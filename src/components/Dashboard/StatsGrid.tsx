@@ -77,7 +77,7 @@ export const StatsGrid: React.FC<Props> = ({ user }) => {
             {taxInfo.isTaxable && (
                 <div className="flex items-center gap-1.5 bg-red-500/10 px-2 py-1 rounded text-[10px] text-red-200 w-fit border border-red-500/20">
                     <Info className="w-3 h-3" />
-                    <span>Includes 10% PIT deduction (>2M)</span>
+                    <span>Includes 10% PIT deduction ({'>'} 2M)</span>
                 </div>
             )}
         </div>
