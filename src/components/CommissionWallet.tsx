@@ -1,12 +1,14 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Wallet, ShieldAlert, Download, ArrowDownLeft, Info } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { formatVND } from '../utils/format';
 import { calculatePIT } from '../utils/tax';
 import { useStore } from '../store';
+import { WithdrawalModal } from './WithdrawalModal';
 
 const CommissionWallet: React.FC = () => {
   const { transactions } = useStore();
+  const [isWithdrawalModalOpen, setIsWithdrawalModalOpen] = useState(false);
 
   const processedTransactions = transactions.map(t => {
      const { taxAmount, isTaxable } = calculatePIT(t.amount);
@@ -93,7 +95,11 @@ const CommissionWallet: React.FC = () => {
                     WellNexus automatically deducts <span className="font-bold text-gray-700">10% PIT</span> for income exceeding 2,000,000 VNĐ per Vietnam Law.
                 </p>
             </div>
-            <button className="bg-brand-accent hover:bg-yellow-400 text-brand-primary font-bold py-4 rounded-xl shadow-lg shadow-yellow-900/10 transition transform active:scale-95 flex items-center justify-center gap-2">
+            <button
+              onClick={() => setIsWithdrawalModalOpen(true)}
+              className="bg-brand-accent hover:bg-yellow-400 text-brand-primary font-bold py-4 rounded-xl shadow-lg shadow-yellow-900/10 transition transform active:scale-95 flex items-center justify-center gap-2"
+              aria-label="Open withdrawal request modal"
+            >
                 <ArrowDownLeft className="w-5 h-5" /> Request Withdrawal
             </button>
         </div>
@@ -114,12 +120,12 @@ const CommissionWallet: React.FC = () => {
           <table className="w-full text-sm text-left">
             <thead className="text-xs text-gray-400 uppercase bg-gray-50/50">
               <tr>
-                <th className="px-6 py-4 font-medium">Date & Ref</th>
-                <th className="px-6 py-4 font-medium">Type</th>
-                <th className="px-6 py-4 font-medium text-right">Gross Amount</th>
-                <th className="px-6 py-4 font-medium text-right">PIT (10%)</th>
-                <th className="px-6 py-4 font-medium text-right">Net Received</th>
-                <th className="px-6 py-4 font-medium text-center">Status</th>
+                <th scope="col" className="px-6 py-4 font-medium">Date & Ref</th>
+                <th scope="col" className="px-6 py-4 font-medium">Type</th>
+                <th scope="col" className="px-6 py-4 font-medium text-right">Gross Amount</th>
+                <th scope="col" className="px-6 py-4 font-medium text-right">PIT (10%)</th>
+                <th scope="col" className="px-6 py-4 font-medium text-right">Net Received</th>
+                <th scope="col" className="px-6 py-4 font-medium text-center">Status</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-gray-100">
@@ -147,6 +153,13 @@ const CommissionWallet: React.FC = () => {
           </table>
         </div>
       </motion.div>
+
+      {/* Withdrawal Modal */}
+      <WithdrawalModal
+        isOpen={isWithdrawalModalOpen}
+        onClose={() => setIsWithdrawalModalOpen(false)}
+        availableBalance={totalNet}
+      />
     </div>
   );
 };
