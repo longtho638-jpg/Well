@@ -1,0 +1,30 @@
+{
+  "name": "WellNexus MVP",
+  "description": "A Hybrid Community Commerce platform for Vietnam, featuring AI coaching and automated tax compliance.",
+  "requestFramePermissions": [],
+  "files": [
+    "index.tsx",
+    "index.html",
+    "types.ts",
+    "store.ts",
+    "SingleFileApp.tsx",
+    "services/geminiService.ts",
+    "services/mockData.ts",
+    "utils/format.ts",
+    "utils/tax.ts",
+    "components/Sidebar.tsx",
+    "components/ProductCard.tsx",
+    "components/CommissionWallet.tsx",
+    "components/OnboardingQuest.tsx",
+    "components/Dashboard/HeroCard.tsx",
+    "components/Dashboard/StatsGrid.tsx",
+    "components/Dashboard/RevenueChart.tsx",
+    "components/Dashboard/TopProducts.tsx",
+    "pages/Dashboard.tsx",
+    "pages/LandingPage.tsx",
+    "pages/Marketplace.tsx",
+    "pages/ProductDetail.tsx",
+    "App.tsx",
+    "USER_ONBOARDING.md"
+  ]
+}
