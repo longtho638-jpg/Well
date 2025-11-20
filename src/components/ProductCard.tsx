@@ -29,6 +29,20 @@ const ProductCard: React.FC<Props> = ({ product }) => {
     }
   };
 
+  const handleShare = async (e: React.MouseEvent) => {
+    e.stopPropagation();
+    const shareUrl = `${window.location.origin}/product/${product.id}`;
+
+    try {
+      await navigator.clipboard.writeText(shareUrl);
+      alert('Link copied to clipboard!');
+    } catch (err) {
+      // Fallback for older browsers
+      console.error('Failed to copy:', err);
+      alert(`Share this link: ${shareUrl}`);
+    }
+  };
+
   const handleViewDetails = () => navigate(`/product/${product.id}`);
   
   const commissionAmount = product.price * product.commissionRate;
@@ -80,11 +94,12 @@ const ProductCard: React.FC<Props> = ({ product }) => {
         </div>
         
         <p className="text-xs text-gray-500 mb-4 line-clamp-2 min-h-[2.5em]">{product.description}</p>
-        
-        <div className="grid grid-cols-2 gap-3 mt-auto">
-          <button 
-            onClick={(e) => { e.stopPropagation(); alert("Link Copied!"); }} 
+
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mt-auto">
+          <button
+            onClick={handleShare}
             className="flex items-center justify-center gap-2 border border-gray-200 text-gray-600 py-2.5 rounded-lg text-xs font-bold hover:bg-gray-50 hover:border-gray-300 transition-all"
+            aria-label="Share product link"
           >
             <Share2 className="w-3.5 h-3.5" /> Share
           </button>

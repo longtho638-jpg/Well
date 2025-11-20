@@ -17,10 +17,49 @@ const CommissionWallet: React.FC = () => {
   const totalTax = processedTransactions.reduce((sum, t) => sum + t.taxDeducted, 0);
   const totalNet = totalGross - totalTax;
 
+  const handleExportCSV = () => {
+    // Create CSV header
+    const headers = ['Date', 'Ref ID', 'Type', 'Gross Amount (VND)', 'Tax Deducted (VND)', 'Net Received (VND)', 'Status'];
+
+    // Create CSV rows
+    const rows = processedTransactions.map(t => [
+      t.date,
+      t.id,
+      t.type,
+      t.amount,
+      t.taxDeducted || 0,
+      t.amount - (t.taxDeducted || 0),
+      t.status
+    ]);
+
+    // Add summary row
+    rows.push([]);
+    rows.push(['SUMMARY', '', '', totalGross, totalTax, totalNet, '']);
+
+    // Combine into CSV string
+    const csvContent = [
+      headers.join(','),
+      ...rows.map(row => row.join(','))
+    ].join('\n');
+
+    // Create download link
+    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+    const link = document.createElement('a');
+    const url = URL.createObjectURL(blob);
+
+    link.setAttribute('href', url);
+    link.setAttribute('download', `wellnexus_earnings_${new Date().toISOString().split('T')[0]}.csv`);
+    link.style.visibility = 'hidden';
+
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
+
   return (
     <div className="space-y-6">
-      <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        <div className="lg:col-span-2 bg-gradient-to-br from-brand-primary to-teal-900 rounded-2xl p-8 text-white shadow-xl relative overflow-hidden group">
+      <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="md:col-span-1 lg:col-span-2 bg-gradient-to-br from-brand-primary to-teal-900 rounded-2xl p-8 text-white shadow-xl relative overflow-hidden group">
             <div className="absolute top-0 right-0 w-64 h-64 bg-white opacity-5 rounded-full blur-3xl -mr-16 -mt-16 pointer-events-none transition-transform duration-700 group-hover:scale-110"></div>
             
             <div className="flex justify-between items-start mb-8 relative z-10">
@@ -62,8 +101,14 @@ const CommissionWallet: React.FC = () => {
 
       <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.2 }} className="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
         <div className="p-6 border-b border-gray-100 flex justify-between items-center">
-            <h3 className="font-bold text-lg text-gray-800">Earnings History</h3>
-            <button className="text-sm text-brand-primary font-medium flex items-center gap-1 hover:underline"><Download className="w-4 h-4" /> Export Statement</button>
+            <h3 className="font-bold text-gray-800">Earnings History</h3>
+            <button
+              onClick={handleExportCSV}
+              className="text-sm text-brand-primary font-medium flex items-center gap-1 hover:underline"
+              aria-label="Export earnings statement as CSV"
+            >
+              <Download className="w-4 h-4" /> Export Statement
+            </button>
         </div>
         <div className="overflow-x-auto">
           <table className="w-full text-sm text-left">
