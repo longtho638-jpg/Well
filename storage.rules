@@ -1,0 +1,65 @@
+rules_version = '2';
+
+service firebase.storage {
+  match /b/{bucket}/o {
+
+    // Helper functions
+    function isAuthenticated() {
+      return request.auth != null;
+    }
+
+    function isOwner(userId) {
+      return isAuthenticated() && request.auth.uid == userId;
+    }
+
+    function isValidImageType() {
+      return request.resource.contentType.matches('image/.*');
+    }
+
+    function isValidFileSize(maxSize) {
+      return request.resource.size <= maxSize;
+    }
+
+    // User profile images
+    match /users/{userId}/avatar/{imageId} {
+      // Users can read any profile image
+      allow read: if true;
+
+      // Users can upload their own profile image (max 5MB)
+      allow create, update: if isOwner(userId) &&
+                               isValidImageType() &&
+                               isValidFileSize(5 * 1024 * 1024);
+
+      // Users can delete their own profile image
+      allow delete: if isOwner(userId);
+    }
+
+    // Product images (admin only)
+    match /products/{productId}/{imageId} {
+      // Anyone can read product images
+      allow read: if true;
+
+      // Only admins can upload product images (via cloud functions)
+      allow create, update, delete: if false;
+    }
+
+    // KYC documents (identity verification)
+    match /kyc/{userId}/{documentId} {
+      // Only the owner and system can read KYC documents
+      allow read: if isOwner(userId);
+
+      // Users can upload KYC documents (max 10MB, images or PDFs)
+      allow create: if isOwner(userId) &&
+                       (isValidImageType() || request.resource.contentType == 'application/pdf') &&
+                       isValidFileSize(10 * 1024 * 1024);
+
+      // KYC documents cannot be updated or deleted after submission
+      allow update, delete: if false;
+    }
+
+    // Default deny all
+    match /{allPaths=**} {
+      allow read, write: if false;
+    }
+  }
+}
