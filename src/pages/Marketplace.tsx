@@ -175,14 +175,14 @@ export const Marketplace: React.FC = () => {
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-50 via-blue-50 to-purple-50 pb-20">
       {/* Toggle Button */}
-      <div className="sticky top-0 z-20 bg-white/80 backdrop-blur-xl border-b border-gray-200 p-4">
+      <div className="sticky top-0 z-20 bg-white/80 dark:bg-slate-800/80 backdrop-blur-xl border-b border-gray-200 dark:border-slate-700 p-4">
         <div className="max-w-7xl mx-auto flex gap-3">
           <button
             onClick={() => setShowRedemption(false)}
             className={`flex-1 px-6 py-3.5 rounded-xl font-bold text-sm transition-all duration-300 flex items-center justify-center gap-2 ${
               !showRedemption
                 ? 'bg-gradient-to-r from-primary to-teal-600 text-white shadow-lg shadow-primary/30'
-                : 'text-gray-600 hover:bg-gray-50'
+                : 'text-gray-600 dark:text-slate-400 hover:bg-gray-50 dark:hover:bg-slate-700'
             }`}
           >
             <ShoppingCart className="w-5 h-5" />
@@ -193,7 +193,7 @@ export const Marketplace: React.FC = () => {
             className={`flex-1 px-6 py-3.5 rounded-xl font-bold text-sm transition-all duration-300 flex items-center justify-center gap-2 ${
               showRedemption
                 ? 'bg-gradient-to-r from-purple-600 via-pink-600 to-orange-500 text-white shadow-lg shadow-purple-500/30'
-                : 'text-gray-600 hover:bg-gray-50'
+                : 'text-gray-600 dark:text-slate-400 hover:bg-gray-50 dark:hover:bg-slate-700'
             }`}
           >
             <Award className="w-5 h-5" />
@@ -219,15 +219,15 @@ export const Marketplace: React.FC = () => {
                   className="lg:col-span-1 space-y-6"
                 >
                   {/* Filter Card */}
-                  <div className="bg-white/70 backdrop-blur-xl rounded-2xl p-6 border border-gray-200 shadow-xl sticky top-24">
+                  <div className="bg-white/70 dark:bg-slate-800/70 backdrop-blur-xl rounded-2xl p-6 border border-gray-200 dark:border-slate-700 shadow-xl sticky top-24">
                     <div className="flex items-center justify-between mb-6">
-                      <h3 className="font-bold text-gray-900 text-lg flex items-center gap-2">
+                      <h3 className="font-bold text-gray-900 dark:text-slate-100 text-lg flex items-center gap-2">
                         <SlidersHorizontal className="w-5 h-5 text-primary" />
                         Bộ Lọc
                       </h3>
                       <button
                         onClick={() => setShowFilters(false)}
-                        className="lg:hidden p-2 hover:bg-gray-100 rounded-lg"
+                        className="lg:hidden p-2 hover:bg-gray-100 dark:hover:bg-slate-700 rounded-lg"
                       >
                         <X className="w-4 h-4" />
                       </button>
@@ -235,7 +235,7 @@ export const Marketplace: React.FC = () => {
 
                     {/* Category Filter */}
                     <div className="mb-6">
-                      <h4 className="font-semibold text-gray-700 mb-3 text-sm">Danh Mục</h4>
+                      <h4 className="font-semibold text-gray-700 dark:text-slate-300 mb-3 text-sm">Danh Mục</h4>
                       <div className="space-y-2">
                         {[
                           { value: 'all', label: 'Tất cả sản phẩm', icon: '🎁' },
@@ -249,7 +249,7 @@ export const Marketplace: React.FC = () => {
                             className={`w-full px-4 py-3 rounded-xl text-sm font-medium transition-all duration-300 flex items-center gap-3 ${
                               selectedProductCategory === cat.value
                                 ? 'bg-gradient-to-r from-primary to-teal-600 text-white shadow-lg'
-                                : 'bg-gray-50 text-gray-700 hover:bg-gray-100'
+                                : 'bg-gray-50 dark:bg-slate-900 text-gray-700 dark:text-slate-300 hover:bg-gray-100 dark:hover:bg-slate-700'
                             }`}
                           >
                             <span className="text-lg">{cat.icon}</span>
@@ -261,7 +261,7 @@ export const Marketplace: React.FC = () => {
 
                     {/* Price Range Filter */}
                     <div>
-                      <h4 className="font-semibold text-gray-700 mb-3 text-sm">Khoảng Giá</h4>
+                      <h4 className="font-semibold text-gray-700 dark:text-slate-300 mb-3 text-sm">Khoảng Giá</h4>
                       <div className="space-y-2">
                         {[
                           { value: 'all', label: 'Tất cả giá', range: '' },
@@ -275,7 +275,7 @@ export const Marketplace: React.FC = () => {
                             className={`w-full px-4 py-3 rounded-xl text-sm font-medium transition-all duration-300 text-left ${
                               selectedPriceRange === price.value
                                 ? 'bg-gradient-to-r from-accent to-yellow-500 text-primary shadow-lg'
-                                : 'bg-gray-50 text-gray-700 hover:bg-gray-100'
+                                : 'bg-gray-50 dark:bg-slate-900 text-gray-700 dark:text-slate-300 hover:bg-gray-100 dark:hover:bg-slate-700'
                             }`}
                           >
                             <div className="flex items-center justify-between">
@@ -296,7 +296,7 @@ export const Marketplace: React.FC = () => {
                         setSelectedPriceRange('all');
                         setSearchTerm('');
                       }}
-                      className="w-full mt-6 px-4 py-2.5 bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-xl text-sm font-medium transition-colors"
+                      className="w-full mt-6 px-4 py-2.5 bg-gray-100 dark:bg-slate-700 hover:bg-gray-200 dark:hover:bg-slate-600 active:bg-gray-300 dark:active:bg-slate-500 text-gray-700 dark:text-slate-100 rounded-xl text-sm font-medium transition-all duration-200"
                     >
                       Đặt lại bộ lọc
                     </button>
@@ -313,13 +313,13 @@ export const Marketplace: React.FC = () => {
                   <div className="flex items-center gap-4">
                     <button
                       onClick={() => setShowFilters(!showFilters)}
-                      className="p-3 bg-white hover:bg-gray-50 rounded-xl border border-gray-200 transition-colors lg:hidden"
+                      className="p-3 bg-white dark:bg-slate-800 hover:bg-gray-50 dark:hover:bg-slate-700 rounded-xl border border-gray-200 dark:border-slate-700 transition-colors lg:hidden"
                     >
                       <Filter className="w-5 h-5 text-primary" />
                     </button>
                     <div>
-                      <h2 className="text-3xl font-bold text-gray-900">{t('marketplace.title')}</h2>
-                      <p className="text-sm text-gray-600 mt-1">
+                      <h2 className="text-3xl font-bold text-gray-900 dark:text-slate-100">{t('marketplace.title')}</h2>
+                      <p className="text-sm text-gray-600 dark:text-slate-400 mt-1">
                         {filteredProducts.length} sản phẩm
                       </p>
                     </div>
@@ -327,12 +327,12 @@ export const Marketplace: React.FC = () => {
                   <div className="flex items-center gap-3">
                     <div className="relative flex-1 sm:w-72">
                       <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
-                        <Search className="h-5 w-5 text-gray-400" />
+                        <Search className="h-5 w-5 text-gray-400 dark:text-slate-500" />
                       </div>
                       <input
                         type="text"
                         placeholder={t('marketplace.searchPlaceholder')}
-                        className="pl-11 pr-4 py-3 border-2 border-gray-200 rounded-xl w-full focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary text-sm bg-white"
+                        className="pl-11 pr-4 py-3 border-2 border-gray-200 dark:border-slate-700 rounded-xl w-full focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary text-sm bg-white dark:bg-slate-800 text-gray-900 dark:text-slate-100 placeholder-gray-400 dark:placeholder-slate-500"
                         value={searchTerm}
                         onChange={(e) => setSearchTerm(e.target.value)}
                       />
@@ -428,11 +428,11 @@ export const Marketplace: React.FC = () => {
                     })}
                   </div>
                 ) : (
-                  <div className="flex flex-col items-center justify-center h-64 text-center bg-white/70 backdrop-blur-xl rounded-2xl border-2 border-gray-200 border-dashed">
-                    <div className="p-4 bg-gray-50 rounded-full mb-3">
-                      <Search className="h-6 w-6 text-gray-400" />
+                  <div className="flex flex-col items-center justify-center h-64 text-center bg-white/70 dark:bg-slate-800/70 backdrop-blur-xl rounded-2xl border-2 border-gray-200 dark:border-slate-700 border-dashed">
+                    <div className="p-4 bg-gray-50 dark:bg-slate-900 rounded-full mb-3">
+                      <Search className="h-6 w-6 text-gray-400 dark:text-slate-500" />
                     </div>
-                    <h3 className="text-lg font-bold text-gray-800">{t('marketplace.noProductsFound')}</h3>
+                    <h3 className="text-lg font-bold text-gray-800 dark:text-slate-100">{t('marketplace.noProductsFound')}</h3>
                   </div>
                 )}
               </div>
@@ -482,7 +482,7 @@ export const Marketplace: React.FC = () => {
                   className={`px-6 py-3 rounded-xl font-semibold text-sm whitespace-nowrap transition-all duration-300 flex items-center gap-2 ${
                     selectedCategory === cat.value
                       ? 'bg-gradient-to-r from-purple-600 to-pink-600 text-white shadow-lg scale-105'
-                      : 'bg-white text-gray-700 hover:bg-gray-50 border border-gray-200'
+                      : 'bg-white dark:bg-slate-800 text-gray-700 dark:text-slate-100 hover:bg-gray-50 dark:hover:bg-slate-700 border border-gray-200 dark:border-slate-600 transition-all duration-200'
                   }`}
                 >
                   <span className="text-lg">{cat.icon}</span>
@@ -602,10 +602,10 @@ export const Marketplace: React.FC = () => {
             </div>
 
             {filteredRedemptionItems.length === 0 && (
-              <div className="text-center py-12 bg-white rounded-2xl border border-gray-100">
-                <Award className="w-16 h-16 text-gray-400 mx-auto mb-4" />
-                <h3 className="text-lg font-bold text-gray-900 mb-2">Chưa có sản phẩm trong danh mục này</h3>
-                <p className="text-gray-600">Vui lòng chọn danh mục khác</p>
+              <div className="text-center py-12 bg-white dark:bg-slate-800 rounded-2xl border border-gray-100 dark:border-slate-700">
+                <Award className="w-16 h-16 text-gray-400 dark:text-slate-600 mx-auto mb-4" />
+                <h3 className="text-lg font-bold text-gray-900 dark:text-slate-100 mb-2">Chưa có sản phẩm trong danh mục này</h3>
+                <p className="text-gray-600 dark:text-slate-400">Vui lòng chọn danh mục khác</p>
               </div>
             )}
           </motion.div>
@@ -631,7 +631,7 @@ export const Marketplace: React.FC = () => {
               animate={{ x: 0 }}
               exit={{ x: '100%' }}
               transition={{ type: 'spring', damping: 25, stiffness: 200 }}
-              className="fixed right-0 top-0 bottom-0 w-full sm:w-[480px] bg-white shadow-2xl z-50 flex flex-col"
+              className="fixed right-0 top-0 bottom-0 w-full sm:w-[480px] bg-white dark:bg-slate-800 shadow-2xl z-50 flex flex-col"
             >
               {/* Header */}
               <div className="bg-gradient-to-r from-primary to-teal-600 p-6 text-white">
@@ -656,9 +656,9 @@ export const Marketplace: React.FC = () => {
               <div className="flex-1 overflow-y-auto p-6 space-y-4">
                 {cart.length === 0 ? (
                   <div className="flex flex-col items-center justify-center h-full text-center">
-                    <ShoppingCart className="w-16 h-16 text-gray-300 mb-4" />
-                    <p className="text-gray-600 font-medium">Giỏ hàng trống</p>
-                    <p className="text-sm text-gray-500">Thêm sản phẩm vào giỏ hàng</p>
+                    <ShoppingCart className="w-16 h-16 text-gray-300 dark:text-slate-600 mb-4" />
+                    <p className="text-gray-600 dark:text-slate-400 font-medium">Giỏ hàng trống</p>
+                    <p className="text-sm text-gray-500 dark:text-slate-500">Thêm sản phẩm vào giỏ hàng</p>
                   </div>
                 ) : (
                   cart.map((item) => (
@@ -667,7 +667,7 @@ export const Marketplace: React.FC = () => {
                       initial={{ opacity: 0, y: 20 }}
                       animate={{ opacity: 1, y: 0 }}
                       exit={{ opacity: 0, y: -20 }}
-                      className="bg-gray-50 rounded-xl p-4 border border-gray-200"
+                      className="bg-gray-50 dark:bg-slate-900 rounded-xl p-4 border border-gray-200 dark:border-slate-700"
                     >
                       <div className="flex gap-4">
                         <img
@@ -676,31 +676,31 @@ export const Marketplace: React.FC = () => {
                           className="w-20 h-20 rounded-lg object-cover"
                         />
                         <div className="flex-1">
-                          <h3 className="font-bold text-gray-900 mb-1">{item.product.name}</h3>
+                          <h3 className="font-bold text-gray-900 dark:text-slate-100 mb-1">{item.product.name}</h3>
                           <p className="text-sm text-primary font-bold mb-2">
                             {formatVND(item.product.price)}
                           </p>
 
                           {/* Quantity Controls */}
                           <div className="flex items-center gap-3">
-                            <div className="flex items-center gap-2 bg-white border border-gray-300 rounded-lg">
+                            <div className="flex items-center gap-2 bg-white dark:bg-slate-800 border border-gray-300 dark:border-slate-600 rounded-lg">
                               <button
                                 onClick={() => updateQuantity(item.product.id, -1)}
-                                className="p-2 hover:bg-gray-100 rounded-l-lg transition-colors"
+                                className="p-2 bg-white dark:bg-slate-700 hover:bg-gray-100 dark:hover:bg-slate-600 active:bg-gray-200 dark:active:bg-slate-500 rounded-l-lg transition-all duration-200 text-gray-700 dark:text-slate-200"
                               >
                                 <Minus className="w-4 h-4" />
                               </button>
-                              <span className="px-3 font-bold">{item.quantity}</span>
+                              <span className="px-3 font-bold text-gray-900 dark:text-slate-100">{item.quantity}</span>
                               <button
                                 onClick={() => updateQuantity(item.product.id, 1)}
-                                className="p-2 hover:bg-gray-100 rounded-r-lg transition-colors"
+                                className="p-2 bg-white dark:bg-slate-700 hover:bg-gray-100 dark:hover:bg-slate-600 active:bg-gray-200 dark:active:bg-slate-500 rounded-r-lg transition-all duration-200 text-gray-700 dark:text-slate-200"
                               >
                                 <Plus className="w-4 h-4" />
                               </button>
                             </div>
                             <button
                               onClick={() => removeFromCart(item.product.id)}
-                              className="p-2 text-red-600 hover:bg-red-50 rounded-lg transition-colors"
+                              className="p-2 text-red-600 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-lg transition-colors"
                             >
                               <Trash2 className="w-4 h-4" />
                             </button>
@@ -709,7 +709,7 @@ export const Marketplace: React.FC = () => {
                       </div>
 
                       {/* Commission Badge */}
-                      <div className="mt-3 bg-accent/20 border border-accent rounded-lg p-2 text-xs">
+                      <div className="mt-3 bg-accent/20 dark:bg-accent/10 border border-accent rounded-lg p-2 text-xs">
                         <span className="text-primary font-bold">
                           Hoa hồng: {formatVND(item.product.price * item.product.commissionRate * item.quantity)}
                         </span>
@@ -721,14 +721,14 @@ export const Marketplace: React.FC = () => {
 
               {/* Footer */}
               {cart.length > 0 && (
-                <div className="border-t border-gray-200 p-6 bg-gray-50 space-y-4">
+                <div className="border-t border-gray-200 dark:border-slate-700 p-6 bg-gray-50 dark:bg-slate-900 space-y-4">
                   <div className="space-y-2">
                     <div className="flex items-center justify-between text-sm">
-                      <span className="text-gray-600">Tổng tiền:</span>
-                      <span className="font-bold text-gray-900">{formatVND(cartTotal)}</span>
+                      <span className="text-gray-600 dark:text-slate-400">Tổng tiền:</span>
+                      <span className="font-bold text-gray-900 dark:text-slate-100">{formatVND(cartTotal)}</span>
                     </div>
                     <div className="flex items-center justify-between text-sm">
-                      <span className="text-gray-600">Tổng hoa hồng:</span>
+                      <span className="text-gray-600 dark:text-slate-400">Tổng hoa hồng:</span>
                       <span className="font-bold text-green-600">{formatVND(cartCommission)}</span>
                     </div>
                   </div>

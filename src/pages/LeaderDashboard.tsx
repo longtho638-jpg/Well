@@ -146,7 +146,7 @@ export default function LeaderDashboard() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-[#0A0E27] via-[#1A1F3A] to-[#0A0E27] p-6 space-y-6 pb-20">
+    <div className="min-h-screen bg-gradient-to-br from-white via-gray-50 to-white dark:from-[#0A0E27] dark:via-[#1A1F3A] dark:to-[#0A0E27] p-6 space-y-6 pb-20">
       {/* Header */}
       <motion.div
         initial={{ opacity: 0, y: -20 }}
@@ -166,11 +166,11 @@ export default function LeaderDashboard() {
                   <Crown className="w-8 h-8 text-primary" />
                 </div>
                 <div>
-                  <h1 className="text-4xl font-bold">{t('team.leaderDashboard')}</h1>
-                  <p className="text-white/80 text-sm">{t('team.subtitle')}</p>
+                  <h1 className="text-4xl font-bold text-gray-900 dark:text-white">{t('team.leaderDashboard')}</h1>
+                  <p className="text-white/80 dark:text-white/80 text-sm">{t('team.subtitle')}</p>
                 </div>
               </div>
-              <p className="text-white/90 max-w-2xl mt-2">
+              <p className="text-gray-700 dark:text-white/90 max-w-2xl mt-2">
                 {t('team.description')}
               </p>
             </div>
@@ -236,7 +236,7 @@ export default function LeaderDashboard() {
                     </div>
                     Top 3 Tướng Tài
                   </h2>
-                  <p className="text-gray-400 text-sm mt-1">Doanh số cao nhất tháng này</p>
+                  <p className="text-gray-600 dark:text-slate-400 text-sm mt-1">Doanh số cao nhất tháng này</p>
                 </div>
               </div>
 
@@ -262,7 +262,7 @@ export default function LeaderDashboard() {
                       </div>
                     </div>
                     <h3 className="text-white font-bold text-lg mb-1">{top3Performers[1].name}</h3>
-                    <p className="text-gray-400 text-sm mb-2">{top3Performers[1].rank}</p>
+                    <p className="text-gray-600 dark:text-slate-400 text-sm mb-2">{top3Performers[1].rank}</p>
                     <div className="bg-white/10 backdrop-blur-sm rounded-xl p-3 border border-white/20">
                       <p className="text-gray-300 text-xs mb-1">Doanh số</p>
                       <p className="text-white font-bold">{formatVND(top3Performers[1].personalSales)}</p>
@@ -293,7 +293,7 @@ export default function LeaderDashboard() {
                       </div>
                     </div>
                     <h3 className="text-white font-bold text-xl mb-1">{top3Performers[0].name}</h3>
-                    <p className="text-yellow-400 text-sm mb-2 flex items-center justify-center gap-1">
+                    <p className="text-yellow-500 dark:text-yellow-400 text-sm mb-2 flex items-center justify-center gap-1">
                       <Star className="w-4 h-4" fill="currentColor" />
                       {top3Performers[0].rank}
                     </p>
@@ -324,7 +324,7 @@ export default function LeaderDashboard() {
                       </div>
                     </div>
                     <h3 className="text-white font-bold text-lg mb-1">{top3Performers[2].name}</h3>
-                    <p className="text-gray-400 text-sm mb-2">{top3Performers[2].rank}</p>
+                    <p className="text-gray-600 dark:text-slate-400 text-sm mb-2">{top3Performers[2].rank}</p>
                     <div className="bg-white/10 backdrop-blur-sm rounded-xl p-3 border border-white/20">
                       <p className="text-gray-300 text-xs mb-1">Doanh số</p>
                       <p className="text-white font-bold">{formatVND(top3Performers[2].personalSales)}</p>
@@ -627,14 +627,14 @@ export default function LeaderDashboard() {
                     </td>
                     <td className="px-6 py-4">
                       <div className="flex items-center justify-center gap-2">
-                        <button className="p-2 hover:bg-white/10 rounded-lg transition-colors" title={t('team.actions.sendEmail')}>
-                          <Mail className="w-4 h-4 text-gray-400" />
+                        <button className="p-2 hover:bg-white/10 active:bg-white/20 rounded-lg transition-all duration-200 group" title={t('team.actions.sendEmail')}>
+                          <Mail className="w-4 h-4 text-gray-400 group-hover:text-blue-400 transition-colors duration-200" />
                         </button>
-                        <button className="p-2 hover:bg-white/10 rounded-lg transition-colors" title={t('team.actions.call')}>
-                          <Phone className="w-4 h-4 text-gray-400" />
+                        <button className="p-2 hover:bg-white/10 active:bg-white/20 rounded-lg transition-all duration-200 group" title={t('team.actions.call')}>
+                          <Phone className="w-4 h-4 text-gray-400 group-hover:text-green-400 transition-colors duration-200" />
                         </button>
-                        <button className="p-2 hover:bg-white/10 rounded-lg transition-colors" title={t('team.actions.moreActions')}>
-                          <MoreVertical className="w-4 h-4 text-gray-400" />
+                        <button className="p-2 hover:bg-white/10 active:bg-white/20 rounded-lg transition-all duration-200 group" title={t('team.actions.moreActions')}>
+                          <MoreVertical className="w-4 h-4 text-gray-400 group-hover:text-purple-400 transition-colors duration-200" />
                         </button>
                       </div>
                     </td>

@@ -146,34 +146,34 @@ export const DailyQuestHub: React.FC = () => {
     <motion.div
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
-      className="bg-gradient-to-br from-amber-50 via-yellow-50 to-orange-50 rounded-2xl border border-amber-200 shadow-sm overflow-hidden"
+      className="bg-gradient-to-br from-amber-50 via-yellow-50 to-orange-50 dark:from-slate-800 dark:via-slate-800 dark:to-slate-900 rounded-2xl border border-amber-200 dark:border-slate-700 shadow-sm overflow-hidden"
     >
       {/* Header */}
-      <div className="bg-gradient-to-r from-amber-500 via-yellow-500 to-orange-500 px-6 py-4">
+      <div className="bg-gradient-to-r from-amber-500 via-yellow-500 to-orange-500 dark:from-yellow-600 dark:via-amber-600 dark:to-orange-600 px-6 py-4">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-3">
             <motion.div
               animate={{ rotate: [0, 10, -10, 0] }}
               transition={{ repeat: Infinity, duration: 3 }}
-              className="w-10 h-10 bg-white rounded-xl flex items-center justify-center shadow-lg"
+              className="w-10 h-10 bg-white dark:bg-slate-800 rounded-xl flex items-center justify-center shadow-lg"
             >
-              <Target className="w-5 h-5 text-amber-600" />
+              <Target className="w-5 h-5 text-amber-600 dark:text-amber-400" />
             </motion.div>
             <div>
-              <h3 className="font-bold text-white flex items-center gap-2">
+              <h3 className="font-bold text-white dark:text-slate-100 flex items-center gap-2">
                 {t('dashboard.dailyQuest.title')}
                 {completedCount === quests.length && (
                   <motion.span
                     initial={{ scale: 0 }}
                     animate={{ scale: 1 }}
-                    className="flex items-center gap-1 text-xs bg-white text-amber-600 px-2 py-0.5 rounded-full font-bold"
+                    className="flex items-center gap-1 text-xs bg-white dark:bg-slate-800 text-amber-600 dark:text-amber-400 px-2 py-0.5 rounded-full font-bold"
                   >
                     <Sparkles className="w-3 h-3" />
                     {t('dashboard.dailyQuest.completedAll')}
                   </motion.span>
                 )}
               </h3>
-              <p className="text-xs text-white/90">
+              <p className="text-xs text-white/90 dark:text-slate-300">
                 {t('dashboard.dailyQuest.questsProgress', { completed: completedCount, total: quests.length })} • {t('dashboard.dailyQuest.tokensEarned', { amount: formatNumber(totalRewards) })}
               </p>
             </div>
@@ -183,12 +183,12 @@ export const DailyQuestHub: React.FC = () => {
             <motion.div
               animate={{ scale: [1, 1.1, 1] }}
               transition={{ repeat: Infinity, duration: 2 }}
-              className="flex items-center gap-1 text-white"
+              className="flex items-center gap-1 text-white dark:text-slate-100"
             >
               <TrendingUp className="w-4 h-4" />
               <span className="text-lg font-bold">+{formatNumber(totalRewards)}</span>
             </motion.div>
-            <p className="text-xs text-white/80">{t('dashboard.dailyQuest.tokensToday')}</p>
+            <p className="text-xs text-white/80 dark:text-slate-300">{t('dashboard.dailyQuest.tokensToday')}</p>
           </div>
         </div>
       </div>
@@ -205,9 +205,9 @@ export const DailyQuestHub: React.FC = () => {
               className="min-w-[280px] snap-start"
             >
               <div className={`
-                relative bg-white rounded-xl border-2 shadow-lg overflow-hidden
+                relative bg-white dark:bg-slate-800 rounded-xl border-2 shadow-lg overflow-hidden
                 transition-all duration-300 hover:shadow-xl hover:-translate-y-1
-                ${quest.status === 'done' ? 'border-green-300 opacity-90' : 'border-gray-200'}
+                ${quest.status === 'done' ? 'border-green-300 dark:border-green-600 opacity-90' : 'border-gray-200 dark:border-slate-700'}
               `}>
                 {/* Gradient Header */}
                 <div className={`h-2 bg-gradient-to-r ${quest.bgGradient}`} />
@@ -228,7 +228,7 @@ export const DailyQuestHub: React.FC = () => {
                         initial={{ scale: 0, rotate: -180 }}
                         animate={{ scale: 1, rotate: 0 }}
                         transition={{ type: 'spring', stiffness: 200 }}
-                        className="bg-green-500 text-white rounded-full p-1"
+                        className="bg-green-500 dark:bg-green-600 text-white rounded-full p-1"
                       >
                         <CheckCircle2 className="w-5 h-5" />
                       </motion.div>
@@ -236,18 +236,18 @@ export const DailyQuestHub: React.FC = () => {
                   </div>
 
                   {/* Quest Info */}
-                  <h4 className="font-bold text-gray-900 mb-2 text-lg">
+                  <h4 className="font-bold text-gray-900 dark:text-slate-100 mb-2 text-lg">
                     {quest.title}
                   </h4>
-                  <p className="text-sm text-gray-600 mb-4 leading-relaxed">
+                  <p className="text-sm text-gray-600 dark:text-slate-400 mb-4 leading-relaxed">
                     {quest.description}
                   </p>
 
                   {/* Reward Badge */}
                   <div className="flex items-center gap-2 mb-4">
-                    <div className="flex items-center gap-1 bg-gradient-to-r from-amber-100 to-yellow-100 border border-amber-300 px-3 py-1.5 rounded-full">
-                      <Coins className="w-4 h-4 text-amber-600" />
-                      <span className="text-sm font-bold text-amber-700">
+                    <div className="flex items-center gap-1 bg-gradient-to-r from-amber-100 to-yellow-100 dark:from-amber-900/30 dark:to-yellow-900/30 border border-amber-300 dark:border-amber-700 px-3 py-1.5 rounded-full">
+                      <Coins className="w-4 h-4 text-amber-600 dark:text-amber-400" />
+                      <span className="text-sm font-bold text-amber-700 dark:text-amber-300">
                         +{formatNumber(quest.reward)} GROW
                       </span>
                     </div>
@@ -255,7 +255,7 @@ export const DailyQuestHub: React.FC = () => {
 
                   {/* Action Button */}
                   {quest.status === 'done' ? (
-                    <div className="flex items-center justify-center gap-2 py-3 bg-green-50 text-green-700 rounded-lg font-semibold">
+                    <div className="flex items-center justify-center gap-2 py-3 bg-green-50 dark:bg-green-900/30 text-green-700 dark:text-green-400 rounded-lg font-semibold">
                       <CheckCircle2 className="w-5 h-5" />
                       <span>{t('dashboard.dailyQuest.questCompleted')}</span>
                     </div>

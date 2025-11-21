@@ -96,7 +96,7 @@ export const Wallet: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-[#0A0E27] via-[#1A1F3A] to-[#0A0E27] p-6">
+    <div className="min-h-screen bg-gradient-to-br from-white via-gray-50 to-white dark:from-[#0A0E27] dark:via-[#1A1F3A] dark:to-[#0A0E27] p-6">
       {/* Hero Section - Total Portfolio */}
       <motion.div
         initial={{ opacity: 0, y: -30 }}
@@ -192,14 +192,14 @@ export const Wallet: React.FC = () => {
                   <p className="text-white text-lg font-bold">
                     {t('wallet.balance.shopToken')}
                   </p>
-                  <p className="text-gray-400 text-xs">VND Stablecoin • 1:1000</p>
+                  <p className="text-gray-400 dark:text-slate-400 text-xs">VND Stablecoin • 1:1000</p>
                 </div>
               </div>
             </div>
 
             {/* Balance */}
             <div className="mb-6">
-              <p className="text-gray-400 text-sm mb-2">
+              <p className="text-gray-400 dark:text-slate-400 text-sm mb-2">
                 {t('wallet.balance.total')}
               </p>
               {hideBalance ? (
@@ -286,7 +286,7 @@ export const Wallet: React.FC = () => {
 
             {/* Balance */}
             <div className="mb-6">
-              <p className="text-gray-400 text-sm mb-2">
+              <p className="text-gray-400 dark:text-slate-400 text-sm mb-2">
                 {t('wallet.balance.total')}
               </p>
               {hideBalance ? (
@@ -392,7 +392,7 @@ export const Wallet: React.FC = () => {
                   className={`px-5 py-2.5 rounded-xl font-bold text-sm transition-all ${
                     filter === f
                       ? 'bg-gradient-to-r from-[#00FFA3] to-cyan-400 text-black shadow-lg shadow-[#00FFA3]/30'
-                      : 'bg-white/10 text-gray-400 hover:bg-white/20 backdrop-blur-sm border border-white/10'
+                      : 'bg-white/10 text-gray-400 hover:bg-white/20 active:bg-white/30 backdrop-blur-sm border border-white/10 transition-all duration-200'
                   }`}
                 >
                   {f === 'all' ? t('common.filter') : f}
