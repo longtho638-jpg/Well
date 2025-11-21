@@ -188,3 +188,7 @@ This is a Seed Stage MVP. Contributions welcome for:
 - Mobile app (React Native)
 - Dark mode
 - Internationalization (vi/en)
+
+---
+
+**Last Deployment:** 2025-11-21T10:30:00Z (Wealth OS - Production Ready)
