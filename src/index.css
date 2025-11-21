@@ -4,8 +4,8 @@
 
 @layer base {
   :root {
-    --font-display: 'Manrope', sans-serif;
-    --font-body: 'Plus Jakarta Sans', sans-serif;
+    --font-display: 'Manrope', system-ui, -apple-system, sans-serif;
+    --font-body: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
   }
 
   html {
@@ -13,17 +13,37 @@
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     text-rendering: optimizeLegibility; /* Tối ưu hiển thị chữ */
+    font-feature-settings: 'kern' 1, 'liga' 1, 'calt' 1; /* Enable OpenType features */
+    -webkit-text-size-adjust: 100%; /* Prevent font scaling in landscape */
+    -moz-text-size-adjust: 100%;
+    text-size-adjust: 100%;
   }
 
+  /* CRITICAL: Force Manrope for ALL headings with Vietnamese character support */
   h1, h2, h3, h4, h5, h6 {
-    font-family: var(--font-display);
+    font-family: var(--font-display) !important;
     font-weight: 800; /* Manrope ExtraBold nhìn rất đẹp cho Tiếng Việt */
     letter-spacing: -0.02em; /* Thu hẹp khoảng cách chữ để tạo cảm giác hiện đại */
+    font-feature-settings: 'kern' 1, 'liga' 1; /* Better Vietnamese diacritic rendering */
+    font-variant-ligatures: common-ligatures;
+    text-rendering: optimizeLegibility;
   }
 
   /* Fix lỗi font cho các thẻ input/button */
   input, button, textarea, select {
     font-family: inherit;
+  }
+
+  /* VIETNAMESE CHARACTER FIX: Ensure all Vietnamese Unicode ranges use correct font */
+  * {
+    /* Force font for Vietnamese characters U+00C0-U+1EF9 */
+    font-synthesis: none; /* Prevent browser from synthesizing missing glyphs */
+  }
+
+  /* Strong fallback prevention for Vietnamese diacritics */
+  body, div, span, p, a, li, td, th {
+    font-family: var(--font-body);
+    unicode-range: U+0000-00FF, U+0100-017F, U+0180-024F, U+1E00-1EFF; /* Latin + Vietnamese */
   }
 }
 
