@@ -18,12 +18,12 @@ export const Sidebar: React.FC<SidebarProps> = ({ onMobileClose }) => {
   const [loading, setLoading] = useState(false);
 
   const menuItems = [
-    { path: '/', label: 'Overview', icon: LayoutDashboard },
-    { path: '/marketplace', label: 'Marketplace', icon: ShoppingBag, matches: ['/product'] },
-    { path: '/wallet', label: 'My Wallet', icon: Wallet },
-    { path: '/copilot', label: 'The Copilot', icon: Bot, badge: 'AI' },
-    { path: '/team', label: 'Team Leader', icon: Users },
-    { path: '/referral', label: 'Giới Thiệu', icon: Share2 },
+    { path: '/dashboard', label: 'Overview', icon: LayoutDashboard },
+    { path: '/dashboard/marketplace', label: 'Marketplace', icon: ShoppingBag, matches: ['/dashboard/product'] },
+    { path: '/dashboard/wallet', label: 'My Wallet', icon: Wallet },
+    { path: '/dashboard/copilot', label: 'The Copilot', icon: Bot, badge: 'AI' },
+    { path: '/dashboard/team', label: 'Team Leader', icon: Users },
+    { path: '/dashboard/referral', label: 'Giới Thiệu', icon: Share2 },
   ];
 
   const handleNav = (path: string) => {
@@ -33,7 +33,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ onMobileClose }) => {
 
   const handleLogout = () => {
     logout();
-    navigate('/landing');
+    navigate('/');
   };
 
   const handleAdvice = async () => {
@@ -56,13 +56,13 @@ export const Sidebar: React.FC<SidebarProps> = ({ onMobileClose }) => {
     >
       <div
         className="p-6 flex items-center gap-3 cursor-pointer"
-        onClick={() => handleNav('/')}
+        onClick={() => handleNav('/dashboard')}
         role="button"
         tabIndex={0}
         onKeyPress={(e) => {
           if (e.key === 'Enter' || e.key === ' ') {
             e.preventDefault();
-            handleNav('/');
+            handleNav('/dashboard');
           }
         }}
         aria-label="WellNexus home"
