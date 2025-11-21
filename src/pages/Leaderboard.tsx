@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Trophy, Medal, Award, TrendingUp, Coins, Zap, Crown } from 'lucide-react';
+import { Trophy, Medal, Award, TrendingUp, Coins, Zap, Crown, Swords } from 'lucide-react';
 import { useStore } from '@/store';
 import { formatVND, formatNumber } from '@/utils/format';
 
@@ -119,6 +119,7 @@ export default function Leaderboard() {
   const { user } = useStore();
   const [showConfetti, setShowConfetti] = useState(true);
   const [leaderboardData, setLeaderboardData] = useState<LeaderboardEntry[]>([]);
+  const [challengeTarget, setChallengeTarget] = useState<LeaderboardEntry | null>(null);
 
   useEffect(() => {
     // Generate leaderboard with current user
@@ -136,6 +137,17 @@ export default function Leaderboard() {
   // Find current user
   const currentUserEntry = leaderboardData.find(entry => entry.isCurrentUser);
   const currentUserInTop10 = currentUserEntry && currentUserEntry.rank <= 10;
+
+  // Calculate gap to target
+  const handleChallenge = (target: LeaderboardEntry) => {
+    setChallengeTarget(target);
+  };
+
+  const calculateGap = (targetEntry: LeaderboardEntry) => {
+    if (!currentUserEntry) return 5000000;
+    const gap = targetEntry.shopTokens - currentUserEntry.shopTokens;
+    return Math.max(gap, 0);
+  };
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-50 via-teal-50 to-amber-50 p-6 relative overflow-hidden">
@@ -189,7 +201,11 @@ export default function Leaderboard() {
                   <span className="text-sm font-medium text-teal-100">Vị trí của bạn</span>
                 </div>
                 <p className="text-2xl font-bold">
-                  #{currentUserEntry?.rank || 'N/A'}
+                  {currentUserEntry ? (
+                    currentUserEntry.rank <= 10 ? `#${currentUserEntry.rank}` : 'Top 100+'
+                  ) : (
+                    'Top 100+'
+                  )}
                 </p>
               </div>
 
@@ -225,15 +241,41 @@ export default function Leaderboard() {
                 <motion.div
                   key={entry.userId}
                   initial={{ opacity: 0, x: -20 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  transition={{ delay: index * 0.05 }}
+                  animate={{
+                    opacity: 1,
+                    x: 0,
+                    scale: entry.rank <= 3 ? [1, 1.01, 1] : 1
+                  }}
+                  transition={{
+                    delay: index * 0.05,
+                    scale: {
+                      duration: 2,
+                      repeat: Infinity,
+                      repeatType: "reverse",
+                      ease: "easeInOut"
+                    }
+                  }}
                   className={`px-6 py-5 hover:bg-gray-50 transition-all duration-200 ${
                     entry.isCurrentUser
                       ? 'bg-gradient-to-r from-primary/5 via-teal-50/50 to-accent/5 border-l-4 border-primary shadow-inner'
                       : ''
-                  } ${entry.rank <= 3 ? 'bg-gradient-to-r from-yellow-50/30 to-transparent' : ''}`}
+                  } ${entry.rank <= 3 ? 'bg-gradient-to-r from-yellow-50/30 to-transparent relative' : ''}`}
                 >
-                  <div className="grid grid-cols-12 gap-4 items-center">
+                  {/* Pulse glow effect for top 3 */}
+                  {entry.rank <= 3 && (
+                    <motion.div
+                      className="absolute inset-0 rounded-lg bg-gradient-to-r from-yellow-400/20 via-amber-400/20 to-yellow-400/20"
+                      animate={{
+                        opacity: [0.3, 0.6, 0.3],
+                      }}
+                      transition={{
+                        duration: 2.5,
+                        repeat: Infinity,
+                        ease: "easeInOut"
+                      }}
+                    />
+                  )}
+                  <div className="grid grid-cols-12 gap-4 items-center relative z-10">
                     {/* Rank */}
                     <div className="col-span-1 flex justify-center">
                       <MedalIcon rank={entry.rank} />
@@ -254,14 +296,25 @@ export default function Leaderboard() {
                         )}
                       </div>
                       <div className="flex-1 min-w-0">
-                        <p className="font-bold text-gray-900 truncate flex items-center gap-2">
-                          {entry.name}
-                          {entry.isCurrentUser && (
-                            <span className="text-xs bg-primary text-white px-2 py-0.5 rounded-full font-semibold">
-                              Bạn
-                            </span>
+                        <div className="flex items-center gap-2">
+                          <p className="font-bold text-gray-900 truncate flex items-center gap-2">
+                            {entry.name}
+                            {entry.isCurrentUser && (
+                              <span className="text-xs bg-primary text-white px-2 py-0.5 rounded-full font-semibold">
+                                Bạn
+                              </span>
+                            )}
+                          </p>
+                          {!entry.isCurrentUser && currentUserEntry && (
+                            <button
+                              onClick={() => handleChallenge(entry)}
+                              className="ml-2 px-2 py-1 bg-gradient-to-r from-orange-500 to-red-500 text-white text-xs font-semibold rounded-md hover:from-orange-600 hover:to-red-600 transition-all shadow-sm flex items-center gap-1"
+                            >
+                              <Swords className="w-3 h-3" />
+                              Thách đấu
+                            </button>
                           )}
-                        </p>
+                        </div>
                         <p className="text-xs text-gray-500">Partner ID: {entry.userId}</p>
                       </div>
                     </div>
@@ -386,6 +439,96 @@ export default function Leaderboard() {
           </div>
         </motion.div>
       </motion.div>
+
+      {/* Challenge Popup Modal */}
+      <AnimatePresence>
+        {challengeTarget && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-4"
+            onClick={() => setChallengeTarget(null)}
+          >
+            <motion.div
+              initial={{ scale: 0.9, y: 20 }}
+              animate={{ scale: 1, y: 0 }}
+              exit={{ scale: 0.9, y: 20 }}
+              className="bg-white rounded-2xl shadow-2xl max-w-md w-full overflow-hidden"
+              onClick={(e) => e.stopPropagation()}
+            >
+              {/* Header */}
+              <div className="bg-gradient-to-r from-orange-500 via-red-500 to-orange-500 p-6 text-white relative overflow-hidden">
+                <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAiIGhlaWdodD0iNDAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGRlZnM+PHBhdHRlcm4gaWQ9ImdyaWQiIHdpZHRoPSI0MCIgaGVpZ2h0PSI0MCIgcGF0dGVyblVuaXRzPSJ1c2VyU3BhY2VPblVzZSI+PHBhdGggZD0iTSAwIDEwIEwgNDAgMTAgTSAxMCAwIEwgMTAgNDAgTSAwIDIwIEwgNDAgMjAgTSAyMCAwIEwgMjAgNDAgTSAwIDMwIEwgNDAgMzAgTSAzMCAwIEwgMzAgNDAiIGZpbGw9Im5vbmUiIHN0cm9rZT0id2hpdGUiIHN0cm9rZS1vcGFjaXR5PSIwLjEiIHN0cm9rZS13aWR0aD0iMSIvPjwvcGF0dGVybj48L2RlZnM+PHJlY3Qgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIgZmlsbD0idXJsKCNncmlkKSIvPjwvc3ZnPg==')] opacity-30" />
+                <div className="relative z-10 flex items-center gap-4">
+                  <div className="bg-white/20 backdrop-blur-sm p-3 rounded-xl">
+                    <Swords className="w-8 h-8" />
+                  </div>
+                  <div>
+                    <h2 className="text-2xl font-bold">Thử Thách!</h2>
+                    <p className="text-sm text-orange-100">Vượt qua đối thủ của bạn</p>
+                  </div>
+                </div>
+              </div>
+
+              {/* Content */}
+              <div className="p-6">
+                <div className="flex items-center gap-4 mb-6 pb-6 border-b border-gray-200">
+                  <img
+                    src={challengeTarget.avatarUrl}
+                    alt={challengeTarget.name}
+                    className="w-16 h-16 rounded-full border-4 border-orange-200 shadow-lg"
+                  />
+                  <div>
+                    <p className="font-bold text-gray-900 text-lg">{challengeTarget.name}</p>
+                    <div className="flex items-center gap-2 mt-1">
+                      <MedalIcon rank={challengeTarget.rank} />
+                      <span className="text-sm text-gray-600">Hạng #{challengeTarget.rank}</span>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="bg-gradient-to-r from-orange-50 to-red-50 rounded-xl p-4 mb-4">
+                  <div className="flex items-start gap-3">
+                    <div className="bg-orange-500 rounded-full p-2 mt-1">
+                      <TrendingUp className="w-5 h-5 text-white" />
+                    </div>
+                    <div className="flex-1">
+                      <p className="font-bold text-gray-900 mb-2">Mục tiêu của bạn:</p>
+                      <p className="text-sm text-gray-700 leading-relaxed">
+                        Hãy nỗ lực thêm <span className="font-bold text-orange-600">{formatVND(calculateGap(challengeTarget))}</span> doanh số
+                        để vượt qua <span className="font-bold">{challengeTarget.name}</span>!
+                      </p>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="space-y-3 mb-6">
+                  <div className="flex items-center gap-3 text-sm">
+                    <div className="w-2 h-2 bg-orange-500 rounded-full"></div>
+                    <span className="text-gray-700">💪 Bạn có thể làm được điều này!</span>
+                  </div>
+                  <div className="flex items-center gap-3 text-sm">
+                    <div className="w-2 h-2 bg-red-500 rounded-full"></div>
+                    <span className="text-gray-700">🔥 Mỗi đơn hàng đưa bạn gần hơn với mục tiêu</span>
+                  </div>
+                  <div className="flex items-center gap-3 text-sm">
+                    <div className="w-2 h-2 bg-orange-500 rounded-full"></div>
+                    <span className="text-gray-700">🚀 Tiếp tục phấn đấu để leo hạng!</span>
+                  </div>
+                </div>
+
+                <button
+                  onClick={() => setChallengeTarget(null)}
+                  className="w-full bg-gradient-to-r from-orange-500 to-red-500 text-white font-bold py-3 rounded-xl hover:from-orange-600 hover:to-red-600 transition-all shadow-lg hover:shadow-xl"
+                >
+                  Sẵn sàng chiến đấu! 💪
+                </button>
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 }
