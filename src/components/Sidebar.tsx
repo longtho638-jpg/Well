@@ -50,7 +50,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ onMobileClose }) => {
 
   return (
     <aside
-      className="bg-white border-r border-gray-200 flex flex-col h-full md:h-screen sticky top-0 z-30 overflow-y-auto"
+      className="bg-white border-r border-gray-200 flex flex-col h-screen overflow-y-auto"
       role="navigation"
       aria-label="Main navigation"
     >

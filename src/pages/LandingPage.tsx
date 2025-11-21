@@ -281,7 +281,7 @@ export default function LandingPage() {
         {/* ================================================================== */}
         {/* HERO SECTION - WORLD CLASS */}
         {/* ================================================================== */}
-        <section className="relative pt-32 pb-24 lg:pt-48 lg:pb-40 overflow-hidden">
+        <section className="relative min-h-[600px] pt-32 pb-12 md:pt-40 md:pb-24 lg:pt-48 lg:pb-40 overflow-hidden">
           {/* Background Layers */}
           <div className="absolute inset-0 z-0">
             {/* Noise Texture */}
@@ -337,7 +337,7 @@ export default function LandingPage() {
           </div>
 
           {/* Content */}
-          <div className="relative z-10 max-w-7xl mx-auto px-6 lg:px-12">
+          <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 md:px-8 lg:px-12">
             <motion.div
               variants={containerVariants}
               initial="hidden"
@@ -345,23 +345,23 @@ export default function LandingPage() {
               className="text-center max-w-5xl mx-auto"
             >
               {/* Badge */}
-              <motion.div variants={itemVariants} className="mb-8 inline-flex">
-                <div className="inline-flex items-center gap-2 bg-white/5 backdrop-blur-md border border-white/10 rounded-full px-5 py-2.5">
+              <motion.div variants={itemVariants} className="mb-6 md:mb-8 inline-flex">
+                <div className="inline-flex items-center gap-2 bg-white/5 backdrop-blur-md border border-white/10 rounded-full px-4 py-2 md:px-5 md:py-2.5">
                   <span className="relative flex h-2 w-2">
                     <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#FFBF00] opacity-75" />
                     <span className="relative inline-flex rounded-full h-2 w-2 bg-[#FFBF00]" />
                   </span>
-                  <Sparkles className="w-4 h-4 text-[#FFBF00]" />
-                  <span className="text-sm font-bold text-[#FFBF00] uppercase tracking-wider font-display">
+                  <Sparkles className="w-3 h-3 md:w-4 md:h-4 text-[#FFBF00]" />
+                  <span className="text-xs md:text-sm font-bold text-[#FFBF00] uppercase tracking-wider font-display">
                     {LANDING_CONTENT.hero.badge}
                   </span>
                 </div>
               </motion.div>
 
-              {/* Headline */}
+              {/* Headline - Mobile: 4xl, Tablet: 6xl, Desktop: 9xl */}
               <motion.h1
                 variants={itemVariants}
-                className="font-display font-black text-7xl md:text-8xl lg:text-9xl mb-6 leading-[0.95] tracking-tight text-white drop-shadow-2xl"
+                className="font-display font-black text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl 2xl:text-9xl mb-4 md:mb-6 leading-[0.95] tracking-tight text-white drop-shadow-2xl"
               >
                 {LANDING_CONTENT.hero.headline}
                 <br />
@@ -370,10 +370,10 @@ export default function LandingPage() {
                 </span>
               </motion.h1>
 
-              {/* Subheadline */}
+              {/* Subheadline - Mobile: base, Desktop: 2xl */}
               <motion.p
                 variants={itemVariants}
-                className="text-lg md:text-xl lg:text-2xl text-white/80 mb-12 max-w-3xl mx-auto leading-relaxed font-light"
+                className="text-base md:text-lg lg:text-xl xl:text-2xl text-white/80 mb-8 md:mb-12 max-w-3xl mx-auto leading-relaxed font-light px-4 md:px-0"
               >
                 {LANDING_CONTENT.hero.subheadline}
               </motion.p>
@@ -419,10 +419,10 @@ export default function LandingPage() {
                 </motion.button>
               </motion.div>
 
-              {/* Stats */}
+              {/* Stats - Mobile: grid-cols-3, Desktop: same */}
               <motion.div
                 variants={itemVariants}
-                className="mt-16 grid grid-cols-3 gap-8 max-w-2xl mx-auto"
+                className="mt-12 md:mt-16 grid grid-cols-3 gap-4 md:gap-8 max-w-2xl mx-auto px-4 md:px-0"
               >
                 {[
                   { value: '200+', label: 'Active Partners' },
@@ -430,10 +430,10 @@ export default function LandingPage() {
                   { value: '98%', label: 'Satisfaction' }
                 ].map((stat, idx) => (
                   <div key={idx} className="text-center">
-                    <div className="text-3xl md:text-4xl font-black text-[#FFBF00] font-display mb-1">
+                    <div className="text-2xl md:text-3xl lg:text-4xl font-black text-[#FFBF00] font-display mb-1">
                       {stat.value}
                     </div>
-                    <div className="text-sm text-white/60 font-medium">
+                    <div className="text-xs md:text-sm text-white/60 font-medium">
                       {stat.label}
                     </div>
                   </div>
@@ -446,38 +446,38 @@ export default function LandingPage() {
         {/* ================================================================== */}
         {/* BENTO GRID FEATURES SECTION */}
         {/* ================================================================== */}
-        <section className="relative py-32 bg-gradient-to-b from-[#00575A] via-[#004144] to-[#003335]">
+        <section className="relative py-12 md:py-24 lg:py-32 bg-gradient-to-b from-[#00575A] via-[#004144] to-[#003335]">
           {/* Background */}
           <div className="absolute inset-0 noise-texture opacity-40" />
           <div className="absolute inset-0 grid-pattern opacity-20" />
 
-          <div className="relative z-10 max-w-7xl mx-auto px-6 lg:px-12">
+          <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 md:px-8 lg:px-12">
             {/* Section Header */}
             <motion.div
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.6 }}
-              className="text-center mb-20"
+              className="text-center mb-12 md:mb-20"
             >
-              <div className="inline-flex items-center gap-2 bg-[#FFBF00]/10 backdrop-blur-md border border-[#FFBF00]/20 rounded-full px-5 py-2 mb-6">
-                <Globe className="w-4 h-4 text-[#FFBF00]" />
-                <span className="text-sm font-bold text-[#FFBF00] uppercase tracking-wider font-display">
+              <div className="inline-flex items-center gap-2 bg-[#FFBF00]/10 backdrop-blur-md border border-[#FFBF00]/20 rounded-full px-4 py-2 md:px-5 md:py-2 mb-4 md:mb-6">
+                <Globe className="w-3 h-3 md:w-4 md:h-4 text-[#FFBF00]" />
+                <span className="text-xs md:text-sm font-bold text-[#FFBF00] uppercase tracking-wider font-display">
                   {LANDING_CONTENT.features.sectionBadge}
                 </span>
               </div>
-              <h2 className="text-4xl md:text-5xl lg:text-6xl font-black text-white mb-4 font-display tracking-tight">
+              <h2 className="text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-black text-white mb-4 font-display tracking-tight px-4 md:px-0">
                 {LANDING_CONTENT.features.sectionTitle}
               </h2>
             </motion.div>
 
-            {/* Bento Grid */}
+            {/* Bento Grid - Mobile: 1 col, Tablet: 2 cols, Desktop: 3 cols */}
             <motion.div
               variants={containerVariants}
               initial="hidden"
               whileInView="visible"
               viewport={{ once: true }}
-              className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
+              className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6"
             >
               {LANDING_CONTENT.features.items.map((feature, idx) => {
                 const Icon = iconMap[feature.icon as keyof typeof iconMap];
@@ -488,7 +488,7 @@ export default function LandingPage() {
                     key={idx}
                     variants={itemVariants}
                     className={`
-                      group relative backdrop-blur-xl bg-white/5 border border-white/10 rounded-3xl p-8
+                      group relative backdrop-blur-xl bg-white/5 border border-white/10 rounded-2xl md:rounded-3xl p-6 md:p-8
                       hover:bg-white/10 hover:border-white/20 transition-all duration-500
                       ${isLarge ? 'md:col-span-2 lg:col-span-1' : ''}
                     `}
@@ -498,19 +498,19 @@ export default function LandingPage() {
                     }}
                   >
                     {/* Glow Effect on Hover */}
-                    <div className="absolute inset-0 rounded-3xl bg-gradient-to-br from-[#FFBF00]/0 via-[#FFBF00]/0 to-[#FFBF00]/0 group-hover:from-[#FFBF00]/10 group-hover:via-[#FFBF00]/5 group-hover:to-transparent transition-all duration-500" />
+                    <div className="absolute inset-0 rounded-2xl md:rounded-3xl bg-gradient-to-br from-[#FFBF00]/0 via-[#FFBF00]/0 to-[#FFBF00]/0 group-hover:from-[#FFBF00]/10 group-hover:via-[#FFBF00]/5 group-hover:to-transparent transition-all duration-500" />
 
                     <div className="relative z-10">
                       {/* Icon */}
-                      <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-[#FFBF00]/20 to-[#FFBF00]/5 backdrop-blur-sm border border-[#FFBF00]/20 flex items-center justify-center mb-6 group-hover:scale-110 group-hover:rotate-3 transition-all duration-500">
-                        <Icon className="w-8 h-8 text-[#FFBF00]" />
+                      <div className="w-12 h-12 md:w-16 md:h-16 rounded-xl md:rounded-2xl bg-gradient-to-br from-[#FFBF00]/20 to-[#FFBF00]/5 backdrop-blur-sm border border-[#FFBF00]/20 flex items-center justify-center mb-4 md:mb-6 group-hover:scale-110 group-hover:rotate-3 transition-all duration-500">
+                        <Icon className="w-6 h-6 md:w-8 md:h-8 text-[#FFBF00]" />
                       </div>
 
                       {/* Content */}
-                      <h3 className="text-2xl font-bold text-white mb-3 font-display tracking-tight">
+                      <h3 className="text-lg md:text-xl lg:text-2xl font-bold text-white mb-2 md:mb-3 font-display tracking-tight">
                         {feature.title}
                       </h3>
-                      <p className="text-white/70 leading-relaxed">
+                      <p className="text-sm md:text-base text-white/70 leading-relaxed">
                         {feature.description}
                       </p>
                     </div>
@@ -524,10 +524,10 @@ export default function LandingPage() {
         {/* ================================================================== */}
         {/* TESTIMONIALS SECTION */}
         {/* ================================================================== */}
-        <section className="relative py-32 bg-[#003335]">
+        <section className="relative py-12 md:py-24 lg:py-32 bg-[#003335]">
           <div className="absolute inset-0 noise-texture opacity-30" />
 
-          <div className="relative z-10 max-w-7xl mx-auto px-6 lg:px-12">
+          <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 md:px-8 lg:px-12">
             {/* Section Header */}
             <motion.div
               initial={{ opacity: 0, y: 30 }}
@@ -545,8 +545,8 @@ export default function LandingPage() {
               </h2>
             </motion.div>
 
-            {/* Testimonials Grid */}
-            <div className="grid md:grid-cols-2 gap-8">
+            {/* Testimonials Grid - Mobile: 1 col, Desktop: 2 cols */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-8">
               {LANDING_CONTENT.testimonials.items.map((testimonial, idx) => (
                 <motion.div
                   key={idx}
@@ -554,16 +554,16 @@ export default function LandingPage() {
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
                   transition={{ delay: idx * 0.2 }}
-                  className="backdrop-blur-xl bg-white/5 border border-white/10 rounded-3xl p-8 hover:bg-white/10 transition-all"
+                  className="backdrop-blur-xl bg-white/5 border border-white/10 rounded-2xl md:rounded-3xl p-6 md:p-8 hover:bg-white/10 transition-all"
                 >
-                  <div className="flex items-start gap-4 mb-6">
-                    <div className="text-5xl">{testimonial.avatar}</div>
+                  <div className="flex items-start gap-3 md:gap-4 mb-4 md:mb-6">
+                    <div className="text-4xl md:text-5xl">{testimonial.avatar}</div>
                     <div>
-                      <div className="font-bold text-white text-lg font-display">{testimonial.author}</div>
-                      <div className="text-white/60 text-sm">{testimonial.role}</div>
+                      <div className="font-bold text-white text-base md:text-lg font-display">{testimonial.author}</div>
+                      <div className="text-white/60 text-xs md:text-sm">{testimonial.role}</div>
                     </div>
                   </div>
-                  <p className="text-white/80 leading-relaxed italic text-lg">
+                  <p className="text-white/80 leading-relaxed italic text-sm md:text-base lg:text-lg">
                     "{testimonial.quote}"
                   </p>
                 </motion.div>
@@ -575,38 +575,38 @@ export default function LandingPage() {
         {/* ================================================================== */}
         {/* CTA SECTION */}
         {/* ================================================================== */}
-        <section className="relative py-32 bg-gradient-to-b from-[#003335] to-[#00575A]">
+        <section className="relative py-12 md:py-24 lg:py-32 bg-gradient-to-b from-[#003335] to-[#00575A]">
           <div className="absolute inset-0 noise-texture opacity-40" />
 
-          <div className="relative z-10 max-w-5xl mx-auto px-6 lg:px-12">
+          <div className="relative z-10 max-w-5xl mx-auto px-4 sm:px-6 md:px-8 lg:px-12">
             <motion.div
               initial={{ opacity: 0, scale: 0.95 }}
               whileInView={{ opacity: 1, scale: 1 }}
               viewport={{ once: true }}
-              className="relative backdrop-blur-xl bg-gradient-to-br from-white/10 to-white/5 border border-white/20 rounded-[3rem] p-12 lg:p-16 text-center overflow-hidden"
+              className="relative backdrop-blur-xl bg-gradient-to-br from-white/10 to-white/5 border border-white/20 rounded-2xl md:rounded-[3rem] p-8 md:p-12 lg:p-16 text-center overflow-hidden"
             >
               {/* Background Glow */}
               <div className="absolute top-0 right-0 w-96 h-96 bg-[#FFBF00]/10 rounded-full blur-[150px]" />
 
               <div className="relative z-10">
-                <div className="inline-flex items-center gap-2 bg-[#FFBF00]/10 backdrop-blur-md border border-[#FFBF00]/20 rounded-full px-5 py-2 mb-6">
-                  <Lock className="w-4 h-4 text-[#FFBF00]" />
-                  <span className="text-sm font-bold text-[#FFBF00] uppercase tracking-wider font-display">
+                <div className="inline-flex items-center gap-2 bg-[#FFBF00]/10 backdrop-blur-md border border-[#FFBF00]/20 rounded-full px-4 py-2 md:px-5 md:py-2 mb-4 md:mb-6">
+                  <Lock className="w-3 h-3 md:w-4 md:h-4 text-[#FFBF00]" />
+                  <span className="text-xs md:text-sm font-bold text-[#FFBF00] uppercase tracking-wider font-display">
                     {LANDING_CONTENT.cta.badge}
                   </span>
                 </div>
 
-                <h2 className="text-4xl md:text-5xl lg:text-6xl font-black text-white mb-6 font-display tracking-tight">
+                <h2 className="text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-black text-white mb-4 md:mb-6 font-display tracking-tight">
                   {LANDING_CONTENT.cta.headline}
                 </h2>
 
-                <p className="text-xl text-white/70 mb-10 max-w-2xl mx-auto leading-relaxed">
+                <p className="text-base md:text-lg lg:text-xl text-white/70 mb-8 md:mb-10 max-w-2xl mx-auto leading-relaxed">
                   {LANDING_CONTENT.cta.subheadline}
                 </p>
 
                 <motion.button
                   onClick={handleJoin}
-                  className="bg-[#FFBF00] text-[#00575A] px-12 py-6 rounded-2xl font-black text-xl shadow-2xl shadow-[#FFBF00]/30 font-display inline-flex items-center gap-3"
+                  className="bg-[#FFBF00] text-[#00575A] px-8 py-4 md:px-12 md:py-6 rounded-xl md:rounded-2xl font-black text-base md:text-lg lg:text-xl shadow-2xl shadow-[#FFBF00]/30 font-display inline-flex items-center gap-2 md:gap-3"
                   whileHover={{
                     scale: 1.05,
                     boxShadow: '0 30px 70px rgba(255, 191, 0, 0.5)'
@@ -614,7 +614,7 @@ export default function LandingPage() {
                   whileTap={{ scale: 0.95 }}
                 >
                   {LANDING_CONTENT.cta.buttonText}
-                  <ArrowRight className="w-6 h-6" />
+                  <ArrowRight className="w-5 h-5 md:w-6 md:h-6" />
                 </motion.button>
               </div>
             </motion.div>
@@ -624,12 +624,12 @@ export default function LandingPage() {
         {/* ================================================================== */}
         {/* FAT FOOTER - TECH STYLE */}
         {/* ================================================================== */}
-        <footer className="relative bg-[#001A1C] text-white pt-24 pb-12">
+        <footer className="relative bg-[#001A1C] text-white pt-12 md:pt-24 pb-8 md:pb-12">
           <div className="absolute inset-0 noise-texture opacity-20" />
 
-          <div className="relative z-10 max-w-7xl mx-auto px-6 lg:px-12">
-            {/* Main Footer Content */}
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-12 mb-16">
+          <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 md:px-8 lg:px-12">
+            {/* Main Footer Content - Mobile: 1 col, Tablet: 2 cols, Desktop: 5 cols */}
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-8 md:gap-12 mb-12 md:mb-16">
               {/* Brand Column */}
               <div className="lg:col-span-1">
                 <div className="flex items-center gap-3 mb-4">
