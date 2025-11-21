@@ -19,6 +19,7 @@ export const vi = {
     submit: 'Gửi',
     search: 'Tìm kiếm',
     filter: 'Lọc',
+    copy: 'Sao chép',
     sort: 'Sắp xếp',
     viewAll: 'Xem tất cả',
     viewDetails: 'Xem chi tiết',
@@ -124,15 +125,34 @@ export const vi = {
       subtitle: 'Hoàn thành để nhận GROW Token',
       progress: 'Tiến độ',
       completed: '{count}/{total} hoàn thành',
+      completedAll: 'HOÀN THÀNH',
+      questsProgress: '{completed}/{total} nhiệm vụ',
+      tokensEarned: '{amount} GROW đã nhận',
+      tokensToday: 'GROW hôm nay',
       startQuest: 'Bắt đầu',
       claiming: 'Đang nhận...',
       claim: 'Nhận thưởng',
       claimedSuccess: 'Đã nhận {amount} GROW Token!',
-      questCompleted: 'Nhiệm vụ hoàn thành',
+      questCompleted: 'Đã hoàn thành',
       types: {
         onboarding: 'Khởi động',
         sales: 'Bán hàng',
         learning: 'Học tập',
+      },
+      // Individual quest data
+      quests: {
+        dailyCheckIn: {
+          title: 'Khởi động ngày mới',
+          description: 'Check-in App hàng ngày',
+        },
+        shareHealthCheck: {
+          title: 'Lan tỏa giá trị',
+          description: 'Chia sẻ 1 link Health Check',
+        },
+        watchTraining: {
+          title: 'Học tập',
+          description: 'Xem 1 video đào tạo',
+        }
       }
     },
 
@@ -291,6 +311,8 @@ export const vi = {
     searchPlaceholder: 'Tìm kiếm sản phẩm...',
     filterBy: 'Lọc theo',
     sortBy: 'Sắp xếp theo',
+    noProductsFound: 'Không tìm thấy sản phẩm',
+    aiRecommended: 'AI Đề xuất',
     categories: {
       all: 'Tất cả',
       supplements: 'Thực phẩm chức năng',
@@ -304,6 +326,12 @@ export const vi = {
       priceLow: 'Giá thấp đến cao',
       priceHigh: 'Giá cao đến thấp',
       commission: 'Hoa hồng cao nhất',
+    },
+    aiRecommendation: {
+      title: 'AI Opportunity Radar',
+      loading: 'Đang phân tích {count} tín hiệu thị trường...',
+      live: 'Trực tiếp',
+      suggestion: 'Dựa trên xu hướng thị trường hiện tại và lịch sử bán hàng của bạn, **{productName}** là sản phẩm hot nhất hiện nay! Hoa hồng cao đến {commission}%.',
     },
     product: {
       commission: 'Hoa hồng',
@@ -331,6 +359,25 @@ export const vi = {
   team: {
     title: 'Quản lý đội nhóm',
     subtitle: 'Theo dõi và hỗ trợ đội nhóm của bạn',
+    leaderDashboard: 'Leader Dashboard',
+    description: 'Theo dõi hiệu suất đội nhóm, phát triển team members, và đạt mục tiêu chung.',
+
+    // Metrics
+    metrics: {
+      totalMembers: 'Tổng Thành Viên',
+      teamVolume: 'Team Volume',
+      averageSales: 'Trung Bình / Người',
+      topPerformers: 'Top Performers',
+      active: 'Active',
+    },
+
+    // Charts
+    charts: {
+      teamPerformance: 'Hiệu Suất Team (Top 5)',
+      rankDistribution: 'Phân Bổ Rank',
+      personalSales: 'Personal Sales',
+      teamVolumeChart: 'Team Volume',
+    },
 
     // Team Overview
     overview: {
@@ -345,16 +392,36 @@ export const vi = {
     // Team Members
     members: {
       title: 'Thành viên',
-      search: 'Tìm thành viên...',
+      teamMembers: 'Team Members',
+      search: 'Tìm kiếm...',
+      searchPlaceholder: 'Tìm thành viên...',
       name: 'Họ tên',
-      rank: 'Cấp bậc',
-      personalSales: 'Doanh số cá nhân',
-      teamVolume: 'Doanh số nhóm',
-      downlines: 'Cấp dưới',
-      growth: 'Tăng trưởng',
+      member: 'Thành Viên',
+      rank: 'Rank',
+      personalSales: 'Personal Sales',
+      teamVolume: 'Team Volume',
+      downlines: 'Downlines',
+      growth: 'Tăng Trưởng',
+      actions: 'Hành Động',
       lastActive: 'Hoạt động gần nhất',
       viewProfile: 'Xem hồ sơ',
       sendMessage: 'Nhắn tin',
+    },
+
+    // Filters & Sorts
+    filters: {
+      allRanks: 'Tất cả Rank',
+      sortSales: 'Sắp xếp: Sales',
+      sortGrowth: 'Sắp xếp: Tăng trưởng',
+      sortTeam: 'Sắp xếp: Team Volume',
+      export: 'Export',
+    },
+
+    // Actions
+    actions: {
+      sendEmail: 'Send email',
+      call: 'Call',
+      moreActions: 'More actions',
     },
 
     // Top Performers
@@ -376,36 +443,59 @@ export const vi = {
 
   // Referral Page
   referral: {
-    title: 'Chương trình giới thiệu',
-    subtitle: 'Mời bạn bè và nhận thưởng',
+    title: 'Giới Thiệu & Kiếm Tiền',
+    subtitle: 'Referral Tracking System',
+    description: 'Chia sẻ link giới thiệu và nhận hoa hồng từ mỗi người bạn giới thiệu thành công!',
+
+    // Tabs
+    tabs: {
+      overview: 'Tổng quan',
+      referrals: 'Danh sách',
+    },
 
     // Referral Stats
     stats: {
-      totalReferrals: 'Tổng lượt giới thiệu',
+      totalReferrals: 'Tổng Giới Thiệu',
       activeReferrals: 'Đang hoạt động',
-      conversionRate: 'Tỷ lệ chuyển đổi',
-      totalBonus: 'Tổng thưởng',
+      active: 'Active',
+      conversionRate: 'Tỉ Lệ Chuyển Đổi',
+      totalRevenue: 'Tổng Doanh Thu',
+      totalBonus: 'Tổng Thưởng',
       monthlyReferrals: 'Giới thiệu tháng này',
     },
 
     // Referral Link
     link: {
-      title: 'Link giới thiệu của bạn',
+      title: 'Link Giới Thiệu Của Bạn',
+      description: 'Chia sẻ link này với bạn bè để họ tham gia WellNexus',
       copy: 'Sao chép',
       copied: 'Đã sao chép!',
       share: 'Chia sẻ',
+      shareVia: 'Chia sẻ qua',
+      email: 'Email',
+      sms: 'SMS',
+      facebook: 'Facebook',
+      twitter: 'Twitter',
+      more: 'Thêm',
       qrCode: 'Mã QR',
+    },
+
+    // Chart
+    chart: {
+      title: 'Xu Hướng Giới Thiệu',
+      referrals: 'Giới thiệu',
+      revenue: 'Doanh thu',
     },
 
     // Referrals List
     list: {
       title: 'Danh sách giới thiệu',
-      name: 'Họ tên',
+      name: 'Họ Tên',
       email: 'Email',
-      status: 'Trạng thái',
-      revenue: 'Doanh thu',
+      status: 'Trạng Thái',
+      revenue: 'Doanh Thu',
       bonus: 'Thưởng',
-      registeredAt: 'Ngày đăng ký',
+      registeredAt: 'Ngày Đăng Ký',
       statuses: {
         pending: 'Đang chờ',
         registered: 'Đã đăng ký',
@@ -430,8 +520,44 @@ export const vi = {
 
   // Copilot (AI Sales Assistant)
   copilot: {
-    title: 'Trợ lý bán hàng AI',
-    subtitle: 'Trợ lý thông minh hỗ trợ bán hàng',
+    title: 'The Copilot',
+    subtitle: 'Trợ lý bán hàng AI của bạn',
+    description: 'Được trang bị AI tiên tiến để giúp bạn xử lý từ chối khách hàng, tạo kịch bản bán hàng, và cải thiện kỹ năng sales mỗi ngày.',
+
+    // Features
+    features: {
+      objectionHandling: {
+        title: 'Xử Lý Từ Chối',
+        description: 'AI phát hiện và gợi ý cách xử lý từ chối thông minh',
+      },
+      salesScript: {
+        title: 'Kịch Bản Bán Hàng',
+        description: 'Tạo script bán hàng chuyên nghiệp trong vài giây',
+      },
+      realtimeCoaching: {
+        title: 'Coaching Realtime',
+        description: 'Nhận phản hồi và gợi ý cải thiện ngay lập tức',
+      }
+    },
+
+    // Stats
+    stats: {
+      title: 'Thống Kê Hôm Nay',
+      objectionsHandled: 'Từ chối xử lý',
+      scriptsCreated: 'Script tạo',
+      conversionRate: 'Tỉ lệ chuyển đổi',
+    },
+
+    // Tips
+    tips: {
+      title: 'Tips Để Sử Dụng Hiệu Quả',
+      tip1: 'Nhập câu phản đối thật của khách hàng để nhận gợi ý chính xác nhất',
+      tip2: 'Sử dụng tính năng "Script" để có sẵn kịch bản cho từng sản phẩm',
+      tip3: 'Sau mỗi cuộc trò chuyện, bấm "Coach" để nhận phản hồi cải thiện',
+      tip4: 'Copy gợi ý nhanh và điều chỉnh cho phù hợp với phong cách của bạn',
+    },
+
+    // Conversation
     startConversation: 'Bắt đầu cuộc trò chuyện',
     placeholder: 'Nhập câu hỏi của bạn...',
     send: 'Gửi',
@@ -451,26 +577,43 @@ export const vi = {
 
   // Leaderboard
   leaderboard: {
-    title: 'Bảng xếp hạng',
-    subtitle: 'Cạnh tranh với cộng đồng',
-    period: {
-      today: 'Hôm nay',
-      week: 'Tuần này',
-      month: 'Tháng này',
-      allTime: 'Mọi thời điểm',
-    },
-    categories: {
-      sales: 'Doanh số',
-      commission: 'Hoa hồng',
-      team: 'Đội nhóm',
-      growth: 'Tăng trưởng',
-    },
+    title: 'Bảng Xếp Hạng',
+    subtitle: 'Top 10 Partners xuất sắc nhất tháng này',
+
+    // Stats
+    highestSales: 'Doanh số cao nhất',
+    yourPosition: 'Vị trí của bạn',
+    yourGrowTokens: 'GROW Tokens của bạn',
+    topHundredPlus: 'Top 100+',
+
+    // Table Headers
     rank: 'Hạng',
-    name: 'Tên',
-    score: 'Điểm số',
-    change: 'Thay đổi',
-    yourRank: 'Hạng của bạn',
-    topPerformers: 'Top {count} xuất sắc',
+    partner: 'Partner',
+    shopSales: 'SHOP (Doanh số)',
+    growToken: 'GROW (Token)',
+
+    // Labels
+    you: 'Bạn',
+    challenge: 'Thách đấu',
+    partnerIdLabel: 'Partner ID: {id}',
+    rankLabel: 'Hạng #{rank}',
+    toTop10: 'Còn {count} vị trí nữa để lọt Top 10!',
+    keepPushing: 'Keep pushing! 💪',
+
+    // Info Footer
+    noteLabel: '💡 Lưu ý:',
+    noteText: 'Bảng xếp hạng được cập nhật theo thời gian thực. SHOP tokens tính theo tổng doanh số bán hàng, GROW tokens là phần thưởng hiệu suất.',
+    lastUpdate: 'Cập nhật lần cuối: {time}',
+
+    // Challenge Modal
+    challengeTitle: 'Thử Thách!',
+    challengeSubtitle: 'Vượt qua đối thủ của bạn',
+    yourGoal: 'Mục tiêu của bạn:',
+    goalText: 'Hãy nỗ lực thêm {amount} doanh số để vượt qua {name}!',
+    motivation1: '💪 Bạn có thể làm được điều này!',
+    motivation2: '🔥 Mỗi đơn hàng đưa bạn gần hơn với mục tiêu',
+    motivation3: '🚀 Tiếp tục phấn đấu để leo hạng!',
+    readyToFight: 'Sẵn sàng chiến đấu! 💪',
   },
 
   // Marketing Tools
@@ -522,83 +665,172 @@ export const vi = {
 
   // Health Coach
   healthCoach: {
-    title: 'Huấn luyện sức khỏe',
-    subtitle: 'Chương trình chăm sóc sức khỏe cá nhân',
+    title: 'Health Coach AI',
+    subtitle: 'Trợ lý sức khỏe thông minh - Tư vấn sản phẩm cá nhân hóa',
 
-    // Health Profile
-    profile: {
-      title: 'Hồ sơ sức khỏe',
-      age: 'Tuổi',
-      height: 'Chiều cao',
-      weight: 'Cân nặng',
-      bmi: 'Chỉ số BMI',
-      bloodType: 'Nhóm máu',
-      allergies: 'Dị ứng',
-      conditions: 'Tình trạng sức khỏe',
-      goals: 'Mục tiêu',
+    // Chat Messages
+    greeting: 'Xin chào! Tôi là **WellNexus Health Coach** 🌿\n\nHãy chia sẻ với tôi về tình trạng sức khỏe hoặc triệu chứng bạn đang gặp phải. Tôi sẽ tư vấn combo sản phẩm phù hợp nhất cho bạn.\n\n**Ví dụ:** "Tôi hay bị mất ngủ và đau đầu" hoặc "Tôi thường xuyên cảm thấy mệt mỏi".',
+
+    greetingResponse: 'Xin chào! Tôi là **WellNexus Health Coach** - trợ lý sức khỏe AI của bạn. 🌿\n\nHãy mô tả các triệu chứng hoặc vấn đề sức khỏe bạn đang gặp, tôi sẽ tư vấn sản phẩm phù hợp nhất.\n\n**Ví dụ:** "Tôi hay bị mất ngủ, đau đầu" hoặc "Tôi cảm thấy mệt mỏi, hay bị ốm".',
+
+    fallbackResponse: 'Cảm ơn bạn đã chia sẻ. Để tư vấn chính xác hơn, bạn có thể mô tả cụ thể hơn các triệu chứng không?\n\n**Gợi ý:** Hãy cho tôi biết bạn đang gặp vấn đề gì (ví dụ: mất ngủ, đau đầu, mệt mỏi, hay bị ốm...)',
+
+    sleepStressResponse: 'Dựa trên các triệu chứng bạn mô tả (mất ngủ, đau đầu, căng thẳng), tôi khuyên dùng **Combo ANIMA Thư Giãn**. Combo này được thiết kế đặc biệt để cải thiện giấc ngủ và giảm căng thẳng thần kinh.',
+
+    fatigueResponse: 'Triệu chứng mệt mỏi và sức đề kháng kém có thể do cơ thể thiếu dinh dưỡng. Tôi gợi ý **Combo Năng Lượng & Miễn Dịch** để phục hồi sức khỏe.',
+
+    // Product Combos
+    comboRelaxation: 'Combo ANIMA Thư Giấc',
+    comboEnergy: 'Combo Năng Lượng & Miễn Dịch',
+
+    reasonRelaxation: 'ANIMA 119 giúp ổn định hệ thần kinh, cải thiện giấc ngủ. Immune Boost bổ sung năng lượng và tăng sức đề kháng.',
+    reasonEnergy: 'Starter Kit cung cấp dinh dưỡng toàn diện, Immune Boost tăng cường miễn dịch và giảm mệt mỏi.',
+
+    // UI Elements
+    totalLabel: 'Tổng cộng:',
+    orderNow: 'Tạo đơn ngay',
+    orderSuccess: '✅ Đã tạo đơn hàng thành công!\n\n**{comboName}** ({totalPrice}) đã được thêm vào lịch sử giao dịch của bạn.\n\nBạn có thể kiểm tra tại trang **Ví Hoa Hồng**. Cảm ơn bạn đã tin dùng ANIMA! 🎉',
+
+    placeholder: 'Mô tả triệu chứng của bạn... (VD: Tôi hay bị mất ngủ, đau đầu)',
+    send: 'Gửi',
+
+    quickSuggestionsLabel: 'Gợi ý câu hỏi:',
+    suggestions: {
+      sleep: 'Tôi hay bị mất ngủ',
+      fatigue: 'Tôi cảm thấy mệt mỏi',
+      immunity: 'Tăng cường miễn dịch',
+    },
+
+    // Footer Disclaimers
+    disclaimerTech: '💡 Health Coach AI sử dụng công nghệ phân tích triệu chứng để đề xuất sản phẩm phù hợp.',
+    disclaimerMedical: 'Lưu ý: Đây là công cụ hỗ trợ, không thay thế tư vấn y tế chuyên nghiệp.',
+  },
+
+  // Health Check (Health Quiz)
+  healthCheck: {
+    // Quiz Questions
+    questions: {
+      sleep: {
+        question: 'Bạn thường ngủ bao nhiêu tiếng mỗi đêm?',
+        options: {
+          under5: 'Dưới 5 tiếng',
+          _5to6: '5-6 tiếng',
+          _6to7: '6-7 tiếng',
+          _7to8: '7-8 tiếng',
+          over8: 'Trên 8 tiếng',
+        }
+      },
+      stress: {
+        question: 'Bạn có hay bị stress hoặc lo âu không?',
+        options: {
+          veryOften: 'Rất thường xuyên',
+          often: 'Thường xuyên',
+          sometimes: 'Thỉnh thoảng',
+          rarely: 'Hiếm khi',
+          never: 'Không bao giờ',
+        }
+      },
+      energy: {
+        question: 'Mức năng lượng của bạn trong ngày như thế nào?',
+        options: {
+          veryTired: 'Rất mệt mỏi',
+          tired: 'Thường xuyên mệt',
+          normal: 'Bình thường',
+          energetic: 'Tràn đầy năng lượng',
+          veryEnergetic: 'Luôn năng động',
+        }
+      },
+      exercise: {
+        question: 'Bạn tập thể dục bao nhiêu lần mỗi tuần?',
+        options: {
+          never: 'Không bao giờ',
+          _1to2: '1-2 lần/tuần',
+          _3to4: '3-4 lần/tuần',
+          _5plus: '5+ lần/tuần',
+        }
+      },
+      goal: {
+        question: 'Mục tiêu sức khỏe chính của bạn là gì?',
+        options: {
+          betterSleep: 'Cải thiện giấc ngủ',
+          reduceStress: 'Giảm stress',
+          increaseEnergy: 'Tăng năng lượng',
+          boostImmunity: 'Tăng cường miễn dịch',
+          overallHealth: 'Sức khỏe tổng thể',
+        }
+      }
+    },
+
+    // Quiz Interface
+    questionProgress: 'Câu hỏi {current} / {total}',
+    back: 'Quay lại',
+    next: 'Tiếp theo',
+    viewResults: 'Xem kết quả',
+    timeInfo: '⏱️ Chỉ mất 2 phút để hoàn thành • 🔒 Thông tin của bạn được bảo mật',
+
+    // Results Page
+    resultsTitle: 'Kết Quả Đánh Giá',
+    yourHealthScore: 'Điểm sức khỏe của bạn',
+
+    // Score Labels
+    scoreLabels: {
+      excellent: 'Xuất sắc',
+      good: 'Tốt',
+      average: 'Trung bình',
+      needsImprovement: 'Cần cải thiện',
+    },
+
+    // Score Descriptions
+    scoreDescriptions: {
+      excellent: 'Tuyệt vời! Bạn đang duy trì lối sống rất khỏe mạnh. Hãy tiếp tục!',
+      good: 'Sức khỏe của bạn ở mức tốt, nhưng vẫn có thể cải thiện thêm.',
+      average: 'Sức khỏe của bạn cần được quan tâm nhiều hơn. Hãy bắt đầu thay đổi ngay!',
+      poor: 'Sức khỏe của bạn đang cần được cải thiện khẩn cấp. Hãy tham khảo các giải pháp dưới đây!',
     },
 
     // Recommendations
-    recommendations: {
-      title: 'Đề xuất sản phẩm',
-      basedOnProfile: 'Dựa trên hồ sơ của bạn',
-      whyRecommended: 'Tại sao đề xuất',
-      dosage: 'Liều lượng',
-      timing: 'Thời gian sử dụng',
+    recommendationsTitle: 'Gợi ý sản phẩm phù hợp',
+    priceLabel: 'Giá',
+    orderNow: 'Đặt ngay',
+
+    // Product Benefits
+    products: {
+      anima119: {
+        reason: 'Hỗ trợ ổn định hệ thần kinh, cải thiện giấc ngủ và giảm căng thẳng',
+        benefits: {
+          sleep: 'Giúp ngủ sâu, ngủ ngon hơn',
+          stress: 'Giảm lo âu, stress',
+          emotion: 'Cân bằng cảm xúc',
+          memory: 'Tăng cường trí nhớ',
+        }
+      },
+      immuneBoost: {
+        reason: 'Tăng cường hệ miễn dịch và năng lượng cho cơ thể',
+        benefits: {
+          immunity: 'Tăng sức đề kháng',
+          fatigue: 'Giảm mệt mỏi',
+          antioxidant: 'Chống oxy hóa',
+          recovery: 'Phục hồi sức khỏe nhanh',
+        }
+      },
+      starterKit: {
+        reason: 'Combo dinh dưỡng toàn diện cho sức khỏe tổng thể',
+        benefits: {
+          nutrition: 'Bổ sung dinh dưỡng đầy đủ',
+          balance: 'Cân bằng cơ thể',
+          health: 'Tăng cường sức khỏe',
+          allAges: 'Phù hợp mọi lứa tuổi',
+        }
+      }
     },
 
-    // Progress Tracking
-    progress: {
-      title: 'Theo dõi tiến độ',
-      currentWeight: 'Cân nặng hiện tại',
-      goalWeight: 'Cân nặng mục tiêu',
-      weeksToGoal: 'Số tuần đến mục tiêu',
-      achievements: 'Thành tựu',
-    }
-  },
+    // Consultation CTA
+    consultationTitle: 'Cần tư vấn chuyên sâu hơn?',
+    consultationDescription: 'Kết nối ngay với Partner của bạn qua Zalo để được tư vấn miễn phí 1-1',
+    chatNow: 'Nhắn tin Zalo ngay',
 
-  // Health Check (System Monitoring)
-  healthCheck: {
-    title: 'Kiểm tra hệ thống',
-    subtitle: 'Trạng thái hoạt động hệ thống',
-
-    // System Status
-    status: {
-      title: 'Trạng thái hệ thống',
-      operational: 'Hoạt động bình thường',
-      degraded: 'Suy giảm hiệu suất',
-      down: 'Ngừng hoạt động',
-      maintenance: 'Bảo trì',
-    },
-
-    // Services
-    services: {
-      title: 'Dịch vụ',
-      api: 'API Server',
-      database: 'Cơ sở dữ liệu',
-      storage: 'Lưu trữ',
-      payment: 'Thanh toán',
-      notification: 'Thông báo',
-      ai: 'Dịch vụ AI',
-    },
-
-    // Metrics
-    metrics: {
-      title: 'Chỉ số hệ thống',
-      uptime: 'Thời gian hoạt động',
-      responseTime: 'Thời gian phản hồi',
-      errorRate: 'Tỷ lệ lỗi',
-      activeUsers: 'Người dùng đang hoạt động',
-      requestsPerSecond: 'Yêu cầu/giây',
-    },
-
-    // Incidents
-    incidents: {
-      title: 'Sự cố',
-      noIncidents: 'Không có sự cố',
-      resolved: 'Đã giải quyết',
-      investigating: 'Đang điều tra',
-    }
+    // Restart
+    restartQuiz: 'Làm lại bài đánh giá →',
   },
 
   // Admin Panel

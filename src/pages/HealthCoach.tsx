@@ -3,6 +3,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { Send, Bot, User, Package, ShoppingCart, Sparkles } from 'lucide-react';
 import { useStore } from '@/store';
 import { formatVND } from '@/utils/format';
+import { useTranslation } from '@/hooks';
 
 interface Message {
   id: string;
@@ -24,7 +25,7 @@ interface ProductRecommendation {
 }
 
 // Mock AI Response Logic
-const generateMockResponse = (userMessage: string): Message => {
+const generateMockResponse = (userMessage: string, t: (key: string) => string): Message => {
   const lowerMessage = userMessage.toLowerCase();
 
   // Health symptom detection patterns
@@ -39,15 +40,15 @@ const generateMockResponse = (userMessage: string): Message => {
     return {
       id: Date.now().toString(),
       role: 'assistant',
-      content: 'Dựa trên các triệu chứng bạn mô tả (mất ngủ, đau đầu, căng thẳng), tôi khuyên dùng **Combo ANIMA Thư Giãn**. Combo này được thiết kế đặc biệt để cải thiện giấc ngủ và giảm căng thẳng thần kinh.',
+      content: t('healthCoach.sleepStressResponse'),
       productRecommendation: {
-        comboName: 'Combo ANIMA Thư Giấc',
+        comboName: t('healthCoach.comboRelaxation'),
         products: [
           { id: '1', name: 'ANIMA 119 - Viên Uống Thần Kinh', price: 15900000 },
           { id: '3', name: 'ANIMA Immune Boost', price: 890000 }
         ],
         totalPrice: 16790000,
-        reason: 'ANIMA 119 giúp ổn định hệ thần kinh, cải thiện giấc ngủ. Immune Boost bổ sung năng lượng và tăng sức đề kháng.'
+        reason: t('healthCoach.reasonRelaxation')
       },
       timestamp: new Date()
     };
@@ -57,15 +58,15 @@ const generateMockResponse = (userMessage: string): Message => {
     return {
       id: Date.now().toString(),
       role: 'assistant',
-      content: 'Triệu chứng mệt mỏi và sức đề kháng kém có thể do cơ thể thiếu dinh dưỡng. Tôi gợi ý **Combo Năng Lượng & Miễn Dịch** để phục hồi sức khỏe.',
+      content: t('healthCoach.fatigueResponse'),
       productRecommendation: {
-        comboName: 'Combo Năng Lượng & Miễn Dịch',
+        comboName: t('healthCoach.comboEnergy'),
         products: [
           { id: '2', name: 'ANIMA Starter Kit', price: 4500000 },
           { id: '3', name: 'ANIMA Immune Boost', price: 890000 }
         ],
         totalPrice: 5390000,
-        reason: 'Starter Kit cung cấp dinh dưỡng toàn diện, Immune Boost tăng cường miễn dịch và giảm mệt mỏi.'
+        reason: t('healthCoach.reasonEnergy')
       },
       timestamp: new Date()
     };
@@ -76,7 +77,7 @@ const generateMockResponse = (userMessage: string): Message => {
     return {
       id: Date.now().toString(),
       role: 'assistant',
-      content: 'Xin chào! Tôi là **WellNexus Health Coach** - trợ lý sức khỏe AI của bạn. 🌿\n\nHãy mô tả các triệu chứng hoặc vấn đề sức khỏe bạn đang gặp, tôi sẽ tư vấn sản phẩm phù hợp nhất.\n\n**Ví dụ:** "Tôi hay bị mất ngủ, đau đầu" hoặc "Tôi cảm thấy mệt mỏi, hay bị ốm".',
+      content: t('healthCoach.greetingResponse'),
       timestamp: new Date()
     };
   }
@@ -85,18 +86,19 @@ const generateMockResponse = (userMessage: string): Message => {
   return {
     id: Date.now().toString(),
     role: 'assistant',
-    content: 'Cảm ơn bạn đã chia sẻ. Để tư vấn chính xác hơn, bạn có thể mô tả cụ thể hơn các triệu chứng không?\n\n**Gợi ý:** Hãy cho tôi biết bạn đang gặp vấn đề gì (ví dụ: mất ngủ, đau đầu, mệt mỏi, hay bị ốm...)',
+    content: t('healthCoach.fallbackResponse'),
     timestamp: new Date()
   };
 };
 
 export default function HealthCoach() {
+  const t = useTranslation();
   const { simulateOrder } = useStore();
   const [messages, setMessages] = useState<Message[]>([
     {
       id: '0',
       role: 'assistant',
-      content: 'Xin chào! Tôi là **WellNexus Health Coach** 🌿\n\nHãy chia sẻ với tôi về tình trạng sức khỏe hoặc triệu chứng bạn đang gặp phải. Tôi sẽ tư vấn combo sản phẩm phù hợp nhất cho bạn.\n\n**Ví dụ:** "Tôi hay bị mất ngủ và đau đầu" hoặc "Tôi thường xuyên cảm thấy mệt mỏi".',
+      content: t('healthCoach.greeting'),
       timestamp: new Date()
     }
   ]);
@@ -132,7 +134,7 @@ export default function HealthCoach() {
     await new Promise(resolve => setTimeout(resolve, 1500));
 
     // Generate AI response
-    const aiResponse = generateMockResponse(inputValue);
+    const aiResponse = generateMockResponse(inputValue, t);
     setMessages(prev => [...prev, aiResponse]);
     setIsTyping(false);
   };
@@ -147,7 +149,10 @@ export default function HealthCoach() {
     const confirmMessage: Message = {
       id: Date.now().toString(),
       role: 'assistant',
-      content: `✅ Đã tạo đơn hàng thành công!\n\n**${recommendation.comboName}** (${formatVND(recommendation.totalPrice)}) đã được thêm vào lịch sử giao dịch của bạn.\n\nBạn có thể kiểm tra tại trang **Ví Hoa Hồng**. Cảm ơn bạn đã tin dùng ANIMA! 🎉`,
+      content: t('healthCoach.orderSuccess', {
+        comboName: recommendation.comboName,
+        totalPrice: formatVND(recommendation.totalPrice)
+      }),
       timestamp: new Date()
     };
     setMessages(prev => [...prev, confirmMessage]);
@@ -174,9 +179,9 @@ export default function HealthCoach() {
               <Sparkles className="w-8 h-8" />
             </div>
             <div>
-              <h1 className="text-3xl font-bold">Health Coach AI</h1>
+              <h1 className="text-3xl font-bold">{t('healthCoach.title')}</h1>
               <p className="text-teal-100 text-sm mt-1">
-                Trợ lý sức khỏe thông minh - Tư vấn sản phẩm cá nhân hóa
+                {t('healthCoach.subtitle')}
               </p>
             </div>
           </div>
@@ -259,7 +264,7 @@ export default function HealthCoach() {
                             </div>
                           ))}
                           <div className="border-t border-gray-200 pt-2 flex justify-between items-center">
-                            <span className="font-bold text-gray-800">Tổng cộng:</span>
+                            <span className="font-bold text-gray-800">{t('healthCoach.totalLabel')}</span>
                             <span className="font-bold text-xl text-primary">
                               {formatVND(message.productRecommendation.totalPrice)}
                             </span>
@@ -275,7 +280,7 @@ export default function HealthCoach() {
                           className="w-full bg-gradient-to-r from-primary to-teal-600 text-white py-3 px-4 rounded-xl font-semibold hover:shadow-lg transition-all duration-300 flex items-center justify-center gap-2 group"
                         >
                           <ShoppingCart className="w-5 h-5 group-hover:scale-110 transition-transform" />
-                          Tạo đơn ngay
+                          {t('healthCoach.orderNow')}
                         </button>
                       </motion.div>
                     )}
@@ -336,7 +341,7 @@ export default function HealthCoach() {
                 value={inputValue}
                 onChange={(e) => setInputValue(e.target.value)}
                 onKeyPress={handleKeyPress}
-                placeholder="Mô tả triệu chứng của bạn... (VD: Tôi hay bị mất ngủ, đau đầu)"
+                placeholder={t('healthCoach.placeholder')}
                 className="flex-1 px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-primary focus:outline-none transition-colors"
               />
               <motion.button
@@ -347,14 +352,18 @@ export default function HealthCoach() {
                 className="bg-gradient-to-r from-primary to-teal-600 text-white px-6 py-3 rounded-xl font-semibold hover:shadow-lg transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
               >
                 <Send className="w-5 h-5" />
-                Gửi
+                {t('healthCoach.send')}
               </motion.button>
             </div>
 
             {/* Quick Suggestions */}
             <div className="mt-3 flex flex-wrap gap-2">
-              <p className="text-xs text-gray-500 w-full mb-1">Gợi ý câu hỏi:</p>
-              {['Tôi hay bị mất ngủ', 'Tôi cảm thấy mệt mỏi', 'Tăng cường miễn dịch'].map(
+              <p className="text-xs text-gray-500 w-full mb-1">{t('healthCoach.quickSuggestionsLabel')}</p>
+              {[
+                t('healthCoach.suggestions.sleep'),
+                t('healthCoach.suggestions.fatigue'),
+                t('healthCoach.suggestions.immunity')
+              ].map(
                 (suggestion) => (
                   <button
                     key={suggestion}
@@ -376,13 +385,8 @@ export default function HealthCoach() {
           transition={{ delay: 0.3 }}
           className="mt-4 text-center text-sm text-gray-500"
         >
-          <p>
-            💡 Health Coach AI sử dụng công nghệ phân tích triệu chứng để đề xuất sản phẩm
-            phù hợp.
-          </p>
-          <p className="mt-1">
-            Lưu ý: Đây là công cụ hỗ trợ, không thay thế tư vấn y tế chuyên nghiệp.
-          </p>
+          <p>{t('healthCoach.disclaimerTech')}</p>
+          <p className="mt-1">{t('healthCoach.disclaimerMedical')}</p>
         </motion.div>
       </motion.div>
     </div>

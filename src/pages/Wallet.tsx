@@ -15,79 +15,10 @@ import {
   Coins,
   Zap,
 } from 'lucide-react';
-import type { Transaction, TokenType, TokenBalance } from '@/types';
-import { formatToken, generateTxHash, calculateStakingReward } from '@/utils/tokenomics';
-
-// Mock Data
-const MOCK_SHOP_BALANCE: TokenBalance = {
-  amount: 50_000_000, // 50 triệu VND
-  locked: 5_000_000,
-  staking: 0,
-};
-
-const MOCK_GROW_BALANCE: TokenBalance = {
-  amount: 1000,
-  locked: 0,
-  staking: 500,
-};
-
-const MOCK_TRANSACTIONS: Transaction[] = [
-  {
-    id: '1',
-    userId: 'user-1',
-    date: new Date(Date.now() - 2 * 60 * 60 * 1000).toISOString(),
-    amount: 3_975_000,
-    type: 'Direct Sale',
-    status: 'completed',
-    taxDeducted: 197_500,
-    hash: generateTxHash(),
-    currency: 'SHOP',
-  },
-  {
-    id: '2',
-    userId: 'user-1',
-    date: new Date(Date.now() - 5 * 60 * 60 * 1000).toISOString(),
-    amount: 500,
-    type: 'Team Volume Bonus',
-    status: 'completed',
-    taxDeducted: 0,
-    hash: generateTxHash(),
-    currency: 'GROW',
-  },
-  {
-    id: '3',
-    userId: 'user-1',
-    date: new Date(Date.now() - 12 * 60 * 60 * 1000).toISOString(),
-    amount: 10_000_000,
-    type: 'Withdrawal',
-    status: 'pending',
-    taxDeducted: 800_000,
-    hash: generateTxHash(),
-    currency: 'SHOP',
-  },
-  {
-    id: '4',
-    userId: 'user-1',
-    date: new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString(),
-    amount: 2_500_000,
-    type: 'Direct Sale',
-    status: 'completed',
-    taxDeducted: 50_000,
-    hash: generateTxHash(),
-    currency: 'SHOP',
-  },
-  {
-    id: '5',
-    userId: 'user-1',
-    date: new Date(Date.now() - 36 * 60 * 60 * 1000).toISOString(),
-    amount: 1_500_000,
-    type: 'Team Volume Bonus',
-    status: 'completed',
-    taxDeducted: 0,
-    hash: generateTxHash(),
-    currency: 'SHOP',
-  },
-];
+import { useStore } from '@/store';
+import { useTranslation } from '@/hooks';
+import type { Transaction, TokenType } from '@/types';
+import { formatToken, calculateStakingReward } from '@/utils/tokenomics';
 
 // Counter Animation Component
 const AnimatedCounter: React.FC<{ value: number; decimals?: number }> = ({
@@ -108,6 +39,8 @@ const AnimatedCounter: React.FC<{ value: number; decimals?: number }> = ({
 };
 
 export const Wallet: React.FC = () => {
+  const t = useTranslation();
+  const { user, transactions } = useStore();
   const [copiedHash, setCopiedHash] = useState<string | null>(null);
   const [filter, setFilter] = useState<'all' | 'SHOP' | 'GROW'>('all');
 
@@ -117,12 +50,43 @@ export const Wallet: React.FC = () => {
     setTimeout(() => setCopiedHash(null), 2000);
   };
 
-  const filteredTransactions = MOCK_TRANSACTIONS.filter((tx) =>
+  const filteredTransactions = transactions.filter((tx) =>
     filter === 'all' ? true : tx.currency === filter
   );
 
-  const totalShopBalance = MOCK_SHOP_BALANCE.amount + MOCK_SHOP_BALANCE.locked + MOCK_SHOP_BALANCE.staking;
-  const totalGrowBalance = MOCK_GROW_BALANCE.amount + MOCK_GROW_BALANCE.locked + MOCK_GROW_BALANCE.staking;
+  // Calculate total balances
+  const totalShopBalance = user.shopBalance;
+  const totalGrowBalance = user.growBalance + user.stakedGrowBalance;
+
+  // Transaction type translation mapping
+  const getTransactionType = (type: string) => {
+    switch (type) {
+      case 'Direct Sale':
+        return t('wallet.transactions.types.directSale');
+      case 'Team Volume Bonus':
+        return t('wallet.transactions.types.teamBonus');
+      case 'Withdrawal':
+        return t('wallet.transactions.types.withdrawal');
+      default:
+        return type;
+    }
+  };
+
+  // Status translation mapping
+  const getStatusText = (status: string) => {
+    switch (status) {
+      case 'pending':
+        return t('wallet.transactions.statusValues.pending');
+      case 'completed':
+        return t('wallet.transactions.statusValues.completed');
+      case 'failed':
+        return t('wallet.transactions.statusValues.failed');
+      case 'cancelled':
+        return t('wallet.transactions.statusValues.cancelled');
+      default:
+        return status;
+    }
+  };
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-[#0A0E27] via-[#1A1F3A] to-[#0A0E27] p-6">
@@ -134,9 +98,9 @@ export const Wallet: React.FC = () => {
       >
         <h1 className="text-4xl font-bold text-white mb-2 flex items-center gap-3">
           <WalletIcon className="w-10 h-10 text-[#00FFA3]" />
-          My Wallet
+          {t('wallet.title')}
         </h1>
-        <p className="text-gray-400">Manage your SHOP & GROW tokens</p>
+        <p className="text-gray-400">{t('wallet.subtitle')}</p>
       </motion.div>
 
       {/* Token Balances Grid */}
@@ -160,7 +124,9 @@ export const Wallet: React.FC = () => {
                   <Coins className="w-6 h-6 text-teal-400" />
                 </div>
                 <div>
-                  <p className="text-gray-400 text-sm font-medium">SHOP Token</p>
+                  <p className="text-gray-400 text-sm font-medium">
+                    {t('wallet.balance.shopToken')}
+                  </p>
                   <p className="text-gray-500 text-xs">VND Stablecoin</p>
                 </div>
               </div>
@@ -171,34 +137,38 @@ export const Wallet: React.FC = () => {
 
             {/* Balance */}
             <div className="mb-6">
-              <p className="text-gray-400 text-sm mb-2">Total Balance</p>
+              <p className="text-gray-400 text-sm mb-2">
+                {t('wallet.balance.total')}
+              </p>
               <p className="text-5xl font-bold text-white font-mono mb-2">
                 <AnimatedCounter value={totalShopBalance} decimals={0} />
               </p>
               <p className="text-gray-400 text-lg font-mono">
-                ≈ {(totalShopBalance / 1000).toLocaleString('vi-VN')} ₫
+                ≈ {(totalShopBalance / 1000).toLocaleString('vi-VN')} {t('common.currency.vnd')}
               </p>
             </div>
 
             {/* Breakdown */}
             <div className="grid grid-cols-3 gap-4 mb-6 p-4 bg-black/30 rounded-xl">
               <div>
-                <p className="text-gray-500 text-xs mb-1">Available</p>
+                <p className="text-gray-500 text-xs mb-1">
+                  {t('wallet.balance.available')}
+                </p>
                 <p className="text-white font-mono text-sm">
-                  {MOCK_SHOP_BALANCE.amount.toLocaleString()}
+                  {user.shopBalance.toLocaleString()}
                 </p>
               </div>
               <div>
-                <p className="text-gray-500 text-xs mb-1">Locked</p>
-                <p className="text-amber-400 font-mono text-sm">
-                  {MOCK_SHOP_BALANCE.locked.toLocaleString()}
+                <p className="text-gray-500 text-xs mb-1">
+                  {t('wallet.balance.locked')}
                 </p>
+                <p className="text-amber-400 font-mono text-sm">0</p>
               </div>
               <div>
-                <p className="text-gray-500 text-xs mb-1">Staking</p>
-                <p className="text-teal-400 font-mono text-sm">
-                  {MOCK_SHOP_BALANCE.staking.toLocaleString()}
+                <p className="text-gray-500 text-xs mb-1">
+                  {t('wallet.balance.staked')}
                 </p>
+                <p className="text-teal-400 font-mono text-sm">0</p>
               </div>
             </div>
 
@@ -210,7 +180,7 @@ export const Wallet: React.FC = () => {
               </button>
               <button className="flex-1 bg-white/10 hover:bg-white/20 text-white font-semibold py-3 rounded-xl transition-all flex items-center justify-center gap-2 border border-white/20">
                 <Upload className="w-4 h-4" />
-                Rút VND
+                {t('wallet.actions.withdraw')}
               </button>
             </div>
           </div>
@@ -235,18 +205,22 @@ export const Wallet: React.FC = () => {
                   <Zap className="w-6 h-6 text-purple-400" />
                 </div>
                 <div>
-                  <p className="text-gray-400 text-sm font-medium">GROW Token</p>
+                  <p className="text-gray-400 text-sm font-medium">
+                    {t('wallet.balance.growToken')}
+                  </p>
                   <p className="text-gray-500 text-xs">Governance Token</p>
                 </div>
               </div>
               <div className="px-3 py-1 rounded-full bg-purple-500/20 text-purple-400 text-xs font-semibold">
-                Up to 25% APY
+                {t('wallet.staking.apy')} 12%
               </div>
             </div>
 
             {/* Balance */}
             <div className="mb-6">
-              <p className="text-gray-400 text-sm mb-2">Total Balance</p>
+              <p className="text-gray-400 text-sm mb-2">
+                {t('wallet.balance.total')}
+              </p>
               <p className="text-5xl font-bold text-white font-mono mb-2">
                 <AnimatedCounter value={totalGrowBalance} decimals={2} />
               </p>
@@ -256,33 +230,39 @@ export const Wallet: React.FC = () => {
             {/* Breakdown */}
             <div className="grid grid-cols-3 gap-4 mb-6 p-4 bg-black/30 rounded-xl">
               <div>
-                <p className="text-gray-500 text-xs mb-1">Available</p>
+                <p className="text-gray-500 text-xs mb-1">
+                  {t('wallet.balance.available')}
+                </p>
                 <p className="text-white font-mono text-sm">
-                  {MOCK_GROW_BALANCE.amount.toLocaleString()}
+                  {user.growBalance.toLocaleString()}
                 </p>
               </div>
               <div>
-                <p className="text-gray-500 text-xs mb-1">Locked</p>
-                <p className="text-amber-400 font-mono text-sm">
-                  {MOCK_GROW_BALANCE.locked.toLocaleString()}
+                <p className="text-gray-500 text-xs mb-1">
+                  {t('wallet.balance.locked')}
                 </p>
+                <p className="text-amber-400 font-mono text-sm">0</p>
               </div>
               <div>
-                <p className="text-gray-500 text-xs mb-1">Staking</p>
+                <p className="text-gray-500 text-xs mb-1">
+                  {t('wallet.balance.staked')}
+                </p>
                 <p className="text-purple-400 font-mono text-sm">
-                  {MOCK_GROW_BALANCE.staking.toLocaleString()}
+                  {user.stakedGrowBalance.toLocaleString()}
                 </p>
               </div>
             </div>
 
             {/* Staking Info */}
-            {MOCK_GROW_BALANCE.staking > 0 && (
+            {user.stakedGrowBalance > 0 && (
               <div className="mb-4 p-4 bg-gradient-to-r from-purple-500/20 to-pink-500/20 rounded-xl border border-purple-500/30">
                 <div className="flex items-center justify-between">
                   <div>
-                    <p className="text-gray-400 text-xs mb-1">Estimated Rewards (90d)</p>
+                    <p className="text-gray-400 text-xs mb-1">
+                      {t('wallet.staking.estimatedReward')} (90 {t('wallet.staking.days', { count: 90 })})
+                    </p>
                     <p className="text-purple-300 font-mono text-lg font-semibold">
-                      +{calculateStakingReward(MOCK_GROW_BALANCE.staking, 0.12, 90).toFixed(2)} GROW
+                      +{calculateStakingReward(user.stakedGrowBalance, 0.12, 90).toFixed(2)} GROW
                     </p>
                   </div>
                   <TrendingUp className="w-6 h-6 text-purple-400" />
@@ -294,11 +274,11 @@ export const Wallet: React.FC = () => {
             <div className="flex gap-3">
               <button className="flex-1 bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white font-semibold py-3 rounded-xl transition-all flex items-center justify-center gap-2 shadow-lg shadow-purple-500/30">
                 <Lock className="w-4 h-4" />
-                Stake GROW
+                {t('wallet.actions.stake')}
               </button>
               <button className="flex-1 bg-white/10 hover:bg-white/20 text-white font-semibold py-3 rounded-xl transition-all flex items-center justify-center gap-2 border border-white/20">
                 <TrendingUp className="w-4 h-4" />
-                Rewards
+                {t('wallet.staking.rewards')}
               </button>
             </div>
           </div>
@@ -316,7 +296,7 @@ export const Wallet: React.FC = () => {
         <div className="flex items-center justify-between mb-6">
           <h2 className="text-2xl font-bold text-white flex items-center gap-3">
             <Hash className="w-6 h-6 text-[#00FFA3]" />
-            Transaction History
+            {t('wallet.transactions.title')}
           </h2>
 
           {/* Filter */}
@@ -331,7 +311,7 @@ export const Wallet: React.FC = () => {
                     : 'bg-white/10 text-gray-400 hover:bg-white/20'
                 }`}
               >
-                {f === 'all' ? 'All' : f}
+                {f === 'all' ? t('common.filter') : f}
               </button>
             ))}
           </div>
@@ -343,22 +323,22 @@ export const Wallet: React.FC = () => {
             <thead>
               <tr className="border-b border-white/10">
                 <th className="text-left text-gray-400 font-medium text-sm py-4 px-4">
-                  Time
+                  {t('wallet.transactions.date')}
                 </th>
                 <th className="text-left text-gray-400 font-medium text-sm py-4 px-4">
-                  Type
+                  {t('wallet.transactions.type')}
                 </th>
                 <th className="text-left text-gray-400 font-medium text-sm py-4 px-4">
-                  Amount
+                  {t('wallet.transactions.amount')}
                 </th>
                 <th className="text-left text-gray-400 font-medium text-sm py-4 px-4">
                   Currency
                 </th>
                 <th className="text-left text-gray-400 font-medium text-sm py-4 px-4">
-                  Status
+                  {t('wallet.transactions.status')}
                 </th>
                 <th className="text-left text-gray-400 font-medium text-sm py-4 px-4">
-                  TxHash
+                  {t('wallet.transactions.hash')}
                 </th>
               </tr>
             </thead>
@@ -379,7 +359,7 @@ export const Wallet: React.FC = () => {
                     </p>
                   </td>
                   <td className="py-4 px-4">
-                    <p className="text-white text-sm">{tx.type}</p>
+                    <p className="text-white text-sm">{getTransactionType(tx.type)}</p>
                   </td>
                   <td className="py-4 px-4">
                     <p className="text-white font-mono text-sm font-semibold">
@@ -388,7 +368,7 @@ export const Wallet: React.FC = () => {
                     </p>
                     {tx.taxDeducted && tx.taxDeducted > 0 && (
                       <p className="text-gray-500 text-xs">
-                        Tax: {tx.taxDeducted.toLocaleString()}
+                        {t('wallet.transactions.tax')}: {tx.taxDeducted.toLocaleString()}
                       </p>
                     )}
                   </td>
@@ -421,7 +401,7 @@ export const Wallet: React.FC = () => {
                       ) : (
                         <Clock className="w-3 h-3" />
                       )}
-                      {tx.status}
+                      {getStatusText(tx.status)}
                     </span>
                   </td>
                   <td className="py-4 px-4">
@@ -432,7 +412,7 @@ export const Wallet: React.FC = () => {
                       <button
                         onClick={() => handleCopyHash(tx.hash)}
                         className="p-1.5 hover:bg-white/10 rounded-lg transition-colors group"
-                        title="Copy full hash"
+                        title={t('common.copy')}
                       >
                         {copiedHash === tx.hash ? (
                           <CheckCircle className="w-4 h-4 text-green-400" />
@@ -461,7 +441,9 @@ export const Wallet: React.FC = () => {
         {filteredTransactions.length === 0 && (
           <div className="text-center py-12">
             <Hash className="w-16 h-16 text-gray-600 mx-auto mb-4" />
-            <p className="text-gray-400 text-lg">No transactions found</p>
+            <p className="text-gray-400 text-lg">
+              {t('wallet.transactions.noTransactions')}
+            </p>
             <p className="text-gray-500 text-sm">
               {filter === 'all'
                 ? 'Your transaction history will appear here'

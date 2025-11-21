@@ -5,8 +5,10 @@ import ProductCard from '../components/ProductCard';
 import { Search, Sparkles, Bot, TrendingUp } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Product } from '../types';
+import { useTranslation } from '../hooks';
 
 export const Marketplace: React.FC = () => {
+  const t = useTranslation();
   const { products } = useStore();
   const [searchTerm, setSearchTerm] = useState('');
   const [aiSuggestion, setAiSuggestion] = useState<{ text: string; productIds: string[] } | null>(null);
@@ -22,13 +24,16 @@ export const Marketplace: React.FC = () => {
       setLoadingAi(true);
       // Simulate API delay
       await new Promise(r => setTimeout(r, 1500));
-      
+
       // Mock AI logic: Suggest high commission products or popular ones
       const suggested = products.find(p => p.commissionRate >= 0.25);
-      
+
       if (suggested) {
         setAiSuggestion({
-          text: `Based on current market trends and your sales history, **${suggested.name}** is the hottest pick right now! It offers a high ${suggested.commissionRate * 100}% commission rate.`,
+          text: t('marketplace.aiRecommendation.suggestion', {
+            productName: suggested.name,
+            commission: (suggested.commissionRate * 100).toString()
+          }),
           productIds: [suggested.id]
         });
       }
@@ -36,17 +41,17 @@ export const Marketplace: React.FC = () => {
     };
 
     generateRecommendations();
-  }, [products]);
+  }, [products, t]);
 
   return (
     <div className="space-y-6 pb-20">
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-        <h2 className="text-2xl font-bold text-brand-dark">Marketplace</h2>
+        <h2 className="text-2xl font-bold text-brand-dark">{t('marketplace.title')}</h2>
         <div className="relative w-full sm:w-72">
            <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
               <Search className="h-5 w-5 text-gray-400" />
            </div>
-           <input type="text" placeholder="Search products..." className="pl-10 pr-4 py-2.5 border border-gray-200 rounded-xl w-full focus:outline-none focus:ring-2 focus:ring-brand-primary/20 text-sm" value={searchTerm} onChange={(e) => setSearchTerm(e.target.value)} />
+           <input type="text" placeholder={t('marketplace.searchPlaceholder')} className="pl-10 pr-4 py-2.5 border border-gray-200 rounded-xl w-full focus:outline-none focus:ring-2 focus:ring-brand-primary/20 text-sm" value={searchTerm} onChange={(e) => setSearchTerm(e.target.value)} />
         </div>
       </div>
 
@@ -60,21 +65,21 @@ export const Marketplace: React.FC = () => {
           </div>
           <div className="flex-1">
             <div className="flex items-center gap-2 mb-1">
-               <h3 className="font-bold text-lg">AI Opportunity Radar</h3>
+               <h3 className="font-bold text-lg">{t('marketplace.aiRecommendation.title')}</h3>
                <span className="bg-yellow-400 text-indigo-900 text-[10px] font-bold px-2 py-0.5 rounded uppercase flex items-center gap-1">
-                  <TrendingUp className="w-3 h-3" /> Live
+                  <TrendingUp className="w-3 h-3" /> {t('marketplace.aiRecommendation.live')}
                </span>
             </div>
             <AnimatePresence mode="wait">
               {loadingAi ? (
-                <motion.p 
+                <motion.p
                   key="loading"
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                   exit={{ opacity: 0 }}
                   className="text-indigo-200 text-sm"
                 >
-                  Analyzing 124 market signals...
+                  {t('marketplace.aiRecommendation.loading', { count: '124' })}
                 </motion.p>
               ) : (
                 <motion.div
@@ -83,7 +88,7 @@ export const Marketplace: React.FC = () => {
                   animate={{ opacity: 1, y: 0 }}
                   className="text-indigo-100 text-sm leading-relaxed"
                 >
-                  {aiSuggestion?.text.split('**').map((part, i) => 
+                  {aiSuggestion?.text.split('**').map((part, i) =>
                     i % 2 === 1 ? <span key={i} className="text-yellow-300 font-bold">{part}</span> : part
                   )}
                 </motion.div>
@@ -98,16 +103,16 @@ export const Marketplace: React.FC = () => {
           {filteredProducts.map((p, idx) => {
             const isRecommended = aiSuggestion?.productIds.includes(p.id);
             return (
-                <motion.div 
-                    key={p.id} 
-                    initial={{ opacity: 0, y: 20 }} 
-                    animate={{ opacity: 1, y: 0 }} 
+                <motion.div
+                    key={p.id}
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: idx * 0.05 }}
                     className={isRecommended ? 'ring-2 ring-yellow-400 ring-offset-2 rounded-xl' : ''}
                 >
                 {isRecommended && (
                     <div className="bg-yellow-400 text-indigo-900 text-xs font-bold px-3 py-1 rounded-t-lg -mb-1 w-fit relative z-10 mx-auto flex items-center gap-1">
-                        <Sparkles className="w-3 h-3" /> AI Recommended
+                        <Sparkles className="w-3 h-3" /> {t('marketplace.aiRecommended')}
                     </div>
                 )}
                 <ProductCard product={p} />
@@ -118,7 +123,7 @@ export const Marketplace: React.FC = () => {
       ) : (
         <div className="flex flex-col items-center justify-center h-64 text-center bg-white rounded-2xl border border-gray-100 border-dashed">
            <div className="p-4 bg-gray-50 rounded-full mb-3"><Search className="h-6 w-6 text-gray-400" /></div>
-           <h3 className="text-lg font-bold text-gray-800">No products found</h3>
+           <h3 className="text-lg font-bold text-gray-800">{t('marketplace.noProductsFound')}</h3>
         </div>
       )}
     </div>
