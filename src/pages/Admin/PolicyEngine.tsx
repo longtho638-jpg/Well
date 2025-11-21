@@ -1,443 +1,378 @@
-import { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { motion } from 'framer-motion';
-import { Settings, TrendingUp, Crown, DollarSign, Lock, Unlock, Play, Save, AlertCircle } from 'lucide-react';
+import { AlertTriangle, Save, DollarSign, Users, TrendingUp, Zap, Target } from 'lucide-react';
 
 /**
- * DYNAMIC POLICY ENGINE
- * The Command Center for Business Strategy Execution
+ * POLICY ENGINE v2.0
+ * Bộ não chiến lược cho WellNexus Platform
  *
- * Philosophy: "Quyền sinh sát nằm trong tay những biến số"
- * Every number is a variable. Every rule is dynamic. Every elite has power.
+ * Features:
+ * - 3-tier commission structure with dynamic sliders
+ * - Real-time payout risk monitoring
+ * - Game rules configuration
+ * - Financial simulation engine
  */
 
-interface PolicyConfig {
-  base_commission_rate: number; // % cơ bản cho mọi người
-  elite_bonus_pool: number; // % doanh thu dành riêng cho Top 200
-  white_label_trigger: number; // Mốc doanh số (VND) để được White-label
-  vendor_fee: number; // % phí thu từ Vendor sau khi tách nhánh
-  elite_threshold: number; // Số lượng Elite (mặc định 200)
-  zodiac_count: number; // Số lượng "12 Tướng" (The Zodiac 12)
-}
+const PolicyEngine: React.FC = () => {
+  // 1. Commission Config State (3 Tầng)
+  const [retailComm, setRetailComm] = useState(25);
+  const [agencyBonus, setAgencyBonus] = useState(10);
+  const [elitePool, setElitePool] = useState(3);
 
-interface SimulationResult {
-  revenue: number;
-  base_payout: number;
-  elite_bonus: number;
-  total_payout: number;
-  platform_profit: number;
-  profit_margin: number;
-}
+  // 2. Game Rules State
+  const [activationThreshold, setActivationThreshold] = useState(6000000);
+  const [whiteLabelGMV, setWhiteLabelGMV] = useState(1000000000);
+  const [whiteLabelPartners, setWhiteLabelPartners] = useState(50);
 
-export default function PolicyEngine() {
-  const [config, setConfig] = useState<PolicyConfig>({
-    base_commission_rate: 15,
-    elite_bonus_pool: 5,
-    white_label_trigger: 1000000000, // 1 tỷ VND/tháng
-    vendor_fee: 20,
-    elite_threshold: 200,
-    zodiac_count: 12,
-  });
+  // 3. Simulation State
+  const [simPartners, setSimPartners] = useState(1000);
+  const [simAOV, setSimAOV] = useState(1500000);
+  const [fixedCost, setFixedCost] = useState(500000000); // 500tr chi phí vận hành
 
-  const [simulation, setSimulation] = useState({
-    revenue: 5000000000, // 5 tỷ VND
-    elite_sales: 3000000000, // 60% từ Elite
-    regular_sales: 2000000000,
-  });
+  // Derived Values
+  const totalPayoutPercent = retailComm + agencyBonus + elitePool;
+  const isRisk = totalPayoutPercent > 45;
 
-  const [result, setResult] = useState<SimulationResult | null>(null);
-  const [isLocked, setIsLocked] = useState(true);
-  const [isSaving, setIsSaving] = useState(false);
+  const simGMV = simPartners * simAOV;
+  const simTotalPayout = simGMV * (totalPayoutPercent / 100);
+  const simProfit = simGMV - simTotalPayout - fixedCost;
+  const profitMargin = simGMV > 0 ? (simProfit / simGMV) * 100 : 0;
 
-  // Calculate simulation results
-  const runSimulation = () => {
-    const basePayout = simulation.revenue * (config.base_commission_rate / 100);
-    const eliteBonus = simulation.revenue * (config.elite_bonus_pool / 100);
-    const totalPayout = basePayout + eliteBonus;
-    const platformProfit = simulation.revenue - totalPayout;
-    const profitMargin = (platformProfit / simulation.revenue) * 100;
+  const formatVND = (num: number) =>
+    new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(num);
 
-    setResult({
-      revenue: simulation.revenue,
-      base_payout: basePayout,
-      elite_bonus: eliteBonus,
-      total_payout: totalPayout,
-      platform_profit: platformProfit,
-      profit_margin: profitMargin,
-    });
-  };
-
-  useEffect(() => {
-    runSimulation();
-  }, [config, simulation]);
-
-  const handleSavePolicy = async () => {
-    setIsSaving(true);
-
-    // Simulate API call to Firestore
-    await new Promise(resolve => setTimeout(resolve, 1500));
-
-    console.log('Saving policy to Firestore:', {
+  const handleSaveConfig = () => {
+    const config = {
+      commissions: { retailComm, agencyBonus, elitePool },
+      rules: { activationThreshold, whiteLabelGMV, whiteLabelPartners },
       timestamp: new Date().toISOString(),
-      config,
-      version: 'system_policy_v1',
-    });
-
-    setIsSaving(false);
-    setIsLocked(true);
-
-    // Show success notification (in production, use toast library)
-    alert('✅ Chính sách đã được lưu vào hệ thống!');
-  };
-
-  const formatVND = (amount: number) => {
-    return new Intl.NumberFormat('vi-VN', {
-      style: 'currency',
-      currency: 'VND',
-      minimumFractionDigits: 0,
-    }).format(amount);
+    };
+    localStorage.setItem('policy_engine_config', JSON.stringify(config));
+    alert('✅ Policy Configuration Saved Successfully!');
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-900 via-gray-800 to-primary p-6">
-      {/* Header: The Command Center */}
-      <motion.div
-        initial={{ opacity: 0, y: -20 }}
-        animate={{ opacity: 1, y: 0 }}
-        className="mb-8"
-      >
-        <div className="flex items-center justify-between">
-          <div>
-            <h1 className="text-4xl font-bold text-white mb-2 flex items-center gap-3">
-              <Settings className="text-accent" size={40} />
-              POLICY ENGINE
-            </h1>
-            <p className="text-gray-400 text-lg">
-              Trung tâm quyền lực • Nơi sinh sát chiến lược • Dynamic by Design
-            </p>
-          </div>
-
-          <button
-            onClick={() => setIsLocked(!isLocked)}
-            className={`px-6 py-3 rounded-lg flex items-center gap-2 transition-all ${
-              isLocked
-                ? 'bg-red-600 hover:bg-red-700 text-white'
-                : 'bg-green-600 hover:bg-green-700 text-white'
-            }`}
-          >
-            {isLocked ? <Lock size={20} /> : <Unlock size={20} />}
-            {isLocked ? 'MỞ KHÓA' : 'ĐANG CHỈNH SỬA'}
-          </button>
-        </div>
-      </motion.div>
-
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        {/* LEFT PANEL: Policy Configuration */}
-        <motion.div
-          initial={{ opacity: 0, x: -50 }}
-          animate={{ opacity: 1, x: 0 }}
-          transition={{ delay: 0.1 }}
-          className="bg-white/10 backdrop-blur-lg rounded-2xl p-6 border border-white/20"
-        >
-          <h2 className="text-2xl font-bold text-white mb-6 flex items-center gap-2">
-            <TrendingUp className="text-accent" />
-            CẤU HÌNH CHÍNH SÁCH
+    <div className="bg-slate-900 text-slate-100 p-6 rounded-2xl shadow-2xl border border-slate-700 min-h-[800px]">
+      {/* Header */}
+      <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-8 gap-4">
+        <div>
+          <h2 className="text-2xl font-display font-bold text-white flex items-center gap-2">
+            <div className="w-3 h-3 rounded-full bg-green-500 animate-pulse" />
+            POLICY ENGINE v2.0
           </h2>
-
-          <div className="space-y-6">
-            {/* Base Commission Rate */}
-            <div>
-              <label className="block text-white font-semibold mb-2">
-                Hoa Hồng Cơ Bản (Base Commission)
-              </label>
-              <div className="flex items-center gap-4">
-                <input
-                  type="range"
-                  min="10"
-                  max="30"
-                  step="1"
-                  value={config.base_commission_rate}
-                  onChange={(e) =>
-                    setConfig({ ...config, base_commission_rate: Number(e.target.value) })
-                  }
-                  disabled={isLocked}
-                  className="flex-1"
-                />
-                <span className="text-accent text-2xl font-bold w-16 text-right">
-                  {config.base_commission_rate}%
-                </span>
-              </div>
-              <p className="text-gray-400 text-sm mt-1">
-                Áp dụng cho tất cả CTV. Được trả từ mỗi giao dịch.
-              </p>
-            </div>
-
-            {/* Elite Bonus Pool */}
-            <div>
-              <label className="block text-white font-semibold mb-2 flex items-center gap-2">
-                <Crown className="text-yellow-400" size={20} />
-                Quỹ Thưởng Tinh Hoa (Elite Pool)
-              </label>
-              <div className="flex items-center gap-4">
-                <input
-                  type="range"
-                  min="0"
-                  max="15"
-                  step="0.5"
-                  value={config.elite_bonus_pool}
-                  onChange={(e) =>
-                    setConfig({ ...config, elite_bonus_pool: Number(e.target.value) })
-                  }
-                  disabled={isLocked}
-                  className="flex-1"
-                />
-                <span className="text-yellow-400 text-2xl font-bold w-16 text-right">
-                  {config.elite_bonus_pool}%
-                </span>
-              </div>
-              <p className="text-gray-400 text-sm mt-1">
-                Dành riêng cho Top 200. Càng cao càng hút quân tài.
-              </p>
-            </div>
-
-            {/* White Label Trigger */}
-            <div>
-              <label className="block text-white font-semibold mb-2">
-                Mốc White-Label (Tách Thương Hiệu)
-              </label>
-              <input
-                type="number"
-                value={config.white_label_trigger}
-                onChange={(e) =>
-                  setConfig({ ...config, white_label_trigger: Number(e.target.value) })
-                }
-                disabled={isLocked}
-                className="w-full bg-white/5 border border-white/20 rounded-lg px-4 py-3 text-white text-lg"
-                placeholder="1,000,000,000"
-              />
-              <p className="text-gray-400 text-sm mt-1">
-                Doanh số/tháng để được cấp Platform riêng (VND)
-              </p>
-              <p className="text-accent text-sm font-semibold">
-                = {formatVND(config.white_label_trigger)}
-              </p>
-            </div>
-
-            {/* Vendor Fee */}
-            <div>
-              <label className="block text-white font-semibold mb-2">
-                Phí Vendor (SaaS Fee)
-              </label>
-              <div className="flex items-center gap-4">
-                <input
-                  type="range"
-                  min="10"
-                  max="40"
-                  step="1"
-                  value={config.vendor_fee}
-                  onChange={(e) =>
-                    setConfig({ ...config, vendor_fee: Number(e.target.value) })
-                  }
-                  disabled={isLocked}
-                  className="flex-1"
-                />
-                <span className="text-green-400 text-2xl font-bold w-16 text-right">
-                  {config.vendor_fee}%
-                </span>
-              </div>
-              <p className="text-gray-400 text-sm mt-1">
-                Thu từ Vendor sau khi họ tách nhánh thành công.
-              </p>
-            </div>
-
-            {/* Elite & Zodiac Numbers */}
-            <div className="grid grid-cols-2 gap-4">
-              <div>
-                <label className="block text-white font-semibold mb-2">Top Elite</label>
-                <input
-                  type="number"
-                  value={config.elite_threshold}
-                  onChange={(e) =>
-                    setConfig({ ...config, elite_threshold: Number(e.target.value) })
-                  }
-                  disabled={isLocked}
-                  className="w-full bg-white/5 border border-white/20 rounded-lg px-4 py-3 text-white"
-                />
-              </div>
-              <div>
-                <label className="block text-white font-semibold mb-2">12 Tướng</label>
-                <input
-                  type="number"
-                  value={config.zodiac_count}
-                  onChange={(e) =>
-                    setConfig({ ...config, zodiac_count: Number(e.target.value) })
-                  }
-                  disabled={isLocked}
-                  className="w-full bg-white/5 border border-white/20 rounded-lg px-4 py-3 text-white"
-                />
-              </div>
-            </div>
-          </div>
-
-          {/* Save Button */}
-          {!isLocked && (
-            <motion.button
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              onClick={handleSavePolicy}
-              disabled={isSaving}
-              className="w-full mt-6 bg-accent hover:bg-yellow-500 text-gray-900 font-bold py-4 rounded-lg flex items-center justify-center gap-2 transition-all disabled:opacity-50"
-            >
-              <Save size={20} />
-              {isSaving ? 'ĐANG LƯU...' : 'LƯU CHÍNH SÁCH'}
-            </motion.button>
-          )}
-        </motion.div>
-
-        {/* RIGHT PANEL: Simulation Engine */}
-        <motion.div
-          initial={{ opacity: 0, x: 50 }}
-          animate={{ opacity: 1, x: 0 }}
-          transition={{ delay: 0.2 }}
-          className="space-y-6"
+          <p className="text-slate-400 text-sm mt-1">Trung tâm điều phối chiến lược & Dòng tiền</p>
+        </div>
+        <button
+          onClick={handleSaveConfig}
+          className="flex items-center gap-2 bg-[#FFBF00] text-[#00575A] px-4 py-2 rounded-lg font-bold hover:bg-yellow-400 transition-all shadow-lg"
         >
-          {/* Simulation Inputs */}
-          <div className="bg-white/10 backdrop-blur-lg rounded-2xl p-6 border border-white/20">
-            <h2 className="text-2xl font-bold text-white mb-6 flex items-center gap-2">
-              <Play className="text-green-400" />
-              MÔ PHỎNG DÒNG TIỀN
-            </h2>
+          <Save size={18} /> Lưu Cấu Hình
+        </button>
+      </div>
 
-            <div className="space-y-4">
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
+        {/* LEFT COLUMN: CONFIGURATION */}
+        <div className="lg:col-span-7 space-y-6">
+          {/* Commission Structure */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="bg-slate-800 p-6 rounded-xl border border-slate-700"
+          >
+            <h3 className="text-lg font-bold mb-4 text-teal-400 flex items-center gap-2">
+              <DollarSign size={20} /> Cấu Trúc Hoa Hồng (Multi-tier)
+            </h3>
+
+            {/* Retail */}
+            <div className="mb-6">
+              <div className="flex justify-between mb-2">
+                <label className="text-sm font-medium">Chiết khấu Bán lẻ (Retail Discount)</label>
+                <motion.span
+                  key={retailComm}
+                  initial={{ scale: 1.2 }}
+                  animate={{ scale: 1 }}
+                  className="text-[#FFBF00] font-bold"
+                >
+                  {retailComm}%
+                </motion.span>
+              </div>
+              <input
+                type="range"
+                min="20"
+                max="35"
+                value={retailComm}
+                onChange={(e) => setRetailComm(Number(e.target.value))}
+                className="w-full accent-teal-500 h-2 bg-slate-600 rounded-lg appearance-none cursor-pointer"
+              />
+              <p className="text-xs text-slate-500 mt-1">Dành cho người bán trực tiếp (Dropshipping).</p>
+            </div>
+
+            {/* Agency */}
+            <div className="mb-6">
+              <div className="flex justify-between mb-2">
+                <label className="text-sm font-medium">Thưởng Quản lý (Agency Bonus)</label>
+                <motion.span
+                  key={agencyBonus}
+                  initial={{ scale: 1.2 }}
+                  animate={{ scale: 1 }}
+                  className="text-[#FFBF00] font-bold"
+                >
+                  {agencyBonus}%
+                </motion.span>
+              </div>
+              <input
+                type="range"
+                min="5"
+                max="15"
+                value={agencyBonus}
+                onChange={(e) => setAgencyBonus(Number(e.target.value))}
+                className="w-full accent-blue-500 h-2 bg-slate-600 rounded-lg appearance-none cursor-pointer"
+              />
+              <p className="text-xs text-slate-500 mt-1">Thưởng dựa trên doanh số nhóm (Volume-based).</p>
+            </div>
+
+            {/* Elite */}
+            <div className="mb-6">
+              <div className="flex justify-between mb-2">
+                <label className="text-sm font-medium">Quỹ Tinh hoa (Elite Pool)</label>
+                <motion.span
+                  key={elitePool}
+                  initial={{ scale: 1.2 }}
+                  animate={{ scale: 1 }}
+                  className="text-[#FFBF00] font-bold"
+                >
+                  {elitePool}%
+                </motion.span>
+              </div>
+              <input
+                type="range"
+                min="1"
+                max="5"
+                value={elitePool}
+                onChange={(e) => setElitePool(Number(e.target.value))}
+                className="w-full accent-purple-500 h-2 bg-slate-600 rounded-lg appearance-none cursor-pointer"
+              />
+              <p className="text-xs text-slate-500 mt-1">Đồng chia cho Top 12 Tướng (The Zodiac).</p>
+            </div>
+
+            {/* Total Monitor */}
+            <motion.div
+              animate={{
+                backgroundColor: isRisk ? 'rgba(127, 29, 29, 0.2)' : 'rgba(6, 78, 59, 0.2)',
+                borderColor: isRisk ? 'rgba(239, 68, 68, 0.5)' : 'rgba(34, 197, 94, 0.5)',
+              }}
+              className="p-4 rounded-lg border transition-all"
+            >
+              <div className="flex justify-between items-center">
+                <span className="text-sm font-bold uppercase">Tổng Payout (Max 45%)</span>
+                <motion.span
+                  key={totalPayoutPercent}
+                  initial={{ scale: 1.3 }}
+                  animate={{ scale: 1 }}
+                  className={`text-2xl font-bold ${isRisk ? 'text-red-500' : 'text-green-400'}`}
+                >
+                  {totalPayoutPercent}%
+                </motion.span>
+              </div>
+              {isRisk && (
+                <motion.div
+                  initial={{ opacity: 0, x: -10 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  className="flex items-center gap-2 text-red-400 text-xs mt-2"
+                >
+                  <AlertTriangle size={14} />
+                  <span>Cảnh báo: Payout quá cao có thể gây thâm hụt dòng tiền vận hành!</span>
+                </motion.div>
+              )}
+            </motion.div>
+          </motion.div>
+
+          {/* Game Rules */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.1 }}
+            className="bg-slate-800 p-6 rounded-xl border border-slate-700"
+          >
+            <h3 className="text-lg font-bold mb-4 text-teal-400 flex items-center gap-2">
+              <Target size={20} /> Luật Chơi & Kích Hoạt
+            </h3>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
-                <label className="block text-white font-semibold mb-2">
-                  Doanh Thu Dự Kiến (VND)
+                <label className="block text-xs text-slate-400 mb-1">
+                  Điều kiện Kích hoạt (Pro Partner)
                 </label>
+                <div className="relative">
+                  <input
+                    type="number"
+                    value={activationThreshold}
+                    onChange={(e) => setActivationThreshold(Number(e.target.value))}
+                    className="w-full bg-slate-900 border border-slate-600 rounded-lg p-2 text-white focus:border-teal-500 outline-none"
+                  />
+                  <span className="absolute right-3 top-2 text-slate-500 text-xs">VND</span>
+                </div>
+              </div>
+              <div>
+                <label className="block text-xs text-slate-400 mb-1">White-label Trigger (GMV)</label>
+                <div className="relative">
+                  <input
+                    type="number"
+                    value={whiteLabelGMV}
+                    onChange={(e) => setWhiteLabelGMV(Number(e.target.value))}
+                    className="w-full bg-slate-900 border border-slate-600 rounded-lg p-2 text-white focus:border-teal-500 outline-none"
+                  />
+                  <span className="absolute right-3 top-2 text-slate-500 text-xs">VND</span>
+                </div>
+              </div>
+              <div className="md:col-span-2">
+                <label className="block text-xs text-slate-400 mb-1">
+                  White-label Trigger (Active Partners)
+                </label>
+                <div className="relative">
+                  <input
+                    type="number"
+                    value={whiteLabelPartners}
+                    onChange={(e) => setWhiteLabelPartners(Number(e.target.value))}
+                    className="w-full bg-slate-900 border border-slate-600 rounded-lg p-2 text-white focus:border-teal-500 outline-none"
+                  />
+                  <span className="absolute right-3 top-2 text-slate-500 text-xs">Partners</span>
+                </div>
+              </div>
+            </div>
+          </motion.div>
+        </div>
+
+        {/* RIGHT COLUMN: SIMULATION */}
+        <div className="lg:col-span-5">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.2 }}
+            className="bg-gradient-to-b from-slate-800 to-slate-900 p-6 rounded-xl border border-slate-700 h-full"
+          >
+            <h3 className="text-lg font-bold mb-6 text-[#FFBF00] flex items-center gap-2">
+              <TrendingUp size={20} /> Mô Phỏng Dòng Tiền (VC View)
+            </h3>
+
+            {/* Inputs */}
+            <div className="space-y-4 mb-8">
+              <div>
+                <label className="text-xs text-slate-400">Số lượng Partner giả định</label>
+                <input
+                  type="range"
+                  min="100"
+                  max="5000"
+                  step="100"
+                  value={simPartners}
+                  onChange={(e) => setSimPartners(Number(e.target.value))}
+                  className="w-full accent-white h-1 bg-slate-600 rounded-lg cursor-pointer mt-2"
+                />
+                <div className="text-right font-mono text-teal-400">{simPartners.toLocaleString()} người</div>
+              </div>
+              <div>
+                <label className="text-xs text-slate-400">AOV (Giá trị đơn trung bình)</label>
                 <input
                   type="number"
-                  value={simulation.revenue}
-                  onChange={(e) => setSimulation({ ...simulation, revenue: Number(e.target.value) })}
-                  className="w-full bg-white/5 border border-white/20 rounded-lg px-4 py-3 text-white text-lg"
+                  value={simAOV}
+                  onChange={(e) => setSimAOV(Number(e.target.value))}
+                  className="w-full bg-slate-900 border border-slate-600 rounded-lg p-2 text-sm mt-1 outline-none focus:border-teal-500"
                 />
-                <p className="text-accent font-semibold mt-1">
-                  = {formatVND(simulation.revenue)}
-                </p>
+              </div>
+              <div>
+                <label className="text-xs text-slate-400">Chi phí cố định (Fixed Cost/Tháng)</label>
+                <input
+                  type="number"
+                  value={fixedCost}
+                  onChange={(e) => setFixedCost(Number(e.target.value))}
+                  className="w-full bg-slate-900 border border-slate-600 rounded-lg p-2 text-sm mt-1 outline-none focus:border-teal-500"
+                />
+              </div>
+            </div>
+
+            {/* Results */}
+            <div className="space-y-4 border-t border-slate-700 pt-6">
+              <div className="flex justify-between items-center">
+                <span className="text-slate-400 flex items-center gap-2">
+                  <Zap size={14} className="text-teal-400" />
+                  Tổng Doanh Thu (GMV)
+                </span>
+                <motion.span
+                  key={simGMV}
+                  initial={{ scale: 1.1, color: '#FFBF00' }}
+                  animate={{ scale: 1, color: '#FFFFFF' }}
+                  className="text-xl font-bold"
+                >
+                  {formatVND(simGMV)}
+                </motion.span>
+              </div>
+              <div className="flex justify-between items-center">
+                <span className="text-slate-400">Tổng Chi Trả (Payout)</span>
+                <motion.span
+                  key={simTotalPayout}
+                  initial={{ scale: 1.1, color: '#FFBF00' }}
+                  animate={{ scale: 1, color: '#fb7185' }}
+                  className="text-lg font-bold text-red-400"
+                >
+                  -{formatVND(simTotalPayout)}
+                </motion.span>
+              </div>
+              <div className="flex justify-between items-center">
+                <span className="text-slate-400">Chi Phí Cố Định</span>
+                <span className="text-lg font-bold text-orange-400">-{formatVND(fixedCost)}</span>
               </div>
 
-              <button
-                onClick={runSimulation}
-                className="w-full bg-green-600 hover:bg-green-700 text-white font-bold py-3 rounded-lg flex items-center justify-center gap-2 transition-all"
-              >
-                <Play size={20} />
-                CHẠY MÔ PHỎNG
-              </button>
-            </div>
-          </div>
-
-          {/* Simulation Results */}
-          {result && (
-            <motion.div
-              initial={{ opacity: 0, scale: 0.95 }}
-              animate={{ opacity: 1, scale: 1 }}
-              className="bg-gradient-to-br from-primary to-gray-800 rounded-2xl p-6 border border-accent/30"
-            >
-              <h3 className="text-xl font-bold text-white mb-4 flex items-center gap-2">
-                <DollarSign className="text-accent" />
-                KẾT QUẢ MÔ PHỎNG
-              </h3>
-
-              <div className="space-y-3">
-                <div className="flex justify-between items-center">
-                  <span className="text-gray-300">Tổng Doanh Thu:</span>
-                  <span className="text-white font-bold text-lg">
-                    {formatVND(result.revenue)}
+              <div className="mt-6 p-4 bg-teal-900/30 rounded-xl border border-teal-500/30">
+                <div className="flex justify-between items-center mb-1">
+                  <span className="text-teal-200 font-medium">Lợi Nhuận Ròng (EBITDA)</span>
+                  <motion.span
+                    key={simProfit}
+                    initial={{ scale: 1.2 }}
+                    animate={{ scale: 1 }}
+                    className={`text-2xl font-bold ${simProfit > 0 ? 'text-green-400' : 'text-red-500'}`}
+                  >
+                    {formatVND(simProfit)}
+                  </motion.span>
+                </div>
+                <div className="text-right text-xs text-slate-400">
+                  Margin:{' '}
+                  <span className={profitMargin > 0 ? 'text-green-400' : 'text-red-400'}>
+                    {profitMargin.toFixed(1)}%
                   </span>
                 </div>
+              </div>
 
-                <div className="h-px bg-white/20"></div>
-
-                <div className="flex justify-between items-center">
-                  <span className="text-gray-300">Hoa Hồng Cơ Bản:</span>
-                  <span className="text-blue-400 font-bold">
-                    {formatVND(result.base_payout)}
-                  </span>
-                </div>
-
-                <div className="flex justify-between items-center">
-                  <span className="text-gray-300">Thưởng Tinh Hoa:</span>
-                  <span className="text-yellow-400 font-bold">
-                    {formatVND(result.elite_bonus)}
-                  </span>
-                </div>
-
-                <div className="h-px bg-white/20"></div>
-
-                <div className="flex justify-between items-center">
-                  <span className="text-gray-300 font-semibold">Tổng Chi Trả:</span>
-                  <span className="text-red-400 font-bold text-lg">
-                    {formatVND(result.total_payout)}
-                  </span>
-                </div>
-
-                <div className="flex justify-between items-center">
-                  <span className="text-white font-bold text-lg">Lợi Nhuận Platform:</span>
-                  <span className="text-accent font-bold text-2xl">
-                    {formatVND(result.platform_profit)}
-                  </span>
-                </div>
-
-                <div className="mt-4 bg-white/10 rounded-lg p-3">
-                  <div className="flex justify-between items-center">
-                    <span className="text-gray-300">Tỷ Suất Lợi Nhuận:</span>
-                    <span className={`font-bold text-xl ${
-                      result.profit_margin > 50 ? 'text-green-400' :
-                      result.profit_margin > 30 ? 'text-yellow-400' : 'text-red-400'
-                    }`}>
-                      {result.profit_margin.toFixed(1)}%
+              {/* Performance Indicator */}
+              <div className="mt-4 p-3 bg-slate-800/50 rounded-lg border border-slate-700">
+                <div className="flex items-center justify-between text-xs">
+                  <span className="text-slate-400">Health Score</span>
+                  <div className="flex items-center gap-2">
+                    <div className="w-32 h-2 bg-slate-700 rounded-full overflow-hidden">
+                      <motion.div
+                        initial={{ width: 0 }}
+                        animate={{
+                          width: `${Math.min(Math.max(profitMargin, 0), 100)}%`,
+                          backgroundColor:
+                            profitMargin > 20 ? '#22c55e' : profitMargin > 10 ? '#eab308' : '#ef4444',
+                        }}
+                        className="h-full rounded-full"
+                      />
+                    </div>
+                    <span
+                      className={`font-bold ${
+                        profitMargin > 20 ? 'text-green-400' : profitMargin > 10 ? 'text-yellow-400' : 'text-red-400'
+                      }`}
+                    >
+                      {profitMargin > 20 ? 'Excellent' : profitMargin > 10 ? 'Good' : 'At Risk'}
                     </span>
                   </div>
                 </div>
               </div>
-            </motion.div>
-          )}
-
-          {/* Warning Box */}
-          <div className="bg-red-900/30 border border-red-500/50 rounded-lg p-4 flex items-start gap-3">
-            <AlertCircle className="text-red-400 flex-shrink-0 mt-1" size={20} />
-            <div className="text-sm text-red-200">
-              <p className="font-semibold mb-1">CẢNH BÁO CHIẾN LƯỢC:</p>
-              <ul className="list-disc list-inside space-y-1">
-                <li>Hoa hồng quá cao → Lợi nhuận thấp → VC không thích</li>
-                <li>Elite Pool quá thấp → Không hút được quân tài</li>
-                <li>White-label trigger quá cao → Không ai đủ điều kiện</li>
-              </ul>
             </div>
-          </div>
-        </motion.div>
-      </div>
-
-      {/* Footer: Strategic Notes */}
-      <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ delay: 0.4 }}
-        className="mt-8 bg-white/5 backdrop-blur-lg rounded-xl p-6 border border-white/10"
-      >
-        <h3 className="text-white font-bold mb-3 flex items-center gap-2">
-          <Crown className="text-accent" />
-          TRIẾT LÝ: "QUYỀN LỰC TRONG TAY BIẾN SỐ"
-        </h3>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm">
-          <div className="text-gray-300">
-            <span className="text-accent font-semibold">Dynamic:</span> Mọi con số đều có thể thay đổi theo thời điểm thị trường.
-          </div>
-          <div className="text-gray-300">
-            <span className="text-accent font-semibold">Elite-First:</span> Hệ thống ưu tiên phục vụ Top 200, không phải đám đông.
-          </div>
-          <div className="text-gray-300">
-            <span className="text-accent font-semibold">White-label Ready:</span> Kiến trúc sẵn sàng cho Vendor tách nhánh.
-          </div>
+          </motion.div>
         </div>
-      </motion.div>
+      </div>
     </div>
   );
-}
+};
+
+export default PolicyEngine;
