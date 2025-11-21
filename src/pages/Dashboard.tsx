@@ -3,6 +3,7 @@ import { HeroCard } from '../components/Dashboard/HeroCard';
 import { StatsGrid } from '../components/Dashboard/StatsGrid';
 import { RevenueChart } from '../components/Dashboard/RevenueChart';
 import { TopProducts } from '../components/Dashboard/TopProducts';
+import { QuickActionsCard } from '../components/Dashboard/QuickActionsCard';
 import { useStore } from '../store';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
@@ -377,6 +378,9 @@ export const Dashboard: React.FC = () => {
 
         {/* Right Column - Sidebar widgets */}
         <div className="space-y-6">
+          {/* Quick Actions Card - Priority position */}
+          <QuickActionsCard />
+
           {/* Revenue Breakdown Donut Chart */}
           <motion.div
             initial={{ opacity: 0, x: 20 }}
