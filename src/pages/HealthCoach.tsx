@@ -1,6 +1,21 @@
 import { useState, useRef, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Send, Bot, User, Package, ShoppingCart, Sparkles } from 'lucide-react';
+import {
+  Send,
+  Bot,
+  User,
+  Package,
+  ShoppingCart,
+  Sparkles,
+  Clock,
+  Heart,
+  Activity,
+  TrendingUp,
+  MessageSquare,
+  Stethoscope,
+  Pill,
+  History
+} from 'lucide-react';
 import { useStore } from '@/store';
 import { formatVND } from '@/utils/format';
 import { useTranslation } from '@/hooks';
@@ -22,6 +37,21 @@ interface ProductRecommendation {
   }>;
   totalPrice: number;
   reason: string;
+}
+
+interface ChatHistory {
+  id: string;
+  title: string;
+  date: Date;
+  messageCount: number;
+}
+
+interface PatientProfile {
+  age: number;
+  mainConcerns: string[];
+  purchaseHistory: string[];
+  lastVisit: Date;
+  healthScore: number;
 }
 
 // Mock AI Response Logic
@@ -91,6 +121,36 @@ const generateMockResponse = (userMessage: string, t: (key: string) => string): 
   };
 };
 
+// Mock data
+const MOCK_CHAT_HISTORY: ChatHistory[] = [
+  {
+    id: '1',
+    title: 'Tư vấn chứng mất ngủ',
+    date: new Date(2025, 10, 18),
+    messageCount: 12
+  },
+  {
+    id: '2',
+    title: 'Hỏi về tăng cường miễn dịch',
+    date: new Date(2025, 10, 15),
+    messageCount: 8
+  },
+  {
+    id: '3',
+    title: 'Stress công việc',
+    date: new Date(2025, 10, 10),
+    messageCount: 15
+  }
+];
+
+const MOCK_PATIENT: PatientProfile = {
+  age: 32,
+  mainConcerns: ['Mất ngủ', 'Stress công việc', 'Mệt mỏi'],
+  purchaseHistory: ['ANIMA 119', 'Immune Boost'],
+  lastVisit: new Date(2025, 10, 15),
+  healthScore: 68
+};
+
 export default function HealthCoach() {
   const t = useTranslation();
   const { simulateOrder } = useStore();
@@ -104,6 +164,7 @@ export default function HealthCoach() {
   ]);
   const [inputValue, setInputValue] = useState('');
   const [isTyping, setIsTyping] = useState(false);
+  const [selectedHistory, setSelectedHistory] = useState<string | null>(null);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
 
@@ -166,127 +227,205 @@ export default function HealthCoach() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-50 via-teal-50 to-amber-50 p-6">
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        className="max-w-5xl mx-auto"
-      >
-        {/* Header */}
-        <div className="bg-gradient-to-r from-primary to-teal-600 rounded-t-2xl p-6 text-white">
-          <div className="flex items-center gap-3">
-            <div className="bg-white/20 backdrop-blur-sm p-3 rounded-xl">
-              <Sparkles className="w-8 h-8" />
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-teal-50/30 to-amber-50/20">
+      {/* Main Container - 3 Column Layout */}
+      <div className="h-screen flex">
+        {/* LEFT SIDEBAR - Chat History */}
+        <motion.div
+          initial={{ x: -100, opacity: 0 }}
+          animate={{ x: 0, opacity: 1 }}
+          className="w-80 bg-white/80 backdrop-blur-xl border-r border-gray-200/50 flex flex-col"
+        >
+          {/* Sidebar Header */}
+          <div className="p-6 border-b border-gray-200/50">
+            <div className="flex items-center gap-3 mb-4">
+              <div className="w-12 h-12 bg-gradient-to-br from-primary to-teal-600 rounded-2xl flex items-center justify-center shadow-lg">
+                <History className="w-6 h-6 text-white" />
+              </div>
+              <div>
+                <h2 className="text-lg font-bold text-gray-900">Lịch Sử</h2>
+                <p className="text-xs text-gray-500">Các cuộc hội thoại</p>
+              </div>
             </div>
-            <div>
-              <h1 className="text-3xl font-bold">{t('healthCoach.title')}</h1>
-              <p className="text-teal-100 text-sm mt-1">
-                {t('healthCoach.subtitle')}
-              </p>
-            </div>
+            <button className="w-full bg-gradient-to-r from-primary to-teal-600 text-white py-3 px-4 rounded-xl font-semibold hover:shadow-lg transition-all duration-300 flex items-center justify-center gap-2 group">
+              <MessageSquare className="w-5 h-5 group-hover:scale-110 transition-transform" />
+              Tạo Cuộc Hội Thoại Mới
+            </button>
           </div>
-        </div>
 
-        {/* Chat Container */}
-        <div className="bg-white rounded-b-2xl shadow-2xl">
+          {/* Chat History List */}
+          <div className="flex-1 overflow-y-auto p-4 space-y-2">
+            {MOCK_CHAT_HISTORY.map((chat) => (
+              <motion.button
+                key={chat.id}
+                whileHover={{ scale: 1.02 }}
+                whileTap={{ scale: 0.98 }}
+                onClick={() => setSelectedHistory(chat.id)}
+                className={`w-full text-left p-4 rounded-xl transition-all duration-200 ${
+                  selectedHistory === chat.id
+                    ? 'bg-gradient-to-r from-primary/10 to-teal-600/10 border-2 border-primary/30 shadow-md'
+                    : 'bg-white/60 hover:bg-white border-2 border-transparent hover:border-gray-200'
+                }`}
+              >
+                <h3 className="font-semibold text-gray-900 text-sm mb-1 line-clamp-1">
+                  {chat.title}
+                </h3>
+                <div className="flex items-center justify-between">
+                  <span className="text-xs text-gray-500">
+                    {chat.date.toLocaleDateString('vi-VN', { month: 'short', day: 'numeric' })}
+                  </span>
+                  <span className="text-xs text-gray-400 flex items-center gap-1">
+                    <MessageSquare className="w-3 h-3" />
+                    {chat.messageCount}
+                  </span>
+                </div>
+              </motion.button>
+            ))}
+          </div>
+        </motion.div>
+
+        {/* CENTER - Main Chat Interface */}
+        <div className="flex-1 flex flex-col">
+          {/* Chat Header */}
+          <motion.div
+            initial={{ y: -20, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            className="bg-gradient-to-r from-primary to-teal-600 px-8 py-6 shadow-lg"
+          >
+            <div className="flex items-center gap-4">
+              <motion.div
+                animate={{
+                  boxShadow: isTyping
+                    ? ['0 0 0 0 rgba(0, 87, 90, 0.4)', '0 0 0 15px rgba(0, 87, 90, 0)']
+                    : '0 0 0 0 rgba(0, 87, 90, 0)'
+                }}
+                transition={{ duration: 1.5, repeat: isTyping ? Infinity : 0 }}
+                className="w-16 h-16 bg-white/20 backdrop-blur-lg rounded-2xl flex items-center justify-center shadow-xl"
+              >
+                <Stethoscope className="w-8 h-8 text-white" />
+              </motion.div>
+              <div>
+                <h1 className="text-2xl font-bold text-white flex items-center gap-2">
+                  {t('healthCoach.title')}
+                  <Sparkles className="w-5 h-5 text-accent animate-pulse" />
+                </h1>
+                <p className="text-teal-100 text-sm">
+                  {isTyping ? 'Đang phân tích và tư vấn...' : t('healthCoach.subtitle')}
+                </p>
+              </div>
+            </div>
+          </motion.div>
+
           {/* Messages Area */}
-          <div className="h-[600px] overflow-y-auto p-6 space-y-6">
+          <div className="flex-1 overflow-y-auto p-6 space-y-6 bg-gradient-to-b from-transparent to-white/30">
             <AnimatePresence>
               {messages.map((message, index) => (
                 <motion.div
                   key={message.id}
-                  initial={{ opacity: 0, y: 10 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0 }}
-                  transition={{ delay: index * 0.1 }}
+                  initial={{ opacity: 0, y: 20, scale: 0.95 }}
+                  animate={{ opacity: 1, y: 0, scale: 1 }}
+                  exit={{ opacity: 0, scale: 0.9 }}
+                  transition={{ delay: index * 0.05, type: 'spring', stiffness: 200 }}
                   className={`flex gap-4 ${
                     message.role === 'user' ? 'flex-row-reverse' : 'flex-row'
                   }`}
                 >
                   {/* Avatar */}
-                  <div
-                    className={`flex-shrink-0 w-10 h-10 rounded-full flex items-center justify-center ${
+                  <motion.div
+                    whileHover={{ scale: 1.1, rotate: 5 }}
+                    className={`flex-shrink-0 w-12 h-12 rounded-2xl flex items-center justify-center shadow-lg ${
                       message.role === 'user'
                         ? 'bg-gradient-to-br from-accent to-yellow-500'
                         : 'bg-gradient-to-br from-primary to-teal-600'
                     }`}
                   >
                     {message.role === 'user' ? (
-                      <User className="w-5 h-5 text-white" />
+                      <User className="w-6 h-6 text-white" />
                     ) : (
-                      <Bot className="w-5 h-5 text-white" />
+                      <Bot className="w-6 h-6 text-white" />
                     )}
-                  </div>
+                  </motion.div>
 
                   {/* Message Content */}
                   <div
-                    className={`flex-1 ${
+                    className={`flex-1 max-w-2xl ${
                       message.role === 'user' ? 'text-right' : 'text-left'
                     }`}
                   >
-                    <div
-                      className={`inline-block max-w-[80%] p-4 rounded-2xl ${
+                    <motion.div
+                      whileHover={{ scale: 1.01 }}
+                      className={`inline-block p-5 rounded-2xl shadow-lg backdrop-blur-sm ${
                         message.role === 'user'
                           ? 'bg-gradient-to-br from-accent to-yellow-500 text-white'
-                          : 'bg-gray-100 text-gray-800'
+                          : 'bg-white/90 text-gray-800 border border-gray-100'
                       }`}
                     >
                       <p className="whitespace-pre-line leading-relaxed">
                         {message.content}
                       </p>
-                    </div>
+                    </motion.div>
 
                     {/* Product Recommendation Card */}
                     {message.productRecommendation && (
                       <motion.div
-                        initial={{ opacity: 0, scale: 0.95 }}
-                        animate={{ opacity: 1, scale: 1 }}
-                        transition={{ delay: 0.2 }}
-                        className="mt-4 inline-block w-full max-w-md bg-white border-2 border-primary/20 rounded-xl p-5 shadow-lg"
+                        initial={{ opacity: 0, y: 10 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ delay: 0.3 }}
+                        className="mt-4 inline-block w-full max-w-lg"
                       >
-                        <div className="flex items-center gap-2 mb-3">
-                          <Package className="w-5 h-5 text-primary" />
-                          <h3 className="font-bold text-lg text-primary">
-                            {message.productRecommendation.comboName}
-                          </h3>
-                        </div>
+                        <div className="bg-gradient-to-br from-white to-teal-50/50 backdrop-blur-xl border-2 border-primary/30 rounded-2xl p-6 shadow-2xl">
+                          <div className="flex items-center gap-3 mb-4">
+                            <div className="w-10 h-10 bg-gradient-to-br from-primary to-teal-600 rounded-xl flex items-center justify-center">
+                              <Package className="w-5 h-5 text-white" />
+                            </div>
+                            <h3 className="font-bold text-lg text-primary">
+                              {message.productRecommendation.comboName}
+                            </h3>
+                          </div>
 
-                        <div className="space-y-2 mb-4">
-                          {message.productRecommendation.products.map((product) => (
-                            <div
-                              key={product.id}
-                              className="flex justify-between items-center text-sm"
-                            >
-                              <span className="text-gray-700">{product.name}</span>
-                              <span className="font-semibold text-primary">
-                                {formatVND(product.price)}
+                          <div className="space-y-3 mb-4">
+                            {message.productRecommendation.products.map((product) => (
+                              <div
+                                key={product.id}
+                                className="flex justify-between items-center bg-white/80 rounded-xl p-3 border border-gray-100"
+                              >
+                                <div className="flex items-center gap-2">
+                                  <Pill className="w-4 h-4 text-primary" />
+                                  <span className="text-sm font-medium text-gray-700">{product.name}</span>
+                                </div>
+                                <span className="font-bold text-primary">
+                                  {formatVND(product.price)}
+                                </span>
+                              </div>
+                            ))}
+                            <div className="bg-gradient-to-r from-primary/10 to-teal-600/10 rounded-xl p-3 flex justify-between items-center border-2 border-primary/20">
+                              <span className="font-bold text-gray-900">{t('healthCoach.totalLabel')}</span>
+                              <span className="font-bold text-2xl text-primary">
+                                {formatVND(message.productRecommendation.totalPrice)}
                               </span>
                             </div>
-                          ))}
-                          <div className="border-t border-gray-200 pt-2 flex justify-between items-center">
-                            <span className="font-bold text-gray-800">{t('healthCoach.totalLabel')}</span>
-                            <span className="font-bold text-xl text-primary">
-                              {formatVND(message.productRecommendation.totalPrice)}
-                            </span>
                           </div>
+
+                          <p className="text-sm text-gray-600 mb-4 italic bg-amber-50/50 p-3 rounded-lg border border-amber-200/50">
+                            💡 {message.productRecommendation.reason}
+                          </p>
+
+                          <motion.button
+                            whileHover={{ scale: 1.02 }}
+                            whileTap={{ scale: 0.98 }}
+                            onClick={() => handleQuickOrder(message.productRecommendation!)}
+                            className="w-full bg-gradient-to-r from-primary to-teal-600 text-white py-4 px-6 rounded-xl font-bold hover:shadow-xl transition-all duration-300 flex items-center justify-center gap-2 group"
+                          >
+                            <ShoppingCart className="w-5 h-5 group-hover:scale-110 transition-transform" />
+                            {t('healthCoach.orderNow')}
+                          </motion.button>
                         </div>
-
-                        <p className="text-sm text-gray-600 mb-4 italic">
-                          {message.productRecommendation.reason}
-                        </p>
-
-                        <button
-                          onClick={() => handleQuickOrder(message.productRecommendation!)}
-                          className="w-full bg-gradient-to-r from-primary to-teal-600 text-white py-3 px-4 rounded-xl font-semibold hover:shadow-lg transition-all duration-300 flex items-center justify-center gap-2 group"
-                        >
-                          <ShoppingCart className="w-5 h-5 group-hover:scale-110 transition-transform" />
-                          {t('healthCoach.orderNow')}
-                        </button>
                       </motion.div>
                     )}
 
                     {/* Timestamp */}
-                    <p className="text-xs text-gray-400 mt-2">
+                    <p className="text-xs text-gray-400 mt-2 flex items-center gap-1 justify-end">
+                      <Clock className="w-3 h-3" />
                       {message.timestamp.toLocaleTimeString('vi-VN', {
                         hour: '2-digit',
                         minute: '2-digit'
@@ -300,29 +439,39 @@ export default function HealthCoach() {
             {/* Typing Indicator */}
             {isTyping && (
               <motion.div
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0 }}
                 className="flex gap-4"
               >
-                <div className="w-10 h-10 rounded-full bg-gradient-to-br from-primary to-teal-600 flex items-center justify-center">
-                  <Bot className="w-5 h-5 text-white" />
-                </div>
-                <div className="bg-gray-100 p-4 rounded-2xl">
-                  <div className="flex gap-1">
+                <motion.div
+                  animate={{
+                    boxShadow: [
+                      '0 0 0 0 rgba(0, 87, 90, 0.7)',
+                      '0 0 0 10px rgba(0, 87, 90, 0)'
+                    ]
+                  }}
+                  transition={{ duration: 1.5, repeat: Infinity }}
+                  className="w-12 h-12 rounded-2xl bg-gradient-to-br from-primary to-teal-600 flex items-center justify-center shadow-lg"
+                >
+                  <Bot className="w-6 h-6 text-white" />
+                </motion.div>
+                <div className="bg-white/90 backdrop-blur-sm p-5 rounded-2xl shadow-lg border border-gray-100">
+                  <div className="flex gap-2">
                     <motion.div
-                      animate={{ y: [0, -8, 0] }}
+                      animate={{ y: [0, -10, 0] }}
                       transition={{ repeat: Infinity, duration: 0.6 }}
-                      className="w-2 h-2 bg-primary rounded-full"
+                      className="w-3 h-3 bg-primary rounded-full"
                     />
                     <motion.div
-                      animate={{ y: [0, -8, 0] }}
+                      animate={{ y: [0, -10, 0] }}
                       transition={{ repeat: Infinity, duration: 0.6, delay: 0.2 }}
-                      className="w-2 h-2 bg-primary rounded-full"
+                      className="w-3 h-3 bg-primary rounded-full"
                     />
                     <motion.div
-                      animate={{ y: [0, -8, 0] }}
+                      animate={{ y: [0, -10, 0] }}
                       transition={{ repeat: Infinity, duration: 0.6, delay: 0.4 }}
-                      className="w-2 h-2 bg-primary rounded-full"
+                      className="w-3 h-3 bg-primary rounded-full"
                     />
                   </div>
                 </div>
@@ -333,62 +482,182 @@ export default function HealthCoach() {
           </div>
 
           {/* Input Area */}
-          <div className="border-t border-gray-200 p-4 bg-gray-50 rounded-b-2xl">
-            <div className="flex gap-3">
-              <input
-                ref={inputRef}
-                type="text"
-                value={inputValue}
-                onChange={(e) => setInputValue(e.target.value)}
-                onKeyPress={handleKeyPress}
-                placeholder={t('healthCoach.placeholder')}
-                className="flex-1 px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-primary focus:outline-none transition-colors"
-              />
-              <motion.button
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-                onClick={handleSendMessage}
-                disabled={!inputValue.trim()}
-                className="bg-gradient-to-r from-primary to-teal-600 text-white px-6 py-3 rounded-xl font-semibold hover:shadow-lg transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
-              >
-                <Send className="w-5 h-5" />
-                {t('healthCoach.send')}
-              </motion.button>
-            </div>
+          <div className="border-t border-gray-200/50 p-6 bg-white/80 backdrop-blur-xl">
+            <div className="max-w-4xl mx-auto">
+              <div className="flex gap-3">
+                <input
+                  ref={inputRef}
+                  type="text"
+                  value={inputValue}
+                  onChange={(e) => setInputValue(e.target.value)}
+                  onKeyPress={handleKeyPress}
+                  placeholder={t('healthCoach.placeholder')}
+                  className="flex-1 px-6 py-4 rounded-2xl border-2 border-gray-200 focus:border-primary focus:outline-none transition-all duration-300 bg-white shadow-sm"
+                />
+                <motion.button
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                  onClick={handleSendMessage}
+                  disabled={!inputValue.trim()}
+                  className="bg-gradient-to-r from-primary to-teal-600 text-white px-8 py-4 rounded-2xl font-bold hover:shadow-xl transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2 group"
+                >
+                  <Send className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+                  {t('healthCoach.send')}
+                </motion.button>
+              </div>
 
-            {/* Quick Suggestions */}
-            <div className="mt-3 flex flex-wrap gap-2">
-              <p className="text-xs text-gray-500 w-full mb-1">{t('healthCoach.quickSuggestionsLabel')}</p>
-              {[
-                t('healthCoach.suggestions.sleep'),
-                t('healthCoach.suggestions.fatigue'),
-                t('healthCoach.suggestions.immunity')
-              ].map(
-                (suggestion) => (
-                  <button
+              {/* Quick Suggestions */}
+              <div className="mt-4 flex flex-wrap gap-2">
+                <p className="text-xs text-gray-500 w-full mb-1 font-semibold">
+                  💬 {t('healthCoach.quickSuggestionsLabel')}
+                </p>
+                {[
+                  t('healthCoach.suggestions.sleep'),
+                  t('healthCoach.suggestions.fatigue'),
+                  t('healthCoach.suggestions.immunity')
+                ].map((suggestion) => (
+                  <motion.button
                     key={suggestion}
+                    whileHover={{ scale: 1.05, y: -2 }}
+                    whileTap={{ scale: 0.95 }}
                     onClick={() => setInputValue(suggestion)}
-                    className="text-xs bg-white border border-gray-300 text-gray-600 px-3 py-1.5 rounded-full hover:bg-primary hover:text-white hover:border-primary transition-colors"
+                    className="text-sm bg-white border-2 border-gray-200 text-gray-700 px-4 py-2 rounded-full hover:bg-primary hover:text-white hover:border-primary transition-all duration-200 shadow-sm"
                   >
                     {suggestion}
-                  </button>
-                )
-              )}
+                  </motion.button>
+                ))}
+              </div>
             </div>
           </div>
         </div>
 
-        {/* Info Footer */}
+        {/* RIGHT SIDEBAR - Patient Context */}
         <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 0.3 }}
-          className="mt-4 text-center text-sm text-gray-500"
+          initial={{ x: 100, opacity: 0 }}
+          animate={{ x: 0, opacity: 1 }}
+          className="w-96 bg-gradient-to-b from-white/90 to-teal-50/30 backdrop-blur-xl border-l border-gray-200/50 p-6 space-y-6 overflow-y-auto"
         >
-          <p>{t('healthCoach.disclaimerTech')}</p>
-          <p className="mt-1">{t('healthCoach.disclaimerMedical')}</p>
+          {/* Patient Profile Card */}
+          <div className="bg-white/80 backdrop-blur-sm rounded-2xl p-6 shadow-lg border border-gray-100">
+            <div className="flex items-center gap-3 mb-4">
+              <div className="w-12 h-12 bg-gradient-to-br from-primary to-teal-600 rounded-2xl flex items-center justify-center shadow-lg">
+                <User className="w-6 h-6 text-white" />
+              </div>
+              <div>
+                <h3 className="font-bold text-gray-900">Hồ Sơ Khách Hàng</h3>
+                <p className="text-xs text-gray-500">Thông tin tư vấn</p>
+              </div>
+            </div>
+
+            <div className="space-y-4">
+              <div className="flex items-center justify-between py-3 border-b border-gray-100">
+                <span className="text-sm text-gray-600">Tuổi</span>
+                <span className="font-bold text-gray-900">{MOCK_PATIENT.age} tuổi</span>
+              </div>
+
+              <div>
+                <p className="text-sm text-gray-600 mb-2">Vấn đề chính</p>
+                <div className="flex flex-wrap gap-2">
+                  {MOCK_PATIENT.mainConcerns.map((concern, idx) => (
+                    <span
+                      key={idx}
+                      className="text-xs bg-red-50 text-red-600 px-3 py-1.5 rounded-full border border-red-200 font-medium"
+                    >
+                      {concern}
+                    </span>
+                  ))}
+                </div>
+              </div>
+
+              <div>
+                <p className="text-sm text-gray-600 mb-2">Lịch sử mua hàng</p>
+                <div className="space-y-2">
+                  {MOCK_PATIENT.purchaseHistory.map((item, idx) => (
+                    <div
+                      key={idx}
+                      className="flex items-center gap-2 bg-green-50 p-2 rounded-lg border border-green-200"
+                    >
+                      <Package className="w-4 h-4 text-green-600" />
+                      <span className="text-xs font-medium text-green-700">{item}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              <div className="flex items-center justify-between py-3 border-t border-gray-100">
+                <span className="text-sm text-gray-600">Lần tư vấn gần nhất</span>
+                <span className="text-xs font-semibold text-gray-900">
+                  {MOCK_PATIENT.lastVisit.toLocaleDateString('vi-VN')}
+                </span>
+              </div>
+            </div>
+          </div>
+
+          {/* Health Score Card */}
+          <div className="bg-gradient-to-br from-primary to-teal-600 rounded-2xl p-6 shadow-xl text-white">
+            <div className="flex items-center gap-3 mb-4">
+              <Heart className="w-8 h-8 text-accent" />
+              <h3 className="font-bold text-lg">Điểm Sức Khỏe</h3>
+            </div>
+
+            <div className="flex items-center justify-center mb-4">
+              <div className="relative w-32 h-32">
+                <svg className="w-full h-full transform -rotate-90">
+                  <circle
+                    cx="64"
+                    cy="64"
+                    r="56"
+                    stroke="rgba(255,255,255,0.2)"
+                    strokeWidth="8"
+                    fill="none"
+                  />
+                  <motion.circle
+                    initial={{ strokeDashoffset: 352 }}
+                    animate={{ strokeDashoffset: 352 - (352 * MOCK_PATIENT.healthScore) / 100 }}
+                    transition={{ duration: 1.5, ease: 'easeOut' }}
+                    cx="64"
+                    cy="64"
+                    r="56"
+                    stroke="#FFBF00"
+                    strokeWidth="8"
+                    fill="none"
+                    strokeDasharray="352"
+                    strokeLinecap="round"
+                  />
+                </svg>
+                <div className="absolute inset-0 flex items-center justify-center">
+                  <span className="text-4xl font-bold">{MOCK_PATIENT.healthScore}</span>
+                </div>
+              </div>
+            </div>
+
+            <p className="text-center text-teal-100 text-sm">
+              Điểm số tốt! Tiếp tục duy trì lối sống lành mạnh.
+            </p>
+          </div>
+
+          {/* Quick Stats */}
+          <div className="grid grid-cols-2 gap-4">
+            <div className="bg-white/80 backdrop-blur-sm rounded-xl p-4 shadow-md border border-gray-100">
+              <Activity className="w-8 h-8 text-blue-500 mb-2" />
+              <p className="text-2xl font-bold text-gray-900">12</p>
+              <p className="text-xs text-gray-600">Tư vấn hoàn thành</p>
+            </div>
+            <div className="bg-white/80 backdrop-blur-sm rounded-xl p-4 shadow-md border border-gray-100">
+              <TrendingUp className="w-8 h-8 text-green-500 mb-2" />
+              <p className="text-2xl font-bold text-gray-900">+15%</p>
+              <p className="text-xs text-gray-600">Cải thiện sức khỏe</p>
+            </div>
+          </div>
+
+          {/* Disclaimer */}
+          <div className="bg-amber-50/80 backdrop-blur-sm rounded-xl p-4 border border-amber-200">
+            <p className="text-xs text-amber-800 leading-relaxed">
+              ⚠️ {t('healthCoach.disclaimerTech')} {t('healthCoach.disclaimerMedical')}
+            </p>
+          </div>
         </motion.div>
-      </motion.div>
+      </div>
     </div>
   );
 }

@@ -147,6 +147,7 @@ export interface Referral {
   referredName?: string;
   referredEmail?: string;
   status: 'pending' | 'registered' | 'active' | 'expired';
+  level?: number; // 1 for F1, 2 for F2, etc.
   createdAt: string;
   registeredAt?: string;
   firstPurchaseAt?: string;
