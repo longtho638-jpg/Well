@@ -4,140 +4,139 @@ import {
   ArrowRight,
   ShieldCheck,
   Users,
-  Zap,
   Bot,
-  Lock,
   TrendingUp,
-  BarChart3,
+  Crown,
+  CheckCircle2,
+  Sparkles,
   Mail,
   Instagram,
   Facebook,
   Linkedin,
-  Sparkles,
-  Globe,
-  Crown,
-  CheckCircle2
+  Target,
+  Compass,
+  Wrench,
+  BarChart3
 } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { useStore } from '../store';
 
 // ============================================================================
-// CMS-READY CONTENT ARCHITECTURE
+// SMOOTH SCROLL UTILITY
 // ============================================================================
-// All text content centralized for easy API integration
-const LANDING_CONTENT = {
-  header: {
-    logo: 'WellNexus',
-    navigation: [
-      { label: 'Cách hoạt động', href: '#how-it-works' },
-      { label: 'Công nghệ', href: '#technology' },
-      { label: 'Sản phẩm', href: '#products' },
-      { label: 'Cộng đồng', href: '#community' }
-    ],
-    cta: {
-      login: 'Đăng nhập',
-      signup: 'Bắt đầu bán hàng'
-    }
-  },
+const smoothScrollTo = (elementId: string) => {
+  const element = document.getElementById(elementId);
+  if (element) {
+    element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+};
 
+// ============================================================================
+// CONTENT ARCHITECTURE - Visual-First Approach
+// ============================================================================
+const CONTENT = {
   hero: {
     badge: 'Nền tảng #1 cho người bán sức khỏe tại Việt Nam',
-    headline: 'Kinh Doanh Sản Phẩm Sức Khỏe',
-    headlineAccent: 'Theo Cách Của Bạn',
-    subheadline: 'WellNexus là nền tảng cho phép bạn bán sản phẩm wellness chất lượng cao với công cụ AI tự động hóa, tính năng tuân thủ thuế, và hoa hồng minh bạch. Không cần vốn đầu tư, không cần kho hàng.',
-    primaryCta: 'Khám phá Dashboard Demo',
-    secondaryCta: 'Xem cách hoạt động'
+    headline: 'Kinh Doanh Sức Khỏe',
+    headlineAccent: 'Thời Đại AI Agentic',
+    subheadline: 'Nền tảng Social Commerce trang bị cho bạn một AI Coach riêng biệt, minh bạch hoa hồng, và công cụ thông minh để bạn bán sản phẩm wellness theo cách của mình.',
+    primaryCta: 'Tham gia Founders Club',
+    secondaryCta: 'Tìm hiểu thêm',
+    stats: [
+      { value: '2,000+', label: 'Người bán hoạt động' },
+      { value: '₫50M+', label: 'Hoa hồng chi trả' },
+      { value: '4.8/5⭐', label: 'Đánh giá trung bình' }
+    ]
   },
 
-  features: {
-    sectionBadge: 'Công nghệ tiên tiến',
-    sectionTitle: 'Công cụ thông minh giúp bạn bán hàng hiệu quả',
+  problems: {
+    sectionTitle: 'Ba rào cản lớn nhất của người bán sức khỏe',
     items: [
       {
-        title: 'AI Business Coach',
-        description: 'Trợ lý AI phân tích dữ liệu bán hàng của bạn và đưa ra gợi ý chiến lược cá nhân hóa hàng ngày. Giống như có một chuyên gia tư vấn 24/7.',
-        icon: 'bot'
+        title: 'Cô đơn',
+        description: 'Bán hàng một mình, không có hỗ trợ, không biết tìm ai khi gặp khó khăn',
+        image: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=800&h=600&fit=crop&q=80',
+        icon: Target
       },
       {
-        title: 'Automated Tax Compliance',
-        description: 'Tự động tính toán và khấu trừ thuế TNCN theo đúng Thông tư 111/2013/TT-BTC. Báo cáo thuế đầy đủ, minh bạch từng giao dịch.',
-        icon: 'shield'
+        title: 'Mất phương hướng',
+        description: 'Không biết bắt đầu từ đâu, chiến lược nào hiệu quả, sản phẩm nào phù hợp',
+        image: 'https://images.unsplash.com/photo-1507842217343-583bb7270b66?w=800&h=600&fit=crop&q=80',
+        icon: Compass
       },
       {
-        title: 'Real-Time Analytics',
-        description: 'Theo dõi doanh số, hoa hồng, và hiệu suất sản phẩm trong dashboard trực quan. Xuất báo cáo chi tiết bất cứ lúc nào.',
-        icon: 'chart'
-      },
-      {
-        title: 'Product Discovery Engine',
-        description: 'AI đề xuất sản phẩm phù hợp dựa trên sở thích khách hàng và xu hướng thị trường. Tăng tỷ lệ chuyển đổi lên 40%.',
-        icon: 'trending'
-      },
-      {
-        title: 'Transparent Commission',
-        description: 'Xem chi tiết cấu trúc hoa hồng cho từng sản phẩm. Không có phí ẩn. Không có điều khoản khó hiểu. 100% minh bạch.',
-        icon: 'crown'
-      },
-      {
-        title: 'Community Learning Hub',
-        description: 'Truy cập thư viện video hướng dẫn, webinar, và khóa học từ những người bán hàng đầu. Học hỏi chiến lược thực chiến.',
-        icon: 'users'
+        title: 'Thiếu công cụ',
+        description: 'Tính toán thuế thủ công, quản lý hoa hồng bằng Excel, mất thời gian và dễ sai sót',
+        image: 'https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?w=800&h=600&fit=crop&q=80',
+        icon: Wrench
       }
     ]
   },
 
-  testimonials: {
-    sectionBadge: 'Câu chuyện từ cộng đồng',
-    sectionTitle: 'Người bán thực tế chia sẻ hành trình',
-    items: [
+  solution: {
+    sectionBadge: 'Giải pháp toàn diện',
+    sectionTitle: 'WellNexus giải quyết tất cả',
+    bentoItems: [
       {
-        quote: 'Tôi bắt đầu bán sản phẩm ANIMA 119 vì mình đã dùng và thấy hiệu quả. Trong 3 tháng đầu, tôi kiếm được ₫18 triệu hoa hồng từ 47 đơn hàng. AI Coach giúp tôi hiểu khách hàng nào quan tâm đến sản phẩm nào.',
-        author: 'Lan Nguyễn',
-        role: 'Wellness Advocate, Hà Nội',
-        avatar: '👩‍💼',
-        metrics: '3 tháng • 47 đơn hàng • ₫18M hoa hồng'
+        title: 'AI Coach 24/7',
+        description: 'Trợ lý AI cá nhân hóa phân tích dữ liệu và đưa ra gợi ý chiến lược mỗi ngày',
+        image: 'https://images.unsplash.com/photo-1677442136019-21780ecad995?w=1200&h=800&fit=crop&q=80',
+        size: 'large', // 2x2 on desktop
+        icon: Bot,
+        gradient: 'from-violet-500/20 to-purple-500/20'
       },
       {
-        quote: 'Tôi từng hoài nghi về bán hàng online. Nhưng WellNexus khác - không cần ép bạn bè mua, không cần tồn kho. Tôi chỉ chia sẻ sản phẩm tôi tin tưởng trong group yoga. Giờ đây, đây là thu nhập phụ ổn định ₫12-15 triệu/tháng.',
-        author: 'Minh Trần',
-        role: 'Former Office Worker, TP.HCM',
-        avatar: '👨‍💼',
-        metrics: '6 tháng • 89 đơn hàng • ₫72M hoa hồng'
+        title: 'Minh bạch 100%',
+        description: 'Xem chi tiết cấu trúc hoa hồng từng sản phẩm, không phí ẩn',
+        image: 'https://images.unsplash.com/photo-1639762681485-074b7f938ba0?w=800&h=600&fit=crop&q=80',
+        size: 'medium', // 1x1
+        icon: ShieldCheck,
+        gradient: 'from-emerald-500/20 to-teal-500/20'
+      },
+      {
+        title: 'Cộng đồng hỗ trợ',
+        description: 'Kết nối với 2,000+ người bán, học hỏi chiến lược thực chiến',
+        image: 'https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=800&h=600&fit=crop&q=80',
+        size: 'medium', // 1x1
+        icon: Users,
+        gradient: 'from-blue-500/20 to-cyan-500/20'
+      },
+      {
+        title: 'Thu nhập ổn định',
+        description: 'Hoa hồng 15-25%, rút tiền linh hoạt, thuế tự động',
+        image: 'https://images.unsplash.com/photo-1579621970563-ebec7560ff3e?w=600&h=400&fit=crop&q=80',
+        size: 'small', // 1x0.5
+        icon: TrendingUp,
+        gradient: 'from-amber-500/20 to-yellow-500/20'
       }
     ]
   },
 
-  cta: {
-    badge: 'Miễn phí đăng ký',
-    headline: 'Sẵn sàng bắt đầu kinh doanh?',
-    subheadline: 'Tạo tài khoản người bán miễn phí ngay hôm nay. Không cần vốn đầu tư. Không phí hàng tháng. Chỉ trả commission khi bạn bán được hàng.',
-    buttonText: 'Tạo tài khoản ngay'
+  pricing: {
+    sectionBadge: 'The Elite Protocol',
+    sectionTitle: 'Chỉ dành cho 50 Founders đầu tiên',
+    badge: 'Chỉ còn 50 suất',
+    title: 'Founders Club',
+    price: 'Miễn phí',
+    priceNote: 'Commission 15-25%',
+    benefits: [
+      'AI Business Coach cá nhân hóa',
+      'Dashboard analytics real-time',
+      'Tự động tính thuế TNCN',
+      'Hỗ trợ ưu tiên 1-1',
+      'Truy cập Product Catalog đầy đủ',
+      'Community Learning Hub',
+      'Webinar độc quyền hàng tháng',
+      'Rank progression: Partner → Founder Club'
+    ]
   },
 
   footer: {
-    tagline: 'Nền tảng Social Commerce cho phép bạn bán sản phẩm wellness chất lượng cao với công cụ thông minh và hoa hồng minh bạch.',
+    logo: 'WellNexus',
+    tagline: 'Nền tảng Social Commerce cho phép bạn bán sản phẩm wellness với AI Coach, thuế tự động, và hoa hồng minh bạch.',
     newsletter: {
       title: 'Nhận hướng dẫn bán hàng',
-      placeholder: 'Email của bạn',
-      buttonText: 'Đăng ký'
-    },
-    columns: {
-      product: {
-        title: 'Nền Tảng',
-        links: ['Dashboard', 'AI Coach', 'Product Catalog', 'Commission Tracker', 'Analytics']
-      },
-      company: {
-        title: 'Kinh Doanh',
-        links: ['Cách hoạt động', 'Cấu trúc hoa hồng', 'Công cụ thuế', 'Hướng dẫn người bán', 'API Docs']
-      },
-      resources: {
-        title: 'Tài Nguyên',
-        links: ['Help Center', 'Video Tutorials', 'Blog', 'Community Forum', 'Success Stories']
-      },
-      legal: {
-        title: 'Pháp Lý',
-        links: ['Terms of Service', 'Privacy Policy', 'Tax Compliance', 'Business Registration', 'Security']
-      }
+      placeholder: 'Email của bạn'
     },
     social: {
       facebook: 'https://facebook.com/wellnexus',
@@ -161,19 +160,8 @@ export default function LandingPage() {
   };
 
   // Animation Variants
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        staggerChildren: 0.1,
-        delayChildren: 0.2
-      }
-    }
-  };
-
-  const itemVariants = {
-    hidden: { opacity: 0, y: 30 },
+  const fadeInUp = {
+    hidden: { opacity: 0, y: 40 },
     visible: {
       opacity: 1,
       y: 0,
@@ -181,14 +169,15 @@ export default function LandingPage() {
     }
   };
 
-  // Icon mapping
-  const iconMap = {
-    bot: Bot,
-    shield: ShieldCheck,
-    users: Users,
-    chart: BarChart3,
-    trending: TrendingUp,
-    crown: Crown
+  const staggerContainer = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.15,
+        delayChildren: 0.1
+      }
+    }
   };
 
   return (
@@ -197,339 +186,273 @@ export default function LandingPage() {
       {/* CUSTOM STYLES */}
       {/* ====================================================================== */}
       <style>{`
-        /* Noise Texture */
+        @import url('https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;700;800;900&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
+
+        body {
+          font-family: 'Plus Jakarta Sans', sans-serif;
+        }
+
+        .font-display {
+          font-family: 'Manrope', sans-serif;
+        }
+
+        html {
+          scroll-behavior: smooth;
+        }
+
         .noise-texture {
           background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' /%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.05'/%3E%3C/svg%3E");
         }
 
-        /* Grid Pattern */
-        .grid-pattern {
-          background-image:
-            linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
-            linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
-          background-size: 50px 50px;
-        }
-
-        /* Smooth scroll behavior */
-        html {
-          scroll-behavior: smooth;
+        .animate-pulse-slow {
+          animation: pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite;
         }
       `}</style>
 
-      <div className="min-h-screen bg-[#00575A] text-gray-900 overflow-x-hidden">
+      <div className="min-h-screen bg-slate-50 text-slate-900 overflow-x-hidden">
 
         {/* ================================================================== */}
-        {/* STICKY GLASSMORPHIC HEADER */}
+        {/* STICKY HEADER WITH ANCHOR NAVIGATION */}
         {/* ================================================================== */}
         <motion.nav
           initial={{ y: -100 }}
           animate={{ y: 0 }}
-          transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
-          className="fixed top-0 w-full z-50 backdrop-blur-xl bg-white/5 border-b border-white/10"
+          transition={{ duration: 0.6 }}
+          className="fixed top-0 w-full z-50 backdrop-blur-xl bg-white/80 border-b border-slate-200/50 shadow-sm"
         >
           <div className="max-w-7xl mx-auto px-6 lg:px-12 h-20 flex items-center justify-between">
             {/* Logo */}
             <motion.div
-              className="flex items-center gap-3"
+              className="flex items-center gap-3 cursor-pointer"
               whileHover={{ scale: 1.02 }}
+              onClick={() => smoothScrollTo('hero')}
             >
-              <div className="w-10 h-10 bg-gradient-to-br from-[#FFBF00] to-yellow-500 rounded-xl flex items-center justify-center text-[#00575A] font-display font-black text-xl shadow-lg shadow-[#FFBF00]/20">
+              <div className="w-10 h-10 bg-gradient-to-br from-[#00575A] to-[#003335] rounded-xl flex items-center justify-center text-[#FFBF00] font-display font-black text-xl shadow-lg">
                 W
               </div>
-              <span className="font-display font-bold text-xl text-white tracking-tight">
-                {LANDING_CONTENT.header.logo}
+              <span className="font-display font-bold text-xl text-slate-900 tracking-tight">
+                {CONTENT.footer.logo}
               </span>
             </motion.div>
 
-            {/* Navigation Menu - Desktop */}
+            {/* Navigation Menu - Anchor Links */}
             <div className="hidden md:flex items-center gap-8">
-              {LANDING_CONTENT.header.navigation.map((item, idx) => (
-                <a
+              {[
+                { label: 'Về chúng tôi', id: 'about' },
+                { label: 'Tính năng', id: 'features' },
+                { label: 'Cộng đồng', id: 'community' },
+                { label: 'Bảng giá', id: 'pricing' }
+              ].map((item, idx) => (
+                <button
                   key={idx}
-                  href={item.href}
-                  className="text-sm font-medium text-white/70 hover:text-white transition-colors"
+                  onClick={() => smoothScrollTo(item.id)}
+                  className="text-sm font-medium text-slate-600 hover:text-[#00575A] transition-colors"
                 >
                   {item.label}
-                </a>
+                </button>
               ))}
             </div>
 
-            {/* Action Buttons */}
-            <div className="flex items-center gap-3">
-              <motion.button
-                onClick={handleJoin}
-                className="hidden md:block text-sm font-semibold text-white/80 hover:text-white px-5 py-2.5 rounded-xl transition-colors"
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-              >
-                {LANDING_CONTENT.header.cta.login}
-              </motion.button>
-
-              <motion.button
-                onClick={handleJoin}
-                className="text-sm font-bold bg-[#FFBF00] hover:bg-yellow-400 text-[#00575A] px-6 py-2.5 rounded-xl transition-all shadow-lg shadow-[#FFBF00]/20"
-                whileHover={{
-                  scale: 1.05,
-                  boxShadow: '0 20px 40px rgba(255, 191, 0, 0.3)'
-                }}
-                whileTap={{ scale: 0.95 }}
-              >
-                {LANDING_CONTENT.header.cta.signup}
-              </motion.button>
-            </div>
+            {/* Action Button */}
+            <motion.button
+              onClick={handleJoin}
+              className="text-sm font-bold bg-[#00575A] hover:bg-[#003335] text-white px-6 py-2.5 rounded-xl transition-all shadow-lg"
+              whileHover={{ scale: 1.05, boxShadow: '0 20px 40px rgba(0, 87, 90, 0.3)' }}
+              whileTap={{ scale: 0.95 }}
+            >
+              Đăng nhập
+            </motion.button>
           </div>
         </motion.nav>
 
         {/* ================================================================== */}
-        {/* HERO SECTION - WORLD CLASS */}
+        {/* HERO SECTION - FUTURISTIC WELLNESS */}
         {/* ================================================================== */}
-        <section className="relative min-h-[600px] pt-32 pb-12 md:pt-40 md:pb-24 lg:pt-48 lg:pb-40 overflow-hidden">
-          {/* Background Layers */}
+        <section id="hero" className="relative min-h-screen pt-32 pb-20 overflow-hidden bg-gradient-to-br from-slate-50 via-white to-slate-100">
+          {/* Background Visual */}
           <div className="absolute inset-0 z-0">
-            {/* Noise Texture */}
-            <div className="absolute inset-0 noise-texture opacity-50" />
-
-            {/* Grid Pattern */}
-            <div className="absolute inset-0 grid-pattern opacity-30" />
-
-            {/* Gradient Orbs */}
-            <motion.div
-              animate={{
-                x: [0, 50, 0],
-                y: [0, 30, 0],
-                scale: [1, 1.1, 1]
-              }}
-              transition={{
-                duration: 20,
-                repeat: Infinity,
-                ease: "easeInOut"
-              }}
-              className="absolute top-0 right-[10%] w-[600px] h-[600px] bg-[#FFBF00] opacity-10 rounded-full blur-[150px]"
-            />
-
-            <motion.div
-              animate={{
-                x: [0, -30, 0],
-                y: [0, 50, 0],
-                scale: [1, 1.15, 1]
-              }}
-              transition={{
-                duration: 25,
-                repeat: Infinity,
-                ease: "easeInOut",
-                delay: 2
-              }}
-              className="absolute bottom-0 left-[5%] w-[500px] h-[500px] bg-cyan-400 opacity-8 rounded-full blur-[130px]"
-            />
-
-            <motion.div
-              animate={{
-                x: [0, 40, 0],
-                y: [0, -40, 0],
-                scale: [1, 1.2, 1]
-              }}
-              transition={{
-                duration: 22,
-                repeat: Infinity,
-                ease: "easeInOut",
-                delay: 4
-              }}
-              className="absolute top-[40%] left-[50%] w-[400px] h-[400px] bg-purple-500 opacity-6 rounded-full blur-[140px]"
-            />
+            <div className="absolute top-0 right-0 w-[800px] h-[800px] bg-[#00575A]/5 rounded-full blur-[200px]" />
+            <div className="absolute bottom-0 left-0 w-[600px] h-[600px] bg-[#FFBF00]/10 rounded-full blur-[180px]" />
           </div>
 
-          {/* Content */}
-          <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 md:px-8 lg:px-12">
+          <div className="relative z-10 max-w-7xl mx-auto px-6 lg:px-12 grid lg:grid-cols-2 gap-12 items-center">
+            {/* Left: Content */}
             <motion.div
-              variants={containerVariants}
+              variants={staggerContainer}
               initial="hidden"
               animate="visible"
-              className="text-center max-w-5xl mx-auto"
             >
               {/* Badge */}
-              <motion.div variants={itemVariants} className="mb-6 md:mb-8 inline-flex">
-                <div className="inline-flex items-center gap-2 bg-white/5 backdrop-blur-md border border-white/10 rounded-full px-4 py-2 md:px-5 md:py-2.5">
+              <motion.div variants={fadeInUp} className="mb-6 inline-flex">
+                <div className="inline-flex items-center gap-2 bg-[#00575A]/5 border border-[#00575A]/10 rounded-full px-4 py-2">
                   <span className="relative flex h-2 w-2">
-                    <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#FFBF00] opacity-75" />
-                    <span className="relative inline-flex rounded-full h-2 w-2 bg-[#FFBF00]" />
+                    <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#00575A] opacity-75" />
+                    <span className="relative inline-flex rounded-full h-2 w-2 bg-[#00575A]" />
                   </span>
-                  <Sparkles className="w-3 h-3 md:w-4 md:h-4 text-[#FFBF00]" />
-                  <span className="text-xs md:text-sm font-bold text-[#FFBF00] uppercase tracking-wider font-display">
-                    {LANDING_CONTENT.hero.badge}
+                  <Sparkles className="w-4 h-4 text-[#00575A]" />
+                  <span className="text-xs font-bold text-[#00575A] uppercase tracking-wider">
+                    {CONTENT.hero.badge}
                   </span>
                 </div>
               </motion.div>
 
-              {/* Headline - Mobile: 4xl, Tablet: 6xl, Desktop: 9xl */}
+              {/* Headline */}
               <motion.h1
-                variants={itemVariants}
-                className="font-display font-black text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl 2xl:text-9xl mb-4 md:mb-6 leading-[0.95] tracking-tight text-white drop-shadow-2xl"
+                variants={fadeInUp}
+                className="font-display font-black text-5xl md:text-6xl lg:text-7xl mb-6 leading-[0.95] tracking-tight text-slate-900"
               >
-                {LANDING_CONTENT.hero.headline}
+                {CONTENT.hero.headline}
                 <br />
-                <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#FFBF00] via-yellow-300 to-[#FFBF00] animate-gradient">
-                  {LANDING_CONTENT.hero.headlineAccent}
+                <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#00575A] via-[#004144] to-[#00575A]">
+                  {CONTENT.hero.headlineAccent}
                 </span>
               </motion.h1>
 
-              {/* Subheadline - Mobile: base, Desktop: 2xl */}
+              {/* Subheadline */}
               <motion.p
-                variants={itemVariants}
-                className="text-base md:text-lg lg:text-xl xl:text-2xl text-white/80 mb-8 md:mb-12 max-w-3xl mx-auto leading-relaxed font-light px-4 md:px-0"
+                variants={fadeInUp}
+                className="text-lg md:text-xl text-slate-600 mb-8 leading-relaxed"
               >
-                {LANDING_CONTENT.hero.subheadline}
+                {CONTENT.hero.subheadline}
               </motion.p>
 
               {/* CTA Buttons */}
               <motion.div
-                variants={itemVariants}
-                className="flex flex-col sm:flex-row gap-4 justify-center items-center"
+                variants={fadeInUp}
+                className="flex flex-col sm:flex-row gap-4"
               >
                 <motion.button
                   onClick={handleJoin}
-                  className="group relative bg-[#FFBF00] text-[#00575A] px-10 py-5 rounded-2xl font-bold text-lg flex items-center gap-3 shadow-2xl shadow-[#FFBF00]/30 font-display overflow-hidden"
-                  whileHover={{
-                    scale: 1.05,
-                    boxShadow: '0 25px 60px rgba(255, 191, 0, 0.5)'
-                  }}
+                  className="group bg-[#00575A] text-white px-8 py-4 rounded-xl font-bold text-lg flex items-center justify-center gap-3 shadow-xl"
+                  whileHover={{ scale: 1.05, boxShadow: '0 25px 50px rgba(0, 87, 90, 0.4)' }}
                   whileTap={{ scale: 0.98 }}
                 >
-                  <span className="relative z-10">{LANDING_CONTENT.hero.primaryCta}</span>
-                  <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform relative z-10" />
-
-                  {/* Shine effect */}
-                  <motion.div
-                    className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent"
-                    animate={{
-                      x: ['-200%', '200%']
-                    }}
-                    transition={{
-                      duration: 2,
-                      repeat: Infinity,
-                      repeatDelay: 1
-                    }}
-                  />
+                  {CONTENT.hero.primaryCta}
+                  <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
                 </motion.button>
 
                 <motion.button
-                  className="group px-10 py-5 rounded-2xl font-bold text-lg text-white border-2 border-white/20 hover:border-white/40 backdrop-blur-md bg-white/5 hover:bg-white/10 transition-all flex items-center gap-2 font-display"
+                  onClick={() => smoothScrollTo('about')}
+                  className="px-8 py-4 rounded-xl font-bold text-lg text-slate-700 border-2 border-slate-300 hover:border-slate-400 bg-white hover:bg-slate-50 transition-all"
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
                 >
-                  <Zap className="w-5 h-5" />
-                  {LANDING_CONTENT.hero.secondaryCta}
+                  {CONTENT.hero.secondaryCta}
                 </motion.button>
               </motion.div>
 
-              {/* Stats - Mobile: grid-cols-3, Desktop: same */}
+              {/* Stats */}
               <motion.div
-                variants={itemVariants}
-                className="mt-12 md:mt-16 grid grid-cols-3 gap-4 md:gap-8 max-w-2xl mx-auto px-4 md:px-0"
+                variants={fadeInUp}
+                className="mt-12 grid grid-cols-3 gap-6"
               >
-                {[
-                  { value: '2,000+', label: 'Người bán hoạt động' },
-                  { value: '₫50M+', label: 'Hoa hồng chi trả' },
-                  { value: '4.8/5⭐', label: 'Đánh giá TB' }
-                ].map((stat, idx) => (
-                  <div key={idx} className="text-center">
-                    <div className="text-2xl md:text-3xl lg:text-4xl font-black text-[#FFBF00] font-display mb-1">
+                {CONTENT.hero.stats.map((stat, idx) => (
+                  <div key={idx}>
+                    <div className="text-3xl lg:text-4xl font-black text-[#00575A] font-display">
                       {stat.value}
                     </div>
-                    <div className="text-xs md:text-sm text-white/60 font-medium">
+                    <div className="text-sm text-slate-500 mt-1">
                       {stat.label}
                     </div>
                   </div>
                 ))}
               </motion.div>
             </motion.div>
+
+            {/* Right: Visual */}
+            <motion.div
+              initial={{ opacity: 0, scale: 0.9 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 0.8, delay: 0.2 }}
+              className="relative"
+            >
+              <div className="relative rounded-3xl overflow-hidden shadow-2xl">
+                <img
+                  src="https://images.unsplash.com/photo-1635070041078-e363dbe005cb?w=1200&h=1200&fit=crop&q=80"
+                  alt="AI Technology"
+                  className="w-full h-[600px] object-cover"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-[#00575A]/80 via-transparent to-transparent" />
+                <div className="absolute bottom-8 left-8 right-8">
+                  <div className="bg-white/10 backdrop-blur-xl border border-white/20 rounded-2xl p-6">
+                    <div className="flex items-center gap-3 mb-2">
+                      <Bot className="w-6 h-6 text-[#FFBF00]" />
+                      <span className="font-display font-bold text-white text-lg">AI Coach</span>
+                    </div>
+                    <p className="text-white/80 text-sm">
+                      "Hôm nay bạn nên tập trung vào khách hàng quan tâm ANIMA 119. Tôi đã chuẩn bị 3 chiến lược cho bạn..."
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </motion.div>
           </div>
         </section>
 
         {/* ================================================================== */}
-        {/* BENTO GRID FEATURES SECTION */}
+        {/* PROBLEM SECTION - VISUAL CARDS */}
         {/* ================================================================== */}
-        <section className="relative py-12 md:py-24 lg:py-32 bg-gradient-to-b from-[#00575A] via-[#004144] to-[#003335]">
-          {/* Background */}
-          <div className="absolute inset-0 noise-texture opacity-40" />
-          <div className="absolute inset-0 grid-pattern opacity-20" />
-
-          <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 md:px-8 lg:px-12">
-            {/* Section Header */}
+        <section id="about" className="py-24 bg-white">
+          <div className="max-w-7xl mx-auto px-6 lg:px-12">
             <motion.div
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              transition={{ duration: 0.6 }}
-              className="text-center mb-12 md:mb-20"
+              className="text-center mb-16"
             >
-              <div className="inline-flex items-center gap-2 bg-[#FFBF00]/10 backdrop-blur-md border border-[#FFBF00]/20 rounded-full px-4 py-2 md:px-5 md:py-2 mb-4 md:mb-6">
-                <Globe className="w-3 h-3 md:w-4 md:h-4 text-[#FFBF00]" />
-                <span className="text-xs md:text-sm font-bold text-[#FFBF00] uppercase tracking-wider font-display">
-                  {LANDING_CONTENT.features.sectionBadge}
-                </span>
-              </div>
-              <h2 className="text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-black text-white mb-4 font-display tracking-tight px-4 md:px-0">
-                {LANDING_CONTENT.features.sectionTitle}
+              <h2 className="text-4xl md:text-5xl lg:text-6xl font-black text-slate-900 mb-4 font-display">
+                {CONTENT.problems.sectionTitle}
               </h2>
             </motion.div>
 
-            {/* Bento Grid - Mobile: 1 col, Tablet: 2 cols, Desktop: 3 cols */}
-            <motion.div
-              variants={containerVariants}
-              initial="hidden"
-              whileInView="visible"
-              viewport={{ once: true }}
-              className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6"
-            >
-              {LANDING_CONTENT.features.items.map((feature, idx) => {
-                const Icon = iconMap[feature.icon as keyof typeof iconMap];
-                const isLarge = idx === 0 || idx === 3; // First and fourth items are larger
-
+            {/* 3 Problem Cards */}
+            <div className="grid md:grid-cols-3 gap-8">
+              {CONTENT.problems.items.map((problem, idx) => {
+                const Icon = problem.icon;
                 return (
                   <motion.div
                     key={idx}
-                    variants={itemVariants}
-                    className={`
-                      group relative backdrop-blur-xl bg-white/5 border border-white/10 rounded-2xl md:rounded-3xl p-6 md:p-8
-                      hover:bg-white/10 hover:border-white/20 transition-all duration-500
-                      ${isLarge ? 'md:col-span-2 lg:col-span-1' : ''}
-                    `}
-                    whileHover={{
-                      y: -8,
-                      transition: { duration: 0.3 }
-                    }}
+                    initial={{ opacity: 0, y: 40 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ delay: idx * 0.2 }}
+                    className="group relative rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all"
+                    whileHover={{ y: -8 }}
                   >
-                    {/* Glow Effect on Hover */}
-                    <div className="absolute inset-0 rounded-2xl md:rounded-3xl bg-gradient-to-br from-[#FFBF00]/0 via-[#FFBF00]/0 to-[#FFBF00]/0 group-hover:from-[#FFBF00]/10 group-hover:via-[#FFBF00]/5 group-hover:to-transparent transition-all duration-500" />
+                    {/* Image */}
+                    <div className="relative h-64 overflow-hidden">
+                      <img
+                        src={problem.image}
+                        alt={problem.title}
+                        className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                      />
+                      <div className="absolute inset-0 bg-gradient-to-t from-slate-900 via-slate-900/50 to-transparent" />
+                    </div>
 
-                    <div className="relative z-10">
-                      {/* Icon */}
-                      <div className="w-12 h-12 md:w-16 md:h-16 rounded-xl md:rounded-2xl bg-gradient-to-br from-[#FFBF00]/20 to-[#FFBF00]/5 backdrop-blur-sm border border-[#FFBF00]/20 flex items-center justify-center mb-4 md:mb-6 group-hover:scale-110 group-hover:rotate-3 transition-all duration-500">
-                        <Icon className="w-6 h-6 md:w-8 md:h-8 text-[#FFBF00]" />
+                    {/* Content */}
+                    <div className="absolute bottom-0 left-0 right-0 p-6">
+                      <div className="w-12 h-12 rounded-xl bg-red-500/20 backdrop-blur-sm border border-red-500/30 flex items-center justify-center mb-4">
+                        <Icon className="w-6 h-6 text-red-400" />
                       </div>
-
-                      {/* Content */}
-                      <h3 className="text-lg md:text-xl lg:text-2xl font-bold text-white mb-2 md:mb-3 font-display tracking-tight">
-                        {feature.title}
+                      <h3 className="text-2xl font-bold text-white mb-2 font-display">
+                        {problem.title}
                       </h3>
-                      <p className="text-sm md:text-base text-white/70 leading-relaxed">
-                        {feature.description}
+                      <p className="text-white/80 text-sm">
+                        {problem.description}
                       </p>
                     </div>
                   </motion.div>
                 );
               })}
-            </motion.div>
+            </div>
           </div>
         </section>
 
         {/* ================================================================== */}
-        {/* TESTIMONIALS SECTION */}
+        {/* BENTO GRID SOLUTION SECTION - VISUAL-FIRST */}
         {/* ================================================================== */}
-        <section className="relative py-12 md:py-24 lg:py-32 bg-[#003335]">
-          <div className="absolute inset-0 noise-texture opacity-30" />
-
-          <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 md:px-8 lg:px-12">
+        <section id="features" className="py-24 bg-gradient-to-b from-white to-slate-50">
+          <div className="max-w-7xl mx-auto px-6 lg:px-12">
             {/* Section Header */}
             <motion.div
               initial={{ opacity: 0, y: 30 }}
@@ -537,235 +460,275 @@ export default function LandingPage() {
               viewport={{ once: true }}
               className="text-center mb-16"
             >
-              <div className="inline-flex items-center gap-2 bg-white/5 backdrop-blur-md border border-white/10 rounded-full px-5 py-2 mb-6">
-                <span className="text-sm font-bold text-[#FFBF00] uppercase tracking-wider font-display">
-                  {LANDING_CONTENT.testimonials.sectionBadge}
+              <div className="inline-flex items-center gap-2 bg-[#00575A]/5 border border-[#00575A]/10 rounded-full px-5 py-2 mb-6">
+                <span className="text-sm font-bold text-[#00575A] uppercase tracking-wider">
+                  {CONTENT.solution.sectionBadge}
                 </span>
               </div>
-              <h2 className="text-4xl md:text-5xl font-black text-white font-display tracking-tight">
-                {LANDING_CONTENT.testimonials.sectionTitle}
+              <h2 className="text-4xl md:text-5xl lg:text-6xl font-black text-slate-900 font-display">
+                {CONTENT.solution.sectionTitle}
               </h2>
             </motion.div>
 
-            {/* Testimonials Grid - Mobile: 1 col, Desktop: 2 cols */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-8">
-              {LANDING_CONTENT.testimonials.items.map((testimonial, idx) => (
-                <motion.div
-                  key={idx}
-                  initial={{ opacity: 0, y: 30 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ delay: idx * 0.2 }}
-                  className="backdrop-blur-xl bg-white/5 border border-white/10 rounded-2xl md:rounded-3xl p-6 md:p-8 hover:bg-white/10 transition-all"
-                >
-                  <div className="flex items-start gap-3 md:gap-4 mb-4 md:mb-6">
-                    <div className="text-4xl md:text-5xl">{testimonial.avatar}</div>
-                    <div>
-                      <div className="font-bold text-white text-base md:text-lg font-display">{testimonial.author}</div>
-                      <div className="text-white/60 text-xs md:text-sm">{testimonial.role}</div>
+            {/* Bento Grid - Responsive Layout */}
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 auto-rows-[300px]">
+              {CONTENT.solution.bentoItems.map((item, idx) => {
+                const Icon = item.icon;
+                const gridClass =
+                  item.size === 'large' ? 'md:col-span-2 md:row-span-2' :
+                  item.size === 'medium' ? 'md:col-span-2 lg:col-span-2' :
+                  'md:col-span-2 lg:col-span-2';
+
+                return (
+                  <motion.div
+                    key={idx}
+                    initial={{ opacity: 0, scale: 0.9 }}
+                    whileInView={{ opacity: 1, scale: 1 }}
+                    viewport={{ once: true }}
+                    transition={{ delay: idx * 0.1 }}
+                    className={`group relative rounded-3xl overflow-hidden shadow-lg hover:shadow-2xl transition-all ${gridClass}`}
+                    whileHover={{ y: -8 }}
+                  >
+                    {/* Background Image */}
+                    <div className="absolute inset-0">
+                      <img
+                        src={item.image}
+                        alt={item.title}
+                        className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
+                      />
+                      <div className={`absolute inset-0 bg-gradient-to-br ${item.gradient} backdrop-blur-[2px]`} />
+                      <div className="absolute inset-0 bg-gradient-to-t from-slate-900/90 via-slate-900/50 to-transparent" />
                     </div>
-                  </div>
-                  <p className="text-white/80 leading-relaxed italic text-sm md:text-base lg:text-lg mb-4">
-                    "{testimonial.quote}"
-                  </p>
-                  {testimonial.metrics && (
-                    <div className="flex items-center gap-2 text-xs md:text-sm text-[#FFBF00]/80 font-medium">
-                      <CheckCircle2 className="w-4 h-4" />
-                      <span>{testimonial.metrics}</span>
+
+                    {/* Content */}
+                    <div className="relative z-10 h-full p-8 flex flex-col justify-end">
+                      <div className="w-16 h-16 rounded-2xl bg-white/10 backdrop-blur-md border border-white/20 flex items-center justify-center mb-4 group-hover:scale-110 group-hover:rotate-3 transition-all">
+                        <Icon className="w-8 h-8 text-white" />
+                      </div>
+                      <h3 className="text-2xl lg:text-3xl font-bold text-white mb-3 font-display">
+                        {item.title}
+                      </h3>
+                      <p className="text-white/90 text-base leading-relaxed">
+                        {item.description}
+                      </p>
                     </div>
-                  )}
-                </motion.div>
-              ))}
+                  </motion.div>
+                );
+              })}
             </div>
           </div>
         </section>
 
         {/* ================================================================== */}
-        {/* CTA SECTION */}
+        {/* COMMUNITY SECTION (Placeholder for testimonials) */}
         {/* ================================================================== */}
-        <section className="relative py-12 md:py-24 lg:py-32 bg-gradient-to-b from-[#003335] to-[#00575A]">
-          <div className="absolute inset-0 noise-texture opacity-40" />
+        <section id="community" className="py-24 bg-white">
+          <div className="max-w-7xl mx-auto px-6 lg:px-12">
+            <motion.div
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              className="text-center mb-16"
+            >
+              <h2 className="text-4xl md:text-5xl font-black text-slate-900 mb-4 font-display">
+                Cộng đồng 2,000+ người bán
+              </h2>
+              <p className="text-xl text-slate-600 max-w-2xl mx-auto">
+                Học hỏi từ những người thực sự kinh doanh sản phẩm wellness và đạt kết quả
+              </p>
+            </motion.div>
 
-          <div className="relative z-10 max-w-5xl mx-auto px-4 sm:px-6 md:px-8 lg:px-12">
+            {/* Community Visual */}
             <motion.div
               initial={{ opacity: 0, scale: 0.95 }}
               whileInView={{ opacity: 1, scale: 1 }}
               viewport={{ once: true }}
-              className="relative backdrop-blur-xl bg-gradient-to-br from-white/10 to-white/5 border border-white/20 rounded-2xl md:rounded-[3rem] p-8 md:p-12 lg:p-16 text-center overflow-hidden"
+              className="relative rounded-3xl overflow-hidden shadow-2xl h-[500px]"
             >
-              {/* Background Glow */}
-              <div className="absolute top-0 right-0 w-96 h-96 bg-[#FFBF00]/10 rounded-full blur-[150px]" />
-
-              <div className="relative z-10">
-                <div className="inline-flex items-center gap-2 bg-[#FFBF00]/10 backdrop-blur-md border border-[#FFBF00]/20 rounded-full px-4 py-2 md:px-5 md:py-2 mb-4 md:mb-6">
-                  <Lock className="w-3 h-3 md:w-4 md:h-4 text-[#FFBF00]" />
-                  <span className="text-xs md:text-sm font-bold text-[#FFBF00] uppercase tracking-wider font-display">
-                    {LANDING_CONTENT.cta.badge}
-                  </span>
+              <img
+                src="https://images.unsplash.com/photo-1528605105345-5344ea20e269?w=1600&h=900&fit=crop&q=80"
+                alt="Community"
+                className="w-full h-full object-cover"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-[#00575A]/90 via-[#00575A]/40 to-transparent" />
+              <div className="absolute bottom-12 left-12 right-12">
+                <div className="grid md:grid-cols-3 gap-6">
+                  {[
+                    { value: '₫18M', label: 'Hoa hồng TB/người' },
+                    { value: '47', label: 'Đơn hàng TB/tháng' },
+                    { value: '92%', label: 'Tỷ lệ thành công' }
+                  ].map((stat, idx) => (
+                    <div key={idx} className="bg-white/10 backdrop-blur-xl border border-white/20 rounded-2xl p-6 text-center">
+                      <div className="text-4xl font-black text-[#FFBF00] font-display mb-2">
+                        {stat.value}
+                      </div>
+                      <div className="text-white/80 text-sm">
+                        {stat.label}
+                      </div>
+                    </div>
+                  ))}
                 </div>
-
-                <h2 className="text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-black text-white mb-4 md:mb-6 font-display tracking-tight">
-                  {LANDING_CONTENT.cta.headline}
-                </h2>
-
-                <p className="text-base md:text-lg lg:text-xl text-white/70 mb-8 md:mb-10 max-w-2xl mx-auto leading-relaxed">
-                  {LANDING_CONTENT.cta.subheadline}
-                </p>
-
-                <motion.button
-                  onClick={handleJoin}
-                  className="bg-[#FFBF00] text-[#00575A] px-8 py-4 md:px-12 md:py-6 rounded-xl md:rounded-2xl font-black text-base md:text-lg lg:text-xl shadow-2xl shadow-[#FFBF00]/30 font-display inline-flex items-center gap-2 md:gap-3"
-                  whileHover={{
-                    scale: 1.05,
-                    boxShadow: '0 30px 70px rgba(255, 191, 0, 0.5)'
-                  }}
-                  whileTap={{ scale: 0.95 }}
-                >
-                  {LANDING_CONTENT.cta.buttonText}
-                  <ArrowRight className="w-5 h-5 md:w-6 md:h-6" />
-                </motion.button>
               </div>
             </motion.div>
           </div>
         </section>
 
         {/* ================================================================== */}
-        {/* FAT FOOTER - TECH STYLE */}
+        {/* PRICING SECTION - THE ELITE PROTOCOL */}
         {/* ================================================================== */}
-        <footer className="relative bg-[#001A1C] text-white pt-12 md:pt-24 pb-8 md:pb-12">
-          <div className="absolute inset-0 noise-texture opacity-20" />
+        <section id="pricing" className="py-24 bg-gradient-to-b from-slate-50 to-white">
+          <div className="max-w-4xl mx-auto px-6 lg:px-12">
+            <motion.div
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              className="text-center mb-16"
+            >
+              <div className="inline-flex items-center gap-2 bg-[#FFBF00]/10 border border-[#FFBF00]/20 rounded-full px-5 py-2 mb-6">
+                <Crown className="w-4 h-4 text-[#FFBF00]" />
+                <span className="text-sm font-bold text-[#FFBF00] uppercase tracking-wider">
+                  {CONTENT.pricing.sectionBadge}
+                </span>
+              </div>
+              <h2 className="text-4xl md:text-5xl lg:text-6xl font-black text-slate-900 font-display">
+                {CONTENT.pricing.sectionTitle}
+              </h2>
+            </motion.div>
 
-          <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 md:px-8 lg:px-12">
-            {/* Main Footer Content - Mobile: 1 col, Tablet: 2 cols, Desktop: 5 cols */}
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-8 md:gap-12 mb-12 md:mb-16">
-              {/* Brand Column */}
-              <div className="lg:col-span-1">
+            {/* Pricing Card */}
+            <motion.div
+              initial={{ opacity: 0, scale: 0.95 }}
+              whileInView={{ opacity: 1, scale: 1 }}
+              viewport={{ once: true }}
+              className="relative bg-gradient-to-br from-[#00575A] to-[#003335] rounded-3xl p-10 shadow-2xl overflow-hidden"
+            >
+              {/* Background Pattern */}
+              <div className="absolute inset-0 noise-texture opacity-20" />
+
+              {/* Badge */}
+              <div className="relative z-10 inline-flex items-center gap-2 bg-[#FFBF00] text-[#00575A] px-4 py-2 rounded-full mb-6">
+                <span className="relative flex h-2 w-2">
+                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#00575A] opacity-75" />
+                  <span className="relative inline-flex rounded-full h-2 w-2 bg-[#00575A]" />
+                </span>
+                <span className="text-sm font-bold uppercase tracking-wider">
+                  {CONTENT.pricing.badge}
+                </span>
+              </div>
+
+              {/* Title & Price */}
+              <div className="relative z-10 mb-8">
+                <div className="flex items-baseline gap-4 mb-2">
+                  <h3 className="text-4xl font-black text-white font-display">
+                    {CONTENT.pricing.title}
+                  </h3>
+                  <Crown className="w-8 h-8 text-[#FFBF00]" />
+                </div>
+                <div className="flex items-baseline gap-3">
+                  <span className="text-5xl font-black text-[#FFBF00] font-display">
+                    {CONTENT.pricing.price}
+                  </span>
+                  <span className="text-white/60 text-lg">
+                    {CONTENT.pricing.priceNote}
+                  </span>
+                </div>
+              </div>
+
+              {/* Benefits */}
+              <div className="relative z-10 space-y-4 mb-10">
+                {CONTENT.pricing.benefits.map((benefit, idx) => (
+                  <motion.div
+                    key={idx}
+                    initial={{ opacity: 0, x: -20 }}
+                    whileInView={{ opacity: 1, x: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ delay: idx * 0.05 }}
+                    className="flex items-center gap-3"
+                  >
+                    <CheckCircle2 className="w-6 h-6 text-[#FFBF00] flex-shrink-0" />
+                    <span className="text-white/90 text-lg">
+                      {benefit}
+                    </span>
+                  </motion.div>
+                ))}
+              </div>
+
+              {/* CTA */}
+              <motion.button
+                onClick={handleJoin}
+                className="relative z-10 w-full bg-[#FFBF00] text-[#00575A] px-8 py-5 rounded-xl font-black text-xl shadow-xl flex items-center justify-center gap-3 font-display"
+                whileHover={{
+                  scale: 1.02,
+                  boxShadow: '0 30px 60px rgba(255, 191, 0, 0.5)'
+                }}
+                whileTap={{ scale: 0.98 }}
+              >
+                Tham gia ngay
+                <ArrowRight className="w-6 h-6" />
+              </motion.button>
+            </motion.div>
+          </div>
+        </section>
+
+        {/* ================================================================== */}
+        {/* FOOTER */}
+        {/* ================================================================== */}
+        <footer className="bg-[#00575A] text-white pt-20 pb-12">
+          <div className="max-w-7xl mx-auto px-6 lg:px-12">
+            {/* Main Footer Content */}
+            <div className="grid md:grid-cols-2 gap-12 mb-16">
+              {/* Brand */}
+              <div>
                 <div className="flex items-center gap-3 mb-4">
-                  <div className="w-10 h-10 bg-gradient-to-br from-[#FFBF00] to-yellow-500 rounded-xl flex items-center justify-center text-[#00575A] font-display font-black text-xl">
+                  <div className="w-10 h-10 bg-[#FFBF00] rounded-xl flex items-center justify-center text-[#00575A] font-display font-black text-xl">
                     W
                   </div>
                   <span className="font-display font-bold text-xl">
-                    {LANDING_CONTENT.header.logo}
+                    {CONTENT.footer.logo}
                   </span>
                 </div>
-                <p className="text-white/60 text-sm leading-relaxed mb-6">
-                  {LANDING_CONTENT.footer.tagline}
+                <p className="text-white/70 leading-relaxed mb-6 max-w-md">
+                  {CONTENT.footer.tagline}
                 </p>
 
                 {/* Social Links */}
                 <div className="flex items-center gap-3">
-                  <motion.a
-                    href={LANDING_CONTENT.footer.social.facebook}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="w-10 h-10 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 flex items-center justify-center transition-all"
-                    whileHover={{ scale: 1.1, y: -2 }}
-                    whileTap={{ scale: 0.95 }}
-                  >
-                    <Facebook className="w-5 h-5" />
-                  </motion.a>
-                  <motion.a
-                    href={LANDING_CONTENT.footer.social.instagram}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="w-10 h-10 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 flex items-center justify-center transition-all"
-                    whileHover={{ scale: 1.1, y: -2 }}
-                    whileTap={{ scale: 0.95 }}
-                  >
-                    <Instagram className="w-5 h-5" />
-                  </motion.a>
-                  <motion.a
-                    href={LANDING_CONTENT.footer.social.linkedin}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="w-10 h-10 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 flex items-center justify-center transition-all"
-                    whileHover={{ scale: 1.1, y: -2 }}
-                    whileTap={{ scale: 0.95 }}
-                  >
-                    <Linkedin className="w-5 h-5" />
-                  </motion.a>
+                  {[
+                    { icon: Facebook, href: CONTENT.footer.social.facebook },
+                    { icon: Instagram, href: CONTENT.footer.social.instagram },
+                    { icon: Linkedin, href: CONTENT.footer.social.linkedin }
+                  ].map((social, idx) => {
+                    const SocialIcon = social.icon;
+                    return (
+                      <motion.a
+                        key={idx}
+                        href={social.href}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="w-12 h-12 rounded-xl bg-white/10 hover:bg-white/20 border border-white/10 flex items-center justify-center transition-all"
+                        whileHover={{ scale: 1.1, y: -2 }}
+                        whileTap={{ scale: 0.95 }}
+                      >
+                        <SocialIcon className="w-5 h-5" />
+                      </motion.a>
+                    );
+                  })}
                 </div>
               </div>
 
-              {/* Product Links */}
+              {/* Newsletter */}
               <div>
-                <h3 className="font-display font-bold text-white mb-4">
-                  {LANDING_CONTENT.footer.columns.product.title}
+                <h3 className="font-display font-bold text-xl mb-4">
+                  {CONTENT.footer.newsletter.title}
                 </h3>
-                <ul className="space-y-3">
-                  {LANDING_CONTENT.footer.columns.product.links.map((link, idx) => (
-                    <li key={idx}>
-                      <a href="#" className="text-white/60 hover:text-white transition-colors text-sm">
-                        {link}
-                      </a>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-
-              {/* Company Links */}
-              <div>
-                <h3 className="font-display font-bold text-white mb-4">
-                  {LANDING_CONTENT.footer.columns.company.title}
-                </h3>
-                <ul className="space-y-3">
-                  {LANDING_CONTENT.footer.columns.company.links.map((link, idx) => (
-                    <li key={idx}>
-                      <a href="#" className="text-white/60 hover:text-white transition-colors text-sm">
-                        {link}
-                      </a>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-
-              {/* Resources Links */}
-              <div>
-                <h3 className="font-display font-bold text-white mb-4">
-                  {LANDING_CONTENT.footer.columns.resources.title}
-                </h3>
-                <ul className="space-y-3">
-                  {LANDING_CONTENT.footer.columns.resources.links.map((link, idx) => (
-                    <li key={idx}>
-                      <a href="#" className="text-white/60 hover:text-white transition-colors text-sm">
-                        {link}
-                      </a>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-
-              {/* Legal Links */}
-              <div>
-                <h3 className="font-display font-bold text-white mb-4">
-                  {LANDING_CONTENT.footer.columns.legal.title}
-                </h3>
-                <ul className="space-y-3">
-                  {LANDING_CONTENT.footer.columns.legal.links.map((link, idx) => (
-                    <li key={idx}>
-                      <a href="#" className="text-white/60 hover:text-white transition-colors text-sm">
-                        {link}
-                      </a>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            </div>
-
-            {/* Newsletter Section */}
-            <div className="border-t border-white/10 pt-12 pb-8">
-              <div className="max-w-md mx-auto text-center">
-                <h3 className="font-display font-bold text-xl text-white mb-3">
-                  {LANDING_CONTENT.footer.newsletter.title}
-                </h3>
-                <div className="flex gap-2">
+                <div className="flex gap-3">
                   <input
                     type="email"
-                    placeholder={LANDING_CONTENT.footer.newsletter.placeholder}
-                    className="flex-1 px-4 py-3 rounded-xl bg-white/5 border border-white/10 text-white placeholder-white/40 focus:outline-none focus:border-[#FFBF00]/50"
+                    placeholder={CONTENT.footer.newsletter.placeholder}
+                    className="flex-1 px-5 py-3 rounded-xl bg-white/10 border border-white/20 text-white placeholder-white/50 focus:outline-none focus:border-[#FFBF00]/50 transition-colors"
                   />
                   <motion.button
-                    className="px-6 py-3 rounded-xl bg-[#FFBF00] text-[#00575A] font-bold"
+                    className="px-6 py-3 rounded-xl bg-[#FFBF00] text-[#00575A] font-bold shadow-lg"
                     whileHover={{ scale: 1.05 }}
                     whileTap={{ scale: 0.95 }}
                   >
@@ -776,8 +739,8 @@ export default function LandingPage() {
             </div>
 
             {/* Copyright */}
-            <div className="text-center text-white/40 text-sm">
-              {LANDING_CONTENT.footer.copyright}
+            <div className="text-center text-white/50 text-sm pt-8 border-t border-white/10">
+              {CONTENT.footer.copyright}
             </div>
           </div>
         </footer>
