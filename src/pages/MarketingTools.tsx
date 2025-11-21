@@ -289,7 +289,7 @@ export default function MarketingTools() {
                       value={newCardCode}
                       onChange={(e) => setNewCardCode(e.target.value)}
                       placeholder={t('marketing.giftCards.codePlaceholder')}
-                      className="w-full px-4 py-2 rounded-lg border-2 border-gray-300 dark:border-slate-600 focus:border-pink-500 focus:outline-none bg-white dark:bg-slate-800 text-gray-900 dark:text-slate-100"
+                      className="w-full px-4 py-2 rounded-lg border-2 border-gray-300 dark:border-slate-600 bg-white dark:bg-slate-800 text-gray-900 dark:text-slate-100 placeholder:text-gray-400 dark:placeholder:text-slate-500 focus:border-pink-500 dark:focus:border-pink-400 focus:ring-2 focus:ring-pink-500/20 dark:focus:ring-pink-400/20 focus:outline-none transition-all duration-200"
                     />
                   </div>
                   <div>
@@ -301,7 +301,7 @@ export default function MarketingTools() {
                       value={newCardDiscount}
                       onChange={(e) => setNewCardDiscount(e.target.value)}
                       placeholder={newCardType === 'fixed' ? '200000' : '15'}
-                      className="w-full px-4 py-2 rounded-lg border-2 border-gray-300 dark:border-slate-600 focus:border-pink-500 focus:outline-none bg-white dark:bg-slate-800 text-gray-900 dark:text-slate-100"
+                      className="w-full px-4 py-2 rounded-lg border-2 border-gray-300 dark:border-slate-600 bg-white dark:bg-slate-800 text-gray-900 dark:text-slate-100 placeholder:text-gray-400 dark:placeholder:text-slate-500 focus:border-pink-500 dark:focus:border-pink-400 focus:ring-2 focus:ring-pink-500/20 dark:focus:ring-pink-400/20 focus:outline-none transition-all duration-200"
                     />
                   </div>
                   <div>
@@ -311,7 +311,7 @@ export default function MarketingTools() {
                     <select
                       value={newCardType}
                       onChange={(e) => setNewCardType(e.target.value as 'percentage' | 'fixed')}
-                      className="w-full px-4 py-2 rounded-lg border-2 border-gray-300 dark:border-slate-600 focus:border-pink-500 focus:outline-none bg-white dark:bg-slate-800 text-gray-900 dark:text-slate-100"
+                      className="w-full px-4 py-2 rounded-lg border-2 border-gray-300 dark:border-slate-600 bg-white dark:bg-slate-800 text-gray-900 dark:text-slate-100 focus:border-pink-500 dark:focus:border-pink-400 focus:ring-2 focus:ring-pink-500/20 dark:focus:ring-pink-400/20 focus:outline-none transition-all duration-200"
                     >
                       <option value="fixed">{t('marketing.giftCards.typeFixed')}</option>
                       <option value="percentage">{t('marketing.giftCards.typePercentage')}</option>
@@ -328,7 +328,7 @@ export default function MarketingTools() {
                   </button>
                   <button
                     onClick={() => setShowCreateCard(false)}
-                    className="px-6 py-2 rounded-lg border-2 border-gray-300 dark:border-slate-600 text-gray-700 dark:text-slate-300 hover:bg-gray-50 dark:hover:bg-slate-700 transition-colors"
+                    className="px-6 py-2 rounded-lg border-2 border-gray-300 dark:border-slate-600 bg-white dark:bg-slate-800 text-gray-700 dark:text-slate-100 hover:bg-gray-50 dark:hover:bg-slate-700 active:bg-gray-100 dark:active:bg-slate-600 transition-all duration-200"
                   >
                     {t('marketing.giftCards.cancel')}
                   </button>
@@ -461,7 +461,7 @@ export default function MarketingTools() {
                       </button>
                       <button
                         onClick={() => handleDownloadImage(template.imageUrl, `${template.title}.jpg`)}
-                        className="flex items-center justify-center gap-2 bg-white dark:bg-slate-700 border-2 border-blue-500 dark:border-blue-400 text-blue-600 dark:text-blue-400 px-4 py-2 rounded-lg font-semibold hover:bg-blue-50 dark:hover:bg-slate-600 transition-all duration-300"
+                        className="flex items-center justify-center gap-2 bg-white dark:bg-slate-700 border-2 border-blue-500 dark:border-blue-400 text-blue-600 dark:text-blue-400 px-4 py-2 rounded-lg font-semibold hover:bg-blue-50 dark:hover:bg-slate-600 active:bg-blue-100 dark:active:bg-slate-500 transition-all duration-200"
                       >
                         <Download className="w-4 h-4" />
                         {t('marketing.contentLibrary.downloadImage')}

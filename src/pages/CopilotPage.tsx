@@ -210,7 +210,7 @@ export default function CopilotPage() {
               {!showHistory && (
                 <button
                   onClick={() => setShowHistory(true)}
-                  className="lg:hidden w-full bg-white border border-gray-200 px-4 py-3 rounded-xl font-medium text-sm hover:bg-gray-50 transition-colors flex items-center justify-center gap-2"
+                  className="lg:hidden w-full bg-white dark:bg-slate-800 border border-gray-200 dark:border-slate-600 px-4 py-3 rounded-xl font-medium text-sm hover:bg-gray-50 dark:hover:bg-slate-700 active:bg-gray-100 dark:active:bg-slate-600 text-gray-700 dark:text-slate-100 transition-all duration-200 flex items-center justify-center gap-2"
                 >
                   <Clock className="w-5 h-5 text-primary" />
                   Xem Lịch Sử Chat

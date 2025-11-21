@@ -521,7 +521,7 @@ export default function HealthCoach() {
                     whileHover={{ scale: 1.05, y: -2 }}
                     whileTap={{ scale: 0.95 }}
                     onClick={() => setInputValue(suggestion)}
-                    className="text-sm bg-white dark:bg-slate-700 border-2 border-gray-200 dark:border-slate-600 text-gray-700 dark:text-slate-100 px-4 py-2 rounded-full hover:bg-primary hover:text-white hover:border-primary transition-all duration-200 shadow-sm"
+                    className="text-sm bg-white dark:bg-slate-700 border-2 border-gray-200 dark:border-slate-600 text-gray-700 dark:text-slate-100 px-4 py-2 rounded-full hover:bg-primary dark:hover:bg-primary hover:text-white dark:hover:text-white hover:border-primary dark:hover:border-primary active:bg-teal-700 dark:active:bg-teal-700 transition-all duration-200 shadow-sm"
                   >
                     {suggestion}
                   </motion.button>

@@ -49,12 +49,12 @@ const ProductCard: React.FC<Props> = ({ product }) => {
   const outOfStock = product.stock <= 0;
 
   return (
-    <div 
-        onClick={handleViewDetails} 
-        className="bg-white rounded-xl overflow-hidden shadow-sm border border-gray-100 hover:shadow-xl hover:border-brand-primary/20 transition-all duration-300 group flex flex-col h-full cursor-pointer relative"
+    <div
+        onClick={handleViewDetails}
+        className="bg-white dark:bg-slate-800 rounded-xl overflow-hidden shadow-sm border border-gray-100 dark:border-slate-700 hover:shadow-xl hover:border-brand-primary/20 dark:hover:border-teal-500/40 transition-all duration-300 group flex flex-col h-full cursor-pointer relative"
     >
       {/* Image Container */}
-      <div className="relative aspect-square bg-gray-50 overflow-hidden p-4 flex items-center justify-center">
+      <div className="relative aspect-square bg-gray-50 dark:bg-slate-900 overflow-hidden p-4 flex items-center justify-center">
         <img 
             src={product.imageUrl} 
             alt={product.name} 
@@ -62,13 +62,13 @@ const ProductCard: React.FC<Props> = ({ product }) => {
         />
         
         {/* Overlay Badge */}
-        <div className="absolute top-3 right-3 bg-brand-primary text-white text-[10px] font-bold px-2.5 py-1 rounded-lg shadow-sm flex items-center gap-1 z-10">
+        <div className="absolute top-3 right-3 bg-brand-primary dark:bg-teal-600 text-white text-[10px] font-bold px-2.5 py-1 rounded-lg shadow-sm flex items-center gap-1 z-10">
           Earn {new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND', maximumFractionDigits: 0 }).format(commissionAmount)}
         </div>
         
         {/* Hover Overlay for View Details */}
-        <div className="absolute inset-0 bg-black/0 group-hover:bg-black/5 transition-colors duration-300 flex items-center justify-center">
-            <div className="opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-white text-brand-dark px-4 py-2 rounded-full shadow-lg font-bold text-xs flex items-center gap-2 transform translate-y-4 group-hover:translate-y-0">
+        <div className="absolute inset-0 bg-black/0 group-hover:bg-black/5 dark:group-hover:bg-black/20 transition-colors duration-300 flex items-center justify-center">
+            <div className="opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-white dark:bg-slate-800 text-brand-dark dark:text-slate-100 px-4 py-2 rounded-full shadow-lg font-bold text-xs flex items-center gap-2 transform translate-y-4 group-hover:translate-y-0">
                 <Eye className="w-3 h-3" /> View Details
             </div>
         </div>
@@ -82,36 +82,36 @@ const ProductCard: React.FC<Props> = ({ product }) => {
       
       {/* Content */}
       <div className="p-5 flex flex-col flex-1">
-        <h3 className="font-bold text-gray-800 text-base mb-1 leading-tight group-hover:text-brand-primary transition-colors line-clamp-1" title={product.name}>
+        <h3 className="font-bold text-gray-800 dark:text-slate-100 text-base mb-1 leading-tight group-hover:text-brand-primary dark:group-hover:text-teal-400 transition-colors line-clamp-1" title={product.name}>
             {product.name}
         </h3>
         
         <div className="flex items-center justify-between mb-3">
-            <span className="text-brand-primary font-bold text-lg">{formatVND(product.price)}</span>
-            <span className={`text-[10px] px-2 py-0.5 rounded font-medium ${outOfStock ? 'bg-red-100 text-red-600' : 'bg-brand-primary/5 text-brand-primary'}`}>
+            <span className="text-brand-primary dark:text-teal-400 font-bold text-lg">{formatVND(product.price)}</span>
+            <span className={`text-[10px] px-2 py-0.5 rounded font-medium ${outOfStock ? 'bg-red-100 dark:bg-red-900/30 text-red-600 dark:text-red-400' : 'bg-brand-primary/5 dark:bg-teal-500/10 text-brand-primary dark:text-teal-400'}`}>
                 Stock: {product.stock}
             </span>
         </div>
-        
-        <p className="text-xs text-gray-500 mb-4 line-clamp-2 min-h-[2.5em]">{product.description}</p>
+
+        <p className="text-xs text-gray-500 dark:text-slate-400 mb-4 line-clamp-2 min-h-[2.5em]">{product.description}</p>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mt-auto">
           <button
             onClick={handleShare}
-            className="flex items-center justify-center gap-2 border border-gray-200 text-gray-600 py-2.5 rounded-lg text-xs font-bold hover:bg-gray-50 hover:border-gray-300 transition-all"
+            className="flex items-center justify-center gap-2 bg-white dark:bg-slate-700 border border-gray-200 dark:border-slate-600 hover:border-gray-300 dark:hover:border-slate-500 text-gray-600 dark:text-slate-300 hover:bg-gray-50 dark:hover:bg-slate-600 active:bg-gray-100 dark:active:bg-slate-500 py-2.5 rounded-lg text-xs font-bold transition-all duration-200"
             aria-label="Share product link"
           >
             <Share2 className="w-3.5 h-3.5" /> Share
           </button>
-          
-          <button 
-            onClick={handleBuy} 
-            disabled={isBuying || outOfStock || showSuccess} 
-            className={`flex items-center justify-center gap-2 py-2.5 rounded-lg text-xs font-bold transition-all relative overflow-hidden
-                ${showSuccess 
-                    ? 'bg-green-500 text-white border-green-500' 
-                    : 'bg-brand-accent text-brand-primary hover:bg-yellow-400 border border-transparent'
-                } 
+
+          <button
+            onClick={handleBuy}
+            disabled={isBuying || outOfStock || showSuccess}
+            className={`flex items-center justify-center gap-2 py-2.5 rounded-lg text-xs font-bold transition-all duration-200 relative overflow-hidden
+                ${showSuccess
+                    ? 'bg-green-500 dark:bg-green-600 text-white border-green-500'
+                    : 'bg-brand-accent dark:bg-yellow-400 text-brand-primary dark:text-slate-900 hover:bg-yellow-400 dark:hover:bg-yellow-300 active:bg-yellow-500 dark:active:bg-yellow-400 border border-transparent'
+                }
                 ${(outOfStock || isBuying) ? 'opacity-70 cursor-not-allowed' : 'hover:shadow-lg hover:shadow-yellow-500/20'}
             `}
           >

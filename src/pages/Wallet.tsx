@@ -392,7 +392,7 @@ export const Wallet: React.FC = () => {
                   className={`px-5 py-2.5 rounded-xl font-bold text-sm transition-all ${
                     filter === f
                       ? 'bg-gradient-to-r from-[#00FFA3] to-cyan-400 text-black shadow-lg shadow-[#00FFA3]/30'
-                      : 'bg-white/10 text-gray-400 hover:bg-white/20 backdrop-blur-sm border border-white/10'
+                      : 'bg-white/10 text-gray-400 hover:bg-white/20 active:bg-white/30 backdrop-blur-sm border border-white/10 transition-all duration-200'
                   }`}
                 >
                   {f === 'all' ? t('common.filter') : f}

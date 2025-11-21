@@ -627,14 +627,14 @@ export default function LeaderDashboard() {
                     </td>
                     <td className="px-6 py-4">
                       <div className="flex items-center justify-center gap-2">
-                        <button className="p-2 hover:bg-white/10 rounded-lg transition-colors" title={t('team.actions.sendEmail')}>
-                          <Mail className="w-4 h-4 text-gray-400" />
+                        <button className="p-2 hover:bg-white/10 active:bg-white/20 rounded-lg transition-all duration-200 group" title={t('team.actions.sendEmail')}>
+                          <Mail className="w-4 h-4 text-gray-400 group-hover:text-blue-400 transition-colors duration-200" />
                         </button>
-                        <button className="p-2 hover:bg-white/10 rounded-lg transition-colors" title={t('team.actions.call')}>
-                          <Phone className="w-4 h-4 text-gray-400" />
+                        <button className="p-2 hover:bg-white/10 active:bg-white/20 rounded-lg transition-all duration-200 group" title={t('team.actions.call')}>
+                          <Phone className="w-4 h-4 text-gray-400 group-hover:text-green-400 transition-colors duration-200" />
                         </button>
-                        <button className="p-2 hover:bg-white/10 rounded-lg transition-colors" title={t('team.actions.moreActions')}>
-                          <MoreVertical className="w-4 h-4 text-gray-400" />
+                        <button className="p-2 hover:bg-white/10 active:bg-white/20 rounded-lg transition-all duration-200 group" title={t('team.actions.moreActions')}>
+                          <MoreVertical className="w-4 h-4 text-gray-400 group-hover:text-purple-400 transition-colors duration-200" />
                         </button>
                       </div>
                     </td>

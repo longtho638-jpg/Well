@@ -79,7 +79,7 @@ export const ProductDetail: React.FC = () => {
     >
       {/* Breadcrumb / Back */}
       <nav className="flex items-center gap-2 text-sm text-gray-500 dark:text-slate-400 mb-6">
-        <button onClick={() => navigate('/marketplace')} className="hover:text-brand-primary flex items-center gap-1">
+        <button onClick={() => navigate('/marketplace')} className="hover:text-brand-primary dark:hover:text-teal-400 transition-colors duration-200 flex items-center gap-1">
             Marketplace
         </button>
         <span>/</span>
@@ -88,7 +88,7 @@ export const ProductDetail: React.FC = () => {
 
       <button
         onClick={() => navigate('/marketplace')}
-        className="flex items-center gap-2 text-gray-500 dark:text-slate-400 hover:text-brand-primary mb-6 font-medium transition-colors group"
+        className="flex items-center gap-2 text-gray-500 dark:text-slate-400 hover:text-brand-primary dark:hover:text-teal-400 active:text-teal-700 dark:active:text-teal-300 mb-6 font-medium transition-all duration-200 group"
       >
         <ArrowLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform" />
         Back to Products
@@ -120,7 +120,7 @@ export const ProductDetail: React.FC = () => {
                 <div className="mb-6">
                     <div className="flex items-center justify-between mb-2">
                         <h1 className="text-3xl font-bold text-brand-dark dark:text-white">{product.name}</h1>
-                        <button onClick={handleShare} className="p-2 hover:bg-gray-100 dark:hover:bg-slate-700 rounded-full text-gray-500 dark:text-slate-400 transition-colors">
+                        <button onClick={handleShare} className="p-2 hover:bg-gray-100 dark:hover:bg-slate-700 active:bg-gray-200 dark:active:bg-slate-600 rounded-full text-gray-500 dark:text-slate-400 hover:text-brand-primary dark:hover:text-teal-400 transition-all duration-200">
                             <Share2 className="w-5 h-5" />
                         </button>
                     </div>
@@ -159,19 +159,19 @@ export const ProductDetail: React.FC = () => {
                 <div className="mt-auto grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <button
                         onClick={handleShare}
-                        className="flex items-center justify-center gap-2 border-2 border-gray-200 dark:border-slate-700 text-gray-700 dark:text-slate-300 py-4 rounded-xl font-bold hover:bg-gray-50 dark:hover:bg-slate-700 hover:border-gray-300 dark:hover:border-slate-600 transition-all"
+                        className="flex items-center justify-center gap-2 bg-white dark:bg-slate-800 border-2 border-gray-200 dark:border-slate-600 hover:border-gray-300 dark:hover:border-slate-500 text-gray-700 dark:text-slate-300 hover:bg-gray-50 dark:hover:bg-slate-700 active:bg-gray-100 dark:active:bg-slate-600 py-4 rounded-xl font-bold transition-all duration-200"
                     >
                         <Share2 className="w-5 h-5" />
                         Share Link
                     </button>
 
-                    <button 
+                    <button
                         onClick={handleBuy}
                         disabled={isBuying || outOfStock || showSuccess}
-                        className={`flex items-center justify-center gap-2 py-4 rounded-xl font-bold text-lg transition-all shadow-lg
-                            ${showSuccess 
-                                ? 'bg-green-500 text-white scale-105' 
-                                : 'bg-brand-accent text-brand-primary hover:bg-yellow-400 hover:-translate-y-1 shadow-yellow-500/20'
+                        className={`flex items-center justify-center gap-2 py-4 rounded-xl font-bold text-lg transition-all duration-200 shadow-lg
+                            ${showSuccess
+                                ? 'bg-green-500 dark:bg-green-600 text-white scale-105'
+                                : 'bg-brand-accent dark:bg-yellow-400 text-brand-primary dark:text-slate-900 hover:bg-yellow-400 dark:hover:bg-yellow-300 active:bg-yellow-500 dark:active:bg-yellow-400 hover:-translate-y-1 shadow-yellow-500/20'
                             }
                             ${(outOfStock || isBuying) ? 'opacity-70 cursor-not-allowed transform-none shadow-none' : ''}
                         `}

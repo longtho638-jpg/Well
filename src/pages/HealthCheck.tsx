@@ -698,8 +698,8 @@ export default function HealthCheck() {
                 disabled={currentStep === 0}
                 className={`flex items-center gap-2 px-8 py-4 rounded-2xl font-bold text-lg transition-all duration-300 ${
                   currentStep === 0
-                    ? 'text-gray-300 dark:text-slate-600 cursor-not-allowed'
-                    : 'text-gray-700 dark:text-slate-300 hover:bg-gray-100 dark:hover:bg-slate-700 hover:shadow-md'
+                    ? 'text-gray-400 dark:text-slate-500 cursor-not-allowed'
+                    : 'text-gray-700 dark:text-slate-300 hover:bg-gray-100 dark:hover:bg-slate-700 active:bg-gray-200 dark:active:bg-slate-600 hover:shadow-md'
                 }`}
               >
                 <ArrowLeft className="w-6 h-6" />

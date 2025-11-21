@@ -296,7 +296,7 @@ export const Marketplace: React.FC = () => {
                         setSelectedPriceRange('all');
                         setSearchTerm('');
                       }}
-                      className="w-full mt-6 px-4 py-2.5 bg-gray-100 dark:bg-slate-900 hover:bg-gray-200 dark:hover:bg-slate-700 text-gray-700 dark:text-slate-300 rounded-xl text-sm font-medium transition-colors"
+                      className="w-full mt-6 px-4 py-2.5 bg-gray-100 dark:bg-slate-700 hover:bg-gray-200 dark:hover:bg-slate-600 active:bg-gray-300 dark:active:bg-slate-500 text-gray-700 dark:text-slate-100 rounded-xl text-sm font-medium transition-all duration-200"
                     >
                       Đặt lại bộ lọc
                     </button>
@@ -482,7 +482,7 @@ export const Marketplace: React.FC = () => {
                   className={`px-6 py-3 rounded-xl font-semibold text-sm whitespace-nowrap transition-all duration-300 flex items-center gap-2 ${
                     selectedCategory === cat.value
                       ? 'bg-gradient-to-r from-purple-600 to-pink-600 text-white shadow-lg scale-105'
-                      : 'bg-white text-gray-700 hover:bg-gray-50 border border-gray-200'
+                      : 'bg-white dark:bg-slate-800 text-gray-700 dark:text-slate-100 hover:bg-gray-50 dark:hover:bg-slate-700 border border-gray-200 dark:border-slate-600 transition-all duration-200'
                   }`}
                 >
                   <span className="text-lg">{cat.icon}</span>
@@ -686,14 +686,14 @@ export const Marketplace: React.FC = () => {
                             <div className="flex items-center gap-2 bg-white dark:bg-slate-800 border border-gray-300 dark:border-slate-600 rounded-lg">
                               <button
                                 onClick={() => updateQuantity(item.product.id, -1)}
-                                className="p-2 hover:bg-gray-100 dark:hover:bg-slate-700 rounded-l-lg transition-colors"
+                                className="p-2 bg-white dark:bg-slate-700 hover:bg-gray-100 dark:hover:bg-slate-600 active:bg-gray-200 dark:active:bg-slate-500 rounded-l-lg transition-all duration-200 text-gray-700 dark:text-slate-200"
                               >
                                 <Minus className="w-4 h-4" />
                               </button>
                               <span className="px-3 font-bold text-gray-900 dark:text-slate-100">{item.quantity}</span>
                               <button
                                 onClick={() => updateQuantity(item.product.id, 1)}
-                                className="p-2 hover:bg-gray-100 dark:hover:bg-slate-700 rounded-r-lg transition-colors"
+                                className="p-2 bg-white dark:bg-slate-700 hover:bg-gray-100 dark:hover:bg-slate-600 active:bg-gray-200 dark:active:bg-slate-500 rounded-r-lg transition-all duration-200 text-gray-700 dark:text-slate-200"
                               >
                                 <Plus className="w-4 h-4" />
                               </button>

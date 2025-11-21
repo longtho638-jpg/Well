@@ -152,7 +152,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ onMobileClose }) => {
                     <button
                       onClick={handleAdvice}
                       disabled={loading}
-                      className="w-full py-2.5 bg-brand-accent hover:bg-yellow-400 text-brand-primary font-bold text-xs rounded-lg flex items-center justify-center gap-2 transition-colors shadow-lg shadow-yellow-500/20"
+                      className="w-full py-2.5 bg-brand-accent dark:bg-yellow-400 hover:bg-yellow-400 dark:hover:bg-yellow-300 active:bg-yellow-500 dark:active:bg-yellow-400 text-brand-primary dark:text-slate-900 font-bold text-xs rounded-lg flex items-center justify-center gap-2 transition-all duration-200 shadow-lg shadow-yellow-500/20 hover:shadow-yellow-500/30"
                       aria-label={loading ? t('common.loading') : 'Get personalized AI advice'}
                     >
                         {loading ? <Sparkles className="w-3 h-3 animate-spin" aria-hidden="true" /> : <Sparkles className="w-3 h-3" aria-hidden="true" />} Get AI Advice
