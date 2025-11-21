@@ -4,6 +4,7 @@ import { StatsGrid } from '../components/Dashboard/StatsGrid';
 import { RevenueChart } from '../components/Dashboard/RevenueChart';
 import { TopProducts } from '../components/Dashboard/TopProducts';
 import { QuickActionsCard } from '../components/Dashboard/QuickActionsCard';
+import { DailyQuestHub } from '../components/Dashboard/DailyQuestHub';
 import { useStore } from '../store';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
@@ -353,6 +354,9 @@ export const Dashboard: React.FC = () => {
 
       {/* Hero Card - Full Width */}
       <HeroCard user={user} />
+
+      {/* Daily Quest Hub - Full Width */}
+      <DailyQuestHub />
 
       {/* Main Grid - 3 columns on desktop */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
