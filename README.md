@@ -109,12 +109,28 @@ src/
 ```
 
 ## 🎨 Design System
+
+**Comprehensive design system documentation available!**
+
 - **Primary:** Deep Teal (`#00575A`)
 - **Accent:** Marigold (`#FFBF00`)
 - **Font:** Inter
 - **Animations:** Framer Motion
 - **Charts:** Recharts
 - **Icons:** Lucide React
+
+📖 **Documentation:**
+- [**DESIGN_SYSTEM.md**](./DESIGN_SYSTEM.md) - Complete design system overview
+- [Component Reference](./docs/design-system/components-reference.md) - Component API docs
+- [Color System](./docs/design-system/color-system.md) - Color usage guidelines
+- [Implementation Guide](./docs/design-system/implementation-guide.md) - Developer setup
+
+**Key Features:**
+- ✅ WCAG AA accessibility standards
+- ✅ Responsive design (mobile-first)
+- ✅ TypeScript component library
+- ✅ Tailwind CSS configuration
+- ✅ Reusable UI components
 
 ## 🆕 Recent Updates
 
