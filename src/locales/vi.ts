@@ -648,39 +648,45 @@ export const vi = {
 
   // Health Coach
   healthCoach: {
-    title: 'Huấn luyện sức khỏe',
-    subtitle: 'Chương trình chăm sóc sức khỏe cá nhân',
+    title: 'Health Coach AI',
+    subtitle: 'Trợ lý sức khỏe thông minh - Tư vấn sản phẩm cá nhân hóa',
 
-    // Health Profile
-    profile: {
-      title: 'Hồ sơ sức khỏe',
-      age: 'Tuổi',
-      height: 'Chiều cao',
-      weight: 'Cân nặng',
-      bmi: 'Chỉ số BMI',
-      bloodType: 'Nhóm máu',
-      allergies: 'Dị ứng',
-      conditions: 'Tình trạng sức khỏe',
-      goals: 'Mục tiêu',
+    // Chat Messages
+    greeting: 'Xin chào! Tôi là **WellNexus Health Coach** 🌿\n\nHãy chia sẻ với tôi về tình trạng sức khỏe hoặc triệu chứng bạn đang gặp phải. Tôi sẽ tư vấn combo sản phẩm phù hợp nhất cho bạn.\n\n**Ví dụ:** "Tôi hay bị mất ngủ và đau đầu" hoặc "Tôi thường xuyên cảm thấy mệt mỏi".',
+
+    greetingResponse: 'Xin chào! Tôi là **WellNexus Health Coach** - trợ lý sức khỏe AI của bạn. 🌿\n\nHãy mô tả các triệu chứng hoặc vấn đề sức khỏe bạn đang gặp, tôi sẽ tư vấn sản phẩm phù hợp nhất.\n\n**Ví dụ:** "Tôi hay bị mất ngủ, đau đầu" hoặc "Tôi cảm thấy mệt mỏi, hay bị ốm".',
+
+    fallbackResponse: 'Cảm ơn bạn đã chia sẻ. Để tư vấn chính xác hơn, bạn có thể mô tả cụ thể hơn các triệu chứng không?\n\n**Gợi ý:** Hãy cho tôi biết bạn đang gặp vấn đề gì (ví dụ: mất ngủ, đau đầu, mệt mỏi, hay bị ốm...)',
+
+    sleepStressResponse: 'Dựa trên các triệu chứng bạn mô tả (mất ngủ, đau đầu, căng thẳng), tôi khuyên dùng **Combo ANIMA Thư Giãn**. Combo này được thiết kế đặc biệt để cải thiện giấc ngủ và giảm căng thẳng thần kinh.',
+
+    fatigueResponse: 'Triệu chứng mệt mỏi và sức đề kháng kém có thể do cơ thể thiếu dinh dưỡng. Tôi gợi ý **Combo Năng Lượng & Miễn Dịch** để phục hồi sức khỏe.',
+
+    // Product Combos
+    comboRelaxation: 'Combo ANIMA Thư Giấc',
+    comboEnergy: 'Combo Năng Lượng & Miễn Dịch',
+
+    reasonRelaxation: 'ANIMA 119 giúp ổn định hệ thần kinh, cải thiện giấc ngủ. Immune Boost bổ sung năng lượng và tăng sức đề kháng.',
+    reasonEnergy: 'Starter Kit cung cấp dinh dưỡng toàn diện, Immune Boost tăng cường miễn dịch và giảm mệt mỏi.',
+
+    // UI Elements
+    totalLabel: 'Tổng cộng:',
+    orderNow: 'Tạo đơn ngay',
+    orderSuccess: '✅ Đã tạo đơn hàng thành công!\n\n**{comboName}** ({totalPrice}) đã được thêm vào lịch sử giao dịch của bạn.\n\nBạn có thể kiểm tra tại trang **Ví Hoa Hồng**. Cảm ơn bạn đã tin dùng ANIMA! 🎉',
+
+    placeholder: 'Mô tả triệu chứng của bạn... (VD: Tôi hay bị mất ngủ, đau đầu)',
+    send: 'Gửi',
+
+    quickSuggestionsLabel: 'Gợi ý câu hỏi:',
+    suggestions: {
+      sleep: 'Tôi hay bị mất ngủ',
+      fatigue: 'Tôi cảm thấy mệt mỏi',
+      immunity: 'Tăng cường miễn dịch',
     },
 
-    // Recommendations
-    recommendations: {
-      title: 'Đề xuất sản phẩm',
-      basedOnProfile: 'Dựa trên hồ sơ của bạn',
-      whyRecommended: 'Tại sao đề xuất',
-      dosage: 'Liều lượng',
-      timing: 'Thời gian sử dụng',
-    },
-
-    // Progress Tracking
-    progress: {
-      title: 'Theo dõi tiến độ',
-      currentWeight: 'Cân nặng hiện tại',
-      goalWeight: 'Cân nặng mục tiêu',
-      weeksToGoal: 'Số tuần đến mục tiêu',
-      achievements: 'Thành tựu',
-    }
+    // Footer Disclaimers
+    disclaimerTech: '💡 Health Coach AI sử dụng công nghệ phân tích triệu chứng để đề xuất sản phẩm phù hợp.',
+    disclaimerMedical: 'Lưu ý: Đây là công cụ hỗ trợ, không thay thế tư vấn y tế chuyên nghiệp.',
   },
 
   // Health Check (System Monitoring)
