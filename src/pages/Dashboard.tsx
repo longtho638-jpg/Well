@@ -29,6 +29,12 @@ import {
 } from 'lucide-react';
 import { PieChart, Pie, Cell, ResponsiveContainer, Legend, Tooltip } from 'recharts';
 import { formatVND, formatNumber } from '../utils/format';
+import {
+  COMMISSION_CONSTANTS,
+  CURRENCY_CONSTANTS,
+  TOKENOMICS_CONSTANTS,
+  WEALTH_OS_CONSTANTS,
+} from '../utils/constants';
 
 // Activity types
 interface LiveActivity {
@@ -53,7 +59,7 @@ const vietnameseNames = [
 ];
 
 // Generate random live activity
-const generateRandomActivity = (t: (key: string, vars?: any) => string): LiveActivity => {
+const generateRandomActivity = (t: (key: string, vars?: Record<string, string | number | undefined>) => string): LiveActivity => {
   const randomName = vietnameseNames[Math.floor(Math.random() * vietnameseNames.length)];
   const activityTypes: Array<LiveActivity['type']> = ['reward', 'order', 'rank_up', 'withdrawal', 'referral'];
   const randomType = activityTypes[Math.floor(Math.random() * activityTypes.length)];
@@ -309,10 +315,14 @@ export const Dashboard: React.FC = () => {
   const { user, revenueData, products, transactions } = useStore();
 
   // Revenue breakdown data
+  // Revenue split: 70% direct sales, 25% team bonus, 5% referral
+  const REVENUE_BREAKDOWN_DIRECT = 0.7;
+  const REVENUE_BREAKDOWN_REFERRAL = 0.05;
+
   const revenueBreakdown = [
-    { name: t('dashboard.revenueBreakdown.directSales'), value: user.totalSales * 0.7, color: '#00575A' },
-    { name: t('dashboard.revenueBreakdown.teamBonus'), value: user.totalSales * 0.25, color: '#FFBF00' },
-    { name: t('dashboard.revenueBreakdown.referral'), value: user.totalSales * 0.05, color: '#22c55e' }
+    { name: t('dashboard.revenueBreakdown.directSales'), value: user.totalSales * REVENUE_BREAKDOWN_DIRECT, color: '#00575A' },
+    { name: t('dashboard.revenueBreakdown.teamBonus'), value: user.totalSales * COMMISSION_CONSTANTS.TEAM_BONUS_RATE, color: '#FFBF00' },
+    { name: t('dashboard.revenueBreakdown.referral'), value: user.totalSales * REVENUE_BREAKDOWN_REFERRAL, color: '#22c55e' }
   ];
 
   // Recent activities
@@ -454,7 +464,7 @@ export const Dashboard: React.FC = () => {
                 <p className="text-white/80 text-sm">
                   {t('dashboard.valuation.formula')}
                   <span className="block text-xs text-white/60 mt-1">
-                    ({formatVND(user.monthlyProfit || 0)} × 12 × 5 PE Ratio)
+                    ({formatVND(user.monthlyProfit || 0)} × {TOKENOMICS_CONSTANTS.MONTHS_PER_YEAR} × {TOKENOMICS_CONSTANTS.PE_RATIO} PE Ratio)
                   </span>
                 </p>
               </div>
@@ -463,7 +473,7 @@ export const Dashboard: React.FC = () => {
               <div className="inline-flex items-center gap-2 bg-white/20 backdrop-blur-md rounded-full px-4 py-2 border border-white/30">
                 <TrendingUp className="w-4 h-4 text-white" />
                 <span className="text-sm font-bold text-white">
-                  +{user.assetGrowthRate || 5}% MoM Growth
+                  +{user.assetGrowthRate || WEALTH_OS_CONSTANTS.GROWTH_RATE_BASELINE}% MoM Growth
                 </span>
               </div>
             </div>
@@ -600,7 +610,7 @@ export const Dashboard: React.FC = () => {
                     <Cell key={`cell-${index}`} fill={entry.color} />
                   ))}
                 </Pie>
-                <Tooltip formatter={(value: number) => `${(value / 1000000).toFixed(1)}M ₫`} />
+                <Tooltip formatter={(value: number) => `${(value / CURRENCY_CONSTANTS.MILLION_DIVISOR).toFixed(1)}M ₫`} />
               </PieChart>
             </ResponsiveContainer>
 

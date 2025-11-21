@@ -13,6 +13,7 @@ import {
 } from 'lucide-react';
 import { generateCopilotResponse, generateSalesScript, getCopilotCoaching } from '@/services/copilotService';
 import { CopilotMessage, ObjectionType } from '@/types';
+import { useTranslation } from '@/hooks';
 
 interface TheCopilotProps {
   productContext?: string;
@@ -20,11 +21,13 @@ interface TheCopilotProps {
 }
 
 export default function TheCopilot({ productContext, userName = "Bạn" }: TheCopilotProps) {
+  const t = useTranslation();
+
   const [messages, setMessages] = useState<CopilotMessage[]>([
     {
       id: '1',
       role: 'assistant',
-      content: `Xin chào ${userName}! 👋 Tôi là **The Copilot** - trợ lý bán hàng AI của bạn.\n\nTôi sẽ giúp bạn:\n✅ Xử lý từ chối khách hàng\n✅ Gợi ý câu trả lời thông minh\n✅ Tạo kịch bản bán hàng\n\nHãy thử nhập một câu phản đối của khách hàng, ví dụ: "Sản phẩm này đắt quá!"`,
+      content: t('copilot.welcome', { userName }),
       timestamp: new Date().toISOString()
     }
   ]);
@@ -84,7 +87,7 @@ export default function TheCopilot({ productContext, userName = "Bạn" }: TheCo
       const errorMessage: CopilotMessage = {
         id: (Date.now() + 1).toString(),
         role: 'assistant',
-        content: 'Xin lỗi, tôi gặp sự cố. Vui lòng thử lại!',
+        content: t('copilot.error'),
         timestamp: new Date().toISOString()
       };
       setMessages(prev => [...prev, errorMessage]);
@@ -98,7 +101,7 @@ export default function TheCopilot({ productContext, userName = "Bạn" }: TheCo
 
     setIsLoading(true);
     const script = await generateSalesScript(
-      'Sản phẩm hiện tại',
+      t('copilot.currentProduct'),
       productContext
     );
 
@@ -118,7 +121,7 @@ export default function TheCopilot({ productContext, userName = "Bạn" }: TheCo
     setShowCoaching(true);
 
     const conversationHistory = messages
-      .filter(m => m.role !== 'assistant' || !m.content.includes('Xin chào'))
+      .filter(m => m.role !== 'assistant' || !m.content.includes(t('copilot.greeting')))
       .map(m => ({ role: m.role, content: m.content }));
 
     const tips = await getCopilotCoaching(conversationHistory);
@@ -136,12 +139,12 @@ export default function TheCopilot({ productContext, userName = "Bạn" }: TheCo
     if (!type) return null;
 
     const badges: Record<ObjectionType, { label: string; color: string }> = {
-      price: { label: 'Giá cả', color: 'bg-orange-100 text-orange-700' },
-      skepticism: { label: 'Nghi ngờ', color: 'bg-red-100 text-red-700' },
-      competition: { label: 'Đối thủ', color: 'bg-purple-100 text-purple-700' },
-      timing: { label: 'Thời điểm', color: 'bg-blue-100 text-blue-700' },
-      need: { label: 'Nhu cầu', color: 'bg-green-100 text-green-700' },
-      general: { label: 'Chung', color: 'bg-gray-100 text-gray-700' }
+      price: { label: t('copilot.objectionTypes.price'), color: 'bg-orange-100 text-orange-700' },
+      skepticism: { label: t('copilot.objectionTypes.skepticism'), color: 'bg-red-100 text-red-700' },
+      competition: { label: t('copilot.objectionTypes.competition'), color: 'bg-purple-100 text-purple-700' },
+      timing: { label: t('copilot.objectionTypes.timing'), color: 'bg-blue-100 text-blue-700' },
+      need: { label: t('copilot.objectionTypes.need'), color: 'bg-green-100 text-green-700' },
+      general: { label: t('copilot.objectionTypes.general'), color: 'bg-gray-100 text-gray-700' }
     };
 
     const badge = badges[type];
@@ -162,10 +165,10 @@ export default function TheCopilot({ productContext, userName = "Bạn" }: TheCo
           </div>
           <div>
             <h3 className="font-bold text-white flex items-center gap-2">
-              The Copilot
+              {t('copilot.title')}
               <Sparkles className="w-4 h-4 text-accent" />
             </h3>
-            <p className="text-xs text-white/80">AI Sales Assistant</p>
+            <p className="text-xs text-white/80">{t('copilot.subtitle')}</p>
           </div>
         </div>
 
@@ -175,20 +178,20 @@ export default function TheCopilot({ productContext, userName = "Bạn" }: TheCo
               onClick={handleGenerateScript}
               disabled={isLoading}
               className="px-3 py-1.5 bg-white/10 hover:bg-white/20 text-white text-xs rounded-lg flex items-center gap-1 transition-colors"
-              title="Generate sales script"
+              title={t('copilot.buttons.scriptTooltip')}
             >
               <MessageSquare className="w-3 h-3" />
-              Script
+              {t('copilot.buttons.script')}
             </button>
           )}
           <button
             onClick={handleGetCoaching}
             disabled={isLoading || messages.length < 3}
             className="px-3 py-1.5 bg-white/10 hover:bg-white/20 text-white text-xs rounded-lg flex items-center gap-1 transition-colors disabled:opacity-50"
-            title="Get coaching tips"
+            title={t('copilot.buttons.coachTooltip')}
           >
             <TrendingUp className="w-3 h-3" />
-            Coach
+            {t('copilot.buttons.coach')}
           </button>
         </div>
       </div>
@@ -228,13 +231,13 @@ export default function TheCopilot({ productContext, userName = "Bạn" }: TheCo
                     <div className="flex items-start gap-2 text-xs">
                       <Lightbulb className="w-4 h-4 text-accent flex-shrink-0 mt-0.5" />
                       <div className="flex-1">
-                        <p className="text-gray-500 mb-1 font-medium">Gợi ý nhanh:</p>
+                        <p className="text-gray-500 mb-1 font-medium">{t('copilot.quickSuggestion')}</p>
                         <p className="text-gray-700 italic">{message.suggestion}</p>
                       </div>
                       <button
                         onClick={() => copySuggestion(message.suggestion!, message.id)}
                         className="p-1 hover:bg-gray-100 rounded transition-colors"
-                        title="Copy suggestion"
+                        title={t('copilot.copySuggestion')}
                       >
                         {copiedSuggestion === message.id ? (
                           <Check className="w-3 h-3 text-green-500" />
@@ -288,14 +291,14 @@ export default function TheCopilot({ productContext, userName = "Bạn" }: TheCo
             <div className="flex items-start gap-3">
               <AlertCircle className="w-5 h-5 text-blue-500 flex-shrink-0 mt-0.5" />
               <div className="flex-1">
-                <h4 className="font-bold text-sm text-blue-900 mb-2">💡 Coaching Tips</h4>
+                <h4 className="font-bold text-sm text-blue-900 mb-2">{t('copilot.coachingTitle')}</h4>
                 <div className="text-sm text-blue-800 whitespace-pre-wrap">{coaching}</div>
               </div>
               <button
                 onClick={() => setShowCoaching(false)}
                 className="text-blue-400 hover:text-blue-600 text-xs"
               >
-                Đóng
+                {t('copilot.close')}
               </button>
             </div>
           </motion.div>
@@ -310,7 +313,7 @@ export default function TheCopilot({ productContext, userName = "Bạn" }: TheCo
             value={input}
             onChange={(e) => setInput(e.target.value)}
             onKeyPress={(e) => e.key === 'Enter' && handleSend()}
-            placeholder="Nhập câu phản đối của khách hàng..."
+            placeholder={t('copilot.placeholder')}
             className="flex-1 px-4 py-2.5 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary/50 text-sm"
             disabled={isLoading}
           />

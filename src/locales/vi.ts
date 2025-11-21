@@ -4,6 +4,12 @@
  */
 
 export const vi = {
+  // Brand
+  brand: {
+    name: 'WellNexus',
+    tagline: 'Social Commerce',
+  },
+
   // Common/Shared Text
   common: {
     loading: 'Đang tải...',
@@ -13,6 +19,8 @@ export const vi = {
     save: 'Lưu',
     cancel: 'Hủy',
     close: 'Đóng',
+    openMenu: 'Mở menu',
+    closeMenu: 'Đóng menu',
     confirm: 'Xác nhận',
     back: 'Quay lại',
     next: 'Tiếp theo',
@@ -126,6 +134,7 @@ export const vi = {
     // Quick Actions
     quickActions: {
       title: 'Hành động nhanh',
+      subtitle: 'Công cụ hỗ trợ kinh doanh',
       shareProduct: 'Chia sẻ sản phẩm',
       shareProductDesc: 'Gửi link cho khách hàng',
       inviteTeam: 'Mời đồng đội',
@@ -136,6 +145,16 @@ export const vi = {
       withdrawDesc: 'Chuyển về tài khoản',
       shareAchievement: 'Chia sẻ thành tích',
       shareAchievementDesc: 'Khoe thành tích của bạn',
+      giftCard: 'Gửi Gift Card',
+      giftCardAlert: 'Tính năng gửi Gift Card đang được phát triển!',
+      healthCheckLabel: 'Chia sẻ Link Health Check',
+      healthCheckDesc: 'Gửi link kiểm tra sức khỏe',
+      healthCheckShareText: 'Kiểm tra sức khỏe miễn phí cùng WellNexus!',
+      linkCopied: 'Link đã được sao chép vào clipboard!',
+      achievementTitle: 'Thành tích WellNexus',
+      achievementCopied: 'Thành tích đã được sao chép vào clipboard!',
+      achievementTemplate: '🎉 Thành tích WellNexus của tôi:\n\n🏆 Cấp bậc: {rank}\n💰 Doanh số: {sales}\n👥 Team Volume: {teamVolume}\n\nTham gia cùng tôi tại WellNexus! 💪',
+      footerTip: '💡 Tip: Sử dụng các công cụ này để tăng tương tác với khách hàng',
     },
 
     // Daily Quest Hub
@@ -240,6 +259,26 @@ export const vi = {
     title: 'Asset Management',
     subtitle: 'Quản lý danh mục tài sản của bạn',
 
+    // Commission Wallet
+    commission: {
+      withdrawableBalance: 'Withdrawable Balance',
+      totalEarningsGross: 'Total Earnings (Gross)',
+      withheldTaxPit: 'Withheld Tax (PIT 10%)',
+      taxComplianceMode: 'Tax Compliance Mode',
+      taxComplianceDescription: 'WellNexus automatically deducts {taxRate} PIT for income exceeding {threshold} per Vietnam Law.',
+      earningsHistory: 'Earnings History',
+      exportStatement: 'Export Statement',
+      requestWithdrawal: 'Request Withdrawal',
+      tableHeaders: {
+        dateRef: 'Date & Ref',
+        type: 'Type',
+        grossAmount: 'Gross Amount',
+        pit: 'PIT (10%)',
+        netReceived: 'Net Received',
+        status: 'Status',
+      },
+    },
+
     // Token Balances (WEALTH OS: Portfolio Components)
     balance: {
       available: 'Liquid Assets (Khả dụng)',
@@ -248,10 +287,13 @@ export const vi = {
       total: 'Total Portfolio Value',
       shopToken: 'SHOP Token - Cashflow',
       growToken: 'GROW Token - Equity',
+      shopTokenDescription: 'VND Stablecoin',
+      growTokenDescription: 'Governance Token',
     },
 
     // Actions
     actions: {
+      deposit: 'Nạp SHOP',
       withdraw: 'Rút tiền',
       stake: 'Gửi tiết kiệm',
       unstake: 'Rút tiết kiệm',
@@ -280,6 +322,8 @@ export const vi = {
     transactions: {
       title: 'Lịch sử giao dịch',
       noTransactions: 'Chưa có giao dịch nào',
+      emptyState: 'Your transaction history will appear here',
+      viewOnBscscan: 'View on BSCScan',
       id: 'Mã giao dịch',
       date: 'Ngày',
       amount: 'Số tiền',
@@ -306,21 +350,64 @@ export const vi = {
     // Withdrawal
     withdrawal: {
       title: 'Rút tiền',
+      modalTitle: 'Yêu Cầu Rút Tiền',
       subtitle: 'Chuyển SHOP Token về tài khoản ngân hàng',
+      availableBalance: 'Số Dư Khả Dụng',
       amount: 'Số tiền muốn rút',
+      withdrawalAmount: 'Số Tiền Rút',
+      enterAmount: 'Nhập số tiền',
+      minMaxHelper: 'Tối thiểu: {min} • Tối đa: {max}',
+      quickAmounts: {
+        twentyFive: '25%',
+        fifty: '50%',
+        seventyFive: '75%',
+        max: 'Tối đa',
+      },
       bankAccount: 'Tài khoản ngân hàng',
-      bankName: 'Tên ngân hàng',
-      accountNumber: 'Số tài khoản',
-      accountName: 'Tên chủ tài khoản',
+      bankDetails: 'Thông Tin Tài Khoản Ngân Hàng',
+      bankName: 'Tên Ngân Hàng',
+      bankNamePlaceholder: 'VD: Vietcombank, Techcombank',
+      accountNumber: 'Số Tài Khoản',
+      accountNumberPlaceholder: 'Nhập số tài khoản',
+      accountName: 'Tên Chủ Tài Khoản',
+      accountNamePlaceholder: 'Họ tên đầy đủ theo đăng ký',
+      accountNameHelper: 'Phải khớp với tên đã đăng ký',
       fee: 'Phí giao dịch',
       tax: 'Thuế TNCN',
       netAmount: 'Số tiền nhận được',
       minWithdrawal: 'Rút tối thiểu {amount}',
       maxWithdrawal: 'Rút tối đa {amount}',
-      processingTime: 'Thời gian xử lý: 1-3 ngày làm việc',
+      processingTime: 'Thời Gian Xử Lý',
+      processingTimeDesc: 'Yêu cầu rút tiền sẽ được xử lý trong vòng 1-3 ngày làm việc. Vui lòng đảm bảo thông tin ngân hàng chính xác.',
       withdrawNow: 'Rút ngay',
+      submitRequest: 'Gửi Yêu Cầu',
+      requestSubmitted: 'Đã Gửi Yêu Cầu!',
+      requestReceived: 'Yêu cầu rút tiền của bạn đã được tiếp nhận.',
+      processingTimeBusiness: 'Thời gian xử lý: 1-3 ngày làm việc',
       withdrawSuccess: 'Yêu cầu rút tiền thành công!',
+      errors: {
+        enterAmount: 'Vui lòng nhập số tiền',
+        minAmount: 'Số tiền rút tối thiểu là {amount}',
+        exceedsBalance: 'Số tiền vượt quá số dư khả dụng',
+        enterBankName: 'Vui lòng nhập tên ngân hàng',
+        enterAccountNumber: 'Vui lòng nhập số tài khoản',
+        accountNumberInvalid: 'Số tài khoản chỉ được chứa chữ số',
+        enterAccountName: 'Vui lòng nhập tên chủ tài khoản',
+      },
     }
+  },
+
+  // Product Card Component
+  productCard: {
+    earn: 'Kiếm',
+    viewDetails: 'Xem chi tiết',
+    outOfStock: 'Hết hàng',
+    stock: 'Còn hàng:',
+    share: 'Chia sẻ',
+    buyNow: 'Mua ngay',
+    added: 'Đã thêm',
+    copySuccess: 'Đã sao chép link!',
+    shareLink: 'Chia sẻ link này: {url}',
   },
 
   // Marketplace Page
@@ -363,14 +450,87 @@ export const vi = {
       viewDetails: 'Xem chi tiết',
     },
     productDetail: {
+      // Not Found Section
+      notFound: 'Không Tìm Thấy Sản Phẩm',
+      notFoundDescription: 'Sản phẩm bạn đang tìm kiếm có thể đã bị xóa.',
+      returnToMarketplace: 'Quay Lại Cửa Hàng',
+
+      // Navigation
+      marketplace: 'Cửa hàng',
+      backToProducts: 'Quay lại sản phẩm',
+
+      // Badges
+      authentic: 'Chính hãng',
+
+      // Stock Status
+      outOfStock: 'Hết hàng',
+      inStock: 'Còn hàng',
+      inStockCount: 'Còn hàng: {count}',
+
+      // Reviews
+      reviews: 'Đánh giá',
+      reviewsCount: '4.9 (128 Đánh giá)',
+      rating: '{score} / 5',
+      reviewCount: '{count} đánh giá',
+
+      // Price Section
+      retailPrice: 'Giá Bán Lẻ',
+      yourCommission: 'Hoa Hồng Của Bạn',
+      commissionInfo: 'Bạn kiếm được <strong>{rate}%</strong> từ mỗi đơn hàng qua link của bạn.',
+
+      // Action Buttons
+      shareLink: 'Chia sẻ Link',
+      buyNow: 'Mua Ngay',
+      addedToWallet: 'Đã Thêm Vào Ví',
+
+      // Share Alert
+      linkCopied: 'Đã sao chép link: wellnexus.vn/ref/VN-888/product/{id}',
+
+      // Tabs
+      tabs: {
+        benefits: 'Lợi ích',
+        ingredients: 'Thành phần',
+        howToUse: 'Cách sử dụng',
+      },
+
+      // Tab Content Headers
+      activeIngredients: 'Thành Phần Hoạt Tính',
+      recommendedDosage: 'Liều Lượng Khuyến Nghị',
+
+      // Mock Data - Benefits
+      mockBenefits: {
+        boostsImmunity: {
+          title: 'Tăng Cường Miễn Dịch',
+          desc: 'Củng cố hệ thống phòng thủ tự nhiên của cơ thể.',
+        },
+        increasesEnergy: {
+          title: 'Tăng Năng Lượng',
+          desc: 'Giảm mệt mỏi và cải thiện sự tập trung.',
+        },
+        skinHealth: {
+          title: 'Sức Khỏe Làn Da',
+          desc: 'Thúc đẩy sản xuất collagen cho làn da rạng rỡ.',
+        },
+      },
+
+      // Mock Data - Ingredients
+      mockIngredients: {
+        vitaminC: 'Vitamin C Cao Cấp (Ascorbic Acid)',
+        zinc: 'Zinc Gluconate Hữu Cơ',
+        elderberry: 'Chiết Xuất Elderberry (Sambucus nigra)',
+        echinacea: 'Echinacea Purpurea',
+        flavorings: 'Hương Liệu Tự Nhiên',
+      },
+
+      // Mock Data - Usage
+      mockUsage: 'Uống 1 viên mỗi ngày với nước, tốt nhất là sau bữa ăn. Không vượt quá liều lượng khuyến nghị.',
+
+      // Legacy fields (keep for compatibility)
       description: 'Mô tả sản phẩm',
       features: 'Tính năng',
       ingredients: 'Thành phần',
       usage: 'Cách sử dụng',
       benefits: 'Lợi ích',
-      reviews: 'Đánh giá',
-      rating: '{score} / 5',
-      reviewCount: '{count} đánh giá',
     }
   },
 
@@ -540,8 +700,36 @@ export const vi = {
   // Copilot (AI Sales Assistant)
   copilot: {
     title: 'The Copilot',
-    subtitle: 'Trợ lý bán hàng AI của bạn',
+    subtitle: 'AI Sales Assistant',
     description: 'Được trang bị AI tiên tiến để giúp bạn xử lý từ chối khách hàng, tạo kịch bản bán hàng, và cải thiện kỹ năng sales mỗi ngày.',
+
+    // Welcome & Messages
+    welcome: 'Xin chào {userName}! 👋 Tôi là **The Copilot** - trợ lý bán hàng AI của bạn.\n\nTôi sẽ giúp bạn:\n✅ Xử lý từ chối khách hàng\n✅ Gợi ý câu trả lời thông minh\n✅ Tạo kịch bản bán hàng\n\nHãy thử nhập một câu phản đối của khách hàng, ví dụ: "Sản phẩm này đắt quá!"',
+    error: 'Xin lỗi, tôi gặp sự cố. Vui lòng thử lại!',
+    greeting: 'Xin chào',
+
+    // Input & Actions
+    placeholder: 'Nhập câu phản đối của khách hàng...',
+    send: 'Gửi',
+    close: 'Đóng',
+
+    // Buttons & Tooltips
+    buttons: {
+      script: 'Script',
+      scriptTooltip: 'Generate sales script',
+      coach: 'Coach',
+      coachTooltip: 'Get coaching tips',
+    },
+
+    // Product Context
+    currentProduct: 'Sản phẩm hiện tại',
+
+    // Suggestions
+    quickSuggestion: 'Gợi ý nhanh:',
+    copySuggestion: 'Copy suggestion',
+
+    // Coaching
+    coachingTitle: '💡 Coaching Tips',
 
     // Features
     features: {
@@ -578,19 +766,19 @@ export const vi = {
 
     // Conversation
     startConversation: 'Bắt đầu cuộc trò chuyện',
-    placeholder: 'Nhập câu hỏi của bạn...',
-    send: 'Gửi',
     typing: 'Đang gõ...',
     objectionDetected: 'Phát hiện từ chối',
     suggestion: 'Gợi ý trả lời',
     useSuggestion: 'Sử dụng gợi ý này',
+
+    // Objection Types (badges)
     objectionTypes: {
       price: 'Giá cả',
       skepticism: 'Nghi ngờ',
       competition: 'Đối thủ',
       timing: 'Thời điểm',
       need: 'Nhu cầu',
-      general: 'Khác',
+      general: 'Chung',
     }
   },
 
@@ -990,6 +1178,70 @@ export const vi = {
       notifications: 'Thông báo',
       integrations: 'Tích hợp',
       backup: 'Sao lưu',
+    },
+
+    // Policy Engine
+    policyEngine: {
+      // Header
+      title: 'POLICY ENGINE v2.0',
+      subtitle: 'Trung tâm điều phối chiến lược & Dòng tiền',
+      saveConfig: 'Lưu Cấu Hình',
+      saveSuccess: '✅ Policy Configuration Saved Successfully!',
+
+      // Commission Structure Section
+      commissionStructure: {
+        title: 'Cấu Trúc Hoa Hồng (Multi-tier)',
+        retailDiscount: {
+          label: 'Chiết khấu Bán lẻ (Retail Discount)',
+          description: 'Dành cho người bán trực tiếp (Dropshipping).',
+        },
+        agencyBonus: {
+          label: 'Thưởng Quản lý (Agency Bonus)',
+          description: 'Thưởng dựa trên doanh số nhóm (Volume-based).',
+        },
+        elitePool: {
+          label: 'Quỹ Tinh hoa (Elite Pool)',
+          description: 'Đồng chia cho Top 12 Tướng (The Zodiac).',
+        },
+      },
+
+      // Total Monitor
+      totalMonitor: {
+        label: 'Tổng Payout (Max 45%)',
+        warningMessage: 'Cảnh báo: Payout quá cao có thể gây thâm hụt dòng tiền vận hành!',
+      },
+
+      // Game Rules Section
+      gameRules: {
+        title: 'Luật Chơi & Kích Hoạt',
+        activationThreshold: 'Điều kiện Kích hoạt (Pro Partner)',
+        whiteLabelGMV: 'White-label Trigger (GMV)',
+        whiteLabelPartners: 'White-label Trigger (Active Partners)',
+        units: {
+          vnd: 'VND',
+          partners: 'Partners',
+        },
+      },
+
+      // Simulation Section
+      simulation: {
+        title: 'Mô Phỏng Dòng Tiền (VC View)',
+        partnersCount: 'Số lượng Partner giả định',
+        partnersUnit: 'người',
+        aov: 'AOV (Giá trị đơn trung bình)',
+        fixedCost: 'Chi phí cố định (Fixed Cost/Tháng)',
+        totalRevenue: 'Tổng Doanh Thu (GMV)',
+        totalPayout: 'Tổng Chi Trả (Payout)',
+        fixedCostLabel: 'Chi Phí Cố Định',
+        netProfit: 'Lợi Nhuận Ròng (EBITDA)',
+        margin: 'Margin:',
+        healthScore: 'Health Score',
+        healthLabels: {
+          excellent: 'Excellent',
+          good: 'Good',
+          atRisk: 'At Risk',
+        },
+      },
     }
   },
 

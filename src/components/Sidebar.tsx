@@ -1,6 +1,6 @@
 
 import React, { useState } from 'react';
-import { LayoutDashboard, ShoppingBag, Wallet, LogOut, Sparkles, Bot, CheckCircle2, Circle, Users, Share2, Trophy, Heart, Megaphone } from 'lucide-react';
+import { LayoutDashboard, ShoppingBag, Wallet, LogOut, Sparkles, Bot, CheckCircle2, Circle, Users, Share2, Trophy, Heart, Megaphone, type LucideIcon } from 'lucide-react';
 import { getCoachAdvice } from '../services/geminiService';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useStore } from '../store';
@@ -11,6 +11,14 @@ interface SidebarProps {
   onMobileClose?: () => void;
 }
 
+interface MenuItem {
+  path: string;
+  label: string;
+  icon: LucideIcon;
+  matches?: string[];
+  badge?: string;
+}
+
 export const Sidebar: React.FC<SidebarProps> = ({ onMobileClose }) => {
   const t = useTranslation();
   const { user, quests, logout } = useStore();
@@ -19,7 +27,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ onMobileClose }) => {
   const [advice, setAdvice] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
 
-  const menuItems = [
+  const menuItems: MenuItem[] = [
     { path: '/dashboard', label: t('nav.dashboard'), icon: LayoutDashboard },
     { path: '/dashboard/marketplace', label: t('nav.marketplace'), icon: ShoppingBag, matches: ['/dashboard/product'] },
     { path: '/dashboard/wallet', label: t('nav.wallet'), icon: Wallet },
@@ -97,13 +105,13 @@ export const Sidebar: React.FC<SidebarProps> = ({ onMobileClose }) => {
               aria-current={isActive ? 'page' : undefined}
               aria-label={`Navigate to ${item.label}`}
             >
-              <Icon className={`w-5 h-5 transition-colors ${isActive ? 'text-brand-accent' : 'group-hover:text-brand-primary'}`} aria-hidden="true" />
+              <Icon className={`w-5 h-5 transition-colors ${isActive ? 'text-brand-accent' : 'group-hover:text-brand-primary'}`} aria-hidden={true} />
               <span className="flex-1 text-left">{item.label}</span>
-              {(item as any).badge && (
+              {item.badge && (
                 <span className={`text-xs px-2 py-0.5 rounded-full font-bold ${
                   isActive ? 'bg-brand-accent text-brand-primary' : 'bg-brand-accent/10 text-brand-accent'
                 }`}>
-                  {(item as any).badge}
+                  {item.badge}
                 </span>
               )}
             </button>
@@ -153,7 +161,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ onMobileClose }) => {
                       className="w-full py-2.5 bg-brand-accent hover:bg-yellow-400 text-brand-primary font-bold text-xs rounded-lg flex items-center justify-center gap-2 transition-colors shadow-lg shadow-yellow-500/20"
                       aria-label={loading ? t('common.loading') : 'Get personalized AI advice'}
                     >
-                        {loading ? <Sparkles className="w-3 h-3 animate-spin" aria-hidden="true" /> : <Sparkles className="w-3 h-3" aria-hidden="true" />} Get AI Advice
+                        {loading ? <Sparkles className="w-3 h-3 animate-spin" aria-hidden={true} /> : <Sparkles className="w-3 h-3" aria-hidden={true} />} Get AI Advice
                     </button>
                 )}
              </AnimatePresence>
@@ -177,7 +185,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ onMobileClose }) => {
             className="text-gray-400 hover:text-red-500 transition p-2 rounded-full hover:bg-red-50"
             aria-label={t('nav.logout')}
           >
-            <LogOut className="w-4 h-4" aria-hidden="true" />
+            <LogOut className="w-4 h-4" aria-hidden={true} />
           </button>
         </div>
       </div>

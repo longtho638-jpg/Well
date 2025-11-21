@@ -10,7 +10,7 @@ import {
 } from 'firebase/auth';
 import { auth } from '../services/firebase';
 import { userAPI } from '../services/api';
-import { User } from '../types';
+import { User, UserRank } from '../types';
 
 interface AuthState {
   user: User | null;
@@ -78,9 +78,10 @@ export function useAuth(): AuthState & AuthActions {
       setLoading(true);
       setError(null);
       await signInWithEmailAndPassword(auth, email, password);
-    } catch (err: any) {
+    } catch (err: unknown) {
       console.error('Sign in error:', err);
-      setError(err.message || 'Failed to sign in');
+      const errorMessage = err instanceof Error ? err.message : 'Failed to sign in';
+      setError(errorMessage);
       throw err;
     } finally {
       setLoading(false);
@@ -111,16 +112,17 @@ export function useAuth(): AuthState & AuthActions {
         id: userCredential.user.uid,
         name: displayName,
         email: email,
-        rank: 'member' as any,
+        rank: UserRank.MEMBER,
         totalSales: 0,
         teamVolume: 0,
         avatarUrl: `https://ui-avatars.com/api/?name=${encodeURIComponent(displayName)}`,
         joinedAt: new Date().toISOString(),
         kycStatus: false,
       });
-    } catch (err: any) {
+    } catch (err: unknown) {
       console.error('Sign up error:', err);
-      setError(err.message || 'Failed to sign up');
+      const errorMessage = err instanceof Error ? err.message : 'Failed to sign up';
+      setError(errorMessage);
       throw err;
     } finally {
       setLoading(false);
@@ -145,7 +147,7 @@ export function useAuth(): AuthState & AuthActions {
           id: userCredential.user.uid,
           name: userCredential.user.displayName || 'User',
           email: userCredential.user.email || '',
-          rank: 'member' as any,
+          rank: UserRank.MEMBER,
           totalSales: 0,
           teamVolume: 0,
           avatarUrl:
@@ -155,9 +157,10 @@ export function useAuth(): AuthState & AuthActions {
           kycStatus: false,
         });
       }
-    } catch (err: any) {
+    } catch (err: unknown) {
       console.error('Google sign in error:', err);
-      setError(err.message || 'Failed to sign in with Google');
+      const errorMessage = err instanceof Error ? err.message : 'Failed to sign in with Google';
+      setError(errorMessage);
       throw err;
     } finally {
       setLoading(false);
@@ -174,9 +177,10 @@ export function useAuth(): AuthState & AuthActions {
       await firebaseSignOut(auth);
       setUser(null);
       setFirebaseUser(null);
-    } catch (err: any) {
+    } catch (err: unknown) {
       console.error('Sign out error:', err);
-      setError(err.message || 'Failed to sign out');
+      const errorMessage = err instanceof Error ? err.message : 'Failed to sign out';
+      setError(errorMessage);
       throw err;
     } finally {
       setLoading(false);

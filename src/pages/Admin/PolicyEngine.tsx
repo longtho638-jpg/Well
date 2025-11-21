@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { AlertTriangle, Save, DollarSign, Users, TrendingUp, Zap, Target } from 'lucide-react';
+import { useTranslation } from '@/hooks';
 
 /**
  * POLICY ENGINE v2.0
@@ -14,6 +15,7 @@ import { AlertTriangle, Save, DollarSign, Users, TrendingUp, Zap, Target } from 
  */
 
 const PolicyEngine: React.FC = () => {
+  const t = useTranslation();
   // 1. Commission Config State (3 Tầng)
   const [retailComm, setRetailComm] = useState(25);
   const [agencyBonus, setAgencyBonus] = useState(10);
@@ -48,7 +50,7 @@ const PolicyEngine: React.FC = () => {
       timestamp: new Date().toISOString(),
     };
     localStorage.setItem('policy_engine_config', JSON.stringify(config));
-    alert('✅ Policy Configuration Saved Successfully!');
+    alert(t('admin.policyEngine.saveSuccess'));
   };
 
   return (
@@ -58,15 +60,15 @@ const PolicyEngine: React.FC = () => {
         <div>
           <h2 className="text-2xl font-display font-bold text-white flex items-center gap-2">
             <div className="w-3 h-3 rounded-full bg-green-500 animate-pulse" />
-            POLICY ENGINE v2.0
+            {t('admin.policyEngine.title')}
           </h2>
-          <p className="text-slate-400 text-sm mt-1">Trung tâm điều phối chiến lược & Dòng tiền</p>
+          <p className="text-slate-400 text-sm mt-1">{t('admin.policyEngine.subtitle')}</p>
         </div>
         <button
           onClick={handleSaveConfig}
           className="flex items-center gap-2 bg-[#FFBF00] text-[#00575A] px-4 py-2 rounded-lg font-bold hover:bg-yellow-400 transition-all shadow-lg"
         >
-          <Save size={18} /> Lưu Cấu Hình
+          <Save size={18} /> {t('admin.policyEngine.saveConfig')}
         </button>
       </div>
 
@@ -80,13 +82,13 @@ const PolicyEngine: React.FC = () => {
             className="bg-slate-800 p-6 rounded-xl border border-slate-700"
           >
             <h3 className="text-lg font-bold mb-4 text-teal-400 flex items-center gap-2">
-              <DollarSign size={20} /> Cấu Trúc Hoa Hồng (Multi-tier)
+              <DollarSign size={20} /> {t('admin.policyEngine.commissionStructure.title')}
             </h3>
 
             {/* Retail */}
             <div className="mb-6">
               <div className="flex justify-between mb-2">
-                <label className="text-sm font-medium">Chiết khấu Bán lẻ (Retail Discount)</label>
+                <label className="text-sm font-medium">{t('admin.policyEngine.commissionStructure.retailDiscount.label')}</label>
                 <motion.span
                   key={retailComm}
                   initial={{ scale: 1.2 }}
@@ -104,13 +106,13 @@ const PolicyEngine: React.FC = () => {
                 onChange={(e) => setRetailComm(Number(e.target.value))}
                 className="w-full accent-teal-500 h-2 bg-slate-600 rounded-lg appearance-none cursor-pointer"
               />
-              <p className="text-xs text-slate-500 mt-1">Dành cho người bán trực tiếp (Dropshipping).</p>
+              <p className="text-xs text-slate-500 mt-1">{t('admin.policyEngine.commissionStructure.retailDiscount.description')}</p>
             </div>
 
             {/* Agency */}
             <div className="mb-6">
               <div className="flex justify-between mb-2">
-                <label className="text-sm font-medium">Thưởng Quản lý (Agency Bonus)</label>
+                <label className="text-sm font-medium">{t('admin.policyEngine.commissionStructure.agencyBonus.label')}</label>
                 <motion.span
                   key={agencyBonus}
                   initial={{ scale: 1.2 }}
@@ -128,13 +130,13 @@ const PolicyEngine: React.FC = () => {
                 onChange={(e) => setAgencyBonus(Number(e.target.value))}
                 className="w-full accent-blue-500 h-2 bg-slate-600 rounded-lg appearance-none cursor-pointer"
               />
-              <p className="text-xs text-slate-500 mt-1">Thưởng dựa trên doanh số nhóm (Volume-based).</p>
+              <p className="text-xs text-slate-500 mt-1">{t('admin.policyEngine.commissionStructure.agencyBonus.description')}</p>
             </div>
 
             {/* Elite */}
             <div className="mb-6">
               <div className="flex justify-between mb-2">
-                <label className="text-sm font-medium">Quỹ Tinh hoa (Elite Pool)</label>
+                <label className="text-sm font-medium">{t('admin.policyEngine.commissionStructure.elitePool.label')}</label>
                 <motion.span
                   key={elitePool}
                   initial={{ scale: 1.2 }}
@@ -152,7 +154,7 @@ const PolicyEngine: React.FC = () => {
                 onChange={(e) => setElitePool(Number(e.target.value))}
                 className="w-full accent-purple-500 h-2 bg-slate-600 rounded-lg appearance-none cursor-pointer"
               />
-              <p className="text-xs text-slate-500 mt-1">Đồng chia cho Top 12 Tướng (The Zodiac).</p>
+              <p className="text-xs text-slate-500 mt-1">{t('admin.policyEngine.commissionStructure.elitePool.description')}</p>
             </div>
 
             {/* Total Monitor */}
@@ -164,7 +166,7 @@ const PolicyEngine: React.FC = () => {
               className="p-4 rounded-lg border transition-all"
             >
               <div className="flex justify-between items-center">
-                <span className="text-sm font-bold uppercase">Tổng Payout (Max 45%)</span>
+                <span className="text-sm font-bold uppercase">{t('admin.policyEngine.totalMonitor.label')}</span>
                 <motion.span
                   key={totalPayoutPercent}
                   initial={{ scale: 1.3 }}
@@ -181,7 +183,7 @@ const PolicyEngine: React.FC = () => {
                   className="flex items-center gap-2 text-red-400 text-xs mt-2"
                 >
                   <AlertTriangle size={14} />
-                  <span>Cảnh báo: Payout quá cao có thể gây thâm hụt dòng tiền vận hành!</span>
+                  <span>{t('admin.policyEngine.totalMonitor.warningMessage')}</span>
                 </motion.div>
               )}
             </motion.div>
@@ -195,12 +197,12 @@ const PolicyEngine: React.FC = () => {
             className="bg-slate-800 p-6 rounded-xl border border-slate-700"
           >
             <h3 className="text-lg font-bold mb-4 text-teal-400 flex items-center gap-2">
-              <Target size={20} /> Luật Chơi & Kích Hoạt
+              <Target size={20} /> {t('admin.policyEngine.gameRules.title')}
             </h3>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
                 <label className="block text-xs text-slate-400 mb-1">
-                  Điều kiện Kích hoạt (Pro Partner)
+                  {t('admin.policyEngine.gameRules.activationThreshold')}
                 </label>
                 <div className="relative">
                   <input
@@ -209,11 +211,11 @@ const PolicyEngine: React.FC = () => {
                     onChange={(e) => setActivationThreshold(Number(e.target.value))}
                     className="w-full bg-slate-900 border border-slate-600 rounded-lg p-2 text-white focus:border-teal-500 outline-none"
                   />
-                  <span className="absolute right-3 top-2 text-slate-500 text-xs">VND</span>
+                  <span className="absolute right-3 top-2 text-slate-500 text-xs">{t('admin.policyEngine.gameRules.units.vnd')}</span>
                 </div>
               </div>
               <div>
-                <label className="block text-xs text-slate-400 mb-1">White-label Trigger (GMV)</label>
+                <label className="block text-xs text-slate-400 mb-1">{t('admin.policyEngine.gameRules.whiteLabelGMV')}</label>
                 <div className="relative">
                   <input
                     type="number"
@@ -221,12 +223,12 @@ const PolicyEngine: React.FC = () => {
                     onChange={(e) => setWhiteLabelGMV(Number(e.target.value))}
                     className="w-full bg-slate-900 border border-slate-600 rounded-lg p-2 text-white focus:border-teal-500 outline-none"
                   />
-                  <span className="absolute right-3 top-2 text-slate-500 text-xs">VND</span>
+                  <span className="absolute right-3 top-2 text-slate-500 text-xs">{t('admin.policyEngine.gameRules.units.vnd')}</span>
                 </div>
               </div>
               <div className="md:col-span-2">
                 <label className="block text-xs text-slate-400 mb-1">
-                  White-label Trigger (Active Partners)
+                  {t('admin.policyEngine.gameRules.whiteLabelPartners')}
                 </label>
                 <div className="relative">
                   <input
@@ -235,7 +237,7 @@ const PolicyEngine: React.FC = () => {
                     onChange={(e) => setWhiteLabelPartners(Number(e.target.value))}
                     className="w-full bg-slate-900 border border-slate-600 rounded-lg p-2 text-white focus:border-teal-500 outline-none"
                   />
-                  <span className="absolute right-3 top-2 text-slate-500 text-xs">Partners</span>
+                  <span className="absolute right-3 top-2 text-slate-500 text-xs">{t('admin.policyEngine.gameRules.units.partners')}</span>
                 </div>
               </div>
             </div>
@@ -251,13 +253,13 @@ const PolicyEngine: React.FC = () => {
             className="bg-gradient-to-b from-slate-800 to-slate-900 p-6 rounded-xl border border-slate-700 h-full"
           >
             <h3 className="text-lg font-bold mb-6 text-[#FFBF00] flex items-center gap-2">
-              <TrendingUp size={20} /> Mô Phỏng Dòng Tiền (VC View)
+              <TrendingUp size={20} /> {t('admin.policyEngine.simulation.title')}
             </h3>
 
             {/* Inputs */}
             <div className="space-y-4 mb-8">
               <div>
-                <label className="text-xs text-slate-400">Số lượng Partner giả định</label>
+                <label className="text-xs text-slate-400">{t('admin.policyEngine.simulation.partnersCount')}</label>
                 <input
                   type="range"
                   min="100"
@@ -267,10 +269,10 @@ const PolicyEngine: React.FC = () => {
                   onChange={(e) => setSimPartners(Number(e.target.value))}
                   className="w-full accent-white h-1 bg-slate-600 rounded-lg cursor-pointer mt-2"
                 />
-                <div className="text-right font-mono text-teal-400">{simPartners.toLocaleString()} người</div>
+                <div className="text-right font-mono text-teal-400">{simPartners.toLocaleString()} {t('admin.policyEngine.simulation.partnersUnit')}</div>
               </div>
               <div>
-                <label className="text-xs text-slate-400">AOV (Giá trị đơn trung bình)</label>
+                <label className="text-xs text-slate-400">{t('admin.policyEngine.simulation.aov')}</label>
                 <input
                   type="number"
                   value={simAOV}
@@ -279,7 +281,7 @@ const PolicyEngine: React.FC = () => {
                 />
               </div>
               <div>
-                <label className="text-xs text-slate-400">Chi phí cố định (Fixed Cost/Tháng)</label>
+                <label className="text-xs text-slate-400">{t('admin.policyEngine.simulation.fixedCost')}</label>
                 <input
                   type="number"
                   value={fixedCost}
@@ -294,7 +296,7 @@ const PolicyEngine: React.FC = () => {
               <div className="flex justify-between items-center">
                 <span className="text-slate-400 flex items-center gap-2">
                   <Zap size={14} className="text-teal-400" />
-                  Tổng Doanh Thu (GMV)
+                  {t('admin.policyEngine.simulation.totalRevenue')}
                 </span>
                 <motion.span
                   key={simGMV}
@@ -306,7 +308,7 @@ const PolicyEngine: React.FC = () => {
                 </motion.span>
               </div>
               <div className="flex justify-between items-center">
-                <span className="text-slate-400">Tổng Chi Trả (Payout)</span>
+                <span className="text-slate-400">{t('admin.policyEngine.simulation.totalPayout')}</span>
                 <motion.span
                   key={simTotalPayout}
                   initial={{ scale: 1.1, color: '#FFBF00' }}
@@ -317,13 +319,13 @@ const PolicyEngine: React.FC = () => {
                 </motion.span>
               </div>
               <div className="flex justify-between items-center">
-                <span className="text-slate-400">Chi Phí Cố Định</span>
+                <span className="text-slate-400">{t('admin.policyEngine.simulation.fixedCostLabel')}</span>
                 <span className="text-lg font-bold text-orange-400">-{formatVND(fixedCost)}</span>
               </div>
 
               <div className="mt-6 p-4 bg-teal-900/30 rounded-xl border border-teal-500/30">
                 <div className="flex justify-between items-center mb-1">
-                  <span className="text-teal-200 font-medium">Lợi Nhuận Ròng (EBITDA)</span>
+                  <span className="text-teal-200 font-medium">{t('admin.policyEngine.simulation.netProfit')}</span>
                   <motion.span
                     key={simProfit}
                     initial={{ scale: 1.2 }}
@@ -334,7 +336,7 @@ const PolicyEngine: React.FC = () => {
                   </motion.span>
                 </div>
                 <div className="text-right text-xs text-slate-400">
-                  Margin:{' '}
+                  {t('admin.policyEngine.simulation.margin')}{' '}
                   <span className={profitMargin > 0 ? 'text-green-400' : 'text-red-400'}>
                     {profitMargin.toFixed(1)}%
                   </span>
@@ -344,7 +346,7 @@ const PolicyEngine: React.FC = () => {
               {/* Performance Indicator */}
               <div className="mt-4 p-3 bg-slate-800/50 rounded-lg border border-slate-700">
                 <div className="flex items-center justify-between text-xs">
-                  <span className="text-slate-400">Health Score</span>
+                  <span className="text-slate-400">{t('admin.policyEngine.simulation.healthScore')}</span>
                   <div className="flex items-center gap-2">
                     <div className="w-32 h-2 bg-slate-700 rounded-full overflow-hidden">
                       <motion.div
@@ -362,7 +364,7 @@ const PolicyEngine: React.FC = () => {
                         profitMargin > 20 ? 'text-green-400' : profitMargin > 10 ? 'text-yellow-400' : 'text-red-400'
                       }`}
                     >
-                      {profitMargin > 20 ? 'Excellent' : profitMargin > 10 ? 'Good' : 'At Risk'}
+                      {profitMargin > 20 ? t('admin.policyEngine.simulation.healthLabels.excellent') : profitMargin > 10 ? t('admin.policyEngine.simulation.healthLabels.good') : t('admin.policyEngine.simulation.healthLabels.atRisk')}
                     </span>
                   </div>
                 </div>

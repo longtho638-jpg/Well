@@ -19,6 +19,7 @@ import { useStore } from '@/store';
 import { useTranslation } from '@/hooks';
 import type { Transaction, TokenType } from '@/types';
 import { formatToken, calculateStakingReward } from '@/utils/tokenomics';
+import { TOKENOMICS_CONSTANTS } from '@/utils/constants';
 
 // Counter Animation Component
 const AnimatedCounter: React.FC<{ value: number; decimals?: number }> = ({
@@ -127,7 +128,7 @@ export const Wallet: React.FC = () => {
                   <p className="text-gray-400 text-sm font-medium">
                     {t('wallet.balance.shopToken')}
                   </p>
-                  <p className="text-gray-500 text-xs">VND Stablecoin</p>
+                  <p className="text-gray-500 text-xs">{t('wallet.balance.shopTokenDescription')}</p>
                 </div>
               </div>
               <div className="px-3 py-1 rounded-full bg-teal-500/20 text-teal-400 text-xs font-semibold">
@@ -176,7 +177,7 @@ export const Wallet: React.FC = () => {
             <div className="flex gap-3">
               <button className="flex-1 bg-gradient-to-r from-teal-500 to-cyan-500 hover:from-teal-600 hover:to-cyan-600 text-white font-semibold py-3 rounded-xl transition-all flex items-center justify-center gap-2 shadow-lg shadow-teal-500/30">
                 <Download className="w-4 h-4" />
-                Nạp SHOP
+                {t('wallet.actions.deposit')}
               </button>
               <button className="flex-1 bg-white/10 hover:bg-white/20 text-white font-semibold py-3 rounded-xl transition-all flex items-center justify-center gap-2 border border-white/20">
                 <Upload className="w-4 h-4" />
@@ -208,11 +209,11 @@ export const Wallet: React.FC = () => {
                   <p className="text-gray-400 text-sm font-medium">
                     {t('wallet.balance.growToken')}
                   </p>
-                  <p className="text-gray-500 text-xs">Governance Token</p>
+                  <p className="text-gray-500 text-xs">{t('wallet.balance.growTokenDescription')}</p>
                 </div>
               </div>
               <div className="px-3 py-1 rounded-full bg-purple-500/20 text-purple-400 text-xs font-semibold">
-                {t('wallet.staking.apy')} 12%
+                {t('wallet.staking.apy')} {(TOKENOMICS_CONSTANTS.DEFAULT_APY * 100).toFixed(0)}%
               </div>
             </div>
 
@@ -262,7 +263,7 @@ export const Wallet: React.FC = () => {
                       {t('wallet.staking.estimatedReward')} (90 {t('wallet.staking.days', { count: 90 })})
                     </p>
                     <p className="text-purple-300 font-mono text-lg font-semibold">
-                      +{calculateStakingReward(user.stakedGrowBalance, 0.12, 90).toFixed(2)} GROW
+                      +{calculateStakingReward(user.stakedGrowBalance, TOKENOMICS_CONSTANTS.DEFAULT_APY, 90).toFixed(2)} GROW
                     </p>
                   </div>
                   <TrendingUp className="w-6 h-6 text-purple-400" />
@@ -425,7 +426,7 @@ export const Wallet: React.FC = () => {
                         target="_blank"
                         rel="noopener noreferrer"
                         className="p-1.5 hover:bg-white/10 rounded-lg transition-colors group"
-                        title="View on BSCScan"
+                        title={t('wallet.transactions.viewOnBscscan')}
                       >
                         <ExternalLink className="w-4 h-4 text-gray-400 group-hover:text-[#00FFA3]" />
                       </a>
@@ -446,7 +447,7 @@ export const Wallet: React.FC = () => {
             </p>
             <p className="text-gray-500 text-sm">
               {filter === 'all'
-                ? 'Your transaction history will appear here'
+                ? t('wallet.transactions.emptyState')
                 : `No ${filter} transactions yet`}
             </p>
           </div>

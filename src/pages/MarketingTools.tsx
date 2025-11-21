@@ -151,7 +151,7 @@ export default function MarketingTools() {
           url: affiliateLink
         });
       } catch (err) {
-        console.log('Share cancelled');
+        // Share cancelled or failed - silently ignore
       }
     } else {
       handleCopyText(affiliateLink, 'qr-link');

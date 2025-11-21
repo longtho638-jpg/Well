@@ -1,10 +1,12 @@
 /**
  * BUSINESS LOGIC RULE: VN_PIT_10
- * 
+ *
  * According to Vietnam Circular 111/2013/TT-BTC:
  * Income from commissions/bonuses exceeding 2,000,000 VND per payment
  * is subject to a provisional 10% Personal Income Tax (PIT) deduction.
  */
+
+import { TAX_CONSTANTS } from './constants';
 
 export interface TaxResult {
   gross: number;
@@ -13,11 +15,6 @@ export interface TaxResult {
   isTaxable: boolean;
   taxRate: number;
 }
-
-export const TAX_CONSTANTS = {
-  THRESHOLD: 2000000, // 2.000.000 VND
-  RATE: 0.10,         // 10%
-};
 
 export const calculatePIT = (amount: number): TaxResult => {
   const isTaxable = amount >= TAX_CONSTANTS.THRESHOLD;

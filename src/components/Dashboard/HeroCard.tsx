@@ -2,6 +2,7 @@
 import React, { useState } from 'react';
 import { User } from '../../types';
 import { formatVND } from '../../utils/format';
+import { KPI_CONSTANTS } from '../../utils/constants';
 import { useTranslation } from '../../hooks';
 import { motion } from 'framer-motion';
 import { Copy, Trophy, Zap, ChevronRight, Check } from 'lucide-react';
@@ -15,7 +16,7 @@ export const HeroCard: React.FC<Props> = ({ user }) => {
   const [copied, setCopied] = useState(false);
 
   // Gamification Logic: Founder Club Quest
-  const TARGET_VOLUME = 100000000; // 100M VND
+  const TARGET_VOLUME = KPI_CONSTANTS.FOUNDER_CLUB_VOLUME;
   const progressRaw = (user.teamVolume / TARGET_VOLUME) * 100;
   const progressPercent = Math.min(progressRaw, 100);
   const remaining = Math.max(TARGET_VOLUME - user.teamVolume, 0);

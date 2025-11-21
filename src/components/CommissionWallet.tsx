@@ -5,8 +5,10 @@ import { formatVND } from '../utils/format';
 import { calculatePIT } from '../utils/tax';
 import { useStore } from '../store';
 import { WithdrawalModal } from './WithdrawalModal';
+import { useTranslation } from '../hooks';
 
 const CommissionWallet: React.FC = () => {
+  const t = useTranslation();
   const { transactions } = useStore();
   const [isWithdrawalModalOpen, setIsWithdrawalModalOpen] = useState(false);
 
@@ -66,7 +68,7 @@ const CommissionWallet: React.FC = () => {
             
             <div className="flex justify-between items-start mb-8 relative z-10">
                 <div>
-                    <p className="text-teal-200 text-sm uppercase tracking-wider font-medium mb-1">Withdrawable Balance</p>
+                    <p className="text-teal-200 text-sm uppercase tracking-wider font-medium mb-1">{t('wallet.commission.withdrawableBalance')}</p>
                     <h2 className="text-4xl font-bold tracking-tight">{formatVND(totalNet)}</h2>
                 </div>
                 <div className="bg-white/10 p-3 rounded-xl backdrop-blur-sm border border-white/10"><Wallet className="w-6 h-6 text-brand-accent" /></div>
@@ -74,12 +76,12 @@ const CommissionWallet: React.FC = () => {
 
             <div className="grid grid-cols-2 gap-8 border-t border-white/10 pt-6 relative z-10">
                 <div>
-                    <p className="text-teal-300 text-xs mb-1">Total Earnings (Gross)</p>
+                    <p className="text-teal-300 text-xs mb-1">{t('wallet.commission.totalEarningsGross')}</p>
                     <p className="font-semibold text-lg">{formatVND(totalGross)}</p>
                 </div>
                 <div>
                     <p className="text-red-300 text-xs mb-1 flex items-center gap-1">
-                        Withheld Tax (PIT 10%)
+                        {t('wallet.commission.withheldTaxPit')}
                         <span className="group/tooltip relative"><Info className="w-3 h-3 cursor-help" /></span>
                     </p>
                     <p className="font-semibold text-lg text-red-200">-{formatVND(totalTax)}</p>
@@ -90,9 +92,9 @@ const CommissionWallet: React.FC = () => {
         <div className="flex flex-col gap-4">
             <div className="flex-1 bg-white p-6 rounded-2xl shadow-sm border border-gray-100 flex flex-col justify-center items-center text-center">
                 <div className="bg-yellow-50 p-3 rounded-full mb-3"><ShieldAlert className="w-6 h-6 text-yellow-600" /></div>
-                <h4 className="font-bold text-gray-800 mb-1">Tax Compliance Mode</h4>
+                <h4 className="font-bold text-gray-800 mb-1">{t('wallet.commission.taxComplianceMode')}</h4>
                 <p className="text-xs text-gray-500 leading-relaxed">
-                    WellNexus automatically deducts <span className="font-bold text-gray-700">10% PIT</span> for income exceeding 2,000,000 VNĐ per Vietnam Law.
+                    {t('wallet.commission.taxComplianceDescription', { taxRate: '10%', threshold: '2,000,000 VNĐ' })}
                 </p>
             </div>
             <button
@@ -100,32 +102,32 @@ const CommissionWallet: React.FC = () => {
               className="bg-brand-accent hover:bg-yellow-400 text-brand-primary font-bold py-4 rounded-xl shadow-lg shadow-yellow-900/10 transition transform active:scale-95 flex items-center justify-center gap-2"
               aria-label="Open withdrawal request modal"
             >
-                <ArrowDownLeft className="w-5 h-5" /> Request Withdrawal
+                <ArrowDownLeft className="w-5 h-5" /> {t('wallet.commission.requestWithdrawal')}
             </button>
         </div>
       </motion.div>
 
       <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.2 }} className="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
         <div className="p-6 border-b border-gray-100 flex justify-between items-center">
-            <h3 className="font-bold text-gray-800">Earnings History</h3>
+            <h3 className="font-bold text-gray-800">{t('wallet.commission.earningsHistory')}</h3>
             <button
               onClick={handleExportCSV}
               className="text-sm text-brand-primary font-medium flex items-center gap-1 hover:underline"
               aria-label="Export earnings statement as CSV"
             >
-              <Download className="w-4 h-4" /> Export Statement
+              <Download className="w-4 h-4" /> {t('wallet.commission.exportStatement')}
             </button>
         </div>
         <div className="overflow-x-auto">
           <table className="w-full text-sm text-left">
             <thead className="text-xs text-gray-400 uppercase bg-gray-50/50">
               <tr>
-                <th scope="col" className="px-6 py-4 font-medium">Date & Ref</th>
-                <th scope="col" className="px-6 py-4 font-medium">Type</th>
-                <th scope="col" className="px-6 py-4 font-medium text-right">Gross Amount</th>
-                <th scope="col" className="px-6 py-4 font-medium text-right">PIT (10%)</th>
-                <th scope="col" className="px-6 py-4 font-medium text-right">Net Received</th>
-                <th scope="col" className="px-6 py-4 font-medium text-center">Status</th>
+                <th scope="col" className="px-6 py-4 font-medium">{t('wallet.commission.tableHeaders.dateRef')}</th>
+                <th scope="col" className="px-6 py-4 font-medium">{t('wallet.commission.tableHeaders.type')}</th>
+                <th scope="col" className="px-6 py-4 font-medium text-right">{t('wallet.commission.tableHeaders.grossAmount')}</th>
+                <th scope="col" className="px-6 py-4 font-medium text-right">{t('wallet.commission.tableHeaders.pit')}</th>
+                <th scope="col" className="px-6 py-4 font-medium text-right">{t('wallet.commission.tableHeaders.netReceived')}</th>
+                <th scope="col" className="px-6 py-4 font-medium text-center">{t('wallet.commission.tableHeaders.status')}</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-gray-100">

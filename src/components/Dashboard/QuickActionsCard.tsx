@@ -11,7 +11,7 @@ export const QuickActionsCard: React.FC = () => {
 
   const handleSendGiftCard = () => {
     // TODO: Implement gift card sending logic
-    alert('Tính năng gửi Gift Card đang được phát triển!');
+    alert(t('dashboard.quickActions.giftCardAlert'));
   };
 
   const handleShareHealthCheck = () => {
@@ -19,29 +19,28 @@ export const QuickActionsCard: React.FC = () => {
     if (navigator.share) {
       navigator.share({
         title: 'WellNexus Health Check',
-        text: 'Kiểm tra sức khỏe miễn phí cùng WellNexus!',
+        text: t('dashboard.quickActions.healthCheckShareText'),
         url: healthCheckLink,
       }).catch(() => {
         // Fallback to clipboard
         navigator.clipboard.writeText(healthCheckLink);
-        alert('Link đã được sao chép vào clipboard!');
+        alert(t('dashboard.quickActions.linkCopied'));
       });
     } else {
       navigator.clipboard.writeText(healthCheckLink);
-      alert('Link đã được sao chép vào clipboard!');
+      alert(t('dashboard.quickActions.linkCopied'));
     }
   };
 
   const handleShareAchievement = () => {
     // Create achievement message based on user's current stats
-    const achievementText = `🎉 Thành tích WellNexus của tôi:\n\n` +
-      `🏆 Cấp bậc: ${user.rank}\n` +
-      `💰 Doanh số: ${formatVND(user.totalSales)}\n` +
-      `👥 Team Volume: ${formatVND(user.teamVolume)}\n\n` +
-      `Tham gia cùng tôi tại WellNexus! 💪`;
+    const achievementText = t('dashboard.quickActions.achievementTemplate')
+      .replace('{rank}', user.rank)
+      .replace('{sales}', formatVND(user.totalSales))
+      .replace('{teamVolume}', formatVND(user.teamVolume));
 
     const shareData = {
-      title: 'Thành tích WellNexus',
+      title: t('dashboard.quickActions.achievementTitle'),
       text: achievementText,
       url: user.referralLink || 'https://wellnexus.app',
     };
@@ -51,20 +50,20 @@ export const QuickActionsCard: React.FC = () => {
         // User cancelled or error occurred, fallback to clipboard
         if (error.name !== 'AbortError') {
           navigator.clipboard.writeText(achievementText + '\n\n' + shareData.url);
-          alert('Thành tích đã được sao chép vào clipboard!');
+          alert(t('dashboard.quickActions.achievementCopied'));
         }
       });
     } else {
       // Fallback to clipboard for browsers that don't support Web Share API
       navigator.clipboard.writeText(achievementText + '\n\n' + shareData.url);
-      alert('Thành tích đã được sao chép vào clipboard!');
+      alert(t('dashboard.quickActions.achievementCopied'));
     }
   };
 
   const quickActions = [
     {
       id: 'gift-card',
-      label: 'Gửi Gift Card',
+      label: t('dashboard.quickActions.giftCard'),
       icon: Gift,
       color: 'from-pink-500 to-rose-600',
       bgColor: 'bg-pink-50',
@@ -74,13 +73,13 @@ export const QuickActionsCard: React.FC = () => {
     },
     {
       id: 'health-check',
-      label: 'Chia sẻ Link Health Check',
+      label: t('dashboard.quickActions.healthCheckLabel'),
       icon: Heart,
       color: 'from-red-500 to-pink-600',
       bgColor: 'bg-red-50',
       iconColor: 'text-red-600',
       onClick: handleShareHealthCheck,
-      description: 'Gửi link kiểm tra sức khỏe',
+      description: t('dashboard.quickActions.healthCheckDesc'),
     },
     {
       id: 'share-achievement',
@@ -107,7 +106,7 @@ export const QuickActionsCard: React.FC = () => {
         </div>
         <div>
           <h3 className="font-bold text-gray-900">{t('dashboard.quickActions.title')}</h3>
-          <p className="text-xs text-gray-500">Công cụ hỗ trợ kinh doanh</p>
+          <p className="text-xs text-gray-500">{t('dashboard.quickActions.subtitle')}</p>
         </div>
       </div>
 
@@ -165,7 +164,7 @@ export const QuickActionsCard: React.FC = () => {
         className="mt-4 pt-4 border-t border-gray-100"
       >
         <p className="text-xs text-gray-400 text-center">
-          💡 Tip: Sử dụng các công cụ này để tăng tương tác với khách hàng
+          {t('dashboard.quickActions.footerTip')}
         </p>
       </motion.div>
     </motion.div>

@@ -6,11 +6,13 @@ import { formatVND } from '../utils/format';
 import { motion } from 'framer-motion';
 import { ArrowLeft, ShoppingBag, Share2, CheckCircle, Loader2, ShieldCheck, Package, Info, Leaf, Zap, Clock } from 'lucide-react';
 import { checkCompliance } from '../services/geminiService';
+import { useTranslation } from '@/hooks/useTranslation';
 
 export const ProductDetail: React.FC = () => {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
   const { products, simulateOrder } = useStore();
+  const t = useTranslation();
   
   const product = products.find(p => p.id === id);
   const [activeTab, setActiveTab] = useState<'benefits' | 'ingredients' | 'usage'>('benefits');
@@ -23,10 +25,10 @@ export const ProductDetail: React.FC = () => {
         <div className="bg-gray-100 p-4 rounded-full mb-4">
             <Package className="w-8 h-8 text-gray-400" />
         </div>
-        <h2 className="text-2xl font-bold text-brand-dark mb-2">Product Not Found</h2>
-        <p className="text-gray-500 mb-6">The product you are looking for might have been removed.</p>
+        <h2 className="text-2xl font-bold text-brand-dark mb-2">{t('marketplace.productDetail.notFound')}</h2>
+        <p className="text-gray-500 mb-6">{t('marketplace.productDetail.notFoundDescription')}</p>
         <button onClick={() => navigate('/marketplace')} className="bg-brand-primary text-white px-6 py-2 rounded-lg font-medium hover:bg-brand-dark transition-colors">
-            Return to Marketplace
+            {t('marketplace.productDetail.returnToMarketplace')}
         </button>
       </div>
     );
@@ -46,28 +48,40 @@ export const ProductDetail: React.FC = () => {
 
   const handleShare = () => {
     // Mock share functionality
-    alert(`Link copied: wellnexus.vn/ref/VN-888/product/${product.id}`);
+    alert(t('marketplace.productDetail.linkCopied', { id: product.id }));
     checkCompliance(product.description);
   };
 
   const commissionAmount = product.price * product.commissionRate;
   const outOfStock = product.stock <= 0;
 
-  // Mock Data for Enhanced Details
+  // Tab type definition
+  type TabId = 'benefits' | 'ingredients' | 'usage';
+
+  // Mock Data for Enhanced Details (now using translations)
   const MOCK_DETAILS = {
     ingredients: [
-        "Premium Vitamin C (Ascorbic Acid)",
-        "Organic Zinc Gluconate", 
-        "Elderberry Extract (Sambucus nigra)",
-        "Echinacea Purpurea",
-        "Natural Flavorings"
+        t('marketplace.productDetail.mockIngredients.vitaminC'),
+        t('marketplace.productDetail.mockIngredients.zinc'),
+        t('marketplace.productDetail.mockIngredients.elderberry'),
+        t('marketplace.productDetail.mockIngredients.echinacea'),
+        t('marketplace.productDetail.mockIngredients.flavorings')
     ],
     benefits: [
-        { title: "Boosts Immunity", desc: "Strengthens your body's natural defenses." },
-        { title: "Increases Energy", desc: "Reduces fatigue and improves focus." },
-        { title: "Skin Health", desc: "Promotes collagen production for radiant skin." }
+        {
+          title: t('marketplace.productDetail.mockBenefits.boostsImmunity.title'),
+          desc: t('marketplace.productDetail.mockBenefits.boostsImmunity.desc')
+        },
+        {
+          title: t('marketplace.productDetail.mockBenefits.increasesEnergy.title'),
+          desc: t('marketplace.productDetail.mockBenefits.increasesEnergy.desc')
+        },
+        {
+          title: t('marketplace.productDetail.mockBenefits.skinHealth.title'),
+          desc: t('marketplace.productDetail.mockBenefits.skinHealth.desc')
+        }
     ],
-    usage: "Take 1 tablet daily with water, preferably after a meal. Do not exceed recommended dose."
+    usage: t('marketplace.productDetail.mockUsage')
   };
 
   return (
@@ -80,18 +94,18 @@ export const ProductDetail: React.FC = () => {
       {/* Breadcrumb / Back */}
       <nav className="flex items-center gap-2 text-sm text-gray-500 mb-6">
         <button onClick={() => navigate('/marketplace')} className="hover:text-brand-primary flex items-center gap-1">
-            Marketplace
+            {t('marketplace.productDetail.marketplace')}
         </button>
         <span>/</span>
         <span className="text-gray-900 font-medium truncate max-w-[200px]">{product.name}</span>
       </nav>
 
-      <button 
-        onClick={() => navigate('/marketplace')} 
+      <button
+        onClick={() => navigate('/marketplace')}
         className="flex items-center gap-2 text-gray-500 hover:text-brand-primary mb-6 font-medium transition-colors group"
       >
         <ArrowLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform" />
-        Back to Products
+        {t('marketplace.productDetail.backToProducts')}
       </button>
 
       <div className="bg-white rounded-3xl shadow-sm border border-gray-100 overflow-hidden">
@@ -105,12 +119,12 @@ export const ProductDetail: React.FC = () => {
                 />
                 {outOfStock && (
                     <div className="absolute inset-0 flex items-center justify-center bg-white/40 backdrop-blur-sm">
-                        <span className="bg-gray-900 text-white text-lg font-bold px-6 py-2 rounded-full shadow-lg">Out of Stock</span>
+                        <span className="bg-gray-900 text-white text-lg font-bold px-6 py-2 rounded-full shadow-lg">{t('marketplace.productDetail.outOfStock')}</span>
                     </div>
                 )}
                 <div className="absolute top-4 left-4">
                     <span className="bg-brand-primary/10 text-brand-primary px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider flex items-center gap-1">
-                        <ShieldCheck className="w-3 h-3" /> Authentic
+                        <ShieldCheck className="w-3 h-3" /> {t('marketplace.productDetail.authentic')}
                     </span>
                 </div>
             </div>
@@ -127,11 +141,11 @@ export const ProductDetail: React.FC = () => {
                     <div className="flex items-center gap-4 mb-4">
                         <div className="flex items-center gap-1 text-brand-accent">
                             <ShieldCheck className="w-4 h-4 fill-current" />
-                            <span className="text-sm font-bold text-gray-700">4.9 (128 Reviews)</span>
+                            <span className="text-sm font-bold text-gray-700">{t('marketplace.productDetail.reviewsCount')}</span>
                         </div>
                         <div className="text-gray-300">|</div>
                         <div className="text-sm text-green-600 font-medium flex items-center gap-1">
-                            <CheckCircle className="w-4 h-4" /> In Stock: {product.stock}
+                            <CheckCircle className="w-4 h-4" /> {t('marketplace.productDetail.inStockCount', { count: product.stock })}
                         </div>
                     </div>
                     <p className="text-gray-600 text-lg leading-relaxed">{product.description}</p>
@@ -141,36 +155,36 @@ export const ProductDetail: React.FC = () => {
                 <div className="bg-brand-bg rounded-2xl p-6 mb-8 border border-brand-primary/5">
                     <div className="flex justify-between items-end mb-4 border-b border-gray-200 pb-4">
                         <div>
-                            <p className="text-xs font-bold text-gray-500 uppercase tracking-wider mb-1">Retail Price</p>
+                            <p className="text-xs font-bold text-gray-500 uppercase tracking-wider mb-1">{t('marketplace.productDetail.retailPrice')}</p>
                             <p className="text-3xl font-bold text-brand-dark">{formatVND(product.price)}</p>
                         </div>
                         <div className="text-right">
-                             <p className="text-xs font-bold text-gray-500 uppercase tracking-wider mb-1">Your Commission</p>
+                             <p className="text-xs font-bold text-gray-500 uppercase tracking-wider mb-1">{t('marketplace.productDetail.yourCommission')}</p>
                              <p className="text-2xl font-bold text-brand-accent">{formatVND(commissionAmount)}</p>
                         </div>
                     </div>
                     <div className="flex items-center gap-2 text-xs text-gray-500">
                         <Info className="w-4 h-4 text-brand-primary" />
-                        <span>You earn <span className="font-bold text-gray-900">{product.commissionRate * 100}%</span> on every sale made via your link.</span>
+                        <span dangerouslySetInnerHTML={{ __html: t('marketplace.productDetail.commissionInfo', { rate: product.commissionRate * 100 }) }}></span>
                     </div>
                 </div>
 
                 {/* Action Buttons */}
                 <div className="mt-auto grid grid-cols-1 sm:grid-cols-2 gap-4">
-                    <button 
+                    <button
                         onClick={handleShare}
                         className="flex items-center justify-center gap-2 border-2 border-gray-200 text-gray-700 py-4 rounded-xl font-bold hover:bg-gray-50 hover:border-gray-300 transition-all"
                     >
                         <Share2 className="w-5 h-5" />
-                        Share Link
+                        {t('marketplace.productDetail.shareLink')}
                     </button>
 
-                    <button 
+                    <button
                         onClick={handleBuy}
                         disabled={isBuying || outOfStock || showSuccess}
                         className={`flex items-center justify-center gap-2 py-4 rounded-xl font-bold text-lg transition-all shadow-lg
-                            ${showSuccess 
-                                ? 'bg-green-500 text-white scale-105' 
+                            ${showSuccess
+                                ? 'bg-green-500 text-white scale-105'
                                 : 'bg-brand-accent text-brand-primary hover:bg-yellow-400 hover:-translate-y-1 shadow-yellow-500/20'
                             }
                             ${(outOfStock || isBuying) ? 'opacity-70 cursor-not-allowed transform-none shadow-none' : ''}
@@ -181,12 +195,12 @@ export const ProductDetail: React.FC = () => {
                         ) : showSuccess ? (
                             <>
                                 <CheckCircle className="w-6 h-6" />
-                                Added to Wallet
+                                {t('marketplace.productDetail.addedToWallet')}
                             </>
                         ) : (
                             <>
                                 <ShoppingBag className="w-5 h-5" />
-                                {outOfStock ? 'Out of Stock' : 'Buy Now'}
+                                {outOfStock ? t('marketplace.productDetail.outOfStock') : t('marketplace.productDetail.buyNow')}
                             </>
                         )}
                     </button>
@@ -197,19 +211,19 @@ export const ProductDetail: React.FC = () => {
         {/* Detailed Tabs */}
         <div className="border-t border-gray-100">
             <div className="flex border-b border-gray-100">
-                {[
-                    { id: 'benefits', label: 'Benefits', icon: Zap },
-                    { id: 'ingredients', label: 'Ingredients', icon: Leaf },
-                    { id: 'usage', label: 'How to Use', icon: Clock }
-                ].map((tab) => {
+                {([
+                    { id: 'benefits' as const, label: t('marketplace.productDetail.tabs.benefits'), icon: Zap },
+                    { id: 'ingredients' as const, label: t('marketplace.productDetail.tabs.ingredients'), icon: Leaf },
+                    { id: 'usage' as const, label: t('marketplace.productDetail.tabs.howToUse'), icon: Clock }
+                ] as const).map((tab) => {
                     const Icon = tab.icon;
                     return (
                         <button
                             key={tab.id}
-                            onClick={() => setActiveTab(tab.id as any)}
+                            onClick={() => setActiveTab(tab.id)}
                             className={`flex-1 py-4 flex items-center justify-center gap-2 text-sm font-bold transition-colors border-b-2
-                                ${activeTab === tab.id 
-                                    ? 'border-brand-primary text-brand-primary bg-brand-primary/5' 
+                                ${activeTab === tab.id
+                                    ? 'border-brand-primary text-brand-primary bg-brand-primary/5'
                                     : 'border-transparent text-gray-500 hover:text-gray-800 hover:bg-gray-50'
                                 }`}
                         >
@@ -227,7 +241,7 @@ export const ProductDetail: React.FC = () => {
                 >
                     {activeTab === 'ingredients' && (
                         <div>
-                            <h3 className="font-bold text-gray-900 mb-4">Active Ingredients</h3>
+                            <h3 className="font-bold text-gray-900 mb-4">{t('marketplace.productDetail.activeIngredients')}</h3>
                             <ul className="grid grid-cols-1 md:grid-cols-2 gap-3">
                                 {MOCK_DETAILS.ingredients.map((ing, i) => (
                                     <li key={i} className="flex items-center gap-2 bg-white p-3 rounded-lg border border-gray-100">
@@ -255,7 +269,7 @@ export const ProductDetail: React.FC = () => {
                         <div className="flex items-start gap-4 bg-blue-50 p-6 rounded-xl text-blue-800">
                             <Clock className="w-6 h-6 shrink-0 mt-1" />
                             <div>
-                                <h4 className="font-bold mb-2">Recommended Dosage</h4>
+                                <h4 className="font-bold mb-2">{t('marketplace.productDetail.recommendedDosage')}</h4>
                                 <p>{MOCK_DETAILS.usage}</p>
                             </div>
                         </div>

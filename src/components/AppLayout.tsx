@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Outlet } from 'react-router-dom';
 import { Menu } from 'lucide-react';
 import { Sidebar } from './Sidebar';
+import { useTranslation } from '@/hooks/useTranslation';
 
 /**
  * AppLayout - Master wrapper for all Dashboard/Protected pages
@@ -13,6 +14,7 @@ import { Sidebar } from './Sidebar';
  * - Scroll: Independent scrolling for main content (not entire page)
  */
 export const AppLayout: React.FC = () => {
+  const t = useTranslation();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   // Close mobile menu on escape key
@@ -54,14 +56,14 @@ export const AppLayout: React.FC = () => {
               W
             </div>
             <span className="font-bold text-brand-primary text-lg tracking-tight">
-              WellNexus
+              {t('brand.name')}
             </span>
           </div>
 
           <button
             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
             className="p-2 rounded-full hover:bg-gray-100 active:bg-gray-200 transition-colors"
-            aria-label="Open menu"
+            aria-label={t('common.openMenu')}
           >
             <Menu className="w-6 h-6 text-gray-600" />
           </button>
@@ -82,7 +84,7 @@ export const AppLayout: React.FC = () => {
           <div
             className="flex-1 bg-black/40 backdrop-blur-sm"
             onClick={() => setIsMobileMenuOpen(false)}
-            aria-label="Close menu"
+            aria-label={t('common.closeMenu')}
           />
         </div>
       )}

@@ -3,7 +3,9 @@ import { Modal } from './ui/Modal';
 import { Button } from './ui/Button';
 import { Input } from './ui/Input';
 import { formatVND } from '../utils/format';
+import { QUICK_AMOUNTS } from '../utils/constants';
 import { Wallet, AlertTriangle, CheckCircle2, CreditCard, Building2 } from 'lucide-react';
+import { useTranslation } from '../hooks';
 
 interface WithdrawalModalProps {
   isOpen: boolean;
@@ -16,6 +18,7 @@ export const WithdrawalModal: React.FC<WithdrawalModalProps> = ({
   onClose,
   availableBalance,
 }) => {
+  const t = useTranslation();
   const [amount, setAmount] = useState('');
   const [bankName, setBankName] = useState('');
   const [accountNumber, setAccountNumber] = useState('');
@@ -49,25 +52,25 @@ export const WithdrawalModal: React.FC<WithdrawalModalProps> = ({
     const newErrors: Record<string, string> = {};
 
     if (!amount || parseInt(amount) === 0) {
-      newErrors.amount = 'Please enter an amount';
+      newErrors.amount = t('wallet.withdrawal.errors.enterAmount');
     } else if (parseInt(amount) < MIN_WITHDRAWAL) {
-      newErrors.amount = `Minimum withdrawal is ${formatVND(MIN_WITHDRAWAL)}`;
+      newErrors.amount = t('wallet.withdrawal.errors.minAmount', { amount: formatVND(MIN_WITHDRAWAL) });
     } else if (parseInt(amount) > MAX_WITHDRAWAL) {
-      newErrors.amount = `Amount exceeds available balance`;
+      newErrors.amount = t('wallet.withdrawal.errors.exceedsBalance');
     }
 
     if (!bankName.trim()) {
-      newErrors.bankName = 'Please enter bank name';
+      newErrors.bankName = t('wallet.withdrawal.errors.enterBankName');
     }
 
     if (!accountNumber.trim()) {
-      newErrors.accountNumber = 'Please enter account number';
+      newErrors.accountNumber = t('wallet.withdrawal.errors.enterAccountNumber');
     } else if (!/^\d+$/.test(accountNumber)) {
-      newErrors.accountNumber = 'Account number must contain only numbers';
+      newErrors.accountNumber = t('wallet.withdrawal.errors.accountNumberInvalid');
     }
 
     if (!accountName.trim()) {
-      newErrors.accountName = 'Please enter account holder name';
+      newErrors.accountName = t('wallet.withdrawal.errors.enterAccountName');
     }
 
     setErrors(newErrors);
@@ -117,7 +120,7 @@ export const WithdrawalModal: React.FC<WithdrawalModalProps> = ({
     <Modal
       isOpen={isOpen}
       onClose={handleClose}
-      title="Request Withdrawal"
+      title={t('wallet.withdrawal.modalTitle')}
       maxWidth="lg"
       showCloseButton={!isSubmitting}
     >
@@ -126,9 +129,9 @@ export const WithdrawalModal: React.FC<WithdrawalModalProps> = ({
           <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
             <CheckCircle2 className="w-8 h-8 text-green-600" />
           </div>
-          <h3 className="text-xl font-bold text-gray-900 mb-2">Request Submitted!</h3>
-          <p className="text-gray-600 mb-1">Your withdrawal request has been received.</p>
-          <p className="text-sm text-gray-500">Processing time: 1-3 business days</p>
+          <h3 className="text-xl font-bold text-gray-900 mb-2">{t('wallet.withdrawal.requestSubmitted')}</h3>
+          <p className="text-gray-600 mb-1">{t('wallet.withdrawal.requestReceived')}</p>
+          <p className="text-sm text-gray-500">{t('wallet.withdrawal.processingTimeBusiness')}</p>
         </div>
       ) : (
         <form onSubmit={handleSubmit} className="space-y-6">
@@ -136,7 +139,7 @@ export const WithdrawalModal: React.FC<WithdrawalModalProps> = ({
           <div className="bg-gradient-to-r from-brand-primary to-teal-800 rounded-xl p-5 text-white">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-teal-200 text-xs uppercase tracking-wider mb-1">Available Balance</p>
+                <p className="text-teal-200 text-xs uppercase tracking-wider mb-1">{t('wallet.withdrawal.availableBalance')}</p>
                 <p className="text-2xl font-bold">{formatVND(availableBalance)}</p>
               </div>
               <Wallet className="w-8 h-8 text-brand-accent" />
@@ -146,13 +149,13 @@ export const WithdrawalModal: React.FC<WithdrawalModalProps> = ({
           {/* Amount Input */}
           <div>
             <Input
-              label="Withdrawal Amount"
+              label={t('wallet.withdrawal.withdrawalAmount')}
               type="text"
               value={amount ? formatVND(parseInt(amount)) : ''}
               onChange={handleAmountChange}
-              placeholder="Enter amount"
+              placeholder={t('wallet.withdrawal.enterAmount')}
               error={errors.amount}
-              helperText={`Min: ${formatVND(MIN_WITHDRAWAL)} • Max: ${formatVND(MAX_WITHDRAWAL)}`}
+              helperText={t('wallet.withdrawal.minMaxHelper', { min: formatVND(MIN_WITHDRAWAL), max: formatVND(MAX_WITHDRAWAL) })}
               required
               icon={<Wallet className="w-5 h-5" />}
             />
@@ -161,31 +164,31 @@ export const WithdrawalModal: React.FC<WithdrawalModalProps> = ({
             <div className="grid grid-cols-4 gap-2 mt-3">
               <button
                 type="button"
-                onClick={() => setQuickAmount(0.25)}
+                onClick={() => setQuickAmount(QUICK_AMOUNTS.WITHDRAWAL_MULTIPLIER)}
                 className="px-3 py-2 text-xs font-medium text-brand-primary border border-brand-primary rounded-lg hover:bg-brand-primary hover:text-white transition-colors"
               >
-                25%
+                {t('wallet.withdrawal.quickAmounts.twentyFive')}
               </button>
               <button
                 type="button"
                 onClick={() => setQuickAmount(0.5)}
                 className="px-3 py-2 text-xs font-medium text-brand-primary border border-brand-primary rounded-lg hover:bg-brand-primary hover:text-white transition-colors"
               >
-                50%
+                {t('wallet.withdrawal.quickAmounts.fifty')}
               </button>
               <button
                 type="button"
                 onClick={() => setQuickAmount(0.75)}
                 className="px-3 py-2 text-xs font-medium text-brand-primary border border-brand-primary rounded-lg hover:bg-brand-primary hover:text-white transition-colors"
               >
-                75%
+                {t('wallet.withdrawal.quickAmounts.seventyFive')}
               </button>
               <button
                 type="button"
                 onClick={() => setQuickAmount(1)}
                 className="px-3 py-2 text-xs font-medium text-brand-primary border border-brand-primary rounded-lg hover:bg-brand-primary hover:text-white transition-colors"
               >
-                Max
+                {t('wallet.withdrawal.quickAmounts.max')}
               </button>
             </div>
           </div>
@@ -194,48 +197,48 @@ export const WithdrawalModal: React.FC<WithdrawalModalProps> = ({
           <div className="space-y-4">
             <h3 className="text-sm font-bold text-gray-900 flex items-center gap-2">
               <Building2 className="w-4 h-4 text-brand-primary" />
-              Bank Account Details
+              {t('wallet.withdrawal.bankDetails')}
             </h3>
 
             <Input
-              label="Bank Name"
+              label={t('wallet.withdrawal.bankName')}
               type="text"
               value={bankName}
               onChange={(e) => {
                 setBankName(e.target.value);
                 if (errors.bankName) setErrors(prev => ({ ...prev, bankName: '' }));
               }}
-              placeholder="e.g., Vietcombank, Techcombank"
+              placeholder={t('wallet.withdrawal.bankNamePlaceholder')}
               error={errors.bankName}
               required
               icon={<Building2 className="w-5 h-5" />}
             />
 
             <Input
-              label="Account Number"
+              label={t('wallet.withdrawal.accountNumber')}
               type="text"
               value={accountNumber}
               onChange={(e) => {
                 setAccountNumber(e.target.value);
                 if (errors.accountNumber) setErrors(prev => ({ ...prev, accountNumber: '' }));
               }}
-              placeholder="Enter account number"
+              placeholder={t('wallet.withdrawal.accountNumberPlaceholder')}
               error={errors.accountNumber}
               required
               icon={<CreditCard className="w-5 h-5" />}
             />
 
             <Input
-              label="Account Holder Name"
+              label={t('wallet.withdrawal.accountName')}
               type="text"
               value={accountName}
               onChange={(e) => {
                 setAccountName(e.target.value);
                 if (errors.accountName) setErrors(prev => ({ ...prev, accountName: '' }));
               }}
-              placeholder="Full name as registered"
+              placeholder={t('wallet.withdrawal.accountNamePlaceholder')}
               error={errors.accountName}
-              helperText="Must match your registered name"
+              helperText={t('wallet.withdrawal.accountNameHelper')}
               required
             />
           </div>
@@ -244,9 +247,9 @@ export const WithdrawalModal: React.FC<WithdrawalModalProps> = ({
           <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4 flex gap-3">
             <AlertTriangle className="w-5 h-5 text-yellow-600 flex-shrink-0 mt-0.5" />
             <div className="text-sm text-yellow-800">
-              <p className="font-medium mb-1">Processing Time</p>
+              <p className="font-medium mb-1">{t('wallet.withdrawal.processingTime')}</p>
               <p className="text-xs leading-relaxed">
-                Withdrawal requests are processed within 1-3 business days. Please ensure your bank details are correct.
+                {t('wallet.withdrawal.processingTimeDesc')}
               </p>
             </div>
           </div>
@@ -260,7 +263,7 @@ export const WithdrawalModal: React.FC<WithdrawalModalProps> = ({
               disabled={isSubmitting}
               className="flex-1"
             >
-              Cancel
+              {t('common.cancel')}
             </Button>
             <Button
               type="submit"
@@ -268,7 +271,7 @@ export const WithdrawalModal: React.FC<WithdrawalModalProps> = ({
               isLoading={isSubmitting}
               className="flex-1"
             >
-              Submit Request
+              {t('wallet.withdrawal.submitRequest')}
             </Button>
           </div>
         </form>

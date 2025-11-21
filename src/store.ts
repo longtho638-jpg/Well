@@ -13,6 +13,7 @@ import {
   REFERRAL_STATS
 } from './data/mockData';
 import { generateTxHash, calculateStakingReward } from './utils/tokenomics';
+import { TOKENOMICS_CONSTANTS, WEALTH_OS_CONSTANTS, COMMISSION_CONSTANTS } from './utils/constants';
 
 // ============================================================================
 // WEALTH OS CALCULATION ENGINE
@@ -23,22 +24,19 @@ import { generateTxHash, calculateStakingReward } from './utils/tokenomics';
  * Formula: Monthly Profit * 12 (Annualized) * PE Ratio (5x for high-growth SMB)
  */
 function calculateBusinessValuation(user: User): number {
-  // Estimate monthly profit: 20% of total sales (conservative margin)
-  const monthlyProfit = user.totalSales * 0.20;
+  // Estimate monthly profit using conservative margin
+  const monthlyProfit = user.totalSales * TOKENOMICS_CONSTANTS.PROFIT_MARGIN;
   // Annualize the monthly profit
-  const annualizedProfit = monthlyProfit * 12;
-  // Apply PE ratio of 5x (standard for high-growth small businesses)
-  const PE_RATIO = 5;
-  return annualizedProfit * PE_RATIO;
+  const annualizedProfit = monthlyProfit * TOKENOMICS_CONSTANTS.MONTHS_PER_YEAR;
+  // Apply PE ratio (standard for high-growth small businesses)
+  return annualizedProfit * TOKENOMICS_CONSTANTS.PE_RATIO;
 }
 
 /**
  * Calculate Equity Value (GROW Token holdings)
- * Assumption: 1 GROW = 10,000 VND market value
  */
 function calculateEquityValue(growBalance: number): number {
-  const GROW_TO_VND_RATE = 10000;
-  return growBalance * GROW_TO_VND_RATE;
+  return growBalance * TOKENOMICS_CONSTANTS.GROW_TO_VND_RATE;
 }
 
 /**
@@ -46,23 +44,28 @@ function calculateEquityValue(growBalance: number): number {
  */
 function calculateAssetGrowthRate(user: User): number {
   // Simulated growth rate based on team volume momentum
-  // Higher team volume = higher growth rate
-  if (user.teamVolume > 100_000_000) return 15; // 15% monthly growth
-  if (user.teamVolume > 50_000_000) return 10;  // 10% monthly growth
-  if (user.teamVolume > 20_000_000) return 7;   // 7% monthly growth
-  return 5; // 5% baseline growth
+  if (user.teamVolume > WEALTH_OS_CONSTANTS.ELITE_VOLUME_THRESHOLD) {
+    return WEALTH_OS_CONSTANTS.GROWTH_RATE_ELITE;
+  }
+  if (user.teamVolume > WEALTH_OS_CONSTANTS.ADVANCED_VOLUME_THRESHOLD) {
+    return WEALTH_OS_CONSTANTS.GROWTH_RATE_ADVANCED;
+  }
+  if (user.teamVolume > WEALTH_OS_CONSTANTS.INTERMEDIATE_VOLUME_THRESHOLD) {
+    return WEALTH_OS_CONSTANTS.GROWTH_RATE_INTERMEDIATE;
+  }
+  return WEALTH_OS_CONSTANTS.GROWTH_RATE_BASELINE;
 }
 
 /**
  * Enrich user with Wealth OS metrics
  */
 function enrichUserWithWealthMetrics(user: User): User {
-  const monthlyProfit = user.totalSales * 0.20; // 20% profit margin
+  const monthlyProfit = user.totalSales * TOKENOMICS_CONSTANTS.PROFIT_MARGIN;
   const businessValuation = calculateBusinessValuation(user);
   const equityValue = calculateEquityValue(user.growBalance + user.stakedGrowBalance);
   const cashflowValue = user.shopBalance;
   const assetGrowthRate = calculateAssetGrowthRate(user);
-  const projectedAnnualProfit = monthlyProfit * 12;
+  const projectedAnnualProfit = monthlyProfit * TOKENOMICS_CONSTANTS.MONTHS_PER_YEAR;
 
   return {
     ...user,
@@ -194,7 +197,7 @@ export const useStore = create<AppState>((set, get) => ({
       const updatedUser = {
         ...state.user,
         totalSales: state.user.totalSales + product.price,
-        teamVolume: state.user.teamVolume + (product.price * 0.2),
+        teamVolume: state.user.teamVolume + (product.price * COMMISSION_CONSTANTS.TIER_MID),
         shopBalance: state.user.shopBalance + commission
       };
 
@@ -245,8 +248,12 @@ export const useStore = create<AppState>((set, get) => ({
       throw new Error("Invalid unstake amount");
     }
 
-    // Calculate staking rewards (example: 12% APY for 30 days)
-    const stakingReward = calculateStakingReward(amount, 0.12, 30);
+    // Calculate staking rewards using default APY and staking period
+    const stakingReward = calculateStakingReward(
+      amount,
+      TOKENOMICS_CONSTANTS.DEFAULT_APY,
+      TOKENOMICS_CONSTANTS.DEFAULT_STAKING_DAYS
+    );
 
     const newTransaction: Transaction = {
       id: `TX-UNSTAKE-${Date.now().toString().slice(-6)}`,
