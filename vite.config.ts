@@ -8,4 +8,11 @@ export default defineConfig({
       '@': '/src',
     },
   },
+  // @ts-ignore - Vitest config
+  test: {
+    globals: true,
+    environment: 'happy-dom',
+    setupFiles: './src/test/setup.ts',
+    css: true,
+  },
 })

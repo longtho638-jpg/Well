@@ -53,6 +53,7 @@
 │   ├── components/                # Reusable UI components
 │   │   ├── Sidebar.tsx            # Navigation + AI coach widget
 │   │   ├── ProductCard.tsx        # Product listing card
+│   │   ├── ProductCard.test.tsx   # ProductCard tests ✅
 │   │   ├── CommissionWallet.tsx   # Transaction history & tax display
 │   │   ├── OnboardingQuest.tsx    # Quest/gamification component
 │   │   └── Dashboard/             # Dashboard-specific components
@@ -71,16 +72,22 @@
 │   │
 │   ├── utils/                     # Helper functions
 │   │   ├── format.ts              # VND currency & number formatting
-│   │   └── tax.ts                 # Vietnam tax calculations
+│   │   ├── format.test.ts         # Format utility tests ✅
+│   │   ├── tax.ts                 # Vietnam tax calculations
+│   │   └── tax.test.ts            # Tax calculation tests ✅
+│   │
+│   ├── test/                      # Test configuration
+│   │   └── setup.ts               # Vitest global setup
 │   │
 │   └── data/                      # Mock data for MVP
 │       └── mockData.ts            # Seed products, users, transactions
 │
 ├── public/                        # Static assets
+├── .env.example                   # Environment variable template
 ├── index.html                     # HTML template
-├── package.json                   # Dependencies
+├── package.json                   # Dependencies & test scripts
 ├── tsconfig.json                  # TypeScript configuration
-├── vite.config.ts                 # Vite build configuration
+├── vite.config.ts                 # Vite & Vitest configuration
 ├── tailwind.config.js             # Tailwind theming
 ├── README.md                      # Project documentation
 └── USER_ONBOARDING.md             # End-user guide
@@ -447,91 +454,137 @@ For custom styles, extend `tailwind.config.js`.
 
 ---
 
-## Known Issues & Warnings
+## Security & Best Practices
 
-### Current Build Errors
+### Build Status ✅
 
-⚠️ **TSX Syntax Errors** (3 files):
+All build errors have been resolved. The project builds successfully:
 
-1. `src/components/CommissionWallet.tsx:59`
-2. `src/SingleFileApp.tsx:403`
-3. `src/components/Dashboard/StatsGrid.tsx:80`
-
-**Issue:** JSX comparison operators need escaping:
-```typescript
-// WRONG
-{value < 0 && <span>Negative</span>}
-
-// CORRECT
-{value < 0 && <span>Negative</span>}
-// or
-{value &lt; 0 && <span>Negative</span>}
+```bash
+npm run build
+# ✓ built in ~11s
 ```
 
-**Fix:** Escape comparison operators in JSX or use variables.
+### API Key Security ✅
 
-### Security Concerns
+The Gemini AI API key is now properly configured to use environment variables:
 
-⚠️ **Exposed API Key** (`src/services/geminiService.ts`)
-
-Current implementation has API key in client code:
 ```typescript
-const API_KEY = 'AIza...'; // EXPOSED!
+// src/services/geminiService.ts
+const genAI = new GoogleGenerativeAI(import.meta.env.VITE_GEMINI_API_KEY || 'demo-key');
 ```
 
-**Recommended Fix:**
-1. Move API calls to backend proxy
-2. Use environment variables during build
-3. Implement rate limiting
+**Setup Instructions:**
+1. Copy `.env.example` to `.env`
+2. Add your Gemini API key: `VITE_GEMINI_API_KEY=your_api_key_here`
+3. The `.env` file is gitignored and will not be committed
+
+**Production Recommendations:**
+- Move API calls to backend proxy for better security
+- Implement rate limiting
+- Use server-side API key management
+
+### Testing Infrastructure ✅
+
+The project now includes a complete testing setup with **31 passing tests**:
+
+**Testing Stack:**
+- **Vitest 4.0** - Fast unit test runner
+- **@testing-library/react** - React component testing
+- **@testing-library/jest-dom** - DOM matchers
+- **happy-dom** - Lightweight DOM environment
+
+**Test Scripts:**
+```bash
+npm test              # Run tests in watch mode
+npm run test:run      # Run tests once
+npm run test:ui       # Open Vitest UI
+npm run test:coverage # Generate coverage report
+```
+
+**Current Test Coverage:**
+- ✅ `src/utils/format.test.ts` - Currency and number formatting (12 tests)
+- ✅ `src/utils/tax.test.ts` - Vietnam tax calculations (9 tests)
+- ✅ `src/components/ProductCard.test.tsx` - Component rendering (10 tests)
+
+**Configuration:** See `vite.config.ts` and `src/test/setup.ts`
 
 ### Missing Features
 
-- ❌ No test suite (Jest/React Testing Library)
 - ❌ No linting/formatting (ESLint/Prettier)
 - ❌ No CI/CD pipeline
 - ❌ No error boundary components
 - ❌ No backend integration (pure mock data)
+- ❌ Additional test coverage for remaining components
 
 ---
 
 ## Testing Strategy
 
-**Currently Not Implemented**
-
-### Recommended Setup
+### Running Tests
 
 ```bash
-# Install testing dependencies
-npm install -D @testing-library/react @testing-library/jest-dom vitest
+# Watch mode (recommended for development)
+npm test
 
-# Add test scripts to package.json
-{
-  "scripts": {
-    "test": "vitest",
-    "test:ui": "vitest --ui"
-  }
-}
+# Run once (for CI/CD)
+npm run test:run
+
+# Visual UI
+npm run test:ui
+
+# With coverage
+npm run test:coverage
 ```
 
-### Test Examples
+### Writing New Tests
+
+**Utility Function Test Example:**
 
 ```typescript
-// Component test
-import { render, screen } from '@testing-library/react';
-import ProductCard from '@/components/ProductCard';
+// src/utils/myUtil.test.ts
+import { describe, it, expect } from 'vitest';
+import { myFunction } from './myUtil';
 
-test('renders product name', () => {
-  render(<ProductCard product={mockProduct} />);
-  expect(screen.getByText('ANIMA 119')).toBeInTheDocument();
-});
-
-// Utility test
-import { formatVND } from '@/utils/format';
-
-test('formats VND correctly', () => {
-  expect(formatVND(1500000)).toBe('1.500.000 ₫');
+describe('myFunction', () => {
+  it('should handle basic case', () => {
+    expect(myFunction(input)).toBe(expected);
+  });
 });
 ```
+
+**Component Test Example:**
+
+```typescript
+// src/components/MyComponent.test.tsx
+import { describe, it, expect, vi } from 'vitest';
+import { render, screen } from '@testing-library/react';
+import { BrowserRouter } from 'react-router-dom';
+import MyComponent from './MyComponent';
+
+// Mock dependencies if needed
+vi.mock('../store', () => ({
+  useStore: () => ({ /* mock state */ }),
+}));
+
+describe('MyComponent', () => {
+  it('should render correctly', () => {
+    render(
+      <BrowserRouter>
+        <MyComponent />
+      </BrowserRouter>
+    );
+    expect(screen.getByText('Expected Text')).toBeInTheDocument();
+  });
+});
+```
+
+### Test Organization
+
+Tests are colocated with source files:
+- `src/utils/*.test.ts` - Utility tests
+- `src/components/*.test.tsx` - Component tests
+- `src/test/setup.ts` - Global test configuration
 
 ---
 
