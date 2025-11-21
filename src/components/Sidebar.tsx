@@ -5,12 +5,14 @@ import { getCoachAdvice } from '../services/geminiService';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useStore } from '../store';
 import { useNavigate, useLocation } from 'react-router-dom';
+import { useTranslation } from '../hooks';
 
 interface SidebarProps {
   onMobileClose?: () => void;
 }
 
 export const Sidebar: React.FC<SidebarProps> = ({ onMobileClose }) => {
+  const t = useTranslation();
   const { user, quests, logout } = useStore();
   const navigate = useNavigate();
   const location = useLocation();
@@ -18,16 +20,16 @@ export const Sidebar: React.FC<SidebarProps> = ({ onMobileClose }) => {
   const [loading, setLoading] = useState(false);
 
   const menuItems = [
-    { path: '/dashboard', label: 'Overview', icon: LayoutDashboard },
-    { path: '/dashboard/marketplace', label: 'Marketplace', icon: ShoppingBag, matches: ['/dashboard/product'] },
-    { path: '/dashboard/wallet', label: 'My Wallet', icon: Wallet },
-    { path: '/dashboard/leaderboard', label: 'Leaderboard', icon: Trophy, badge: 'HOT' },
-    { path: '/dashboard/marketing-tools', label: 'Marketing Tools', icon: Megaphone, badge: 'NEW' },
-    { path: '/dashboard/health-check', label: 'Health Check', icon: Heart },
-    { path: '/dashboard/health-coach', label: 'Health Coach', icon: Sparkles, badge: 'AI' },
-    { path: '/dashboard/copilot', label: 'The Copilot', icon: Bot, badge: 'AI' },
-    { path: '/dashboard/team', label: 'Team Leader', icon: Users },
-    { path: '/dashboard/referral', label: 'Giới Thiệu', icon: Share2 },
+    { path: '/dashboard', label: t('nav.dashboard'), icon: LayoutDashboard },
+    { path: '/dashboard/marketplace', label: t('nav.marketplace'), icon: ShoppingBag, matches: ['/dashboard/product'] },
+    { path: '/dashboard/wallet', label: t('nav.wallet'), icon: Wallet },
+    { path: '/dashboard/leaderboard', label: t('nav.leaderboard'), icon: Trophy, badge: 'HOT' },
+    { path: '/dashboard/marketing-tools', label: t('nav.marketingTools'), icon: Megaphone, badge: 'NEW' },
+    { path: '/dashboard/health-check', label: t('nav.healthCheck'), icon: Heart },
+    { path: '/dashboard/health-coach', label: t('nav.healthCoach'), icon: Sparkles, badge: 'AI' },
+    { path: '/dashboard/copilot', label: t('nav.copilot'), icon: Bot, badge: 'AI' },
+    { path: '/dashboard/team', label: t('nav.team'), icon: Users },
+    { path: '/dashboard/referral', label: t('nav.referral'), icon: Share2 },
   ];
 
   const handleNav = (path: string) => {
@@ -112,7 +114,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ onMobileClose }) => {
       <div className="p-4">
         <div className="bg-brand-primary rounded-2xl p-5 relative overflow-hidden shadow-xl group">
           <div className="absolute top-0 right-0 w-32 h-32 bg-brand-accent opacity-10 rounded-full blur-2xl -mr-10 -mt-10 pointer-events-none"></div>
-          
+
           <div className="relative z-10">
             <div className="flex justify-between items-center mb-4">
               <div className="flex items-center gap-2 text-white font-bold text-sm">
@@ -149,7 +151,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ onMobileClose }) => {
                       onClick={handleAdvice}
                       disabled={loading}
                       className="w-full py-2.5 bg-brand-accent hover:bg-yellow-400 text-brand-primary font-bold text-xs rounded-lg flex items-center justify-center gap-2 transition-colors shadow-lg shadow-yellow-500/20"
-                      aria-label={loading ? 'Loading AI advice' : 'Get personalized AI advice'}
+                      aria-label={loading ? t('common.loading') : 'Get personalized AI advice'}
                     >
                         {loading ? <Sparkles className="w-3 h-3 animate-spin" aria-hidden="true" /> : <Sparkles className="w-3 h-3" aria-hidden="true" />} Get AI Advice
                     </button>
@@ -173,7 +175,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ onMobileClose }) => {
           <button
             onClick={handleLogout}
             className="text-gray-400 hover:text-red-500 transition p-2 rounded-full hover:bg-red-50"
-            aria-label="Sign out"
+            aria-label={t('nav.logout')}
           >
             <LogOut className="w-4 h-4" aria-hidden="true" />
           </button>

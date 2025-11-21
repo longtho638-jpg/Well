@@ -19,6 +19,7 @@ export const vi = {
     submit: 'Gửi',
     search: 'Tìm kiếm',
     filter: 'Lọc',
+    copy: 'Sao chép',
     sort: 'Sắp xếp',
     viewAll: 'Xem tất cả',
     viewDetails: 'Xem chi tiết',
