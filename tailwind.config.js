@@ -19,8 +19,10 @@ export default {
         marigold: '#FFBF00',
       },
       fontFamily: {
-        sans: ['"Plus Jakarta Sans"', 'ui-sans-serif', 'system-ui', 'sans-serif'],
-        display: ['"Outfit"', 'ui-sans-serif', 'system-ui', 'sans-serif'],
+        // Dùng Manrope cho các tiêu đề (thay cho Outfit)
+        display: ['"Manrope"', 'sans-serif'],
+        // Dùng Plus Jakarta Sans cho nội dung
+        sans: ['"Plus Jakarta Sans"', 'sans-serif'],
       },
       animation: {
         'pulse-slow': 'pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite',
