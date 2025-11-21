@@ -1,6 +1,6 @@
 
 import React, { useState } from 'react';
-import { LayoutDashboard, ShoppingBag, Wallet, LogOut, Sparkles, Bot, CheckCircle2, Circle } from 'lucide-react';
+import { LayoutDashboard, ShoppingBag, Wallet, LogOut, Sparkles, Bot, CheckCircle2, Circle, Users, Share2 } from 'lucide-react';
 import { getCoachAdvice } from '../services/geminiService';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useStore } from '../store';
@@ -21,6 +21,9 @@ export const Sidebar: React.FC<SidebarProps> = ({ onMobileClose }) => {
     { path: '/', label: 'Overview', icon: LayoutDashboard },
     { path: '/marketplace', label: 'Marketplace', icon: ShoppingBag, matches: ['/product'] },
     { path: '/wallet', label: 'My Wallet', icon: Wallet },
+    { path: '/copilot', label: 'The Copilot', icon: Bot, badge: 'AI' },
+    { path: '/team', label: 'Team Leader', icon: Users },
+    { path: '/referral', label: 'Giới Thiệu', icon: Share2 },
   ];
 
   const handleNav = (path: string) => {
@@ -89,7 +92,14 @@ export const Sidebar: React.FC<SidebarProps> = ({ onMobileClose }) => {
               aria-label={`Navigate to ${item.label}`}
             >
               <Icon className={`w-5 h-5 transition-colors ${isActive ? 'text-brand-accent' : 'group-hover:text-brand-primary'}`} aria-hidden="true" />
-              {item.label}
+              <span className="flex-1 text-left">{item.label}</span>
+              {(item as any).badge && (
+                <span className={`text-xs px-2 py-0.5 rounded-full font-bold ${
+                  isActive ? 'bg-brand-accent text-brand-primary' : 'bg-brand-accent/10 text-brand-accent'
+                }`}>
+                  {(item as any).badge}
+                </span>
+              )}
             </button>
           );
         })}

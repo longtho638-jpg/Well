@@ -7,6 +7,9 @@ import { Marketplace } from './pages/Marketplace';
 import { ProductDetail } from './pages/ProductDetail';
 import CommissionWallet from './components/CommissionWallet';
 import LandingPage from './pages/LandingPage';
+import CopilotPage from './pages/CopilotPage';
+import LeaderDashboard from './pages/LeaderDashboard';
+import ReferralPage from './pages/ReferralPage';
 import { Menu } from 'lucide-react';
 import { useStore } from './store';
 
@@ -80,9 +83,9 @@ const App: React.FC = () => {
 
       {/* Route 2: Protected Dashboard Routes */}
       {/* Nếu đã login -> Vào Layout. Nếu chưa -> Đá về Landing */}
-      <Route 
-        path="/dashboard" 
-        element={isAuthenticated ? <DashboardLayout /> : <Navigate to="/" replace />} 
+      <Route
+        path="/dashboard"
+        element={isAuthenticated ? <DashboardLayout /> : <Navigate to="/" replace />}
       >
         {/* Các route con bên trong Dashboard Layout */}
         <Route index element={<Dashboard />} />
@@ -94,6 +97,11 @@ const App: React.FC = () => {
             </div>
         } />
         <Route path="product/:id" element={<ProductDetail />} />
+
+        {/* Phase 2: Growth Features */}
+        <Route path="copilot" element={<CopilotPage />} />
+        <Route path="team" element={<LeaderDashboard />} />
+        <Route path="referral" element={<ReferralPage />} />
       </Route>
       
       {/* Fallback for legacy paths or redirects */}

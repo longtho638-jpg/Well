@@ -17,3 +17,7 @@ export const formatPercent = (value: number): string => {
   const sign = value > 0 ? '+' : '';
   return `${sign}${value.toFixed(1)}%`;
 };
+
+export const formatNumber = (num: number): string => {
+  return new Intl.NumberFormat('vi-VN').format(num);
+};
