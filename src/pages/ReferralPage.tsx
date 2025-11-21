@@ -23,8 +23,10 @@ import { Referral } from '@/types';
 import { formatVND } from '@/utils/format';
 import { REFERRALS, REFERRAL_STATS } from '@/data/mockData';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
+import { useTranslation } from '@/hooks';
 
 export default function ReferralPage() {
+  const t = useTranslation();
   const { user } = useStore();
   const [copiedLink, setCopiedLink] = useState(false);
   const [selectedTab, setSelectedTab] = useState<'overview' | 'referrals'>('overview');
@@ -95,12 +97,12 @@ export default function ReferralPage() {
                 <Share2 className="w-7 h-7 text-primary" />
               </div>
               <div>
-                <h1 className="text-3xl font-bold">Giới Thiệu & Kiếm Tiền</h1>
-                <p className="text-white/80 text-sm">Referral Tracking System</p>
+                <h1 className="text-3xl font-bold">{t('referral.title')}</h1>
+                <p className="text-white/80 text-sm">{t('referral.subtitle')}</p>
               </div>
             </div>
             <p className="text-white/90 max-w-2xl">
-              Chia sẻ link giới thiệu và nhận hoa hồng từ mỗi người bạn giới thiệu thành công!
+              {t('referral.description')}
             </p>
           </div>
         </div>
@@ -116,11 +118,11 @@ export default function ReferralPage() {
           <div className="flex items-center justify-between mb-3">
             <Users className="w-8 h-8 text-blue-500" />
             <span className="text-xs font-bold bg-blue-50 text-blue-600 px-2 py-1 rounded-full">
-              {REFERRAL_STATS.activeReferrals} Active
+              {REFERRAL_STATS.activeReferrals} {t('referral.stats.active')}
             </span>
           </div>
           <h3 className="text-2xl font-bold text-gray-900">{REFERRAL_STATS.totalReferrals}</h3>
-          <p className="text-sm text-gray-600">Tổng Giới Thiệu</p>
+          <p className="text-sm text-gray-600">{t('referral.stats.totalReferrals')}</p>
         </motion.div>
 
         <motion.div
@@ -136,7 +138,7 @@ export default function ReferralPage() {
             </span>
           </div>
           <h3 className="text-2xl font-bold text-gray-900">{REFERRAL_STATS.conversionRate}%</h3>
-          <p className="text-sm text-gray-600">Tỉ Lệ Chuyển Đổi</p>
+          <p className="text-sm text-gray-600">{t('referral.stats.conversionRate')}</p>
         </motion.div>
 
         <motion.div
@@ -150,7 +152,7 @@ export default function ReferralPage() {
             <TrendingUp className="w-4 h-4 text-green-500" />
           </div>
           <h3 className="text-2xl font-bold text-gray-900">{formatVND(REFERRAL_STATS.totalBonus)}</h3>
-          <p className="text-sm text-gray-600">Tổng Hoa Hồng</p>
+          <p className="text-sm text-gray-600">{t('referral.stats.totalBonus')}</p>
         </motion.div>
 
         <motion.div
@@ -162,11 +164,11 @@ export default function ReferralPage() {
           <div className="flex items-center justify-between mb-3">
             <Gift className="w-8 h-8 text-orange-500" />
             <span className="text-xs font-bold bg-orange-50 text-orange-600 px-2 py-1 rounded-full">
-              Tháng này
+              {t('referral.stats.monthlyReferrals')}
             </span>
           </div>
           <h3 className="text-2xl font-bold text-gray-900">{REFERRAL_STATS.monthlyReferrals}</h3>
-          <p className="text-sm text-gray-600">Giới Thiệu Mới</p>
+          <p className="text-sm text-gray-600">{t('referral.stats.monthlyReferrals')}</p>
         </motion.div>
       </div>
 
@@ -174,8 +176,8 @@ export default function ReferralPage() {
       <div className="bg-gradient-to-br from-blue-50 to-indigo-50 rounded-2xl p-8 border border-blue-100">
         <div className="flex items-start justify-between mb-6">
           <div>
-            <h3 className="font-bold text-gray-900 text-lg mb-2">📎 Link Giới Thiệu Của Bạn</h3>
-            <p className="text-sm text-gray-600">Chia sẻ link này để bắt đầu kiếm hoa hồng!</p>
+            <h3 className="font-bold text-gray-900 text-lg mb-2">📎 {t('referral.link.title')}</h3>
+            <p className="text-sm text-gray-600">{t('referral.link.description')}</p>
           </div>
         </div>
 
@@ -194,12 +196,12 @@ export default function ReferralPage() {
             {copiedLink ? (
               <>
                 <Check className="w-4 h-4" />
-                Đã copy!
+                {t('referral.link.copied')}
               </>
             ) : (
               <>
                 <Copy className="w-4 h-4" />
-                Copy
+                {t('referral.link.copy')}
               </>
             )}
           </button>

@@ -443,36 +443,59 @@ export const vi = {
 
   // Referral Page
   referral: {
-    title: 'Chương trình giới thiệu',
-    subtitle: 'Mời bạn bè và nhận thưởng',
+    title: 'Giới Thiệu & Kiếm Tiền',
+    subtitle: 'Referral Tracking System',
+    description: 'Chia sẻ link giới thiệu và nhận hoa hồng từ mỗi người bạn giới thiệu thành công!',
+
+    // Tabs
+    tabs: {
+      overview: 'Tổng quan',
+      referrals: 'Danh sách',
+    },
 
     // Referral Stats
     stats: {
-      totalReferrals: 'Tổng lượt giới thiệu',
+      totalReferrals: 'Tổng Giới Thiệu',
       activeReferrals: 'Đang hoạt động',
-      conversionRate: 'Tỷ lệ chuyển đổi',
-      totalBonus: 'Tổng thưởng',
+      active: 'Active',
+      conversionRate: 'Tỉ Lệ Chuyển Đổi',
+      totalRevenue: 'Tổng Doanh Thu',
+      totalBonus: 'Tổng Thưởng',
       monthlyReferrals: 'Giới thiệu tháng này',
     },
 
     // Referral Link
     link: {
-      title: 'Link giới thiệu của bạn',
+      title: 'Link Giới Thiệu Của Bạn',
+      description: 'Chia sẻ link này với bạn bè để họ tham gia WellNexus',
       copy: 'Sao chép',
       copied: 'Đã sao chép!',
       share: 'Chia sẻ',
+      shareVia: 'Chia sẻ qua',
+      email: 'Email',
+      sms: 'SMS',
+      facebook: 'Facebook',
+      twitter: 'Twitter',
+      more: 'Thêm',
       qrCode: 'Mã QR',
+    },
+
+    // Chart
+    chart: {
+      title: 'Xu Hướng Giới Thiệu',
+      referrals: 'Giới thiệu',
+      revenue: 'Doanh thu',
     },
 
     // Referrals List
     list: {
       title: 'Danh sách giới thiệu',
-      name: 'Họ tên',
+      name: 'Họ Tên',
       email: 'Email',
-      status: 'Trạng thái',
-      revenue: 'Doanh thu',
+      status: 'Trạng Thái',
+      revenue: 'Doanh Thu',
       bonus: 'Thưởng',
-      registeredAt: 'Ngày đăng ký',
+      registeredAt: 'Ngày Đăng Ký',
       statuses: {
         pending: 'Đang chờ',
         registered: 'Đã đăng ký',
