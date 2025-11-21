@@ -36,16 +36,16 @@ const smoothScrollTo = (elementId: string) => {
 // ============================================================================
 const CONTENT = {
   hero: {
-    badge: 'Nền tảng #1 cho người bán sức khỏe tại Việt Nam',
-    headline: 'Kinh Doanh Sức Khỏe',
-    headlineAccent: 'Thời Đại AI Agentic',
-    subheadline: 'Nền tảng Social Commerce trang bị cho bạn một AI Coach riêng biệt, minh bạch hoa hồng, và công cụ thông minh để bạn bán sản phẩm wellness theo cách của mình.',
-    primaryCta: 'Tham gia Founders Club',
-    secondaryCta: 'Tìm hiểu thêm',
+    badge: 'Wealth Operating System #1 tại Việt Nam',
+    headline: 'Sở Hữu Đế Chế Kinh Doanh',
+    headlineAccent: 'Sức Khỏe Của Riêng Bạn',
+    subheadline: 'Digital Franchise cho phép bạn xây dựng tài sản có thể định giá, với AI Leverage, ESOP/Token Allocation, và lộ trình IPO rõ ràng.',
+    primaryCta: 'Sở hữu vị trí Venture Partner',
+    secondaryCta: 'Xem Portfolio Valuation',
     stats: [
-      { value: '2,000+', label: 'Người bán hoạt động' },
-      { value: '₫50M+', label: 'Hoa hồng chi trả' },
-      { value: '4.8/5⭐', label: 'Đánh giá trung bình' }
+      { value: '₫5.2B', label: 'Total Portfolio Valuation' },
+      { value: '2,000+', label: 'Active Partners' },
+      { value: '12% MoM', label: 'Avg. Asset Growth' }
     ]
   },
 
@@ -74,36 +74,36 @@ const CONTENT = {
   },
 
   solution: {
-    sectionBadge: 'Giải pháp toàn diện',
-    sectionTitle: 'WellNexus giải quyết tất cả',
+    sectionBadge: 'Digital Franchise Model',
+    sectionTitle: 'Sở hữu tài sản có thể định giá',
     bentoItems: [
       {
-        title: 'AI Coach 24/7',
-        description: 'Trợ lý AI cá nhân hóa phân tích dữ liệu và đưa ra gợi ý chiến lược mỗi ngày',
+        title: 'AI Investment Advisor',
+        description: 'Hệ thống AI phân tích dữ liệu và tối ưu hóa lợi nhuận portfolio của bạn mỗi ngày',
         image: 'https://images.unsplash.com/photo-1677442136019-21780ecad995?w=1200&h=800&fit=crop&q=80',
         size: 'large', // 2x2 on desktop
         icon: Bot,
         gradient: 'from-violet-500/20 to-purple-500/20'
       },
       {
-        title: 'Minh bạch 100%',
-        description: 'Xem chi tiết cấu trúc hoa hồng từng sản phẩm, không phí ẩn',
+        title: 'ESOP & Token Allocation',
+        description: 'Sở hữu equity thông qua GROW Token, staking để nhận passive income',
         image: 'https://images.unsplash.com/photo-1639762681485-074b7f938ba0?w=800&h=600&fit=crop&q=80',
         size: 'medium', // 1x1
         icon: ShieldCheck,
         gradient: 'from-emerald-500/20 to-teal-500/20'
       },
       {
-        title: 'Cộng đồng hỗ trợ',
-        description: 'Kết nối với 2,000+ người bán, học hỏi chiến lược thực chiến',
+        title: 'Venture Partner Network',
+        description: 'Kết nối với 2,000+ Partners, mở rộng thị phần và scaling doanh nghiệp',
         image: 'https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=800&h=600&fit=crop&q=80',
         size: 'medium', // 1x1
         icon: Users,
         gradient: 'from-blue-500/20 to-cyan-500/20'
       },
       {
-        title: 'Thu nhập ổn định',
-        description: 'Hoa hồng 15-25%, rút tiền linh hoạt, thuế tự động',
+        title: 'Cashflow + Equity Growth',
+        description: 'Dòng tiền ổn định (SHOP) + tăng trưởng tài sản (GROW) - Dual Token System',
         image: 'https://images.unsplash.com/photo-1579621970563-ebec7560ff3e?w=600&h=400&fit=crop&q=80',
         size: 'small', // 1x0.5
         icon: TrendingUp,
@@ -113,27 +113,27 @@ const CONTENT = {
   },
 
   pricing: {
-    sectionBadge: 'The Elite Protocol',
-    sectionTitle: 'Chỉ dành cho 50 Founders đầu tiên',
-    badge: 'Chỉ còn 50 suất',
-    title: 'Founders Club',
-    price: 'Miễn phí',
-    priceNote: 'Commission 15-25%',
+    sectionBadge: 'Venture Partner Program',
+    sectionTitle: 'Chỉ dành cho 50 Venture Partners đầu tiên',
+    badge: 'Limited Edition: 50 vị trí',
+    title: 'Digital Franchise Owner',
+    price: '₫0 Capital',
+    priceNote: '15-25% Profit Margin + ESOP',
     benefits: [
-      'AI Business Coach cá nhân hóa',
-      'Dashboard analytics real-time',
-      'Tự động tính thuế TNCN',
-      'Hỗ trợ ưu tiên 1-1',
-      'Truy cập Product Catalog đầy đủ',
-      'Community Learning Hub',
-      'Webinar độc quyền hàng tháng',
-      'Rank progression: Partner → Founder Club'
+      'AI Investment Advisor - Tối ưu lợi nhuận tự động',
+      'Real-time Valuation Dashboard (PE Ratio 5x)',
+      'GROW Token Allocation (Equity ownership)',
+      'SHOP Token Cashflow (Liquid income)',
+      'Lộ trình IPO rõ ràng với milestone định giá',
+      'Venture Partner Network - Mở rộng thị phần',
+      'Tự động tính thuế & compliance',
+      'Portfolio Growth Tracking 24/7'
     ]
   },
 
   footer: {
     logo: 'WellNexus',
-    tagline: 'Nền tảng Social Commerce cho phép bạn bán sản phẩm wellness với AI Coach, thuế tự động, và hoa hồng minh bạch.',
+    tagline: 'Wealth Operating System cho phép bạn sở hữu Digital Franchise với AI Leverage, ESOP/Token Allocation, và định giá doanh nghiệp theo chuẩn đầu tư.',
     newsletter: {
       title: 'Nhận hướng dẫn bán hàng',
       placeholder: 'Email của bạn'

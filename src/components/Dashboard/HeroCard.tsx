@@ -78,10 +78,10 @@ export const HeroCard: React.FC<Props> = ({ user }) => {
                 </div>
 
                 <h2 className="text-3xl font-bold mb-3 text-white tracking-tight">
-                  {t('dashboard.hero.roadToFounder')}
+                  {t('dashboard.hero.ipoPathway')}
                 </h2>
                 <p className="text-teal-100 text-sm mb-8 max-w-lg leading-relaxed opacity-90">
-                    Hit <span className="font-bold text-white">100M {t('dashboard.hero.teamVolume')}</span> to unlock the "Founder" badge and receive 2% Global Bonus Pool sharing.
+                    Đạt <span className="font-bold text-white">100M Portfolio Value</span> để mở khóa Venture Partner Status và nhận 2% equity pool distribution.
                 </p>
 
                 {/* Progress Section */}

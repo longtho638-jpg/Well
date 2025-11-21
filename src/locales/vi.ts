@@ -57,8 +57,10 @@ export const vi = {
     hero: {
       greeting: 'Xin chào, {name}!',
       roadToFounder: 'Hành trình đến Founder Club',
+      ipoPathway: 'Lộ trình IPO Pathway',
       currentProgress: 'Tiến độ hiện tại',
       teamVolume: 'Doanh số đội nhóm',
+      portfolioValue: 'Portfolio Value',
       target: 'Mục tiêu',
       remaining: 'Còn lại',
       daysLeft: '{days} ngày',
@@ -66,32 +68,49 @@ export const vi = {
       needsBoost: 'Cần tăng tốc',
     },
 
-    // Stats Grid
-    stats: {
-      totalSales: 'Tổng doanh số',
-      teamVolume: 'Doanh số đội nhóm',
-      commission: 'Hoa hồng',
-      rank: 'Cấp bậc',
-      growth: 'Tăng trưởng',
-      thisMonth: 'Tháng này',
-      vsLastMonth: 'So với tháng trước',
+    // Business Valuation (WEALTH OS)
+    valuation: {
+      title: 'Định Giá Doanh Nghiệp',
+      subtitle: 'Business Valuation (PE Ratio 5x)',
+      formula: 'Công thức định giá',
+      assetBreakdown: 'Cơ cấu tài sản',
+      cashflow: 'Dòng tiền (Cashflow)',
+      equity: 'Vốn chủ sở hữu (Equity)',
+      projectedAnnual: 'Lợi nhuận dự phóng',
+      upgradePortfolio: 'Nâng cấp Portfolio',
+      peRatio: 'PE Ratio',
+      monthlyProfit: 'Lợi nhuận tháng',
+      annualizedRevenue: 'Doanh thu hàng năm',
+      assetGrowth: 'Tăng trưởng tài sản',
+      valuationMethod: 'Phương pháp định giá: DCF & Comparable',
     },
 
-    // Revenue Chart
+    // Stats Grid (WEALTH OS: Investment Language)
+    stats: {
+      totalSales: 'Tổng Dòng Tiền (Cashflow)',
+      teamVolume: 'Portfolio Volume',
+      commission: 'Lợi Nhuận (Net Profit)',
+      rank: 'Investor Tier',
+      growth: 'Asset Growth',
+      thisMonth: 'Tháng này',
+      vsLastMonth: 'MoM Growth',
+    },
+
+    // Revenue Chart (WEALTH OS: Asset Performance)
     revenue: {
-      title: '7 ngày doanh thu',
-      subtitle: 'Biểu đồ doanh thu tuần',
+      title: '7 ngày Asset Performance',
+      subtitle: 'Biểu đồ tăng trưởng tài sản',
       total: 'Tổng',
       average: 'Trung bình',
       peak: 'Cao nhất',
     },
 
-    // Revenue Breakdown
+    // Revenue Breakdown (WEALTH OS: Income Streams)
     revenueBreakdown: {
-      title: 'Nguồn doanh thu',
-      directSales: 'Bán trực tiếp',
-      teamBonus: 'Thưởng đội nhóm',
-      referral: 'Giới thiệu',
+      title: 'Nguồn Thu Nhập (Income Streams)',
+      directSales: 'Direct Income',
+      teamBonus: 'Portfolio Bonus',
+      referral: 'Referral Income',
     },
 
     // Top Products
@@ -216,19 +235,19 @@ export const vi = {
     }
   },
 
-  // Wallet Page
+  // Wallet Page (WEALTH OS: Asset Management)
   wallet: {
-    title: 'Ví tiền',
-    subtitle: 'Quản lý tài chính của bạn',
+    title: 'Asset Management',
+    subtitle: 'Quản lý danh mục tài sản của bạn',
 
-    // Token Balances
+    // Token Balances (WEALTH OS: Portfolio Components)
     balance: {
-      available: 'Số dư khả dụng',
-      locked: 'Đang khóa',
-      staked: 'Đang stake',
-      total: 'Tổng cộng',
-      shopToken: 'SHOP Token (VND)',
-      growToken: 'GROW Token',
+      available: 'Liquid Assets (Khả dụng)',
+      locked: 'Locked Assets (Đang khóa)',
+      staked: 'Staked for Yield (Đang stake)',
+      total: 'Total Portfolio Value',
+      shopToken: 'SHOP Token - Cashflow',
+      growToken: 'GROW Token - Equity',
     },
 
     // Actions
@@ -355,19 +374,19 @@ export const vi = {
     }
   },
 
-  // Team Dashboard
+  // Team Dashboard (WEALTH OS: Portfolio Management)
   team: {
-    title: 'Quản lý đội nhóm',
-    subtitle: 'Theo dõi và hỗ trợ đội nhóm của bạn',
-    leaderDashboard: 'Leader Dashboard',
-    description: 'Theo dõi hiệu suất đội nhóm, phát triển team members, và đạt mục tiêu chung.',
+    title: 'Portfolio Management',
+    subtitle: 'Quản lý mạng lưới đối tác & scaling tài sản',
+    leaderDashboard: 'Partner Network Dashboard',
+    description: 'Theo dõi performance đối tác, mở rộng thị phần, và tối ưu hóa tăng trưởng portfolio.',
 
-    // Metrics
+    // Metrics (WEALTH OS: Investment Metrics)
     metrics: {
-      totalMembers: 'Tổng Thành Viên',
-      teamVolume: 'Team Volume',
-      averageSales: 'Trung Bình / Người',
-      topPerformers: 'Top Performers',
+      totalMembers: 'Active Partners',
+      teamVolume: 'Network Portfolio Value',
+      averageSales: 'Avg. Profit / Partner',
+      topPerformers: 'Top Earners',
       active: 'Active',
     },
 
