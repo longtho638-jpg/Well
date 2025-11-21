@@ -706,48 +706,131 @@ export const vi = {
     disclaimerMedical: 'Lưu ý: Đây là công cụ hỗ trợ, không thay thế tư vấn y tế chuyên nghiệp.',
   },
 
-  // Health Check (System Monitoring)
+  // Health Check (Health Quiz)
   healthCheck: {
-    title: 'Kiểm tra hệ thống',
-    subtitle: 'Trạng thái hoạt động hệ thống',
-
-    // System Status
-    status: {
-      title: 'Trạng thái hệ thống',
-      operational: 'Hoạt động bình thường',
-      degraded: 'Suy giảm hiệu suất',
-      down: 'Ngừng hoạt động',
-      maintenance: 'Bảo trì',
+    // Quiz Questions
+    questions: {
+      sleep: {
+        question: 'Bạn thường ngủ bao nhiêu tiếng mỗi đêm?',
+        options: {
+          under5: 'Dưới 5 tiếng',
+          _5to6: '5-6 tiếng',
+          _6to7: '6-7 tiếng',
+          _7to8: '7-8 tiếng',
+          over8: 'Trên 8 tiếng',
+        }
+      },
+      stress: {
+        question: 'Bạn có hay bị stress hoặc lo âu không?',
+        options: {
+          veryOften: 'Rất thường xuyên',
+          often: 'Thường xuyên',
+          sometimes: 'Thỉnh thoảng',
+          rarely: 'Hiếm khi',
+          never: 'Không bao giờ',
+        }
+      },
+      energy: {
+        question: 'Mức năng lượng của bạn trong ngày như thế nào?',
+        options: {
+          veryTired: 'Rất mệt mỏi',
+          tired: 'Thường xuyên mệt',
+          normal: 'Bình thường',
+          energetic: 'Tràn đầy năng lượng',
+          veryEnergetic: 'Luôn năng động',
+        }
+      },
+      exercise: {
+        question: 'Bạn tập thể dục bao nhiêu lần mỗi tuần?',
+        options: {
+          never: 'Không bao giờ',
+          _1to2: '1-2 lần/tuần',
+          _3to4: '3-4 lần/tuần',
+          _5plus: '5+ lần/tuần',
+        }
+      },
+      goal: {
+        question: 'Mục tiêu sức khỏe chính của bạn là gì?',
+        options: {
+          betterSleep: 'Cải thiện giấc ngủ',
+          reduceStress: 'Giảm stress',
+          increaseEnergy: 'Tăng năng lượng',
+          boostImmunity: 'Tăng cường miễn dịch',
+          overallHealth: 'Sức khỏe tổng thể',
+        }
+      }
     },
 
-    // Services
-    services: {
-      title: 'Dịch vụ',
-      api: 'API Server',
-      database: 'Cơ sở dữ liệu',
-      storage: 'Lưu trữ',
-      payment: 'Thanh toán',
-      notification: 'Thông báo',
-      ai: 'Dịch vụ AI',
+    // Quiz Interface
+    questionProgress: 'Câu hỏi {current} / {total}',
+    back: 'Quay lại',
+    next: 'Tiếp theo',
+    viewResults: 'Xem kết quả',
+    timeInfo: '⏱️ Chỉ mất 2 phút để hoàn thành • 🔒 Thông tin của bạn được bảo mật',
+
+    // Results Page
+    resultsTitle: 'Kết Quả Đánh Giá',
+    yourHealthScore: 'Điểm sức khỏe của bạn',
+
+    // Score Labels
+    scoreLabels: {
+      excellent: 'Xuất sắc',
+      good: 'Tốt',
+      average: 'Trung bình',
+      needsImprovement: 'Cần cải thiện',
     },
 
-    // Metrics
-    metrics: {
-      title: 'Chỉ số hệ thống',
-      uptime: 'Thời gian hoạt động',
-      responseTime: 'Thời gian phản hồi',
-      errorRate: 'Tỷ lệ lỗi',
-      activeUsers: 'Người dùng đang hoạt động',
-      requestsPerSecond: 'Yêu cầu/giây',
+    // Score Descriptions
+    scoreDescriptions: {
+      excellent: 'Tuyệt vời! Bạn đang duy trì lối sống rất khỏe mạnh. Hãy tiếp tục!',
+      good: 'Sức khỏe của bạn ở mức tốt, nhưng vẫn có thể cải thiện thêm.',
+      average: 'Sức khỏe của bạn cần được quan tâm nhiều hơn. Hãy bắt đầu thay đổi ngay!',
+      poor: 'Sức khỏe của bạn đang cần được cải thiện khẩn cấp. Hãy tham khảo các giải pháp dưới đây!',
     },
 
-    // Incidents
-    incidents: {
-      title: 'Sự cố',
-      noIncidents: 'Không có sự cố',
-      resolved: 'Đã giải quyết',
-      investigating: 'Đang điều tra',
-    }
+    // Recommendations
+    recommendationsTitle: 'Gợi ý sản phẩm phù hợp',
+    priceLabel: 'Giá',
+    orderNow: 'Đặt ngay',
+
+    // Product Benefits
+    products: {
+      anima119: {
+        reason: 'Hỗ trợ ổn định hệ thần kinh, cải thiện giấc ngủ và giảm căng thẳng',
+        benefits: {
+          sleep: 'Giúp ngủ sâu, ngủ ngon hơn',
+          stress: 'Giảm lo âu, stress',
+          emotion: 'Cân bằng cảm xúc',
+          memory: 'Tăng cường trí nhớ',
+        }
+      },
+      immuneBoost: {
+        reason: 'Tăng cường hệ miễn dịch và năng lượng cho cơ thể',
+        benefits: {
+          immunity: 'Tăng sức đề kháng',
+          fatigue: 'Giảm mệt mỏi',
+          antioxidant: 'Chống oxy hóa',
+          recovery: 'Phục hồi sức khỏe nhanh',
+        }
+      },
+      starterKit: {
+        reason: 'Combo dinh dưỡng toàn diện cho sức khỏe tổng thể',
+        benefits: {
+          nutrition: 'Bổ sung dinh dưỡng đầy đủ',
+          balance: 'Cân bằng cơ thể',
+          health: 'Tăng cường sức khỏe',
+          allAges: 'Phù hợp mọi lứa tuổi',
+        }
+      }
+    },
+
+    // Consultation CTA
+    consultationTitle: 'Cần tư vấn chuyên sâu hơn?',
+    consultationDescription: 'Kết nối ngay với Partner của bạn qua Zalo để được tư vấn miễn phí 1-1',
+    chatNow: 'Nhắn tin Zalo ngay',
+
+    // Restart
+    restartQuiz: 'Làm lại bài đánh giá →',
   },
 
   // Admin Panel

@@ -18,6 +18,7 @@ import {
 } from 'lucide-react';
 import { useStore } from '@/store';
 import { formatVND } from '@/utils/format';
+import { useTranslation } from '@/hooks';
 
 // Quiz questions structure
 interface Question {
@@ -39,74 +40,76 @@ interface ProductRecommendation {
   benefits: string[];
 }
 
-const quizQuestions: Question[] = [
+const getQuizQuestions = (t: (key: string) => string): Question[] => [
   {
     id: 'sleep',
-    question: 'Bạn thường ngủ bao nhiêu tiếng mỗi đêm?',
+    question: t('healthCheck.questions.sleep.question'),
     icon: Moon,
     options: [
-      { label: 'Dưới 5 tiếng', value: 'under_5', score: 20 },
-      { label: '5-6 tiếng', value: '5_6', score: 40 },
-      { label: '6-7 tiếng', value: '6_7', score: 70 },
-      { label: '7-8 tiếng', value: '7_8', score: 100 },
-      { label: 'Trên 8 tiếng', value: 'over_8', score: 80 }
+      { label: t('healthCheck.questions.sleep.options.under5'), value: 'under_5', score: 20 },
+      { label: t('healthCheck.questions.sleep.options._5to6'), value: '5_6', score: 40 },
+      { label: t('healthCheck.questions.sleep.options._6to7'), value: '6_7', score: 70 },
+      { label: t('healthCheck.questions.sleep.options._7to8'), value: '7_8', score: 100 },
+      { label: t('healthCheck.questions.sleep.options.over8'), value: 'over_8', score: 80 }
     ]
   },
   {
     id: 'stress',
-    question: 'Bạn có hay bị stress hoặc lo âu không?',
+    question: t('healthCheck.questions.stress.question'),
     icon: Brain,
     options: [
-      { label: 'Rất thường xuyên', value: 'very_often', score: 20 },
-      { label: 'Thường xuyên', value: 'often', score: 40 },
-      { label: 'Thỉnh thoảng', value: 'sometimes', score: 70 },
-      { label: 'Hiếm khi', value: 'rarely', score: 90 },
-      { label: 'Không bao giờ', value: 'never', score: 100 }
+      { label: t('healthCheck.questions.stress.options.veryOften'), value: 'very_often', score: 20 },
+      { label: t('healthCheck.questions.stress.options.often'), value: 'often', score: 40 },
+      { label: t('healthCheck.questions.stress.options.sometimes'), value: 'sometimes', score: 70 },
+      { label: t('healthCheck.questions.stress.options.rarely'), value: 'rarely', score: 90 },
+      { label: t('healthCheck.questions.stress.options.never'), value: 'never', score: 100 }
     ]
   },
   {
     id: 'energy',
-    question: 'Mức năng lượng của bạn trong ngày như thế nào?',
+    question: t('healthCheck.questions.energy.question'),
     icon: Coffee,
     options: [
-      { label: 'Rất mệt mỏi', value: 'very_tired', score: 20 },
-      { label: 'Thường xuyên mệt', value: 'tired', score: 40 },
-      { label: 'Bình thường', value: 'normal', score: 70 },
-      { label: 'Tràn đầy năng lượng', value: 'energetic', score: 90 },
-      { label: 'Luôn năng động', value: 'very_energetic', score: 100 }
+      { label: t('healthCheck.questions.energy.options.veryTired'), value: 'very_tired', score: 20 },
+      { label: t('healthCheck.questions.energy.options.tired'), value: 'tired', score: 40 },
+      { label: t('healthCheck.questions.energy.options.normal'), value: 'normal', score: 70 },
+      { label: t('healthCheck.questions.energy.options.energetic'), value: 'energetic', score: 90 },
+      { label: t('healthCheck.questions.energy.options.veryEnergetic'), value: 'very_energetic', score: 100 }
     ]
   },
   {
     id: 'exercise',
-    question: 'Bạn tập thể dục bao nhiêu lần mỗi tuần?',
+    question: t('healthCheck.questions.exercise.question'),
     icon: Activity,
     options: [
-      { label: 'Không bao giờ', value: 'never', score: 20 },
-      { label: '1-2 lần/tuần', value: '1_2', score: 50 },
-      { label: '3-4 lần/tuần', value: '3_4', score: 80 },
-      { label: '5+ lần/tuần', value: '5_plus', score: 100 }
+      { label: t('healthCheck.questions.exercise.options.never'), value: 'never', score: 20 },
+      { label: t('healthCheck.questions.exercise.options._1to2'), value: '1_2', score: 50 },
+      { label: t('healthCheck.questions.exercise.options._3to4'), value: '3_4', score: 80 },
+      { label: t('healthCheck.questions.exercise.options._5plus'), value: '5_plus', score: 100 }
     ]
   },
   {
     id: 'goal',
-    question: 'Mục tiêu sức khỏe chính của bạn là gì?',
+    question: t('healthCheck.questions.goal.question'),
     icon: Target,
     options: [
-      { label: 'Cải thiện giấc ngủ', value: 'better_sleep', score: 0 },
-      { label: 'Giảm stress', value: 'reduce_stress', score: 0 },
-      { label: 'Tăng năng lượng', value: 'increase_energy', score: 0 },
-      { label: 'Tăng cường miễn dịch', value: 'boost_immunity', score: 0 },
-      { label: 'Sức khỏe tổng thể', value: 'overall_health', score: 0 }
+      { label: t('healthCheck.questions.goal.options.betterSleep'), value: 'better_sleep', score: 0 },
+      { label: t('healthCheck.questions.goal.options.reduceStress'), value: 'reduce_stress', score: 0 },
+      { label: t('healthCheck.questions.goal.options.increaseEnergy'), value: 'increase_energy', score: 0 },
+      { label: t('healthCheck.questions.goal.options.boostImmunity'), value: 'boost_immunity', score: 0 },
+      { label: t('healthCheck.questions.goal.options.overallHealth'), value: 'overall_health', score: 0 }
     ]
   }
 ];
 
 export default function HealthCheck() {
+  const t = useTranslation();
   const { user, simulateOrder } = useStore();
   const [currentStep, setCurrentStep] = useState(0);
   const [answers, setAnswers] = useState<Record<string, string>>({});
   const [showResults, setShowResults] = useState(false);
 
+  const quizQuestions = getQuizQuestions(t);
   const currentQuestion = quizQuestions[currentStep];
   const progress = ((currentStep + 1) / quizQuestions.length) * 100;
 
@@ -160,12 +163,12 @@ export default function HealthCheck() {
         id: '1',
         name: 'ANIMA 119 - Viên Uống Thần Kinh',
         price: 15900000,
-        reason: 'Hỗ trợ ổn định hệ thần kinh, cải thiện giấc ngủ và giảm căng thẳng',
+        reason: t('healthCheck.products.anima119.reason'),
         benefits: [
-          'Giúp ngủ sâu, ngủ ngon hơn',
-          'Giảm lo âu, stress',
-          'Cân bằng cảm xúc',
-          'Tăng cường trí nhớ'
+          t('healthCheck.products.anima119.benefits.sleep'),
+          t('healthCheck.products.anima119.benefits.stress'),
+          t('healthCheck.products.anima119.benefits.emotion'),
+          t('healthCheck.products.anima119.benefits.memory')
         ]
       });
     }
@@ -176,12 +179,12 @@ export default function HealthCheck() {
         id: '3',
         name: 'ANIMA Immune Boost',
         price: 890000,
-        reason: 'Tăng cường hệ miễn dịch và năng lượng cho cơ thể',
+        reason: t('healthCheck.products.immuneBoost.reason'),
         benefits: [
-          'Tăng sức đề kháng',
-          'Giảm mệt mỏi',
-          'Chống oxy hóa',
-          'Phục hồi sức khỏe nhanh'
+          t('healthCheck.products.immuneBoost.benefits.immunity'),
+          t('healthCheck.products.immuneBoost.benefits.fatigue'),
+          t('healthCheck.products.immuneBoost.benefits.antioxidant'),
+          t('healthCheck.products.immuneBoost.benefits.recovery')
         ]
       });
     }
@@ -192,12 +195,12 @@ export default function HealthCheck() {
         id: '2',
         name: 'ANIMA Starter Kit',
         price: 4500000,
-        reason: 'Combo dinh dưỡng toàn diện cho sức khỏe tổng thể',
+        reason: t('healthCheck.products.starterKit.reason'),
         benefits: [
-          'Bổ sung dinh dưỡng đầy đủ',
-          'Cân bằng cơ thể',
-          'Tăng cường sức khỏe',
-          'Phù hợp mọi lứa tuổi'
+          t('healthCheck.products.starterKit.benefits.nutrition'),
+          t('healthCheck.products.starterKit.benefits.balance'),
+          t('healthCheck.products.starterKit.benefits.health'),
+          t('healthCheck.products.starterKit.benefits.allAges')
         ]
       });
     }
@@ -229,10 +232,17 @@ export default function HealthCheck() {
   };
 
   const getScoreLabel = (score: number) => {
-    if (score >= 80) return 'Xuất sắc';
-    if (score >= 60) return 'Tốt';
-    if (score >= 40) return 'Trung bình';
-    return 'Cần cải thiện';
+    if (score >= 80) return t('healthCheck.scoreLabels.excellent');
+    if (score >= 60) return t('healthCheck.scoreLabels.good');
+    if (score >= 40) return t('healthCheck.scoreLabels.average');
+    return t('healthCheck.scoreLabels.needsImprovement');
+  };
+
+  const getScoreDescription = (score: number) => {
+    if (score >= 80) return t('healthCheck.scoreDescriptions.excellent');
+    if (score >= 60) return t('healthCheck.scoreDescriptions.good');
+    if (score >= 40) return t('healthCheck.scoreDescriptions.average');
+    return t('healthCheck.scoreDescriptions.poor');
   };
 
   if (showResults) {
@@ -253,8 +263,8 @@ export default function HealthCheck() {
                 className="flex flex-col items-center"
               >
                 <Award className="w-16 h-16 mb-4 text-accent" />
-                <h1 className="text-3xl font-bold mb-2">Kết Quả Đánh Giá</h1>
-                <p className="text-teal-100">Điểm sức khỏe của bạn</p>
+                <h1 className="text-3xl font-bold mb-2">{t('healthCheck.resultsTitle')}</h1>
+                <p className="text-teal-100">{t('healthCheck.yourHealthScore')}</p>
               </motion.div>
             </div>
 
@@ -283,10 +293,7 @@ export default function HealthCheck() {
                     {getScoreLabel(healthScore)}
                   </h2>
                   <p className="text-gray-600 max-w-md">
-                    {healthScore >= 80 && 'Tuyệt vời! Bạn đang duy trì lối sống rất khỏe mạnh. Hãy tiếp tục!'}
-                    {healthScore >= 60 && healthScore < 80 && 'Sức khỏe của bạn ở mức tốt, nhưng vẫn có thể cải thiện thêm.'}
-                    {healthScore >= 40 && healthScore < 60 && 'Sức khỏe của bạn cần được quan tâm nhiều hơn. Hãy bắt đầu thay đổi ngay!'}
-                    {healthScore < 40 && 'Sức khỏe của bạn đang cần được cải thiện khẩn cấp. Hãy tham khảo các giải pháp dưới đây!'}
+                    {getScoreDescription(healthScore)}
                   </p>
                 </motion.div>
               </div>
@@ -303,7 +310,7 @@ export default function HealthCheck() {
             <div className="flex items-center gap-3 mb-6">
               <Sparkles className="w-6 h-6 text-primary" />
               <h2 className="text-2xl font-bold text-gray-900">
-                Gợi ý sản phẩm phù hợp
+                {t('healthCheck.recommendationsTitle')}
               </h2>
             </div>
 
@@ -335,7 +342,7 @@ export default function HealthCheck() {
                       </ul>
                     </div>
                     <div className="text-right ml-4">
-                      <p className="text-sm text-gray-500 mb-1">Giá</p>
+                      <p className="text-sm text-gray-500 mb-1">{t('healthCheck.priceLabel')}</p>
                       <p className="text-2xl font-bold text-primary mb-4">
                         {formatVND(product.price)}
                       </p>
@@ -343,7 +350,7 @@ export default function HealthCheck() {
                         onClick={() => handleOrderRecommendation(product.id)}
                         className="bg-gradient-to-r from-primary to-teal-600 text-white px-6 py-2 rounded-xl font-semibold hover:shadow-lg transition-all duration-300"
                       >
-                        Đặt ngay
+                        {t('healthCheck.orderNow')}
                       </button>
                     </div>
                   </div>
@@ -366,10 +373,10 @@ export default function HealthCheck() {
                 </div>
                 <div>
                   <h3 className="text-2xl font-bold mb-2">
-                    Cần tư vấn chuyên sâu hơn?
+                    {t('healthCheck.consultationTitle')}
                   </h3>
                   <p className="text-green-100">
-                    Kết nối ngay với Partner của bạn qua Zalo để được tư vấn miễn phí 1-1
+                    {t('healthCheck.consultationDescription')}
                   </p>
                 </div>
               </div>
@@ -378,7 +385,7 @@ export default function HealthCheck() {
                 className="bg-white text-green-600 px-8 py-4 rounded-xl font-bold text-lg hover:scale-105 transition-transform duration-300 shadow-xl flex items-center gap-2 whitespace-nowrap"
               >
                 <MessageCircle className="w-6 h-6" />
-                Nhắn tin Zalo ngay
+                {t('healthCheck.chatNow')}
               </button>
             </div>
           </motion.div>
@@ -398,7 +405,7 @@ export default function HealthCheck() {
               }}
               className="text-gray-600 hover:text-primary transition-colors font-medium"
             >
-              Làm lại bài đánh giá →
+              {t('healthCheck.restartQuiz')}
             </button>
           </motion.div>
         </motion.div>
@@ -438,7 +445,7 @@ export default function HealthCheck() {
                 <currentQuestion.icon className="w-12 h-12 text-white" />
               </motion.div>
               <p className="text-sm text-gray-500 mb-2">
-                Câu hỏi {currentStep + 1} / {quizQuestions.length}
+                {t('healthCheck.questionProgress', { current: currentStep + 1, total: quizQuestions.length })}
               </p>
               <h2 className="text-2xl md:text-3xl font-bold text-gray-900">
                 {currentQuestion.question}
@@ -487,7 +494,7 @@ export default function HealthCheck() {
                 }`}
               >
                 <ArrowLeft className="w-5 h-5" />
-                Quay lại
+                {t('healthCheck.back')}
               </button>
 
               <button
@@ -499,7 +506,7 @@ export default function HealthCheck() {
                     : 'bg-gray-200 text-gray-400 cursor-not-allowed'
                 }`}
               >
-                {currentStep === quizQuestions.length - 1 ? 'Xem kết quả' : 'Tiếp theo'}
+                {currentStep === quizQuestions.length - 1 ? t('healthCheck.viewResults') : t('healthCheck.next')}
                 <ArrowRight className="w-5 h-5" />
               </button>
             </div>
@@ -514,7 +521,7 @@ export default function HealthCheck() {
           className="mt-6 text-center"
         >
           <p className="text-sm text-gray-600">
-            ⏱️ Chỉ mất 2 phút để hoàn thành • 🔒 Thông tin của bạn được bảo mật
+            {t('healthCheck.timeInfo')}
           </p>
         </motion.div>
       </motion.div>
