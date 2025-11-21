@@ -1,4 +1,8 @@
-/* Import Google Fonts - Outfit for headings, Plus Jakarta Sans for body */
+/* ============================================================================
+   TYPOGRAPHY INJECTION - Google Fonts
+   ============================================================================ */
+/* Outfit: Display font for headlines (400, 500, 700, 800) */
+/* Plus Jakarta Sans: Body font for content (400, 500, 600, 700) */
 @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap');
 
 @tailwind base;
@@ -6,14 +10,20 @@
 @tailwind utilities;
 
 @layer base {
+  /* Global HTML font - Plus Jakarta Sans as default */
   html {
-    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
   }
 
+  /* All headings use Outfit with tight tracking for modern look */
   h1, h2, h3, h4, h5, h6 {
-    font-family: 'Outfit', sans-serif;
+    font-family: 'Outfit', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    letter-spacing: -0.02em;
   }
 
+  /* Body with brand colors and antialiasing */
   body {
     @apply bg-brand-bg text-brand-dark font-sans antialiased;
   }
