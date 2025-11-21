@@ -1,12 +1,12 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { Link } from 'react-scroll';
 import {
   ArrowRight,
   ShieldCheck,
   Users,
   Zap,
   Bot,
+  Lock,
   TrendingUp,
   BarChart3,
   Mail,
@@ -14,18 +14,143 @@ import {
   Facebook,
   Linkedin,
   Sparkles,
-  Crown,
-  CheckCircle2,
   Globe,
-  Lightbulb,
-  Target,
-  Heart,
-  Wallet,
-  Lock
+  Crown,
+  CheckCircle2
 } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { useStore } from '../store';
 
+// ============================================================================
+// CMS-READY CONTENT ARCHITECTURE
+// ============================================================================
+// All text content centralized for easy API integration
+const LANDING_CONTENT = {
+  header: {
+    logo: 'WellNexus',
+    navigation: [
+      { label: 'Cách hoạt động', href: '#how-it-works' },
+      { label: 'Công nghệ', href: '#technology' },
+      { label: 'Sản phẩm', href: '#products' },
+      { label: 'Cộng đồng', href: '#community' }
+    ],
+    cta: {
+      login: 'Đăng nhập',
+      signup: 'Bắt đầu bán hàng'
+    }
+  },
+
+  hero: {
+    badge: 'Nền tảng #1 cho người bán sức khỏe tại Việt Nam',
+    headline: 'Kinh Doanh Sản Phẩm Sức Khỏe',
+    headlineAccent: 'Theo Cách Của Bạn',
+    subheadline: 'WellNexus là nền tảng cho phép bạn bán sản phẩm wellness chất lượng cao với công cụ AI tự động hóa, tính năng tuân thủ thuế, và hoa hồng minh bạch. Không cần vốn đầu tư, không cần kho hàng.',
+    primaryCta: 'Khám phá Dashboard Demo',
+    secondaryCta: 'Xem cách hoạt động'
+  },
+
+  features: {
+    sectionBadge: 'Công nghệ tiên tiến',
+    sectionTitle: 'Công cụ thông minh giúp bạn bán hàng hiệu quả',
+    items: [
+      {
+        title: 'AI Business Coach',
+        description: 'Trợ lý AI phân tích dữ liệu bán hàng của bạn và đưa ra gợi ý chiến lược cá nhân hóa hàng ngày. Giống như có một chuyên gia tư vấn 24/7.',
+        icon: 'bot'
+      },
+      {
+        title: 'Automated Tax Compliance',
+        description: 'Tự động tính toán và khấu trừ thuế TNCN theo đúng Thông tư 111/2013/TT-BTC. Báo cáo thuế đầy đủ, minh bạch từng giao dịch.',
+        icon: 'shield'
+      },
+      {
+        title: 'Real-Time Analytics',
+        description: 'Theo dõi doanh số, hoa hồng, và hiệu suất sản phẩm trong dashboard trực quan. Xuất báo cáo chi tiết bất cứ lúc nào.',
+        icon: 'chart'
+      },
+      {
+        title: 'Product Discovery Engine',
+        description: 'AI đề xuất sản phẩm phù hợp dựa trên sở thích khách hàng và xu hướng thị trường. Tăng tỷ lệ chuyển đổi lên 40%.',
+        icon: 'trending'
+      },
+      {
+        title: 'Transparent Commission',
+        description: 'Xem chi tiết cấu trúc hoa hồng cho từng sản phẩm. Không có phí ẩn. Không có điều khoản khó hiểu. 100% minh bạch.',
+        icon: 'crown'
+      },
+      {
+        title: 'Community Learning Hub',
+        description: 'Truy cập thư viện video hướng dẫn, webinar, và khóa học từ những người bán hàng đầu. Học hỏi chiến lược thực chiến.',
+        icon: 'users'
+      }
+    ]
+  },
+
+  testimonials: {
+    sectionBadge: 'Câu chuyện từ cộng đồng',
+    sectionTitle: 'Người bán thực tế chia sẻ hành trình',
+    items: [
+      {
+        quote: 'Tôi bắt đầu bán sản phẩm ANIMA 119 vì mình đã dùng và thấy hiệu quả. Trong 3 tháng đầu, tôi kiếm được ₫18 triệu hoa hồng từ 47 đơn hàng. AI Coach giúp tôi hiểu khách hàng nào quan tâm đến sản phẩm nào.',
+        author: 'Lan Nguyễn',
+        role: 'Wellness Advocate, Hà Nội',
+        avatar: '👩‍💼',
+        metrics: '3 tháng • 47 đơn hàng • ₫18M hoa hồng'
+      },
+      {
+        quote: 'Tôi từng hoài nghi về bán hàng online. Nhưng WellNexus khác - không cần ép bạn bè mua, không cần tồn kho. Tôi chỉ chia sẻ sản phẩm tôi tin tưởng trong group yoga. Giờ đây, đây là thu nhập phụ ổn định ₫12-15 triệu/tháng.',
+        author: 'Minh Trần',
+        role: 'Former Office Worker, TP.HCM',
+        avatar: '👨‍💼',
+        metrics: '6 tháng • 89 đơn hàng • ₫72M hoa hồng'
+      }
+    ]
+  },
+
+  cta: {
+    badge: 'Miễn phí đăng ký',
+    headline: 'Sẵn sàng bắt đầu kinh doanh?',
+    subheadline: 'Tạo tài khoản người bán miễn phí ngay hôm nay. Không cần vốn đầu tư. Không phí hàng tháng. Chỉ trả commission khi bạn bán được hàng.',
+    buttonText: 'Tạo tài khoản ngay'
+  },
+
+  footer: {
+    tagline: 'Nền tảng Social Commerce cho phép bạn bán sản phẩm wellness chất lượng cao với công cụ thông minh và hoa hồng minh bạch.',
+    newsletter: {
+      title: 'Nhận hướng dẫn bán hàng',
+      placeholder: 'Email của bạn',
+      buttonText: 'Đăng ký'
+    },
+    columns: {
+      product: {
+        title: 'Nền Tảng',
+        links: ['Dashboard', 'AI Coach', 'Product Catalog', 'Commission Tracker', 'Analytics']
+      },
+      company: {
+        title: 'Kinh Doanh',
+        links: ['Cách hoạt động', 'Cấu trúc hoa hồng', 'Công cụ thuế', 'Hướng dẫn người bán', 'API Docs']
+      },
+      resources: {
+        title: 'Tài Nguyên',
+        links: ['Help Center', 'Video Tutorials', 'Blog', 'Community Forum', 'Success Stories']
+      },
+      legal: {
+        title: 'Pháp Lý',
+        links: ['Terms of Service', 'Privacy Policy', 'Tax Compliance', 'Business Registration', 'Security']
+      }
+    },
+    social: {
+      facebook: 'https://facebook.com/wellnexus',
+      instagram: 'https://instagram.com/wellnexus',
+      linkedin: 'https://linkedin.com/company/wellnexus'
+    },
+    copyright: '© 2025 WellNexus Technology JSC. All rights reserved.'
+  }
+};
+
+// ============================================================================
+// MAIN COMPONENT
+// ============================================================================
 export default function LandingPage() {
   const navigate = useNavigate();
   const { login } = useStore();
@@ -35,513 +160,420 @@ export default function LandingPage() {
     navigate('/dashboard');
   };
 
+  // Animation Variants
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.1,
+        delayChildren: 0.2
+      }
+    }
+  };
+
+  const itemVariants = {
+    hidden: { opacity: 0, y: 30 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: { duration: 0.6, ease: [0.22, 1, 0.36, 1] }
+    }
+  };
+
+  // Icon mapping
+  const iconMap = {
+    bot: Bot,
+    shield: ShieldCheck,
+    users: Users,
+    chart: BarChart3,
+    trending: TrendingUp,
+    crown: Crown
+  };
+
   return (
     <>
-      {/* Custom Fonts */}
+      {/* ====================================================================== */}
+      {/* CUSTOM STYLES */}
+      {/* ====================================================================== */}
       <style>{`
-        @import url('https://fonts.googleapis.com/css2?family=Manrope:wght@200;300;400;500;600;700;800&family=Plus+Jakarta+Sans:wght@200;300;400;500;600;700;800&display=swap');
-
-        .font-manrope {
-          font-family: 'Manrope', sans-serif;
+        /* Noise Texture */
+        .noise-texture {
+          background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' /%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.05'/%3E%3C/svg%3E");
         }
 
-        .font-jakarta {
-          font-family: 'Plus Jakarta Sans', sans-serif;
+        /* Grid Pattern */
+        .grid-pattern {
+          background-image:
+            linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+            linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+          background-size: 50px 50px;
         }
 
+        /* Smooth scroll behavior */
         html {
           scroll-behavior: smooth;
         }
-
-        .noise-texture {
-          background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' /%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.03'/%3E%3C/svg%3E");
-        }
-
-        .gradient-text {
-          background: linear-gradient(135deg, #FFBF00 0%, #FFD966 50%, #FFBF00 100%);
-          -webkit-background-clip: text;
-          -webkit-text-fill-color: transparent;
-          background-clip: text;
-        }
-
-        .glass-card {
-          background: rgba(255, 255, 255, 0.03);
-          backdrop-filter: blur(20px);
-          border: 1px solid rgba(255, 255, 255, 0.1);
-        }
-
-        .glow-hover {
-          transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-
-        .glow-hover:hover {
-          box-shadow: 0 20px 60px rgba(255, 191, 0, 0.3);
-        }
       `}</style>
 
-      <div className="min-h-screen bg-slate-50 text-slate-900 overflow-x-hidden">
+      <div className="min-h-screen bg-[#00575A] text-gray-900 overflow-x-hidden">
 
         {/* ================================================================== */}
-        {/* STICKY NAVIGATION BAR */}
+        {/* STICKY GLASSMORPHIC HEADER */}
         {/* ================================================================== */}
         <motion.nav
           initial={{ y: -100 }}
           animate={{ y: 0 }}
-          transition={{ duration: 0.6 }}
-          className="fixed top-0 w-full z-50 backdrop-blur-2xl bg-white/80 border-b border-slate-200 shadow-lg"
+          transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+          className="fixed top-0 w-full z-50 backdrop-blur-xl bg-white/5 border-b border-white/10"
         >
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-12 h-20 flex items-center justify-between">
+          <div className="max-w-7xl mx-auto px-6 lg:px-12 h-20 flex items-center justify-between">
             {/* Logo */}
             <motion.div
-              className="flex items-center gap-3 cursor-pointer"
-              whileHover={{ scale: 1.05 }}
+              className="flex items-center gap-3"
+              whileHover={{ scale: 1.02 }}
             >
-              <div className="w-11 h-11 bg-gradient-to-br from-[#00575A] to-teal-700 rounded-2xl flex items-center justify-center text-white font-manrope font-black text-xl shadow-xl">
+              <div className="w-10 h-10 bg-gradient-to-br from-[#FFBF00] to-yellow-500 rounded-xl flex items-center justify-center text-[#00575A] font-display font-black text-xl shadow-lg shadow-[#FFBF00]/20">
                 W
               </div>
-              <span className="font-manrope font-extrabold text-2xl text-slate-900 tracking-tight">
-                WellNexus
+              <span className="font-display font-bold text-xl text-white tracking-tight">
+                {LANDING_CONTENT.header.logo}
               </span>
             </motion.div>
 
             {/* Navigation Menu - Desktop */}
             <div className="hidden md:flex items-center gap-8">
-              <Link
-                to="about"
-                smooth={true}
-                duration={800}
-                offset={-80}
-                className="text-sm font-semibold text-slate-700 hover:text-[#00575A] transition-colors cursor-pointer font-jakarta"
-              >
-                Về chúng tôi
-              </Link>
-              <Link
-                to="features"
-                smooth={true}
-                duration={800}
-                offset={-80}
-                className="text-sm font-semibold text-slate-700 hover:text-[#00575A] transition-colors cursor-pointer font-jakarta"
-              >
-                Tính năng
-              </Link>
-              <Link
-                to="community"
-                smooth={true}
-                duration={800}
-                offset={-80}
-                className="text-sm font-semibold text-slate-700 hover:text-[#00575A] transition-colors cursor-pointer font-jakarta"
-              >
-                Cộng đồng
-              </Link>
-              <Link
-                to="pricing"
-                smooth={true}
-                duration={800}
-                offset={-80}
-                className="text-sm font-semibold text-slate-700 hover:text-[#00575A] transition-colors cursor-pointer font-jakarta"
-              >
-                Bảng giá
-              </Link>
+              {LANDING_CONTENT.header.navigation.map((item, idx) => (
+                <a
+                  key={idx}
+                  href={item.href}
+                  className="text-sm font-medium text-white/70 hover:text-white transition-colors"
+                >
+                  {item.label}
+                </a>
+              ))}
             </div>
 
-            {/* Action Button */}
-            <motion.button
-              onClick={handleJoin}
-              className="px-6 py-3 bg-gradient-to-r from-[#00575A] to-teal-700 text-white font-bold rounded-2xl shadow-xl hover:shadow-2xl transition-all font-jakarta"
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-            >
-              Đăng nhập
-            </motion.button>
+            {/* Action Buttons */}
+            <div className="flex items-center gap-3">
+              <motion.button
+                onClick={handleJoin}
+                className="hidden md:block text-sm font-semibold text-white/80 hover:text-white px-5 py-2.5 rounded-xl transition-colors"
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+              >
+                {LANDING_CONTENT.header.cta.login}
+              </motion.button>
+
+              <motion.button
+                onClick={handleJoin}
+                className="text-sm font-bold bg-[#FFBF00] hover:bg-yellow-400 text-[#00575A] px-6 py-2.5 rounded-xl transition-all shadow-lg shadow-[#FFBF00]/20"
+                whileHover={{
+                  scale: 1.05,
+                  boxShadow: '0 20px 40px rgba(255, 191, 0, 0.3)'
+                }}
+                whileTap={{ scale: 0.95 }}
+              >
+                {LANDING_CONTENT.header.cta.signup}
+              </motion.button>
+            </div>
           </div>
         </motion.nav>
 
         {/* ================================================================== */}
-        {/* HERO SECTION - Visual First */}
+        {/* HERO SECTION - WORLD CLASS */}
         {/* ================================================================== */}
-        <section className="relative min-h-screen pt-32 pb-20 overflow-hidden bg-gradient-to-br from-slate-50 via-white to-teal-50">
-          {/* Background Effects */}
-          <div className="absolute inset-0 noise-texture opacity-40" />
+        <section className="relative min-h-[600px] pt-32 pb-12 md:pt-40 md:pb-24 lg:pt-48 lg:pb-40 overflow-hidden">
+          {/* Background Layers */}
+          <div className="absolute inset-0 z-0">
+            {/* Noise Texture */}
+            <div className="absolute inset-0 noise-texture opacity-50" />
 
-          {/* Floating Orbs */}
-          <motion.div
-            animate={{
-              y: [0, -30, 0],
-              rotate: [0, 180, 360],
-            }}
-            transition={{
-              duration: 20,
-              repeat: Infinity,
-              ease: "linear"
-            }}
-            className="absolute top-20 right-10 w-72 h-72 bg-gradient-to-br from-[#FFBF00]/20 to-yellow-300/20 rounded-full blur-3xl"
-          />
+            {/* Grid Pattern */}
+            <div className="absolute inset-0 grid-pattern opacity-30" />
 
-          <motion.div
-            animate={{
-              y: [0, 40, 0],
-              rotate: [360, 180, 0],
-            }}
-            transition={{
-              duration: 25,
-              repeat: Infinity,
-              ease: "linear"
-            }}
-            className="absolute bottom-20 left-10 w-96 h-96 bg-gradient-to-br from-[#00575A]/15 to-teal-400/15 rounded-full blur-3xl"
-          />
+            {/* Gradient Orbs */}
+            <motion.div
+              animate={{
+                x: [0, 50, 0],
+                y: [0, 30, 0],
+                scale: [1, 1.1, 1]
+              }}
+              transition={{
+                duration: 20,
+                repeat: Infinity,
+                ease: "easeInOut"
+              }}
+              className="absolute top-0 right-[10%] w-[600px] h-[600px] bg-[#FFBF00] opacity-10 rounded-full blur-[150px]"
+            />
 
-          <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-12">
-            <div className="grid lg:grid-cols-2 gap-12 items-center">
-              {/* Left: Text Content */}
-              <motion.div
-                initial={{ opacity: 0, x: -50 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ duration: 0.8 }}
+            <motion.div
+              animate={{
+                x: [0, -30, 0],
+                y: [0, 50, 0],
+                scale: [1, 1.15, 1]
+              }}
+              transition={{
+                duration: 25,
+                repeat: Infinity,
+                ease: "easeInOut",
+                delay: 2
+              }}
+              className="absolute bottom-0 left-[5%] w-[500px] h-[500px] bg-cyan-400 opacity-8 rounded-full blur-[130px]"
+            />
+
+            <motion.div
+              animate={{
+                x: [0, 40, 0],
+                y: [0, -40, 0],
+                scale: [1, 1.2, 1]
+              }}
+              transition={{
+                duration: 22,
+                repeat: Infinity,
+                ease: "easeInOut",
+                delay: 4
+              }}
+              className="absolute top-[40%] left-[50%] w-[400px] h-[400px] bg-purple-500 opacity-6 rounded-full blur-[140px]"
+            />
+          </div>
+
+          {/* Content */}
+          <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 md:px-8 lg:px-12">
+            <motion.div
+              variants={containerVariants}
+              initial="hidden"
+              animate="visible"
+              className="text-center max-w-5xl mx-auto"
+            >
+              {/* Badge */}
+              <motion.div variants={itemVariants} className="mb-6 md:mb-8 inline-flex">
+                <div className="inline-flex items-center gap-2 bg-white/5 backdrop-blur-md border border-white/10 rounded-full px-4 py-2 md:px-5 md:py-2.5">
+                  <span className="relative flex h-2 w-2">
+                    <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#FFBF00] opacity-75" />
+                    <span className="relative inline-flex rounded-full h-2 w-2 bg-[#FFBF00]" />
+                  </span>
+                  <Sparkles className="w-3 h-3 md:w-4 md:h-4 text-[#FFBF00]" />
+                  <span className="text-xs md:text-sm font-bold text-[#FFBF00] uppercase tracking-wider font-display">
+                    {LANDING_CONTENT.hero.badge}
+                  </span>
+                </div>
+              </motion.div>
+
+              {/* Headline - Mobile: 4xl, Tablet: 6xl, Desktop: 9xl */}
+              <motion.h1
+                variants={itemVariants}
+                className="font-display font-black text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl 2xl:text-9xl mb-4 md:mb-6 leading-[0.95] tracking-tight text-white drop-shadow-2xl"
               >
-                <motion.div
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.2 }}
-                  className="inline-flex items-center gap-2 bg-[#FFBF00]/10 border border-[#FFBF00]/30 rounded-full px-5 py-2 mb-8"
-                >
-                  <Sparkles className="w-4 h-4 text-[#FFBF00]" />
-                  <span className="text-sm font-bold text-[#00575A] uppercase tracking-wider font-jakarta">
-                    Powered by AI Agentic
-                  </span>
-                </motion.div>
+                {LANDING_CONTENT.hero.headline}
+                <br />
+                <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#FFBF00] via-yellow-300 to-[#FFBF00] animate-gradient">
+                  {LANDING_CONTENT.hero.headlineAccent}
+                </span>
+              </motion.h1>
 
-                <h1 className="font-manrope font-black text-5xl sm:text-6xl lg:text-7xl xl:text-8xl mb-6 leading-[0.95] tracking-tight text-slate-900">
-                  Kinh Doanh Sức Khỏe{' '}
-                  <span className="gradient-text">
-                    Thời Đại AI Agentic
-                  </span>
-                </h1>
+              {/* Subheadline - Mobile: base, Desktop: 2xl */}
+              <motion.p
+                variants={itemVariants}
+                className="text-base md:text-lg lg:text-xl xl:text-2xl text-white/80 mb-8 md:mb-12 max-w-3xl mx-auto leading-relaxed font-light px-4 md:px-0"
+              >
+                {LANDING_CONTENT.hero.subheadline}
+              </motion.p>
 
-                <p className="text-xl text-slate-600 mb-10 leading-relaxed font-jakarta max-w-xl">
-                  Nền tảng Social Commerce trang bị cho bạn một{' '}
-                  <span className="font-bold text-[#00575A]">AI Coach riêng biệt</span>,{' '}
-                  công cụ thông minh, và cộng đồng hỗ trợ để xây dựng sự nghiệp kinh doanh wellness.
-                </p>
-
+              {/* CTA Buttons */}
+              <motion.div
+                variants={itemVariants}
+                className="flex flex-col sm:flex-row gap-4 justify-center items-center"
+              >
                 <motion.button
                   onClick={handleJoin}
-                  className="group relative bg-gradient-to-r from-[#FFBF00] to-yellow-400 text-slate-900 px-10 py-5 rounded-2xl font-bold text-lg flex items-center gap-3 shadow-2xl font-jakarta overflow-hidden"
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
+                  className="group relative bg-[#FFBF00] text-[#00575A] px-10 py-5 rounded-2xl font-bold text-lg flex items-center gap-3 shadow-2xl shadow-[#FFBF00]/30 font-display overflow-hidden"
+                  whileHover={{
+                    scale: 1.05,
+                    boxShadow: '0 25px 60px rgba(255, 191, 0, 0.5)'
+                  }}
+                  whileTap={{ scale: 0.98 }}
                 >
-                  <span className="relative z-10">Tham gia Founders Club</span>
-                  <ArrowRight className="w-6 h-6 group-hover:translate-x-2 transition-transform relative z-10" />
+                  <span className="relative z-10">{LANDING_CONTENT.hero.primaryCta}</span>
+                  <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform relative z-10" />
 
-                  {/* Pulse Animation */}
+                  {/* Shine effect */}
                   <motion.div
-                    className="absolute inset-0 bg-gradient-to-r from-yellow-300 to-[#FFBF00]"
+                    className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent"
                     animate={{
-                      scale: [1, 1.05, 1],
-                      opacity: [0.5, 0.8, 0.5],
+                      x: ['-200%', '200%']
                     }}
                     transition={{
                       duration: 2,
                       repeat: Infinity,
+                      repeatDelay: 1
                     }}
                   />
                 </motion.button>
 
-                {/* Stats */}
-                <div className="mt-12 grid grid-cols-3 gap-6">
-                  {[
-                    { value: '2K+', label: 'Members' },
-                    { value: '₫50M+', label: 'Payouts' },
-                    { value: '4.8⭐', label: 'Rating' }
-                  ].map((stat, idx) => (
-                    <div key={idx}>
-                      <div className="text-3xl font-black text-[#00575A] font-manrope">{stat.value}</div>
-                      <div className="text-sm text-slate-500 font-jakarta">{stat.label}</div>
-                    </div>
-                  ))}
-                </div>
+                <motion.button
+                  className="group px-10 py-5 rounded-2xl font-bold text-lg text-white border-2 border-white/20 hover:border-white/40 backdrop-blur-md bg-white/5 hover:bg-white/10 transition-all flex items-center gap-2 font-display"
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                >
+                  <Zap className="w-5 h-5" />
+                  {LANDING_CONTENT.hero.secondaryCta}
+                </motion.button>
               </motion.div>
 
-              {/* Right: Hero Visual */}
+              {/* Stats - Mobile: grid-cols-3, Desktop: same */}
               <motion.div
-                initial={{ opacity: 0, scale: 0.8 }}
-                animate={{ opacity: 1, scale: 1 }}
-                transition={{ duration: 1 }}
-                className="relative"
+                variants={itemVariants}
+                className="mt-12 md:mt-16 grid grid-cols-3 gap-4 md:gap-8 max-w-2xl mx-auto px-4 md:px-0"
               >
-                <div className="relative rounded-3xl overflow-hidden shadow-2xl">
-                  <img
-                    src="https://source.unsplash.com/800x900/?abstract,3d,technology,wellness"
-                    alt="AI Technology"
-                    className="w-full h-auto object-cover"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-tr from-[#00575A]/60 via-transparent to-[#FFBF00]/40" />
-                </div>
+                {[
+                  { value: '2,000+', label: 'Người bán hoạt động' },
+                  { value: '₫50M+', label: 'Hoa hồng chi trả' },
+                  { value: '4.8/5⭐', label: 'Đánh giá TB' }
+                ].map((stat, idx) => (
+                  <div key={idx} className="text-center">
+                    <div className="text-2xl md:text-3xl lg:text-4xl font-black text-[#FFBF00] font-display mb-1">
+                      {stat.value}
+                    </div>
+                    <div className="text-xs md:text-sm text-white/60 font-medium">
+                      {stat.label}
+                    </div>
+                  </div>
+                ))}
               </motion.div>
-            </div>
+            </motion.div>
           </div>
         </section>
 
         {/* ================================================================== */}
-        {/* PROBLEM SECTION - Visual Cards (Flip Cards) */}
+        {/* BENTO GRID FEATURES SECTION */}
         {/* ================================================================== */}
-        <section id="about" className="relative py-24 bg-white">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-12">
+        <section className="relative py-12 md:py-24 lg:py-32 bg-gradient-to-b from-[#00575A] via-[#004144] to-[#003335]">
+          {/* Background */}
+          <div className="absolute inset-0 noise-texture opacity-40" />
+          <div className="absolute inset-0 grid-pattern opacity-20" />
+
+          <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 md:px-8 lg:px-12">
+            {/* Section Header */}
             <motion.div
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.6 }}
-              className="text-center mb-16"
+              className="text-center mb-12 md:mb-20"
             >
-              <h2 className="font-manrope font-black text-4xl md:text-5xl lg:text-6xl text-slate-900 mb-4">
-                Bạn Đang Gặp Phải Vấn Đề Này?
+              <div className="inline-flex items-center gap-2 bg-[#FFBF00]/10 backdrop-blur-md border border-[#FFBF00]/20 rounded-full px-4 py-2 md:px-5 md:py-2 mb-4 md:mb-6">
+                <Globe className="w-3 h-3 md:w-4 md:h-4 text-[#FFBF00]" />
+                <span className="text-xs md:text-sm font-bold text-[#FFBF00] uppercase tracking-wider font-display">
+                  {LANDING_CONTENT.features.sectionBadge}
+                </span>
+              </div>
+              <h2 className="text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-black text-white mb-4 font-display tracking-tight px-4 md:px-0">
+                {LANDING_CONTENT.features.sectionTitle}
               </h2>
-              <p className="text-xl text-slate-600 font-jakarta">
-                Chúng tôi hiểu rõ thách thức của người bán hàng độc lập
-              </p>
             </motion.div>
 
-            <div className="grid md:grid-cols-3 gap-8">
-              {[
-                {
-                  title: 'Cô Đơn',
-                  description: 'Không có cộng đồng hỗ trợ, tự mình vật lộn với khó khăn',
-                  image: 'https://source.unsplash.com/600x400/?lonely,dark,person',
-                  icon: Heart
-                },
-                {
-                  title: 'Mất Phương Hướng',
-                  description: 'Không biết chiến lược nào hiệu quả, lãng phí thời gian',
-                  image: 'https://source.unsplash.com/600x400/?maze,lost,confused',
-                  icon: Target
-                },
-                {
-                  title: 'Thiếu Công Cụ',
-                  description: 'Dùng công cụ thủ công lỗi thời, không có AI hỗ trợ',
-                  image: 'https://source.unsplash.com/600x400/?old,tools,vintage',
-                  icon: Lightbulb
-                }
-              ].map((problem, idx) => {
-                const Icon = problem.icon;
+            {/* Bento Grid - Mobile: 1 col, Tablet: 2 cols, Desktop: 3 cols */}
+            <motion.div
+              variants={containerVariants}
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true }}
+              className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6"
+            >
+              {LANDING_CONTENT.features.items.map((feature, idx) => {
+                const Icon = iconMap[feature.icon as keyof typeof iconMap];
+                const isLarge = idx === 0 || idx === 3; // First and fourth items are larger
+
                 return (
                   <motion.div
                     key={idx}
-                    initial={{ opacity: 0, y: 30 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true }}
-                    transition={{ delay: idx * 0.2 }}
-                    className="group relative rounded-3xl overflow-hidden shadow-xl hover:shadow-2xl transition-all duration-500"
-                    whileHover={{ y: -10 }}
+                    variants={itemVariants}
+                    className={`
+                      group relative backdrop-blur-xl bg-white/5 border border-white/10 rounded-2xl md:rounded-3xl p-6 md:p-8
+                      hover:bg-white/10 hover:border-white/20 transition-all duration-500
+                      ${isLarge ? 'md:col-span-2 lg:col-span-1' : ''}
+                    `}
+                    whileHover={{
+                      y: -8,
+                      transition: { duration: 0.3 }
+                    }}
                   >
-                    <div className="relative h-64">
-                      <img
-                        src={problem.image}
-                        alt={problem.title}
-                        className="w-full h-full object-cover"
-                      />
-                      <div className="absolute inset-0 bg-gradient-to-t from-slate-900 via-slate-900/60 to-transparent" />
-                    </div>
+                    {/* Glow Effect on Hover */}
+                    <div className="absolute inset-0 rounded-2xl md:rounded-3xl bg-gradient-to-br from-[#FFBF00]/0 via-[#FFBF00]/0 to-[#FFBF00]/0 group-hover:from-[#FFBF00]/10 group-hover:via-[#FFBF00]/5 group-hover:to-transparent transition-all duration-500" />
 
-                    <div className="absolute bottom-0 left-0 right-0 p-6 text-white">
-                      <Icon className="w-10 h-10 mb-3 text-[#FFBF00]" />
-                      <h3 className="font-manrope font-bold text-2xl mb-2">{problem.title}</h3>
-                      <p className="text-white/80 font-jakarta text-sm">{problem.description}</p>
+                    <div className="relative z-10">
+                      {/* Icon */}
+                      <div className="w-12 h-12 md:w-16 md:h-16 rounded-xl md:rounded-2xl bg-gradient-to-br from-[#FFBF00]/20 to-[#FFBF00]/5 backdrop-blur-sm border border-[#FFBF00]/20 flex items-center justify-center mb-4 md:mb-6 group-hover:scale-110 group-hover:rotate-3 transition-all duration-500">
+                        <Icon className="w-6 h-6 md:w-8 md:h-8 text-[#FFBF00]" />
+                      </div>
+
+                      {/* Content */}
+                      <h3 className="text-lg md:text-xl lg:text-2xl font-bold text-white mb-2 md:mb-3 font-display tracking-tight">
+                        {feature.title}
+                      </h3>
+                      <p className="text-sm md:text-base text-white/70 leading-relaxed">
+                        {feature.description}
+                      </p>
                     </div>
                   </motion.div>
                 );
               })}
-            </div>
+            </motion.div>
           </div>
         </section>
 
         {/* ================================================================== */}
-        {/* SOLUTION SECTION - BENTO GRID (CRITICAL) */}
+        {/* TESTIMONIALS SECTION */}
         {/* ================================================================== */}
-        <section id="features" className="relative py-24 bg-gradient-to-b from-slate-50 to-white">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-12">
+        <section className="relative py-12 md:py-24 lg:py-32 bg-[#003335]">
+          <div className="absolute inset-0 noise-texture opacity-30" />
+
+          <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 md:px-8 lg:px-12">
+            {/* Section Header */}
             <motion.div
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               className="text-center mb-16"
             >
-              <h2 className="font-manrope font-black text-4xl md:text-5xl lg:text-6xl text-slate-900 mb-4">
-                Giải Pháp Toàn Diện
+              <div className="inline-flex items-center gap-2 bg-white/5 backdrop-blur-md border border-white/10 rounded-full px-5 py-2 mb-6">
+                <span className="text-sm font-bold text-[#FFBF00] uppercase tracking-wider font-display">
+                  {LANDING_CONTENT.testimonials.sectionBadge}
+                </span>
+              </div>
+              <h2 className="text-4xl md:text-5xl font-black text-white font-display tracking-tight">
+                {LANDING_CONTENT.testimonials.sectionTitle}
               </h2>
-              <p className="text-xl text-slate-600 font-jakarta">
-                Công nghệ AI tiên tiến kết hợp cộng đồng mạnh mẽ
-              </p>
             </motion.div>
 
-            {/* BENTO GRID */}
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-              {/* Large Card 1 - AI Coach */}
-              <motion.div
-                initial={{ opacity: 0, scale: 0.9 }}
-                whileInView={{ opacity: 1, scale: 1 }}
-                viewport={{ once: true }}
-                className="lg:col-span-2 lg:row-span-2 glass-card rounded-3xl overflow-hidden shadow-xl glow-hover relative group"
-              >
-                <div className="absolute inset-0">
-                  <img
-                    src="https://source.unsplash.com/800x800/?artificial-intelligence,robot,future"
-                    alt="AI Coach"
-                    className="w-full h-full object-cover opacity-40"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-br from-[#00575A]/80 to-teal-900/80" />
-                </div>
-
-                <div className="relative z-10 p-8 h-full flex flex-col justify-end">
-                  <Bot className="w-16 h-16 text-[#FFBF00] mb-4" />
-                  <h3 className="font-manrope font-black text-4xl text-white mb-3">AI Coach</h3>
-                  <p className="text-white/90 text-lg font-jakarta">
-                    Trợ lý AI cá nhân hóa phân tích dữ liệu bán hàng và đưa ra gợi ý chiến lược thông minh 24/7
-                  </p>
-                </div>
-              </motion.div>
-
-              {/* Medium Card 2 - Minh Bạch */}
-              <motion.div
-                initial={{ opacity: 0, scale: 0.9 }}
-                whileInView={{ opacity: 1, scale: 1 }}
-                viewport={{ once: true }}
-                transition={{ delay: 0.1 }}
-                className="lg:row-span-1 glass-card rounded-3xl overflow-hidden shadow-xl glow-hover relative group"
-              >
-                <div className="absolute inset-0">
-                  <img
-                    src="https://source.unsplash.com/600x400/?blockchain,transparency,qrcode"
-                    alt="Transparency"
-                    className="w-full h-full object-cover opacity-30"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-br from-[#FFBF00]/70 to-yellow-600/70" />
-                </div>
-
-                <div className="relative z-10 p-6 h-full flex flex-col justify-end">
-                  <ShieldCheck className="w-12 h-12 text-slate-900 mb-3" />
-                  <h3 className="font-manrope font-black text-2xl text-slate-900 mb-2">100% Minh Bạch</h3>
-                  <p className="text-slate-800 font-jakarta text-sm">
-                    Hoa hồng rõ ràng, thuế tự động
-                  </p>
-                </div>
-              </motion.div>
-
-              {/* Medium Card 3 - Cộng Đồng */}
-              <motion.div
-                initial={{ opacity: 0, scale: 0.9 }}
-                whileInView={{ opacity: 1, scale: 1 }}
-                viewport={{ once: true }}
-                transition={{ delay: 0.2 }}
-                className="lg:row-span-1 glass-card rounded-3xl overflow-hidden shadow-xl glow-hover relative group"
-              >
-                <div className="absolute inset-0">
-                  <img
-                    src="https://source.unsplash.com/600x400/?community,happy,people,team"
-                    alt="Community"
-                    className="w-full h-full object-cover opacity-40"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-br from-teal-600/80 to-teal-800/80" />
-                </div>
-
-                <div className="relative z-10 p-6 h-full flex flex-col justify-end">
-                  <Users className="w-12 h-12 text-[#FFBF00] mb-3" />
-                  <h3 className="font-manrope font-black text-2xl text-white mb-2">Cộng Đồng Mạnh</h3>
-                  <p className="text-white/90 font-jakarta text-sm">
-                    2,000+ thành viên hỗ trợ lẫn nhau
-                  </p>
-                </div>
-              </motion.div>
-
-              {/* Small Card 4 - Thu Nhập */}
-              <motion.div
-                initial={{ opacity: 0, scale: 0.9 }}
-                whileInView={{ opacity: 1, scale: 1 }}
-                viewport={{ once: true }}
-                transition={{ delay: 0.3 }}
-                className="lg:col-span-2 glass-card rounded-3xl overflow-hidden shadow-xl glow-hover relative group"
-              >
-                <div className="absolute inset-0">
-                  <img
-                    src="https://source.unsplash.com/800x400/?growth,chart,success,money"
-                    alt="Income"
-                    className="w-full h-full object-cover opacity-30"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-br from-slate-900/80 to-slate-800/80" />
-                </div>
-
-                <div className="relative z-10 p-6 h-full flex items-center justify-between">
-                  <div>
-                    <Wallet className="w-12 h-12 text-[#FFBF00] mb-3" />
-                    <h3 className="font-manrope font-black text-3xl text-white mb-2">Thu Nhập Thụ Động</h3>
-                    <p className="text-white/80 font-jakarta">
-                      Hoa hồng đến 25% • Không cần vốn đầu tư
-                    </p>
-                  </div>
-                  <TrendingUp className="w-24 h-24 text-[#FFBF00]/20" />
-                </div>
-              </motion.div>
-            </div>
-          </div>
-        </section>
-
-        {/* ================================================================== */}
-        {/* COMMUNITY SECTION */}
-        {/* ================================================================== */}
-        <section id="community" className="relative py-24 bg-white">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-12">
-            <motion.div
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              className="text-center mb-16"
-            >
-              <h2 className="font-manrope font-black text-4xl md:text-5xl lg:text-6xl text-slate-900 mb-4">
-                Câu Chuyện Thành Công
-              </h2>
-              <p className="text-xl text-slate-600 font-jakarta">
-                Từ người dùng thực tế của chúng tôi
-              </p>
-            </motion.div>
-
-            <div className="grid md:grid-cols-2 gap-8">
-              {[
-                {
-                  quote: 'Tôi bắt đầu bán sản phẩm ANIMA 119 vì mình đã dùng và thấy hiệu quả. Trong 3 tháng đầu, tôi kiếm được ₫18 triệu hoa hồng từ 47 đơn hàng. AI Coach giúp tôi hiểu khách hàng nào quan tâm đến sản phẩm nào.',
-                  author: 'Lan Nguyễn',
-                  role: 'Wellness Advocate, Hà Nội',
-                  avatar: '👩‍💼',
-                  metrics: '3 tháng • 47 đơn • ₫18M'
-                },
-                {
-                  quote: 'Tôi từng hoài nghi về bán hàng online. Nhưng WellNexus khác - không cần ép bạn bè mua, không cần tồn kho. Tôi chỉ chia sẻ sản phẩm tôi tin tưởng. Giờ đây, đây là thu nhập phụ ổn định ₫12-15 triệu/tháng.',
-                  author: 'Minh Trần',
-                  role: 'Former Office Worker, TP.HCM',
-                  avatar: '👨‍💼',
-                  metrics: '6 tháng • 89 đơn • ₫72M'
-                }
-              ].map((testimonial, idx) => (
+            {/* Testimonials Grid - Mobile: 1 col, Desktop: 2 cols */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-8">
+              {LANDING_CONTENT.testimonials.items.map((testimonial, idx) => (
                 <motion.div
                   key={idx}
                   initial={{ opacity: 0, y: 30 }}
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
                   transition={{ delay: idx * 0.2 }}
-                  className="glass-card rounded-3xl p-8 shadow-xl hover:shadow-2xl transition-all"
+                  className="backdrop-blur-xl bg-white/5 border border-white/10 rounded-2xl md:rounded-3xl p-6 md:p-8 hover:bg-white/10 transition-all"
                 >
-                  <div className="flex items-start gap-4 mb-6">
-                    <div className="text-5xl">{testimonial.avatar}</div>
+                  <div className="flex items-start gap-3 md:gap-4 mb-4 md:mb-6">
+                    <div className="text-4xl md:text-5xl">{testimonial.avatar}</div>
                     <div>
-                      <div className="font-manrope font-bold text-xl text-slate-900">{testimonial.author}</div>
-                      <div className="text-slate-600 text-sm font-jakarta">{testimonial.role}</div>
+                      <div className="font-bold text-white text-base md:text-lg font-display">{testimonial.author}</div>
+                      <div className="text-white/60 text-xs md:text-sm">{testimonial.role}</div>
                     </div>
                   </div>
-                  <p className="text-slate-700 leading-relaxed italic text-lg font-jakarta mb-4">
+                  <p className="text-white/80 leading-relaxed italic text-sm md:text-base lg:text-lg mb-4">
                     "{testimonial.quote}"
                   </p>
-                  <div className="flex items-center gap-2 text-sm text-[#00575A] font-semibold font-jakarta">
-                    <CheckCircle2 className="w-5 h-5 text-[#FFBF00]" />
-                    <span>{testimonial.metrics}</span>
-                  </div>
+                  {testimonial.metrics && (
+                    <div className="flex items-center gap-2 text-xs md:text-sm text-[#FFBF00]/80 font-medium">
+                      <CheckCircle2 className="w-4 h-4" />
+                      <span>{testimonial.metrics}</span>
+                    </div>
+                  )}
                 </motion.div>
               ))}
             </div>
@@ -549,144 +581,121 @@ export default function LandingPage() {
         </section>
 
         {/* ================================================================== */}
-        {/* THE ELITE PROTOCOL (PRICING) */}
+        {/* CTA SECTION */}
         {/* ================================================================== */}
-        <section id="pricing" className="relative py-24 bg-gradient-to-b from-slate-50 to-white">
-          <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-12">
-            <motion.div
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              className="text-center mb-16"
-            >
-              <h2 className="font-manrope font-black text-4xl md:text-5xl lg:text-6xl text-slate-900 mb-4">
-                The Elite Protocol
-              </h2>
-              <p className="text-xl text-slate-600 font-jakarta">
-                Gia nhập đội ngũ Founders Club độc quyền
-              </p>
-            </motion.div>
+        <section className="relative py-12 md:py-24 lg:py-32 bg-gradient-to-b from-[#003335] to-[#00575A]">
+          <div className="absolute inset-0 noise-texture opacity-40" />
 
-            {/* Pricing Card */}
+          <div className="relative z-10 max-w-5xl mx-auto px-4 sm:px-6 md:px-8 lg:px-12">
             <motion.div
-              initial={{ opacity: 0, scale: 0.9 }}
+              initial={{ opacity: 0, scale: 0.95 }}
               whileInView={{ opacity: 1, scale: 1 }}
               viewport={{ once: true }}
-              className="relative rounded-3xl overflow-hidden shadow-2xl"
+              className="relative backdrop-blur-xl bg-gradient-to-br from-white/10 to-white/5 border border-white/20 rounded-2xl md:rounded-[3rem] p-8 md:p-12 lg:p-16 text-center overflow-hidden"
             >
-              <div className="absolute inset-0 bg-gradient-to-br from-[#00575A] via-teal-700 to-teal-900" />
+              {/* Background Glow */}
+              <div className="absolute top-0 right-0 w-96 h-96 bg-[#FFBF00]/10 rounded-full blur-[150px]" />
 
-              <div className="relative z-10 p-12">
-                {/* Badge */}
-                <div className="flex justify-between items-start mb-8">
-                  <div>
-                    <h3 className="font-manrope font-black text-4xl text-white mb-2">Founders Club</h3>
-                    <p className="text-white/80 text-lg font-jakarta">Đặc quyền trọn đời</p>
-                  </div>
-                  <div className="bg-[#FFBF00] text-slate-900 px-4 py-2 rounded-full font-bold text-sm font-jakarta">
-                    Chỉ còn 50 suất
-                  </div>
+              <div className="relative z-10">
+                <div className="inline-flex items-center gap-2 bg-[#FFBF00]/10 backdrop-blur-md border border-[#FFBF00]/20 rounded-full px-4 py-2 md:px-5 md:py-2 mb-4 md:mb-6">
+                  <Lock className="w-3 h-3 md:w-4 md:h-4 text-[#FFBF00]" />
+                  <span className="text-xs md:text-sm font-bold text-[#FFBF00] uppercase tracking-wider font-display">
+                    {LANDING_CONTENT.cta.badge}
+                  </span>
                 </div>
 
-                {/* Benefits */}
-                <div className="space-y-4 mb-10">
-                  {[
-                    'AI Coach Premium với phân tích dữ liệu nâng cao',
-                    'Hoa hồng cao nhất 25% trên mọi sản phẩm',
-                    'Truy cập sớm vào sản phẩm mới độc quyền',
-                    'Đào tạo 1-on-1 với Top Performers',
-                    'Công cụ thuế tự động & báo cáo chi tiết',
-                    'Hỗ trợ ưu tiên 24/7 qua Telegram VIP',
-                    'Dashboard phân tích thời gian thực',
-                    'Cộng đồng Private Forum chỉ dành cho Founders'
-                  ].map((benefit, idx) => (
-                    <motion.div
-                      key={idx}
-                      initial={{ opacity: 0, x: -20 }}
-                      whileInView={{ opacity: 1, x: 0 }}
-                      viewport={{ once: true }}
-                      transition={{ delay: idx * 0.1 }}
-                      className="flex items-start gap-3"
-                    >
-                      <CheckCircle2 className="w-6 h-6 text-[#FFBF00] flex-shrink-0 mt-0.5" />
-                      <span className="text-white text-lg font-jakarta">{benefit}</span>
-                    </motion.div>
-                  ))}
-                </div>
+                <h2 className="text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-black text-white mb-4 md:mb-6 font-display tracking-tight">
+                  {LANDING_CONTENT.cta.headline}
+                </h2>
 
-                {/* CTA */}
+                <p className="text-base md:text-lg lg:text-xl text-white/70 mb-8 md:mb-10 max-w-2xl mx-auto leading-relaxed">
+                  {LANDING_CONTENT.cta.subheadline}
+                </p>
+
                 <motion.button
                   onClick={handleJoin}
-                  className="w-full bg-gradient-to-r from-[#FFBF00] to-yellow-400 text-slate-900 py-5 rounded-2xl font-black text-xl shadow-2xl font-manrope flex items-center justify-center gap-3"
-                  whileHover={{ scale: 1.02 }}
-                  whileTap={{ scale: 0.98 }}
+                  className="bg-[#FFBF00] text-[#00575A] px-8 py-4 md:px-12 md:py-6 rounded-xl md:rounded-2xl font-black text-base md:text-lg lg:text-xl shadow-2xl shadow-[#FFBF00]/30 font-display inline-flex items-center gap-2 md:gap-3"
+                  whileHover={{
+                    scale: 1.05,
+                    boxShadow: '0 30px 70px rgba(255, 191, 0, 0.5)'
+                  }}
+                  whileTap={{ scale: 0.95 }}
                 >
-                  <Crown className="w-6 h-6" />
-                  Tham Gia Ngay
-                  <ArrowRight className="w-6 h-6" />
+                  {LANDING_CONTENT.cta.buttonText}
+                  <ArrowRight className="w-5 h-5 md:w-6 md:h-6" />
                 </motion.button>
-
-                <p className="text-center text-white/60 text-sm mt-6 font-jakarta">
-                  Miễn phí tham gia • Chỉ trả hoa hồng khi bán được hàng
-                </p>
               </div>
             </motion.div>
           </div>
         </section>
 
         {/* ================================================================== */}
-        {/* FOOTER - Clean & Simple */}
+        {/* FAT FOOTER - TECH STYLE */}
         {/* ================================================================== */}
-        <footer className="relative bg-slate-900 text-white pt-20 pb-10">
-          <div className="absolute inset-0 noise-texture opacity-10" />
+        <footer className="relative bg-[#001A1C] text-white pt-12 md:pt-24 pb-8 md:pb-12">
+          <div className="absolute inset-0 noise-texture opacity-20" />
 
-          <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-12">
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-16">
-              {/* Brand */}
-              <div>
+          <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 md:px-8 lg:px-12">
+            {/* Main Footer Content - Mobile: 1 col, Tablet: 2 cols, Desktop: 5 cols */}
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-8 md:gap-12 mb-12 md:mb-16">
+              {/* Brand Column */}
+              <div className="lg:col-span-1">
                 <div className="flex items-center gap-3 mb-4">
-                  <div className="w-10 h-10 bg-gradient-to-br from-[#FFBF00] to-yellow-500 rounded-2xl flex items-center justify-center text-slate-900 font-manrope font-black text-xl">
+                  <div className="w-10 h-10 bg-gradient-to-br from-[#FFBF00] to-yellow-500 rounded-xl flex items-center justify-center text-[#00575A] font-display font-black text-xl">
                     W
                   </div>
-                  <span className="font-manrope font-bold text-xl">WellNexus</span>
+                  <span className="font-display font-bold text-xl">
+                    {LANDING_CONTENT.header.logo}
+                  </span>
                 </div>
-                <p className="text-white/60 text-sm font-jakarta mb-6">
-                  Nền tảng Social Commerce cho người bán wellness với AI Coach và công cụ thông minh.
+                <p className="text-white/60 text-sm leading-relaxed mb-6">
+                  {LANDING_CONTENT.footer.tagline}
                 </p>
 
-                {/* Social */}
-                <div className="flex gap-3">
+                {/* Social Links */}
+                <div className="flex items-center gap-3">
                   <motion.a
-                    href="#"
-                    className="w-10 h-10 rounded-xl bg-white/5 hover:bg-white/10 flex items-center justify-center transition-all"
+                    href={LANDING_CONTENT.footer.social.facebook}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="w-10 h-10 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 flex items-center justify-center transition-all"
                     whileHover={{ scale: 1.1, y: -2 }}
+                    whileTap={{ scale: 0.95 }}
                   >
                     <Facebook className="w-5 h-5" />
                   </motion.a>
                   <motion.a
-                    href="#"
-                    className="w-10 h-10 rounded-xl bg-white/5 hover:bg-white/10 flex items-center justify-center transition-all"
+                    href={LANDING_CONTENT.footer.social.instagram}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="w-10 h-10 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 flex items-center justify-center transition-all"
                     whileHover={{ scale: 1.1, y: -2 }}
+                    whileTap={{ scale: 0.95 }}
                   >
                     <Instagram className="w-5 h-5" />
                   </motion.a>
                   <motion.a
-                    href="#"
-                    className="w-10 h-10 rounded-xl bg-white/5 hover:bg-white/10 flex items-center justify-center transition-all"
+                    href={LANDING_CONTENT.footer.social.linkedin}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="w-10 h-10 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 flex items-center justify-center transition-all"
                     whileHover={{ scale: 1.1, y: -2 }}
+                    whileTap={{ scale: 0.95 }}
                   >
                     <Linkedin className="w-5 h-5" />
                   </motion.a>
                 </div>
               </div>
 
-              {/* Links Columns */}
+              {/* Product Links */}
               <div>
-                <h3 className="font-manrope font-bold text-white mb-4">Nền Tảng</h3>
+                <h3 className="font-display font-bold text-white mb-4">
+                  {LANDING_CONTENT.footer.columns.product.title}
+                </h3>
                 <ul className="space-y-3">
-                  {['Dashboard', 'AI Coach', 'Products', 'Analytics'].map((link, idx) => (
+                  {LANDING_CONTENT.footer.columns.product.links.map((link, idx) => (
                     <li key={idx}>
-                      <a href="#" className="text-white/60 hover:text-white transition-colors text-sm font-jakarta">
+                      <a href="#" className="text-white/60 hover:text-white transition-colors text-sm">
                         {link}
                       </a>
                     </li>
@@ -694,12 +703,15 @@ export default function LandingPage() {
                 </ul>
               </div>
 
+              {/* Company Links */}
               <div>
-                <h3 className="font-manrope font-bold text-white mb-4">Công Ty</h3>
+                <h3 className="font-display font-bold text-white mb-4">
+                  {LANDING_CONTENT.footer.columns.company.title}
+                </h3>
                 <ul className="space-y-3">
-                  {['Về chúng tôi', 'Blog', 'Careers', 'Press Kit'].map((link, idx) => (
+                  {LANDING_CONTENT.footer.columns.company.links.map((link, idx) => (
                     <li key={idx}>
-                      <a href="#" className="text-white/60 hover:text-white transition-colors text-sm font-jakarta">
+                      <a href="#" className="text-white/60 hover:text-white transition-colors text-sm">
                         {link}
                       </a>
                     </li>
@@ -707,12 +719,31 @@ export default function LandingPage() {
                 </ul>
               </div>
 
+              {/* Resources Links */}
               <div>
-                <h3 className="font-manrope font-bold text-white mb-4">Pháp Lý</h3>
+                <h3 className="font-display font-bold text-white mb-4">
+                  {LANDING_CONTENT.footer.columns.resources.title}
+                </h3>
                 <ul className="space-y-3">
-                  {['Privacy', 'Terms', 'Security', 'Compliance'].map((link, idx) => (
+                  {LANDING_CONTENT.footer.columns.resources.links.map((link, idx) => (
                     <li key={idx}>
-                      <a href="#" className="text-white/60 hover:text-white transition-colors text-sm font-jakarta">
+                      <a href="#" className="text-white/60 hover:text-white transition-colors text-sm">
+                        {link}
+                      </a>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+
+              {/* Legal Links */}
+              <div>
+                <h3 className="font-display font-bold text-white mb-4">
+                  {LANDING_CONTENT.footer.columns.legal.title}
+                </h3>
+                <ul className="space-y-3">
+                  {LANDING_CONTENT.footer.columns.legal.links.map((link, idx) => (
+                    <li key={idx}>
+                      <a href="#" className="text-white/60 hover:text-white transition-colors text-sm">
                         {link}
                       </a>
                     </li>
@@ -721,11 +752,32 @@ export default function LandingPage() {
               </div>
             </div>
 
+            {/* Newsletter Section */}
+            <div className="border-t border-white/10 pt-12 pb-8">
+              <div className="max-w-md mx-auto text-center">
+                <h3 className="font-display font-bold text-xl text-white mb-3">
+                  {LANDING_CONTENT.footer.newsletter.title}
+                </h3>
+                <div className="flex gap-2">
+                  <input
+                    type="email"
+                    placeholder={LANDING_CONTENT.footer.newsletter.placeholder}
+                    className="flex-1 px-4 py-3 rounded-xl bg-white/5 border border-white/10 text-white placeholder-white/40 focus:outline-none focus:border-[#FFBF00]/50"
+                  />
+                  <motion.button
+                    className="px-6 py-3 rounded-xl bg-[#FFBF00] text-[#00575A] font-bold"
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
+                  >
+                    <Mail className="w-5 h-5" />
+                  </motion.button>
+                </div>
+              </div>
+            </div>
+
             {/* Copyright */}
-            <div className="border-t border-white/10 pt-8 text-center">
-              <p className="text-white/40 text-sm font-jakarta">
-                © 2025 WellNexus Technology JSC. All rights reserved.
-              </p>
+            <div className="text-center text-white/40 text-sm">
+              {LANDING_CONTENT.footer.copyright}
             </div>
           </div>
         </footer>
