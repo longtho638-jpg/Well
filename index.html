@@ -4,6 +4,16 @@
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="/vite.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- Font Optimization: Preconnect for faster DNS resolution -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <!-- Font Loading: Manrope + Plus Jakarta Sans with display=swap for Vietnamese support -->
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap&subset=vietnamese,latin,latin-ext" rel="stylesheet">
+
+    <!-- Preload critical fonts to prevent FOUT (Flash of Unstyled Text) -->
+    <link rel="preload" href="https://fonts.gstatic.com/s/manrope/v15/xn7gYHE41ni1AdIRggexSg.woff2" as="font" type="font/woff2" crossorigin>
+    <link rel="preload" href="https://fonts.gstatic.com/s/plusjakartasans/v8/LDIoaomQNQcsA88c7O9yZ4KMCoOg4Ko20_k.woff2" as="font" type="font/woff2" crossorigin>
     <title>WellNexus | Social Commerce</title>
   </head>
   <body>

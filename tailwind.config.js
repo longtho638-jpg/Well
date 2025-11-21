@@ -19,7 +19,42 @@ export default {
         marigold: '#FFBF00',
       },
       fontFamily: {
-        sans: ['Inter', 'sans-serif'],
+        // Dùng Manrope cho các tiêu đề với fallback stack mạnh cho Tiếng Việt
+        display: [
+          '"Manrope"',
+          // Vietnamese-friendly fallbacks
+          'system-ui',
+          '-apple-system',
+          'BlinkMacSystemFont',
+          '"Segoe UI"',
+          'Roboto',
+          '"Helvetica Neue"',
+          'Arial',
+          '"Noto Sans"',
+          'sans-serif',
+          '"Apple Color Emoji"',
+          '"Segoe UI Emoji"',
+          '"Segoe UI Symbol"',
+          '"Noto Color Emoji"'
+        ],
+        // Dùng Plus Jakarta Sans cho nội dung với fallback stack mạnh
+        sans: [
+          '"Plus Jakarta Sans"',
+          // Vietnamese-friendly fallbacks
+          'system-ui',
+          '-apple-system',
+          'BlinkMacSystemFont',
+          '"Segoe UI"',
+          'Roboto',
+          '"Helvetica Neue"',
+          'Arial',
+          '"Noto Sans"',
+          'sans-serif',
+          '"Apple Color Emoji"',
+          '"Segoe UI Emoji"',
+          '"Segoe UI Symbol"',
+          '"Noto Color Emoji"'
+        ],
       },
       animation: {
         'pulse-slow': 'pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite',

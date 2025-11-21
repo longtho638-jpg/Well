@@ -7,7 +7,7 @@
 **Current Stage:** Seed Stage MVP (v1.0.0-seed)
 **Architecture:** Frontend-only SPA with mock data
 **Target Market:** Vietnam (VND currency, Vietnamese tax law)
-**Deployment:** Firebase Hosting
+**Deployment:** Vercel (Primary), Firebase Hosting (Legacy)
 
 ### Key Features
 - Multi-level marketing (MLM) commission tracking
@@ -106,7 +106,54 @@ npm run build
 npm run preview
 ```
 
-### Firebase Deployment
+### Vercel Deployment (Primary)
+
+⚠️ **CRITICAL DEPLOYMENT RULE:**
+**ALL code changes MUST be deployed to Vercel immediately. NO technical debt allowed.**
+
+#### Deployment Workflow
+
+```bash
+# 1. Make your changes on feature branch
+git add .
+git commit -m "feat: your feature description"
+
+# 2. Checkout main branch
+git checkout main
+git pull origin main
+
+# 3. Merge feature branch
+git merge your-feature-branch
+
+# 4. Push to main (triggers automatic Vercel deployment)
+git push -u origin main
+```
+
+#### Vercel Configuration
+
+The project is configured with `vercel.json`:
+- **Framework:** Vite
+- **Build Command:** `npm run build`
+- **Output Directory:** `dist`
+- **SPA Routing:** All routes redirect to `/index.html`
+
+#### Deployment Rules
+
+1. ✅ **Every commit to `main` branch auto-deploys to production**
+2. ✅ **Feature branches create preview deployments automatically**
+3. ⚠️ **NEVER leave code undeployed on main branch**
+4. ⚠️ **Always verify deployment succeeds after pushing**
+5. ✅ **Preview URLs available for all PRs**
+
+#### Verifying Deployment
+
+After pushing to main:
+1. Check Vercel dashboard for deployment status
+2. Wait for build to complete (~1-2 minutes)
+3. Verify changes on production URL
+4. Check preview deployment for feature branches
+
+### Firebase Deployment (Legacy)
 
 ```bash
 # Login to Firebase
@@ -120,6 +167,8 @@ firebase init hosting
 npm run build
 firebase deploy
 ```
+
+**Note:** Firebase deployment is maintained for backup but Vercel is the primary deployment target.
 
 ### Path Aliases
 
@@ -719,9 +768,10 @@ refactor: Simplify product card component
 2. **Maintain type safety** - Add proper TypeScript interfaces
 3. **Use existing patterns** - Follow the component/service/util structure
 4. **Test builds** - Run `npm run build` before committing
-5. **Respect Vietnamese context** - Currency is VND, tax is Vietnam law
-6. **Preserve mock data** - This is a seed-stage MVP
-7. **Document complex logic** - Add comments for business rules
+5. **⚠️ DEPLOY IMMEDIATELY** - Merge to main and push to trigger Vercel deployment. NO technical debt allowed.
+6. **Respect Vietnamese context** - Currency is VND, tax is Vietnam law
+7. **Preserve mock data** - This is a seed-stage MVP
+8. **Document complex logic** - Add comments for business rules
 
 ### Common Gotchas
 

@@ -1,6 +1,6 @@
 
 import React, { useState } from 'react';
-import { LayoutDashboard, ShoppingBag, Wallet, LogOut, Sparkles, Bot, CheckCircle2, Circle, Users, Share2 } from 'lucide-react';
+import { LayoutDashboard, ShoppingBag, Wallet, LogOut, Sparkles, Bot, CheckCircle2, Circle, Users, Share2, Trophy, Heart, Megaphone } from 'lucide-react';
 import { getCoachAdvice } from '../services/geminiService';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useStore } from '../store';
@@ -18,12 +18,16 @@ export const Sidebar: React.FC<SidebarProps> = ({ onMobileClose }) => {
   const [loading, setLoading] = useState(false);
 
   const menuItems = [
-    { path: '/', label: 'Overview', icon: LayoutDashboard },
-    { path: '/marketplace', label: 'Marketplace', icon: ShoppingBag, matches: ['/product'] },
-    { path: '/wallet', label: 'My Wallet', icon: Wallet },
-    { path: '/copilot', label: 'The Copilot', icon: Bot, badge: 'AI' },
-    { path: '/team', label: 'Team Leader', icon: Users },
-    { path: '/referral', label: 'Giới Thiệu', icon: Share2 },
+    { path: '/dashboard', label: 'Overview', icon: LayoutDashboard },
+    { path: '/dashboard/marketplace', label: 'Marketplace', icon: ShoppingBag, matches: ['/dashboard/product'] },
+    { path: '/dashboard/wallet', label: 'My Wallet', icon: Wallet },
+    { path: '/dashboard/leaderboard', label: 'Leaderboard', icon: Trophy, badge: 'HOT' },
+    { path: '/dashboard/marketing-tools', label: 'Marketing Tools', icon: Megaphone, badge: 'NEW' },
+    { path: '/dashboard/health-check', label: 'Health Check', icon: Heart },
+    { path: '/dashboard/health-coach', label: 'Health Coach', icon: Sparkles, badge: 'AI' },
+    { path: '/dashboard/copilot', label: 'The Copilot', icon: Bot, badge: 'AI' },
+    { path: '/dashboard/team', label: 'Team Leader', icon: Users },
+    { path: '/dashboard/referral', label: 'Giới Thiệu', icon: Share2 },
   ];
 
   const handleNav = (path: string) => {
@@ -33,7 +37,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ onMobileClose }) => {
 
   const handleLogout = () => {
     logout();
-    navigate('/landing');
+    navigate('/');
   };
 
   const handleAdvice = async () => {
@@ -50,19 +54,19 @@ export const Sidebar: React.FC<SidebarProps> = ({ onMobileClose }) => {
 
   return (
     <aside
-      className="bg-white border-r border-gray-200 flex flex-col h-full md:h-screen sticky top-0 z-30 overflow-y-auto"
+      className="bg-white border-r border-gray-200 flex flex-col h-screen overflow-y-auto"
       role="navigation"
       aria-label="Main navigation"
     >
       <div
         className="p-6 flex items-center gap-3 cursor-pointer"
-        onClick={() => handleNav('/')}
+        onClick={() => handleNav('/dashboard')}
         role="button"
         tabIndex={0}
         onKeyPress={(e) => {
           if (e.key === 'Enter' || e.key === ' ') {
             e.preventDefault();
-            handleNav('/');
+            handleNav('/dashboard');
           }
         }}
         aria-label="WellNexus home"

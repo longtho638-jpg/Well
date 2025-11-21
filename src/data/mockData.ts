@@ -1,4 +1,5 @@
 import { User, UserRank, Product, Transaction, Quest, ChartDataPoint, TeamMember, TeamMetrics, Referral, ReferralStats } from '../types';
+import { generateTxHash } from '../utils/tokenomics';
 
 export const PRODUCTS: Product[] = [
   {
@@ -85,7 +86,9 @@ export const TRANSACTIONS: Transaction[] = [
         amount: 5000000,
         type: 'Team Volume Bonus',
         status: 'completed',
-        taxDeducted: 500000
+        taxDeducted: 500000,
+        hash: generateTxHash(),
+        currency: 'SHOP'
     },
     {
         id: 'TX-02',
@@ -94,7 +97,9 @@ export const TRANSACTIONS: Transaction[] = [
         amount: 375000,
         type: 'Direct Sale',
         status: 'completed',
-        taxDeducted: 0
+        taxDeducted: 0,
+        hash: generateTxHash(),
+        currency: 'SHOP'
     },
 ];
 
