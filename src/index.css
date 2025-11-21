@@ -6,10 +6,21 @@
   :root {
     --font-display: 'Manrope', system-ui, -apple-system, sans-serif;
     --font-body: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+
+    /* Typography Scale - Consistent font weights for Vietnamese */
+    --font-weight-normal: 400;
+    --font-weight-medium: 500;
+    --font-weight-semibold: 600;
+    --font-weight-bold: 700;
+    --font-weight-extrabold: 800;
   }
 
+  /* ================================================================ */
+  /* GLOBAL FONT ENFORCEMENT - 100% CONSISTENCY */
+  /* ================================================================ */
+
   html {
-    font-family: var(--font-body);
+    font-family: var(--font-body) !important;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     text-rendering: optimizeLegibility; /* Tối ưu hiển thị chữ */
@@ -17,33 +28,121 @@
     -webkit-text-size-adjust: 100%; /* Prevent font scaling in landscape */
     -moz-text-size-adjust: 100%;
     text-size-adjust: 100%;
+    font-weight: var(--font-weight-normal) !important;
+  }
+
+  /* Force consistent font for ALL elements - No exceptions */
+  * {
+    font-synthesis: none !important; /* Prevent browser from synthesizing missing glyphs */
+    font-family: inherit !important; /* Force inheritance */
   }
 
   /* CRITICAL: Force Manrope for ALL headings with Vietnamese character support */
   h1, h2, h3, h4, h5, h6 {
     font-family: var(--font-display) !important;
-    font-weight: 800; /* Manrope ExtraBold nhìn rất đẹp cho Tiếng Việt */
-    letter-spacing: -0.02em; /* Thu hẹp khoảng cách chữ để tạo cảm giác hiện đại */
-    font-feature-settings: 'kern' 1, 'liga' 1; /* Better Vietnamese diacritic rendering */
+    font-weight: var(--font-weight-extrabold) !important; /* Consistent 800 for all headings */
+    letter-spacing: -0.02em !important; /* Thu hẹp khoảng cách chữ */
+    font-feature-settings: 'kern' 1, 'liga' 1 !important;
     font-variant-ligatures: common-ligatures;
     text-rendering: optimizeLegibility;
   }
 
+  /* Body elements use body font with normal weight */
+  body, div, span, p, a, li, td, th, label {
+    font-family: var(--font-body) !important;
+    font-weight: var(--font-weight-normal);
+    unicode-range: U+0000-00FF, U+0100-017F, U+0180-024F, U+1E00-1EFF; /* Latin + Vietnamese */
+  }
+
   /* Fix lỗi font cho các thẻ input/button */
   input, button, textarea, select {
-    font-family: inherit;
+    font-family: inherit !important;
   }
 
-  /* VIETNAMESE CHARACTER FIX: Ensure all Vietnamese Unicode ranges use correct font */
-  * {
-    /* Force font for Vietnamese characters U+00C0-U+1EF9 */
-    font-synthesis: none; /* Prevent browser from synthesizing missing glyphs */
+  /* ================================================================ */
+  /* TAILWIND FONT-WEIGHT OVERRIDES - Đồng bộ 100% */
+  /* ================================================================ */
+
+  /* Override Tailwind's font-weight utilities with consistent values */
+  .font-normal {
+    font-weight: var(--font-weight-normal) !important;
   }
 
-  /* Strong fallback prevention for Vietnamese diacritics */
-  body, div, span, p, a, li, td, th {
-    font-family: var(--font-body);
-    unicode-range: U+0000-00FF, U+0100-017F, U+0180-024F, U+1E00-1EFF; /* Latin + Vietnamese */
+  .font-medium {
+    font-weight: var(--font-weight-medium) !important;
+  }
+
+  .font-semibold {
+    font-weight: var(--font-weight-semibold) !important;
+  }
+
+  .font-bold {
+    font-weight: var(--font-weight-bold) !important;
+  }
+
+  .font-extrabold {
+    font-weight: var(--font-weight-extrabold) !important;
+  }
+
+  .font-black {
+    font-weight: var(--font-weight-extrabold) !important; /* Map to 800 for consistency */
+  }
+
+  /* ================================================================ */
+  /* TAILWIND FONT-DISPLAY OVERRIDE - Force Manrope */
+  /* ================================================================ */
+
+  .font-display {
+    font-family: var(--font-display) !important;
+    font-weight: var(--font-weight-extrabold) !important;
+  }
+
+  .font-sans {
+    font-family: var(--font-body) !important;
+  }
+
+  /* ================================================================ */
+  /* TEXT SIZE CONSISTENCY - Vietnamese-optimized line-height */
+  /* ================================================================ */
+
+  /* Ensure consistent line-height for Vietnamese diacritics */
+  .text-xs { line-height: 1.5 !important; }
+  .text-sm { line-height: 1.5 !important; }
+  .text-base { line-height: 1.6 !important; }
+  .text-lg { line-height: 1.6 !important; }
+  .text-xl { line-height: 1.5 !important; }
+  .text-2xl { line-height: 1.4 !important; }
+  .text-3xl { line-height: 1.3 !important; }
+  .text-4xl { line-height: 1.2 !important; }
+  .text-5xl { line-height: 1.2 !important; }
+  .text-6xl { line-height: 1.1 !important; }
+  .text-7xl { line-height: 1.1 !important; }
+  .text-8xl { line-height: 1.1 !important; }
+  .text-9xl { line-height: 1.1 !important; }
+
+  /* ================================================================ */
+  /* VIETNAMESE CHARACTER RENDERING FIX */
+  /* ================================================================ */
+
+  /* Force proper rendering for Vietnamese Unicode ranges */
+  [class*="text-"],
+  [class*="font-"] {
+    font-feature-settings: 'kern' 1, 'liga' 1 !important;
+    text-rendering: optimizeLegibility !important;
+  }
+
+  /* Ensure buttons and interactive elements maintain consistency */
+  button,
+  a,
+  [role="button"] {
+    font-family: inherit !important;
+    font-weight: inherit;
+    font-feature-settings: 'kern' 1, 'liga' 1 !important;
+  }
+
+  /* Code and monospace should still work */
+  code, pre, kbd, samp {
+    font-family: ui-monospace, 'Cascadia Code', 'Source Code Pro', Menlo, Monaco, 'Courier New', monospace !important;
   }
 }
 
