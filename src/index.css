@@ -249,6 +249,14 @@
   background: #94a3b8;
 }
 
+/* Dark mode scrollbar */
+.dark ::-webkit-scrollbar-thumb {
+  background: #475569;
+}
+.dark ::-webkit-scrollbar-thumb:hover {
+  background: #64748b;
+}
+
 /* Hide scrollbar utility */
 @layer utilities {
   .scrollbar-hide {
