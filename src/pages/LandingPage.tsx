@@ -1,16 +1,25 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { ArrowRight, ShieldCheck, Users, Zap, CheckCircle2, Bot, Lock } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { useStore } from '../store';
+import AuthModal from '../components/AuthModal';
 
 export default function LandingPage() {
   const navigate = useNavigate();
   const { login } = useStore();
+  const [showAuthModal, setShowAuthModal] = useState(false);
+  const [authMode, setAuthMode] = useState<'signin' | 'signup'>('signup');
 
-  const handleJoin = () => {
-    login(); // 1. Kích hoạt trạng thái đăng nhập trong Store
-    navigate('/dashboard'); // 2. Chuyển hướng sang Dashboard
+  const handleJoin = (mode: 'signin' | 'signup' = 'signup') => {
+    setAuthMode(mode);
+    setShowAuthModal(true);
+  };
+
+  const handleDemoAccess = () => {
+    // For demo purposes, allow quick access
+    login();
+    navigate('/dashboard');
   };
 
   const fadeInUp = {
@@ -30,7 +39,7 @@ export default function LandingPage() {
         <div className="flex items-center gap-4">
             <button className="text-sm font-medium text-gray-500 hover:text-[#00575A] hidden md:block">Về chúng tôi</button>
             <motion.button
-            onClick={handleJoin}
+            onClick={() => handleJoin('signin')}
             className="text-sm font-bold bg-gray-100 hover:bg-gray-200 text-[#00575A] px-5 py-2 rounded-full transition-colors"
             whileHover={{ scale: 1.05, backgroundColor: '#e5e7eb' }}
             whileTap={{ scale: 0.95 }}
@@ -78,7 +87,7 @@ export default function LandingPage() {
 
                 <div className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
                 <motion.button
-                    onClick={handleJoin}
+                    onClick={handleDemoAccess}
                     className="bg-[#FFBF00] hover:bg-yellow-400 text-[#00575A] px-8 py-4 rounded-xl font-bold text-lg flex items-center justify-center gap-2 shadow-[0_0_30px_rgba(255,191,0,0.3)] transition-all"
                     whileHover={{
                       scale: 1.05,
@@ -211,7 +220,7 @@ export default function LandingPage() {
               <p className="text-gray-400 max-w-md">Tham gia ngay hôm nay để nhận gói quà tặng Founder trị giá 3.000.000đ và quyền lợi chia sẻ 2% doanh thu toàn cầu.</p>
             </div>
             <motion.button
-              onClick={handleJoin}
+              onClick={() => handleJoin('signup')}
               className="bg-[#FFBF00] text-[#00575A] px-10 py-5 rounded-xl font-bold text-lg shadow-lg whitespace-nowrap"
               whileHover={{
                 scale: 1.08,
@@ -231,6 +240,13 @@ export default function LandingPage() {
       <footer className="bg-gray-50 py-12 border-t border-gray-200 text-center">
         <p className="text-gray-500 text-sm">© 2024 WellNexus Technology JSC. All rights reserved.</p>
       </footer>
+
+      {/* Auth Modal */}
+      <AuthModal
+        isOpen={showAuthModal}
+        onClose={() => setShowAuthModal(false)}
+        mode={authMode}
+      />
     </div>
   );
 }

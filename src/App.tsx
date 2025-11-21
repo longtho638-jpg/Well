@@ -6,6 +6,10 @@ import { Dashboard } from './pages/Dashboard';
 import { Marketplace } from './pages/Marketplace';
 import { ProductDetail } from './pages/ProductDetail';
 import CommissionWallet from './components/CommissionWallet';
+import Achievements from './components/Achievements';
+import Leaderboard from './components/Leaderboard';
+import Goals from './components/Goals';
+import AICoachPanel from './components/AICoachPanel';
 import LandingPage from './pages/LandingPage';
 import { Menu } from 'lucide-react';
 import { useStore } from './store';
@@ -65,6 +69,9 @@ const DashboardLayout: React.FC = () => {
       <main className="flex-1 p-4 md:p-8 overflow-y-auto h-screen pt-20 md:pt-0 scroll-smooth">
         <Outlet />
       </main>
+
+      {/* AI Coach Panel - Global */}
+      <AICoachPanel />
     </div>
   );
 };
@@ -91,6 +98,21 @@ const App: React.FC = () => {
             <div className="space-y-6 pb-20">
                 <h2 className="text-2xl font-bold text-[#1F2937]">Commission Wallet</h2>
                 <CommissionWallet />
+            </div>
+        } />
+        <Route path="achievements" element={
+            <div className="space-y-6 pb-20">
+                <Achievements />
+            </div>
+        } />
+        <Route path="leaderboard" element={
+            <div className="space-y-6 pb-20">
+                <Leaderboard />
+            </div>
+        } />
+        <Route path="goals" element={
+            <div className="space-y-6 pb-20">
+                <Goals />
             </div>
         } />
         <Route path="product/:id" element={<ProductDetail />} />

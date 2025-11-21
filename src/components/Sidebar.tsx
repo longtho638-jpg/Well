@@ -1,6 +1,6 @@
 
 import React, { useState } from 'react';
-import { LayoutDashboard, ShoppingBag, Wallet, LogOut, Sparkles, Bot, CheckCircle2, Circle } from 'lucide-react';
+import { LayoutDashboard, ShoppingBag, Wallet, LogOut, Sparkles, Bot, CheckCircle2, Circle, Trophy, Award, Target } from 'lucide-react';
 import { getCoachAdvice } from '../services/geminiService';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useStore } from '../store';
@@ -18,9 +18,12 @@ export const Sidebar: React.FC<SidebarProps> = ({ onMobileClose }) => {
   const [loading, setLoading] = useState(false);
 
   const menuItems = [
-    { path: '/', label: 'Overview', icon: LayoutDashboard },
-    { path: '/marketplace', label: 'Marketplace', icon: ShoppingBag, matches: ['/product'] },
-    { path: '/wallet', label: 'My Wallet', icon: Wallet },
+    { path: '/dashboard', label: 'Overview', icon: LayoutDashboard },
+    { path: '/dashboard/marketplace', label: 'Marketplace', icon: ShoppingBag, matches: ['/dashboard/product'] },
+    { path: '/dashboard/wallet', label: 'My Wallet', icon: Wallet },
+    { path: '/dashboard/achievements', label: 'Achievements', icon: Award },
+    { path: '/dashboard/leaderboard', label: 'Leaderboard', icon: Trophy },
+    { path: '/dashboard/goals', label: 'Goals', icon: Target },
   ];
 
   const handleNav = (path: string) => {

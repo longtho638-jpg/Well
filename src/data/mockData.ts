@@ -1,4 +1,4 @@
-import { User, UserRank, Product, Transaction, Quest, ChartDataPoint } from '../types';
+import { User, UserRank, Product, Transaction, Quest, ChartDataPoint, Achievement, LeaderboardEntry, Goal } from '../types';
 
 export const PRODUCTS: Product[] = [
   {
@@ -46,6 +46,40 @@ export const CURRENT_USER: User = {
   nextPayoutDate: '15/06/2024',
   estimatedBonus: 2400000,
   referralLink: 'wellnexus.vn/ref/VN-888',
+  // Gamification
+  xp: 1250,
+  level: 5,
+  badges: [
+    {
+      id: 'BADGE-001',
+      name: 'First Sale',
+      description: 'Made your first sale',
+      icon: 'Trophy',
+      rarity: 'common',
+      earnedAt: '2024-01-20'
+    },
+    {
+      id: 'BADGE-002',
+      name: 'Team Builder',
+      description: 'Recruited 5 team members',
+      icon: 'Users',
+      rarity: 'rare',
+      earnedAt: '2024-02-10'
+    },
+    {
+      id: 'BADGE-003',
+      name: 'Sales Champion',
+      description: 'Reached 10M VND in sales',
+      icon: 'Award',
+      rarity: 'epic',
+      earnedAt: '2024-03-15'
+    }
+  ],
+  // Performance
+  currentStreak: 7,
+  longestStreak: 15,
+  totalSalesCount: 47,
+  teamSize: 12,
 };
 
 export const DAILY_QUESTS: Quest[] = [
@@ -54,8 +88,12 @@ export const DAILY_QUESTS: Quest[] = [
     title: 'Connect',
     description: 'Share referral link with 5 friends',
     xp: 50,
-    type: 'sales',
+    reward: 100000,
+    type: 'social',
     isCompleted: false,
+    progress: 60,
+    requirement: 5,
+    expiresAt: new Date(Date.now() + 24 * 60 * 60 * 1000).toISOString(),
   },
   {
     id: 'Q2',
@@ -64,6 +102,53 @@ export const DAILY_QUESTS: Quest[] = [
     xp: 20,
     type: 'learning',
     isCompleted: true,
+    progress: 100,
+    requirement: 1,
+  },
+  {
+    id: 'Q3',
+    title: 'Sales Sprint',
+    description: 'Make 3 sales today',
+    xp: 100,
+    reward: 500000,
+    type: 'sales',
+    isCompleted: false,
+    progress: 33,
+    requirement: 3,
+    expiresAt: new Date(Date.now() + 24 * 60 * 60 * 1000).toISOString(),
+  },
+  {
+    id: 'Q4',
+    title: 'Team Check-in',
+    description: 'Message 3 team members with encouragement',
+    xp: 30,
+    type: 'social',
+    isCompleted: false,
+    progress: 0,
+    requirement: 3,
+    expiresAt: new Date(Date.now() + 24 * 60 * 60 * 1000).toISOString(),
+  },
+  {
+    id: 'Q5',
+    title: 'Product Expert',
+    description: 'Complete product knowledge quiz',
+    xp: 40,
+    type: 'learning',
+    isCompleted: false,
+    progress: 0,
+    requirement: 1,
+  },
+  {
+    id: 'Q6',
+    title: 'Weekly Milestone',
+    description: 'Reach 5M VND in sales this week',
+    xp: 200,
+    reward: 1000000,
+    type: 'milestone',
+    isCompleted: false,
+    progress: 64,
+    requirement: 5000000,
+    expiresAt: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString(),
   },
 ];
 
@@ -78,22 +163,207 @@ export const REVENUE_DATA: ChartDataPoint[] = [
 ];
 
 export const TRANSACTIONS: Transaction[] = [
-    { 
-        id: 'TX-01', 
+    {
+        id: 'TX-01',
         userId: 'VN-888',
-        date: '2024-05-20', 
-        amount: 5000000, 
-        type: 'Team Volume Bonus', 
-        status: 'completed', 
-        taxDeducted: 500000 
+        date: '2024-05-20',
+        amount: 5000000,
+        type: 'Team Volume Bonus',
+        status: 'completed',
+        taxDeducted: 500000
     },
-    { 
-        id: 'TX-02', 
+    {
+        id: 'TX-02',
         userId: 'VN-888',
-        date: '2024-05-22', 
-        amount: 375000, 
-        type: 'Direct Sale', 
-        status: 'completed', 
-        taxDeducted: 0 
+        date: '2024-05-22',
+        amount: 375000,
+        type: 'Direct Sale',
+        status: 'completed',
+        taxDeducted: 0
     },
+];
+
+export const ACHIEVEMENTS: Achievement[] = [
+  {
+    id: 'ACH-001',
+    title: 'Sales Starter',
+    description: 'Make your first sale',
+    icon: 'CircleDollarSign',
+    category: 'sales',
+    tier: 'bronze',
+    requirement: 1,
+    progress: 1,
+    isUnlocked: true,
+    unlockedAt: '2024-01-20',
+    reward: 50,
+  },
+  {
+    id: 'ACH-002',
+    title: 'Sales Pro',
+    description: 'Make 50 sales',
+    icon: 'TrendingUp',
+    category: 'sales',
+    tier: 'gold',
+    requirement: 50,
+    progress: 47,
+    isUnlocked: false,
+    reward: 500,
+  },
+  {
+    id: 'ACH-003',
+    title: 'Team Leader',
+    description: 'Build a team of 10 members',
+    icon: 'Users',
+    category: 'social',
+    tier: 'silver',
+    requirement: 10,
+    progress: 12,
+    isUnlocked: true,
+    unlockedAt: '2024-03-10',
+    reward: 200,
+  },
+  {
+    id: 'ACH-004',
+    title: 'Knowledge Seeker',
+    description: 'Complete 10 learning modules',
+    icon: 'BookOpen',
+    category: 'learning',
+    tier: 'bronze',
+    requirement: 10,
+    progress: 6,
+    isUnlocked: false,
+    reward: 100,
+  },
+  {
+    id: 'ACH-005',
+    title: 'Million Maker',
+    description: 'Reach 20M VND in total sales',
+    icon: 'Trophy',
+    category: 'milestone',
+    tier: 'platinum',
+    requirement: 20000000,
+    progress: 16000000,
+    isUnlocked: false,
+    reward: 1000,
+  },
+  {
+    id: 'ACH-006',
+    title: 'Consistency King',
+    description: 'Maintain a 30-day activity streak',
+    icon: 'Flame',
+    category: 'milestone',
+    tier: 'gold',
+    requirement: 30,
+    progress: 7,
+    isUnlocked: false,
+    reward: 300,
+  },
+];
+
+export const LEADERBOARD: LeaderboardEntry[] = [
+  {
+    userId: 'VN-001',
+    userName: 'Tran Minh Duc',
+    avatarUrl: 'https://ui-avatars.com/api/?name=Tran+Minh+Duc&background=FFD700&color=000',
+    rank: UserRank.FOUNDER_CLUB,
+    score: 125000000,
+    change: 0,
+    badges: ['BADGE-001', 'BADGE-002', 'BADGE-003', 'BADGE-LEGEND'],
+  },
+  {
+    userId: 'VN-002',
+    userName: 'Le Thi Mai',
+    avatarUrl: 'https://ui-avatars.com/api/?name=Le+Thi+Mai&background=C0C0C0&color=000',
+    rank: UserRank.FOUNDER_CLUB,
+    score: 98000000,
+    change: 2,
+    badges: ['BADGE-001', 'BADGE-002', 'BADGE-003'],
+  },
+  {
+    userId: 'VN-888',
+    userName: 'Nguyen Van An',
+    avatarUrl: 'https://ui-avatars.com/api/?name=Nguyen+Van+An&background=00575A&color=fff',
+    rank: UserRank.PARTNER,
+    score: 45000000,
+    change: -1,
+    badges: ['BADGE-001', 'BADGE-002', 'BADGE-003'],
+  },
+  {
+    userId: 'VN-045',
+    userName: 'Pham Hoang Long',
+    avatarUrl: 'https://ui-avatars.com/api/?name=Pham+Hoang+Long&background=CD7F32&color=fff',
+    rank: UserRank.PARTNER,
+    score: 38000000,
+    change: 1,
+    badges: ['BADGE-001', 'BADGE-002'],
+  },
+  {
+    userId: 'VN-123',
+    userName: 'Vo Thi Lan',
+    avatarUrl: 'https://ui-avatars.com/api/?name=Vo+Thi+Lan&background=E67E22&color=fff',
+    rank: UserRank.PARTNER,
+    score: 32000000,
+    change: -2,
+    badges: ['BADGE-001', 'BADGE-002'],
+  },
+  {
+    userId: 'VN-234',
+    userName: 'Nguyen Thanh Tung',
+    avatarUrl: 'https://ui-avatars.com/api/?name=Nguyen+Thanh+Tung&background=3498DB&color=fff',
+    rank: UserRank.MEMBER,
+    score: 18000000,
+    change: 0,
+    badges: ['BADGE-001'],
+  },
+  {
+    userId: 'VN-567',
+    userName: 'Hoang Thi Thu',
+    avatarUrl: 'https://ui-avatars.com/api/?name=Hoang+Thi+Thu&background=9B59B6&color=fff',
+    rank: UserRank.MEMBER,
+    score: 12000000,
+    change: 3,
+    badges: ['BADGE-001'],
+  },
+];
+
+export const GOALS: Goal[] = [
+  {
+    id: 'GOAL-001',
+    title: 'Daily Sales Target',
+    description: 'Complete 2 sales today to maintain momentum',
+    type: 'daily',
+    target: 2,
+    current: 0,
+    unit: 'sales',
+    deadline: new Date(Date.now() + 24 * 60 * 60 * 1000).toISOString().split('T')[0],
+    aiSuggested: false,
+    status: 'active',
+    createdAt: '2024-05-23',
+  },
+  {
+    id: 'GOAL-002',
+    title: 'Weekly Revenue Goal',
+    description: 'Reach 5M VND in revenue this week',
+    type: 'weekly',
+    target: 5000000,
+    current: 3200000,
+    unit: 'revenue',
+    deadline: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString().split('T')[0],
+    aiSuggested: true,
+    status: 'active',
+    createdAt: '2024-05-20',
+  },
+  {
+    id: 'GOAL-003',
+    title: 'Team Growth',
+    description: 'Recruit 2 new team members this month',
+    type: 'monthly',
+    target: 2,
+    current: 1,
+    unit: 'recruits',
+    deadline: '2024-06-30',
+    aiSuggested: true,
+    status: 'active',
+    createdAt: '2024-05-01',
+  },
 ];

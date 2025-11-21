@@ -6,6 +6,12 @@ export const formatVND = (amount: number): string => {
   }).format(amount).replace('₫', 'đ');
 };
 
+export const formatNumber = (value: number): string => {
+  return new Intl.NumberFormat('vi-VN', {
+    maximumFractionDigits: 0,
+  }).format(value);
+};
+
 export const formatCompact = (amount: number): string => {
   return new Intl.NumberFormat('en-US', {
     notation: "compact",
