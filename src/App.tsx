@@ -10,6 +10,7 @@ import LandingPage from './pages/LandingPage';
 import CopilotPage from './pages/CopilotPage';
 import LeaderDashboard from './pages/LeaderDashboard';
 import ReferralPage from './pages/ReferralPage';
+import HealthCoach from './pages/HealthCoach';
 import Admin from './pages/Admin';
 import PolicyEngine from './pages/Admin/PolicyEngine';
 import { useStore } from './store';
@@ -60,6 +61,7 @@ const App: React.FC = () => {
         <Route path="copilot" element={<CopilotPage />} />
         <Route path="team" element={<LeaderDashboard />} />
         <Route path="referral" element={<ReferralPage />} />
+        <Route path="health-coach" element={<HealthCoach />} />
       </Route>
 
       {/* ============================================================ */}

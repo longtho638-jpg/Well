@@ -21,6 +21,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ onMobileClose }) => {
     { path: '/dashboard', label: 'Overview', icon: LayoutDashboard },
     { path: '/dashboard/marketplace', label: 'Marketplace', icon: ShoppingBag, matches: ['/dashboard/product'] },
     { path: '/dashboard/wallet', label: 'My Wallet', icon: Wallet },
+    { path: '/dashboard/health-coach', label: 'Health Coach', icon: Sparkles, badge: 'NEW' },
     { path: '/dashboard/copilot', label: 'The Copilot', icon: Bot, badge: 'AI' },
     { path: '/dashboard/team', label: 'Team Leader', icon: Users },
     { path: '/dashboard/referral', label: 'Giới Thiệu', icon: Share2 },
