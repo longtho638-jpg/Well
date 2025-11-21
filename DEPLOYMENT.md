@@ -1,179 +1,224 @@
-# 🚀 Hướng Dẫn Deploy WellNexus
+# WellNexus Deployment & Testing Guide
 
-## Cách 1: Deploy Lên Vercel (Khuyên Dùng - Miễn Phí)
-
-### Bước 1: Tạo Tài Khoản Vercel
-1. Truy cập https://vercel.com
-2. Đăng nhập bằng GitHub account của bạn
-
-### Bước 2: Import Repository
-1. Click **"Add New Project"**
-2. Chọn repository **Well** của bạn
-3. Vercel sẽ tự động detect Vite framework
-
-### Bước 3: Cấu Hình Environment Variables (Tùy chọn)
-Nếu muốn dùng AI Coach:
-- Thêm biến: `VITE_GEMINI_API_KEY`
-- Giá trị: API key từ https://ai.google.dev/
-
-### Bước 4: Deploy
-1. Click **"Deploy"**
-2. Đợi 2-3 phút
-3. Xong! Bạn sẽ có URL dạng: `wellnexus.vercel.app`
-
-### Auto Deploy
-Mỗi khi push code lên GitHub, Vercel sẽ tự động deploy lại.
+## Table of Contents
+1. [Quick Start](#quick-start)
+2. [Environment Setup](#environment-setup)
+3. [Development](#development)
+4. [Testing](#testing)
+5. [Building](#building)
+6. [Deployment](#deployment)
+7. [Troubleshooting](#troubleshooting)
+8. [Phase 2 Features](#phase-2-features)
 
 ---
 
-## Cách 2: Deploy Lên Netlify
+## Quick Start
 
-### Deploy Nhanh
 ```bash
-# 1. Cài Netlify CLI
-npm install -g netlify-cli
+# Clone repository
+git clone <repository-url>
+cd Well
 
-# 2. Build project
+# Install dependencies
+npm install
+
+# Set up environment variables
+cp .env.example .env
+# Edit .env with your API keys
+
+# Start development server
+npm run dev
+```
+
+Visit `http://localhost:5173` to see the app running.
+
+---
+
+## Environment Setup
+
+### Required Environment Variables
+
+Create a `.env` file in the project root:
+
+```env
+# Firebase Configuration
+VITE_FIREBASE_API_KEY=your_firebase_api_key_here
+VITE_FIREBASE_AUTH_DOMAIN=your-project-id.firebaseapp.com
+VITE_FIREBASE_PROJECT_ID=your-project-id
+VITE_FIREBASE_STORAGE_BUCKET=your-project-id.appspot.com
+VITE_FIREBASE_MESSAGING_SENDER_ID=your_messaging_sender_id
+VITE_FIREBASE_APP_ID=your_firebase_app_id
+
+# Firebase Emulators (for local development)
+VITE_USE_FIREBASE_EMULATORS=false
+
+# Google Gemini AI API Key (optional - for AI features)
+VITE_GEMINI_API_KEY=your_gemini_api_key_here
+```
+
+### Getting API Keys
+
+#### Firebase
+1. Go to [Firebase Console](https://console.firebase.google.com/)
+2. Create a new project or select existing
+3. Go to Project Settings > General
+4. Scroll to "Your apps" section
+5. Add a web app if you haven't
+6. Copy the configuration values
+
+#### Google Gemini AI
+1. Visit [Google AI Studio](https://aistudio.google.com/apikey)
+2. Sign in with your Google account
+3. Click "Get API Key"
+4. Copy the API key
+5. Add to `.env` as `VITE_GEMINI_API_KEY`
+
+**Important:** Never commit `.env` file to version control!
+
+---
+
+## Development
+
+### Running Development Server
+
+```bash
+npm run dev
+```
+
+The app will be available at `http://localhost:5173` with hot module replacement (HMR).
+
+---
+
+## Testing
+
+### Test Suite
+
+The project uses **Vitest** with React Testing Library for comprehensive testing.
+
+#### Running Tests
+
+```bash
+# Watch mode (default) - runs tests on file changes
+npm test
+
+# Run tests once
+npm run test:run
+
+# Interactive UI mode
+npm run test:ui
+
+# Generate coverage report
+npm run test:coverage
+```
+
+**Current Coverage:** 13 tests passing ✅
+
+---
+
+## Building
+
+### Production Build
+
+```bash
 npm run build
-
-# 3. Deploy
-netlify deploy --prod --dir=dist
 ```
 
-### Hoặc qua Web UI
-1. Truy cập https://app.netlify.com
-2. Kéo thả thư mục `dist` vào
-3. Xong!
+This outputs to `dist/` directory.
+
+### Preview Production Build
+
+```bash
+npm run preview
+```
 
 ---
 
-## Cách 3: Deploy Lên Firebase Hosting
+## Deployment
 
-### Bước 1: Cài Firebase CLI
-```bash
-npm install -g firebase-tools
-```
+### Vercel Deployment (Recommended)
 
-### Bước 2: Đăng Nhập
+1. Connect GitHub repository to Vercel
+2. Configure environment variables in Vercel Dashboard
+3. Push to main branch - auto-deploys
+
+#### Vercel Configuration
+
+The `vercel.json` ensures SPA routing works correctly with rewrites to `/index.html`.
+
+### Firebase Hosting
+
 ```bash
 firebase login
-```
-
-### Bước 3: Init Project
-```bash
 firebase init hosting
-```
-- Chọn **"Use an existing project"**
-- Public directory: **`dist`**
-- Single-page app: **Yes**
-
-### Bước 4: Deploy
-```bash
 npm run build
 firebase deploy
 ```
 
 ---
 
-## Cách 4: Deploy Lên GitHub Pages
+## Troubleshooting
 
-### Bước 1: Sửa vite.config.ts
-Thêm base URL:
-```ts
-export default defineConfig({
-  base: '/Well/', // Tên repository của bạn
-  // ...
-})
-```
+### Menu Navigation Issues
 
-### Bước 2: Cài gh-pages
-```bash
-npm install --save-dev gh-pages
-```
+**Fixed in latest version:** All navigation paths now correctly include `/dashboard` prefix.
 
-### Bước 3: Thêm script vào package.json
-```json
-{
-  "scripts": {
-    "predeploy": "npm run build",
-    "deploy": "gh-pages -d dist"
-  }
-}
-```
+If issues persist:
+1. Clear browser cache
+2. Hard refresh (Ctrl+Shift+R)
+3. Verify latest deployment
 
-### Bước 4: Deploy
-```bash
-npm run deploy
-```
+### Environment Variables Not Loading
 
-### Bước 5: Bật GitHub Pages
-1. Vào Settings > Pages
-2. Source: **gh-pages branch**
-3. URL: `https://longtho638-jpg.github.io/Well/`
+- Variables must start with `VITE_`
+- Restart dev server after changing `.env`
+- Set variables in deployment platform dashboard for production
 
 ---
 
-## 📝 Lưu Ý Quan Trọng
+## Phase 2 Features
 
-### Environment Variables
-- File `.env` **KHÔNG BAO GIỜ** commit lên Git
-- Chỉ commit `.env.example`
-- Trên hosting platform, thêm biến qua Web UI
+All Phase 2 Growth features are **fully implemented** ✅
 
-### Production Build
-Kiểm tra build trước khi deploy:
-```bash
-npm run build
-npm run preview
-```
+### 1. The Copilot (AI Sales Assistant)
 
-### Domain Tùy Chỉnh
-Cả 3 platform đều hỗ trợ custom domain miễn phí:
-- Vercel: Settings > Domains
-- Netlify: Domain settings
-- Firebase: Hosting > Add custom domain
+**Route:** `/dashboard/copilot`
 
----
+Features:
+- Real-time objection handling
+- AI-powered response suggestions
+- Sales script generation
+- Coaching feedback
 
-## 🆘 Troubleshooting
+### 2. Leader Dashboard
 
-### Lỗi "404 Not Found" khi refresh
-**Nguyên nhân:** SPA routing không được config đúng
+**Route:** `/dashboard/team`
 
-**Giải pháp:**
-- **Vercel:** Đã có trong `vercel.json` ✅
-- **Netlify:** Tạo file `public/_redirects`:
-  ```
-  /*    /index.html   200
-  ```
-- **Firebase:** Đã có trong `firebase.json` ✅
+Features:
+- Team member overview
+- Performance metrics & charts
+- Search and filter
+- Export functionality
 
-### Lỗi Environment Variables không load
-**Giải pháp:**
-1. Kiểm tra tên biến phải bắt đầu bằng `VITE_`
-2. Restart dev server sau khi thay đổi `.env`
-3. Re-deploy nếu đang ở production
+### 3. Referral System
 
-### Build Size Quá Lớn (>500KB warning)
-**Đây là cảnh báo bình thường.** Nếu muốn optimize:
-```bash
-npm run build -- --minify esbuild
-```
+**Route:** `/dashboard/referral`
+
+Features:
+- Unique referral link
+- Multi-channel sharing
+- Tracking and analytics
+- Bonus calculation
 
 ---
 
-## ✅ Checklist Trước Khi Deploy
+## Production Checklist
 
-- [ ] `npm run build` chạy thành công
-- [ ] `npm run preview` hiển thị đúng
-- [ ] Không có lỗi TypeScript (`npx tsc --noEmit`)
-- [ ] File `.env` không commit lên Git
-- [ ] Environment variables đã thêm trên hosting platform
+- [ ] All API keys in environment variables
+- [ ] Production build tested
+- [ ] All tests passing
+- [ ] SPA routing configured
+- [ ] Cross-browser tested
 
 ---
 
-## 🎯 Khuyến Nghị
-
-**Cho MVP/Demo:** Vercel hoặc Netlify (dễ nhất)
-**Cho Production:** Firebase Hosting (tích hợp tốt với Firebase services)
-**Cho Open Source:** GitHub Pages (miễn phí, không limit)
+**Last Updated:** 2025-11-21
