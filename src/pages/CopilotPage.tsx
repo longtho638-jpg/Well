@@ -1,13 +1,85 @@
-import React from 'react';
+import React, { useState } from 'react';
 import TheCopilot from '@/components/TheCopilot';
 import { useStore } from '@/store';
-import { Bot, Target, MessageCircle, TrendingUp } from 'lucide-react';
-import { motion } from 'framer-motion';
+import { Bot, Target, MessageCircle, TrendingUp, Clock, Sparkles, Plus, X, Zap } from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
 import { useTranslation } from '@/hooks';
+
+// Chat History Interface
+interface ChatSession {
+  id: string;
+  title: string;
+  timestamp: Date;
+  preview: string;
+}
 
 export default function CopilotPage() {
   const t = useTranslation();
   const { user } = useStore();
+
+  // Chat history state
+  const [showHistory, setShowHistory] = useState(true);
+  const [chatSessions, setChatSessions] = useState<ChatSession[]>([
+    {
+      id: '1',
+      title: 'Tư vấn khách hàng về ANIMA 119',
+      timestamp: new Date('2025-01-20 14:30'),
+      preview: 'Khách hỏi về giá và công dụng của ANIMA...'
+    },
+    {
+      id: '2',
+      title: 'Xử lý từ chối - Giá cao',
+      timestamp: new Date('2025-01-20 10:15'),
+      preview: 'Khách nói sản phẩm đắt quá...'
+    },
+    {
+      id: '3',
+      title: 'Kịch bản chốt sale cuối tháng',
+      timestamp: new Date('2025-01-19 16:45'),
+      preview: 'Tạo kịch bản chốt sale cho khuyến mãi...'
+    },
+    {
+      id: '4',
+      title: 'Viết bài đăng Facebook',
+      timestamp: new Date('2025-01-19 09:20'),
+      preview: 'Viết bài giới thiệu sản phẩm mới...'
+    }
+  ]);
+  const [selectedSession, setSelectedSession] = useState<string | null>(null);
+
+  // Prompt suggestions
+  const promptSuggestions = [
+    {
+      icon: '📝',
+      title: 'Viết bài đăng Facebook',
+      prompt: 'Giúp tôi viết bài đăng Facebook giới thiệu ANIMA 119 hấp dẫn, có emoji và call-to-action mạnh mẽ'
+    },
+    {
+      icon: '💬',
+      title: 'Kịch bản chốt sale',
+      prompt: 'Tạo kịch bản chốt sale cho khách hàng đang do dự về giá'
+    },
+    {
+      icon: '🎯',
+      title: 'Xử lý từ chối',
+      prompt: 'Khách hàng nói "Tôi cần suy nghĩ thêm". Tôi nên trả lời thế nào?'
+    },
+    {
+      icon: '📞',
+      title: 'Kịch bản gọi điện',
+      prompt: 'Viết kịch bản gọi điện chào hàng cho khách hàng mới'
+    },
+    {
+      icon: '✨',
+      title: 'Highlight sản phẩm',
+      prompt: 'Liệt kê 5 điểm nổi bật nhất của ANIMA 119 để thuyết phục khách'
+    },
+    {
+      icon: '🎁',
+      title: 'Chương trình khuyến mãi',
+      prompt: 'Tạo ý tưởng chương trình khuyến mãi thu hút cho sản phẩm'
+    }
+  ];
 
   const features = [
     {
@@ -27,96 +99,255 @@ export default function CopilotPage() {
     }
   ];
 
+  const handleNewChat = () => {
+    setSelectedSession(null);
+  };
+
+  const formatTimestamp = (date: Date) => {
+    const now = new Date();
+    const diffHours = Math.floor((now.getTime() - date.getTime()) / (1000 * 60 * 60));
+
+    if (diffHours < 1) return 'Vừa xong';
+    if (diffHours < 24) return `${diffHours} giờ trước`;
+    if (diffHours < 48) return 'Hôm qua';
+    return date.toLocaleDateString('vi-VN');
+  };
+
   return (
-    <div className="space-y-6 pb-20">
+    <div className="min-h-screen bg-gradient-to-br from-gray-50 via-blue-50 to-purple-50 pb-20">
       {/* Header */}
-      <div className="bg-gradient-to-r from-primary to-primary/80 rounded-2xl p-8 text-white">
-        <div className="flex items-start justify-between">
-          <div className="flex-1">
-            <div className="flex items-center gap-3 mb-3">
-              <div className="w-12 h-12 bg-accent rounded-xl flex items-center justify-center">
-                <Bot className="w-7 h-7 text-primary" />
+      <div className="bg-gradient-to-r from-primary to-primary/80 p-8 text-white sticky top-0 z-10 shadow-xl">
+        <div className="max-w-7xl mx-auto">
+          <div className="flex items-start justify-between">
+            <div className="flex-1">
+              <div className="flex items-center gap-3 mb-3">
+                <div className="w-14 h-14 bg-accent rounded-2xl flex items-center justify-center shadow-lg shadow-accent/30">
+                  <Bot className="w-8 h-8 text-primary" />
+                </div>
+                <div>
+                  <h1 className="text-4xl font-bold">{t('copilot.title')}</h1>
+                  <p className="text-white/80 text-sm">{t('copilot.subtitle')}</p>
+                </div>
               </div>
-              <div>
-                <h1 className="text-3xl font-bold">{t('copilot.title')}</h1>
-                <p className="text-white/80 text-sm">{t('copilot.subtitle')}</p>
-              </div>
+              <p className="text-white/90 max-w-2xl">
+                {t('copilot.description')}
+              </p>
             </div>
-            <p className="text-white/90 max-w-2xl">
-              {t('copilot.description')}
-            </p>
-          </div>
-        </div>
-      </div>
-
-      {/* Features Grid */}
-      <div className="grid md:grid-cols-3 gap-4">
-        {features.map((feature, index) => {
-          const Icon = feature.icon;
-          return (
-            <motion.div
-              key={index}
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: index * 0.1 }}
-              className="bg-white rounded-xl p-6 border border-gray-100 hover:shadow-lg transition-shadow"
+            <button
+              onClick={() => setShowHistory(!showHistory)}
+              className="lg:hidden p-3 bg-white/20 hover:bg-white/30 rounded-xl transition-colors"
             >
-              <Icon className="w-8 h-8 text-primary mb-3" />
-              <h3 className="font-bold text-gray-900 mb-2">{feature.title}</h3>
-              <p className="text-sm text-gray-600">{feature.description}</p>
-            </motion.div>
-          );
-        })}
-      </div>
-
-      {/* Stats */}
-      <div className="bg-gradient-to-br from-blue-50 to-indigo-50 rounded-xl p-6 border border-blue-100">
-        <h3 className="font-bold text-gray-900 mb-4">📊 {t('copilot.stats.title')}</h3>
-        <div className="grid grid-cols-3 gap-4">
-          <div>
-            <p className="text-2xl font-bold text-primary">12</p>
-            <p className="text-xs text-gray-600">{t('copilot.stats.objectionsHandled')}</p>
-          </div>
-          <div>
-            <p className="text-2xl font-bold text-primary">8</p>
-            <p className="text-xs text-gray-600">{t('copilot.stats.scriptsCreated')}</p>
-          </div>
-          <div>
-            <p className="text-2xl font-bold text-primary">85%</p>
-            <p className="text-xs text-gray-600">{t('copilot.stats.conversionRate')}</p>
+              {showHistory ? <X className="w-5 h-5" /> : <Clock className="w-5 h-5" />}
+            </button>
           </div>
         </div>
       </div>
 
-      {/* The Copilot Component */}
-      <div>
-        <TheCopilot
-          userName={user.name}
-          productContext="WellNexus products - premium health and wellness supplements"
-        />
-      </div>
+      <div className="max-w-7xl mx-auto p-6">
+        <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
+          {/* Sidebar - Chat History */}
+          <AnimatePresence>
+            {showHistory && (
+              <motion.div
+                initial={{ opacity: 0, x: -20 }}
+                animate={{ opacity: 1, x: 0 }}
+                exit={{ opacity: 0, x: -20 }}
+                className="lg:col-span-1 space-y-4"
+              >
+                {/* New Chat Button */}
+                <button
+                  onClick={handleNewChat}
+                  className="w-full bg-gradient-to-r from-primary to-teal-600 text-white px-6 py-4 rounded-xl font-bold text-sm hover:shadow-xl transition-all duration-300 flex items-center justify-center gap-2"
+                >
+                  <Plus className="w-5 h-5" />
+                  Chat Mới
+                </button>
 
-      {/* Tips Section */}
-      <div className="bg-white rounded-xl p-6 border border-gray-100">
-        <h3 className="font-bold text-gray-900 mb-4">💡 {t('copilot.tips.title')}</h3>
-        <ul className="space-y-3 text-sm text-gray-600">
-          <li className="flex gap-3">
-            <span className="text-accent font-bold">1.</span>
-            <span>{t('copilot.tips.tip1')}</span>
-          </li>
-          <li className="flex gap-3">
-            <span className="text-accent font-bold">2.</span>
-            <span>{t('copilot.tips.tip2')}</span>
-          </li>
-          <li className="flex gap-3">
-            <span className="text-accent font-bold">3.</span>
-            <span>{t('copilot.tips.tip3')}</span>
-          </li>
-          <li className="flex gap-3">
-            <span className="text-accent font-bold">4.</span>
-            <span>{t('copilot.tips.tip4')}</span>
-          </li>
-        </ul>
+                {/* Chat History Card */}
+                <div className="bg-white/70 backdrop-blur-xl rounded-2xl p-6 border border-gray-200 shadow-xl sticky top-32 max-h-[calc(100vh-200px)] overflow-y-auto">
+                  <h3 className="font-bold text-gray-900 text-lg mb-4 flex items-center gap-2">
+                    <Clock className="w-5 h-5 text-primary" />
+                    Lịch Sử Chat
+                  </h3>
+                  <div className="space-y-2">
+                    {chatSessions.map((session, index) => (
+                      <motion.button
+                        key={session.id}
+                        initial={{ opacity: 0, y: 10 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ delay: index * 0.05 }}
+                        onClick={() => setSelectedSession(session.id)}
+                        className={`w-full text-left p-4 rounded-xl transition-all duration-300 ${
+                          selectedSession === session.id
+                            ? 'bg-gradient-to-r from-primary/10 to-teal-600/10 border-2 border-primary shadow-md'
+                            : 'bg-gray-50 hover:bg-gray-100 border border-gray-200'
+                        }`}
+                      >
+                        <h4 className="font-semibold text-gray-900 text-sm mb-1 line-clamp-1">
+                          {session.title}
+                        </h4>
+                        <p className="text-xs text-gray-600 mb-2 line-clamp-1">
+                          {session.preview}
+                        </p>
+                        <div className="flex items-center gap-2">
+                          <Clock className="w-3 h-3 text-gray-400" />
+                          <span className="text-xs text-gray-500">
+                            {formatTimestamp(session.timestamp)}
+                          </span>
+                        </div>
+                      </motion.button>
+                    ))}
+                  </div>
+                </div>
+              </motion.div>
+            )}
+          </AnimatePresence>
+
+          {/* Main Content */}
+          <div className={showHistory ? 'lg:col-span-3' : 'lg:col-span-4'}>
+            <div className="space-y-6">
+              {/* Toggle Button (Mobile) */}
+              {!showHistory && (
+                <button
+                  onClick={() => setShowHistory(true)}
+                  className="lg:hidden w-full bg-white border border-gray-200 px-4 py-3 rounded-xl font-medium text-sm hover:bg-gray-50 transition-colors flex items-center justify-center gap-2"
+                >
+                  <Clock className="w-5 h-5 text-primary" />
+                  Xem Lịch Sử Chat
+                </button>
+              )}
+
+              {/* Features Grid */}
+              <div className="grid md:grid-cols-3 gap-4">
+                {features.map((feature, index) => {
+                  const Icon = feature.icon;
+                  return (
+                    <motion.div
+                      key={index}
+                      initial={{ opacity: 0, y: 20 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ delay: index * 0.1 }}
+                      className="relative group"
+                    >
+                      <div className="absolute inset-0 bg-gradient-to-br from-primary/10 to-teal-600/10 rounded-xl blur-xl opacity-0 group-hover:opacity-100 transition-opacity" />
+                      <div className="relative bg-white/70 backdrop-blur-xl rounded-xl p-6 border border-gray-200 hover:border-primary/50 hover:shadow-xl transition-all duration-300">
+                        <Icon className="w-8 h-8 text-primary mb-3" />
+                        <h3 className="font-bold text-gray-900 mb-2">{feature.title}</h3>
+                        <p className="text-sm text-gray-600">{feature.description}</p>
+                      </div>
+                    </motion.div>
+                  );
+                })}
+              </div>
+
+              {/* Prompt Suggestions */}
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.4 }}
+                className="bg-gradient-to-r from-purple-50 to-pink-50 rounded-2xl p-6 border border-purple-200"
+              >
+                <h3 className="font-bold text-gray-900 mb-4 flex items-center gap-2">
+                  <Sparkles className="w-5 h-5 text-purple-600" />
+                  Gợi Ý Prompt - Click để dùng ngay
+                </h3>
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
+                  {promptSuggestions.map((suggestion, index) => (
+                    <motion.button
+                      key={index}
+                      initial={{ opacity: 0, scale: 0.95 }}
+                      animate={{ opacity: 1, scale: 1 }}
+                      transition={{ delay: 0.5 + index * 0.05 }}
+                      whileHover={{ scale: 1.02 }}
+                      whileTap={{ scale: 0.98 }}
+                      className="bg-white hover:bg-gradient-to-r hover:from-purple-100 hover:to-pink-100 rounded-xl p-4 border-2 border-gray-200 hover:border-purple-400 transition-all duration-300 text-left group"
+                    >
+                      <div className="flex items-center gap-3 mb-2">
+                        <span className="text-2xl">{suggestion.icon}</span>
+                        <h4 className="font-semibold text-gray-900 text-sm group-hover:text-purple-700 transition-colors">
+                          {suggestion.title}
+                        </h4>
+                      </div>
+                      <p className="text-xs text-gray-600 line-clamp-2">
+                        {suggestion.prompt}
+                      </p>
+                    </motion.button>
+                  ))}
+                </div>
+              </motion.div>
+
+              {/* Stats */}
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.8 }}
+                className="bg-gradient-to-br from-blue-50 to-indigo-50 rounded-xl p-6 border border-blue-200"
+              >
+                <h3 className="font-bold text-gray-900 mb-4 flex items-center gap-2">
+                  <Zap className="w-5 h-5 text-blue-600" />
+                  {t('copilot.stats.title')}
+                </h3>
+                <div className="grid grid-cols-3 gap-6">
+                  <div className="text-center">
+                    <p className="text-3xl font-bold text-primary mb-1">12</p>
+                    <p className="text-xs text-gray-600">{t('copilot.stats.objectionsHandled')}</p>
+                  </div>
+                  <div className="text-center">
+                    <p className="text-3xl font-bold text-primary mb-1">8</p>
+                    <p className="text-xs text-gray-600">{t('copilot.stats.scriptsCreated')}</p>
+                  </div>
+                  <div className="text-center">
+                    <p className="text-3xl font-bold text-green-600 mb-1">85%</p>
+                    <p className="text-xs text-gray-600">{t('copilot.stats.conversionRate')}</p>
+                  </div>
+                </div>
+              </motion.div>
+
+              {/* The Copilot Component */}
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 1 }}
+              >
+                <TheCopilot
+                  userName={user.name}
+                  productContext="WellNexus products - premium health and wellness supplements"
+                />
+              </motion.div>
+
+              {/* Tips Section */}
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 1.2 }}
+                className="bg-white/70 backdrop-blur-xl rounded-xl p-6 border border-gray-200"
+              >
+                <h3 className="font-bold text-gray-900 mb-4 flex items-center gap-2">
+                  <span className="text-xl">💡</span>
+                  {t('copilot.tips.title')}
+                </h3>
+                <ul className="space-y-3 text-sm text-gray-600">
+                  <li className="flex gap-3 items-start">
+                    <span className="bg-accent text-primary font-bold px-2 py-1 rounded-lg text-xs">1</span>
+                    <span className="flex-1">{t('copilot.tips.tip1')}</span>
+                  </li>
+                  <li className="flex gap-3 items-start">
+                    <span className="bg-accent text-primary font-bold px-2 py-1 rounded-lg text-xs">2</span>
+                    <span className="flex-1">{t('copilot.tips.tip2')}</span>
+                  </li>
+                  <li className="flex gap-3 items-start">
+                    <span className="bg-accent text-primary font-bold px-2 py-1 rounded-lg text-xs">3</span>
+                    <span className="flex-1">{t('copilot.tips.tip3')}</span>
+                  </li>
+                  <li className="flex gap-3 items-start">
+                    <span className="bg-accent text-primary font-bold px-2 py-1 rounded-lg text-xs">4</span>
+                    <span className="flex-1">{t('copilot.tips.tip4')}</span>
+                  </li>
+                </ul>
+              </motion.div>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   );
