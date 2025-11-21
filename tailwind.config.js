@@ -1,5 +1,6 @@
 /** @type {import('tailwindcss').Config} */
 export default {
+  darkMode: 'class',
   content: [
     "./index.html",
     "./src/**/*.{js,ts,jsx,tsx}",
@@ -17,6 +18,17 @@ export default {
         // Aliases for deeper customization
         deepTeal: '#00575A',
         marigold: '#FFBF00',
+        // Dark mode colors
+        dark: {
+          bg: '#0F172A',        // Dark background (slate-900)
+          surface: '#1E293B',   // Card background (slate-800)
+          border: '#334155',    // Border color (slate-700)
+          text: {
+            primary: '#F1F5F9',   // Primary text (slate-100)
+            secondary: '#CBD5E1', // Secondary text (slate-300)
+            muted: '#94A3B8',     // Muted text (slate-400)
+          }
+        }
       },
       fontFamily: {
         // Dùng Manrope cho các tiêu đề với fallback stack mạnh cho Tiếng Việt

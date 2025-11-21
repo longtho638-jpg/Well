@@ -1,11 +1,12 @@
 
 import React, { useState } from 'react';
-import { LayoutDashboard, ShoppingBag, Wallet, LogOut, Sparkles, Bot, CheckCircle2, Circle, Users, Share2, Trophy, Heart, Megaphone } from 'lucide-react';
+import { LayoutDashboard, ShoppingBag, Wallet, LogOut, Sparkles, Bot, CheckCircle2, Circle, Users, Share2, Trophy, Heart, Megaphone, Moon, Sun } from 'lucide-react';
 import { getCoachAdvice } from '../services/geminiService';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useStore } from '../store';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useTranslation } from '../hooks';
+import { useTheme } from '../context/ThemeContext';
 
 interface SidebarProps {
   onMobileClose?: () => void;
@@ -16,6 +17,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ onMobileClose }) => {
   const { user, quests, logout } = useStore();
   const navigate = useNavigate();
   const location = useLocation();
+  const { theme, toggleTheme } = useTheme();
   const [advice, setAdvice] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
 
@@ -56,7 +58,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ onMobileClose }) => {
 
   return (
     <aside
-      className="bg-white border-r border-gray-200 flex flex-col h-screen overflow-y-auto"
+      className="bg-white dark:bg-slate-900 border-r border-gray-200 dark:border-slate-700 flex flex-col h-screen overflow-y-auto transition-colors"
       role="navigation"
       aria-label="Main navigation"
     >
@@ -73,10 +75,10 @@ export const Sidebar: React.FC<SidebarProps> = ({ onMobileClose }) => {
         }}
         aria-label="WellNexus home"
       >
-        <div className="w-10 h-10 bg-brand-primary rounded-xl flex items-center justify-center text-white font-bold shadow-lg shadow-brand-primary/30 flex-shrink-0">W</div>
+        <div className="w-10 h-10 bg-brand-primary dark:bg-teal-600 rounded-xl flex items-center justify-center text-white font-bold shadow-lg shadow-brand-primary/30 flex-shrink-0">W</div>
         <div>
-          <h1 className="font-bold text-xl text-brand-primary leading-none">WellNexus</h1>
-          <p className="text-[10px] text-gray-400 uppercase tracking-widest font-semibold mt-1">Social Commerce</p>
+          <h1 className="font-bold text-xl text-brand-primary dark:text-teal-400 leading-none">WellNexus</h1>
+          <p className="text-[10px] text-gray-400 dark:text-slate-500 uppercase tracking-widest font-semibold mt-1">Social Commerce</p>
         </div>
       </div>
 
@@ -91,8 +93,8 @@ export const Sidebar: React.FC<SidebarProps> = ({ onMobileClose }) => {
               onClick={() => handleNav(item.path)}
               className={`w-full flex items-center gap-3 px-4 py-3.5 rounded-xl text-sm font-medium transition-all duration-200 group ${
                 isActive
-                  ? 'bg-brand-primary text-white shadow-md shadow-brand-primary/20'
-                  : 'text-gray-500 hover:bg-brand-primary/5 hover:text-brand-primary'
+                  ? 'bg-brand-primary dark:bg-teal-600 text-white shadow-md shadow-brand-primary/20'
+                  : 'text-gray-500 dark:text-slate-400 hover:bg-brand-primary/5 dark:hover:bg-slate-800 hover:text-brand-primary dark:hover:text-teal-400'
               }`}
               aria-current={isActive ? 'page' : undefined}
               aria-label={`Navigate to ${item.label}`}
@@ -161,20 +163,43 @@ export const Sidebar: React.FC<SidebarProps> = ({ onMobileClose }) => {
         </div>
       </div>
 
-      <div className="p-4 border-t border-gray-200">
+      {/* Theme Toggle Button */}
+      <div className="px-4 pb-4">
+        <motion.button
+          whileHover={{ scale: 1.02 }}
+          whileTap={{ scale: 0.98 }}
+          onClick={toggleTheme}
+          className="w-full px-4 py-3 bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 rounded-xl flex items-center justify-center gap-3 transition-all font-semibold text-gray-700 dark:text-slate-300 border border-slate-200 dark:border-slate-600"
+          aria-label={`Switch to ${theme === 'light' ? 'dark' : 'light'} mode`}
+        >
+          {theme === 'light' ? (
+            <>
+              <Moon className="w-5 h-5" aria-hidden="true" />
+              <span>Dark Mode</span>
+            </>
+          ) : (
+            <>
+              <Sun className="w-5 h-5" aria-hidden="true" />
+              <span>Light Mode</span>
+            </>
+          )}
+        </motion.button>
+      </div>
+
+      <div className="p-4 border-t border-gray-200 dark:border-slate-700">
         <div className="flex items-center gap-3">
           <img
             src={user.avatarUrl}
             alt={`${user.name}'s profile picture`}
-            className="w-10 h-10 rounded-full border border-gray-100 shadow-sm object-cover"
+            className="w-10 h-10 rounded-full border border-gray-100 dark:border-slate-700 shadow-sm object-cover"
           />
           <div className="flex-1 min-w-0">
-            <p className="text-sm font-bold text-gray-900 truncate">{user.name}</p>
-            <p className="text-xs text-brand-primary font-medium" aria-label={`Rank: ${user.rank}`}>{user.rank}</p>
+            <p className="text-sm font-bold text-gray-900 dark:text-slate-100 truncate">{user.name}</p>
+            <p className="text-xs text-brand-primary dark:text-teal-400 font-medium" aria-label={`Rank: ${user.rank}`}>{user.rank}</p>
           </div>
           <button
             onClick={handleLogout}
-            className="text-gray-400 hover:text-red-500 transition p-2 rounded-full hover:bg-red-50"
+            className="text-gray-400 dark:text-slate-500 hover:text-red-500 dark:hover:text-red-400 transition p-2 rounded-full hover:bg-red-50 dark:hover:bg-red-900/20"
             aria-label={t('nav.logout')}
           >
             <LogOut className="w-4 h-4" aria-hidden="true" />

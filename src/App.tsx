@@ -17,12 +17,14 @@ import MarketingTools from './pages/MarketingTools';
 import Admin from './pages/Admin';
 import PolicyEngine from './pages/Admin/PolicyEngine';
 import { useStore } from './store';
+import { ThemeProvider } from './context/ThemeContext';
 
 const App: React.FC = () => {
   const { isAuthenticated } = useStore();
 
   return (
-    <Routes>
+    <ThemeProvider>
+      <Routes>
       {/* ============================================================ */}
       {/* PUBLIC ROUTE: Landing Page */}
       {/* ============================================================ */}
@@ -81,7 +83,8 @@ const App: React.FC = () => {
       {/* CATCH-ALL: Unknown routes redirect to home */}
       {/* ============================================================ */}
       <Route path="*" element={<Navigate to="/" replace />} />
-    </Routes>
+      </Routes>
+    </ThemeProvider>
   );
 };
 
