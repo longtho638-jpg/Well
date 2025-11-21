@@ -1,7 +1,17 @@
 
 import { create } from 'zustand';
-import { User, Product, Transaction, Quest, ChartDataPoint } from './types';
-import { CURRENT_USER, PRODUCTS, TRANSACTIONS, DAILY_QUESTS, REVENUE_DATA } from './data/mockData';
+import { User, Product, Transaction, Quest, ChartDataPoint, TeamMember, TeamMetrics, Referral, ReferralStats } from './types';
+import {
+  CURRENT_USER,
+  PRODUCTS,
+  TRANSACTIONS,
+  DAILY_QUESTS,
+  REVENUE_DATA,
+  TEAM_MEMBERS,
+  TEAM_METRICS,
+  REFERRALS,
+  REFERRAL_STATS
+} from './data/mockData';
 
 interface AppState {
   // Auth State
@@ -16,6 +26,12 @@ interface AppState {
   quests: Quest[];
   revenueData: ChartDataPoint[];
 
+  // Phase 2: Growth Features
+  teamMembers: TeamMember[];
+  teamMetrics: TeamMetrics;
+  referrals: Referral[];
+  referralStats: ReferralStats;
+
   // Actions (Simulating Backend Mutations)
   completeQuest: (questId: string) => void;
   simulateOrder: (productId: string) => Promise<void>;
@@ -24,12 +40,18 @@ interface AppState {
 export const useStore = create<AppState>((set, get) => ({
   // Initial State
   isAuthenticated: false, // Default to false to show Landing Page first
-  
+
   user: CURRENT_USER,
   products: PRODUCTS,
   transactions: TRANSACTIONS,
   quests: DAILY_QUESTS,
   revenueData: REVENUE_DATA,
+
+  // Phase 2: Growth Features
+  teamMembers: TEAM_MEMBERS,
+  teamMetrics: TEAM_METRICS,
+  referrals: REFERRALS,
+  referralStats: REFERRAL_STATS,
 
   // Auth Actions
   login: () => set({ isAuthenticated: true }),
