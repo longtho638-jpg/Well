@@ -12,6 +12,7 @@ import {
   REFERRALS,
   REFERRAL_STATS
 } from './data/mockData';
+import { generateTxHash } from './utils/tokenomics';
 
 interface AppState {
   // Auth State
@@ -80,7 +81,9 @@ export const useStore = create<AppState>((set, get) => ({
       amount: commission,
       type: 'Direct Sale',
       status: 'completed',
-      taxDeducted: 0 
+      taxDeducted: 0,
+      hash: generateTxHash(),
+      currency: 'SHOP'
     };
 
     set((state) => {
