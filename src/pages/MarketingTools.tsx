@@ -14,11 +14,17 @@ import {
   FileText,
   Link as LinkIcon,
   Sparkles,
-  Tag
+  Tag,
+  Palette,
+  Upload,
+  Wand2,
+  ExternalLink,
+  BarChart3
 } from 'lucide-react';
 import { useStore } from '@/store';
 import { formatVND, formatNumber } from '@/utils/format';
 import { useTranslation } from '@/hooks';
+import { LandingPageTemplateType } from '@/types';
 
 // Gift Card Interface
 interface GiftCard {
@@ -73,7 +79,7 @@ const contentTemplates: ContentTemplate[] = [
 
 export default function MarketingTools() {
   const t = useTranslation();
-  const { user } = useStore();
+  const { user, landingPageTemplates, userLandingPages, createLandingPage, publishLandingPage } = useStore();
   const [giftCards, setGiftCards] = useState<GiftCard[]>([
     {
       id: '1',
@@ -99,6 +105,12 @@ export default function MarketingTools() {
   const [newCardType, setNewCardType] = useState<'percentage' | 'fixed'>('fixed');
   const [copiedText, setCopiedText] = useState<string | null>(null);
   const [showQRCode, setShowQRCode] = useState(false);
+
+  // AI Landing Builder State
+  const [selectedTemplate, setSelectedTemplate] = useState<LandingPageTemplateType>('expert');
+  const [portraitUrl, setPortraitUrl] = useState<string>('');
+  const [isGeneratingBio, setIsGeneratingBio] = useState(false);
+  const [generatedLandingPage, setGeneratedLandingPage] = useState<any>(null);
 
   // Affiliate link
   const affiliateLink = `https://wellnexus.vn/ref/${user.id}`;
@@ -155,6 +167,37 @@ export default function MarketingTools() {
       }
     } else {
       handleCopyText(affiliateLink, 'qr-link');
+    }
+  };
+
+  // AI Landing Builder Handlers
+  const handleGenerateBio = async () => {
+    setIsGeneratingBio(true);
+    try {
+      const newPage = await createLandingPage(selectedTemplate, portraitUrl || undefined);
+      setGeneratedLandingPage(newPage);
+    } catch (error) {
+      console.error('Failed to generate landing page:', error);
+    } finally {
+      setIsGeneratingBio(false);
+    }
+  };
+
+  const handlePublishLandingPage = () => {
+    if (generatedLandingPage) {
+      publishLandingPage(generatedLandingPage.id);
+      setGeneratedLandingPage({ ...generatedLandingPage, isPublished: true });
+    }
+  };
+
+  const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = () => {
+        setPortraitUrl(reader.result as string);
+      };
+      reader.readAsDataURL(file);
     }
   };
 
@@ -542,6 +585,259 @@ export default function MarketingTools() {
                 </p>
               </div>
             </div>
+          </div>
+        </motion.div>
+
+        {/* AI Landing Builder Section - TREE MAX LEVEL */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.7 }}
+          className="bg-white rounded-2xl shadow-xl overflow-hidden"
+        >
+          <div className="bg-gradient-to-r from-purple-600 via-pink-600 to-orange-500 border-b border-gray-200 p-6">
+            <div className="flex items-center gap-3">
+              <div className="bg-white/20 backdrop-blur-sm p-3 rounded-xl shadow-lg">
+                <Wand2 className="w-6 h-6 text-white" />
+              </div>
+              <div>
+                <h2 className="text-2xl font-bold text-white flex items-center gap-2">
+                  AI Landing Builder
+                  <span className="bg-accent text-primary text-xs px-3 py-1 rounded-full font-bold">NEW</span>
+                </h2>
+                <p className="text-white/90 text-sm">Tạo trang tuyển dụng chuyên nghiệp với AI trong 60 giây</p>
+              </div>
+            </div>
+          </div>
+
+          <div className="p-6">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+              {/* Template Selection */}
+              <div className="space-y-6">
+                <div>
+                  <h3 className="font-bold text-gray-900 mb-3 flex items-center gap-2">
+                    <Palette className="w-5 h-5 text-purple-600" />
+                    Chọn Template
+                  </h3>
+                  <div className="grid grid-cols-1 gap-3">
+                    {landingPageTemplates.map((template) => (
+                      <motion.button
+                        key={template.id}
+                        onClick={() => setSelectedTemplate(template.type)}
+                        whileHover={{ scale: 1.02 }}
+                        whileTap={{ scale: 0.98 }}
+                        className={`relative overflow-hidden rounded-xl p-4 text-left transition-all duration-300 ${
+                          selectedTemplate === template.type
+                            ? 'ring-4 ring-purple-500 bg-gradient-to-r from-purple-50 to-pink-50'
+                            : 'bg-gray-50 hover:bg-gray-100'
+                        }`}
+                      >
+                        <div className="flex items-center gap-4">
+                          <img
+                            src={template.imageUrl}
+                            alt={template.name}
+                            className="w-20 h-20 rounded-lg object-cover"
+                          />
+                          <div className="flex-1">
+                            <h4 className="font-bold text-gray-900">{template.name}</h4>
+                            <p className="text-sm text-gray-600">{template.description}</p>
+                          </div>
+                          {selectedTemplate === template.type && (
+                            <CheckCircle2 className="w-6 h-6 text-purple-600" />
+                          )}
+                        </div>
+                      </motion.button>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Portrait Upload */}
+                <div>
+                  <h3 className="font-bold text-gray-900 mb-3 flex items-center gap-2">
+                    <Upload className="w-5 h-5 text-purple-600" />
+                    Upload Ảnh Chân Dung
+                  </h3>
+                  <div className="border-2 border-dashed border-gray-300 rounded-xl p-6 hover:border-purple-500 transition-colors">
+                    <input
+                      type="file"
+                      accept="image/*"
+                      onChange={handleFileUpload}
+                      className="hidden"
+                      id="portrait-upload"
+                    />
+                    <label htmlFor="portrait-upload" className="cursor-pointer">
+                      {portraitUrl ? (
+                        <div className="flex items-center gap-4">
+                          <img
+                            src={portraitUrl}
+                            alt="Portrait"
+                            className="w-20 h-20 rounded-full object-cover"
+                          />
+                          <div>
+                            <p className="text-sm font-medium text-gray-900">Ảnh đã tải lên</p>
+                            <p className="text-xs text-gray-600">Click để thay đổi</p>
+                          </div>
+                        </div>
+                      ) : (
+                        <div className="text-center">
+                          <ImageIcon className="w-12 h-12 text-gray-400 mx-auto mb-2" />
+                          <p className="text-sm font-medium text-gray-900">Click để tải ảnh lên</p>
+                          <p className="text-xs text-gray-600">JPG, PNG, tối đa 5MB</p>
+                        </div>
+                      )}
+                    </label>
+                  </div>
+                </div>
+
+                {/* Generate Button */}
+                <button
+                  onClick={handleGenerateBio}
+                  disabled={isGeneratingBio}
+                  className="w-full flex items-center justify-center gap-2 bg-gradient-to-r from-purple-600 via-pink-600 to-orange-500 text-white px-8 py-4 rounded-xl font-bold text-lg hover:shadow-2xl transition-all duration-300 disabled:opacity-50"
+                >
+                  {isGeneratingBio ? (
+                    <>
+                      <Sparkles className="w-6 h-6 animate-spin" />
+                      AI Đang Viết Câu Chuyện...
+                    </>
+                  ) : (
+                    <>
+                      <Wand2 className="w-6 h-6" />
+                      AI Viết Câu Chuyện Của Tôi
+                    </>
+                  )}
+                </button>
+              </div>
+
+              {/* Preview / Result */}
+              <div className="space-y-4">
+                <h3 className="font-bold text-gray-900 flex items-center gap-2">
+                  <Eye className="w-5 h-5 text-purple-600" />
+                  Preview Landing Page
+                </h3>
+
+                {generatedLandingPage ? (
+                  <motion.div
+                    initial={{ opacity: 0, scale: 0.95 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    className="bg-gradient-to-br from-purple-50 to-pink-50 rounded-xl p-6 border-2 border-purple-200"
+                  >
+                    <div className="flex items-center gap-4 mb-4">
+                      {portraitUrl && (
+                        <img
+                          src={portraitUrl}
+                          alt="Portrait"
+                          className="w-24 h-24 rounded-full object-cover ring-4 ring-white shadow-lg"
+                        />
+                      )}
+                      <div>
+                        <h4 className="text-2xl font-bold text-gray-900">{user.name}</h4>
+                        <p className="text-sm text-purple-600 font-semibold">{user.rank}</p>
+                      </div>
+                    </div>
+
+                    <div className="bg-white rounded-lg p-4 mb-4">
+                      <p className="text-sm text-gray-700 leading-relaxed whitespace-pre-line">
+                        {generatedLandingPage.aiGeneratedBio}
+                      </p>
+                    </div>
+
+                    <div className="space-y-3">
+                      <div className="flex items-center justify-between bg-white rounded-lg p-3">
+                        <span className="text-sm text-gray-600">Link Landing Page:</span>
+                        <div className="flex items-center gap-2">
+                          <code className="text-xs bg-purple-100 text-purple-700 px-2 py-1 rounded">
+                            {generatedLandingPage.publishedUrl}
+                          </code>
+                          <button
+                            onClick={() => handleCopyText(generatedLandingPage.publishedUrl, 'landing-url')}
+                            className="p-1 hover:bg-purple-100 rounded"
+                          >
+                            {copiedText === 'landing-url' ? (
+                              <CheckCircle2 className="w-4 h-4 text-green-600" />
+                            ) : (
+                              <Copy className="w-4 h-4 text-purple-600" />
+                            )}
+                          </button>
+                        </div>
+                      </div>
+
+                      <div className="grid grid-cols-3 gap-3 text-center">
+                        <div className="bg-white rounded-lg p-3">
+                          <Eye className="w-5 h-5 text-blue-600 mx-auto mb-1" />
+                          <p className="text-lg font-bold text-gray-900">{generatedLandingPage.views}</p>
+                          <p className="text-xs text-gray-600">Lượt xem</p>
+                        </div>
+                        <div className="bg-white rounded-lg p-3">
+                          <TrendingUp className="w-5 h-5 text-green-600 mx-auto mb-1" />
+                          <p className="text-lg font-bold text-gray-900">{generatedLandingPage.conversions}</p>
+                          <p className="text-xs text-gray-600">Chuyển đổi</p>
+                        </div>
+                        <div className="bg-white rounded-lg p-3">
+                          <BarChart3 className="w-5 h-5 text-purple-600 mx-auto mb-1" />
+                          <p className="text-lg font-bold text-gray-900">
+                            {generatedLandingPage.views > 0
+                              ? ((generatedLandingPage.conversions / generatedLandingPage.views) * 100).toFixed(1)
+                              : '0.0'}%
+                          </p>
+                          <p className="text-xs text-gray-600">Tỷ lệ</p>
+                        </div>
+                      </div>
+
+                      {!generatedLandingPage.isPublished ? (
+                        <button
+                          onClick={handlePublishLandingPage}
+                          className="w-full flex items-center justify-center gap-2 bg-gradient-to-r from-green-600 to-teal-600 text-white px-6 py-3 rounded-xl font-bold hover:shadow-lg transition-all duration-300"
+                        >
+                          <ExternalLink className="w-5 h-5" />
+                          Xuất Bản Ngay
+                        </button>
+                      ) : (
+                        <div className="bg-green-50 border-2 border-green-500 rounded-xl p-4 text-center">
+                          <CheckCircle2 className="w-8 h-8 text-green-600 mx-auto mb-2" />
+                          <p className="text-sm font-bold text-green-800">Landing Page Đã Xuất Bản!</p>
+                          <p className="text-xs text-green-700">Link đã sẵn sàng để chia sẻ</p>
+                        </div>
+                      )}
+                    </div>
+                  </motion.div>
+                ) : (
+                  <div className="bg-gray-50 rounded-xl p-12 text-center border-2 border-dashed border-gray-300">
+                    <Wand2 className="w-16 h-16 text-gray-400 mx-auto mb-4" />
+                    <p className="text-gray-600 font-medium">Chọn template và click "AI Viết Câu Chuyện"</p>
+                    <p className="text-sm text-gray-500 mt-2">AI sẽ tạo landing page chuyên nghiệp cho bạn</p>
+                  </div>
+                )}
+              </div>
+            </div>
+
+            {/* Existing Landing Pages */}
+            {userLandingPages.length > 0 && (
+              <div className="mt-8 pt-8 border-t border-gray-200">
+                <h3 className="font-bold text-gray-900 mb-4">Landing Pages Đã Tạo ({userLandingPages.length})</h3>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  {userLandingPages.map((page) => (
+                    <div
+                      key={page.id}
+                      className="bg-gradient-to-br from-purple-50 to-pink-50 rounded-xl p-4 border border-purple-200"
+                    >
+                      <div className="flex items-center justify-between mb-2">
+                        <span className="text-sm font-bold text-gray-900">{page.template}</span>
+                        {page.isPublished && (
+                          <span className="bg-green-100 text-green-700 text-xs px-2 py-1 rounded-full font-bold">
+                            Live
+                          </span>
+                        )}
+                      </div>
+                      <div className="flex items-center justify-between text-xs text-gray-600">
+                        <span>👁️ {page.views} views</span>
+                        <span>✅ {page.conversions} conversions</span>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
           </div>
         </motion.div>
       </motion.div>

@@ -1,6 +1,6 @@
 
 import { create } from 'zustand';
-import { User, Product, Transaction, Quest, ChartDataPoint, TeamMember, TeamMetrics, Referral, ReferralStats } from './types';
+import { User, Product, Transaction, Quest, ChartDataPoint, TeamMember, TeamMetrics, Referral, ReferralStats, LandingPageTemplate, UserLandingPage, TeamInsights, RedemptionItem, RedemptionOrder } from './types';
 import {
   CURRENT_USER,
   PRODUCTS,
@@ -10,7 +10,12 @@ import {
   TEAM_MEMBERS,
   TEAM_METRICS,
   REFERRALS,
-  REFERRAL_STATS
+  REFERRAL_STATS,
+  LANDING_PAGE_TEMPLATES,
+  USER_LANDING_PAGES,
+  TEAM_INSIGHTS,
+  REDEMPTION_ITEMS,
+  REDEMPTION_ORDERS
 } from './data/mockData';
 import { generateTxHash, calculateStakingReward } from './utils/tokenomics';
 
@@ -94,6 +99,17 @@ interface AppState {
   referrals: Referral[];
   referralStats: ReferralStats;
 
+  // TREE MAX LEVEL: AI Landing Builder
+  landingPageTemplates: LandingPageTemplate[];
+  userLandingPages: UserLandingPage[];
+
+  // TREE MAX LEVEL: AI Insights
+  teamInsights: TeamInsights;
+
+  // TREE MAX LEVEL: Redemption Marketplace
+  redemptionItems: RedemptionItem[];
+  redemptionOrders: RedemptionOrder[];
+
   // Actions (Simulating Backend Mutations)
   completeQuest: (questId: string) => void;
   simulateOrder: (productId: string) => Promise<void>;
@@ -102,6 +118,17 @@ interface AppState {
   stakeGrowTokens: (amount: number) => void;
   unstakeGrowTokens: (amount: number) => void;
   withdrawShopTokens: (amount: number) => Promise<void>;
+
+  // TREE MAX LEVEL: Landing Page Actions
+  createLandingPage: (template: string, portraitUrl?: string) => Promise<UserLandingPage>;
+  publishLandingPage: (pageId: string) => void;
+
+  // TREE MAX LEVEL: AI Insights Actions
+  sendReminder: (memberId: string) => Promise<void>;
+  sendGift: (memberId: string, voucherAmount: number) => Promise<void>;
+
+  // TREE MAX LEVEL: Redemption Actions
+  redeemItem: (itemId: string) => Promise<void>;
 }
 
 export const useStore = create<AppState>((set, get) => ({
@@ -119,6 +146,13 @@ export const useStore = create<AppState>((set, get) => ({
   teamMetrics: TEAM_METRICS,
   referrals: REFERRALS,
   referralStats: REFERRAL_STATS,
+
+  // TREE MAX LEVEL: Initial State
+  landingPageTemplates: LANDING_PAGE_TEMPLATES,
+  userLandingPages: USER_LANDING_PAGES,
+  teamInsights: TEAM_INSIGHTS,
+  redemptionItems: REDEMPTION_ITEMS,
+  redemptionOrders: REDEMPTION_ORDERS,
 
   // Auth Actions
   login: () => set({ isAuthenticated: true }),
@@ -297,5 +331,115 @@ export const useStore = create<AppState>((set, get) => ({
       },
       transactions: [newTransaction, ...state.transactions]
     }));
+  },
+
+  // ============================================================================
+  // TREE MAX LEVEL: ACTION IMPLEMENTATIONS
+  // ============================================================================
+
+  // AI Landing Builder: Create Landing Page
+  createLandingPage: async (template, portraitUrl) => {
+    const state = get();
+
+    // Simulate AI bio generation
+    await new Promise(resolve => setTimeout(resolve, 2000));
+
+    const aiGeneratedBio = `Tôi là ${state.user.name} - ${state.user.rank} tại WellNexus với kinh nghiệm ${Math.floor(Math.random() * 5) + 1} năm trong lĩnh vực chăm sóc sức khỏe. Đội ngũ của tôi đã giúp hàng trăm khách hàng cải thiện chất lượng cuộc sống. Chuyên môn: Tư vấn sức khỏe, phát triển đội nhóm, và kinh doanh bền vững. Hãy để tôi đồng hành cùng bạn trên hành trình chinh phục mục tiêu!`;
+
+    const newPage: UserLandingPage = {
+      id: `LP-${Date.now().toString().slice(-6)}`,
+      userId: state.user.id,
+      template: template as any,
+      portraitUrl,
+      aiGeneratedBio,
+      publishedUrl: `wellnexus.vn/lp/${state.user.id}`,
+      isPublished: false,
+      createdAt: new Date().toISOString().split('T')[0],
+      views: 0,
+      conversions: 0
+    };
+
+    set((state) => ({
+      userLandingPages: [...state.userLandingPages, newPage]
+    }));
+
+    return newPage;
+  },
+
+  // AI Landing Builder: Publish Landing Page
+  publishLandingPage: (pageId) => set((state) => ({
+    userLandingPages: state.userLandingPages.map(page =>
+      page.id === pageId ? { ...page, isPublished: true } : page
+    )
+  })),
+
+  // AI Insights: Send Reminder to At-Risk Member
+  sendReminder: async (memberId) => {
+    // Simulate API call
+    await new Promise(resolve => setTimeout(resolve, 1000));
+
+    // In real app, this would send notification/email
+    console.log(`Reminder sent to member ${memberId}`);
+  },
+
+  // AI Insights: Send Gift Voucher to At-Risk Member
+  sendGift: async (memberId, voucherAmount) => {
+    // Simulate API call
+    await new Promise(resolve => setTimeout(resolve, 1000));
+
+    // In real app, this would create a voucher and send it
+    console.log(`Gift voucher of ${voucherAmount} VND sent to member ${memberId}`);
+  },
+
+  // Redemption: Redeem GROW Tokens for Item
+  redeemItem: async (itemId) => {
+    const state = get();
+    const item = state.redemptionItems.find(i => i.id === itemId);
+
+    if (!item) throw new Error("Item not found");
+    if (!item.isAvailable) throw new Error("Item not available");
+    if (item.stock <= 0) throw new Error("Out of stock");
+    if (state.user.growBalance < item.growCost) throw new Error("Insufficient GROW tokens");
+
+    // Create redemption order
+    const newOrder: RedemptionOrder = {
+      id: `RO-${Date.now().toString().slice(-6)}`,
+      userId: state.user.id,
+      itemId: item.id,
+      itemName: item.name,
+      growSpent: item.growCost,
+      status: 'pending',
+      createdAt: new Date().toISOString().split('T')[0]
+    };
+
+    // Create transaction for GROW token spend
+    const newTransaction: Transaction = {
+      id: `TX-REDEEM-${Date.now().toString().slice(-6)}`,
+      userId: state.user.id,
+      date: new Date().toISOString().split('T')[0],
+      amount: item.growCost,
+      type: 'Withdrawal',
+      status: 'completed',
+      taxDeducted: 0,
+      hash: generateTxHash(),
+      currency: 'GROW'
+    };
+
+    set((state) => ({
+      user: {
+        ...state.user,
+        growBalance: state.user.growBalance - item.growCost
+      },
+      redemptionItems: state.redemptionItems.map(i =>
+        i.id === itemId
+          ? { ...i, stock: i.stock - 1, redemptionCount: i.redemptionCount + 1 }
+          : i
+      ),
+      redemptionOrders: [...state.redemptionOrders, newOrder],
+      transactions: [newTransaction, ...state.transactions]
+    }));
+
+    // Simulate processing delay
+    await new Promise(resolve => setTimeout(resolve, 1500));
   }
 }));
