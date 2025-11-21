@@ -1,20 +1,53 @@
 
-import React from 'react';
+import React, { useState } from 'react';
 import { User } from '../../types';
 import { formatVND } from '../../utils/format';
 import { motion } from 'framer-motion';
-import { Copy, Trophy, Zap, ChevronRight } from 'lucide-react';
+import { Copy, Trophy, Zap, ChevronRight, Check } from 'lucide-react';
 
 interface Props {
   user: User;
 }
 
 export const HeroCard: React.FC<Props> = ({ user }) => {
+  const [copied, setCopied] = useState(false);
+
   // Gamification Logic: Founder Club Quest
   const TARGET_VOLUME = 100000000; // 100M VND
   const progressRaw = (user.teamVolume / TARGET_VOLUME) * 100;
   const progressPercent = Math.min(progressRaw, 100);
   const remaining = Math.max(TARGET_VOLUME - user.teamVolume, 0);
+
+  const referralLink = user.referralLink || `wellnexus.vn/ref/${user.id}`;
+
+  const handleCopyLink = async () => {
+    try {
+      await navigator.clipboard.writeText(referralLink);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000);
+    } catch (err) {
+      console.error('Failed to copy:', err);
+      alert(`Copy this link: ${referralLink}`);
+    }
+  };
+
+  const handleShare = async () => {
+    if (navigator.share) {
+      try {
+        await navigator.share({
+          title: 'Join WellNexus',
+          text: 'Join me on WellNexus and start earning!',
+          url: referralLink,
+        });
+      } catch (err) {
+        if ((err as Error).name !== 'AbortError') {
+          handleCopyLink();
+        }
+      }
+    } else {
+      handleCopyLink();
+    }
+  };
 
   return (
     <motion.div 
@@ -73,14 +106,21 @@ export const HeroCard: React.FC<Props> = ({ user }) => {
                 </div>
                 
                 <div className="flex items-center gap-2 bg-black/30 p-2.5 rounded-xl mb-4 border border-white/5 group-hover:border-white/20 transition-colors">
-                    <code className="text-xs text-white truncate flex-1 font-mono">{user.referralLink || `wellnexus.vn/ref/${user.id}`}</code>
-                    <button className="text-brand-accent hover:text-white transition-colors p-1">
-                        <Copy className="w-3.5 h-3.5" />
+                    <code className="text-xs text-white truncate flex-1 font-mono">{referralLink}</code>
+                    <button
+                      onClick={handleCopyLink}
+                      className="text-brand-accent hover:text-white transition-colors p-1"
+                      aria-label="Copy referral link"
+                    >
+                        {copied ? <Check className="w-3.5 h-3.5" /> : <Copy className="w-3.5 h-3.5" />}
                     </button>
                 </div>
-                
-                <button className="w-full bg-brand-accent hover:bg-yellow-400 text-brand-primary font-bold py-3 rounded-xl text-sm transition-all shadow-lg shadow-yellow-500/10 flex items-center justify-center gap-2 group-hover:shadow-yellow-500/20">
-                    Share Now
+
+                <button
+                  onClick={handleShare}
+                  className="w-full bg-brand-accent hover:bg-yellow-400 text-brand-primary font-bold py-3 rounded-xl text-sm transition-all shadow-lg shadow-yellow-500/10 flex items-center justify-center gap-2 group-hover:shadow-yellow-500/20"
+                >
+                    {copied ? 'Link Copied!' : 'Share Now'}
                     <ChevronRight className="w-4 h-4" />
                 </button>
             </div>

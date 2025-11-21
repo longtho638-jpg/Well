@@ -1,7 +1,7 @@
-import { GoogleGenAI } from "@google/genai";
+import { GoogleGenerativeAI } from "@google/generative-ai";
 
 // NOTE: In a real production app, engage a backend proxy to hide this key.
-const ai = new GoogleGenAI({ apiKey: process.env.API_KEY || '' });
+const genAI = new GoogleGenerativeAI(import.meta.env.VITE_GEMINI_API_KEY || 'demo-key');
 
 export const getCoachAdvice = async (
   userName: string,
@@ -9,19 +9,18 @@ export const getCoachAdvice = async (
   pendingQuests: string[]
 ): Promise<string> => {
   try {
-    const model = "gemini-2.5-flash";
+    const model = genAI.getGenerativeModel({ model: "gemini-pro" });
     const prompt = `
       You are "The Coach", a motivational AI mentor for a Social Commerce platform (WellNexus).
       User: ${userName}. Sales: ${salesData}. Pending Tasks: ${pendingQuests.join(', ')}.
       Give 1 short, high-energy sentence of advice to help them grow. Use emojis.
     `;
 
-    const response = await ai.models.generateContent({
-      model: model,
-      contents: prompt,
-    });
+    const result = await model.generateContent(prompt);
+    const response = await result.response;
+    const text = response.text();
 
-    return response.text || "Keep pushing! Success is just one connection away. 🚀";
+    return text || "Keep pushing! Success is just one connection away. 🚀";
   } catch (error) {
     console.warn("AI Offline:", error);
     return "Great things take time. Keep building your network! 🌟";

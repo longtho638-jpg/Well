@@ -46,8 +46,24 @@ export const Sidebar: React.FC<SidebarProps> = ({ onMobileClose }) => {
   };
 
   return (
-    <aside className="bg-white border-r border-gray-200 flex flex-col h-full md:h-screen sticky top-0 z-30 overflow-y-auto">
-      <div className="p-6 flex items-center gap-3 cursor-pointer" onClick={() => handleNav('/')}>
+    <aside
+      className="bg-white border-r border-gray-200 flex flex-col h-full md:h-screen sticky top-0 z-30 overflow-y-auto"
+      role="navigation"
+      aria-label="Main navigation"
+    >
+      <div
+        className="p-6 flex items-center gap-3 cursor-pointer"
+        onClick={() => handleNav('/')}
+        role="button"
+        tabIndex={0}
+        onKeyPress={(e) => {
+          if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault();
+            handleNav('/');
+          }
+        }}
+        aria-label="WellNexus home"
+      >
         <div className="w-10 h-10 bg-brand-primary rounded-xl flex items-center justify-center text-white font-bold shadow-lg shadow-brand-primary/30 flex-shrink-0">W</div>
         <div>
           <h1 className="font-bold text-xl text-brand-primary leading-none">WellNexus</h1>
@@ -55,11 +71,11 @@ export const Sidebar: React.FC<SidebarProps> = ({ onMobileClose }) => {
         </div>
       </div>
 
-      <nav className="flex-1 px-4 space-y-1 py-4">
+      <nav className="flex-1 px-4 space-y-1 py-4" aria-label="Primary navigation">
         {menuItems.map((item) => {
           const Icon = item.icon;
           const isActive = location.pathname === item.path || (item.matches && item.matches.some(m => location.pathname.startsWith(m)));
-          
+
           return (
             <button
               key={item.path}
@@ -69,8 +85,10 @@ export const Sidebar: React.FC<SidebarProps> = ({ onMobileClose }) => {
                   ? 'bg-brand-primary text-white shadow-md shadow-brand-primary/20'
                   : 'text-gray-500 hover:bg-brand-primary/5 hover:text-brand-primary'
               }`}
+              aria-current={isActive ? 'page' : undefined}
+              aria-label={`Navigate to ${item.label}`}
             >
-              <Icon className={`w-5 h-5 transition-colors ${isActive ? 'text-brand-accent' : 'group-hover:text-brand-primary'}`} />
+              <Icon className={`w-5 h-5 transition-colors ${isActive ? 'text-brand-accent' : 'group-hover:text-brand-primary'}`} aria-hidden="true" />
               {item.label}
             </button>
           );
@@ -103,10 +121,23 @@ export const Sidebar: React.FC<SidebarProps> = ({ onMobileClose }) => {
 
              <AnimatePresence mode='wait'>
                 {advice ? (
-                    <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="bg-white/10 rounded-lg p-3 text-xs text-gray-100 italic border border-white/10 mb-2">"{advice}"</motion.div>
+                    <motion.div
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      className="bg-white/10 rounded-lg p-3 text-xs text-gray-100 italic border border-white/10 mb-2"
+                      role="status"
+                      aria-live="polite"
+                    >
+                      "{advice}"
+                    </motion.div>
                 ) : (
-                    <button onClick={handleAdvice} disabled={loading} className="w-full py-2.5 bg-brand-accent hover:bg-yellow-400 text-brand-primary font-bold text-xs rounded-lg flex items-center justify-center gap-2 transition-colors shadow-lg shadow-yellow-500/20">
-                        {loading ? <Sparkles className="w-3 h-3 animate-spin"/> : <Sparkles className="w-3 h-3"/>} Get AI Advice
+                    <button
+                      onClick={handleAdvice}
+                      disabled={loading}
+                      className="w-full py-2.5 bg-brand-accent hover:bg-yellow-400 text-brand-primary font-bold text-xs rounded-lg flex items-center justify-center gap-2 transition-colors shadow-lg shadow-yellow-500/20"
+                      aria-label={loading ? 'Loading AI advice' : 'Get personalized AI advice'}
+                    >
+                        {loading ? <Sparkles className="w-3 h-3 animate-spin" aria-hidden="true" /> : <Sparkles className="w-3 h-3" aria-hidden="true" />} Get AI Advice
                     </button>
                 )}
              </AnimatePresence>
@@ -116,13 +147,21 @@ export const Sidebar: React.FC<SidebarProps> = ({ onMobileClose }) => {
 
       <div className="p-4 border-t border-gray-200">
         <div className="flex items-center gap-3">
-          <img src={user.avatarUrl} alt={user.name} className="w-10 h-10 rounded-full border border-gray-100 shadow-sm object-cover" />
+          <img
+            src={user.avatarUrl}
+            alt={`${user.name}'s profile picture`}
+            className="w-10 h-10 rounded-full border border-gray-100 shadow-sm object-cover"
+          />
           <div className="flex-1 min-w-0">
             <p className="text-sm font-bold text-gray-900 truncate">{user.name}</p>
-            <p className="text-xs text-brand-primary font-medium">{user.rank}</p>
+            <p className="text-xs text-brand-primary font-medium" aria-label={`Rank: ${user.rank}`}>{user.rank}</p>
           </div>
-          <button onClick={handleLogout} className="text-gray-400 hover:text-red-500 transition p-2 rounded-full hover:bg-red-50" title="Sign Out">
-            <LogOut className="w-4 h-4" />
+          <button
+            onClick={handleLogout}
+            className="text-gray-400 hover:text-red-500 transition p-2 rounded-full hover:bg-red-50"
+            aria-label="Sign out"
+          >
+            <LogOut className="w-4 h-4" aria-hidden="true" />
           </button>
         </div>
       </div>
