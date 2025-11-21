@@ -173,3 +173,81 @@ export interface ReferralReward {
   createdAt: string;
   paidAt?: string;
 }
+
+// ===== TREE MAX LEVEL: AI LANDING BUILDER =====
+
+export type LandingPageTemplateType = 'elegant' | 'dynamic' | 'expert';
+
+export interface LandingPageTemplate {
+  id: string;
+  type: LandingPageTemplateType;
+  name: string;
+  description: string;
+  imageUrl: string;
+  colorScheme: {
+    primary: string;
+    secondary: string;
+    accent: string;
+  };
+}
+
+export interface UserLandingPage {
+  id: string;
+  userId: string;
+  template: LandingPageTemplateType;
+  portraitUrl?: string;
+  aiGeneratedBio: string;
+  customBio?: string;
+  publishedUrl: string;
+  isPublished: boolean;
+  createdAt: string;
+  views: number;
+  conversions: number;
+}
+
+// ===== TREE MAX LEVEL: AI INSIGHTS (AT-RISK MEMBERS) =====
+
+export interface AtRiskMember {
+  member: TeamMember;
+  riskLevel: 'high' | 'medium' | 'low';
+  riskReasons: string[];
+  lastActive: string;
+  daysInactive: number;
+  suggestedActions: string[];
+}
+
+export interface TeamInsights {
+  atRiskMembers: AtRiskMember[];
+  totalAtRisk: number;
+  highRiskCount: number;
+  mediumRiskCount: number;
+  retentionRate: number;
+}
+
+// ===== TREE MAX LEVEL: REDEMPTION MARKETPLACE =====
+
+export interface RedemptionItem {
+  id: string;
+  name: string;
+  description: string;
+  imageUrl: string;
+  growCost: number;
+  category: 'electronics' | 'travel' | 'education' | 'experience';
+  stock: number;
+  estimatedValue: number; // VND value equivalent
+  redemptionCount: number;
+  isAvailable: boolean;
+  highlights: string[];
+}
+
+export interface RedemptionOrder {
+  id: string;
+  userId: string;
+  itemId: string;
+  itemName: string;
+  growSpent: number;
+  status: 'pending' | 'processing' | 'shipped' | 'completed';
+  createdAt: string;
+  completedAt?: string;
+  trackingNumber?: string;
+}
