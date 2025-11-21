@@ -2,7 +2,7 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import {
   ArrowRight,
-  ShieldCheck,
+  Shield,
   Users,
   Bot,
   TrendingUp,
@@ -13,10 +13,16 @@ import {
   Instagram,
   Facebook,
   Linkedin,
-  Target,
-  Compass,
-  Wrench,
-  BarChart3
+  Zap,
+  Globe,
+  Network,
+  Rocket,
+  Lock,
+  ChevronRight,
+  Building2,
+  LineChart,
+  Award,
+  MapPin
 } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { useStore } from '../store';
@@ -32,118 +38,126 @@ const smoothScrollTo = (elementId: string) => {
 };
 
 // ============================================================================
-// CONTENT ARCHITECTURE - Visual-First Approach
+// CONTENT ARCHITECTURE - Venture Builder Positioning
 // ============================================================================
 const CONTENT = {
   hero: {
-    badge: 'Wealth Operating System #1 tại Việt Nam',
-    headline: 'Sở Hữu Đế Chế Kinh Doanh',
-    headlineAccent: 'Sức Khỏe Của Riêng Bạn',
-    subheadline: 'Digital Franchise cho phép bạn xây dựng tài sản có thể định giá, với AI Leverage, ESOP/Token Allocation, và lộ trình IPO rõ ràng.',
-    primaryCta: 'Sở hữu vị trí Venture Partner',
-    secondaryCta: 'Xem Portfolio Valuation',
+    badge: 'Venture Builder · SEA Health Market',
+    headline: 'WellNexus Venture Builder:',
+    headlineAccent: 'Nơi Khởi Nguồn Của Những Kỳ Lân Sức Khỏe Tiếp Theo Tại SEA',
+    subheadline: 'Chúng tôi không tìm người bán hàng. Chúng tôi tìm kiếm 200 Co-Founders để cùng sở hữu và vận hành chuỗi cung ứng sức khỏe phi tập trung (DeFi Health).',
+    primaryCta: 'Nộp Hồ Sơ Đối Tác Chiến Lược',
+    secondaryCta: 'Xem Portfolio',
     stats: [
-      { value: '₫5.2B', label: 'Total Portfolio Valuation' },
-      { value: '2,000+', label: 'Active Partners' },
-      { value: '12% MoM', label: 'Avg. Asset Growth' }
+      { value: '$2.5M', label: 'Total Portfolio Valuation' },
+      { value: '200', label: 'Co-Founder Slots' },
+      { value: 'SEA', label: 'Market Coverage' }
     ]
   },
 
-  problems: {
-    sectionTitle: 'Ba rào cản lớn nhất của người bán sức khỏe',
-    items: [
+  deal: {
+    sectionBadge: 'The Term Sheet',
+    sectionTitle: 'Cơ Cấu Đầu Tư & Quyền Lợi',
+    subheadline: 'Mô hình đầu tư dành cho Co-Founders với equity ownership thực sự',
+    terms: [
       {
-        title: 'Cô đơn',
-        description: 'Bán hàng một mình, không có hỗ trợ, không biết tìm ai khi gặp khó khăn',
-        image: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=800&h=600&fit=crop&q=80',
-        icon: Target
-      },
-      {
-        title: 'Mất phương hướng',
-        description: 'Không biết bắt đầu từ đâu, chiến lược nào hiệu quả, sản phẩm nào phù hợp',
-        image: 'https://images.unsplash.com/photo-1507842217343-583bb7270b66?w=800&h=600&fit=crop&q=80',
-        icon: Compass
-      },
-      {
-        title: 'Thiếu công cụ',
-        description: 'Tính toán thuế thủ công, quản lý hoa hồng bằng Excel, mất thời gian và dễ sai sót',
-        image: 'https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?w=800&h=600&fit=crop&q=80',
-        icon: Wrench
-      }
-    ]
-  },
-
-  solution: {
-    sectionBadge: 'Digital Franchise Model',
-    sectionTitle: 'Sở hữu tài sản có thể định giá',
-    bentoItems: [
-      {
-        title: 'AI Investment Advisor',
-        description: 'Hệ thống AI phân tích dữ liệu và tối ưu hóa lợi nhuận portfolio của bạn mỗi ngày',
-        image: 'https://images.unsplash.com/photo-1677442136019-21780ecad995?w=1200&h=800&fit=crop&q=80',
-        size: 'large', // 2x2 on desktop
-        icon: Bot,
-        gradient: 'from-violet-500/20 to-purple-500/20'
-      },
-      {
-        title: 'ESOP & Token Allocation',
-        description: 'Sở hữu equity thông qua GROW Token, staking để nhận passive income',
-        image: 'https://images.unsplash.com/photo-1639762681485-074b7f938ba0?w=800&h=600&fit=crop&q=80',
-        size: 'medium', // 1x1
-        icon: ShieldCheck,
+        category: 'Vốn (Capital)',
+        items: [
+          'Hỗ trợ hàng hóa (Inventory) không cần vốn ban đầu',
+          'Working capital từ hệ sinh thái WellNexus',
+          'Credit line mở rộng theo performance'
+        ],
+        icon: Building2,
         gradient: 'from-emerald-500/20 to-teal-500/20'
       },
       {
-        title: 'Venture Partner Network',
-        description: 'Kết nối với 2,000+ Partners, mở rộng thị phần và scaling doanh nghiệp',
-        image: 'https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=800&h=600&fit=crop&q=80',
-        size: 'medium', // 1x1
-        icon: Users,
-        gradient: 'from-blue-500/20 to-cyan-500/20'
+        category: 'Công nghệ (Technology Stack)',
+        items: [
+          'Agentic OS - Hệ điều hành AI độc quyền',
+          'Real-time Analytics & Valuation Dashboard',
+          'Automated Tax Compliance (Vietnam Law)',
+          'Smart Contract Integration (Blockchain-ready)'
+        ],
+        icon: Zap,
+        gradient: 'from-violet-500/20 to-purple-500/20'
       },
       {
-        title: 'Cashflow + Equity Growth',
-        description: 'Dòng tiền ổn định (SHOP) + tăng trưởng tài sản (GROW) - Dual Token System',
-        image: 'https://images.unsplash.com/photo-1579621970563-ebec7560ff3e?w=600&h=400&fit=crop&q=80',
-        size: 'small', // 1x0.5
-        icon: TrendingUp,
+        category: 'Cổ phần (Equity)',
+        items: [
+          'ESOP Program - Employee Stock Ownership Plan',
+          'GROW Token Allocation (Equity-backed)',
+          'Vesting schedule: 4 năm với 1 năm cliff',
+          'Lộ trình IPO rõ ràng với milestone định giá'
+        ],
+        icon: Award,
         gradient: 'from-amber-500/20 to-yellow-500/20'
       }
     ]
   },
 
-  pricing: {
-    sectionBadge: 'Venture Partner Program',
-    sectionTitle: 'Chỉ dành cho 50 Venture Partners đầu tiên',
-    badge: 'Limited Edition: 50 vị trí',
-    title: 'Digital Franchise Owner',
-    price: '₫0 Capital',
-    priceNote: '15-25% Profit Margin + ESOP',
-    benefits: [
-      'AI Investment Advisor - Tối ưu lợi nhuận tự động',
-      'Real-time Valuation Dashboard (PE Ratio 5x)',
-      'GROW Token Allocation (Equity ownership)',
-      'SHOP Token Cashflow (Liquid income)',
-      'Lộ trình IPO rõ ràng với milestone định giá',
-      'Venture Partner Network - Mở rộng thị phần',
-      'Tự động tính thuế & compliance',
-      'Portfolio Growth Tracking 24/7'
+  portfolio: {
+    sectionBadge: 'Portfolio Companies',
+    sectionTitle: 'Những Founder Đã Đạt Định Giá',
+    subheadline: 'Học hỏi từ những Co-Founders thành công trong hệ sinh thái WellNexus',
+    companies: [
+      {
+        founderName: 'Nguyễn Minh An',
+        companyName: 'AnHealth Distribution',
+        role: 'Co-Founder & CEO',
+        valuation: '$500K',
+        growth: '+320% YoY',
+        metric: '₫180M ARR',
+        image: 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=400&h=400&fit=crop&q=80',
+        region: 'Hà Nội'
+      },
+      {
+        founderName: 'Trần Thị Bích',
+        companyName: 'Wellness Network VN',
+        role: 'Co-Founder & CMO',
+        valuation: '$350K',
+        growth: '+280% YoY',
+        metric: '₫125M ARR',
+        image: 'https://images.unsplash.com/photo-1580489944761-15a19d654956?w=400&h=400&fit=crop&q=80',
+        region: 'TP.HCM'
+      },
+      {
+        founderName: 'Lê Hoàng Long',
+        companyName: 'HealthTech Ventures',
+        role: 'Co-Founder & CTO',
+        valuation: '$420K',
+        growth: '+295% YoY',
+        metric: '₫155M ARR',
+        image: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=400&h=400&fit=crop&q=80',
+        region: 'Đà Nẵng'
+      }
+    ]
+  },
+
+  market: {
+    sectionBadge: 'SEA Expansion',
+    sectionTitle: 'Biên Giới Của Bạn Không Phải Là Việt Nam',
+    subheadline: 'Là cả Đông Nam Á - Market opportunity $12B',
+    regions: [
+      { name: 'Vietnam', market: '$3.5B', growth: '+28%', status: 'Active' },
+      { name: 'Thailand', market: '$2.8B', growth: '+22%', status: 'Expanding' },
+      { name: 'Indonesia', market: '$4.2B', growth: '+32%', status: 'Planning' },
+      { name: 'Philippines', market: '$1.5B', growth: '+25%', status: 'Planning' }
     ]
   },
 
   footer: {
     logo: 'WellNexus',
-    tagline: 'Wealth Operating System cho phép bạn sở hữu Digital Franchise với AI Leverage, ESOP/Token Allocation, và định giá doanh nghiệp theo chuẩn đầu tư.',
+    tagline: 'Venture Builder powering the next generation of health entrepreneurs across Southeast Asia with AI-driven technology, equity ownership, and clear path to unicorn status.',
     newsletter: {
-      title: 'Nhận hướng dẫn bán hàng',
-      placeholder: 'Email của bạn'
+      title: 'Co-Founder Updates',
+      placeholder: 'Your email'
     },
     social: {
       facebook: 'https://facebook.com/wellnexus',
       instagram: 'https://instagram.com/wellnexus',
       linkedin: 'https://linkedin.com/company/wellnexus'
     },
-    copyright: '© 2025 WellNexus Technology JSC. All rights reserved.'
+    copyright: '© 2025 WellNexus Venture Builder. All rights reserved.'
   }
 };
 
@@ -159,13 +173,17 @@ export default function LandingPage() {
     navigate('/dashboard');
   };
 
-  // Animation Variants
-  const fadeInUp = {
-    hidden: { opacity: 0, y: 40 },
+  // Animation Variants - Cinematic Style
+  const cinematicFadeIn = {
+    hidden: { opacity: 0, y: 60, scale: 0.95 },
     visible: {
       opacity: 1,
       y: 0,
-      transition: { duration: 0.6, ease: [0.22, 1, 0.36, 1] }
+      scale: 1,
+      transition: {
+        duration: 1,
+        ease: [0.16, 1, 0.3, 1] // Custom easing for cinematic feel
+      }
     }
   };
 
@@ -174,8 +192,20 @@ export default function LandingPage() {
     visible: {
       opacity: 1,
       transition: {
-        staggerChildren: 0.15,
-        delayChildren: 0.1
+        staggerChildren: 0.2,
+        delayChildren: 0.3
+      }
+    }
+  };
+
+  const scaleIn = {
+    hidden: { opacity: 0, scale: 0.8 },
+    visible: {
+      opacity: 1,
+      scale: 1,
+      transition: {
+        duration: 0.8,
+        ease: [0.16, 1, 0.3, 1]
       }
     }
   };
@@ -183,42 +213,60 @@ export default function LandingPage() {
   return (
     <>
       {/* ====================================================================== */}
-      {/* CUSTOM STYLES */}
+      {/* CUSTOM STYLES - Premium Dark Theme */}
       {/* ====================================================================== */}
       <style>{`
-        @import url('https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;700;800;900&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Space+Grotesk:wght@400;500;600;700&display=swap');
 
         body {
-          font-family: 'Plus Jakarta Sans', sans-serif;
+          font-family: 'Inter', sans-serif;
+          background: #0a0a0a;
         }
 
         .font-display {
-          font-family: 'Manrope', sans-serif;
+          font-family: 'Space Grotesk', sans-serif;
         }
 
         html {
           scroll-behavior: smooth;
         }
 
-        .noise-texture {
-          background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' /%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.05'/%3E%3C/svg%3E");
+        .grain-overlay {
+          background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='4' numOctaves='4' /%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.08'/%3E%3C/svg%3E");
         }
 
-        .animate-pulse-slow {
-          animation: pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+        .mesh-gradient {
+          background:
+            radial-gradient(at 27% 37%, hsla(175, 100%, 17%, 0.3) 0px, transparent 50%),
+            radial-gradient(at 97% 21%, hsla(45, 100%, 50%, 0.15) 0px, transparent 50%),
+            radial-gradient(at 52% 99%, hsla(175, 100%, 12%, 0.4) 0px, transparent 50%),
+            radial-gradient(at 10% 29%, hsla(175, 100%, 20%, 0.2) 0px, transparent 50%);
+        }
+
+        .glow-text {
+          text-shadow: 0 0 40px rgba(255, 191, 0, 0.3);
+        }
+
+        @keyframes float {
+          0%, 100% { transform: translateY(0px); }
+          50% { transform: translateY(-20px); }
+        }
+
+        .animate-float {
+          animation: float 6s ease-in-out infinite;
         }
       `}</style>
 
-      <div className="min-h-screen bg-slate-50 text-slate-900 overflow-x-hidden">
+      <div className="min-h-screen bg-slate-950 text-white overflow-x-hidden">
 
         {/* ================================================================== */}
-        {/* STICKY HEADER WITH ANCHOR NAVIGATION */}
+        {/* STICKY HEADER - Premium Dark */}
         {/* ================================================================== */}
         <motion.nav
           initial={{ y: -100 }}
           animate={{ y: 0 }}
-          transition={{ duration: 0.6 }}
-          className="fixed top-0 w-full z-50 backdrop-blur-xl bg-white/80 border-b border-slate-200/50 shadow-sm"
+          transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+          className="fixed top-0 w-full z-50 backdrop-blur-2xl bg-slate-950/80 border-b border-slate-800/50"
         >
           <div className="max-w-7xl mx-auto px-6 lg:px-12 h-20 flex items-center justify-between">
             {/* Logo */}
@@ -227,26 +275,28 @@ export default function LandingPage() {
               whileHover={{ scale: 1.02 }}
               onClick={() => smoothScrollTo('hero')}
             >
-              <div className="w-10 h-10 bg-gradient-to-br from-[#00575A] to-[#003335] rounded-xl flex items-center justify-center text-[#FFBF00] font-display font-black text-xl shadow-lg">
+              <div className="w-10 h-10 bg-gradient-to-br from-[#FFBF00] to-[#FF9500] rounded-lg flex items-center justify-center text-slate-950 font-display font-black text-xl shadow-2xl shadow-[#FFBF00]/20">
                 W
               </div>
-              <span className="font-display font-bold text-xl text-slate-900 tracking-tight">
+              <span className="font-display font-bold text-xl text-white tracking-tight">
                 {CONTENT.footer.logo}
+              </span>
+              <span className="text-xs font-medium text-slate-500 uppercase tracking-wider">
+                Venture Builder
               </span>
             </motion.div>
 
-            {/* Navigation Menu - Anchor Links */}
+            {/* Navigation Menu */}
             <div className="hidden md:flex items-center gap-8">
               {[
-                { label: 'Về chúng tôi', id: 'about' },
-                { label: 'Tính năng', id: 'features' },
-                { label: 'Cộng đồng', id: 'community' },
-                { label: 'Bảng giá', id: 'pricing' }
+                { label: 'Portfolio', id: 'portfolio' },
+                { label: 'The Deal', id: 'deal' },
+                { label: 'SEA Market', id: 'market' }
               ].map((item, idx) => (
                 <button
                   key={idx}
                   onClick={() => smoothScrollTo(item.id)}
-                  className="text-sm font-medium text-slate-600 hover:text-[#00575A] transition-colors"
+                  className="text-sm font-medium text-slate-400 hover:text-[#FFBF00] transition-colors"
                 >
                   {item.label}
                 </button>
@@ -256,41 +306,51 @@ export default function LandingPage() {
             {/* Action Button */}
             <motion.button
               onClick={handleJoin}
-              className="text-sm font-bold bg-[#00575A] hover:bg-[#003335] text-white px-6 py-2.5 rounded-xl transition-all shadow-lg"
-              whileHover={{ scale: 1.05, boxShadow: '0 20px 40px rgba(0, 87, 90, 0.3)' }}
+              className="text-sm font-bold bg-[#FFBF00] hover:bg-[#FF9500] text-slate-950 px-6 py-2.5 rounded-lg transition-all shadow-lg shadow-[#FFBF00]/20"
+              whileHover={{ scale: 1.05, boxShadow: '0 20px 40px rgba(255, 191, 0, 0.3)' }}
               whileTap={{ scale: 0.95 }}
             >
-              Đăng nhập
+              Apply Now
             </motion.button>
           </div>
         </motion.nav>
 
         {/* ================================================================== */}
-        {/* HERO SECTION - FUTURISTIC WELLNESS */}
+        {/* HERO SECTION - The Pitch (Dark Premium) */}
         {/* ================================================================== */}
-        <section id="hero" className="relative min-h-screen pt-32 pb-20 overflow-hidden bg-gradient-to-br from-slate-50 via-white to-slate-100">
-          {/* Background Visual */}
-          <div className="absolute inset-0 z-0">
-            <div className="absolute top-0 right-0 w-[800px] h-[800px] bg-[#00575A]/5 rounded-full blur-[200px]" />
-            <div className="absolute bottom-0 left-0 w-[600px] h-[600px] bg-[#FFBF00]/10 rounded-full blur-[180px]" />
+        <section id="hero" className="relative min-h-screen pt-32 pb-20 overflow-hidden">
+          {/* Background - Dark Mesh Gradient */}
+          <div className="absolute inset-0 z-0 mesh-gradient" />
+          <div className="absolute inset-0 z-0 grain-overlay" />
+
+          {/* Animated Grid Background */}
+          <div className="absolute inset-0 z-0 opacity-10">
+            <div className="absolute inset-0" style={{
+              backgroundImage: 'linear-gradient(rgba(255, 191, 0, 0.1) 1px, transparent 1px), linear-gradient(90deg, rgba(255, 191, 0, 0.1) 1px, transparent 1px)',
+              backgroundSize: '100px 100px'
+            }} />
           </div>
 
-          <div className="relative z-10 max-w-7xl mx-auto px-6 lg:px-12 grid lg:grid-cols-2 gap-12 items-center">
-            {/* Left: Content */}
+          {/* Glowing Orbs */}
+          <div className="absolute top-20 right-20 w-[500px] h-[500px] bg-[#FFBF00]/20 rounded-full blur-[150px] animate-float" />
+          <div className="absolute bottom-20 left-20 w-[400px] h-[400px] bg-[#00575A]/30 rounded-full blur-[120px]" style={{ animationDelay: '1s' }} />
+
+          <div className="relative z-10 max-w-7xl mx-auto px-6 lg:px-12">
             <motion.div
               variants={staggerContainer}
               initial="hidden"
               animate="visible"
+              className="text-center max-w-5xl mx-auto"
             >
               {/* Badge */}
-              <motion.div variants={fadeInUp} className="mb-6 inline-flex">
-                <div className="inline-flex items-center gap-2 bg-[#00575A]/5 border border-[#00575A]/10 rounded-full px-4 py-2">
+              <motion.div variants={cinematicFadeIn} className="mb-8 inline-flex">
+                <div className="inline-flex items-center gap-3 bg-slate-900/50 backdrop-blur-xl border border-slate-800/50 rounded-full px-5 py-2.5">
                   <span className="relative flex h-2 w-2">
-                    <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#00575A] opacity-75" />
-                    <span className="relative inline-flex rounded-full h-2 w-2 bg-[#00575A]" />
+                    <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#FFBF00] opacity-75" />
+                    <span className="relative inline-flex rounded-full h-2 w-2 bg-[#FFBF00]" />
                   </span>
-                  <Sparkles className="w-4 h-4 text-[#00575A]" />
-                  <span className="text-xs font-bold text-[#00575A] uppercase tracking-wider">
+                  <Globe className="w-4 h-4 text-[#FFBF00]" />
+                  <span className="text-xs font-bold text-slate-300 uppercase tracking-wider">
                     {CONTENT.hero.badge}
                   </span>
                 </div>
@@ -298,42 +358,48 @@ export default function LandingPage() {
 
               {/* Headline */}
               <motion.h1
-                variants={fadeInUp}
-                className="font-display font-black text-5xl md:text-6xl lg:text-7xl mb-6 leading-[0.95] tracking-tight text-slate-900"
+                variants={cinematicFadeIn}
+                className="font-display font-black text-6xl md:text-7xl lg:text-8xl mb-8 leading-[0.9] tracking-tight"
               >
-                {CONTENT.hero.headline}
+                <span className="text-slate-100">
+                  {CONTENT.hero.headline}
+                </span>
                 <br />
-                <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#00575A] via-[#004144] to-[#00575A]">
+                <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#FFBF00] via-[#FFD700] to-[#FFBF00] glow-text">
                   {CONTENT.hero.headlineAccent}
                 </span>
               </motion.h1>
 
               {/* Subheadline */}
               <motion.p
-                variants={fadeInUp}
-                className="text-lg md:text-xl text-slate-600 mb-8 leading-relaxed"
+                variants={cinematicFadeIn}
+                className="text-xl md:text-2xl text-slate-400 mb-12 leading-relaxed max-w-4xl mx-auto"
               >
                 {CONTENT.hero.subheadline}
               </motion.p>
 
               {/* CTA Buttons */}
               <motion.div
-                variants={fadeInUp}
-                className="flex flex-col sm:flex-row gap-4"
+                variants={cinematicFadeIn}
+                className="flex flex-col sm:flex-row gap-4 justify-center mb-16"
               >
                 <motion.button
                   onClick={handleJoin}
-                  className="group bg-[#00575A] text-white px-8 py-4 rounded-xl font-bold text-lg flex items-center justify-center gap-3 shadow-xl"
-                  whileHover={{ scale: 1.05, boxShadow: '0 25px 50px rgba(0, 87, 90, 0.4)' }}
+                  className="group bg-[#FFBF00] text-slate-950 px-10 py-5 rounded-xl font-bold text-lg flex items-center justify-center gap-3 shadow-2xl shadow-[#FFBF00]/30"
+                  whileHover={{
+                    scale: 1.05,
+                    boxShadow: '0 30px 60px rgba(255, 191, 0, 0.4)'
+                  }}
                   whileTap={{ scale: 0.98 }}
                 >
+                  <Rocket className="w-5 h-5" />
                   {CONTENT.hero.primaryCta}
                   <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
                 </motion.button>
 
                 <motion.button
-                  onClick={() => smoothScrollTo('about')}
-                  className="px-8 py-4 rounded-xl font-bold text-lg text-slate-700 border-2 border-slate-300 hover:border-slate-400 bg-white hover:bg-slate-50 transition-all"
+                  onClick={() => smoothScrollTo('portfolio')}
+                  className="px-10 py-5 rounded-xl font-bold text-lg text-slate-300 border-2 border-slate-700 hover:border-[#FFBF00] bg-slate-900/50 backdrop-blur-xl hover:bg-slate-800/50 transition-all"
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
                 >
@@ -341,353 +407,376 @@ export default function LandingPage() {
                 </motion.button>
               </motion.div>
 
-              {/* Stats */}
+              {/* Stats - Venture Style */}
               <motion.div
-                variants={fadeInUp}
-                className="mt-12 grid grid-cols-3 gap-6"
+                variants={cinematicFadeIn}
+                className="grid grid-cols-3 gap-8 max-w-3xl mx-auto"
               >
                 {CONTENT.hero.stats.map((stat, idx) => (
-                  <div key={idx}>
-                    <div className="text-3xl lg:text-4xl font-black text-[#00575A] font-display">
-                      {stat.value}
-                    </div>
-                    <div className="text-sm text-slate-500 mt-1">
-                      {stat.label}
+                  <div key={idx} className="relative group">
+                    <div className="absolute inset-0 bg-gradient-to-br from-[#FFBF00]/10 to-transparent rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity blur-xl" />
+                    <div className="relative bg-slate-900/50 backdrop-blur-xl border border-slate-800/50 rounded-2xl p-6 hover:border-[#FFBF00]/50 transition-all">
+                      <div className="text-4xl lg:text-5xl font-black text-[#FFBF00] font-display mb-2">
+                        {stat.value}
+                      </div>
+                      <div className="text-sm text-slate-400 font-medium">
+                        {stat.label}
+                      </div>
                     </div>
                   </div>
                 ))}
               </motion.div>
             </motion.div>
-
-            {/* Right: Visual */}
-            <motion.div
-              initial={{ opacity: 0, scale: 0.9 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 0.8, delay: 0.2 }}
-              className="relative"
-            >
-              <div className="relative rounded-3xl overflow-hidden shadow-2xl">
-                <img
-                  src="https://images.unsplash.com/photo-1635070041078-e363dbe005cb?w=1200&h=1200&fit=crop&q=80"
-                  alt="AI Technology"
-                  className="w-full h-[600px] object-cover"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-[#00575A]/80 via-transparent to-transparent" />
-                <div className="absolute bottom-8 left-8 right-8">
-                  <div className="bg-white/10 backdrop-blur-xl border border-white/20 rounded-2xl p-6">
-                    <div className="flex items-center gap-3 mb-2">
-                      <Bot className="w-6 h-6 text-[#FFBF00]" />
-                      <span className="font-display font-bold text-white text-lg">AI Coach</span>
-                    </div>
-                    <p className="text-white/80 text-sm">
-                      "Hôm nay bạn nên tập trung vào khách hàng quan tâm ANIMA 119. Tôi đã chuẩn bị 3 chiến lược cho bạn..."
-                    </p>
-                  </div>
-                </div>
-              </div>
-            </motion.div>
           </div>
         </section>
 
         {/* ================================================================== */}
-        {/* PROBLEM SECTION - VISUAL CARDS */}
+        {/* THE DEAL SECTION - Term Sheet Style */}
         {/* ================================================================== */}
-        <section id="about" className="py-24 bg-white">
-          <div className="max-w-7xl mx-auto px-6 lg:px-12">
-            <motion.div
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              className="text-center mb-16"
-            >
-              <h2 className="text-4xl md:text-5xl lg:text-6xl font-black text-slate-900 mb-4 font-display">
-                {CONTENT.problems.sectionTitle}
-              </h2>
-            </motion.div>
+        <section id="deal" className="relative py-32 bg-slate-950">
+          <div className="absolute inset-0 grain-overlay opacity-50" />
 
-            {/* 3 Problem Cards */}
-            <div className="grid md:grid-cols-3 gap-8">
-              {CONTENT.problems.items.map((problem, idx) => {
-                const Icon = problem.icon;
-                return (
-                  <motion.div
-                    key={idx}
-                    initial={{ opacity: 0, y: 40 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true }}
-                    transition={{ delay: idx * 0.2 }}
-                    className="group relative rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all"
-                    whileHover={{ y: -8 }}
-                  >
-                    {/* Image */}
-                    <div className="relative h-64 overflow-hidden">
-                      <img
-                        src={problem.image}
-                        alt={problem.title}
-                        className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
-                      />
-                      <div className="absolute inset-0 bg-gradient-to-t from-slate-900 via-slate-900/50 to-transparent" />
-                    </div>
-
-                    {/* Content */}
-                    <div className="absolute bottom-0 left-0 right-0 p-6">
-                      <div className="w-12 h-12 rounded-xl bg-red-500/20 backdrop-blur-sm border border-red-500/30 flex items-center justify-center mb-4">
-                        <Icon className="w-6 h-6 text-red-400" />
-                      </div>
-                      <h3 className="text-2xl font-bold text-white mb-2 font-display">
-                        {problem.title}
-                      </h3>
-                      <p className="text-white/80 text-sm">
-                        {problem.description}
-                      </p>
-                    </div>
-                  </motion.div>
-                );
-              })}
-            </div>
-          </div>
-        </section>
-
-        {/* ================================================================== */}
-        {/* BENTO GRID SOLUTION SECTION - VISUAL-FIRST */}
-        {/* ================================================================== */}
-        <section id="features" className="py-24 bg-gradient-to-b from-white to-slate-50">
-          <div className="max-w-7xl mx-auto px-6 lg:px-12">
+          <div className="relative z-10 max-w-7xl mx-auto px-6 lg:px-12">
             {/* Section Header */}
             <motion.div
-              initial={{ opacity: 0, y: 30 }}
+              initial={{ opacity: 0, y: 40 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              className="text-center mb-16"
+              transition={{ duration: 0.8 }}
+              className="text-center mb-20"
             >
-              <div className="inline-flex items-center gap-2 bg-[#00575A]/5 border border-[#00575A]/10 rounded-full px-5 py-2 mb-6">
-                <span className="text-sm font-bold text-[#00575A] uppercase tracking-wider">
-                  {CONTENT.solution.sectionBadge}
+              <div className="inline-flex items-center gap-2 bg-slate-900/50 backdrop-blur-xl border border-slate-800/50 rounded-full px-5 py-2 mb-6">
+                <Lock className="w-4 h-4 text-[#FFBF00]" />
+                <span className="text-sm font-bold text-slate-300 uppercase tracking-wider">
+                  {CONTENT.deal.sectionBadge}
                 </span>
               </div>
-              <h2 className="text-4xl md:text-5xl lg:text-6xl font-black text-slate-900 font-display">
-                {CONTENT.solution.sectionTitle}
+              <h2 className="text-5xl md:text-6xl lg:text-7xl font-black text-white mb-6 font-display">
+                {CONTENT.deal.sectionTitle}
               </h2>
-            </motion.div>
-
-            {/* Bento Grid - Responsive Layout */}
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 auto-rows-[300px]">
-              {CONTENT.solution.bentoItems.map((item, idx) => {
-                const Icon = item.icon;
-                const gridClass =
-                  item.size === 'large' ? 'md:col-span-2 md:row-span-2' :
-                  item.size === 'medium' ? 'md:col-span-2 lg:col-span-2' :
-                  'md:col-span-2 lg:col-span-2';
-
-                return (
-                  <motion.div
-                    key={idx}
-                    initial={{ opacity: 0, scale: 0.9 }}
-                    whileInView={{ opacity: 1, scale: 1 }}
-                    viewport={{ once: true }}
-                    transition={{ delay: idx * 0.1 }}
-                    className={`group relative rounded-3xl overflow-hidden shadow-lg hover:shadow-2xl transition-all ${gridClass}`}
-                    whileHover={{ y: -8 }}
-                  >
-                    {/* Background Image */}
-                    <div className="absolute inset-0">
-                      <img
-                        src={item.image}
-                        alt={item.title}
-                        className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
-                      />
-                      <div className={`absolute inset-0 bg-gradient-to-br ${item.gradient} backdrop-blur-[2px]`} />
-                      <div className="absolute inset-0 bg-gradient-to-t from-slate-900/90 via-slate-900/50 to-transparent" />
-                    </div>
-
-                    {/* Content */}
-                    <div className="relative z-10 h-full p-8 flex flex-col justify-end">
-                      <div className="w-16 h-16 rounded-2xl bg-white/10 backdrop-blur-md border border-white/20 flex items-center justify-center mb-4 group-hover:scale-110 group-hover:rotate-3 transition-all">
-                        <Icon className="w-8 h-8 text-white" />
-                      </div>
-                      <h3 className="text-2xl lg:text-3xl font-bold text-white mb-3 font-display">
-                        {item.title}
-                      </h3>
-                      <p className="text-white/90 text-base leading-relaxed">
-                        {item.description}
-                      </p>
-                    </div>
-                  </motion.div>
-                );
-              })}
-            </div>
-          </div>
-        </section>
-
-        {/* ================================================================== */}
-        {/* COMMUNITY SECTION (Placeholder for testimonials) */}
-        {/* ================================================================== */}
-        <section id="community" className="py-24 bg-white">
-          <div className="max-w-7xl mx-auto px-6 lg:px-12">
-            <motion.div
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              className="text-center mb-16"
-            >
-              <h2 className="text-4xl md:text-5xl font-black text-slate-900 mb-4 font-display">
-                Cộng đồng 2,000+ người bán
-              </h2>
-              <p className="text-xl text-slate-600 max-w-2xl mx-auto">
-                Học hỏi từ những người thực sự kinh doanh sản phẩm wellness và đạt kết quả
+              <p className="text-xl text-slate-400 max-w-3xl mx-auto">
+                {CONTENT.deal.subheadline}
               </p>
             </motion.div>
 
-            {/* Community Visual */}
-            <motion.div
-              initial={{ opacity: 0, scale: 0.95 }}
-              whileInView={{ opacity: 1, scale: 1 }}
-              viewport={{ once: true }}
-              className="relative rounded-3xl overflow-hidden shadow-2xl h-[500px]"
-            >
-              <img
-                src="https://images.unsplash.com/photo-1528605105345-5344ea20e269?w=1600&h=900&fit=crop&q=80"
-                alt="Community"
-                className="w-full h-full object-cover"
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-[#00575A]/90 via-[#00575A]/40 to-transparent" />
-              <div className="absolute bottom-12 left-12 right-12">
-                <div className="grid md:grid-cols-3 gap-6">
-                  {[
-                    { value: '₫18M', label: 'Hoa hồng TB/người' },
-                    { value: '47', label: 'Đơn hàng TB/tháng' },
-                    { value: '92%', label: 'Tỷ lệ thành công' }
-                  ].map((stat, idx) => (
-                    <div key={idx} className="bg-white/10 backdrop-blur-xl border border-white/20 rounded-2xl p-6 text-center">
-                      <div className="text-4xl font-black text-[#FFBF00] font-display mb-2">
-                        {stat.value}
+            {/* Term Cards Grid */}
+            <div className="grid md:grid-cols-3 gap-8">
+              {CONTENT.deal.terms.map((term, idx) => {
+                const Icon = term.icon;
+                return (
+                  <motion.div
+                    key={idx}
+                    initial={{ opacity: 0, y: 60 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ delay: idx * 0.2, duration: 0.8 }}
+                    className="group relative"
+                  >
+                    {/* Glow effect */}
+                    <div className="absolute -inset-0.5 bg-gradient-to-br from-[#FFBF00]/20 to-[#00575A]/20 rounded-3xl opacity-0 group-hover:opacity-100 transition-opacity blur-xl" />
+
+                    {/* Card */}
+                    <div className="relative bg-slate-900/80 backdrop-blur-xl border border-slate-800/50 rounded-3xl p-8 h-full hover:border-[#FFBF00]/30 transition-all">
+                      {/* Icon */}
+                      <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-[#FFBF00]/20 to-transparent border border-[#FFBF00]/20 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+                        <Icon className="w-8 h-8 text-[#FFBF00]" />
                       </div>
-                      <div className="text-white/80 text-sm">
-                        {stat.label}
-                      </div>
+
+                      {/* Category */}
+                      <h3 className="text-2xl font-bold text-white mb-6 font-display">
+                        {term.category}
+                      </h3>
+
+                      {/* Items */}
+                      <ul className="space-y-4">
+                        {term.items.map((item, itemIdx) => (
+                          <li key={itemIdx} className="flex items-start gap-3">
+                            <CheckCircle2 className="w-5 h-5 text-[#FFBF00] flex-shrink-0 mt-0.5" />
+                            <span className="text-slate-300 text-sm leading-relaxed">
+                              {item}
+                            </span>
+                          </li>
+                        ))}
+                      </ul>
                     </div>
-                  ))}
-                </div>
-              </div>
-            </motion.div>
+                  </motion.div>
+                );
+              })}
+            </div>
           </div>
         </section>
 
         {/* ================================================================== */}
-        {/* PRICING SECTION - THE ELITE PROTOCOL */}
+        {/* PORTFOLIO SECTION - Portfolio Companies */}
         {/* ================================================================== */}
-        <section id="pricing" className="py-24 bg-gradient-to-b from-slate-50 to-white">
-          <div className="max-w-4xl mx-auto px-6 lg:px-12">
+        <section id="portfolio" className="relative py-32 bg-slate-900">
+          <div className="absolute inset-0 grain-overlay opacity-30" />
+
+          <div className="relative z-10 max-w-7xl mx-auto px-6 lg:px-12">
+            {/* Section Header */}
             <motion.div
-              initial={{ opacity: 0, y: 30 }}
+              initial={{ opacity: 0, y: 40 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              className="text-center mb-16"
+              transition={{ duration: 0.8 }}
+              className="text-center mb-20"
             >
-              <div className="inline-flex items-center gap-2 bg-[#FFBF00]/10 border border-[#FFBF00]/20 rounded-full px-5 py-2 mb-6">
-                <Crown className="w-4 h-4 text-[#FFBF00]" />
-                <span className="text-sm font-bold text-[#FFBF00] uppercase tracking-wider">
-                  {CONTENT.pricing.sectionBadge}
+              <div className="inline-flex items-center gap-2 bg-slate-950/50 backdrop-blur-xl border border-slate-800/50 rounded-full px-5 py-2 mb-6">
+                <Award className="w-4 h-4 text-[#FFBF00]" />
+                <span className="text-sm font-bold text-slate-300 uppercase tracking-wider">
+                  {CONTENT.portfolio.sectionBadge}
                 </span>
               </div>
-              <h2 className="text-4xl md:text-5xl lg:text-6xl font-black text-slate-900 font-display">
-                {CONTENT.pricing.sectionTitle}
+              <h2 className="text-5xl md:text-6xl lg:text-7xl font-black text-white mb-6 font-display">
+                {CONTENT.portfolio.sectionTitle}
               </h2>
+              <p className="text-xl text-slate-400 max-w-3xl mx-auto">
+                {CONTENT.portfolio.subheadline}
+              </p>
             </motion.div>
 
-            {/* Pricing Card */}
+            {/* Portfolio Grid */}
+            <div className="grid md:grid-cols-3 gap-8">
+              {CONTENT.portfolio.companies.map((company, idx) => (
+                <motion.div
+                  key={idx}
+                  initial={{ opacity: 0, scale: 0.9 }}
+                  whileInView={{ opacity: 1, scale: 1 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: idx * 0.15, duration: 0.8 }}
+                  className="group relative"
+                >
+                  {/* Glow */}
+                  <div className="absolute -inset-0.5 bg-gradient-to-br from-[#FFBF00]/30 to-transparent rounded-3xl opacity-0 group-hover:opacity-100 transition-opacity blur-2xl" />
+
+                  {/* Card */}
+                  <div className="relative bg-slate-950/80 backdrop-blur-xl border border-slate-800/50 rounded-3xl overflow-hidden hover:border-[#FFBF00]/30 transition-all">
+                    {/* Profile Image */}
+                    <div className="relative h-64 overflow-hidden">
+                      <img
+                        src={company.image}
+                        alt={company.founderName}
+                        className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
+                      />
+                      <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/50 to-transparent" />
+
+                      {/* Valuation Badge */}
+                      <div className="absolute top-4 right-4">
+                        <div className="bg-[#FFBF00]/20 backdrop-blur-xl border border-[#FFBF00]/30 rounded-full px-4 py-2">
+                          <span className="text-[#FFBF00] font-bold text-sm">
+                            {company.valuation}
+                          </span>
+                        </div>
+                      </div>
+
+                      {/* Region */}
+                      <div className="absolute bottom-4 left-4">
+                        <div className="flex items-center gap-2 bg-slate-950/50 backdrop-blur-xl border border-slate-800/50 rounded-full px-3 py-1.5">
+                          <MapPin className="w-3 h-3 text-slate-400" />
+                          <span className="text-slate-300 font-medium text-xs">
+                            {company.region}
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Content */}
+                    <div className="p-6">
+                      <h3 className="text-2xl font-bold text-white mb-1 font-display">
+                        {company.founderName}
+                      </h3>
+                      <p className="text-slate-400 text-sm mb-1">
+                        {company.role}
+                      </p>
+                      <p className="text-[#FFBF00] text-sm font-bold mb-4">
+                        {company.companyName}
+                      </p>
+
+                      {/* Metrics */}
+                      <div className="flex items-center justify-between pt-4 border-t border-slate-800/50">
+                        <div>
+                          <div className="text-sm text-slate-500">Growth</div>
+                          <div className="text-lg font-bold text-emerald-400">
+                            {company.growth}
+                          </div>
+                        </div>
+                        <div className="text-right">
+                          <div className="text-sm text-slate-500">ARR</div>
+                          <div className="text-lg font-bold text-white">
+                            {company.metric}
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </motion.div>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* ================================================================== */}
+        {/* THE MARKET SECTION - SEA Vision */}
+        {/* ================================================================== */}
+        <section id="market" className="relative py-32 bg-slate-950">
+          <div className="absolute inset-0 grain-overlay opacity-50" />
+
+          <div className="relative z-10 max-w-7xl mx-auto px-6 lg:px-12">
+            {/* Section Header */}
+            <motion.div
+              initial={{ opacity: 0, y: 40 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.8 }}
+              className="text-center mb-20"
+            >
+              <div className="inline-flex items-center gap-2 bg-slate-900/50 backdrop-blur-xl border border-slate-800/50 rounded-full px-5 py-2 mb-6">
+                <Network className="w-4 h-4 text-[#FFBF00]" />
+                <span className="text-sm font-bold text-slate-300 uppercase tracking-wider">
+                  {CONTENT.market.sectionBadge}
+                </span>
+              </div>
+              <h2 className="text-5xl md:text-6xl lg:text-7xl font-black text-white mb-6 font-display leading-tight">
+                {CONTENT.market.sectionTitle}
+              </h2>
+              <p className="text-xl text-slate-400 max-w-3xl mx-auto">
+                {CONTENT.market.subheadline}
+              </p>
+            </motion.div>
+
+            {/* Market Map Visual */}
             <motion.div
               initial={{ opacity: 0, scale: 0.95 }}
               whileInView={{ opacity: 1, scale: 1 }}
               viewport={{ once: true }}
-              className="relative bg-gradient-to-br from-[#00575A] to-[#003335] rounded-3xl p-10 shadow-2xl overflow-hidden"
+              transition={{ duration: 1 }}
+              className="relative bg-slate-900/50 backdrop-blur-xl border border-slate-800/50 rounded-3xl p-12 mb-12"
             >
-              {/* Background Pattern */}
-              <div className="absolute inset-0 noise-texture opacity-20" />
+              {/* Visual Map Representation */}
+              <div className="relative h-[400px] mb-8">
+                <img
+                  src="https://images.unsplash.com/photo-1526778548025-fa2f459cd5c1?w=1600&h=900&fit=crop&q=80"
+                  alt="SEA Map"
+                  className="w-full h-full object-cover rounded-2xl opacity-30"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-slate-900 via-transparent to-transparent rounded-2xl" />
 
-              {/* Badge */}
-              <div className="relative z-10 inline-flex items-center gap-2 bg-[#FFBF00] text-[#00575A] px-4 py-2 rounded-full mb-6">
-                <span className="relative flex h-2 w-2">
-                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#00575A] opacity-75" />
-                  <span className="relative inline-flex rounded-full h-2 w-2 bg-[#00575A]" />
-                </span>
-                <span className="text-sm font-bold uppercase tracking-wider">
-                  {CONTENT.pricing.badge}
-                </span>
-              </div>
+                {/* Network Nodes Overlay */}
+                <div className="absolute inset-0 flex items-center justify-center">
+                  <div className="relative w-full max-w-3xl">
+                    {/* Connecting Lines */}
+                    <svg className="absolute inset-0 w-full h-full opacity-30">
+                      <line x1="25%" y1="30%" x2="50%" y2="50%" stroke="#FFBF00" strokeWidth="2" strokeDasharray="5,5" />
+                      <line x1="50%" y1="50%" x2="75%" y2="40%" stroke="#FFBF00" strokeWidth="2" strokeDasharray="5,5" />
+                      <line x1="50%" y1="50%" x2="60%" y2="70%" stroke="#FFBF00" strokeWidth="2" strokeDasharray="5,5" />
+                    </svg>
 
-              {/* Title & Price */}
-              <div className="relative z-10 mb-8">
-                <div className="flex items-baseline gap-4 mb-2">
-                  <h3 className="text-4xl font-black text-white font-display">
-                    {CONTENT.pricing.title}
-                  </h3>
-                  <Crown className="w-8 h-8 text-[#FFBF00]" />
-                </div>
-                <div className="flex items-baseline gap-3">
-                  <span className="text-5xl font-black text-[#FFBF00] font-display">
-                    {CONTENT.pricing.price}
-                  </span>
-                  <span className="text-white/60 text-lg">
-                    {CONTENT.pricing.priceNote}
-                  </span>
+                    {/* Node Points */}
+                    <div className="absolute top-[30%] left-[25%] w-4 h-4 bg-[#FFBF00] rounded-full animate-pulse shadow-lg shadow-[#FFBF00]/50" />
+                    <div className="absolute top-[50%] left-[50%] w-6 h-6 bg-[#FFBF00] rounded-full animate-pulse shadow-2xl shadow-[#FFBF00]/70" />
+                    <div className="absolute top-[40%] left-[75%] w-4 h-4 bg-slate-500 rounded-full animate-pulse" />
+                    <div className="absolute top-[70%] left-[60%] w-4 h-4 bg-slate-500 rounded-full animate-pulse" />
+                  </div>
                 </div>
               </div>
 
-              {/* Benefits */}
-              <div className="relative z-10 space-y-4 mb-10">
-                {CONTENT.pricing.benefits.map((benefit, idx) => (
+              {/* Region Grid */}
+              <div className="grid md:grid-cols-4 gap-6">
+                {CONTENT.market.regions.map((region, idx) => (
                   <motion.div
                     key={idx}
-                    initial={{ opacity: 0, x: -20 }}
-                    whileInView={{ opacity: 1, x: 0 }}
+                    initial={{ opacity: 0, y: 30 }}
+                    whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: true }}
-                    transition={{ delay: idx * 0.05 }}
-                    className="flex items-center gap-3"
+                    transition={{ delay: idx * 0.1, duration: 0.6 }}
+                    className="relative group"
                   >
-                    <CheckCircle2 className="w-6 h-6 text-[#FFBF00] flex-shrink-0" />
-                    <span className="text-white/90 text-lg">
-                      {benefit}
-                    </span>
+                    <div className="bg-slate-950/50 backdrop-blur-xl border border-slate-800/50 rounded-2xl p-6 hover:border-[#FFBF00]/30 transition-all">
+                      {/* Status Badge */}
+                      <div className="flex items-center justify-between mb-4">
+                        <span className="text-lg font-bold text-white font-display">
+                          {region.name}
+                        </span>
+                        <span className={`text-xs font-bold px-2 py-1 rounded-full ${
+                          region.status === 'Active' ? 'bg-emerald-500/20 text-emerald-400' :
+                          region.status === 'Expanding' ? 'bg-[#FFBF00]/20 text-[#FFBF00]' :
+                          'bg-slate-700/20 text-slate-400'
+                        }`}>
+                          {region.status}
+                        </span>
+                      </div>
+
+                      {/* Market Size */}
+                      <div className="mb-2">
+                        <div className="text-3xl font-black text-[#FFBF00] font-display">
+                          {region.market}
+                        </div>
+                        <div className="text-sm text-slate-500">Market Size</div>
+                      </div>
+
+                      {/* Growth */}
+                      <div className="flex items-center gap-2">
+                        <TrendingUp className="w-4 h-4 text-emerald-400" />
+                        <span className="text-emerald-400 font-bold">
+                          {region.growth}
+                        </span>
+                        <span className="text-slate-500 text-sm">YoY</span>
+                      </div>
+                    </div>
                   </motion.div>
                 ))}
               </div>
+            </motion.div>
 
-              {/* CTA */}
+            {/* CTA */}
+            <motion.div
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              className="text-center"
+            >
               <motion.button
                 onClick={handleJoin}
-                className="relative z-10 w-full bg-[#FFBF00] text-[#00575A] px-8 py-5 rounded-xl font-black text-xl shadow-xl flex items-center justify-center gap-3 font-display"
+                className="group bg-[#FFBF00] text-slate-950 px-12 py-6 rounded-xl font-bold text-xl flex items-center justify-center gap-3 mx-auto shadow-2xl shadow-[#FFBF00]/30"
                 whileHover={{
-                  scale: 1.02,
-                  boxShadow: '0 30px 60px rgba(255, 191, 0, 0.5)'
+                  scale: 1.05,
+                  boxShadow: '0 30px 60px rgba(255, 191, 0, 0.4)'
                 }}
                 whileTap={{ scale: 0.98 }}
               >
-                Tham gia ngay
-                <ArrowRight className="w-6 h-6" />
+                <Globe className="w-6 h-6" />
+                Mở Rộng Sang SEA Với Chúng Tôi
+                <ChevronRight className="w-6 h-6 group-hover:translate-x-1 transition-transform" />
               </motion.button>
             </motion.div>
           </div>
         </section>
 
         {/* ================================================================== */}
-        {/* FOOTER */}
+        {/* FOOTER - Premium Dark */}
         {/* ================================================================== */}
-        <footer className="bg-[#00575A] text-white pt-20 pb-12">
-          <div className="max-w-7xl mx-auto px-6 lg:px-12">
+        <footer className="relative bg-slate-950 text-white pt-20 pb-12 border-t border-slate-800/50">
+          <div className="absolute inset-0 grain-overlay opacity-30" />
+
+          <div className="relative z-10 max-w-7xl mx-auto px-6 lg:px-12">
             {/* Main Footer Content */}
             <div className="grid md:grid-cols-2 gap-12 mb-16">
               {/* Brand */}
               <div>
                 <div className="flex items-center gap-3 mb-4">
-                  <div className="w-10 h-10 bg-[#FFBF00] rounded-xl flex items-center justify-center text-[#00575A] font-display font-black text-xl">
+                  <div className="w-12 h-12 bg-gradient-to-br from-[#FFBF00] to-[#FF9500] rounded-lg flex items-center justify-center text-slate-950 font-display font-black text-2xl shadow-2xl shadow-[#FFBF00]/20">
                     W
                   </div>
-                  <span className="font-display font-bold text-xl">
-                    {CONTENT.footer.logo}
-                  </span>
+                  <div>
+                    <div className="font-display font-bold text-xl">
+                      {CONTENT.footer.logo}
+                    </div>
+                    <div className="text-xs text-slate-500 uppercase tracking-wider">
+                      Venture Builder
+                    </div>
+                  </div>
                 </div>
-                <p className="text-white/70 leading-relaxed mb-6 max-w-md">
+                <p className="text-slate-400 leading-relaxed mb-6 max-w-md">
                   {CONTENT.footer.tagline}
                 </p>
 
@@ -705,7 +794,7 @@ export default function LandingPage() {
                         href={social.href}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="w-12 h-12 rounded-xl bg-white/10 hover:bg-white/20 border border-white/10 flex items-center justify-center transition-all"
+                        className="w-12 h-12 rounded-xl bg-slate-900/50 hover:bg-slate-800/50 border border-slate-800/50 hover:border-[#FFBF00]/30 flex items-center justify-center transition-all"
                         whileHover={{ scale: 1.1, y: -2 }}
                         whileTap={{ scale: 0.95 }}
                       >
@@ -725,10 +814,10 @@ export default function LandingPage() {
                   <input
                     type="email"
                     placeholder={CONTENT.footer.newsletter.placeholder}
-                    className="flex-1 px-5 py-3 rounded-xl bg-white/10 border border-white/20 text-white placeholder-white/50 focus:outline-none focus:border-[#FFBF00]/50 transition-colors"
+                    className="flex-1 px-5 py-3 rounded-xl bg-slate-900/50 border border-slate-800/50 text-white placeholder-slate-500 focus:outline-none focus:border-[#FFBF00]/50 transition-colors backdrop-blur-xl"
                   />
                   <motion.button
-                    className="px-6 py-3 rounded-xl bg-[#FFBF00] text-[#00575A] font-bold shadow-lg"
+                    className="px-6 py-3 rounded-xl bg-[#FFBF00] text-slate-950 font-bold shadow-lg shadow-[#FFBF00]/20"
                     whileHover={{ scale: 1.05 }}
                     whileTap={{ scale: 0.95 }}
                   >
@@ -739,7 +828,7 @@ export default function LandingPage() {
             </div>
 
             {/* Copyright */}
-            <div className="text-center text-white/50 text-sm pt-8 border-t border-white/10">
+            <div className="text-center text-slate-500 text-sm pt-8 border-t border-slate-800/50">
               {CONTENT.footer.copyright}
             </div>
           </div>
