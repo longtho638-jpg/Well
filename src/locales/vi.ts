@@ -311,6 +311,8 @@ export const vi = {
     searchPlaceholder: 'Tìm kiếm sản phẩm...',
     filterBy: 'Lọc theo',
     sortBy: 'Sắp xếp theo',
+    noProductsFound: 'Không tìm thấy sản phẩm',
+    aiRecommended: 'AI Đề xuất',
     categories: {
       all: 'Tất cả',
       supplements: 'Thực phẩm chức năng',
@@ -324,6 +326,12 @@ export const vi = {
       priceLow: 'Giá thấp đến cao',
       priceHigh: 'Giá cao đến thấp',
       commission: 'Hoa hồng cao nhất',
+    },
+    aiRecommendation: {
+      title: 'AI Opportunity Radar',
+      loading: 'Đang phân tích {count} tín hiệu thị trường...',
+      live: 'Trực tiếp',
+      suggestion: 'Dựa trên xu hướng thị trường hiện tại và lịch sử bán hàng của bạn, **{productName}** là sản phẩm hot nhất hiện nay! Hoa hồng cao đến {commission}%.',
     },
     product: {
       commission: 'Hoa hồng',
