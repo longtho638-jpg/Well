@@ -7,6 +7,7 @@ import { Marketplace } from './pages/Marketplace';
 import { ProductDetail } from './pages/ProductDetail';
 import CommissionWallet from './components/CommissionWallet';
 import LandingPage from './pages/LandingPage';
+import VenturePage from './pages/VenturePage';
 import CopilotPage from './pages/CopilotPage';
 import LeaderDashboard from './pages/LeaderDashboard';
 import ReferralPage from './pages/ReferralPage';
@@ -26,9 +27,10 @@ const App: React.FC = () => {
     <ThemeProvider>
       <Routes>
       {/* ============================================================ */}
-      {/* PUBLIC ROUTE: Landing Page */}
+      {/* PUBLIC ROUTES: Landing & Venture Vision */}
       {/* ============================================================ */}
       <Route path="/" element={<LandingPage />} />
+      <Route path="/venture" element={<VenturePage />} />
 
       {/* ============================================================ */}
       {/* ADMIN ROUTES: Mission Control */}

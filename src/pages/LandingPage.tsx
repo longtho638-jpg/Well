@@ -2,162 +2,182 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import {
   ArrowRight,
-  Shield,
-  Users,
-  Bot,
-  TrendingUp,
-  Crown,
-  CheckCircle2,
-  Sparkles,
-  Mail,
-  Instagram,
-  Facebook,
-  Linkedin,
-  Zap,
-  Globe,
-  Network,
-  Rocket,
-  Lock,
-  ChevronRight,
+  Sprout,
+  TreeDeciduous,
+  Trees,
   Building2,
-  LineChart,
+  CheckCircle2,
+  Lock,
+  Sparkles,
+  Users,
+  TrendingUp,
   Award,
-  MapPin
+  Rocket,
+  ChevronRight,
+  Mail,
+  Facebook,
+  Instagram,
+  Linkedin,
+  Star,
+  Zap,
+  Target,
+  Globe
 } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { useStore } from '../store';
 
 // ============================================================================
-// SMOOTH SCROLL UTILITY
-// ============================================================================
-const smoothScrollTo = (elementId: string) => {
-  const element = document.getElementById(elementId);
-  if (element) {
-    element.scrollIntoView({ behavior: 'smooth', block: 'start' });
-  }
-};
-
-// ============================================================================
-// CONTENT ARCHITECTURE - Venture Builder Positioning
+// CONTENT ARCHITECTURE - Growth Journey Map
 // ============================================================================
 const CONTENT = {
   hero: {
-    badge: 'Venture Builder · SEA Health Market',
-    headline: 'WellNexus Venture Builder:',
-    headlineAccent: 'Nơi Khởi Nguồn Của Những Kỳ Lân Sức Khỏe Tiếp Theo Tại SEA',
-    subheadline: 'Chúng tôi không tìm người bán hàng. Chúng tôi tìm kiếm 200 Co-Founders để cùng sở hữu và vận hành chuỗi cung ứng sức khỏe phi tập trung (DeFi Health).',
-    primaryCta: 'Nộp Hồ Sơ Đối Tác Chiến Lược',
-    secondaryCta: 'Xem Portfolio',
-    stats: [
-      { value: '$2.5M', label: 'Total Portfolio Valuation' },
-      { value: '200', label: 'Co-Founder Slots' },
-      { value: 'SEA', label: 'Market Coverage' }
-    ]
+    badge: 'Hành Trình Thịnh Vượng',
+    headline: 'Khởi Đầu Hành Trình Thịnh Vượng',
+    headlineAccent: 'Cùng WellNexus',
+    subheadline: 'Hệ sinh thái Social Commerce tiên phong tại Đông Nam Á. Từ Hạt Giống đến Đế Chế.',
+    primaryCta: 'Gia Nhập Founders Club',
+    secondaryCta: 'Tìm Hiểu Thêm',
+    currentStage: 'Hiện đang ở Giai đoạn Hạt Giống'
   },
 
-  deal: {
-    sectionBadge: 'The Term Sheet',
-    sectionTitle: 'Cơ Cấu Đầu Tư & Quyền Lợi',
-    subheadline: 'Mô hình đầu tư dành cho Co-Founders với equity ownership thực sự',
-    terms: [
+  roadmap: {
+    sectionBadge: 'Lộ Trình Phát Triển',
+    sectionTitle: 'The Evolution Map',
+    subheadline: 'Hành trình từ Partner đến Empire Builder',
+    stages: [
       {
-        category: 'Vốn (Capital)',
-        items: [
-          'Hỗ trợ hàng hóa (Inventory) không cần vốn ban đầu',
-          'Working capital từ hệ sinh thái WellNexus',
-          'Credit line mở rộng theo performance'
+        id: 'seed',
+        name: 'HẠT GIỐNG',
+        icon: Sprout,
+        status: 'active',
+        statusLabel: 'Đang diễn ra',
+        color: 'teal',
+        gradient: 'from-teal-500 to-teal-600',
+        bgGlow: 'bg-teal-500/20',
+        textColor: 'text-teal-400',
+        borderColor: 'border-teal-500/50',
+        description: 'Tuyển 200 Founders Club, Xây dựng niềm tin',
+        mission: 'Bán lẻ & Xây dựng cộng đồng',
+        benefits: [
+          'Thu nhập chủ động từ bán hàng',
+          'Hoa hồng Founder Club',
+          'Công cụ AI cơ bản',
+          'Đào tạo & hỗ trợ 1-1'
         ],
+        unlockCondition: null
+      },
+      {
+        id: 'tree',
+        name: 'CÂY',
+        icon: TreeDeciduous,
+        status: 'coming',
+        statusLabel: 'Sắp mở khóa',
+        color: 'green',
+        gradient: 'from-green-500 to-green-600',
+        bgGlow: 'bg-green-500/20',
+        textColor: 'text-green-400',
+        borderColor: 'border-green-500/50',
+        description: 'Tự động hóa Sales với AI',
+        mission: 'Scale team & Automation',
+        benefits: [
+          'AI Copilot nâng cao',
+          'Tự động hóa marketing',
+          'Leader Dashboard',
+          'Thu nhập thụ động từ team'
+        ],
+        unlockCondition: '1,000 Partner'
+      },
+      {
+        id: 'forest',
+        name: 'RỪNG',
+        icon: Trees,
+        status: 'locked',
+        statusLabel: 'Tương lai',
+        color: 'emerald',
+        gradient: 'from-emerald-500 to-emerald-600',
+        bgGlow: 'bg-emerald-500/20',
+        textColor: 'text-emerald-400',
+        borderColor: 'border-emerald-500/50',
+        description: 'Marketplace & Hệ sinh thái',
+        mission: 'Build ecosystem products',
+        benefits: [
+          'Health Coach Platform',
+          'Marketplace ownership',
+          'Data monetization',
+          'Equity participation'
+        ],
+        unlockCondition: '10,000 Partner'
+      },
+      {
+        id: 'empire',
+        name: 'ĐẤT',
         icon: Building2,
-        gradient: 'from-emerald-500/20 to-teal-500/20'
-      },
-      {
-        category: 'Công nghệ (Technology Stack)',
-        items: [
-          'Agentic OS - Hệ điều hành AI độc quyền',
-          'Real-time Analytics & Valuation Dashboard',
-          'Automated Tax Compliance (Vietnam Law)',
-          'Smart Contract Integration (Blockchain-ready)'
+        status: 'vision',
+        statusLabel: 'Tầm nhìn 2028',
+        color: 'amber',
+        gradient: 'from-amber-500 to-yellow-500',
+        bgGlow: 'bg-amber-500/20',
+        textColor: 'text-amber-400',
+        borderColor: 'border-amber-500/50',
+        description: 'Venture Builder & IPO',
+        mission: 'Build the empire',
+        benefits: [
+          'Venture Builder platform',
+          'IPO preparation',
+          'Holdings structure',
+          'SEA expansion'
         ],
-        icon: Zap,
-        gradient: 'from-violet-500/20 to-purple-500/20'
-      },
+        unlockCondition: '100,000 Partner',
+        hasVisionLink: true
+      }
+    ]
+  },
+
+  whyNow: {
+    sectionBadge: 'Lợi Thế Tiên Phong',
+    sectionTitle: 'Tại Sao Phải Tham Gia Ngay?',
+    subheadline: 'Quyền lợi đặc biệt dành cho những người đi đầu trong giai đoạn Hạt Giống',
+    benefits: [
       {
-        category: 'Cổ phần (Equity)',
-        items: [
-          'ESOP Program - Employee Stock Ownership Plan',
-          'GROW Token Allocation (Equity-backed)',
-          'Vesting schedule: 4 năm với 1 năm cliff',
-          'Lộ trình IPO rõ ràng với milestone định giá'
-        ],
         icon: Award,
-        gradient: 'from-amber-500/20 to-yellow-500/20'
-      }
-    ]
-  },
-
-  portfolio: {
-    sectionBadge: 'Portfolio Companies',
-    sectionTitle: 'Những Founder Đã Đạt Định Giá',
-    subheadline: 'Học hỏi từ những Co-Founders thành công trong hệ sinh thái WellNexus',
-    companies: [
-      {
-        founderName: 'Nguyễn Minh An',
-        companyName: 'AnHealth Distribution',
-        role: 'Co-Founder & CEO',
-        valuation: '$500K',
-        growth: '+320% YoY',
-        metric: '₫180M ARR',
-        image: 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=400&h=400&fit=crop&q=80',
-        region: 'Hà Nội'
+        title: 'Founders Club Bonus',
+        description: 'Hoa hồng đặc biệt và equity allocation cho 200 Partner đầu tiên',
+        highlight: 'Chỉ còn 157 slot'
       },
       {
-        founderName: 'Trần Thị Bích',
-        companyName: 'Wellness Network VN',
-        role: 'Co-Founder & CMO',
-        valuation: '$350K',
-        growth: '+280% YoY',
-        metric: '₫125M ARR',
-        image: 'https://images.unsplash.com/photo-1580489944761-15a19d654956?w=400&h=400&fit=crop&q=80',
-        region: 'TP.HCM'
+        icon: TrendingUp,
+        title: 'Tăng Trưởng Sớm',
+        description: 'Xây dựng team từ đầu, hưởng lợi từ network effect khi hệ thống scale',
+        highlight: '+320% YoY'
       },
       {
-        founderName: 'Lê Hoàng Long',
-        companyName: 'HealthTech Ventures',
-        role: 'Co-Founder & CTO',
-        valuation: '$420K',
-        growth: '+295% YoY',
-        metric: '₫155M ARR',
-        image: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=400&h=400&fit=crop&q=80',
-        region: 'Đà Nẵng'
+        icon: Zap,
+        title: 'Công Nghệ AI Độc Quyền',
+        description: 'Truy cập sớm vào Agentic OS và AI tools chỉ dành cho Founders',
+        highlight: 'Early Access'
+      },
+      {
+        icon: Globe,
+        title: 'SEA Market First-Mover',
+        description: 'Đi đầu trong thị trường $12B, mở rộng sang 4 quốc gia SEA',
+        highlight: 'First-Mover'
       }
-    ]
-  },
-
-  market: {
-    sectionBadge: 'SEA Expansion',
-    sectionTitle: 'Biên Giới Của Bạn Không Phải Là Việt Nam',
-    subheadline: 'Là cả Đông Nam Á - Market opportunity $12B',
-    regions: [
-      { name: 'Vietnam', market: '$3.5B', growth: '+28%', status: 'Active' },
-      { name: 'Thailand', market: '$2.8B', growth: '+22%', status: 'Expanding' },
-      { name: 'Indonesia', market: '$4.2B', growth: '+32%', status: 'Planning' },
-      { name: 'Philippines', market: '$1.5B', growth: '+25%', status: 'Planning' }
     ]
   },
 
   footer: {
     logo: 'WellNexus',
-    tagline: 'Venture Builder powering the next generation of health entrepreneurs across Southeast Asia with AI-driven technology, equity ownership, and clear path to unicorn status.',
+    tagline: 'Hệ sinh thái Social Commerce tiên phong tại Đông Nam Á với AI-driven technology, equity ownership, và lộ trình rõ ràng từ Hạt Giống đến Đế Chế.',
     newsletter: {
-      title: 'Co-Founder Updates',
-      placeholder: 'Your email'
+      title: 'Nhận Thông Tin Cập Nhật',
+      placeholder: 'Email của bạn'
     },
     social: {
       facebook: 'https://facebook.com/wellnexus',
       instagram: 'https://instagram.com/wellnexus',
       linkedin: 'https://linkedin.com/company/wellnexus'
     },
-    copyright: '© 2025 WellNexus Venture Builder. All rights reserved.'
+    copyright: '© 2025 WellNexus. All rights reserved.'
   }
 };
 
@@ -173,17 +193,17 @@ export default function LandingPage() {
     navigate('/dashboard');
   };
 
-  // Animation Variants - Cinematic Style
-  const cinematicFadeIn = {
-    hidden: { opacity: 0, y: 60, scale: 0.95 },
+  const handleVisionClick = () => {
+    navigate('/venture');
+  };
+
+  // Animation Variants
+  const fadeInUp = {
+    hidden: { opacity: 0, y: 40 },
     visible: {
       opacity: 1,
       y: 0,
-      scale: 1,
-      transition: {
-        duration: 1,
-        ease: [0.16, 1, 0.3, 1] // Custom easing for cinematic feel
-      }
+      transition: { duration: 0.6, ease: [0.16, 1, 0.3, 1] }
     }
   };
 
@@ -192,648 +212,442 @@ export default function LandingPage() {
     visible: {
       opacity: 1,
       transition: {
-        staggerChildren: 0.2,
-        delayChildren: 0.3
+        staggerChildren: 0.15,
+        delayChildren: 0.2
       }
     }
   };
 
   const scaleIn = {
-    hidden: { opacity: 0, scale: 0.8 },
+    hidden: { opacity: 0, scale: 0.9 },
     visible: {
       opacity: 1,
       scale: 1,
-      transition: {
-        duration: 0.8,
-        ease: [0.16, 1, 0.3, 1]
-      }
+      transition: { duration: 0.5, ease: [0.16, 1, 0.3, 1] }
     }
   };
 
   return (
-    <>
-      {/* ====================================================================== */}
-      {/* CUSTOM STYLES - Premium Dark Theme */}
-      {/* ====================================================================== */}
-      <style>{`
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Space+Grotesk:wght@400;500;600;700&display=swap');
-
-        body {
-          font-family: 'Inter', sans-serif;
-          background: #0a0a0a;
-        }
-
-        .font-display {
-          font-family: 'Space Grotesk', sans-serif;
-        }
-
-        html {
-          scroll-behavior: smooth;
-        }
-
-        .grain-overlay {
-          background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='4' numOctaves='4' /%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.08'/%3E%3C/svg%3E");
-        }
-
-        .mesh-gradient {
-          background:
-            radial-gradient(at 27% 37%, hsla(175, 100%, 17%, 0.3) 0px, transparent 50%),
-            radial-gradient(at 97% 21%, hsla(45, 100%, 50%, 0.15) 0px, transparent 50%),
-            radial-gradient(at 52% 99%, hsla(175, 100%, 12%, 0.4) 0px, transparent 50%),
-            radial-gradient(at 10% 29%, hsla(175, 100%, 20%, 0.2) 0px, transparent 50%);
-        }
-
-        .glow-text {
-          text-shadow: 0 0 40px rgba(255, 191, 0, 0.3);
-        }
-
-        @keyframes float {
-          0%, 100% { transform: translateY(0px); }
-          50% { transform: translateY(-20px); }
-        }
-
-        .animate-float {
-          animation: float 6s ease-in-out infinite;
-        }
-      `}</style>
-
-      <div className="min-h-screen bg-slate-950 text-white overflow-x-hidden">
-
-        {/* ================================================================== */}
-        {/* STICKY HEADER - Premium Dark */}
-        {/* ================================================================== */}
-        <motion.nav
-          initial={{ y: -100 }}
-          animate={{ y: 0 }}
-          transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-          className="fixed top-0 w-full z-50 backdrop-blur-2xl bg-slate-950/80 border-b border-slate-800/50"
-        >
-          <div className="max-w-7xl mx-auto px-6 lg:px-12 h-20 flex items-center justify-between">
-            {/* Logo */}
-            <motion.div
-              className="flex items-center gap-3 cursor-pointer"
-              whileHover={{ scale: 1.02 }}
-              onClick={() => smoothScrollTo('hero')}
-            >
-              <div className="w-10 h-10 bg-gradient-to-br from-[#FFBF00] to-[#FF9500] rounded-lg flex items-center justify-center text-slate-950 font-display font-black text-xl shadow-2xl shadow-[#FFBF00]/20">
-                W
-              </div>
-              <span className="font-display font-bold text-xl text-white tracking-tight">
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-teal-50 overflow-x-hidden">
+      {/* ================================================================== */}
+      {/* STICKY HEADER */}
+      {/* ================================================================== */}
+      <motion.nav
+        initial={{ y: -100 }}
+        animate={{ y: 0 }}
+        transition={{ duration: 0.6 }}
+        className="fixed top-0 w-full z-50 backdrop-blur-xl bg-white/80 border-b border-slate-200/50 shadow-sm"
+      >
+        <div className="max-w-7xl mx-auto px-6 lg:px-12 h-20 flex items-center justify-between">
+          {/* Logo */}
+          <div className="flex items-center gap-3">
+            <div className="w-10 h-10 bg-gradient-to-br from-[#00575A] to-teal-600 rounded-xl flex items-center justify-center text-white font-bold text-xl shadow-lg shadow-teal-500/30">
+              W
+            </div>
+            <div>
+              <div className="font-bold text-xl text-slate-900 tracking-tight">
                 {CONTENT.footer.logo}
+              </div>
+              <div className="text-xs text-slate-500 font-medium">
+                Evolution Map
+              </div>
+            </div>
+          </div>
+
+          {/* Action Button */}
+          <motion.button
+            onClick={handleJoin}
+            className="bg-[#00575A] hover:bg-teal-700 text-white px-6 py-2.5 rounded-xl font-bold text-sm shadow-lg shadow-teal-500/20 transition-all"
+            whileHover={{ scale: 1.05, boxShadow: '0 20px 40px rgba(0, 87, 90, 0.3)' }}
+            whileTap={{ scale: 0.95 }}
+          >
+            Bắt Đầu Ngay
+          </motion.button>
+        </div>
+      </motion.nav>
+
+      {/* ================================================================== */}
+      {/* HERO SECTION */}
+      {/* ================================================================== */}
+      <section className="relative pt-32 pb-20 overflow-hidden">
+        {/* Background Elements */}
+        <div className="absolute top-20 right-20 w-[400px] h-[400px] bg-teal-400/20 rounded-full blur-[120px] animate-pulse" />
+        <div className="absolute bottom-20 left-20 w-[350px] h-[350px] bg-[#FFBF00]/20 rounded-full blur-[100px]" style={{ animationDelay: '1s' }} />
+
+        <div className="relative z-10 max-w-7xl mx-auto px-6 lg:px-12">
+          <motion.div
+            variants={staggerContainer}
+            initial="hidden"
+            animate="visible"
+            className="text-center max-w-4xl mx-auto"
+          >
+            {/* Badge */}
+            <motion.div variants={fadeInUp} className="mb-6 inline-flex">
+              <div className="inline-flex items-center gap-2 bg-teal-50 border border-teal-200 rounded-full px-5 py-2">
+                <Sparkles className="w-4 h-4 text-teal-600" />
+                <span className="text-sm font-bold text-teal-700 uppercase tracking-wider">
+                  {CONTENT.hero.badge}
+                </span>
+              </div>
+            </motion.div>
+
+            {/* Headline */}
+            <motion.h1
+              variants={fadeInUp}
+              className="font-black text-5xl md:text-6xl lg:text-7xl mb-6 leading-tight tracking-tight"
+            >
+              <span className="text-slate-900">
+                {CONTENT.hero.headline}
               </span>
-              <span className="text-xs font-medium text-slate-500 uppercase tracking-wider">
-                Venture Builder
+              <br />
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#00575A] via-teal-600 to-[#00575A]">
+                {CONTENT.hero.headlineAccent}
+              </span>
+            </motion.h1>
+
+            {/* Subheadline */}
+            <motion.p
+              variants={fadeInUp}
+              className="text-xl md:text-2xl text-slate-600 mb-8 leading-relaxed"
+            >
+              {CONTENT.hero.subheadline}
+            </motion.p>
+
+            {/* Current Stage Badge */}
+            <motion.div
+              variants={fadeInUp}
+              className="inline-flex items-center gap-3 bg-white border-2 border-teal-200 rounded-full px-6 py-3 mb-8 shadow-lg"
+            >
+              <div className="relative flex h-3 w-3">
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-teal-400 opacity-75" />
+                <span className="relative inline-flex rounded-full h-3 w-3 bg-teal-500" />
+              </div>
+              <Sprout className="w-5 h-5 text-teal-600" />
+              <span className="text-sm font-bold text-slate-700">
+                {CONTENT.hero.currentStage}
               </span>
             </motion.div>
 
-            {/* Navigation Menu */}
-            <div className="hidden md:flex items-center gap-8">
-              {[
-                { label: 'Portfolio', id: 'portfolio' },
-                { label: 'The Deal', id: 'deal' },
-                { label: 'SEA Market', id: 'market' }
-              ].map((item, idx) => (
-                <button
-                  key={idx}
-                  onClick={() => smoothScrollTo(item.id)}
-                  className="text-sm font-medium text-slate-400 hover:text-[#FFBF00] transition-colors"
-                >
-                  {item.label}
-                </button>
-              ))}
-            </div>
-
-            {/* Action Button */}
-            <motion.button
-              onClick={handleJoin}
-              className="text-sm font-bold bg-[#FFBF00] hover:bg-[#FF9500] text-slate-950 px-6 py-2.5 rounded-lg transition-all shadow-lg shadow-[#FFBF00]/20"
-              whileHover={{ scale: 1.05, boxShadow: '0 20px 40px rgba(255, 191, 0, 0.3)' }}
-              whileTap={{ scale: 0.95 }}
-            >
-              Apply Now
-            </motion.button>
-          </div>
-        </motion.nav>
-
-        {/* ================================================================== */}
-        {/* HERO SECTION - The Pitch (Dark Premium) */}
-        {/* ================================================================== */}
-        <section id="hero" className="relative min-h-screen pt-32 pb-20 overflow-hidden">
-          {/* Background - Dark Mesh Gradient */}
-          <div className="absolute inset-0 z-0 mesh-gradient" />
-          <div className="absolute inset-0 z-0 grain-overlay" />
-
-          {/* Animated Grid Background */}
-          <div className="absolute inset-0 z-0 opacity-10">
-            <div className="absolute inset-0" style={{
-              backgroundImage: 'linear-gradient(rgba(255, 191, 0, 0.1) 1px, transparent 1px), linear-gradient(90deg, rgba(255, 191, 0, 0.1) 1px, transparent 1px)',
-              backgroundSize: '100px 100px'
-            }} />
-          </div>
-
-          {/* Glowing Orbs */}
-          <div className="absolute top-20 right-20 w-[500px] h-[500px] bg-[#FFBF00]/20 rounded-full blur-[150px] animate-float" />
-          <div className="absolute bottom-20 left-20 w-[400px] h-[400px] bg-[#00575A]/30 rounded-full blur-[120px]" style={{ animationDelay: '1s' }} />
-
-          <div className="relative z-10 max-w-7xl mx-auto px-6 lg:px-12">
+            {/* CTA Buttons */}
             <motion.div
-              variants={staggerContainer}
-              initial="hidden"
-              animate="visible"
-              className="text-center max-w-5xl mx-auto"
-            >
-              {/* Badge */}
-              <motion.div variants={cinematicFadeIn} className="mb-8 inline-flex">
-                <div className="inline-flex items-center gap-3 bg-slate-900/50 backdrop-blur-xl border border-slate-800/50 rounded-full px-5 py-2.5">
-                  <span className="relative flex h-2 w-2">
-                    <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#FFBF00] opacity-75" />
-                    <span className="relative inline-flex rounded-full h-2 w-2 bg-[#FFBF00]" />
-                  </span>
-                  <Globe className="w-4 h-4 text-[#FFBF00]" />
-                  <span className="text-xs font-bold text-slate-300 uppercase tracking-wider">
-                    {CONTENT.hero.badge}
-                  </span>
-                </div>
-              </motion.div>
-
-              {/* Headline */}
-              <motion.h1
-                variants={cinematicFadeIn}
-                className="font-display font-black text-6xl md:text-7xl lg:text-8xl mb-8 leading-[0.9] tracking-tight"
-              >
-                <span className="text-slate-100">
-                  {CONTENT.hero.headline}
-                </span>
-                <br />
-                <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#FFBF00] via-[#FFD700] to-[#FFBF00] glow-text">
-                  {CONTENT.hero.headlineAccent}
-                </span>
-              </motion.h1>
-
-              {/* Subheadline */}
-              <motion.p
-                variants={cinematicFadeIn}
-                className="text-xl md:text-2xl text-slate-400 mb-12 leading-relaxed max-w-4xl mx-auto"
-              >
-                {CONTENT.hero.subheadline}
-              </motion.p>
-
-              {/* CTA Buttons */}
-              <motion.div
-                variants={cinematicFadeIn}
-                className="flex flex-col sm:flex-row gap-4 justify-center mb-16"
-              >
-                <motion.button
-                  onClick={handleJoin}
-                  className="group bg-[#FFBF00] text-slate-950 px-10 py-5 rounded-xl font-bold text-lg flex items-center justify-center gap-3 shadow-2xl shadow-[#FFBF00]/30"
-                  whileHover={{
-                    scale: 1.05,
-                    boxShadow: '0 30px 60px rgba(255, 191, 0, 0.4)'
-                  }}
-                  whileTap={{ scale: 0.98 }}
-                >
-                  <Rocket className="w-5 h-5" />
-                  {CONTENT.hero.primaryCta}
-                  <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
-                </motion.button>
-
-                <motion.button
-                  onClick={() => smoothScrollTo('portfolio')}
-                  className="px-10 py-5 rounded-xl font-bold text-lg text-slate-300 border-2 border-slate-700 hover:border-[#FFBF00] bg-slate-900/50 backdrop-blur-xl hover:bg-slate-800/50 transition-all"
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
-                >
-                  {CONTENT.hero.secondaryCta}
-                </motion.button>
-              </motion.div>
-
-              {/* Stats - Venture Style */}
-              <motion.div
-                variants={cinematicFadeIn}
-                className="grid grid-cols-3 gap-8 max-w-3xl mx-auto"
-              >
-                {CONTENT.hero.stats.map((stat, idx) => (
-                  <div key={idx} className="relative group">
-                    <div className="absolute inset-0 bg-gradient-to-br from-[#FFBF00]/10 to-transparent rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity blur-xl" />
-                    <div className="relative bg-slate-900/50 backdrop-blur-xl border border-slate-800/50 rounded-2xl p-6 hover:border-[#FFBF00]/50 transition-all">
-                      <div className="text-4xl lg:text-5xl font-black text-[#FFBF00] font-display mb-2">
-                        {stat.value}
-                      </div>
-                      <div className="text-sm text-slate-400 font-medium">
-                        {stat.label}
-                      </div>
-                    </div>
-                  </div>
-                ))}
-              </motion.div>
-            </motion.div>
-          </div>
-        </section>
-
-        {/* ================================================================== */}
-        {/* THE DEAL SECTION - Term Sheet Style */}
-        {/* ================================================================== */}
-        <section id="deal" className="relative py-32 bg-slate-950">
-          <div className="absolute inset-0 grain-overlay opacity-50" />
-
-          <div className="relative z-10 max-w-7xl mx-auto px-6 lg:px-12">
-            {/* Section Header */}
-            <motion.div
-              initial={{ opacity: 0, y: 40 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.8 }}
-              className="text-center mb-20"
-            >
-              <div className="inline-flex items-center gap-2 bg-slate-900/50 backdrop-blur-xl border border-slate-800/50 rounded-full px-5 py-2 mb-6">
-                <Lock className="w-4 h-4 text-[#FFBF00]" />
-                <span className="text-sm font-bold text-slate-300 uppercase tracking-wider">
-                  {CONTENT.deal.sectionBadge}
-                </span>
-              </div>
-              <h2 className="text-5xl md:text-6xl lg:text-7xl font-black text-white mb-6 font-display">
-                {CONTENT.deal.sectionTitle}
-              </h2>
-              <p className="text-xl text-slate-400 max-w-3xl mx-auto">
-                {CONTENT.deal.subheadline}
-              </p>
-            </motion.div>
-
-            {/* Term Cards Grid */}
-            <div className="grid md:grid-cols-3 gap-8">
-              {CONTENT.deal.terms.map((term, idx) => {
-                const Icon = term.icon;
-                return (
-                  <motion.div
-                    key={idx}
-                    initial={{ opacity: 0, y: 60 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true }}
-                    transition={{ delay: idx * 0.2, duration: 0.8 }}
-                    className="group relative"
-                  >
-                    {/* Glow effect */}
-                    <div className="absolute -inset-0.5 bg-gradient-to-br from-[#FFBF00]/20 to-[#00575A]/20 rounded-3xl opacity-0 group-hover:opacity-100 transition-opacity blur-xl" />
-
-                    {/* Card */}
-                    <div className="relative bg-slate-900/80 backdrop-blur-xl border border-slate-800/50 rounded-3xl p-8 h-full hover:border-[#FFBF00]/30 transition-all">
-                      {/* Icon */}
-                      <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-[#FFBF00]/20 to-transparent border border-[#FFBF00]/20 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
-                        <Icon className="w-8 h-8 text-[#FFBF00]" />
-                      </div>
-
-                      {/* Category */}
-                      <h3 className="text-2xl font-bold text-white mb-6 font-display">
-                        {term.category}
-                      </h3>
-
-                      {/* Items */}
-                      <ul className="space-y-4">
-                        {term.items.map((item, itemIdx) => (
-                          <li key={itemIdx} className="flex items-start gap-3">
-                            <CheckCircle2 className="w-5 h-5 text-[#FFBF00] flex-shrink-0 mt-0.5" />
-                            <span className="text-slate-300 text-sm leading-relaxed">
-                              {item}
-                            </span>
-                          </li>
-                        ))}
-                      </ul>
-                    </div>
-                  </motion.div>
-                );
-              })}
-            </div>
-          </div>
-        </section>
-
-        {/* ================================================================== */}
-        {/* PORTFOLIO SECTION - Portfolio Companies */}
-        {/* ================================================================== */}
-        <section id="portfolio" className="relative py-32 bg-slate-900">
-          <div className="absolute inset-0 grain-overlay opacity-30" />
-
-          <div className="relative z-10 max-w-7xl mx-auto px-6 lg:px-12">
-            {/* Section Header */}
-            <motion.div
-              initial={{ opacity: 0, y: 40 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.8 }}
-              className="text-center mb-20"
-            >
-              <div className="inline-flex items-center gap-2 bg-slate-950/50 backdrop-blur-xl border border-slate-800/50 rounded-full px-5 py-2 mb-6">
-                <Award className="w-4 h-4 text-[#FFBF00]" />
-                <span className="text-sm font-bold text-slate-300 uppercase tracking-wider">
-                  {CONTENT.portfolio.sectionBadge}
-                </span>
-              </div>
-              <h2 className="text-5xl md:text-6xl lg:text-7xl font-black text-white mb-6 font-display">
-                {CONTENT.portfolio.sectionTitle}
-              </h2>
-              <p className="text-xl text-slate-400 max-w-3xl mx-auto">
-                {CONTENT.portfolio.subheadline}
-              </p>
-            </motion.div>
-
-            {/* Portfolio Grid */}
-            <div className="grid md:grid-cols-3 gap-8">
-              {CONTENT.portfolio.companies.map((company, idx) => (
-                <motion.div
-                  key={idx}
-                  initial={{ opacity: 0, scale: 0.9 }}
-                  whileInView={{ opacity: 1, scale: 1 }}
-                  viewport={{ once: true }}
-                  transition={{ delay: idx * 0.15, duration: 0.8 }}
-                  className="group relative"
-                >
-                  {/* Glow */}
-                  <div className="absolute -inset-0.5 bg-gradient-to-br from-[#FFBF00]/30 to-transparent rounded-3xl opacity-0 group-hover:opacity-100 transition-opacity blur-2xl" />
-
-                  {/* Card */}
-                  <div className="relative bg-slate-950/80 backdrop-blur-xl border border-slate-800/50 rounded-3xl overflow-hidden hover:border-[#FFBF00]/30 transition-all">
-                    {/* Profile Image */}
-                    <div className="relative h-64 overflow-hidden">
-                      <img
-                        src={company.image}
-                        alt={company.founderName}
-                        className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
-                      />
-                      <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/50 to-transparent" />
-
-                      {/* Valuation Badge */}
-                      <div className="absolute top-4 right-4">
-                        <div className="bg-[#FFBF00]/20 backdrop-blur-xl border border-[#FFBF00]/30 rounded-full px-4 py-2">
-                          <span className="text-[#FFBF00] font-bold text-sm">
-                            {company.valuation}
-                          </span>
-                        </div>
-                      </div>
-
-                      {/* Region */}
-                      <div className="absolute bottom-4 left-4">
-                        <div className="flex items-center gap-2 bg-slate-950/50 backdrop-blur-xl border border-slate-800/50 rounded-full px-3 py-1.5">
-                          <MapPin className="w-3 h-3 text-slate-400" />
-                          <span className="text-slate-300 font-medium text-xs">
-                            {company.region}
-                          </span>
-                        </div>
-                      </div>
-                    </div>
-
-                    {/* Content */}
-                    <div className="p-6">
-                      <h3 className="text-2xl font-bold text-white mb-1 font-display">
-                        {company.founderName}
-                      </h3>
-                      <p className="text-slate-400 text-sm mb-1">
-                        {company.role}
-                      </p>
-                      <p className="text-[#FFBF00] text-sm font-bold mb-4">
-                        {company.companyName}
-                      </p>
-
-                      {/* Metrics */}
-                      <div className="flex items-center justify-between pt-4 border-t border-slate-800/50">
-                        <div>
-                          <div className="text-sm text-slate-500">Growth</div>
-                          <div className="text-lg font-bold text-emerald-400">
-                            {company.growth}
-                          </div>
-                        </div>
-                        <div className="text-right">
-                          <div className="text-sm text-slate-500">ARR</div>
-                          <div className="text-lg font-bold text-white">
-                            {company.metric}
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </motion.div>
-              ))}
-            </div>
-          </div>
-        </section>
-
-        {/* ================================================================== */}
-        {/* THE MARKET SECTION - SEA Vision */}
-        {/* ================================================================== */}
-        <section id="market" className="relative py-32 bg-slate-950">
-          <div className="absolute inset-0 grain-overlay opacity-50" />
-
-          <div className="relative z-10 max-w-7xl mx-auto px-6 lg:px-12">
-            {/* Section Header */}
-            <motion.div
-              initial={{ opacity: 0, y: 40 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.8 }}
-              className="text-center mb-20"
-            >
-              <div className="inline-flex items-center gap-2 bg-slate-900/50 backdrop-blur-xl border border-slate-800/50 rounded-full px-5 py-2 mb-6">
-                <Network className="w-4 h-4 text-[#FFBF00]" />
-                <span className="text-sm font-bold text-slate-300 uppercase tracking-wider">
-                  {CONTENT.market.sectionBadge}
-                </span>
-              </div>
-              <h2 className="text-5xl md:text-6xl lg:text-7xl font-black text-white mb-6 font-display leading-tight">
-                {CONTENT.market.sectionTitle}
-              </h2>
-              <p className="text-xl text-slate-400 max-w-3xl mx-auto">
-                {CONTENT.market.subheadline}
-              </p>
-            </motion.div>
-
-            {/* Market Map Visual */}
-            <motion.div
-              initial={{ opacity: 0, scale: 0.95 }}
-              whileInView={{ opacity: 1, scale: 1 }}
-              viewport={{ once: true }}
-              transition={{ duration: 1 }}
-              className="relative bg-slate-900/50 backdrop-blur-xl border border-slate-800/50 rounded-3xl p-12 mb-12"
-            >
-              {/* Visual Map Representation */}
-              <div className="relative h-[400px] mb-8">
-                <img
-                  src="https://images.unsplash.com/photo-1526778548025-fa2f459cd5c1?w=1600&h=900&fit=crop&q=80"
-                  alt="SEA Map"
-                  className="w-full h-full object-cover rounded-2xl opacity-30"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-slate-900 via-transparent to-transparent rounded-2xl" />
-
-                {/* Network Nodes Overlay */}
-                <div className="absolute inset-0 flex items-center justify-center">
-                  <div className="relative w-full max-w-3xl">
-                    {/* Connecting Lines */}
-                    <svg className="absolute inset-0 w-full h-full opacity-30">
-                      <line x1="25%" y1="30%" x2="50%" y2="50%" stroke="#FFBF00" strokeWidth="2" strokeDasharray="5,5" />
-                      <line x1="50%" y1="50%" x2="75%" y2="40%" stroke="#FFBF00" strokeWidth="2" strokeDasharray="5,5" />
-                      <line x1="50%" y1="50%" x2="60%" y2="70%" stroke="#FFBF00" strokeWidth="2" strokeDasharray="5,5" />
-                    </svg>
-
-                    {/* Node Points */}
-                    <div className="absolute top-[30%] left-[25%] w-4 h-4 bg-[#FFBF00] rounded-full animate-pulse shadow-lg shadow-[#FFBF00]/50" />
-                    <div className="absolute top-[50%] left-[50%] w-6 h-6 bg-[#FFBF00] rounded-full animate-pulse shadow-2xl shadow-[#FFBF00]/70" />
-                    <div className="absolute top-[40%] left-[75%] w-4 h-4 bg-slate-500 rounded-full animate-pulse" />
-                    <div className="absolute top-[70%] left-[60%] w-4 h-4 bg-slate-500 rounded-full animate-pulse" />
-                  </div>
-                </div>
-              </div>
-
-              {/* Region Grid */}
-              <div className="grid md:grid-cols-4 gap-6">
-                {CONTENT.market.regions.map((region, idx) => (
-                  <motion.div
-                    key={idx}
-                    initial={{ opacity: 0, y: 30 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true }}
-                    transition={{ delay: idx * 0.1, duration: 0.6 }}
-                    className="relative group"
-                  >
-                    <div className="bg-slate-950/50 backdrop-blur-xl border border-slate-800/50 rounded-2xl p-6 hover:border-[#FFBF00]/30 transition-all">
-                      {/* Status Badge */}
-                      <div className="flex items-center justify-between mb-4">
-                        <span className="text-lg font-bold text-white font-display">
-                          {region.name}
-                        </span>
-                        <span className={`text-xs font-bold px-2 py-1 rounded-full ${
-                          region.status === 'Active' ? 'bg-emerald-500/20 text-emerald-400' :
-                          region.status === 'Expanding' ? 'bg-[#FFBF00]/20 text-[#FFBF00]' :
-                          'bg-slate-700/20 text-slate-400'
-                        }`}>
-                          {region.status}
-                        </span>
-                      </div>
-
-                      {/* Market Size */}
-                      <div className="mb-2">
-                        <div className="text-3xl font-black text-[#FFBF00] font-display">
-                          {region.market}
-                        </div>
-                        <div className="text-sm text-slate-500">Market Size</div>
-                      </div>
-
-                      {/* Growth */}
-                      <div className="flex items-center gap-2">
-                        <TrendingUp className="w-4 h-4 text-emerald-400" />
-                        <span className="text-emerald-400 font-bold">
-                          {region.growth}
-                        </span>
-                        <span className="text-slate-500 text-sm">YoY</span>
-                      </div>
-                    </div>
-                  </motion.div>
-                ))}
-              </div>
-            </motion.div>
-
-            {/* CTA */}
-            <motion.div
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              className="text-center"
+              variants={fadeInUp}
+              className="flex flex-col sm:flex-row gap-4 justify-center"
             >
               <motion.button
                 onClick={handleJoin}
-                className="group bg-[#FFBF00] text-slate-950 px-12 py-6 rounded-xl font-bold text-xl flex items-center justify-center gap-3 mx-auto shadow-2xl shadow-[#FFBF00]/30"
-                whileHover={{
-                  scale: 1.05,
-                  boxShadow: '0 30px 60px rgba(255, 191, 0, 0.4)'
-                }}
+                className="group bg-gradient-to-r from-[#00575A] to-teal-600 text-white px-10 py-5 rounded-xl font-bold text-lg flex items-center justify-center gap-3 shadow-2xl shadow-teal-500/30"
+                whileHover={{ scale: 1.05, boxShadow: '0 30px 60px rgba(0, 87, 90, 0.4)' }}
                 whileTap={{ scale: 0.98 }}
               >
-                <Globe className="w-6 h-6" />
-                Mở Rộng Sang SEA Với Chúng Tôi
-                <ChevronRight className="w-6 h-6 group-hover:translate-x-1 transition-transform" />
+                <Rocket className="w-5 h-5" />
+                {CONTENT.hero.primaryCta}
+                <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+              </motion.button>
+
+              <motion.button
+                onClick={() => document.getElementById('roadmap')?.scrollIntoView({ behavior: 'smooth' })}
+                className="px-10 py-5 rounded-xl font-bold text-lg text-slate-700 border-2 border-slate-300 hover:border-teal-500 bg-white hover:bg-teal-50 transition-all"
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+              >
+                {CONTENT.hero.secondaryCta}
               </motion.button>
             </motion.div>
-          </div>
-        </section>
+          </motion.div>
+        </div>
+      </section>
 
-        {/* ================================================================== */}
-        {/* FOOTER - Premium Dark */}
-        {/* ================================================================== */}
-        <footer className="relative bg-slate-950 text-white pt-20 pb-12 border-t border-slate-800/50">
-          <div className="absolute inset-0 grain-overlay opacity-30" />
+      {/* ================================================================== */}
+      {/* THE ROADMAP SECTION - 4 Stages */}
+      {/* ================================================================== */}
+      <section id="roadmap" className="relative py-32 bg-white">
+        <div className="max-w-7xl mx-auto px-6 lg:px-12">
+          {/* Section Header */}
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+            className="text-center mb-20"
+          >
+            <div className="inline-flex items-center gap-2 bg-teal-50 border border-teal-200 rounded-full px-5 py-2 mb-6">
+              <Target className="w-4 h-4 text-teal-600" />
+              <span className="text-sm font-bold text-teal-700 uppercase tracking-wider">
+                {CONTENT.roadmap.sectionBadge}
+              </span>
+            </div>
+            <h2 className="text-4xl md:text-5xl lg:text-6xl font-black text-slate-900 mb-6">
+              {CONTENT.roadmap.sectionTitle}
+            </h2>
+            <p className="text-xl text-slate-600 max-w-3xl mx-auto">
+              {CONTENT.roadmap.subheadline}
+            </p>
+          </motion.div>
 
-          <div className="relative z-10 max-w-7xl mx-auto px-6 lg:px-12">
-            {/* Main Footer Content */}
-            <div className="grid md:grid-cols-2 gap-12 mb-16">
-              {/* Brand */}
-              <div>
-                <div className="flex items-center gap-3 mb-4">
-                  <div className="w-12 h-12 bg-gradient-to-br from-[#FFBF00] to-[#FF9500] rounded-lg flex items-center justify-center text-slate-950 font-display font-black text-2xl shadow-2xl shadow-[#FFBF00]/20">
-                    W
-                  </div>
-                  <div>
-                    <div className="font-display font-bold text-xl">
-                      {CONTENT.footer.logo}
+          {/* Stages Grid */}
+          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+            {CONTENT.roadmap.stages.map((stage, idx) => {
+              const StageIcon = stage.icon;
+              const isActive = stage.status === 'active';
+              const isLocked = stage.status === 'locked' || stage.status === 'vision';
+
+              return (
+                <motion.div
+                  key={stage.id}
+                  initial={{ opacity: 0, y: 40 }}
+                  whileInView={{ opacity: isActive ? 1 : 0.7, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: idx * 0.15, duration: 0.6 }}
+                  whileHover={{ opacity: 1, scale: 1.03 }}
+                  className="group relative"
+                >
+                  {/* Glow Effect for Active */}
+                  {isActive && (
+                    <div className={`absolute -inset-0.5 bg-gradient-to-br ${stage.gradient} rounded-3xl opacity-20 group-hover:opacity-30 blur-xl transition-opacity`} />
+                  )}
+
+                  {/* Card */}
+                  <div className={`relative bg-white border-2 ${isActive ? stage.borderColor : 'border-slate-200'} rounded-3xl p-8 h-full transition-all ${isLocked ? 'opacity-50' : ''}`}>
+                    {/* Icon */}
+                    <div className={`w-16 h-16 rounded-2xl bg-gradient-to-br ${stage.gradient} flex items-center justify-center mb-6 shadow-lg ${isActive ? 'ring-4 ring-offset-2 ring-' + stage.color + '-200' : ''}`}>
+                      <StageIcon className="w-8 h-8 text-white" />
+                      {isLocked && (
+                        <div className="absolute inset-0 flex items-center justify-center bg-black/50 rounded-2xl">
+                          <Lock className="w-6 h-6 text-white" />
+                        </div>
+                      )}
                     </div>
-                    <div className="text-xs text-slate-500 uppercase tracking-wider">
-                      Venture Builder
-                    </div>
-                  </div>
-                </div>
-                <p className="text-slate-400 leading-relaxed mb-6 max-w-md">
-                  {CONTENT.footer.tagline}
-                </p>
 
-                {/* Social Links */}
-                <div className="flex items-center gap-3">
-                  {[
-                    { icon: Facebook, href: CONTENT.footer.social.facebook },
-                    { icon: Instagram, href: CONTENT.footer.social.instagram },
-                    { icon: Linkedin, href: CONTENT.footer.social.linkedin }
-                  ].map((social, idx) => {
-                    const SocialIcon = social.icon;
-                    return (
-                      <motion.a
-                        key={idx}
-                        href={social.href}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="w-12 h-12 rounded-xl bg-slate-900/50 hover:bg-slate-800/50 border border-slate-800/50 hover:border-[#FFBF00]/30 flex items-center justify-center transition-all"
-                        whileHover={{ scale: 1.1, y: -2 }}
-                        whileTap={{ scale: 0.95 }}
+                    {/* Status Badge */}
+                    <div className={`inline-flex items-center gap-2 px-3 py-1.5 rounded-full mb-4 ${isActive ? stage.bgGlow + ' ' + stage.textColor : 'bg-slate-100 text-slate-600'}`}>
+                      {isActive && <div className="w-2 h-2 rounded-full bg-current animate-pulse" />}
+                      <span className="text-xs font-bold uppercase tracking-wider">
+                        {stage.statusLabel}
+                      </span>
+                    </div>
+
+                    {/* Name */}
+                    <h3 className={`text-2xl font-black mb-3 ${isActive ? stage.textColor : 'text-slate-700'}`}>
+                      {stage.name}
+                    </h3>
+
+                    {/* Description */}
+                    <p className="text-slate-600 font-medium mb-2">
+                      {stage.description}
+                    </p>
+                    <p className="text-sm text-slate-500 mb-6 italic">
+                      {stage.mission}
+                    </p>
+
+                    {/* Benefits */}
+                    <ul className="space-y-3 mb-6">
+                      {stage.benefits.map((benefit, bidx) => (
+                        <li key={bidx} className="flex items-start gap-2">
+                          <CheckCircle2 className={`w-4 h-4 flex-shrink-0 mt-0.5 ${isActive ? stage.textColor : 'text-slate-400'}`} />
+                          <span className="text-sm text-slate-600 leading-relaxed">
+                            {benefit}
+                          </span>
+                        </li>
+                      ))}
+                    </ul>
+
+                    {/* Unlock Condition or Action */}
+                    {stage.unlockCondition ? (
+                      <div className="pt-4 border-t border-slate-200">
+                        <div className="flex items-center gap-2 text-xs text-slate-500">
+                          <Lock className="w-3 h-3" />
+                          <span>Mở khóa khi đạt {stage.unlockCondition}</span>
+                        </div>
+                      </div>
+                    ) : stage.hasVisionLink ? (
+                      <motion.button
+                        onClick={handleVisionClick}
+                        className={`w-full mt-4 px-4 py-3 rounded-xl font-bold text-sm bg-gradient-to-r ${stage.gradient} text-white shadow-lg flex items-center justify-center gap-2`}
+                        whileHover={{ scale: 1.02 }}
+                        whileTap={{ scale: 0.98 }}
                       >
-                        <SocialIcon className="w-5 h-5" />
-                      </motion.a>
-                    );
-                  })}
+                        <Globe className="w-4 h-4" />
+                        Xem Tầm Nhìn
+                        <ChevronRight className="w-4 h-4" />
+                      </motion.button>
+                    ) : (
+                      <div className="pt-4 border-t border-slate-200">
+                        <div className="flex items-center gap-2 text-xs font-bold text-teal-600">
+                          <Star className="w-3 h-3" />
+                          <span>Giai đoạn hiện tại</span>
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                </motion.div>
+              );
+            })}
+          </div>
+        </div>
+      </section>
+
+      {/* ================================================================== */}
+      {/* WHY NOW SECTION */}
+      {/* ================================================================== */}
+      <section className="relative py-32 bg-gradient-to-br from-teal-50 via-white to-teal-50">
+        <div className="max-w-7xl mx-auto px-6 lg:px-12">
+          {/* Section Header */}
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+            className="text-center mb-20"
+          >
+            <div className="inline-flex items-center gap-2 bg-amber-50 border border-amber-200 rounded-full px-5 py-2 mb-6">
+              <Zap className="w-4 h-4 text-amber-600" />
+              <span className="text-sm font-bold text-amber-700 uppercase tracking-wider">
+                {CONTENT.whyNow.sectionBadge}
+              </span>
+            </div>
+            <h2 className="text-4xl md:text-5xl lg:text-6xl font-black text-slate-900 mb-6">
+              {CONTENT.whyNow.sectionTitle}
+            </h2>
+            <p className="text-xl text-slate-600 max-w-3xl mx-auto">
+              {CONTENT.whyNow.subheadline}
+            </p>
+          </motion.div>
+
+          {/* Benefits Grid */}
+          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+            {CONTENT.whyNow.benefits.map((benefit, idx) => {
+              const BenefitIcon = benefit.icon;
+              return (
+                <motion.div
+                  key={idx}
+                  initial={{ opacity: 0, y: 30 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: idx * 0.1, duration: 0.6 }}
+                  className="group relative"
+                >
+                  <div className="relative bg-white border border-slate-200 rounded-2xl p-6 h-full hover:border-teal-300 hover:shadow-xl transition-all">
+                    {/* Highlight Badge */}
+                    <div className="absolute -top-3 -right-3 bg-gradient-to-r from-amber-400 to-amber-500 text-white text-xs font-bold px-3 py-1 rounded-full shadow-lg">
+                      {benefit.highlight}
+                    </div>
+
+                    {/* Icon */}
+                    <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-teal-500 to-teal-600 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+                      <BenefitIcon className="w-6 h-6 text-white" />
+                    </div>
+
+                    {/* Title */}
+                    <h3 className="text-lg font-bold text-slate-900 mb-2">
+                      {benefit.title}
+                    </h3>
+
+                    {/* Description */}
+                    <p className="text-sm text-slate-600 leading-relaxed">
+                      {benefit.description}
+                    </p>
+                  </div>
+                </motion.div>
+              );
+            })}
+          </div>
+
+          {/* Final CTA */}
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="text-center mt-16"
+          >
+            <motion.button
+              onClick={handleJoin}
+              className="group bg-gradient-to-r from-[#00575A] to-teal-600 text-white px-12 py-6 rounded-xl font-bold text-xl flex items-center justify-center gap-3 mx-auto shadow-2xl shadow-teal-500/30"
+              whileHover={{ scale: 1.05, boxShadow: '0 30px 60px rgba(0, 87, 90, 0.4)' }}
+              whileTap={{ scale: 0.98 }}
+            >
+              <Users className="w-6 h-6" />
+              Tham Gia Ngay - Chỉ Còn 157 Slot
+              <ChevronRight className="w-6 h-6 group-hover:translate-x-1 transition-transform" />
+            </motion.button>
+          </motion.div>
+        </div>
+      </section>
+
+      {/* ================================================================== */}
+      {/* FOOTER */}
+      {/* ================================================================== */}
+      <footer className="relative bg-slate-900 text-white pt-20 pb-12">
+        <div className="max-w-7xl mx-auto px-6 lg:px-12">
+          {/* Main Footer Content */}
+          <div className="grid md:grid-cols-2 gap-12 mb-16">
+            {/* Brand */}
+            <div>
+              <div className="flex items-center gap-3 mb-4">
+                <div className="w-12 h-12 bg-gradient-to-br from-[#00575A] to-teal-600 rounded-xl flex items-center justify-center text-white font-bold text-2xl shadow-lg">
+                  W
+                </div>
+                <div>
+                  <div className="font-bold text-xl">{CONTENT.footer.logo}</div>
+                  <div className="text-xs text-slate-400">Evolution Map</div>
                 </div>
               </div>
+              <p className="text-slate-400 leading-relaxed mb-6 max-w-md">
+                {CONTENT.footer.tagline}
+              </p>
 
-              {/* Newsletter */}
-              <div>
-                <h3 className="font-display font-bold text-xl mb-4">
-                  {CONTENT.footer.newsletter.title}
-                </h3>
-                <div className="flex gap-3">
-                  <input
-                    type="email"
-                    placeholder={CONTENT.footer.newsletter.placeholder}
-                    className="flex-1 px-5 py-3 rounded-xl bg-slate-900/50 border border-slate-800/50 text-white placeholder-slate-500 focus:outline-none focus:border-[#FFBF00]/50 transition-colors backdrop-blur-xl"
-                  />
-                  <motion.button
-                    className="px-6 py-3 rounded-xl bg-[#FFBF00] text-slate-950 font-bold shadow-lg shadow-[#FFBF00]/20"
-                    whileHover={{ scale: 1.05 }}
-                    whileTap={{ scale: 0.95 }}
-                  >
-                    <Mail className="w-5 h-5" />
-                  </motion.button>
-                </div>
+              {/* Social Links */}
+              <div className="flex items-center gap-3">
+                {[
+                  { icon: Facebook, href: CONTENT.footer.social.facebook },
+                  { icon: Instagram, href: CONTENT.footer.social.instagram },
+                  { icon: Linkedin, href: CONTENT.footer.social.linkedin }
+                ].map((social, idx) => {
+                  const SocialIcon = social.icon;
+                  return (
+                    <motion.a
+                      key={idx}
+                      href={social.href}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="w-12 h-12 rounded-xl bg-slate-800 hover:bg-teal-600 border border-slate-700 hover:border-teal-500 flex items-center justify-center transition-all"
+                      whileHover={{ scale: 1.1, y: -2 }}
+                      whileTap={{ scale: 0.95 }}
+                    >
+                      <SocialIcon className="w-5 h-5" />
+                    </motion.a>
+                  );
+                })}
               </div>
             </div>
 
-            {/* Copyright */}
-            <div className="text-center text-slate-500 text-sm pt-8 border-t border-slate-800/50">
-              {CONTENT.footer.copyright}
+            {/* Newsletter */}
+            <div>
+              <h3 className="font-bold text-xl mb-4">
+                {CONTENT.footer.newsletter.title}
+              </h3>
+              <div className="flex gap-3">
+                <input
+                  type="email"
+                  placeholder={CONTENT.footer.newsletter.placeholder}
+                  className="flex-1 px-5 py-3 rounded-xl bg-slate-800 border border-slate-700 text-white placeholder-slate-500 focus:outline-none focus:border-teal-500 transition-colors"
+                />
+                <motion.button
+                  className="px-6 py-3 rounded-xl bg-teal-600 hover:bg-teal-700 text-white font-bold shadow-lg"
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                >
+                  <Mail className="w-5 h-5" />
+                </motion.button>
+              </div>
             </div>
           </div>
-        </footer>
-      </div>
-    </>
+
+          {/* Copyright */}
+          <div className="text-center text-slate-500 text-sm pt-8 border-t border-slate-800">
+            {CONTENT.footer.copyright}
+          </div>
+        </div>
+      </footer>
+    </div>
   );
 }
