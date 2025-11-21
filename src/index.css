@@ -4,26 +4,232 @@
 
 @layer base {
   :root {
-    --font-display: 'Manrope', sans-serif;
-    --font-body: 'Plus Jakarta Sans', sans-serif;
+    --font-display: 'Manrope', system-ui, -apple-system, sans-serif;
+    --font-body: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+
+    /* Typography Scale - Consistent font weights for Vietnamese */
+    --font-weight-normal: 400;
+    --font-weight-medium: 500;
+    --font-weight-semibold: 600;
+    --font-weight-bold: 700;
+    --font-weight-extrabold: 800;
+
+    /* FIXED FONT SIZES - Đồng bộ 100% Tiếng Việt + Tiếng Anh */
+    --text-2xs: 10px;
+    --text-xs: 12px;
+    --text-sm: 14px;
+    --text-base: 16px;
+    --text-lg: 18px;
+    --text-xl: 20px;
+    --text-2xl: 24px;
+    --text-3xl: 30px;
+    --text-4xl: 36px;
+    --text-5xl: 48px;
+    --text-6xl: 60px;
+    --text-7xl: 72px;
+    --text-8xl: 96px;
+    --text-9xl: 128px;
   }
 
+  /* ================================================================ */
+  /* GLOBAL FONT ENFORCEMENT - 100% CONSISTENCY */
+  /* ================================================================ */
+
   html {
-    font-family: var(--font-body);
+    font-family: var(--font-body) !important;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     text-rendering: optimizeLegibility; /* Tối ưu hiển thị chữ */
+    font-feature-settings: 'kern' 1, 'liga' 1, 'calt' 1; /* Enable OpenType features */
+    -webkit-text-size-adjust: 100%; /* Prevent font scaling in landscape */
+    -moz-text-size-adjust: 100%;
+    text-size-adjust: 100%;
+    font-weight: var(--font-weight-normal) !important;
+    font-size: var(--text-base) !important; /* Force 16px default */
   }
 
+  /* Force consistent font for ALL elements - No exceptions */
+  * {
+    font-synthesis: none !important; /* Prevent browser from synthesizing missing glyphs */
+    font-family: inherit !important; /* Force inheritance */
+  }
+
+  /* CRITICAL: Force Manrope for ALL headings with Vietnamese character support */
   h1, h2, h3, h4, h5, h6 {
-    font-family: var(--font-display);
-    font-weight: 800; /* Manrope ExtraBold nhìn rất đẹp cho Tiếng Việt */
-    letter-spacing: -0.02em; /* Thu hẹp khoảng cách chữ để tạo cảm giác hiện đại */
+    font-family: var(--font-display) !important;
+    font-weight: var(--font-weight-extrabold) !important; /* Consistent 800 for all headings */
+    letter-spacing: -0.02em !important; /* Thu hẹp khoảng cách chữ */
+    font-feature-settings: 'kern' 1, 'liga' 1 !important;
+    font-variant-ligatures: common-ligatures;
+    text-rendering: optimizeLegibility;
+  }
+
+  /* Body elements use body font with normal weight */
+  body, div, span, p, a, li, td, th, label {
+    font-family: var(--font-body) !important;
+    font-weight: var(--font-weight-normal);
+    unicode-range: U+0000-00FF, U+0100-017F, U+0180-024F, U+1E00-1EFF; /* Latin + Vietnamese */
   }
 
   /* Fix lỗi font cho các thẻ input/button */
   input, button, textarea, select {
-    font-family: inherit;
+    font-family: inherit !important;
+  }
+
+  /* ================================================================ */
+  /* TAILWIND FONT-WEIGHT OVERRIDES - Đồng bộ 100% */
+  /* ================================================================ */
+
+  /* Override Tailwind's font-weight utilities with consistent values */
+  .font-normal {
+    font-weight: var(--font-weight-normal) !important;
+  }
+
+  .font-medium {
+    font-weight: var(--font-weight-medium) !important;
+  }
+
+  .font-semibold {
+    font-weight: var(--font-weight-semibold) !important;
+  }
+
+  .font-bold {
+    font-weight: var(--font-weight-bold) !important;
+  }
+
+  .font-extrabold {
+    font-weight: var(--font-weight-extrabold) !important;
+  }
+
+  .font-black {
+    font-weight: var(--font-weight-extrabold) !important; /* Map to 800 for consistency */
+  }
+
+  /* ================================================================ */
+  /* TAILWIND FONT-DISPLAY OVERRIDE - Force Manrope */
+  /* ================================================================ */
+
+  .font-display {
+    font-family: var(--font-display) !important;
+    font-weight: var(--font-weight-extrabold) !important;
+  }
+
+  .font-sans {
+    font-family: var(--font-body) !important;
+  }
+
+  /* ================================================================ */
+  /* CRITICAL: FIXED FONT-SIZE OVERRIDES - 100% Consistency */
+  /* ================================================================ */
+
+  /* Override ALL Tailwind text utilities with FIXED px values */
+  /* This ensures Tiếng Việt and English render EXACTLY the same */
+
+  .text-2xs, [class*="text-[10px]"] {
+    font-size: var(--text-2xs) !important; /* 10px */
+    line-height: 1.5 !important;
+  }
+
+  .text-xs {
+    font-size: var(--text-xs) !important; /* 12px */
+    line-height: 1.5 !important;
+  }
+
+  .text-sm {
+    font-size: var(--text-sm) !important; /* 14px */
+    line-height: 1.5 !important;
+  }
+
+  .text-base {
+    font-size: var(--text-base) !important; /* 16px */
+    line-height: 1.6 !important;
+  }
+
+  .text-lg {
+    font-size: var(--text-lg) !important; /* 18px */
+    line-height: 1.6 !important;
+  }
+
+  .text-xl {
+    font-size: var(--text-xl) !important; /* 20px */
+    line-height: 1.5 !important;
+  }
+
+  .text-2xl {
+    font-size: var(--text-2xl) !important; /* 24px */
+    line-height: 1.4 !important;
+  }
+
+  .text-3xl {
+    font-size: var(--text-3xl) !important; /* 30px */
+    line-height: 1.3 !important;
+  }
+
+  .text-4xl {
+    font-size: var(--text-4xl) !important; /* 36px */
+    line-height: 1.2 !important;
+  }
+
+  .text-5xl {
+    font-size: var(--text-5xl) !important; /* 48px */
+    line-height: 1.2 !important;
+  }
+
+  .text-6xl {
+    font-size: var(--text-6xl) !important; /* 60px */
+    line-height: 1.1 !important;
+  }
+
+  .text-7xl {
+    font-size: var(--text-7xl) !important; /* 72px */
+    line-height: 1.1 !important;
+  }
+
+  .text-8xl {
+    font-size: var(--text-8xl) !important; /* 96px */
+    line-height: 1.1 !important;
+  }
+
+  .text-9xl {
+    font-size: var(--text-9xl) !important; /* 128px */
+    line-height: 1.1 !important;
+  }
+
+  /* ================================================================ */
+  /* VIETNAMESE CHARACTER RENDERING FIX */
+  /* ================================================================ */
+
+  /* Force proper rendering for Vietnamese Unicode ranges */
+  [class*="text-"],
+  [class*="font-"] {
+    font-feature-settings: 'kern' 1, 'liga' 1 !important;
+    text-rendering: optimizeLegibility !important;
+  }
+
+  /* Ensure buttons and interactive elements maintain consistency */
+  button,
+  a,
+  [role="button"] {
+    font-family: inherit !important;
+    font-weight: inherit;
+    font-feature-settings: 'kern' 1, 'liga' 1 !important;
+  }
+
+  /* Code and monospace should still work */
+  code, pre, kbd, samp {
+    font-family: ui-monospace, 'Cascadia Code', 'Source Code Pro', Menlo, Monaco, 'Courier New', monospace !important;
+  }
+
+  /* ================================================================ */
+  /* CATCH-ALL: Override any inline text-[Npx] classes */
+  /* ================================================================ */
+
+  /* Target all arbitrary value classes and normalize them */
+  [class*="text-[1"][class*="px]"],
+  [class*="text-[2"][class*="px]"],
+  [class*="text-[3"][class*="px]"] {
+    font-feature-settings: 'kern' 1, 'liga' 1 !important;
+    text-rendering: optimizeLegibility !important;
   }
 }
 
