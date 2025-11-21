@@ -20,7 +20,9 @@ import {
   Gift as GiftIcon,
   CheckCircle2,
   Clock,
-  AlertCircle
+  AlertCircle,
+  Star,
+  Sparkles,
 } from 'lucide-react';
 import { useStore } from '@/store';
 import { TeamMember, UserRank } from '@/types';
@@ -61,12 +63,27 @@ export default function LeaderDashboard() {
       }
     });
 
+  // Top 3 performers
+  const top3Performers = [...TEAM_MEMBERS]
+    .sort((a, b) => b.personalSales - a.personalSales)
+    .slice(0, 3);
+
   // Chart data
   const performanceData = TEAM_MEMBERS.slice(0, 5).map(m => ({
     name: m.name.split(' ').pop(),
     sales: m.personalSales / 1000000,
     team: m.teamVolume / 1000000
   }));
+
+  // Network Health Data
+  const activeCount = TEAM_MEMBERS.filter(m => m.monthlyGrowth > 0).length;
+  const inactiveCount = TEAM_MEMBERS.length - activeCount;
+
+  const networkHealthData = [
+    { name: 'Active', value: activeCount, color: '#10B981' },
+    { name: 'At Risk', value: Math.floor(TEAM_MEMBERS.length * 0.15), color: '#F59E0B' },
+    { name: 'Inactive', value: inactiveCount - Math.floor(TEAM_MEMBERS.length * 0.15), color: '#EF4444' }
+  ];
 
   const rankDistribution = [
     { name: 'Partner', value: TEAM_MEMBERS.filter(m => m.rank === 'Partner').length, color: '#00575A' },
@@ -129,35 +146,51 @@ export default function LeaderDashboard() {
   };
 
   return (
-    <div className="space-y-6 pb-20">
+    <div className="min-h-screen bg-gradient-to-br from-[#0A0E27] via-[#1A1F3A] to-[#0A0E27] p-6 space-y-6 pb-20">
       {/* Header */}
-      <div className="bg-gradient-to-r from-primary to-primary/80 rounded-2xl p-8 text-white">
-        <div className="flex items-start justify-between">
-          <div className="flex-1">
-            <div className="flex items-center gap-3 mb-3">
-              <div className="w-12 h-12 bg-accent rounded-xl flex items-center justify-center">
-                <Crown className="w-7 h-7 text-primary" />
+      <motion.div
+        initial={{ opacity: 0, y: -20 }}
+        animate={{ opacity: 1, y: 0 }}
+        className="relative overflow-hidden"
+      >
+        {/* Background */}
+        <div className="absolute inset-0 bg-gradient-to-r from-primary to-primary/80 rounded-3xl" />
+        <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGRlZnM+PHBhdHRlcm4gaWQ9ImdyaWQiIHdpZHRoPSI2MCIgaGVpZ2h0PSI2MCIgcGF0dGVyblVuaXRzPSJ1c2VyU3BhY2VPblVzZSI+PHBhdGggZD0iTSAxMCAwIEwgMCAwIDAgMTAiIGZpbGw9Im5vbmUiIHN0cm9rZT0id2hpdGUiIHN0cm9rZS1vcGFjaXR5PSIwLjA1IiBzdHJva2Utd2lkdGg9IjEiLz48L3BhdHRlcm4+PC9kZWZzPjxyZWN0IHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiIGZpbGw9InVybCgjZ3JpZCkiLz48L3N2Zz4=')] opacity-30" />
+
+        {/* Content */}
+        <div className="relative p-8 text-white">
+          <div className="flex items-start justify-between">
+            <div className="flex-1">
+              <div className="flex items-center gap-3 mb-3">
+                <div className="w-14 h-14 bg-accent rounded-2xl flex items-center justify-center shadow-lg shadow-accent/30">
+                  <Crown className="w-8 h-8 text-primary" />
+                </div>
+                <div>
+                  <h1 className="text-4xl font-bold">{t('team.leaderDashboard')}</h1>
+                  <p className="text-white/80 text-sm">{t('team.subtitle')}</p>
+                </div>
               </div>
-              <div>
-                <h1 className="text-3xl font-bold">{t('team.leaderDashboard')}</h1>
-                <p className="text-white/80 text-sm">{t('team.subtitle')}</p>
-              </div>
+              <p className="text-white/90 max-w-2xl mt-2">
+                {t('team.description')}
+              </p>
             </div>
-            <p className="text-white/90 max-w-2xl">
-              {t('team.description')}
-            </p>
           </div>
         </div>
-      </div>
+      </motion.div>
 
       {/* Tab Navigation - TREE MAX LEVEL */}
-      <div className="bg-white rounded-xl p-2 flex gap-2 border border-gray-200">
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.1 }}
+        className="bg-white/10 backdrop-blur-xl rounded-2xl p-2 flex gap-2 border border-white/20"
+      >
         <button
           onClick={() => setActiveTab('team')}
-          className={`flex-1 px-6 py-3 rounded-lg font-bold text-sm transition-all duration-300 flex items-center justify-center gap-2 ${
+          className={`flex-1 px-6 py-3.5 rounded-xl font-bold text-sm transition-all duration-300 flex items-center justify-center gap-2 ${
             activeTab === 'team'
-              ? 'bg-gradient-to-r from-primary to-primary/80 text-white shadow-lg'
-              : 'text-gray-600 hover:bg-gray-50'
+              ? 'bg-gradient-to-r from-primary to-primary/80 text-white shadow-lg shadow-primary/30'
+              : 'text-gray-300 hover:bg-white/5'
           }`}
         >
           <Users className="w-5 h-5" />
@@ -165,10 +198,10 @@ export default function LeaderDashboard() {
         </button>
         <button
           onClick={() => setActiveTab('insights')}
-          className={`flex-1 px-6 py-3 rounded-lg font-bold text-sm transition-all duration-300 flex items-center justify-center gap-2 ${
+          className={`flex-1 px-6 py-3.5 rounded-xl font-bold text-sm transition-all duration-300 flex items-center justify-center gap-2 ${
             activeTab === 'insights'
-              ? 'bg-gradient-to-r from-orange-500 to-red-500 text-white shadow-lg'
-              : 'text-gray-600 hover:bg-gray-50'
+              ? 'bg-gradient-to-r from-orange-500 to-red-500 text-white shadow-lg shadow-orange-500/30'
+              : 'text-gray-300 hover:bg-white/5'
           }`}
         >
           <Brain className="w-5 h-5" />
@@ -179,253 +212,439 @@ export default function LeaderDashboard() {
             </span>
           )}
         </button>
-      </div>
+      </motion.div>
 
       {activeTab === 'team' && (
         <>
+          {/* Top 3 Leaderboard - Podium Style */}
+          <motion.div
+            initial={{ opacity: 0, scale: 0.95 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ delay: 0.2 }}
+            className="relative"
+          >
+            {/* Glow */}
+            <div className="absolute inset-0 bg-gradient-to-r from-yellow-500/20 via-orange-500/20 to-red-500/20 rounded-3xl blur-2xl" />
+
+            {/* Card */}
+            <div className="relative bg-gradient-to-br from-white/10 to-white/5 backdrop-blur-xl border border-white/20 rounded-3xl p-8">
+              <div className="flex items-center justify-between mb-6">
+                <div>
+                  <h2 className="text-2xl font-bold text-white flex items-center gap-3">
+                    <div className="p-2 bg-yellow-500/20 rounded-xl">
+                      <Award className="w-6 h-6 text-yellow-400" />
+                    </div>
+                    Top 3 Tướng Tài
+                  </h2>
+                  <p className="text-gray-400 text-sm mt-1">Doanh số cao nhất tháng này</p>
+                </div>
+              </div>
+
+              {/* Podium */}
+              <div className="grid grid-cols-3 gap-6 items-end">
+                {/* 2nd Place */}
+                {top3Performers[1] && (
+                  <motion.div
+                    initial={{ opacity: 0, y: 50 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.3 }}
+                    className="text-center"
+                  >
+                    <div className="relative mb-4 inline-block">
+                      <div className="absolute inset-0 bg-gradient-to-br from-gray-400 to-gray-600 rounded-full blur-xl opacity-50" />
+                      <img
+                        src={top3Performers[1].avatarUrl}
+                        alt={top3Performers[1].name}
+                        className="relative w-24 h-24 rounded-full border-4 border-gray-400 shadow-2xl mx-auto"
+                      />
+                      <div className="absolute -top-2 -right-2 w-10 h-10 bg-gradient-to-br from-gray-300 to-gray-500 rounded-full flex items-center justify-center border-2 border-white shadow-lg">
+                        <span className="text-white font-bold text-lg">2</span>
+                      </div>
+                    </div>
+                    <h3 className="text-white font-bold text-lg mb-1">{top3Performers[1].name}</h3>
+                    <p className="text-gray-400 text-sm mb-2">{top3Performers[1].rank}</p>
+                    <div className="bg-white/10 backdrop-blur-sm rounded-xl p-3 border border-white/20">
+                      <p className="text-gray-300 text-xs mb-1">Doanh số</p>
+                      <p className="text-white font-bold">{formatVND(top3Performers[1].personalSales)}</p>
+                    </div>
+                  </motion.div>
+                )}
+
+                {/* 1st Place */}
+                {top3Performers[0] && (
+                  <motion.div
+                    initial={{ opacity: 0, y: 50 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.2 }}
+                    className="text-center transform scale-110"
+                  >
+                    <div className="relative mb-4 inline-block">
+                      <div className="absolute inset-0 bg-gradient-to-br from-yellow-400 to-orange-600 rounded-full blur-2xl opacity-70 animate-pulse" />
+                      <img
+                        src={top3Performers[0].avatarUrl}
+                        alt={top3Performers[0].name}
+                        className="relative w-32 h-32 rounded-full border-4 border-yellow-400 shadow-2xl mx-auto ring-4 ring-yellow-400/30"
+                      />
+                      <div className="absolute -top-4 left-1/2 -translate-x-1/2">
+                        <Crown className="w-10 h-10 text-yellow-400 drop-shadow-2xl animate-pulse" fill="currentColor" />
+                      </div>
+                      <div className="absolute -bottom-2 left-1/2 -translate-x-1/2 w-12 h-12 bg-gradient-to-br from-yellow-400 to-orange-500 rounded-full flex items-center justify-center border-4 border-white shadow-2xl">
+                        <span className="text-white font-bold text-xl">1</span>
+                      </div>
+                    </div>
+                    <h3 className="text-white font-bold text-xl mb-1">{top3Performers[0].name}</h3>
+                    <p className="text-yellow-400 text-sm mb-2 flex items-center justify-center gap-1">
+                      <Star className="w-4 h-4" fill="currentColor" />
+                      {top3Performers[0].rank}
+                    </p>
+                    <div className="bg-gradient-to-br from-yellow-500/20 to-orange-500/20 backdrop-blur-sm rounded-xl p-4 border border-yellow-500/40">
+                      <p className="text-yellow-200 text-xs mb-1">Doanh số</p>
+                      <p className="text-white font-bold text-lg">{formatVND(top3Performers[0].personalSales)}</p>
+                    </div>
+                  </motion.div>
+                )}
+
+                {/* 3rd Place */}
+                {top3Performers[2] && (
+                  <motion.div
+                    initial={{ opacity: 0, y: 50 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.4 }}
+                    className="text-center"
+                  >
+                    <div className="relative mb-4 inline-block">
+                      <div className="absolute inset-0 bg-gradient-to-br from-orange-400 to-orange-600 rounded-full blur-xl opacity-50" />
+                      <img
+                        src={top3Performers[2].avatarUrl}
+                        alt={top3Performers[2].name}
+                        className="relative w-24 h-24 rounded-full border-4 border-orange-400 shadow-2xl mx-auto"
+                      />
+                      <div className="absolute -top-2 -right-2 w-10 h-10 bg-gradient-to-br from-orange-300 to-orange-600 rounded-full flex items-center justify-center border-2 border-white shadow-lg">
+                        <span className="text-white font-bold text-lg">3</span>
+                      </div>
+                    </div>
+                    <h3 className="text-white font-bold text-lg mb-1">{top3Performers[2].name}</h3>
+                    <p className="text-gray-400 text-sm mb-2">{top3Performers[2].rank}</p>
+                    <div className="bg-white/10 backdrop-blur-sm rounded-xl p-3 border border-white/20">
+                      <p className="text-gray-300 text-xs mb-1">Doanh số</p>
+                      <p className="text-white font-bold">{formatVND(top3Performers[2].personalSales)}</p>
+                    </div>
+                  </motion.div>
+                )}
+              </div>
+            </div>
+          </motion.div>
+
           {/* Key Metrics */}
           <div className="grid md:grid-cols-4 gap-4">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          className="bg-white rounded-xl p-6 border border-gray-100"
-        >
-          <div className="flex items-center justify-between mb-3">
-            <Users className="w-8 h-8 text-blue-500" />
-            <span className="text-xs font-bold bg-blue-50 text-blue-600 px-2 py-1 rounded-full">
-              {TEAM_METRICS.activeMembers}/{TEAM_METRICS.totalMembers} {t('team.metrics.active')}
-            </span>
-          </div>
-          <h3 className="text-2xl font-bold text-gray-900">{TEAM_METRICS.totalMembers}</h3>
-          <p className="text-sm text-gray-600">{t('team.metrics.totalMembers')}</p>
-        </motion.div>
-
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.1 }}
-          className="bg-white rounded-xl p-6 border border-gray-100"
-        >
-          <div className="flex items-center justify-between mb-3">
-            <DollarSign className="w-8 h-8 text-green-500" />
-            <TrendingUp className="w-4 h-4 text-green-500" />
-          </div>
-          <h3 className="text-2xl font-bold text-gray-900">{formatVND(TEAM_METRICS.totalTeamVolume)}</h3>
-          <p className="text-sm text-gray-600">{t('team.metrics.teamVolume')}</p>
-        </motion.div>
-
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.2 }}
-          className="bg-white rounded-xl p-6 border border-gray-100"
-        >
-          <div className="flex items-center justify-between mb-3">
-            <Target className="w-8 h-8 text-purple-500" />
-            <span className="text-xs font-bold bg-green-50 text-green-600 px-2 py-1 rounded-full">
-              +{TEAM_METRICS.monthlyGrowth}%
-            </span>
-          </div>
-          <h3 className="text-2xl font-bold text-gray-900">{formatVND(TEAM_METRICS.averageSalesPerMember)}</h3>
-          <p className="text-sm text-gray-600">{t('team.metrics.averageSales')}</p>
-        </motion.div>
-
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.3 }}
-          className="bg-white rounded-xl p-6 border border-gray-100"
+          className="relative group"
         >
-          <div className="flex items-center justify-between mb-3">
-            <Award className="w-8 h-8 text-orange-500" />
-            <Activity className="w-4 h-4 text-orange-500" />
+          <div className="absolute inset-0 bg-gradient-to-br from-blue-500/20 to-blue-600/20 rounded-2xl blur-xl opacity-0 group-hover:opacity-100 transition-opacity" />
+          <div className="relative bg-white/10 backdrop-blur-xl rounded-2xl p-6 border border-white/20 hover:border-blue-500/50 transition-all">
+            <div className="flex items-center justify-between mb-3">
+              <Users className="w-8 h-8 text-blue-400" />
+              <span className="text-xs font-bold bg-blue-500/20 text-blue-300 px-2 py-1 rounded-full border border-blue-500/30">
+                {TEAM_METRICS.activeMembers}/{TEAM_METRICS.totalMembers} {t('team.metrics.active')}
+              </span>
+            </div>
+            <h3 className="text-3xl font-bold text-white mb-1">{TEAM_METRICS.totalMembers}</h3>
+            <p className="text-sm text-gray-400">{t('team.metrics.totalMembers')}</p>
           </div>
-          <h3 className="text-2xl font-bold text-gray-900">{TEAM_METRICS.topPerformers.length}</h3>
-          <p className="text-sm text-gray-600">{t('team.metrics.topPerformers')}</p>
+        </motion.div>
+
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.4 }}
+          className="relative group"
+        >
+          <div className="absolute inset-0 bg-gradient-to-br from-green-500/20 to-green-600/20 rounded-2xl blur-xl opacity-0 group-hover:opacity-100 transition-opacity" />
+          <div className="relative bg-white/10 backdrop-blur-xl rounded-2xl p-6 border border-white/20 hover:border-green-500/50 transition-all">
+            <div className="flex items-center justify-between mb-3">
+              <DollarSign className="w-8 h-8 text-green-400" />
+              <TrendingUp className="w-5 h-5 text-green-400" />
+            </div>
+            <h3 className="text-3xl font-bold text-white mb-1">{formatVND(TEAM_METRICS.totalTeamVolume)}</h3>
+            <p className="text-sm text-gray-400">{t('team.metrics.teamVolume')}</p>
+          </div>
+        </motion.div>
+
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.5 }}
+          className="relative group"
+        >
+          <div className="absolute inset-0 bg-gradient-to-br from-purple-500/20 to-purple-600/20 rounded-2xl blur-xl opacity-0 group-hover:opacity-100 transition-opacity" />
+          <div className="relative bg-white/10 backdrop-blur-xl rounded-2xl p-6 border border-white/20 hover:border-purple-500/50 transition-all">
+            <div className="flex items-center justify-between mb-3">
+              <Target className="w-8 h-8 text-purple-400" />
+              <span className="text-xs font-bold bg-green-500/20 text-green-300 px-2 py-1 rounded-full border border-green-500/30">
+                +{TEAM_METRICS.monthlyGrowth}%
+              </span>
+            </div>
+            <h3 className="text-3xl font-bold text-white mb-1">{formatVND(TEAM_METRICS.averageSalesPerMember)}</h3>
+            <p className="text-sm text-gray-400">{t('team.metrics.averageSales')}</p>
+          </div>
+        </motion.div>
+
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.6 }}
+          className="relative group"
+        >
+          <div className="absolute inset-0 bg-gradient-to-br from-orange-500/20 to-orange-600/20 rounded-2xl blur-xl opacity-0 group-hover:opacity-100 transition-opacity" />
+          <div className="relative bg-white/10 backdrop-blur-xl rounded-2xl p-6 border border-white/20 hover:border-orange-500/50 transition-all">
+            <div className="flex items-center justify-between mb-3">
+              <Award className="w-8 h-8 text-orange-400" />
+              <Activity className="w-5 h-5 text-orange-400" />
+            </div>
+            <h3 className="text-3xl font-bold text-white mb-1">{TEAM_METRICS.topPerformers.length}</h3>
+            <p className="text-sm text-gray-400">{t('team.metrics.topPerformers')}</p>
+          </div>
         </motion.div>
       </div>
 
-      {/* Charts */}
+      {/* Charts - Network Health & Rank Distribution */}
       <div className="grid md:grid-cols-2 gap-6">
-        {/* Performance Chart */}
-        <div className="bg-white rounded-xl p-6 border border-gray-100">
-          <h3 className="font-bold text-gray-900 mb-4 flex items-center gap-2">
-            <TrendingUp className="w-5 h-5 text-primary" />
-            {t('team.charts.teamPerformance')}
-          </h3>
-          <ResponsiveContainer width="100%" height={250}>
-            <BarChart data={performanceData}>
-              <CartesianGrid strokeDasharray="3 3" stroke="#f0f0f0" />
-              <XAxis dataKey="name" tick={{ fontSize: 12 }} />
-              <YAxis tick={{ fontSize: 12 }} />
-              <Tooltip
-                formatter={(value: number) => `${value.toFixed(1)}M`}
-                contentStyle={{ borderRadius: '8px', border: '1px solid #e5e7eb' }}
-              />
-              <Bar dataKey="sales" fill="#00575A" name={t('team.charts.personalSales')} radius={[8, 8, 0, 0]} />
-              <Bar dataKey="team" fill="#FFBF00" name={t('team.charts.teamVolumeChart')} radius={[8, 8, 0, 0]} />
-            </BarChart>
-          </ResponsiveContainer>
-        </div>
+        {/* Network Health - Donut Chart */}
+        <motion.div
+          initial={{ opacity: 0, x: -20 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ delay: 0.7 }}
+          className="relative group"
+        >
+          <div className="absolute inset-0 bg-gradient-to-br from-cyan-500/10 to-blue-500/10 rounded-2xl blur-xl opacity-50" />
+          <div className="relative bg-white/10 backdrop-blur-xl rounded-2xl p-6 border border-white/20">
+            <h3 className="font-bold text-white text-lg mb-4 flex items-center gap-2">
+              <Activity className="w-5 h-5 text-cyan-400" />
+              Network Health
+            </h3>
+            <ResponsiveContainer width="100%" height={250}>
+              <PieChart>
+                <Pie
+                  data={networkHealthData}
+                  cx="50%"
+                  cy="50%"
+                  innerRadius={60}
+                  outerRadius={90}
+                  paddingAngle={5}
+                  dataKey="value"
+                  label={({ name, value, percent }) => `${name}: ${value} (${(percent * 100).toFixed(0)}%)`}
+                >
+                  {networkHealthData.map((entry, index) => (
+                    <Cell key={`cell-${index}`} fill={entry.color} />
+                  ))}
+                </Pie>
+                <Tooltip
+                  contentStyle={{
+                    backgroundColor: 'rgba(0, 0, 0, 0.8)',
+                    border: '1px solid rgba(255, 255, 255, 0.2)',
+                    borderRadius: '12px',
+                    color: 'white'
+                  }}
+                />
+              </PieChart>
+            </ResponsiveContainer>
+
+            {/* Legend */}
+            <div className="flex justify-center gap-4 mt-4">
+              {networkHealthData.map((item, index) => (
+                <div key={index} className="flex items-center gap-2">
+                  <div className="w-3 h-3 rounded-full" style={{ backgroundColor: item.color }} />
+                  <span className="text-gray-300 text-sm">{item.name}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+        </motion.div>
 
         {/* Rank Distribution */}
-        <div className="bg-white rounded-xl p-6 border border-gray-100">
-          <h3 className="font-bold text-gray-900 mb-4 flex items-center gap-2">
-            <Award className="w-5 h-5 text-primary" />
-            {t('team.charts.rankDistribution')}
-          </h3>
-          <ResponsiveContainer width="100%" height={250}>
-            <PieChart>
-              <Pie
-                data={rankDistribution}
-                cx="50%"
-                cy="50%"
-                labelLine={false}
-                label={({ name, value, percent }) => `${name}: ${value} (${(percent * 100).toFixed(0)}%)`}
-                outerRadius={80}
-                fill="#8884d8"
-                dataKey="value"
-              >
-                {rankDistribution.map((entry, index) => (
-                  <Cell key={`cell-${index}`} fill={entry.color} />
-                ))}
-              </Pie>
-              <Tooltip />
-            </PieChart>
-          </ResponsiveContainer>
-        </div>
+        <motion.div
+          initial={{ opacity: 0, x: 20 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ delay: 0.8 }}
+          className="relative group"
+        >
+          <div className="absolute inset-0 bg-gradient-to-br from-purple-500/10 to-pink-500/10 rounded-2xl blur-xl opacity-50" />
+          <div className="relative bg-white/10 backdrop-blur-xl rounded-2xl p-6 border border-white/20">
+            <h3 className="font-bold text-white text-lg mb-4 flex items-center gap-2">
+              <Award className="w-5 h-5 text-purple-400" />
+              {t('team.charts.rankDistribution')}
+            </h3>
+            <ResponsiveContainer width="100%" height={250}>
+              <PieChart>
+                <Pie
+                  data={rankDistribution}
+                  cx="50%"
+                  cy="50%"
+                  labelLine={false}
+                  label={({ name, value, percent }) => `${name}: ${value} (${(percent * 100).toFixed(0)}%)`}
+                  outerRadius={90}
+                  fill="#8884d8"
+                  dataKey="value"
+                >
+                  {rankDistribution.map((entry, index) => (
+                    <Cell key={`cell-${index}`} fill={entry.color} />
+                  ))}
+                </Pie>
+                <Tooltip
+                  contentStyle={{
+                    backgroundColor: 'rgba(0, 0, 0, 0.8)',
+                    border: '1px solid rgba(255, 255, 255, 0.2)',
+                    borderRadius: '12px',
+                    color: 'white'
+                  }}
+                />
+              </PieChart>
+            </ResponsiveContainer>
+          </div>
+        </motion.div>
       </div>
 
       {/* Team Members Table */}
-      <div className="bg-white rounded-xl border border-gray-100 overflow-hidden">
-        {/* Header */}
-        <div className="p-6 border-b border-gray-100">
-          <div className="flex flex-col md:flex-row gap-4 items-start md:items-center justify-between">
-            <div>
-              <h3 className="font-bold text-gray-900 flex items-center gap-2">
-                <Users className="w-5 h-5 text-primary" />
-                {t('team.members.teamMembers')} ({filteredMembers.length})
-              </h3>
-            </div>
-
-            <div className="flex flex-col md:flex-row gap-3 w-full md:w-auto">
-              {/* Search */}
-              <div className="relative">
-                <Search className="w-4 h-4 text-gray-400 absolute left-3 top-1/2 -translate-y-1/2" />
-                <input
-                  type="text"
-                  value={searchTerm}
-                  onChange={(e) => setSearchTerm(e.target.value)}
-                  placeholder={t('team.members.search')}
-                  className="pl-9 pr-4 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-primary/50"
-                />
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.9 }}
+        className="relative group"
+      >
+        <div className="absolute inset-0 bg-gradient-to-br from-white/5 to-white/10 rounded-2xl blur-xl opacity-50" />
+        <div className="relative bg-white/10 backdrop-blur-xl border border-white/20 rounded-2xl overflow-hidden">
+          {/* Header */}
+          <div className="p-6 border-b border-white/10">
+            <div className="flex flex-col md:flex-row gap-4 items-start md:items-center justify-between">
+              <div>
+                <h3 className="font-bold text-white text-lg flex items-center gap-2">
+                  <Users className="w-5 h-5 text-primary" />
+                  {t('team.members.teamMembers')} ({filteredMembers.length})
+                </h3>
               </div>
 
-              {/* Filter by Rank */}
-              <select
-                value={filterRank}
-                onChange={(e) => setFilterRank(e.target.value as UserRank | 'all')}
-                className="px-4 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-primary/50"
-              >
-                <option value="all">{t('team.filters.allRanks')}</option>
-                <option value="Partner">Partner</option>
-                <option value="Member">Member</option>
-              </select>
+              <div className="flex flex-col md:flex-row gap-3 w-full md:w-auto">
+                {/* Search */}
+                <div className="relative">
+                  <Search className="w-4 h-4 text-gray-400 absolute left-3 top-1/2 -translate-y-1/2" />
+                  <input
+                    type="text"
+                    value={searchTerm}
+                    onChange={(e) => setSearchTerm(e.target.value)}
+                    placeholder={t('team.members.search')}
+                    className="pl-9 pr-4 py-2.5 bg-white/10 border border-white/20 rounded-xl text-sm text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-primary/50 backdrop-blur-sm"
+                  />
+                </div>
 
-              {/* Sort */}
-              <select
-                value={sortBy}
-                onChange={(e) => setSortBy(e.target.value as 'sales' | 'growth' | 'team')}
-                className="px-4 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-primary/50"
-              >
-                <option value="sales">{t('team.filters.sortSales')}</option>
-                <option value="growth">{t('team.filters.sortGrowth')}</option>
-                <option value="team">{t('team.filters.sortTeam')}</option>
-              </select>
+                {/* Filter by Rank */}
+                <select
+                  value={filterRank}
+                  onChange={(e) => setFilterRank(e.target.value as UserRank | 'all')}
+                  className="px-4 py-2.5 bg-white/10 border border-white/20 rounded-xl text-sm text-white focus:outline-none focus:ring-2 focus:ring-primary/50 backdrop-blur-sm"
+                >
+                  <option value="all" className="bg-gray-800">{t('team.filters.allRanks')}</option>
+                  <option value="Partner" className="bg-gray-800">Partner</option>
+                  <option value="Member" className="bg-gray-800">Member</option>
+                </select>
 
-              {/* Export */}
-              <button className="px-4 py-2 bg-primary hover:bg-primary/90 text-white rounded-lg text-sm flex items-center gap-2 transition-colors">
-                <Download className="w-4 h-4" />
-                {t('team.filters.export')}
-              </button>
+                {/* Sort */}
+                <select
+                  value={sortBy}
+                  onChange={(e) => setSortBy(e.target.value as 'sales' | 'growth' | 'team')}
+                  className="px-4 py-2.5 bg-white/10 border border-white/20 rounded-xl text-sm text-white focus:outline-none focus:ring-2 focus:ring-primary/50 backdrop-blur-sm"
+                >
+                  <option value="sales" className="bg-gray-800">{t('team.filters.sortSales')}</option>
+                  <option value="growth" className="bg-gray-800">{t('team.filters.sortGrowth')}</option>
+                  <option value="team" className="bg-gray-800">{t('team.filters.sortTeam')}</option>
+                </select>
+
+                {/* Export */}
+                <button className="px-4 py-2.5 bg-gradient-to-r from-primary to-primary/80 hover:from-primary/90 hover:to-primary/70 text-white rounded-xl text-sm font-bold flex items-center gap-2 transition-all shadow-lg shadow-primary/30">
+                  <Download className="w-4 h-4" />
+                  {t('team.filters.export')}
+                </button>
+              </div>
             </div>
           </div>
-        </div>
 
-        {/* Table */}
-        <div className="overflow-x-auto">
-          <table className="w-full">
-            <thead className="bg-gray-50 border-b border-gray-200">
-              <tr>
-                <th className="px-6 py-4 text-left text-xs font-bold text-gray-600 uppercase tracking-wider">{t('team.members.member')}</th>
-                <th className="px-6 py-4 text-left text-xs font-bold text-gray-600 uppercase tracking-wider">{t('team.members.rank')}</th>
-                <th className="px-6 py-4 text-right text-xs font-bold text-gray-600 uppercase tracking-wider">{t('team.members.personalSales')}</th>
-                <th className="px-6 py-4 text-right text-xs font-bold text-gray-600 uppercase tracking-wider">{t('team.members.teamVolume')}</th>
-                <th className="px-6 py-4 text-center text-xs font-bold text-gray-600 uppercase tracking-wider">{t('team.members.downlines')}</th>
-                <th className="px-6 py-4 text-center text-xs font-bold text-gray-600 uppercase tracking-wider">{t('team.members.growth')}</th>
-                <th className="px-6 py-4 text-center text-xs font-bold text-gray-600 uppercase tracking-wider">{t('team.members.actions')}</th>
-              </tr>
-            </thead>
-            <tbody className="divide-y divide-gray-200">
-              {filteredMembers.map((member, index) => (
-                <motion.tr
-                  key={member.id}
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  transition={{ delay: index * 0.05 }}
-                  className="hover:bg-gray-50 transition-colors"
-                >
-                  <td className="px-6 py-4">
-                    <div className="flex items-center gap-3">
-                      <img
-                        src={member.avatarUrl}
-                        alt={member.name}
-                        className="w-10 h-10 rounded-full"
-                      />
-                      <div>
-                        <p className="font-medium text-gray-900">{member.name}</p>
-                        <p className="text-xs text-gray-500">{member.email}</p>
+          {/* Table */}
+          <div className="overflow-x-auto">
+            <table className="w-full">
+              <thead className="bg-white/5 border-b border-white/10">
+                <tr>
+                  <th className="px-6 py-4 text-left text-xs font-bold text-gray-400 uppercase tracking-wider">{t('team.members.member')}</th>
+                  <th className="px-6 py-4 text-left text-xs font-bold text-gray-400 uppercase tracking-wider">{t('team.members.rank')}</th>
+                  <th className="px-6 py-4 text-right text-xs font-bold text-gray-400 uppercase tracking-wider">{t('team.members.personalSales')}</th>
+                  <th className="px-6 py-4 text-right text-xs font-bold text-gray-400 uppercase tracking-wider">{t('team.members.teamVolume')}</th>
+                  <th className="px-6 py-4 text-center text-xs font-bold text-gray-400 uppercase tracking-wider">{t('team.members.downlines')}</th>
+                  <th className="px-6 py-4 text-center text-xs font-bold text-gray-400 uppercase tracking-wider">{t('team.members.growth')}</th>
+                  <th className="px-6 py-4 text-center text-xs font-bold text-gray-400 uppercase tracking-wider">{t('team.members.actions')}</th>
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-white/5">
+                {filteredMembers.map((member, index) => (
+                  <motion.tr
+                    key={member.id}
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    transition={{ delay: index * 0.05 }}
+                    className="hover:bg-white/5 transition-colors"
+                  >
+                    <td className="px-6 py-4">
+                      <div className="flex items-center gap-3">
+                        <img
+                          src={member.avatarUrl}
+                          alt={member.name}
+                          className="w-10 h-10 rounded-full ring-2 ring-white/20"
+                        />
+                        <div>
+                          <p className="font-medium text-white">{member.name}</p>
+                          <p className="text-xs text-gray-400">{member.email}</p>
+                        </div>
                       </div>
-                    </div>
-                  </td>
-                  <td className="px-6 py-4">
-                    <span className={`text-xs px-2 py-1 rounded-full font-medium ${getRankBadgeColor(member.rank)}`}>
-                      {member.rank}
-                    </span>
-                  </td>
-                  <td className="px-6 py-4 text-right font-medium text-gray-900">
-                    {formatVND(member.personalSales)}
-                  </td>
-                  <td className="px-6 py-4 text-right font-medium text-gray-900">
-                    {formatVND(member.teamVolume)}
-                  </td>
-                  <td className="px-6 py-4 text-center">
-                    <span className="text-sm font-medium text-gray-700">{member.activeDownlines}</span>
-                  </td>
-                  <td className="px-6 py-4 text-center">
-                    <span className={`text-sm font-bold ${getGrowthColor(member.monthlyGrowth)}`}>
-                      +{member.monthlyGrowth}%
-                    </span>
-                  </td>
-                  <td className="px-6 py-4">
-                    <div className="flex items-center justify-center gap-2">
-                      <button className="p-2 hover:bg-gray-100 rounded-lg transition-colors" title={t('team.actions.sendEmail')}>
-                        <Mail className="w-4 h-4 text-gray-600" />
-                      </button>
-                      <button className="p-2 hover:bg-gray-100 rounded-lg transition-colors" title={t('team.actions.call')}>
-                        <Phone className="w-4 h-4 text-gray-600" />
-                      </button>
-                      <button className="p-2 hover:bg-gray-100 rounded-lg transition-colors" title={t('team.actions.moreActions')}>
-                        <MoreVertical className="w-4 h-4 text-gray-600" />
-                      </button>
-                    </div>
-                  </td>
-                </motion.tr>
-              ))}
-            </tbody>
-          </table>
+                    </td>
+                    <td className="px-6 py-4">
+                      <span className={`text-xs px-3 py-1.5 rounded-lg font-bold border ${getRankBadgeColor(member.rank)}`}>
+                        {member.rank}
+                      </span>
+                    </td>
+                    <td className="px-6 py-4 text-right font-medium text-white">
+                      {formatVND(member.personalSales)}
+                    </td>
+                    <td className="px-6 py-4 text-right font-medium text-white">
+                      {formatVND(member.teamVolume)}
+                    </td>
+                    <td className="px-6 py-4 text-center">
+                      <span className="text-sm font-medium text-gray-300">{member.activeDownlines}</span>
+                    </td>
+                    <td className="px-6 py-4 text-center">
+                      <span className={`text-sm font-bold ${getGrowthColor(member.monthlyGrowth)}`}>
+                        +{member.monthlyGrowth}%
+                      </span>
+                    </td>
+                    <td className="px-6 py-4">
+                      <div className="flex items-center justify-center gap-2">
+                        <button className="p-2 hover:bg-white/10 rounded-lg transition-colors" title={t('team.actions.sendEmail')}>
+                          <Mail className="w-4 h-4 text-gray-400" />
+                        </button>
+                        <button className="p-2 hover:bg-white/10 rounded-lg transition-colors" title={t('team.actions.call')}>
+                          <Phone className="w-4 h-4 text-gray-400" />
+                        </button>
+                        <button className="p-2 hover:bg-white/10 rounded-lg transition-colors" title={t('team.actions.moreActions')}>
+                          <MoreVertical className="w-4 h-4 text-gray-400" />
+                        </button>
+                      </div>
+                    </td>
+                  </motion.tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
         </div>
-      </div>
+      </motion.div>
         </>
       )}
 
@@ -438,179 +657,226 @@ export default function LeaderDashboard() {
         >
           {/* Insights Overview */}
           <div className="grid md:grid-cols-4 gap-4">
-            <div className="bg-gradient-to-br from-red-500 to-red-600 rounded-xl p-6 text-white">
-              <AlertTriangle className="w-8 h-8 mb-3 opacity-80" />
-              <h3 className="text-3xl font-bold">{teamInsights.highRiskCount}</h3>
-              <p className="text-sm text-red-100">Thành viên rủi ro cao</p>
-            </div>
-            <div className="bg-gradient-to-br from-yellow-500 to-yellow-600 rounded-xl p-6 text-white">
-              <AlertCircle className="w-8 h-8 mb-3 opacity-80" />
-              <h3 className="text-3xl font-bold">{teamInsights.mediumRiskCount}</h3>
-              <p className="text-sm text-yellow-100">Thành viên rủi ro trung bình</p>
-            </div>
-            <div className="bg-gradient-to-br from-green-500 to-green-600 rounded-xl p-6 text-white">
-              <CheckCircle2 className="w-8 h-8 mb-3 opacity-80" />
-              <h3 className="text-3xl font-bold">{teamInsights.retentionRate.toFixed(1)}%</h3>
-              <p className="text-sm text-green-100">Tỷ lệ giữ chân</p>
-            </div>
-            <div className="bg-gradient-to-br from-blue-500 to-blue-600 rounded-xl p-6 text-white">
-              <Brain className="w-8 h-8 mb-3 opacity-80" />
-              <h3 className="text-3xl font-bold">{teamInsights.totalAtRisk}</h3>
-              <p className="text-sm text-blue-100">Cần chú ý</p>
-            </div>
+            <motion.div
+              initial={{ opacity: 0, scale: 0.9 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ delay: 0.1 }}
+              className="relative group"
+            >
+              <div className="absolute inset-0 bg-gradient-to-br from-red-500 to-red-600 rounded-2xl blur-xl opacity-50" />
+              <div className="relative bg-gradient-to-br from-red-500 to-red-600 rounded-2xl p-6 text-white">
+                <AlertTriangle className="w-8 h-8 mb-3 opacity-80" />
+                <h3 className="text-4xl font-bold mb-1">{teamInsights.highRiskCount}</h3>
+                <p className="text-sm text-red-100">Thành viên rủi ro cao</p>
+              </div>
+            </motion.div>
+
+            <motion.div
+              initial={{ opacity: 0, scale: 0.9 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ delay: 0.2 }}
+              className="relative group"
+            >
+              <div className="absolute inset-0 bg-gradient-to-br from-yellow-500 to-yellow-600 rounded-2xl blur-xl opacity-50" />
+              <div className="relative bg-gradient-to-br from-yellow-500 to-yellow-600 rounded-2xl p-6 text-white">
+                <AlertCircle className="w-8 h-8 mb-3 opacity-80" />
+                <h3 className="text-4xl font-bold mb-1">{teamInsights.mediumRiskCount}</h3>
+                <p className="text-sm text-yellow-100">Thành viên rủi ro trung bình</p>
+              </div>
+            </motion.div>
+
+            <motion.div
+              initial={{ opacity: 0, scale: 0.9 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ delay: 0.3 }}
+              className="relative group"
+            >
+              <div className="absolute inset-0 bg-gradient-to-br from-green-500 to-green-600 rounded-2xl blur-xl opacity-50" />
+              <div className="relative bg-gradient-to-br from-green-500 to-green-600 rounded-2xl p-6 text-white">
+                <CheckCircle2 className="w-8 h-8 mb-3 opacity-80" />
+                <h3 className="text-4xl font-bold mb-1">{teamInsights.retentionRate.toFixed(1)}%</h3>
+                <p className="text-sm text-green-100">Tỷ lệ giữ chân</p>
+              </div>
+            </motion.div>
+
+            <motion.div
+              initial={{ opacity: 0, scale: 0.9 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ delay: 0.4 }}
+              className="relative group"
+            >
+              <div className="absolute inset-0 bg-gradient-to-br from-blue-500 to-blue-600 rounded-2xl blur-xl opacity-50" />
+              <div className="relative bg-gradient-to-br from-blue-500 to-blue-600 rounded-2xl p-6 text-white">
+                <Brain className="w-8 h-8 mb-3 opacity-80" />
+                <h3 className="text-4xl font-bold mb-1">{teamInsights.totalAtRisk}</h3>
+                <p className="text-sm text-blue-100">Cần chú ý</p>
+              </div>
+            </motion.div>
           </div>
 
           {/* At-Risk Members List */}
-          <div className="bg-white rounded-xl border border-gray-100 overflow-hidden">
-            <div className="bg-gradient-to-r from-orange-50 to-red-50 border-b border-gray-200 p-6">
-              <h3 className="font-bold text-gray-900 flex items-center gap-2 text-xl">
-                <AlertTriangle className="w-6 h-6 text-orange-600" />
-                Thành Viên Cần Chú Ý ({teamInsights.atRiskMembers.length})
-              </h3>
-              <p className="text-sm text-gray-600 mt-1">
-                AI phát hiện những thành viên cần hỗ trợ và động viên
-              </p>
-            </div>
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.5 }}
+            className="relative"
+          >
+            <div className="absolute inset-0 bg-gradient-to-br from-orange-500/10 to-red-500/10 rounded-2xl blur-xl opacity-50" />
+            <div className="relative bg-white/10 backdrop-blur-xl border border-white/20 rounded-2xl overflow-hidden">
+              <div className="bg-gradient-to-r from-orange-500/20 to-red-500/20 border-b border-white/10 p-6">
+                <h3 className="font-bold text-white flex items-center gap-2 text-xl">
+                  <AlertTriangle className="w-6 h-6 text-orange-400" />
+                  Thành Viên Cần Chú Ý ({teamInsights.atRiskMembers.length})
+                </h3>
+                <p className="text-sm text-gray-300 mt-1">
+                  AI phát hiện những thành viên cần hỗ trợ và động viên
+                </p>
+              </div>
 
-            <div className="p-6 space-y-4">
-              {teamInsights.atRiskMembers.map((atRiskMember, index) => (
-                <motion.div
-                  key={atRiskMember.member.id}
-                  initial={{ opacity: 0, x: -20 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  transition={{ delay: index * 0.1 }}
-                  className="bg-gradient-to-br from-gray-50 to-white rounded-xl p-6 border-2 border-gray-200 hover:border-orange-300 transition-all duration-300"
-                >
-                  <div className="flex items-start gap-4">
-                    {/* Avatar */}
-                    <img
-                      src={atRiskMember.member.avatarUrl}
-                      alt={atRiskMember.member.name}
-                      className="w-16 h-16 rounded-full ring-4 ring-white shadow-lg"
-                    />
+              <div className="p-6 space-y-4">
+                {teamInsights.atRiskMembers.map((atRiskMember, index) => (
+                  <motion.div
+                    key={atRiskMember.member.id}
+                    initial={{ opacity: 0, x: -20 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ delay: index * 0.1 }}
+                    className="bg-gradient-to-br from-white/5 to-white/10 rounded-2xl p-6 border border-white/20 hover:border-orange-500/40 transition-all duration-300"
+                  >
+                    <div className="flex items-start gap-4">
+                      {/* Avatar */}
+                      <img
+                        src={atRiskMember.member.avatarUrl}
+                        alt={atRiskMember.member.name}
+                        className="w-16 h-16 rounded-full ring-4 ring-white/20 shadow-lg"
+                      />
 
-                    {/* Member Info */}
-                    <div className="flex-1">
-                      <div className="flex items-center justify-between mb-2">
-                        <div>
-                          <h4 className="font-bold text-gray-900 text-lg">
-                            {atRiskMember.member.name}
-                          </h4>
-                          <p className="text-sm text-gray-600">{atRiskMember.member.email}</p>
+                      {/* Member Info */}
+                      <div className="flex-1">
+                        <div className="flex items-center justify-between mb-2">
+                          <div>
+                            <h4 className="font-bold text-white text-lg">
+                              {atRiskMember.member.name}
+                            </h4>
+                            <p className="text-sm text-gray-400">{atRiskMember.member.email}</p>
+                          </div>
+                          <span className={`text-xs px-3 py-1.5 rounded-full font-bold border ${getRiskBadgeColor(atRiskMember.riskLevel)}`}>
+                            {atRiskMember.riskLevel === 'high' && 'Rủi ro cao'}
+                            {atRiskMember.riskLevel === 'medium' && 'Rủi ro trung bình'}
+                            {atRiskMember.riskLevel === 'low' && 'Rủi ro thấp'}
+                          </span>
                         </div>
-                        <span className={`text-xs px-3 py-1 rounded-full font-bold ${getRiskBadgeColor(atRiskMember.riskLevel)}`}>
-                          {atRiskMember.riskLevel === 'high' && 'Rủi ro cao'}
-                          {atRiskMember.riskLevel === 'medium' && 'Rủi ro trung bình'}
-                          {atRiskMember.riskLevel === 'low' && 'Rủi ro thấp'}
-                        </span>
-                      </div>
 
-                      {/* Risk Reasons */}
-                      <div className="bg-orange-50 rounded-lg p-3 mb-3">
-                        <p className="text-xs font-bold text-orange-800 mb-2 flex items-center gap-1">
-                          <AlertTriangle className="w-3 h-3" />
-                          Lý do cần chú ý:
-                        </p>
-                        <ul className="text-xs text-orange-700 space-y-1">
-                          {atRiskMember.riskReasons.map((reason, idx) => (
-                            <li key={idx} className="flex items-center gap-2">
-                              <span className="w-1 h-1 bg-orange-600 rounded-full"></span>
-                              {reason}
-                            </li>
-                          ))}
-                        </ul>
-                      </div>
-
-                      {/* Suggested Actions */}
-                      <div className="bg-blue-50 rounded-lg p-3 mb-3">
-                        <p className="text-xs font-bold text-blue-800 mb-2 flex items-center gap-1">
-                          <Brain className="w-3 h-3" />
-                          AI đề xuất:
-                        </p>
-                        <ul className="text-xs text-blue-700 space-y-1">
-                          {atRiskMember.suggestedActions.map((action, idx) => (
-                            <li key={idx} className="flex items-center gap-2">
-                              <CheckCircle2 className="w-3 h-3" />
-                              {action}
-                            </li>
-                          ))}
-                        </ul>
-                      </div>
-
-                      {/* Stats */}
-                      <div className="grid grid-cols-3 gap-3 mb-4">
-                        <div className="bg-white rounded-lg p-2 border border-gray-200">
-                          <p className="text-xs text-gray-600">Doanh số</p>
-                          <p className="text-sm font-bold text-gray-900">
-                            {formatVND(atRiskMember.member.personalSales)}
+                        {/* Risk Reasons */}
+                        <div className="bg-orange-500/10 border border-orange-500/20 rounded-xl p-3 mb-3">
+                          <p className="text-xs font-bold text-orange-300 mb-2 flex items-center gap-1">
+                            <AlertTriangle className="w-3 h-3" />
+                            Lý do cần chú ý:
                           </p>
+                          <ul className="text-xs text-orange-200 space-y-1">
+                            {atRiskMember.riskReasons.map((reason, idx) => (
+                              <li key={idx} className="flex items-center gap-2">
+                                <span className="w-1 h-1 bg-orange-400 rounded-full"></span>
+                                {reason}
+                              </li>
+                            ))}
+                          </ul>
                         </div>
-                        <div className="bg-white rounded-lg p-2 border border-gray-200">
-                          <p className="text-xs text-gray-600">Tăng trưởng</p>
-                          <p className="text-sm font-bold text-gray-900">
-                            +{atRiskMember.member.monthlyGrowth}%
-                          </p>
-                        </div>
-                        <div className="bg-white rounded-lg p-2 border border-gray-200">
-                          <p className="text-xs text-gray-600">Không hoạt động</p>
-                          <p className="text-sm font-bold text-orange-600 flex items-center gap-1">
-                            <Clock className="w-3 h-3" />
-                            {atRiskMember.daysInactive} ngày
-                          </p>
-                        </div>
-                      </div>
 
-                      {/* Action Buttons */}
-                      <div className="flex gap-3">
-                        <button
-                          onClick={() => handleSendReminder(atRiskMember.member.id)}
-                          disabled={actionLoading === `reminder-${atRiskMember.member.id}`}
-                          className="flex-1 flex items-center justify-center gap-2 bg-gradient-to-r from-blue-500 to-blue-600 text-white px-4 py-3 rounded-lg font-semibold hover:shadow-lg transition-all duration-300 disabled:opacity-50"
-                        >
-                          {actionLoading === `reminder-${atRiskMember.member.id}` ? (
-                            <>
-                              <Bell className="w-4 h-4 animate-bounce" />
-                              Đang gửi...
-                            </>
-                          ) : (
-                            <>
-                              <Bell className="w-4 h-4" />
-                              Nhắc nhở
-                            </>
-                          )}
-                        </button>
-                        <button
-                          onClick={() => handleSendGift(atRiskMember.member.id)}
-                          disabled={actionLoading === `gift-${atRiskMember.member.id}`}
-                          className="flex-1 flex items-center justify-center gap-2 bg-gradient-to-r from-purple-500 to-pink-600 text-white px-4 py-3 rounded-lg font-semibold hover:shadow-lg transition-all duration-300 disabled:opacity-50"
-                        >
-                          {actionLoading === `gift-${atRiskMember.member.id}` ? (
-                            <>
-                              <GiftIcon className="w-4 h-4 animate-bounce" />
-                              Đang tặng...
-                            </>
-                          ) : (
-                            <>
-                              <GiftIcon className="w-4 h-4" />
-                              Tặng quà 200k
-                            </>
-                          )}
-                        </button>
+                        {/* Suggested Actions */}
+                        <div className="bg-blue-500/10 border border-blue-500/20 rounded-xl p-3 mb-3">
+                          <p className="text-xs font-bold text-blue-300 mb-2 flex items-center gap-1">
+                            <Brain className="w-3 h-3" />
+                            AI đề xuất:
+                          </p>
+                          <ul className="text-xs text-blue-200 space-y-1">
+                            {atRiskMember.suggestedActions.map((action, idx) => (
+                              <li key={idx} className="flex items-center gap-2">
+                                <CheckCircle2 className="w-3 h-3" />
+                                {action}
+                              </li>
+                            ))}
+                          </ul>
+                        </div>
+
+                        {/* Stats */}
+                        <div className="grid grid-cols-3 gap-3 mb-4">
+                          <div className="bg-white/5 border border-white/10 rounded-xl p-2">
+                            <p className="text-xs text-gray-400">Doanh số</p>
+                            <p className="text-sm font-bold text-white">
+                              {formatVND(atRiskMember.member.personalSales)}
+                            </p>
+                          </div>
+                          <div className="bg-white/5 border border-white/10 rounded-xl p-2">
+                            <p className="text-xs text-gray-400">Tăng trưởng</p>
+                            <p className="text-sm font-bold text-white">
+                              +{atRiskMember.member.monthlyGrowth}%
+                            </p>
+                          </div>
+                          <div className="bg-white/5 border border-white/10 rounded-xl p-2">
+                            <p className="text-xs text-gray-400">Không hoạt động</p>
+                            <p className="text-sm font-bold text-orange-400 flex items-center gap-1">
+                              <Clock className="w-3 h-3" />
+                              {atRiskMember.daysInactive} ngày
+                            </p>
+                          </div>
+                        </div>
+
+                        {/* Action Buttons */}
+                        <div className="flex gap-3">
+                          <button
+                            onClick={() => handleSendReminder(atRiskMember.member.id)}
+                            disabled={actionLoading === `reminder-${atRiskMember.member.id}`}
+                            className="flex-1 flex items-center justify-center gap-2 bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white px-4 py-3 rounded-xl font-bold hover:shadow-lg transition-all duration-300 disabled:opacity-50"
+                          >
+                            {actionLoading === `reminder-${atRiskMember.member.id}` ? (
+                              <>
+                                <Bell className="w-4 h-4 animate-bounce" />
+                                Đang gửi...
+                              </>
+                            ) : (
+                              <>
+                                <Bell className="w-4 h-4" />
+                                Nhắc nhở
+                              </>
+                            )}
+                          </button>
+                          <button
+                            onClick={() => handleSendGift(atRiskMember.member.id)}
+                            disabled={actionLoading === `gift-${atRiskMember.member.id}`}
+                            className="flex-1 flex items-center justify-center gap-2 bg-gradient-to-r from-purple-500 via-pink-500 to-purple-600 hover:from-purple-600 hover:via-pink-600 hover:to-purple-700 text-white px-4 py-3 rounded-xl font-bold hover:shadow-lg transition-all duration-300 disabled:opacity-50"
+                          >
+                            {actionLoading === `gift-${atRiskMember.member.id}` ? (
+                              <>
+                                <GiftIcon className="w-4 h-4 animate-bounce" />
+                                Đang tặng...
+                              </>
+                            ) : (
+                              <>
+                                <GiftIcon className="w-4 h-4" />
+                                Tặng quà 200k
+                              </>
+                            )}
+                          </button>
+                        </div>
                       </div>
                     </div>
-                  </div>
-                </motion.div>
-              ))}
+                  </motion.div>
+                ))}
 
-              {teamInsights.atRiskMembers.length === 0 && (
-                <div className="text-center py-12">
-                  <CheckCircle2 className="w-16 h-16 text-green-500 mx-auto mb-4" />
-                  <h4 className="text-lg font-bold text-gray-900 mb-2">Tuyệt vời!</h4>
-                  <p className="text-gray-600">Không có thành viên nào cần chú ý đặc biệt</p>
-                </div>
-              )}
+                {teamInsights.atRiskMembers.length === 0 && (
+                  <div className="text-center py-12">
+                    <div className="mb-4 flex justify-center">
+                      <div className="p-4 bg-green-500/10 rounded-2xl">
+                        <CheckCircle2 className="w-16 h-16 text-green-400" />
+                      </div>
+                    </div>
+                    <h4 className="text-lg font-bold text-white mb-2">Tuyệt vời!</h4>
+                    <p className="text-gray-400">Không có thành viên nào cần chú ý đặc biệt</p>
+                  </div>
+                )}
+              </div>
             </div>
-          </div>
+          </motion.div>
         </motion.div>
       )}
     </div>
