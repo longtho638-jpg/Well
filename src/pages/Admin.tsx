@@ -17,9 +17,11 @@ import {
   Check,
   X,
   Menu,
+  Settings,
 } from 'lucide-react';
 import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 import { formatVND } from '@/utils/format';
+import PolicyEngine from './Admin/PolicyEngine';
 
 // ============================================================
 // TYPES
@@ -51,7 +53,7 @@ interface WithdrawalRequest {
   status: 'Pending' | 'Approved' | 'Rejected';
 }
 
-type Tab = 'overview' | 'cms' | 'partners' | 'finance';
+type Tab = 'overview' | 'cms' | 'partners' | 'finance' | 'strategy';
 
 // ============================================================
 // MOCK DATA
@@ -155,6 +157,7 @@ const Admin: React.FC = () => {
     { id: 'cms', label: 'CMS', icon: <FileText className="w-5 h-5" /> },
     { id: 'partners', label: 'Partners', icon: <Users className="w-5 h-5" /> },
     { id: 'finance', label: 'Finance', icon: <Wallet className="w-5 h-5" /> },
+    { id: 'strategy', label: 'Strategy', icon: <Settings className="w-5 h-5" /> },
   ];
 
   const handleSaveCMS = () => {
@@ -649,6 +652,20 @@ const Admin: React.FC = () => {
                     <p className="text-slate-500">No withdrawal requests at this time</p>
                   </div>
                 )}
+              </motion.div>
+            )}
+
+            {/* ============================================================ */}
+            {/* TAB: STRATEGY (POLICY ENGINE) */}
+            {/* ============================================================ */}
+            {activeTab === 'strategy' && (
+              <motion.div
+                key="strategy"
+                initial={{ opacity: 0, x: 20 }}
+                animate={{ opacity: 1, x: 0 }}
+                exit={{ opacity: 0, x: -20 }}
+              >
+                <PolicyEngine />
               </motion.div>
             )}
           </AnimatePresence>
