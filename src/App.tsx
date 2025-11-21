@@ -10,6 +10,7 @@ import LandingPage from './pages/LandingPage';
 import CopilotPage from './pages/CopilotPage';
 import LeaderDashboard from './pages/LeaderDashboard';
 import ReferralPage from './pages/ReferralPage';
+import Admin from './pages/Admin';
 import { useStore } from './store';
 
 const App: React.FC = () => {
@@ -21,6 +22,11 @@ const App: React.FC = () => {
       {/* PUBLIC ROUTE: Landing Page */}
       {/* ============================================================ */}
       <Route path="/" element={<LandingPage />} />
+
+      {/* ============================================================ */}
+      {/* ADMIN ROUTE: Mission Control */}
+      {/* ============================================================ */}
+      <Route path="/admin" element={<Admin />} />
 
       {/* ============================================================ */}
       {/* PROTECTED ROUTES: Dashboard with AppLayout wrapper */}
