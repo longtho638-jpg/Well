@@ -3,6 +3,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { Trophy, Medal, Award, TrendingUp, Coins, Zap, Crown, Swords } from 'lucide-react';
 import { useStore } from '@/store';
 import { formatVND, formatNumber } from '@/utils/format';
+import { useTranslation } from '@/hooks';
 
 interface LeaderboardEntry {
   rank: number;
@@ -116,6 +117,7 @@ const MedalIcon = ({ rank }: { rank: number }) => {
 };
 
 export default function Leaderboard() {
+  const t = useTranslation();
   const { user } = useStore();
   const [showConfetti, setShowConfetti] = useState(true);
   const [leaderboardData, setLeaderboardData] = useState<LeaderboardEntry[]>([]);
@@ -176,9 +178,9 @@ export default function Leaderboard() {
                 <Trophy className="w-10 h-10 text-accent" />
               </div>
               <div>
-                <h1 className="text-4xl font-bold">Bảng Xếp Hạng</h1>
+                <h1 className="text-4xl font-bold">{t('leaderboard.title')}</h1>
                 <p className="text-teal-100 text-sm mt-1">
-                  Top 10 Partners xuất sắc nhất tháng này
+                  {t('leaderboard.subtitle')}
                 </p>
               </div>
             </div>
@@ -188,7 +190,7 @@ export default function Leaderboard() {
               <div className="bg-white/10 backdrop-blur-sm rounded-xl p-4 border border-white/20">
                 <div className="flex items-center gap-2 mb-2">
                   <TrendingUp className="w-5 h-5 text-accent" />
-                  <span className="text-sm font-medium text-teal-100">Doanh số cao nhất</span>
+                  <span className="text-sm font-medium text-teal-100">{t('leaderboard.highestSales')}</span>
                 </div>
                 <p className="text-2xl font-bold">
                   {top10[0] ? formatVND(top10[0].shopTokens) : '0 ₫'}
@@ -198,13 +200,13 @@ export default function Leaderboard() {
               <div className="bg-white/10 backdrop-blur-sm rounded-xl p-4 border border-white/20">
                 <div className="flex items-center gap-2 mb-2">
                   <Zap className="w-5 h-5 text-yellow-300" />
-                  <span className="text-sm font-medium text-teal-100">Vị trí của bạn</span>
+                  <span className="text-sm font-medium text-teal-100">{t('leaderboard.yourPosition')}</span>
                 </div>
                 <p className="text-2xl font-bold">
                   {currentUserEntry ? (
-                    currentUserEntry.rank <= 10 ? `#${currentUserEntry.rank}` : 'Top 100+'
+                    currentUserEntry.rank <= 10 ? `#${currentUserEntry.rank}` : t('leaderboard.topHundredPlus')
                   ) : (
-                    'Top 100+'
+                    t('leaderboard.topHundredPlus')
                   )}
                 </p>
               </div>
@@ -212,7 +214,7 @@ export default function Leaderboard() {
               <div className="bg-white/10 backdrop-blur-sm rounded-xl p-4 border border-white/20">
                 <div className="flex items-center gap-2 mb-2">
                   <Coins className="w-5 h-5 text-accent" />
-                  <span className="text-sm font-medium text-teal-100">GROW Tokens của bạn</span>
+                  <span className="text-sm font-medium text-teal-100">{t('leaderboard.yourGrowTokens')}</span>
                 </div>
                 <p className="text-2xl font-bold">
                   {formatNumber(currentUserEntry?.growTokens || 0)}
@@ -227,10 +229,10 @@ export default function Leaderboard() {
           {/* Table Header */}
           <div className="bg-gradient-to-r from-gray-50 to-teal-50 border-b border-gray-200 px-6 py-4">
             <div className="grid grid-cols-12 gap-4 items-center text-sm font-bold text-gray-600 uppercase tracking-wide">
-              <div className="col-span-1 text-center">Hạng</div>
-              <div className="col-span-5">Partner</div>
-              <div className="col-span-3 text-right">SHOP (Doanh số)</div>
-              <div className="col-span-3 text-right">GROW (Token)</div>
+              <div className="col-span-1 text-center">{t('leaderboard.rank')}</div>
+              <div className="col-span-5">{t('leaderboard.partner')}</div>
+              <div className="col-span-3 text-right">{t('leaderboard.shopSales')}</div>
+              <div className="col-span-3 text-right">{t('leaderboard.growToken')}</div>
             </div>
           </div>
 
@@ -301,7 +303,7 @@ export default function Leaderboard() {
                             {entry.name}
                             {entry.isCurrentUser && (
                               <span className="text-xs bg-primary text-white px-2 py-0.5 rounded-full font-semibold">
-                                Bạn
+                                {t('leaderboard.you')}
                               </span>
                             )}
                           </p>
@@ -311,11 +313,11 @@ export default function Leaderboard() {
                               className="ml-2 px-2 py-1 bg-gradient-to-r from-orange-500 to-red-500 text-white text-xs font-semibold rounded-md hover:from-orange-600 hover:to-red-600 transition-all shadow-sm flex items-center gap-1"
                             >
                               <Swords className="w-3 h-3" />
-                              Thách đấu
+                              {t('leaderboard.challenge')}
                             </button>
                           )}
                         </div>
-                        <p className="text-xs text-gray-500">Partner ID: {entry.userId}</p>
+                        <p className="text-xs text-gray-500">{t('leaderboard.partnerIdLabel', { id: entry.userId })}</p>
                       </div>
                     </div>
 
@@ -359,11 +361,11 @@ export default function Leaderboard() {
                   <div className="flex items-center gap-2 text-white">
                     <Zap className="w-5 h-5 text-accent" />
                     <span className="font-bold text-sm uppercase tracking-wide">
-                      Vị trí của bạn
+                      {t('leaderboard.yourPosition')}
                     </span>
                   </div>
                   <span className="text-white/60 text-xs">
-                    Còn {currentUserEntry.rank - 10} vị trí nữa để lọt Top 10!
+                    {t('leaderboard.toTop10', { count: currentUserEntry.rank - 10 })}
                   </span>
                 </div>
 
@@ -388,10 +390,10 @@ export default function Leaderboard() {
                       <p className="font-bold text-white truncate flex items-center gap-2">
                         {currentUserEntry.name}
                         <span className="text-xs bg-accent text-primary px-2 py-0.5 rounded-full font-semibold">
-                          Bạn
+                          {t('leaderboard.you')}
                         </span>
                       </p>
-                      <p className="text-xs text-white/60">Keep pushing! 💪</p>
+                      <p className="text-xs text-white/60">{t('leaderboard.keepPushing')}</p>
                     </div>
                   </div>
 
@@ -429,12 +431,10 @@ export default function Leaderboard() {
         >
           <div className="bg-white/60 backdrop-blur-sm rounded-xl p-4 border border-gray-200">
             <p className="text-sm text-gray-600">
-              <span className="font-semibold">💡 Lưu ý:</span> Bảng xếp hạng được cập nhật
-              theo thời gian thực. SHOP tokens tính theo tổng doanh số bán hàng, GROW tokens
-              là phần thưởng hiệu suất.
+              <span className="font-semibold">{t('leaderboard.noteLabel')}</span> {t('leaderboard.noteText')}
             </p>
             <p className="text-xs text-gray-500 mt-2">
-              Cập nhật lần cuối: {new Date().toLocaleString('vi-VN')}
+              {t('leaderboard.lastUpdate', { time: new Date().toLocaleString('vi-VN') })}
             </p>
           </div>
         </motion.div>
@@ -465,8 +465,8 @@ export default function Leaderboard() {
                     <Swords className="w-8 h-8" />
                   </div>
                   <div>
-                    <h2 className="text-2xl font-bold">Thử Thách!</h2>
-                    <p className="text-sm text-orange-100">Vượt qua đối thủ của bạn</p>
+                    <h2 className="text-2xl font-bold">{t('leaderboard.challengeTitle')}</h2>
+                    <p className="text-sm text-orange-100">{t('leaderboard.challengeSubtitle')}</p>
                   </div>
                 </div>
               </div>
@@ -483,7 +483,7 @@ export default function Leaderboard() {
                     <p className="font-bold text-gray-900 text-lg">{challengeTarget.name}</p>
                     <div className="flex items-center gap-2 mt-1">
                       <MedalIcon rank={challengeTarget.rank} />
-                      <span className="text-sm text-gray-600">Hạng #{challengeTarget.rank}</span>
+                      <span className="text-sm text-gray-600">{t('leaderboard.rankLabel', { rank: challengeTarget.rank })}</span>
                     </div>
                   </div>
                 </div>
@@ -494,10 +494,12 @@ export default function Leaderboard() {
                       <TrendingUp className="w-5 h-5 text-white" />
                     </div>
                     <div className="flex-1">
-                      <p className="font-bold text-gray-900 mb-2">Mục tiêu của bạn:</p>
+                      <p className="font-bold text-gray-900 mb-2">{t('leaderboard.yourGoal')}</p>
                       <p className="text-sm text-gray-700 leading-relaxed">
-                        Hãy nỗ lực thêm <span className="font-bold text-orange-600">{formatVND(calculateGap(challengeTarget))}</span> doanh số
-                        để vượt qua <span className="font-bold">{challengeTarget.name}</span>!
+                        {t('leaderboard.goalText', {
+                          amount: formatVND(calculateGap(challengeTarget)),
+                          name: challengeTarget.name
+                        })}
                       </p>
                     </div>
                   </div>
@@ -506,15 +508,15 @@ export default function Leaderboard() {
                 <div className="space-y-3 mb-6">
                   <div className="flex items-center gap-3 text-sm">
                     <div className="w-2 h-2 bg-orange-500 rounded-full"></div>
-                    <span className="text-gray-700">💪 Bạn có thể làm được điều này!</span>
+                    <span className="text-gray-700">{t('leaderboard.motivation1')}</span>
                   </div>
                   <div className="flex items-center gap-3 text-sm">
                     <div className="w-2 h-2 bg-red-500 rounded-full"></div>
-                    <span className="text-gray-700">🔥 Mỗi đơn hàng đưa bạn gần hơn với mục tiêu</span>
+                    <span className="text-gray-700">{t('leaderboard.motivation2')}</span>
                   </div>
                   <div className="flex items-center gap-3 text-sm">
                     <div className="w-2 h-2 bg-orange-500 rounded-full"></div>
-                    <span className="text-gray-700">🚀 Tiếp tục phấn đấu để leo hạng!</span>
+                    <span className="text-gray-700">{t('leaderboard.motivation3')}</span>
                   </div>
                 </div>
 
@@ -522,7 +524,7 @@ export default function Leaderboard() {
                   onClick={() => setChallengeTarget(null)}
                   className="w-full bg-gradient-to-r from-orange-500 to-red-500 text-white font-bold py-3 rounded-xl hover:from-orange-600 hover:to-red-600 transition-all shadow-lg hover:shadow-xl"
                 >
-                  Sẵn sàng chiến đấu! 💪
+                  {t('leaderboard.readyToFight')}
                 </button>
               </div>
             </motion.div>

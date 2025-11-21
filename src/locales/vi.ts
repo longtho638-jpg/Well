@@ -577,26 +577,43 @@ export const vi = {
 
   // Leaderboard
   leaderboard: {
-    title: 'Bảng xếp hạng',
-    subtitle: 'Cạnh tranh với cộng đồng',
-    period: {
-      today: 'Hôm nay',
-      week: 'Tuần này',
-      month: 'Tháng này',
-      allTime: 'Mọi thời điểm',
-    },
-    categories: {
-      sales: 'Doanh số',
-      commission: 'Hoa hồng',
-      team: 'Đội nhóm',
-      growth: 'Tăng trưởng',
-    },
+    title: 'Bảng Xếp Hạng',
+    subtitle: 'Top 10 Partners xuất sắc nhất tháng này',
+
+    // Stats
+    highestSales: 'Doanh số cao nhất',
+    yourPosition: 'Vị trí của bạn',
+    yourGrowTokens: 'GROW Tokens của bạn',
+    topHundredPlus: 'Top 100+',
+
+    // Table Headers
     rank: 'Hạng',
-    name: 'Tên',
-    score: 'Điểm số',
-    change: 'Thay đổi',
-    yourRank: 'Hạng của bạn',
-    topPerformers: 'Top {count} xuất sắc',
+    partner: 'Partner',
+    shopSales: 'SHOP (Doanh số)',
+    growToken: 'GROW (Token)',
+
+    // Labels
+    you: 'Bạn',
+    challenge: 'Thách đấu',
+    partnerIdLabel: 'Partner ID: {id}',
+    rankLabel: 'Hạng #{rank}',
+    toTop10: 'Còn {count} vị trí nữa để lọt Top 10!',
+    keepPushing: 'Keep pushing! 💪',
+
+    // Info Footer
+    noteLabel: '💡 Lưu ý:',
+    noteText: 'Bảng xếp hạng được cập nhật theo thời gian thực. SHOP tokens tính theo tổng doanh số bán hàng, GROW tokens là phần thưởng hiệu suất.',
+    lastUpdate: 'Cập nhật lần cuối: {time}',
+
+    // Challenge Modal
+    challengeTitle: 'Thử Thách!',
+    challengeSubtitle: 'Vượt qua đối thủ của bạn',
+    yourGoal: 'Mục tiêu của bạn:',
+    goalText: 'Hãy nỗ lực thêm {amount} doanh số để vượt qua {name}!',
+    motivation1: '💪 Bạn có thể làm được điều này!',
+    motivation2: '🔥 Mỗi đơn hàng đưa bạn gần hơn với mục tiêu',
+    motivation3: '🚀 Tiếp tục phấn đấu để leo hạng!',
+    readyToFight: 'Sẵn sàng chiến đấu! 💪',
   },
 
   // Marketing Tools
