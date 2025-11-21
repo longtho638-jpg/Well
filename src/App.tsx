@@ -16,6 +16,10 @@ import HealthCheck from './pages/HealthCheck';
 import Leaderboard from './pages/Leaderboard';
 import MarketingTools from './pages/MarketingTools';
 import Admin from './pages/Admin';
+import Overview from './pages/Admin/Overview';
+import CMS from './pages/Admin/CMS';
+import Partners from './pages/Admin/Partners';
+import Finance from './pages/Admin/Finance';
 import PolicyEngine from './pages/Admin/PolicyEngine';
 import { useStore } from './store';
 import { ThemeProvider } from './context/ThemeContext';
@@ -33,10 +37,15 @@ const App: React.FC = () => {
       <Route path="/venture" element={<VenturePage />} />
 
       {/* ============================================================ */}
-      {/* ADMIN ROUTES: Mission Control */}
+      {/* ADMIN ROUTES: Mission Control with Nested Routes */}
       {/* ============================================================ */}
-      <Route path="/admin" element={<Admin />} />
-      <Route path="/admin/policy-engine" element={<PolicyEngine />} />
+      <Route path="/admin" element={<Admin />}>
+        <Route index element={<Overview />} />
+        <Route path="cms" element={<CMS />} />
+        <Route path="partners" element={<Partners />} />
+        <Route path="finance" element={<Finance />} />
+        <Route path="policy-engine" element={<PolicyEngine />} />
+      </Route>
 
       {/* ============================================================ */}
       {/* PROTECTED ROUTES: Dashboard with AppLayout wrapper */}
