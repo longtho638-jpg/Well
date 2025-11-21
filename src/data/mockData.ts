@@ -199,6 +199,7 @@ export const REFERRALS: Referral[] = [
     referredName: 'Trần Thị Mai',
     referredEmail: 'mai.tran@example.com',
     status: 'active',
+    level: 1, // F1
     createdAt: '2024-02-10',
     registeredAt: '2024-02-10',
     firstPurchaseAt: '2024-02-12',
@@ -212,6 +213,7 @@ export const REFERRALS: Referral[] = [
     referredName: 'Lê Văn Hùng',
     referredEmail: 'hung.le@example.com',
     status: 'active',
+    level: 1, // F1
     createdAt: '2024-03-15',
     registeredAt: '2024-03-15',
     firstPurchaseAt: '2024-03-18',
@@ -224,6 +226,7 @@ export const REFERRALS: Referral[] = [
     referredName: 'Võ Thị Lan',
     referredEmail: 'lan.vo@example.com',
     status: 'pending',
+    level: 2, // F2
     createdAt: '2024-05-20',
     totalRevenue: 0,
     referralBonus: 0
@@ -235,6 +238,7 @@ export const REFERRALS: Referral[] = [
     referredName: 'Nguyễn Thị Hoa',
     referredEmail: 'hoa.nguyen@example.com',
     status: 'active',
+    level: 2, // F2
     createdAt: '2024-04-05',
     registeredAt: '2024-04-05',
     firstPurchaseAt: '2024-04-07',
