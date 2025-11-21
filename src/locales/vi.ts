@@ -359,6 +359,25 @@ export const vi = {
   team: {
     title: 'Quản lý đội nhóm',
     subtitle: 'Theo dõi và hỗ trợ đội nhóm của bạn',
+    leaderDashboard: 'Leader Dashboard',
+    description: 'Theo dõi hiệu suất đội nhóm, phát triển team members, và đạt mục tiêu chung.',
+
+    // Metrics
+    metrics: {
+      totalMembers: 'Tổng Thành Viên',
+      teamVolume: 'Team Volume',
+      averageSales: 'Trung Bình / Người',
+      topPerformers: 'Top Performers',
+      active: 'Active',
+    },
+
+    // Charts
+    charts: {
+      teamPerformance: 'Hiệu Suất Team (Top 5)',
+      rankDistribution: 'Phân Bổ Rank',
+      personalSales: 'Personal Sales',
+      teamVolumeChart: 'Team Volume',
+    },
 
     // Team Overview
     overview: {
@@ -373,16 +392,36 @@ export const vi = {
     // Team Members
     members: {
       title: 'Thành viên',
-      search: 'Tìm thành viên...',
+      teamMembers: 'Team Members',
+      search: 'Tìm kiếm...',
+      searchPlaceholder: 'Tìm thành viên...',
       name: 'Họ tên',
-      rank: 'Cấp bậc',
-      personalSales: 'Doanh số cá nhân',
-      teamVolume: 'Doanh số nhóm',
-      downlines: 'Cấp dưới',
-      growth: 'Tăng trưởng',
+      member: 'Thành Viên',
+      rank: 'Rank',
+      personalSales: 'Personal Sales',
+      teamVolume: 'Team Volume',
+      downlines: 'Downlines',
+      growth: 'Tăng Trưởng',
+      actions: 'Hành Động',
       lastActive: 'Hoạt động gần nhất',
       viewProfile: 'Xem hồ sơ',
       sendMessage: 'Nhắn tin',
+    },
+
+    // Filters & Sorts
+    filters: {
+      allRanks: 'Tất cả Rank',
+      sortSales: 'Sắp xếp: Sales',
+      sortGrowth: 'Sắp xếp: Tăng trưởng',
+      sortTeam: 'Sắp xếp: Team Volume',
+      export: 'Export',
+    },
+
+    // Actions
+    actions: {
+      sendEmail: 'Send email',
+      call: 'Call',
+      moreActions: 'More actions',
     },
 
     // Top Performers

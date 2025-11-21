@@ -20,8 +20,10 @@ import { TeamMember, UserRank } from '@/types';
 import { formatVND, formatNumber } from '@/utils/format';
 import { TEAM_MEMBERS, TEAM_METRICS } from '@/data/mockData';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, PieChart, Pie, Cell } from 'recharts';
+import { useTranslation } from '@/hooks';
 
 export default function LeaderDashboard() {
+  const t = useTranslation();
   const { user } = useStore();
   const [searchTerm, setSearchTerm] = useState('');
   const [filterRank, setFilterRank] = useState<UserRank | 'all'>('all');
@@ -90,12 +92,12 @@ export default function LeaderDashboard() {
                 <Crown className="w-7 h-7 text-primary" />
               </div>
               <div>
-                <h1 className="text-3xl font-bold">Leader Dashboard</h1>
-                <p className="text-white/80 text-sm">Quản lý đội nhóm của bạn</p>
+                <h1 className="text-3xl font-bold">{t('team.leaderDashboard')}</h1>
+                <p className="text-white/80 text-sm">{t('team.subtitle')}</p>
               </div>
             </div>
             <p className="text-white/90 max-w-2xl">
-              Theo dõi hiệu suất đội nhóm, phát triển team members, và đạt mục tiêu chung.
+              {t('team.description')}
             </p>
           </div>
         </div>
@@ -111,11 +113,11 @@ export default function LeaderDashboard() {
           <div className="flex items-center justify-between mb-3">
             <Users className="w-8 h-8 text-blue-500" />
             <span className="text-xs font-bold bg-blue-50 text-blue-600 px-2 py-1 rounded-full">
-              {TEAM_METRICS.activeMembers}/{TEAM_METRICS.totalMembers} Active
+              {TEAM_METRICS.activeMembers}/{TEAM_METRICS.totalMembers} {t('team.metrics.active')}
             </span>
           </div>
           <h3 className="text-2xl font-bold text-gray-900">{TEAM_METRICS.totalMembers}</h3>
-          <p className="text-sm text-gray-600">Tổng Thành Viên</p>
+          <p className="text-sm text-gray-600">{t('team.metrics.totalMembers')}</p>
         </motion.div>
 
         <motion.div
@@ -129,7 +131,7 @@ export default function LeaderDashboard() {
             <TrendingUp className="w-4 h-4 text-green-500" />
           </div>
           <h3 className="text-2xl font-bold text-gray-900">{formatVND(TEAM_METRICS.totalTeamVolume)}</h3>
-          <p className="text-sm text-gray-600">Team Volume</p>
+          <p className="text-sm text-gray-600">{t('team.metrics.teamVolume')}</p>
         </motion.div>
 
         <motion.div
@@ -145,7 +147,7 @@ export default function LeaderDashboard() {
             </span>
           </div>
           <h3 className="text-2xl font-bold text-gray-900">{formatVND(TEAM_METRICS.averageSalesPerMember)}</h3>
-          <p className="text-sm text-gray-600">Trung Bình / Người</p>
+          <p className="text-sm text-gray-600">{t('team.metrics.averageSales')}</p>
         </motion.div>
 
         <motion.div
@@ -159,7 +161,7 @@ export default function LeaderDashboard() {
             <Activity className="w-4 h-4 text-orange-500" />
           </div>
           <h3 className="text-2xl font-bold text-gray-900">{TEAM_METRICS.topPerformers.length}</h3>
-          <p className="text-sm text-gray-600">Top Performers</p>
+          <p className="text-sm text-gray-600">{t('team.metrics.topPerformers')}</p>
         </motion.div>
       </div>
 
@@ -169,7 +171,7 @@ export default function LeaderDashboard() {
         <div className="bg-white rounded-xl p-6 border border-gray-100">
           <h3 className="font-bold text-gray-900 mb-4 flex items-center gap-2">
             <TrendingUp className="w-5 h-5 text-primary" />
-            Hiệu Suất Team (Top 5)
+            {t('team.charts.teamPerformance')}
           </h3>
           <ResponsiveContainer width="100%" height={250}>
             <BarChart data={performanceData}>
@@ -180,8 +182,8 @@ export default function LeaderDashboard() {
                 formatter={(value: number) => `${value.toFixed(1)}M`}
                 contentStyle={{ borderRadius: '8px', border: '1px solid #e5e7eb' }}
               />
-              <Bar dataKey="sales" fill="#00575A" name="Personal Sales" radius={[8, 8, 0, 0]} />
-              <Bar dataKey="team" fill="#FFBF00" name="Team Volume" radius={[8, 8, 0, 0]} />
+              <Bar dataKey="sales" fill="#00575A" name={t('team.charts.personalSales')} radius={[8, 8, 0, 0]} />
+              <Bar dataKey="team" fill="#FFBF00" name={t('team.charts.teamVolumeChart')} radius={[8, 8, 0, 0]} />
             </BarChart>
           </ResponsiveContainer>
         </div>
@@ -190,7 +192,7 @@ export default function LeaderDashboard() {
         <div className="bg-white rounded-xl p-6 border border-gray-100">
           <h3 className="font-bold text-gray-900 mb-4 flex items-center gap-2">
             <Award className="w-5 h-5 text-primary" />
-            Phân Bổ Rank
+            {t('team.charts.rankDistribution')}
           </h3>
           <ResponsiveContainer width="100%" height={250}>
             <PieChart>
@@ -222,7 +224,7 @@ export default function LeaderDashboard() {
             <div>
               <h3 className="font-bold text-gray-900 flex items-center gap-2">
                 <Users className="w-5 h-5 text-primary" />
-                Team Members ({filteredMembers.length})
+                {t('team.members.teamMembers')} ({filteredMembers.length})
               </h3>
             </div>
 
@@ -234,7 +236,7 @@ export default function LeaderDashboard() {
                   type="text"
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
-                  placeholder="Tìm kiếm..."
+                  placeholder={t('team.members.search')}
                   className="pl-9 pr-4 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-primary/50"
                 />
               </div>
@@ -245,7 +247,7 @@ export default function LeaderDashboard() {
                 onChange={(e) => setFilterRank(e.target.value as UserRank | 'all')}
                 className="px-4 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-primary/50"
               >
-                <option value="all">Tất cả Rank</option>
+                <option value="all">{t('team.filters.allRanks')}</option>
                 <option value="Partner">Partner</option>
                 <option value="Member">Member</option>
               </select>
@@ -256,15 +258,15 @@ export default function LeaderDashboard() {
                 onChange={(e) => setSortBy(e.target.value as 'sales' | 'growth' | 'team')}
                 className="px-4 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-primary/50"
               >
-                <option value="sales">Sắp xếp: Sales</option>
-                <option value="growth">Sắp xếp: Tăng trưởng</option>
-                <option value="team">Sắp xếp: Team Volume</option>
+                <option value="sales">{t('team.filters.sortSales')}</option>
+                <option value="growth">{t('team.filters.sortGrowth')}</option>
+                <option value="team">{t('team.filters.sortTeam')}</option>
               </select>
 
               {/* Export */}
               <button className="px-4 py-2 bg-primary hover:bg-primary/90 text-white rounded-lg text-sm flex items-center gap-2 transition-colors">
                 <Download className="w-4 h-4" />
-                Export
+                {t('team.filters.export')}
               </button>
             </div>
           </div>
@@ -275,13 +277,13 @@ export default function LeaderDashboard() {
           <table className="w-full">
             <thead className="bg-gray-50 border-b border-gray-200">
               <tr>
-                <th className="px-6 py-4 text-left text-xs font-bold text-gray-600 uppercase tracking-wider">Thành Viên</th>
-                <th className="px-6 py-4 text-left text-xs font-bold text-gray-600 uppercase tracking-wider">Rank</th>
-                <th className="px-6 py-4 text-right text-xs font-bold text-gray-600 uppercase tracking-wider">Personal Sales</th>
-                <th className="px-6 py-4 text-right text-xs font-bold text-gray-600 uppercase tracking-wider">Team Volume</th>
-                <th className="px-6 py-4 text-center text-xs font-bold text-gray-600 uppercase tracking-wider">Downlines</th>
-                <th className="px-6 py-4 text-center text-xs font-bold text-gray-600 uppercase tracking-wider">Tăng Trưởng</th>
-                <th className="px-6 py-4 text-center text-xs font-bold text-gray-600 uppercase tracking-wider">Hành Động</th>
+                <th className="px-6 py-4 text-left text-xs font-bold text-gray-600 uppercase tracking-wider">{t('team.members.member')}</th>
+                <th className="px-6 py-4 text-left text-xs font-bold text-gray-600 uppercase tracking-wider">{t('team.members.rank')}</th>
+                <th className="px-6 py-4 text-right text-xs font-bold text-gray-600 uppercase tracking-wider">{t('team.members.personalSales')}</th>
+                <th className="px-6 py-4 text-right text-xs font-bold text-gray-600 uppercase tracking-wider">{t('team.members.teamVolume')}</th>
+                <th className="px-6 py-4 text-center text-xs font-bold text-gray-600 uppercase tracking-wider">{t('team.members.downlines')}</th>
+                <th className="px-6 py-4 text-center text-xs font-bold text-gray-600 uppercase tracking-wider">{t('team.members.growth')}</th>
+                <th className="px-6 py-4 text-center text-xs font-bold text-gray-600 uppercase tracking-wider">{t('team.members.actions')}</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-gray-200">
@@ -327,13 +329,13 @@ export default function LeaderDashboard() {
                   </td>
                   <td className="px-6 py-4">
                     <div className="flex items-center justify-center gap-2">
-                      <button className="p-2 hover:bg-gray-100 rounded-lg transition-colors" title="Send email">
+                      <button className="p-2 hover:bg-gray-100 rounded-lg transition-colors" title={t('team.actions.sendEmail')}>
                         <Mail className="w-4 h-4 text-gray-600" />
                       </button>
-                      <button className="p-2 hover:bg-gray-100 rounded-lg transition-colors" title="Call">
+                      <button className="p-2 hover:bg-gray-100 rounded-lg transition-colors" title={t('team.actions.call')}>
                         <Phone className="w-4 h-4 text-gray-600" />
                       </button>
-                      <button className="p-2 hover:bg-gray-100 rounded-lg transition-colors" title="More actions">
+                      <button className="p-2 hover:bg-gray-100 rounded-lg transition-colors" title={t('team.actions.moreActions')}>
                         <MoreVertical className="w-4 h-4 text-gray-600" />
                       </button>
                     </div>
