@@ -20,11 +20,11 @@ export const ProductDetail: React.FC = () => {
   if (!product) {
     return (
       <div className="flex flex-col items-center justify-center h-96 text-center">
-        <div className="bg-gray-100 p-4 rounded-full mb-4">
-            <Package className="w-8 h-8 text-gray-400" />
+        <div className="bg-gray-100 dark:bg-slate-900 p-4 rounded-full mb-4">
+            <Package className="w-8 h-8 text-gray-400 dark:text-slate-500" />
         </div>
         <h2 className="text-2xl font-bold text-brand-dark mb-2">Product Not Found</h2>
-        <p className="text-gray-500 mb-6">The product you are looking for might have been removed.</p>
+        <p className="text-gray-500 dark:text-slate-400 mb-6">The product you are looking for might have been removed.</p>
         <button onClick={() => navigate('/marketplace')} className="bg-brand-primary text-white px-6 py-2 rounded-lg font-medium hover:bg-brand-dark transition-colors">
             Return to Marketplace
         </button>
@@ -78,26 +78,26 @@ export const ProductDetail: React.FC = () => {
       className="pb-24 max-w-5xl mx-auto"
     >
       {/* Breadcrumb / Back */}
-      <nav className="flex items-center gap-2 text-sm text-gray-500 mb-6">
+      <nav className="flex items-center gap-2 text-sm text-gray-500 dark:text-slate-400 mb-6">
         <button onClick={() => navigate('/marketplace')} className="hover:text-brand-primary flex items-center gap-1">
             Marketplace
         </button>
         <span>/</span>
-        <span className="text-gray-900 font-medium truncate max-w-[200px]">{product.name}</span>
+        <span className="text-gray-900 dark:text-slate-100 font-medium truncate max-w-[200px]">{product.name}</span>
       </nav>
 
-      <button 
-        onClick={() => navigate('/marketplace')} 
-        className="flex items-center gap-2 text-gray-500 hover:text-brand-primary mb-6 font-medium transition-colors group"
+      <button
+        onClick={() => navigate('/marketplace')}
+        className="flex items-center gap-2 text-gray-500 dark:text-slate-400 hover:text-brand-primary mb-6 font-medium transition-colors group"
       >
         <ArrowLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform" />
         Back to Products
       </button>
 
-      <div className="bg-white rounded-3xl shadow-sm border border-gray-100 overflow-hidden">
+      <div className="bg-white dark:bg-slate-800 rounded-3xl shadow-sm border border-gray-100 dark:border-slate-700 overflow-hidden">
         <div className="grid grid-cols-1 lg:grid-cols-2">
             {/* Left: Product Image */}
-            <div className="relative bg-gray-50 h-[400px] lg:h-auto flex items-center justify-center p-8 group">
+            <div className="relative bg-gray-50 dark:bg-slate-900 h-[400px] lg:h-auto flex items-center justify-center p-8 group">
                 <img 
                     src={product.imageUrl} 
                     alt={product.name} 
@@ -119,47 +119,47 @@ export const ProductDetail: React.FC = () => {
             <div className="p-6 lg:p-10 flex flex-col">
                 <div className="mb-6">
                     <div className="flex items-center justify-between mb-2">
-                        <h1 className="text-3xl font-bold text-brand-dark">{product.name}</h1>
-                        <button onClick={handleShare} className="p-2 hover:bg-gray-100 rounded-full text-gray-500 transition-colors">
+                        <h1 className="text-3xl font-bold text-brand-dark dark:text-white">{product.name}</h1>
+                        <button onClick={handleShare} className="p-2 hover:bg-gray-100 dark:hover:bg-slate-700 rounded-full text-gray-500 dark:text-slate-400 transition-colors">
                             <Share2 className="w-5 h-5" />
                         </button>
                     </div>
                     <div className="flex items-center gap-4 mb-4">
                         <div className="flex items-center gap-1 text-brand-accent">
                             <ShieldCheck className="w-4 h-4 fill-current" />
-                            <span className="text-sm font-bold text-gray-700">4.9 (128 Reviews)</span>
+                            <span className="text-sm font-bold text-gray-700 dark:text-slate-300">4.9 (128 Reviews)</span>
                         </div>
-                        <div className="text-gray-300">|</div>
+                        <div className="text-gray-300 dark:text-slate-600">|</div>
                         <div className="text-sm text-green-600 font-medium flex items-center gap-1">
                             <CheckCircle className="w-4 h-4" /> In Stock: {product.stock}
                         </div>
                     </div>
-                    <p className="text-gray-600 text-lg leading-relaxed">{product.description}</p>
+                    <p className="text-gray-600 dark:text-slate-400 text-lg leading-relaxed">{product.description}</p>
                 </div>
 
                 {/* Price & Commission Card */}
-                <div className="bg-brand-bg rounded-2xl p-6 mb-8 border border-brand-primary/5">
-                    <div className="flex justify-between items-end mb-4 border-b border-gray-200 pb-4">
+                <div className="bg-brand-bg dark:bg-slate-900 rounded-2xl p-6 mb-8 border border-brand-primary/5 dark:border-slate-700">
+                    <div className="flex justify-between items-end mb-4 border-b border-gray-200 dark:border-slate-700 pb-4">
                         <div>
-                            <p className="text-xs font-bold text-gray-500 uppercase tracking-wider mb-1">Retail Price</p>
-                            <p className="text-3xl font-bold text-brand-dark">{formatVND(product.price)}</p>
+                            <p className="text-xs font-bold text-gray-500 dark:text-slate-400 uppercase tracking-wider mb-1">Retail Price</p>
+                            <p className="text-3xl font-bold text-brand-dark dark:text-white">{formatVND(product.price)}</p>
                         </div>
                         <div className="text-right">
-                             <p className="text-xs font-bold text-gray-500 uppercase tracking-wider mb-1">Your Commission</p>
+                             <p className="text-xs font-bold text-gray-500 dark:text-slate-400 uppercase tracking-wider mb-1">Your Commission</p>
                              <p className="text-2xl font-bold text-brand-accent">{formatVND(commissionAmount)}</p>
                         </div>
                     </div>
-                    <div className="flex items-center gap-2 text-xs text-gray-500">
+                    <div className="flex items-center gap-2 text-xs text-gray-500 dark:text-slate-400">
                         <Info className="w-4 h-4 text-brand-primary" />
-                        <span>You earn <span className="font-bold text-gray-900">{product.commissionRate * 100}%</span> on every sale made via your link.</span>
+                        <span>You earn <span className="font-bold text-gray-900 dark:text-slate-100">{product.commissionRate * 100}%</span> on every sale made via your link.</span>
                     </div>
                 </div>
 
                 {/* Action Buttons */}
                 <div className="mt-auto grid grid-cols-1 sm:grid-cols-2 gap-4">
-                    <button 
+                    <button
                         onClick={handleShare}
-                        className="flex items-center justify-center gap-2 border-2 border-gray-200 text-gray-700 py-4 rounded-xl font-bold hover:bg-gray-50 hover:border-gray-300 transition-all"
+                        className="flex items-center justify-center gap-2 border-2 border-gray-200 dark:border-slate-700 text-gray-700 dark:text-slate-300 py-4 rounded-xl font-bold hover:bg-gray-50 dark:hover:bg-slate-700 hover:border-gray-300 dark:hover:border-slate-600 transition-all"
                     >
                         <Share2 className="w-5 h-5" />
                         Share Link
@@ -195,8 +195,8 @@ export const ProductDetail: React.FC = () => {
         </div>
 
         {/* Detailed Tabs */}
-        <div className="border-t border-gray-100">
-            <div className="flex border-b border-gray-100">
+        <div className="border-t border-gray-100 dark:border-slate-700">
+            <div className="flex border-b border-gray-100 dark:border-slate-700">
                 {[
                     { id: 'benefits', label: 'Benefits', icon: Zap },
                     { id: 'ingredients', label: 'Ingredients', icon: Leaf },
@@ -208,9 +208,9 @@ export const ProductDetail: React.FC = () => {
                             key={tab.id}
                             onClick={() => setActiveTab(tab.id as any)}
                             className={`flex-1 py-4 flex items-center justify-center gap-2 text-sm font-bold transition-colors border-b-2
-                                ${activeTab === tab.id 
-                                    ? 'border-brand-primary text-brand-primary bg-brand-primary/5' 
-                                    : 'border-transparent text-gray-500 hover:text-gray-800 hover:bg-gray-50'
+                                ${activeTab === tab.id
+                                    ? 'border-brand-primary text-brand-primary bg-brand-primary/5 dark:bg-brand-primary/10'
+                                    : 'border-transparent text-gray-500 dark:text-slate-400 hover:text-gray-800 dark:hover:text-slate-200 hover:bg-gray-50 dark:hover:bg-slate-700'
                                 }`}
                         >
                             <Icon className="w-4 h-4" /> {tab.label}
@@ -218,7 +218,7 @@ export const ProductDetail: React.FC = () => {
                     );
                 })}
             </div>
-            <div className="p-8 bg-gray-50/50 min-h-[200px]">
+            <div className="p-8 bg-gray-50/50 dark:bg-slate-900/50 min-h-[200px]">
                 <motion.div
                     key={activeTab}
                     initial={{ opacity: 0, y: 10 }}
@@ -227,12 +227,12 @@ export const ProductDetail: React.FC = () => {
                 >
                     {activeTab === 'ingredients' && (
                         <div>
-                            <h3 className="font-bold text-gray-900 mb-4">Active Ingredients</h3>
+                            <h3 className="font-bold text-gray-900 dark:text-slate-100 mb-4">Active Ingredients</h3>
                             <ul className="grid grid-cols-1 md:grid-cols-2 gap-3">
                                 {MOCK_DETAILS.ingredients.map((ing, i) => (
-                                    <li key={i} className="flex items-center gap-2 bg-white p-3 rounded-lg border border-gray-100">
+                                    <li key={i} className="flex items-center gap-2 bg-white dark:bg-slate-800 p-3 rounded-lg border border-gray-100 dark:border-slate-700">
                                         <Leaf className="w-4 h-4 text-green-500" />
-                                        <span className="text-gray-700">{ing}</span>
+                                        <span className="text-gray-700 dark:text-slate-300">{ing}</span>
                                     </li>
                                 ))}
                             </ul>
@@ -241,12 +241,12 @@ export const ProductDetail: React.FC = () => {
                     {activeTab === 'benefits' && (
                         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                             {MOCK_DETAILS.benefits.map((ben, i) => (
-                                <div key={i} className="bg-white p-5 rounded-xl border border-gray-100">
-                                    <div className="w-10 h-10 bg-brand-accent/10 rounded-full flex items-center justify-center text-brand-accent mb-3">
+                                <div key={i} className="bg-white dark:bg-slate-800 p-5 rounded-xl border border-gray-100 dark:border-slate-700">
+                                    <div className="w-10 h-10 bg-brand-accent/10 dark:bg-brand-accent/20 rounded-full flex items-center justify-center text-brand-accent mb-3">
                                         <Zap className="w-5 h-5" />
                                     </div>
-                                    <h4 className="font-bold text-gray-900 mb-1">{ben.title}</h4>
-                                    <p className="text-sm text-gray-500">{ben.desc}</p>
+                                    <h4 className="font-bold text-gray-900 dark:text-slate-100 mb-1">{ben.title}</h4>
+                                    <p className="text-sm text-gray-500 dark:text-slate-400">{ben.desc}</p>
                                 </div>
                             ))}
                         </div>

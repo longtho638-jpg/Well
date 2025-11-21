@@ -225,10 +225,10 @@ export default function Leaderboard() {
         </div>
 
         {/* Leaderboard Table */}
-        <div className="bg-white rounded-2xl shadow-2xl overflow-hidden">
+        <div className="bg-white dark:bg-slate-800 rounded-2xl shadow-2xl overflow-hidden">
           {/* Table Header */}
-          <div className="bg-gradient-to-r from-gray-50 to-teal-50 border-b border-gray-200 px-6 py-4">
-            <div className="grid grid-cols-12 gap-4 items-center text-sm font-bold text-gray-600 uppercase tracking-wide">
+          <div className="bg-gradient-to-r from-gray-50 dark:from-slate-900 to-teal-50 dark:to-teal-900/20 border-b border-gray-200 dark:border-slate-700 px-6 py-4">
+            <div className="grid grid-cols-12 gap-4 items-center text-sm font-bold text-gray-600 dark:text-slate-400 uppercase tracking-wide">
               <div className="col-span-1 text-center">{t('leaderboard.rank')}</div>
               <div className="col-span-5">{t('leaderboard.partner')}</div>
               <div className="col-span-3 text-right">{t('leaderboard.shopSales')}</div>
@@ -237,7 +237,7 @@ export default function Leaderboard() {
           </div>
 
           {/* Table Body - Top 10 */}
-          <div className="divide-y divide-gray-100">
+          <div className="divide-y divide-gray-100 dark:divide-slate-700">
             <AnimatePresence>
               {top10.map((entry, index) => (
                 <motion.div
@@ -257,11 +257,11 @@ export default function Leaderboard() {
                       ease: "easeInOut"
                     }
                   }}
-                  className={`px-6 py-5 hover:bg-gray-50 transition-all duration-200 ${
+                  className={`px-6 py-5 hover:bg-gray-50 dark:hover:bg-slate-700 transition-all duration-200 ${
                     entry.isCurrentUser
-                      ? 'bg-gradient-to-r from-primary/5 via-teal-50/50 to-accent/5 border-l-4 border-primary shadow-inner'
+                      ? 'bg-gradient-to-r from-primary/5 dark:from-primary/10 via-teal-50/50 dark:via-teal-900/20 to-accent/5 dark:to-accent/10 border-l-4 border-primary shadow-inner'
                       : ''
-                  } ${entry.rank <= 3 ? 'bg-gradient-to-r from-yellow-50/30 to-transparent relative' : ''}`}
+                  } ${entry.rank <= 3 ? 'bg-gradient-to-r from-yellow-50/30 dark:from-yellow-900/10 to-transparent relative' : ''}`}
                 >
                   {/* Pulse glow effect for top 3 */}
                   {entry.rank <= 3 && (
@@ -299,7 +299,7 @@ export default function Leaderboard() {
                       </div>
                       <div className="flex-1 min-w-0">
                         <div className="flex items-center gap-2">
-                          <p className="font-bold text-gray-900 truncate flex items-center gap-2">
+                          <p className="font-bold text-gray-900 dark:text-slate-100 truncate flex items-center gap-2">
                             {entry.name}
                             {entry.isCurrentUser && (
                               <span className="text-xs bg-primary text-white px-2 py-0.5 rounded-full font-semibold">
@@ -317,7 +317,7 @@ export default function Leaderboard() {
                             </button>
                           )}
                         </div>
-                        <p className="text-xs text-gray-500">{t('leaderboard.partnerIdLabel', { id: entry.userId })}</p>
+                        <p className="text-xs text-gray-500 dark:text-slate-400">{t('leaderboard.partnerIdLabel', { id: entry.userId })}</p>
                       </div>
                     </div>
 
@@ -429,11 +429,11 @@ export default function Leaderboard() {
           transition={{ delay: 0.8 }}
           className="mt-6 text-center"
         >
-          <div className="bg-white/60 backdrop-blur-sm rounded-xl p-4 border border-gray-200">
-            <p className="text-sm text-gray-600">
+          <div className="bg-white/60 dark:bg-slate-800/60 backdrop-blur-sm rounded-xl p-4 border border-gray-200 dark:border-slate-700">
+            <p className="text-sm text-gray-600 dark:text-slate-400">
               <span className="font-semibold">{t('leaderboard.noteLabel')}</span> {t('leaderboard.noteText')}
             </p>
-            <p className="text-xs text-gray-500 mt-2">
+            <p className="text-xs text-gray-500 dark:text-slate-500 mt-2">
               {t('leaderboard.lastUpdate', { time: new Date().toLocaleString('vi-VN') })}
             </p>
           </div>
@@ -454,7 +454,7 @@ export default function Leaderboard() {
               initial={{ scale: 0.9, y: 20 }}
               animate={{ scale: 1, y: 0 }}
               exit={{ scale: 0.9, y: 20 }}
-              className="bg-white rounded-2xl shadow-2xl max-w-md w-full overflow-hidden"
+              className="bg-white dark:bg-slate-800 rounded-2xl shadow-2xl max-w-md w-full overflow-hidden"
               onClick={(e) => e.stopPropagation()}
             >
               {/* Header */}
@@ -480,22 +480,22 @@ export default function Leaderboard() {
                     className="w-16 h-16 rounded-full border-4 border-orange-200 shadow-lg"
                   />
                   <div>
-                    <p className="font-bold text-gray-900 text-lg">{challengeTarget.name}</p>
+                    <p className="font-bold text-gray-900 dark:text-slate-100 text-lg">{challengeTarget.name}</p>
                     <div className="flex items-center gap-2 mt-1">
                       <MedalIcon rank={challengeTarget.rank} />
-                      <span className="text-sm text-gray-600">{t('leaderboard.rankLabel', { rank: challengeTarget.rank })}</span>
+                      <span className="text-sm text-gray-600 dark:text-slate-400">{t('leaderboard.rankLabel', { rank: challengeTarget.rank })}</span>
                     </div>
                   </div>
                 </div>
 
-                <div className="bg-gradient-to-r from-orange-50 to-red-50 rounded-xl p-4 mb-4">
+                <div className="bg-gradient-to-r from-orange-50 dark:from-orange-900/20 to-red-50 dark:to-red-900/20 rounded-xl p-4 mb-4">
                   <div className="flex items-start gap-3">
                     <div className="bg-orange-500 rounded-full p-2 mt-1">
                       <TrendingUp className="w-5 h-5 text-white" />
                     </div>
                     <div className="flex-1">
-                      <p className="font-bold text-gray-900 mb-2">{t('leaderboard.yourGoal')}</p>
-                      <p className="text-sm text-gray-700 leading-relaxed">
+                      <p className="font-bold text-gray-900 dark:text-slate-100 mb-2">{t('leaderboard.yourGoal')}</p>
+                      <p className="text-sm text-gray-700 dark:text-slate-300 leading-relaxed">
                         {t('leaderboard.goalText', {
                           amount: formatVND(calculateGap(challengeTarget)),
                           name: challengeTarget.name
@@ -508,15 +508,15 @@ export default function Leaderboard() {
                 <div className="space-y-3 mb-6">
                   <div className="flex items-center gap-3 text-sm">
                     <div className="w-2 h-2 bg-orange-500 rounded-full"></div>
-                    <span className="text-gray-700">{t('leaderboard.motivation1')}</span>
+                    <span className="text-gray-700 dark:text-slate-300">{t('leaderboard.motivation1')}</span>
                   </div>
                   <div className="flex items-center gap-3 text-sm">
                     <div className="w-2 h-2 bg-red-500 rounded-full"></div>
-                    <span className="text-gray-700">{t('leaderboard.motivation2')}</span>
+                    <span className="text-gray-700 dark:text-slate-300">{t('leaderboard.motivation2')}</span>
                   </div>
                   <div className="flex items-center gap-3 text-sm">
                     <div className="w-2 h-2 bg-orange-500 rounded-full"></div>
-                    <span className="text-gray-700">{t('leaderboard.motivation3')}</span>
+                    <span className="text-gray-700 dark:text-slate-300">{t('leaderboard.motivation3')}</span>
                   </div>
                 </div>
 

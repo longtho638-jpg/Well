@@ -289,7 +289,7 @@ export default function HealthCheck() {
 
   if (showResults) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-violet-50 via-purple-50 to-pink-50 p-6">
+      <div className="min-h-screen bg-gradient-to-br from-violet-50 dark:from-slate-900 via-purple-50 dark:via-slate-800 to-pink-50 dark:to-slate-900 p-6">
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
@@ -415,10 +415,10 @@ export default function HealthCheck() {
                   initial={{ opacity: 0, scale: 0.9 }}
                   animate={{ opacity: 1, scale: 1 }}
                   transition={{ delay: 1 + idx * 0.1 }}
-                  className="bg-gradient-to-br from-primary/5 to-teal-50 rounded-xl p-4 border border-primary/20"
+                  className="bg-gradient-to-br from-primary/5 dark:from-primary/10 to-teal-50 dark:to-slate-700 rounded-xl p-4 border border-primary/20 dark:border-primary/30"
                 >
-                  <p className="text-sm font-semibold text-gray-700 mb-1">{dim.dimension}</p>
-                  <p className="text-3xl font-bold text-primary">{dim.score}</p>
+                  <p className="text-sm font-semibold text-gray-700 dark:text-slate-300 mb-1">{dim.dimension}</p>
+                  <p className="text-3xl font-bold text-primary dark:text-cyan-400">{dim.score}</p>
                   <div className="mt-2 h-2 bg-gray-200 rounded-full overflow-hidden">
                     <motion.div
                       initial={{ width: 0 }}
@@ -443,10 +443,10 @@ export default function HealthCheck() {
                 <Sparkles className="w-6 h-6 text-white" />
               </div>
               <div>
-                <h2 className="text-2xl font-bold text-gray-900">
+                <h2 className="text-2xl font-bold text-gray-900 dark:text-slate-100">
                   {t('healthCheck.recommendationsTitle')}
                 </h2>
-                <p className="text-sm text-gray-600">Sản phẩm được AI đề xuất dành riêng cho bạn</p>
+                <p className="text-sm text-gray-600 dark:text-slate-400">Sản phẩm được AI đề xuất dành riêng cho bạn</p>
               </div>
             </div>
 
@@ -463,8 +463,8 @@ export default function HealthCheck() {
                     transition={{ delay: 1.4 + index * 0.15 }}
                     className={`
                       ${isLarge ? 'md:col-span-2 lg:row-span-2' : ''}
-                      bg-gradient-to-br from-white to-gray-50/50 backdrop-blur-xl rounded-2xl shadow-xl border-2 overflow-hidden
-                      ${product.priority === 'high' ? 'border-primary/30' : 'border-gray-200'}
+                      bg-gradient-to-br from-white dark:from-slate-800 to-gray-50/50 dark:to-slate-700 backdrop-blur-xl rounded-2xl shadow-xl border-2 overflow-hidden
+                      ${product.priority === 'high' ? 'border-primary/30 dark:border-primary/40' : 'border-gray-200 dark:border-slate-600'}
                       hover:shadow-2xl hover:scale-[1.02] transition-all duration-300 group
                     `}
                   >
@@ -485,10 +485,10 @@ export default function HealthCheck() {
                           <Package className={`${isLarge ? 'w-8 h-8' : 'w-6 h-6'} text-white`} />
                         </div>
                         <div className="flex-1">
-                          <h3 className={`${isLarge ? 'text-2xl' : 'text-lg'} font-bold text-gray-900 mb-2 group-hover:text-primary transition-colors`}>
+                          <h3 className={`${isLarge ? 'text-2xl' : 'text-lg'} font-bold text-gray-900 dark:text-slate-100 mb-2 group-hover:text-primary transition-colors`}>
                             {product.name}
                           </h3>
-                          <p className={`${isLarge ? 'text-base' : 'text-sm'} text-gray-600 leading-relaxed`}>
+                          <p className={`${isLarge ? 'text-base' : 'text-sm'} text-gray-600 dark:text-slate-400 leading-relaxed`}>
                             {product.reason}
                           </p>
                         </div>
@@ -499,7 +499,7 @@ export default function HealthCheck() {
                         {product.benefits.slice(0, isLarge ? 4 : 2).map((benefit, idx) => (
                           <div key={idx} className="flex items-start gap-2">
                             <CheckCircle2 className="w-4 h-4 text-green-500 flex-shrink-0 mt-0.5" />
-                            <span className="text-sm text-gray-700 leading-relaxed">{benefit}</span>
+                            <span className="text-sm text-gray-700 dark:text-slate-300 leading-relaxed">{benefit}</span>
                           </div>
                         ))}
                         {!isLarge && product.benefits.length > 2 && (
@@ -508,9 +508,9 @@ export default function HealthCheck() {
                       </div>
 
                       {/* Price & CTA */}
-                      <div className="flex items-center justify-between gap-4 pt-4 border-t border-gray-200">
+                      <div className="flex items-center justify-between gap-4 pt-4 border-t border-gray-200 dark:border-slate-600">
                         <div>
-                          <p className="text-xs text-gray-500 mb-1">{t('healthCheck.priceLabel')}</p>
+                          <p className="text-xs text-gray-500 dark:text-slate-400 mb-1">{t('healthCheck.priceLabel')}</p>
                           <p className={`${isLarge ? 'text-3xl' : 'text-2xl'} font-bold bg-gradient-to-r from-primary to-teal-600 bg-clip-text text-transparent`}>
                             {formatVND(product.price)}
                           </p>
@@ -602,16 +602,16 @@ export default function HealthCheck() {
 
   // Quiz Interface (Full Screen per Question)
   return (
-    <div className="min-h-screen bg-gradient-to-br from-purple-50 via-pink-50 to-blue-50 flex items-center justify-center p-6">
+    <div className="min-h-screen bg-gradient-to-br from-purple-50 dark:from-slate-900 via-pink-50 dark:via-slate-800 to-blue-50 dark:to-slate-900 flex items-center justify-center p-6">
       <motion.div
         initial={{ opacity: 0, scale: 0.95 }}
         animate={{ opacity: 1, scale: 1 }}
         className="w-full max-w-4xl"
       >
         {/* Quiz Card */}
-        <div className="bg-white/90 backdrop-blur-xl rounded-3xl shadow-2xl overflow-hidden border border-gray-200">
+        <div className="bg-white dark:bg-slate-800 backdrop-blur-xl rounded-3xl shadow-2xl overflow-hidden border border-gray-200 dark:border-slate-700">
           {/* Progress Bar */}
-          <div className="h-3 bg-gray-100">
+          <div className="h-3 bg-gray-200 dark:bg-slate-700">
             <motion.div
               initial={{ width: 0 }}
               animate={{ width: `${progress}%` }}
@@ -635,7 +635,7 @@ export default function HealthCheck() {
                 <currentQuestion.icon className="w-16 h-16 text-white" />
               </motion.div>
 
-              <p className="text-sm font-bold text-primary mb-3 tracking-wider uppercase">
+              <p className="text-sm font-bold text-primary dark:text-cyan-400 mb-3 tracking-wider uppercase">
                 {t('healthCheck.questionProgress', { current: currentStep + 1, total: quizQuestions.length })}
               </p>
 
@@ -643,7 +643,7 @@ export default function HealthCheck() {
                 key={`q-${currentStep}`}
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
-                className="text-3xl md:text-4xl font-bold text-gray-900 leading-tight"
+                className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-slate-100 leading-tight"
               >
                 {currentQuestion.question}
               </motion.h2>
@@ -664,13 +664,13 @@ export default function HealthCheck() {
                     whileTap={{ scale: 0.98 }}
                     className={`w-full p-6 rounded-2xl border-3 text-left transition-all duration-300 ${
                       answers[currentQuestion.id] === option.value
-                        ? 'border-primary bg-gradient-to-r from-primary/10 to-teal-50 shadow-xl scale-105'
-                        : 'border-gray-200 bg-white hover:border-primary/50 hover:bg-gray-50 shadow-md hover:shadow-lg'
+                        ? 'border-primary dark:border-cyan-400 bg-gradient-to-r from-primary/10 dark:from-primary/20 to-teal-50 dark:to-slate-700 shadow-xl scale-105'
+                        : 'border-gray-200 dark:border-slate-600 bg-white dark:bg-slate-800 hover:border-primary/50 dark:hover:border-primary/40 hover:bg-gray-50 dark:hover:bg-slate-700 shadow-md hover:shadow-lg'
                     }`}
                   >
                     <div className="flex items-center justify-between">
                       <span className={`font-semibold text-lg ${
-                        answers[currentQuestion.id] === option.value ? 'text-primary' : 'text-gray-900'
+                        answers[currentQuestion.id] === option.value ? 'text-primary dark:text-cyan-400' : 'text-gray-900 dark:text-slate-100'
                       }`}>
                         {option.label}
                       </span>
@@ -698,8 +698,8 @@ export default function HealthCheck() {
                 disabled={currentStep === 0}
                 className={`flex items-center gap-2 px-8 py-4 rounded-2xl font-bold text-lg transition-all duration-300 ${
                   currentStep === 0
-                    ? 'text-gray-300 cursor-not-allowed'
-                    : 'text-gray-700 hover:bg-gray-100 hover:shadow-md'
+                    ? 'text-gray-300 dark:text-slate-600 cursor-not-allowed'
+                    : 'text-gray-700 dark:text-slate-300 hover:bg-gray-100 dark:hover:bg-slate-700 hover:shadow-md'
                 }`}
               >
                 <ArrowLeft className="w-6 h-6" />
@@ -714,7 +714,7 @@ export default function HealthCheck() {
                 className={`flex items-center gap-2 px-10 py-4 rounded-2xl font-bold text-lg transition-all duration-300 shadow-lg ${
                   answers[currentQuestion.id]
                     ? 'bg-gradient-to-r from-primary to-teal-600 text-white hover:shadow-2xl hover:scale-105'
-                    : 'bg-gray-200 text-gray-400 cursor-not-allowed'
+                    : 'bg-gray-200 dark:bg-slate-700 text-gray-400 dark:text-slate-500 cursor-not-allowed'
                 }`}
               >
                 {currentStep === quizQuestions.length - 1 ? (
@@ -740,7 +740,7 @@ export default function HealthCheck() {
           transition={{ delay: 0.3 }}
           className="mt-6 text-center"
         >
-          <p className="text-sm text-gray-600 flex items-center justify-center gap-2">
+          <p className="text-sm text-gray-600 dark:text-slate-400 flex items-center justify-center gap-2">
             <Heart className="w-4 h-4 text-red-500" />
             {t('healthCheck.timeInfo')}
           </p>

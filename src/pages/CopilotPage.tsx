@@ -230,10 +230,10 @@ export default function CopilotPage() {
                       className="relative group"
                     >
                       <div className="absolute inset-0 bg-gradient-to-br from-primary/10 to-teal-600/10 rounded-xl blur-xl opacity-0 group-hover:opacity-100 transition-opacity" />
-                      <div className="relative bg-white/70 backdrop-blur-xl rounded-xl p-6 border border-gray-200 hover:border-primary/50 hover:shadow-xl transition-all duration-300">
+                      <div className="relative bg-white/70 dark:bg-slate-800/70 backdrop-blur-xl rounded-xl p-6 border border-gray-200 dark:border-slate-700 hover:border-primary/50 hover:shadow-xl transition-all duration-300">
                         <Icon className="w-8 h-8 text-primary mb-3" />
-                        <h3 className="font-bold text-gray-900 mb-2">{feature.title}</h3>
-                        <p className="text-sm text-gray-600">{feature.description}</p>
+                        <h3 className="font-bold text-gray-900 dark:text-slate-100 mb-2">{feature.title}</h3>
+                        <p className="text-sm text-gray-600 dark:text-slate-400">{feature.description}</p>
                       </div>
                     </motion.div>
                   );
@@ -247,7 +247,7 @@ export default function CopilotPage() {
                 transition={{ delay: 0.4 }}
                 className="bg-gradient-to-r from-purple-50 to-pink-50 rounded-2xl p-6 border border-purple-200"
               >
-                <h3 className="font-bold text-gray-900 mb-4 flex items-center gap-2">
+                <h3 className="font-bold text-gray-900 dark:text-slate-100 mb-4 flex items-center gap-2">
                   <Sparkles className="w-5 h-5 text-purple-600" />
                   Gợi Ý Prompt - Click để dùng ngay
                 </h3>
@@ -260,15 +260,15 @@ export default function CopilotPage() {
                       transition={{ delay: 0.5 + index * 0.05 }}
                       whileHover={{ scale: 1.02 }}
                       whileTap={{ scale: 0.98 }}
-                      className="bg-white hover:bg-gradient-to-r hover:from-purple-100 hover:to-pink-100 rounded-xl p-4 border-2 border-gray-200 hover:border-purple-400 transition-all duration-300 text-left group"
+                      className="bg-white dark:bg-slate-800 hover:bg-gradient-to-r hover:from-purple-100 hover:to-pink-100 dark:hover:from-purple-900/20 dark:hover:to-pink-900/20 rounded-xl p-4 border-2 border-gray-200 dark:border-slate-700 hover:border-purple-400 transition-all duration-300 text-left group"
                     >
                       <div className="flex items-center gap-3 mb-2">
                         <span className="text-2xl">{suggestion.icon}</span>
-                        <h4 className="font-semibold text-gray-900 text-sm group-hover:text-purple-700 transition-colors">
+                        <h4 className="font-semibold text-gray-900 dark:text-slate-100 text-sm group-hover:text-purple-700 dark:group-hover:text-purple-400 transition-colors">
                           {suggestion.title}
                         </h4>
                       </div>
-                      <p className="text-xs text-gray-600 line-clamp-2">
+                      <p className="text-xs text-gray-600 dark:text-slate-400 line-clamp-2">
                         {suggestion.prompt}
                       </p>
                     </motion.button>
@@ -281,9 +281,9 @@ export default function CopilotPage() {
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.8 }}
-                className="bg-gradient-to-br from-blue-50 to-indigo-50 rounded-xl p-6 border border-blue-200"
+                className="bg-gradient-to-br from-blue-50 dark:from-blue-900/20 to-indigo-50 dark:to-indigo-900/20 rounded-xl p-6 border border-blue-200 dark:border-blue-900/30"
               >
-                <h3 className="font-bold text-gray-900 mb-4 flex items-center gap-2">
+                <h3 className="font-bold text-gray-900 dark:text-slate-100 mb-4 flex items-center gap-2">
                   <Zap className="w-5 h-5 text-blue-600" />
                   {t('copilot.stats.title')}
                 </h3>
@@ -320,13 +320,13 @@ export default function CopilotPage() {
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 1.2 }}
-                className="bg-white/70 backdrop-blur-xl rounded-xl p-6 border border-gray-200"
+                className="bg-white/70 dark:bg-slate-800/70 backdrop-blur-xl rounded-xl p-6 border border-gray-200 dark:border-slate-700"
               >
-                <h3 className="font-bold text-gray-900 mb-4 flex items-center gap-2">
+                <h3 className="font-bold text-gray-900 dark:text-slate-100 mb-4 flex items-center gap-2">
                   <span className="text-xl">💡</span>
                   {t('copilot.tips.title')}
                 </h3>
-                <ul className="space-y-3 text-sm text-gray-600">
+                <ul className="space-y-3 text-sm text-gray-600 dark:text-slate-400">
                   <li className="flex gap-3 items-start">
                     <span className="bg-accent text-primary font-bold px-2 py-1 rounded-lg text-xs">1</span>
                     <span className="flex-1">{t('copilot.tips.tip1')}</span>

@@ -98,16 +98,16 @@ export const QuickActionsCard: React.FC = () => {
     <motion.div
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
-      className="bg-white rounded-2xl border border-gray-100 shadow-sm p-6"
+      className="bg-white dark:bg-slate-800 rounded-2xl border border-gray-100 dark:border-slate-700 shadow-sm p-6"
     >
       {/* Header */}
       <div className="flex items-center gap-2 mb-5">
-        <div className="w-8 h-8 bg-gradient-to-br from-[#00575A] to-[#FFBF00] rounded-lg flex items-center justify-center">
+        <div className="w-8 h-8 bg-gradient-to-br from-[#00575A] to-[#FFBF00] dark:from-teal-600 dark:to-yellow-400 rounded-lg flex items-center justify-center">
           <Zap className="w-4 h-4 text-white" />
         </div>
         <div>
-          <h3 className="font-bold text-gray-900">{t('dashboard.quickActions.title')}</h3>
-          <p className="text-xs text-gray-500">Công cụ hỗ trợ kinh doanh</p>
+          <h3 className="font-bold text-gray-900 dark:text-slate-100">{t('dashboard.quickActions.title')}</h3>
+          <p className="text-xs text-gray-500 dark:text-slate-400">Công cụ hỗ trợ kinh doanh</p>
         </div>
       </div>
 
@@ -132,22 +132,22 @@ export const QuickActionsCard: React.FC = () => {
 
             <div className="relative z-10 flex items-center gap-4">
               {/* Icon */}
-              <div className={`w-12 h-12 ${action.bgColor} rounded-xl flex items-center justify-center shrink-0 group-hover:scale-110 transition-transform duration-300`}>
-                <action.icon className={`w-6 h-6 ${action.iconColor}`} />
+              <div className={`w-12 h-12 ${action.bgColor} dark:bg-opacity-20 rounded-xl flex items-center justify-center shrink-0 group-hover:scale-110 transition-transform duration-300`}>
+                <action.icon className={`w-6 h-6 ${action.iconColor} dark:brightness-125`} />
               </div>
 
               {/* Text */}
               <div className="flex-1 min-w-0">
-                <p className="font-semibold text-gray-900 text-sm md:text-base mb-0.5">
+                <p className="font-semibold text-gray-900 dark:text-slate-100 text-sm md:text-base mb-0.5">
                   {action.label}
                 </p>
-                <p className="text-xs text-gray-500 truncate">
+                <p className="text-xs text-gray-500 dark:text-slate-400 truncate">
                   {action.description}
                 </p>
               </div>
 
               {/* Arrow indicator */}
-              <div className="shrink-0 text-gray-400 group-hover:text-gray-600 group-hover:translate-x-1 transition-all duration-300">
+              <div className="shrink-0 text-gray-400 dark:text-slate-500 group-hover:text-gray-600 dark:group-hover:text-slate-300 group-hover:translate-x-1 transition-all duration-300">
                 <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
                 </svg>
@@ -162,9 +162,9 @@ export const QuickActionsCard: React.FC = () => {
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ delay: 0.4 }}
-        className="mt-4 pt-4 border-t border-gray-100"
+        className="mt-4 pt-4 border-t border-gray-100 dark:border-slate-700"
       >
-        <p className="text-xs text-gray-400 text-center">
+        <p className="text-xs text-gray-400 dark:text-slate-500 text-center">
           💡 Tip: Sử dụng các công cụ này để tăng tương tác với khách hàng
         </p>
       </motion.div>

@@ -96,7 +96,7 @@ export const Wallet: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-[#0A0E27] via-[#1A1F3A] to-[#0A0E27] p-6">
+    <div className="min-h-screen bg-gradient-to-br from-white via-gray-50 to-white dark:from-[#0A0E27] dark:via-[#1A1F3A] dark:to-[#0A0E27] p-6">
       {/* Hero Section - Total Portfolio */}
       <motion.div
         initial={{ opacity: 0, y: -30 }}
@@ -192,14 +192,14 @@ export const Wallet: React.FC = () => {
                   <p className="text-white text-lg font-bold">
                     {t('wallet.balance.shopToken')}
                   </p>
-                  <p className="text-gray-400 text-xs">VND Stablecoin • 1:1000</p>
+                  <p className="text-gray-400 dark:text-slate-400 text-xs">VND Stablecoin • 1:1000</p>
                 </div>
               </div>
             </div>
 
             {/* Balance */}
             <div className="mb-6">
-              <p className="text-gray-400 text-sm mb-2">
+              <p className="text-gray-400 dark:text-slate-400 text-sm mb-2">
                 {t('wallet.balance.total')}
               </p>
               {hideBalance ? (
@@ -286,7 +286,7 @@ export const Wallet: React.FC = () => {
 
             {/* Balance */}
             <div className="mb-6">
-              <p className="text-gray-400 text-sm mb-2">
+              <p className="text-gray-400 dark:text-slate-400 text-sm mb-2">
                 {t('wallet.balance.total')}
               </p>
               {hideBalance ? (
