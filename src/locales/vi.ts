@@ -125,15 +125,34 @@ export const vi = {
       subtitle: 'Hoàn thành để nhận GROW Token',
       progress: 'Tiến độ',
       completed: '{count}/{total} hoàn thành',
+      completedAll: 'HOÀN THÀNH',
+      questsProgress: '{completed}/{total} nhiệm vụ',
+      tokensEarned: '{amount} GROW đã nhận',
+      tokensToday: 'GROW hôm nay',
       startQuest: 'Bắt đầu',
       claiming: 'Đang nhận...',
       claim: 'Nhận thưởng',
       claimedSuccess: 'Đã nhận {amount} GROW Token!',
-      questCompleted: 'Nhiệm vụ hoàn thành',
+      questCompleted: 'Đã hoàn thành',
       types: {
         onboarding: 'Khởi động',
         sales: 'Bán hàng',
         learning: 'Học tập',
+      },
+      // Individual quest data
+      quests: {
+        dailyCheckIn: {
+          title: 'Khởi động ngày mới',
+          description: 'Check-in App hàng ngày',
+        },
+        shareHealthCheck: {
+          title: 'Lan tỏa giá trị',
+          description: 'Chia sẻ 1 link Health Check',
+        },
+        watchTraining: {
+          title: 'Học tập',
+          description: 'Xem 1 video đào tạo',
+        }
       }
     },
 

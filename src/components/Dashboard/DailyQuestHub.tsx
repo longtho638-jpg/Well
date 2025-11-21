@@ -13,6 +13,7 @@ import {
   TrendingUp
 } from 'lucide-react';
 import { formatNumber } from '../../utils/format';
+import { useTranslation } from '../../hooks';
 
 // Daily Quest Interface with navigation
 export interface DailyQuest {
@@ -27,12 +28,12 @@ export interface DailyQuest {
   bgGradient: string;
 }
 
-// Mock Daily Quests Data
-const DAILY_QUESTS_DATA: DailyQuest[] = [
+// Function to get daily quests data with translations
+const getDailyQuestsData = (t: (key: string) => string): DailyQuest[] => [
   {
     id: 'daily-1',
-    title: 'Khởi động ngày mới',
-    description: 'Check-in App hàng ngày',
+    title: t('dashboard.dailyQuest.quests.dailyCheckIn.title'),
+    description: t('dashboard.dailyQuest.quests.dailyCheckIn.description'),
     reward: 50,
     icon: Sunrise,
     status: 'done',
@@ -41,8 +42,8 @@ const DAILY_QUESTS_DATA: DailyQuest[] = [
   },
   {
     id: 'daily-2',
-    title: 'Lan tỏa giá trị',
-    description: 'Chia sẻ 1 link Health Check',
+    title: t('dashboard.dailyQuest.quests.shareHealthCheck.title'),
+    description: t('dashboard.dailyQuest.quests.shareHealthCheck.description'),
     reward: 100,
     icon: Share2,
     status: 'ready',
@@ -52,8 +53,8 @@ const DAILY_QUESTS_DATA: DailyQuest[] = [
   },
   {
     id: 'daily-3',
-    title: 'Học tập',
-    description: 'Xem 1 video đào tạo',
+    title: t('dashboard.dailyQuest.quests.watchTraining.title'),
+    description: t('dashboard.dailyQuest.quests.watchTraining.description'),
     reward: 75,
     icon: GraduationCap,
     status: 'ready',
@@ -94,8 +95,9 @@ const TokenFlyAnimation: React.FC<TokenFlyAnimationProps> = ({ startX, startY, o
 };
 
 export const DailyQuestHub: React.FC = () => {
+  const t = useTranslation();
   const navigate = useNavigate();
-  const [quests, setQuests] = useState<DailyQuest[]>(DAILY_QUESTS_DATA);
+  const [quests, setQuests] = useState<DailyQuest[]>(() => getDailyQuestsData(t));
   const [flyingTokens, setFlyingTokens] = useState<Array<{ id: string; x: number; y: number }>>([]);
   const [claimedToday, setClaimedToday] = useState(0);
 
@@ -159,7 +161,7 @@ export const DailyQuestHub: React.FC = () => {
             </motion.div>
             <div>
               <h3 className="font-bold text-white flex items-center gap-2">
-                Nhiệm vụ hàng ngày
+                {t('dashboard.dailyQuest.title')}
                 {completedCount === quests.length && (
                   <motion.span
                     initial={{ scale: 0 }}
@@ -167,12 +169,12 @@ export const DailyQuestHub: React.FC = () => {
                     className="flex items-center gap-1 text-xs bg-white text-amber-600 px-2 py-0.5 rounded-full font-bold"
                   >
                     <Sparkles className="w-3 h-3" />
-                    HOÀN THÀNH
+                    {t('dashboard.dailyQuest.completedAll')}
                   </motion.span>
                 )}
               </h3>
               <p className="text-xs text-white/90">
-                {completedCount}/{quests.length} nhiệm vụ • {formatNumber(totalRewards)} GROW đã nhận
+                {t('dashboard.dailyQuest.questsProgress', { completed: completedCount, total: quests.length })} • {t('dashboard.dailyQuest.tokensEarned', { amount: formatNumber(totalRewards) })}
               </p>
             </div>
           </div>
@@ -186,7 +188,7 @@ export const DailyQuestHub: React.FC = () => {
               <TrendingUp className="w-4 h-4" />
               <span className="text-lg font-bold">+{formatNumber(totalRewards)}</span>
             </motion.div>
-            <p className="text-xs text-white/80">GROW hôm nay</p>
+            <p className="text-xs text-white/80">{t('dashboard.dailyQuest.tokensToday')}</p>
           </div>
         </div>
       </div>
@@ -255,7 +257,7 @@ export const DailyQuestHub: React.FC = () => {
                   {quest.status === 'done' ? (
                     <div className="flex items-center justify-center gap-2 py-3 bg-green-50 text-green-700 rounded-lg font-semibold">
                       <CheckCircle2 className="w-5 h-5" />
-                      <span>Đã hoàn thành</span>
+                      <span>{t('dashboard.dailyQuest.questCompleted')}</span>
                     </div>
                   ) : quest.status === 'ready' ? (
                     <button
@@ -268,7 +270,7 @@ export const DailyQuestHub: React.FC = () => {
                         flex items-center justify-center gap-2 group
                       `}
                     >
-                      <span>Bắt đầu</span>
+                      <span>{t('dashboard.dailyQuest.startQuest')}</span>
                       <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
                     </button>
                   ) : (
@@ -279,7 +281,7 @@ export const DailyQuestHub: React.FC = () => {
                       className="w-full py-3 rounded-lg font-bold text-white bg-gradient-to-r from-amber-500 to-orange-500 hover:shadow-lg transition-all duration-200 flex items-center justify-center gap-2"
                     >
                       <Sparkles className="w-5 h-5" />
-                      <span>Nhận thưởng</span>
+                      <span>{t('dashboard.dailyQuest.claim')}</span>
                     </motion.button>
                   )}
                 </div>
