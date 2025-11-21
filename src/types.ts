@@ -8,6 +8,14 @@ export enum UserRank {
 
 export type TransactionType = 'Direct Sale' | 'Team Volume Bonus' | 'Withdrawal';
 
+export type TokenType = 'SHOP' | 'GROW';
+
+export interface TokenBalance {
+  amount: number;
+  locked: number;
+  staking: number;
+}
+
 export interface User {
   id: string;
   name: string;
@@ -42,6 +50,8 @@ export interface Transaction {
   type: TransactionType;
   status: 'pending' | 'completed';
   taxDeducted?: number;
+  hash: string;
+  currency: TokenType;
 }
 
 export interface Quest {
