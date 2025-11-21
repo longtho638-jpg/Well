@@ -858,6 +858,69 @@ export const vi = {
     title: 'Quản trị hệ thống',
     subtitle: 'Cấu hình và quản lý toàn hệ thống',
 
+    // Sidebar
+    sidebarTitle: 'Mission Control',
+    adminLabel: 'Admin',
+    superUser: 'Super User',
+
+    // Tabs
+    tabs: {
+      overview: 'Overview',
+      cms: 'CMS',
+      partners: 'Partners',
+      finance: 'Finance',
+      strategy: 'Strategy',
+    },
+
+    // Overview Tab
+    overview: {
+      title: 'System Overview',
+      subtitle: 'Real-time platform metrics and health status',
+      totalRevenue: 'Total Revenue',
+      activePartners: 'Active Partners',
+      pendingPayouts: 'Pending Payouts',
+      systemHealth: 'System Health',
+      chartTitle: '7-Day Revenue Trend',
+    },
+
+    // CMS Tab
+    cms: {
+      title: 'Content Management',
+      subtitle: 'Edit landing page content and marketing copy',
+      heroHeadline: 'Hero Headline',
+      heroSubheadline: 'Hero Subheadline',
+      ctaButtonText: 'CTA Button Text',
+      saveChanges: 'Save Changes',
+      saveSuccess: 'CMS Content saved successfully!',
+      preview: 'Preview',
+    },
+
+    // Partners Tab
+    partners: {
+      title: 'Partner Operations',
+      subtitle: 'Manage partner accounts and KYC verification',
+      tableHeaders: {
+        id: 'ID',
+        name: 'Name',
+        rank: 'Rank',
+        sales: 'Sales',
+        status: 'Status',
+        actions: 'Actions',
+      }
+    },
+
+    // Finance Tab
+    finance: {
+      title: 'Finance Operations',
+      subtitle: 'Manage withdrawal requests and tax compliance',
+      gross: 'Gross:',
+      tax: 'Tax (10%):',
+      net: 'Net:',
+      approve: 'Approve',
+      reject: 'Reject',
+      noRequests: 'No withdrawal requests at this time',
+    },
+
     // User Management
     users: {
       title: 'Quản lý người dùng',
