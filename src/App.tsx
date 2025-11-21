@@ -11,6 +11,7 @@ import CopilotPage from './pages/CopilotPage';
 import LeaderDashboard from './pages/LeaderDashboard';
 import ReferralPage from './pages/ReferralPage';
 import Admin from './pages/Admin';
+import PolicyEngine from './pages/Admin/PolicyEngine';
 import { useStore } from './store';
 
 const App: React.FC = () => {
@@ -24,9 +25,10 @@ const App: React.FC = () => {
       <Route path="/" element={<LandingPage />} />
 
       {/* ============================================================ */}
-      {/* ADMIN ROUTE: Mission Control */}
+      {/* ADMIN ROUTES: Mission Control */}
       {/* ============================================================ */}
       <Route path="/admin" element={<Admin />} />
+      <Route path="/admin/policy-engine" element={<PolicyEngine />} />
 
       {/* ============================================================ */}
       {/* PROTECTED ROUTES: Dashboard with AppLayout wrapper */}
