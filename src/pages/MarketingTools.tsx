@@ -18,6 +18,7 @@ import {
 } from 'lucide-react';
 import { useStore } from '@/store';
 import { formatVND, formatNumber } from '@/utils/format';
+import { useTranslation } from '@/hooks';
 
 // Gift Card Interface
 interface GiftCard {
@@ -71,6 +72,7 @@ const contentTemplates: ContentTemplate[] = [
 ];
 
 export default function MarketingTools() {
+  const t = useTranslation();
   const { user } = useStore();
   const [giftCards, setGiftCards] = useState<GiftCard[]>([
     {
@@ -144,8 +146,8 @@ export default function MarketingTools() {
     if (navigator.share) {
       try {
         await navigator.share({
-          title: 'QR Code của tôi - WellNexus',
-          text: `Quét QR code này để truy cập link giới thiệu của tôi!`,
+          title: t('marketing.affiliate.shareTitle'),
+          text: t('marketing.affiliate.shareText'),
           url: affiliateLink
         });
       } catch (err) {
@@ -170,9 +172,9 @@ export default function MarketingTools() {
               <Sparkles className="w-10 h-10 text-accent" />
             </div>
             <div>
-              <h1 className="text-4xl font-bold">Marketing Tools</h1>
+              <h1 className="text-4xl font-bold">{t('marketing.title')}</h1>
               <p className="text-teal-100 text-sm mt-1">
-                Công cụ hỗ trợ bán hàng và marketing chuyên nghiệp
+                {t('marketing.subtitle')}
               </p>
             </div>
           </div>
@@ -180,18 +182,18 @@ export default function MarketingTools() {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-6">
             <div className="bg-white/10 backdrop-blur-sm rounded-xl p-4 border border-white/20">
               <Gift className="w-6 h-6 text-accent mb-2" />
-              <p className="text-sm text-teal-100">Gift Cards</p>
+              <p className="text-sm text-teal-100">{t('marketing.stats.giftCards')}</p>
               <p className="text-2xl font-bold">{giftCards.length}</p>
             </div>
             <div className="bg-white/10 backdrop-blur-sm rounded-xl p-4 border border-white/20">
               <FileText className="w-6 h-6 text-accent mb-2" />
-              <p className="text-sm text-teal-100">Content Templates</p>
+              <p className="text-sm text-teal-100">{t('marketing.stats.contentTemplates')}</p>
               <p className="text-2xl font-bold">{contentTemplates.length}</p>
             </div>
             <div className="bg-white/10 backdrop-blur-sm rounded-xl p-4 border border-white/20">
               <QrCode className="w-6 h-6 text-accent mb-2" />
-              <p className="text-sm text-teal-100">Affiliate Link</p>
-              <p className="text-2xl font-bold">Active</p>
+              <p className="text-sm text-teal-100">{t('marketing.stats.affiliateLink')}</p>
+              <p className="text-2xl font-bold">{t('marketing.stats.active')}</p>
             </div>
           </div>
         </div>
@@ -210,8 +212,8 @@ export default function MarketingTools() {
                   <Gift className="w-6 h-6 text-white" />
                 </div>
                 <div>
-                  <h2 className="text-2xl font-bold text-gray-900">Gift Cards</h2>
-                  <p className="text-sm text-gray-600">Tạo mã giảm giá cho khách hàng</p>
+                  <h2 className="text-2xl font-bold text-gray-900">{t('marketing.giftCards.title')}</h2>
+                  <p className="text-sm text-gray-600">{t('marketing.giftCards.subtitle')}</p>
                 </div>
               </div>
               <button
@@ -219,7 +221,7 @@ export default function MarketingTools() {
                 className="flex items-center gap-2 bg-gradient-to-r from-pink-500 to-purple-600 text-white px-6 py-3 rounded-xl font-semibold hover:shadow-lg transition-all duration-300"
               >
                 <Plus className="w-5 h-5" />
-                Tạo mã mới
+                {t('marketing.giftCards.createNew')}
               </button>
             </div>
           </div>
@@ -233,23 +235,23 @@ export default function MarketingTools() {
                 exit={{ opacity: 0, height: 0 }}
                 className="bg-gradient-to-br from-pink-50 to-purple-50 rounded-xl p-6 mb-6 border-2 border-pink-200"
               >
-                <h3 className="text-lg font-bold text-gray-900 mb-4">Tạo Gift Card mới</h3>
+                <h3 className="text-lg font-bold text-gray-900 mb-4">{t('marketing.giftCards.createTitle')}</h3>
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-2">
-                      Mã giảm giá
+                      {t('marketing.giftCards.codeLabel')}
                     </label>
                     <input
                       type="text"
                       value={newCardCode}
                       onChange={(e) => setNewCardCode(e.target.value)}
-                      placeholder="VD: AN-200K"
+                      placeholder={t('marketing.giftCards.codePlaceholder')}
                       className="w-full px-4 py-2 rounded-lg border-2 border-gray-300 focus:border-pink-500 focus:outline-none"
                     />
                   </div>
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-2">
-                      Giá trị giảm
+                      {t('marketing.giftCards.valueLabel')}
                     </label>
                     <input
                       type="number"
@@ -261,15 +263,15 @@ export default function MarketingTools() {
                   </div>
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-2">
-                      Loại
+                      {t('marketing.giftCards.typeLabel')}
                     </label>
                     <select
                       value={newCardType}
                       onChange={(e) => setNewCardType(e.target.value as 'percentage' | 'fixed')}
                       className="w-full px-4 py-2 rounded-lg border-2 border-gray-300 focus:border-pink-500 focus:outline-none"
                     >
-                      <option value="fixed">Số tiền cố định (VND)</option>
-                      <option value="percentage">Phần trăm (%)</option>
+                      <option value="fixed">{t('marketing.giftCards.typeFixed')}</option>
+                      <option value="percentage">{t('marketing.giftCards.typePercentage')}</option>
                     </select>
                   </div>
                 </div>
@@ -279,13 +281,13 @@ export default function MarketingTools() {
                     className="flex items-center gap-2 bg-gradient-to-r from-pink-500 to-purple-600 text-white px-6 py-2 rounded-lg font-semibold hover:shadow-lg transition-all duration-300"
                   >
                     <CheckCircle2 className="w-5 h-5" />
-                    Tạo ngay
+                    {t('marketing.giftCards.createButton')}
                   </button>
                   <button
                     onClick={() => setShowCreateCard(false)}
                     className="px-6 py-2 rounded-lg border-2 border-gray-300 text-gray-700 hover:bg-gray-50 transition-colors"
                   >
-                    Hủy
+                    {t('marketing.giftCards.cancel')}
                   </button>
                 </div>
               </motion.div>
@@ -325,14 +327,14 @@ export default function MarketingTools() {
 
                   <div className="space-y-2">
                     <div className="flex items-center justify-between text-sm">
-                      <span className="text-gray-600">Lượt sử dụng:</span>
+                      <span className="text-gray-600">{t('marketing.giftCards.usageCount')}</span>
                       <span className="font-bold text-gray-900 flex items-center gap-1">
                         <Eye className="w-4 h-4 text-purple-600" />
                         {card.usageCount}
                       </span>
                     </div>
                     <div className="flex items-center justify-between text-sm">
-                      <span className="text-gray-600">Ngày tạo:</span>
+                      <span className="text-gray-600">{t('marketing.giftCards.createdDate')}</span>
                       <span className="font-medium text-gray-900">
                         {card.createdAt.toLocaleDateString('vi-VN')}
                       </span>
@@ -357,8 +359,8 @@ export default function MarketingTools() {
                 <FileText className="w-6 h-6 text-white" />
               </div>
               <div>
-                <h2 className="text-2xl font-bold text-gray-900">Content Library</h2>
-                <p className="text-sm text-gray-600">Thư viện nội dung mẫu để chia sẻ</p>
+                <h2 className="text-2xl font-bold text-gray-900">{t('marketing.contentLibrary.title')}</h2>
+                <p className="text-sm text-gray-600">{t('marketing.contentLibrary.subtitle')}</p>
               </div>
             </div>
           </div>
@@ -381,10 +383,10 @@ export default function MarketingTools() {
                     />
                     <div className="absolute top-3 right-3">
                       <span className="bg-white/90 backdrop-blur-sm px-3 py-1 rounded-full text-xs font-semibold text-primary">
-                        {template.category === 'product' && '📦 Sản phẩm'}
-                        {template.category === 'testimonial' && '⭐ Review'}
-                        {template.category === 'tips' && '💡 Tips'}
-                        {template.category === 'promotion' && '🎉 Khuyến mãi'}
+                        {template.category === 'product' && t('marketing.contentLibrary.categories.product')}
+                        {template.category === 'testimonial' && t('marketing.contentLibrary.categories.testimonial')}
+                        {template.category === 'tips' && t('marketing.contentLibrary.categories.tips')}
+                        {template.category === 'promotion' && t('marketing.contentLibrary.categories.promotion')}
                       </span>
                     </div>
                   </div>
@@ -405,12 +407,12 @@ export default function MarketingTools() {
                         {copiedText === `content-${template.id}` ? (
                           <>
                             <CheckCircle2 className="w-4 h-4" />
-                            Đã copy
+                            {t('marketing.contentLibrary.copied')}
                           </>
                         ) : (
                           <>
                             <Copy className="w-4 h-4" />
-                            Copy text
+                            {t('marketing.contentLibrary.copyText')}
                           </>
                         )}
                       </button>
@@ -419,7 +421,7 @@ export default function MarketingTools() {
                         className="flex items-center justify-center gap-2 bg-white border-2 border-blue-500 text-blue-600 px-4 py-2 rounded-lg font-semibold hover:bg-blue-50 transition-all duration-300"
                       >
                         <Download className="w-4 h-4" />
-                        Tải ảnh
+                        {t('marketing.contentLibrary.downloadImage')}
                       </button>
                     </div>
                   </div>
@@ -442,8 +444,8 @@ export default function MarketingTools() {
                 <QrCode className="w-6 h-6 text-white" />
               </div>
               <div>
-                <h2 className="text-2xl font-bold text-gray-900">Affiliate Link & QR Code</h2>
-                <p className="text-sm text-gray-600">Link giới thiệu cá nhân của bạn</p>
+                <h2 className="text-2xl font-bold text-gray-900">{t('marketing.affiliate.title')}</h2>
+                <p className="text-sm text-gray-600">{t('marketing.affiliate.subtitle')}</p>
               </div>
             </div>
           </div>
@@ -454,7 +456,7 @@ export default function MarketingTools() {
               <div className="space-y-4">
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-2">
-                    Link giới thiệu của bạn
+                    {t('marketing.affiliate.linkLabel')}
                   </label>
                   <div className="flex gap-2">
                     <input
@@ -479,28 +481,26 @@ export default function MarketingTools() {
                 <div className="bg-gradient-to-br from-green-50 to-teal-50 rounded-xl p-6 border-2 border-green-200">
                   <h3 className="font-bold text-gray-900 mb-3 flex items-center gap-2">
                     <TrendingUp className="w-5 h-5 text-green-600" />
-                    Thống kê
+                    {t('marketing.affiliate.stats.title')}
                   </h3>
                   <div className="space-y-2">
                     <div className="flex items-center justify-between">
-                      <span className="text-sm text-gray-600">Lượt click:</span>
+                      <span className="text-sm text-gray-600">{t('marketing.affiliate.stats.clicks')}</span>
                       <span className="font-bold text-gray-900">245</span>
                     </div>
                     <div className="flex items-center justify-between">
-                      <span className="text-sm text-gray-600">Đăng ký mới:</span>
+                      <span className="text-sm text-gray-600">{t('marketing.affiliate.stats.signups')}</span>
                       <span className="font-bold text-green-600">12</span>
                     </div>
                     <div className="flex items-center justify-between">
-                      <span className="text-sm text-gray-600">Tỷ lệ chuyển đổi:</span>
+                      <span className="text-sm text-gray-600">{t('marketing.affiliate.stats.conversion')}</span>
                       <span className="font-bold text-primary">4.9%</span>
                     </div>
                   </div>
                 </div>
 
                 <div className="bg-blue-50 rounded-xl p-4 border border-blue-200">
-                  <p className="text-sm text-gray-700">
-                    <span className="font-semibold">💡 Tip:</span> Chia sẻ link này trên Facebook, Zalo, hoặc website cá nhân của bạn để nhận hoa hồng từ mỗi đơn hàng!
-                  </p>
+                  <p className="text-sm text-gray-700">{t('marketing.affiliate.tip')}</p>
                 </div>
               </div>
 
@@ -516,7 +516,7 @@ export default function MarketingTools() {
                     <p className="text-sm font-semibold text-gray-700 mb-1">
                       {user.name}
                     </p>
-                    <p className="text-xs text-gray-500">WellNexus Partner</p>
+                    <p className="text-xs text-gray-500">{t('marketing.affiliate.partnerLabel')}</p>
                   </div>
                 </div>
 
@@ -526,19 +526,19 @@ export default function MarketingTools() {
                     className="flex items-center gap-2 bg-gradient-to-r from-green-500 to-teal-600 text-white px-6 py-3 rounded-xl font-semibold hover:shadow-lg transition-all duration-300"
                   >
                     <Download className="w-5 h-5" />
-                    Tải QR Code
+                    {t('marketing.affiliate.downloadQR')}
                   </button>
                   <button
                     onClick={handleShareQRCode}
                     className="flex items-center gap-2 bg-white border-2 border-green-500 text-green-600 px-6 py-3 rounded-xl font-semibold hover:bg-green-50 transition-all duration-300"
                   >
                     <Share2 className="w-5 h-5" />
-                    Chia sẻ
+                    {t('marketing.affiliate.share')}
                   </button>
                 </div>
 
                 <p className="text-xs text-gray-500 text-center mt-4 max-w-xs">
-                  In QR code này ra giấy và dán tại cửa hàng, hoặc chia sẻ online để khách hàng dễ dàng truy cập!
+                  {t('marketing.affiliate.qrTip')}
                 </p>
               </div>
             </div>

@@ -21,6 +21,7 @@ import {
 } from 'lucide-react';
 import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 import { formatVND } from '@/utils/format';
+import { useTranslation } from '@/hooks';
 import PolicyEngine from './Admin/PolicyEngine';
 
 // ============================================================
@@ -140,6 +141,7 @@ const MetricCard: React.FC<MetricCardProps> = ({ label, value, trend, status, ic
 // ============================================================
 
 const Admin: React.FC = () => {
+  const t = useTranslation();
   const [activeTab, setActiveTab] = useState<Tab>('overview');
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -153,18 +155,18 @@ const Admin: React.FC = () => {
   const [withdrawals, setWithdrawals] = useState<WithdrawalRequest[]>(mockWithdrawals);
 
   const tabs: { id: Tab; label: string; icon: React.ReactNode }[] = [
-    { id: 'overview', label: 'Overview', icon: <LayoutDashboard className="w-5 h-5" /> },
-    { id: 'cms', label: 'CMS', icon: <FileText className="w-5 h-5" /> },
-    { id: 'partners', label: 'Partners', icon: <Users className="w-5 h-5" /> },
-    { id: 'finance', label: 'Finance', icon: <Wallet className="w-5 h-5" /> },
-    { id: 'strategy', label: 'Strategy', icon: <Settings className="w-5 h-5" /> },
+    { id: 'overview', label: t('admin.tabs.overview'), icon: <LayoutDashboard className="w-5 h-5" /> },
+    { id: 'cms', label: t('admin.tabs.cms'), icon: <FileText className="w-5 h-5" /> },
+    { id: 'partners', label: t('admin.tabs.partners'), icon: <Users className="w-5 h-5" /> },
+    { id: 'finance', label: t('admin.tabs.finance'), icon: <Wallet className="w-5 h-5" /> },
+    { id: 'strategy', label: t('admin.tabs.strategy'), icon: <Settings className="w-5 h-5" /> },
   ];
 
   const handleSaveCMS = () => {
     localStorage.setItem('cms_headline', headline);
     localStorage.setItem('cms_subheadline', subheadline);
     localStorage.setItem('cms_cta', ctaText);
-    alert('CMS Content saved successfully!');
+    alert(t('admin.cms.saveSuccess'));
   };
 
   const handleApproveWithdrawal = (id: string) => {
@@ -197,7 +199,7 @@ const Admin: React.FC = () => {
               animate={{ opacity: 1 }}
               className="font-display font-bold text-xl text-[#00575A]"
             >
-              Mission Control
+              {t('admin.sidebarTitle')}
             </motion.h1>
           )}
           <button
@@ -234,8 +236,8 @@ const Admin: React.FC = () => {
             </div>
             {!sidebarCollapsed && (
               <div className="flex-1">
-                <p className="text-sm font-medium text-slate-900">Admin</p>
-                <p className="text-xs text-slate-500">Super User</p>
+                <p className="text-sm font-medium text-slate-900">{t('admin.adminLabel')}</p>
+                <p className="text-xs text-slate-500">{t('admin.superUser')}</p>
               </div>
             )}
           </div>
@@ -260,7 +262,7 @@ const Admin: React.FC = () => {
               onClick={(e) => e.stopPropagation()}
             >
               <div className="h-16 border-b border-slate-200 flex items-center justify-between px-6">
-                <h1 className="font-display font-bold text-xl text-[#00575A]">Mission Control</h1>
+                <h1 className="font-display font-bold text-xl text-[#00575A]">{t('admin.sidebarTitle')}</h1>
                 <button onClick={() => setMobileMenuOpen(false)} className="p-2">
                   <X className="w-5 h-5" />
                 </button>
@@ -300,7 +302,7 @@ const Admin: React.FC = () => {
               <Menu className="w-6 h-6" />
             </button>
             <div className="flex items-center gap-2 text-sm text-slate-600">
-              <span>Admin</span>
+              <span>{t('admin.adminLabel')}</span>
               <span>/</span>
               <span className="text-slate-900 font-medium capitalize">{activeTab}</span>
             </div>
@@ -330,32 +332,32 @@ const Admin: React.FC = () => {
                 className="space-y-6"
               >
                 <div>
-                  <h2 className="text-3xl font-display font-bold text-slate-900">System Overview</h2>
-                  <p className="text-slate-500 mt-1">Real-time platform metrics and health status</p>
+                  <h2 className="text-3xl font-display font-bold text-slate-900">{t('admin.overview.title')}</h2>
+                  <p className="text-slate-500 mt-1">{t('admin.overview.subtitle')}</p>
                 </div>
 
                 {/* Metrics Grid */}
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
                   <MetricCard
-                    label="Total Revenue"
+                    label={t('admin.overview.totalRevenue')}
                     value="2.450.000.000 ₫"
                     trend="+12%"
                     icon={<Activity className="w-6 h-6" />}
                   />
                   <MetricCard
-                    label="Active Partners"
+                    label={t('admin.overview.activePartners')}
                     value="245"
                     trend="+5"
                     icon={<Users className="w-6 h-6" />}
                   />
                   <MetricCard
-                    label="Pending Payouts"
+                    label={t('admin.overview.pendingPayouts')}
                     value="15"
                     status="warning"
                     icon={<AlertCircle className="w-6 h-6" />}
                   />
                   <MetricCard
-                    label="System Health"
+                    label={t('admin.overview.systemHealth')}
                     value="99.9%"
                     status="success"
                     icon={<CheckCircle2 className="w-6 h-6" />}
@@ -364,7 +366,7 @@ const Admin: React.FC = () => {
 
                 {/* Chart */}
                 <div className="bg-white border border-slate-200 rounded-lg p-6">
-                  <h3 className="text-lg font-display font-bold text-slate-900 mb-6">7-Day Revenue Trend</h3>
+                  <h3 className="text-lg font-display font-bold text-slate-900 mb-6">{t('admin.overview.chartTitle')}</h3>
                   <ResponsiveContainer width="100%" height={300}>
                     <AreaChart data={mockGrowthData}>
                       <defs>
@@ -410,14 +412,14 @@ const Admin: React.FC = () => {
                 className="space-y-6"
               >
                 <div>
-                  <h2 className="text-3xl font-display font-bold text-slate-900">Content Management</h2>
-                  <p className="text-slate-500 mt-1">Edit landing page content and marketing copy</p>
+                  <h2 className="text-3xl font-display font-bold text-slate-900">{t('admin.cms.title')}</h2>
+                  <p className="text-slate-500 mt-1">{t('admin.cms.subtitle')}</p>
                 </div>
 
                 <div className="bg-white border border-slate-200 rounded-lg p-6 space-y-6">
                   {/* Headline */}
                   <div>
-                    <label className="block text-sm font-medium text-slate-700 mb-2">Hero Headline</label>
+                    <label className="block text-sm font-medium text-slate-700 mb-2">{t('admin.cms.heroHeadline')}</label>
                     <input
                       type="text"
                       value={headline}
@@ -428,7 +430,7 @@ const Admin: React.FC = () => {
 
                   {/* Subheadline */}
                   <div>
-                    <label className="block text-sm font-medium text-slate-700 mb-2">Hero Subheadline</label>
+                    <label className="block text-sm font-medium text-slate-700 mb-2">{t('admin.cms.heroSubheadline')}</label>
                     <input
                       type="text"
                       value={subheadline}
@@ -439,7 +441,7 @@ const Admin: React.FC = () => {
 
                   {/* CTA Text */}
                   <div>
-                    <label className="block text-sm font-medium text-slate-700 mb-2">CTA Button Text</label>
+                    <label className="block text-sm font-medium text-slate-700 mb-2">{t('admin.cms.ctaButtonText')}</label>
                     <input
                       type="text"
                       value={ctaText}
@@ -454,13 +456,13 @@ const Admin: React.FC = () => {
                     className="w-full md:w-auto px-6 py-3 bg-[#00575A] text-white font-medium rounded-lg hover:bg-[#004447] transition-colors flex items-center justify-center gap-2"
                   >
                     <Save className="w-5 h-5" />
-                    Save Changes
+                    {t('admin.cms.saveChanges')}
                   </button>
                 </div>
 
                 {/* Preview */}
                 <div className="bg-white border border-slate-200 rounded-lg p-6">
-                  <h3 className="text-lg font-display font-bold text-slate-900 mb-4">Preview</h3>
+                  <h3 className="text-lg font-display font-bold text-slate-900 mb-4">{t('admin.cms.preview')}</h3>
                   <div className="border border-slate-200 rounded-lg p-8 bg-gradient-to-br from-[#00575A]/5 to-transparent">
                     <h1 className="text-4xl font-display font-bold text-slate-900 mb-3">{headline}</h1>
                     <p className="text-xl text-slate-600 mb-6">{subheadline}</p>
@@ -484,8 +486,8 @@ const Admin: React.FC = () => {
                 className="space-y-6"
               >
                 <div>
-                  <h2 className="text-3xl font-display font-bold text-slate-900">Partner Operations</h2>
-                  <p className="text-slate-500 mt-1">Manage partner accounts and KYC verification</p>
+                  <h2 className="text-3xl font-display font-bold text-slate-900">{t('admin.partners.title')}</h2>
+                  <p className="text-slate-500 mt-1">{t('admin.partners.subtitle')}</p>
                 </div>
 
                 <div className="bg-white border border-slate-200 rounded-lg overflow-hidden">
@@ -494,22 +496,22 @@ const Admin: React.FC = () => {
                       <thead className="bg-slate-50 border-b border-slate-200">
                         <tr>
                           <th className="px-6 py-4 text-left text-xs font-medium text-slate-500 uppercase tracking-wider">
-                            ID
+                            {t('admin.partners.tableHeaders.id')}
                           </th>
                           <th className="px-6 py-4 text-left text-xs font-medium text-slate-500 uppercase tracking-wider">
-                            Name
+                            {t('admin.partners.tableHeaders.name')}
                           </th>
                           <th className="px-6 py-4 text-left text-xs font-medium text-slate-500 uppercase tracking-wider">
-                            Rank
+                            {t('admin.partners.tableHeaders.rank')}
                           </th>
                           <th className="px-6 py-4 text-left text-xs font-medium text-slate-500 uppercase tracking-wider">
-                            Sales
+                            {t('admin.partners.tableHeaders.sales')}
                           </th>
                           <th className="px-6 py-4 text-left text-xs font-medium text-slate-500 uppercase tracking-wider">
-                            Status
+                            {t('admin.partners.tableHeaders.status')}
                           </th>
                           <th className="px-6 py-4 text-left text-xs font-medium text-slate-500 uppercase tracking-wider">
-                            Actions
+                            {t('admin.partners.tableHeaders.actions')}
                           </th>
                         </tr>
                       </thead>
@@ -574,8 +576,8 @@ const Admin: React.FC = () => {
                 className="space-y-6"
               >
                 <div>
-                  <h2 className="text-3xl font-display font-bold text-slate-900">Finance Operations</h2>
-                  <p className="text-slate-500 mt-1">Manage withdrawal requests and tax compliance</p>
+                  <h2 className="text-3xl font-display font-bold text-slate-900">{t('admin.finance.title')}</h2>
+                  <p className="text-slate-500 mt-1">{t('admin.finance.subtitle')}</p>
                 </div>
 
                 <div className="space-y-4">
@@ -605,19 +607,19 @@ const Admin: React.FC = () => {
                           <p className="text-sm text-slate-500">ID: {withdrawal.id}</p>
                           <div className="flex items-center gap-4 text-sm">
                             <div>
-                              <span className="text-slate-500">Gross: </span>
+                              <span className="text-slate-500">{t('admin.finance.gross')} </span>
                               <span className="font-medium text-slate-900">
                                 {formatVND(withdrawal.gross)}
                               </span>
                             </div>
                             <span className="text-slate-300">-</span>
                             <div>
-                              <span className="text-slate-500">Tax (10%): </span>
+                              <span className="text-slate-500">{t('admin.finance.tax')} </span>
                               <span className="font-medium text-red-600">{formatVND(withdrawal.tax)}</span>
                             </div>
                             <span className="text-slate-300">=</span>
                             <div>
-                              <span className="text-slate-500">Net: </span>
+                              <span className="text-slate-500">{t('admin.finance.net')} </span>
                               <span className="font-bold text-[#00575A]">{formatVND(withdrawal.net)}</span>
                             </div>
                           </div>
@@ -630,14 +632,14 @@ const Admin: React.FC = () => {
                               className="px-4 py-2 bg-green-600 text-white font-medium rounded-lg hover:bg-green-700 transition-colors flex items-center gap-2"
                             >
                               <Check className="w-4 h-4" />
-                              Approve
+                              {t('admin.finance.approve')}
                             </button>
                             <button
                               onClick={() => handleRejectWithdrawal(withdrawal.id)}
                               className="px-4 py-2 bg-red-600 text-white font-medium rounded-lg hover:bg-red-700 transition-colors flex items-center gap-2"
                             >
                               <X className="w-4 h-4" />
-                              Reject
+                              {t('admin.finance.reject')}
                             </button>
                           </div>
                         )}
@@ -649,7 +651,7 @@ const Admin: React.FC = () => {
                 {withdrawals.length === 0 && (
                   <div className="bg-white border border-slate-200 rounded-lg p-12 text-center">
                     <Wallet className="w-12 h-12 text-slate-300 mx-auto mb-4" />
-                    <p className="text-slate-500">No withdrawal requests at this time</p>
+                    <p className="text-slate-500">{t('admin.finance.noRequests')}</p>
                   </div>
                 )}
               </motion.div>

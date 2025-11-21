@@ -637,48 +637,68 @@ export const vi = {
 
   // Marketing Tools
   marketing: {
-    title: 'Công cụ Marketing',
-    subtitle: 'Tự động hóa chiến dịch marketing',
+    title: 'Marketing Tools',
+    subtitle: 'Công cụ hỗ trợ bán hàng và marketing chuyên nghiệp',
 
-    // Campaign Builder
-    campaign: {
-      title: 'Tạo chiến dịch',
-      name: 'Tên chiến dịch',
-      type: 'Loại chiến dịch',
-      target: 'Đối tượng mục tiêu',
-      schedule: 'Lên lịch',
-      content: 'Nội dung',
-      preview: 'Xem trước',
-      launch: 'Phát động',
-      types: {
-        email: 'Email',
-        sms: 'SMS',
-        social: 'Mạng xã hội',
-        push: 'Thông báo đẩy',
-      }
+    // Stats Overview
+    stats: {
+      giftCards: 'Gift Cards',
+      contentTemplates: 'Content Templates',
+      affiliateLink: 'Affiliate Link',
+      active: 'Active',
     },
 
-    // Templates
-    templates: {
-      title: 'Mẫu Marketing',
-      useTemplate: 'Sử dụng mẫu',
-      customize: 'Tùy chỉnh',
+    // Gift Cards Section
+    giftCards: {
+      title: 'Gift Cards',
+      subtitle: 'Tạo mã giảm giá cho khách hàng',
+      createNew: 'Tạo mã mới',
+      createTitle: 'Tạo Gift Card mới',
+      codeLabel: 'Mã giảm giá',
+      codePlaceholder: 'VD: AN-200K',
+      valueLabel: 'Giá trị giảm',
+      typeLabel: 'Loại',
+      typeFixed: 'Số tiền cố định (VND)',
+      typePercentage: 'Phần trăm (%)',
+      createButton: 'Tạo ngay',
+      cancel: 'Hủy',
+      usageCount: 'Lượt sử dụng:',
+      createdDate: 'Ngày tạo:',
+    },
+
+    // Content Library Section
+    contentLibrary: {
+      title: 'Content Library',
+      subtitle: 'Thư viện nội dung mẫu để chia sẻ',
       categories: {
-        welcome: 'Chào mừng',
-        promotion: 'Khuyến mãi',
-        announcement: 'Thông báo',
-        reminder: 'Nhắc nhở',
-      }
+        product: '📦 Sản phẩm',
+        testimonial: '⭐ Review',
+        tips: '💡 Tips',
+        promotion: '🎉 Khuyến mãi',
+      },
+      copyText: 'Copy text',
+      copied: 'Đã copy',
+      downloadImage: 'Tải ảnh',
     },
 
-    // Analytics
-    analytics: {
-      title: 'Phân tích chiến dịch',
-      impressions: 'Lượt hiển thị',
-      clicks: 'Lượt nhấp',
-      conversions: 'Chuyển đổi',
-      roi: 'ROI',
-      engagement: 'Tương tác',
+    // Affiliate Link & QR Code Section
+    affiliate: {
+      title: 'Affiliate Link & QR Code',
+      subtitle: 'Link giới thiệu cá nhân của bạn',
+      linkLabel: 'Link giới thiệu của bạn',
+      stats: {
+        title: 'Thống kê',
+        clicks: 'Lượt click:',
+        signups: 'Đăng ký mới:',
+        conversion: 'Tỷ lệ chuyển đổi:',
+      },
+      tip: '💡 Tip: Chia sẻ link này trên Facebook, Zalo, hoặc website cá nhân của bạn để nhận hoa hồng từ mỗi đơn hàng!',
+      partnerLabel: 'WellNexus Partner',
+      downloadQR: 'Tải QR Code',
+      share: 'Chia sẻ',
+      qrTip: 'In QR code này ra giấy và dán tại cửa hàng, hoặc chia sẻ online để khách hàng dễ dàng truy cập!',
+      shareTitle: 'QR Code của tôi - WellNexus',
+      shareText: 'Quét QR code này để truy cập link giới thiệu của tôi!',
     }
   },
 
@@ -856,6 +876,69 @@ export const vi = {
   admin: {
     title: 'Quản trị hệ thống',
     subtitle: 'Cấu hình và quản lý toàn hệ thống',
+
+    // Sidebar
+    sidebarTitle: 'Mission Control',
+    adminLabel: 'Admin',
+    superUser: 'Super User',
+
+    // Tabs
+    tabs: {
+      overview: 'Overview',
+      cms: 'CMS',
+      partners: 'Partners',
+      finance: 'Finance',
+      strategy: 'Strategy',
+    },
+
+    // Overview Tab
+    overview: {
+      title: 'System Overview',
+      subtitle: 'Real-time platform metrics and health status',
+      totalRevenue: 'Total Revenue',
+      activePartners: 'Active Partners',
+      pendingPayouts: 'Pending Payouts',
+      systemHealth: 'System Health',
+      chartTitle: '7-Day Revenue Trend',
+    },
+
+    // CMS Tab
+    cms: {
+      title: 'Content Management',
+      subtitle: 'Edit landing page content and marketing copy',
+      heroHeadline: 'Hero Headline',
+      heroSubheadline: 'Hero Subheadline',
+      ctaButtonText: 'CTA Button Text',
+      saveChanges: 'Save Changes',
+      saveSuccess: 'CMS Content saved successfully!',
+      preview: 'Preview',
+    },
+
+    // Partners Tab
+    partners: {
+      title: 'Partner Operations',
+      subtitle: 'Manage partner accounts and KYC verification',
+      tableHeaders: {
+        id: 'ID',
+        name: 'Name',
+        rank: 'Rank',
+        sales: 'Sales',
+        status: 'Status',
+        actions: 'Actions',
+      }
+    },
+
+    // Finance Tab
+    finance: {
+      title: 'Finance Operations',
+      subtitle: 'Manage withdrawal requests and tax compliance',
+      gross: 'Gross:',
+      tax: 'Tax (10%):',
+      net: 'Net:',
+      approve: 'Approve',
+      reject: 'Reject',
+      noRequests: 'No withdrawal requests at this time',
+    },
 
     // User Management
     users: {
