@@ -520,8 +520,44 @@ export const vi = {
 
   // Copilot (AI Sales Assistant)
   copilot: {
-    title: 'Trợ lý bán hàng AI',
-    subtitle: 'Trợ lý thông minh hỗ trợ bán hàng',
+    title: 'The Copilot',
+    subtitle: 'Trợ lý bán hàng AI của bạn',
+    description: 'Được trang bị AI tiên tiến để giúp bạn xử lý từ chối khách hàng, tạo kịch bản bán hàng, và cải thiện kỹ năng sales mỗi ngày.',
+
+    // Features
+    features: {
+      objectionHandling: {
+        title: 'Xử Lý Từ Chối',
+        description: 'AI phát hiện và gợi ý cách xử lý từ chối thông minh',
+      },
+      salesScript: {
+        title: 'Kịch Bản Bán Hàng',
+        description: 'Tạo script bán hàng chuyên nghiệp trong vài giây',
+      },
+      realtimeCoaching: {
+        title: 'Coaching Realtime',
+        description: 'Nhận phản hồi và gợi ý cải thiện ngay lập tức',
+      }
+    },
+
+    // Stats
+    stats: {
+      title: 'Thống Kê Hôm Nay',
+      objectionsHandled: 'Từ chối xử lý',
+      scriptsCreated: 'Script tạo',
+      conversionRate: 'Tỉ lệ chuyển đổi',
+    },
+
+    // Tips
+    tips: {
+      title: 'Tips Để Sử Dụng Hiệu Quả',
+      tip1: 'Nhập câu phản đối thật của khách hàng để nhận gợi ý chính xác nhất',
+      tip2: 'Sử dụng tính năng "Script" để có sẵn kịch bản cho từng sản phẩm',
+      tip3: 'Sau mỗi cuộc trò chuyện, bấm "Coach" để nhận phản hồi cải thiện',
+      tip4: 'Copy gợi ý nhanh và điều chỉnh cho phù hợp với phong cách của bạn',
+    },
+
+    // Conversation
     startConversation: 'Bắt đầu cuộc trò chuyện',
     placeholder: 'Nhập câu hỏi của bạn...',
     send: 'Gửi',
