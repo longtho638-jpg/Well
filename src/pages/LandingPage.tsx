@@ -29,12 +29,15 @@ export default function LandingPage() {
         </div>
         <div className="flex items-center gap-4">
             <button className="text-sm font-medium text-gray-500 hover:text-[#00575A] hidden md:block">Về chúng tôi</button>
-            <button 
+            <motion.button
             onClick={handleJoin}
             className="text-sm font-bold bg-gray-100 hover:bg-gray-200 text-[#00575A] px-5 py-2 rounded-full transition-colors"
+            whileHover={{ scale: 1.05, backgroundColor: '#e5e7eb' }}
+            whileTap={{ scale: 0.95 }}
+            transition={{ type: "spring", stiffness: 400, damping: 17 }}
             >
             Đăng nhập
-            </button>
+            </motion.button>
         </div>
       </nav>
 
@@ -74,15 +77,31 @@ export default function LandingPage() {
                 </p>
 
                 <div className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
-                <button 
+                <motion.button
                     onClick={handleJoin}
-                    className="bg-[#FFBF00] hover:bg-yellow-400 text-[#00575A] px-8 py-4 rounded-xl font-bold text-lg flex items-center justify-center gap-2 shadow-[0_0_30px_rgba(255,191,0,0.3)] hover:shadow-[0_0_50px_rgba(255,191,0,0.5)] transition-all transform hover:-translate-y-1"
+                    className="bg-[#FFBF00] hover:bg-yellow-400 text-[#00575A] px-8 py-4 rounded-xl font-bold text-lg flex items-center justify-center gap-2 shadow-[0_0_30px_rgba(255,191,0,0.3)] transition-all"
+                    whileHover={{
+                      scale: 1.05,
+                      y: -4,
+                      boxShadow: '0 0 50px rgba(255,191,0,0.5)'
+                    }}
+                    whileTap={{ scale: 0.98, y: 0 }}
+                    transition={{ type: "spring", stiffness: 400, damping: 17 }}
                 >
                     Truy cập Dashboard Demo <ArrowRight className="w-5 h-5" />
-                </button>
-                <button className="px-8 py-4 rounded-xl font-bold text-white border border-white/20 hover:bg-white/10 transition flex items-center justify-center gap-2">
+                </motion.button>
+                <motion.button
+                    className="px-8 py-4 rounded-xl font-bold text-white border border-white/20 hover:bg-white/10 transition flex items-center justify-center gap-2"
+                    whileHover={{
+                      scale: 1.05,
+                      backgroundColor: 'rgba(255,255,255,0.1)',
+                      borderColor: 'rgba(255,255,255,0.3)'
+                    }}
+                    whileTap={{ scale: 0.95 }}
+                    transition={{ type: "spring", stiffness: 400, damping: 17 }}
+                >
                     <Zap className="w-4 h-4" /> Tìm hiểu mô hình
-                </button>
+                </motion.button>
                 </div>
             </motion.div>
 
@@ -191,12 +210,19 @@ export default function LandingPage() {
               <h3 className="text-3xl font-bold mb-4">Sẵn sàng bắt đầu hành trình?</h3>
               <p className="text-gray-400 max-w-md">Tham gia ngay hôm nay để nhận gói quà tặng Founder trị giá 3.000.000đ và quyền lợi chia sẻ 2% doanh thu toàn cầu.</p>
             </div>
-            <button 
+            <motion.button
               onClick={handleJoin}
-              className="bg-[#FFBF00] text-[#00575A] px-10 py-5 rounded-xl font-bold text-lg hover:bg-yellow-400 transition shadow-lg whitespace-nowrap"
+              className="bg-[#FFBF00] text-[#00575A] px-10 py-5 rounded-xl font-bold text-lg shadow-lg whitespace-nowrap"
+              whileHover={{
+                scale: 1.08,
+                backgroundColor: '#fcd34d',
+                boxShadow: '0 20px 50px rgba(255,191,0,0.4)'
+              }}
+              whileTap={{ scale: 0.95 }}
+              transition={{ type: "spring", stiffness: 400, damping: 17 }}
             >
               Đăng Ký Ngay
-            </button>
+            </motion.button>
           </div>
         </div>
       </section>
