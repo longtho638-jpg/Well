@@ -29,6 +29,10 @@ export interface User {
   nextPayoutDate?: string;
   estimatedBonus?: number;
   referralLink?: string;
+  // Token Balances (Dual Token System)
+  shopBalance: number;      // SHOP token (VND) - from sales
+  growBalance: number;      // GROW token - from quests/staking
+  stakedGrowBalance: number; // Locked GROW tokens in staking
 }
 
 export interface Product {

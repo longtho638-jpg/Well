@@ -6,6 +6,7 @@ import { TopProducts } from '../components/Dashboard/TopProducts';
 import { QuickActionsCard } from '../components/Dashboard/QuickActionsCard';
 import { DailyQuestHub } from '../components/Dashboard/DailyQuestHub';
 import { useStore } from '../store';
+import { useTranslation } from '../hooks';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
   TrendingUp,
@@ -51,7 +52,7 @@ const vietnameseNames = [
 ];
 
 // Generate random live activity
-const generateRandomActivity = (): LiveActivity => {
+const generateRandomActivity = (t: (key: string, vars?: any) => string): LiveActivity => {
   const randomName = vietnameseNames[Math.floor(Math.random() * vietnameseNames.length)];
   const activityTypes: Array<LiveActivity['type']> = ['reward', 'order', 'rank_up', 'withdrawal', 'referral'];
   const randomType = activityTypes[Math.floor(Math.random() * activityTypes.length)];
@@ -62,9 +63,9 @@ const generateRandomActivity = (): LiveActivity => {
       color: 'text-yellow-600',
       bgColor: 'bg-yellow-50',
       messages: [
-        { text: 'vừa nhận ${amount} GROW tokens', amount: Math.floor(Math.random() * 900) + 100 },
-        { text: 'được thưởng ${amount} GROW', amount: Math.floor(Math.random() * 1500) + 500 },
-        { text: 'kiếm được ${amount} GROW từ team bonus', amount: Math.floor(Math.random() * 2000) + 800 }
+        { key: 'dashboard.liveActivities.activities.earnedGrow', amount: Math.floor(Math.random() * 900) + 100 },
+        { key: 'dashboard.liveActivities.activities.rewardedGrow', amount: Math.floor(Math.random() * 1500) + 500 },
+        { key: 'dashboard.liveActivities.activities.teamBonusGrow', amount: Math.floor(Math.random() * 2000) + 800 }
       ]
     },
     order: {
@@ -72,9 +73,9 @@ const generateRandomActivity = (): LiveActivity => {
       color: 'text-green-600',
       bgColor: 'bg-green-50',
       messages: [
-        { text: 'vừa chốt đơn ${amount}', amount: Math.floor(Math.random() * 8000000) + 2000000 },
-        { text: 'bán thành công ${amount}', amount: Math.floor(Math.random() * 15000000) + 5000000 },
-        { text: 'hoàn thành đơn hàng ${amount}', amount: Math.floor(Math.random() * 20000000) + 10000000 }
+        { key: 'dashboard.liveActivities.activities.completedOrder', amount: Math.floor(Math.random() * 8000000) + 2000000 },
+        { key: 'dashboard.liveActivities.activities.soldSuccess', amount: Math.floor(Math.random() * 15000000) + 5000000 },
+        { key: 'dashboard.liveActivities.activities.finishedOrder', amount: Math.floor(Math.random() * 20000000) + 10000000 }
       ]
     },
     rank_up: {
@@ -82,10 +83,10 @@ const generateRandomActivity = (): LiveActivity => {
       color: 'text-purple-600',
       bgColor: 'bg-purple-50',
       messages: [
-        { text: 'vừa thăng cấp Gold' },
-        { text: 'đạt rank Partner' },
-        { text: 'lên cấp Founder Club' },
-        { text: 'thăng hạng Silver' }
+        { key: 'dashboard.liveActivities.activities.rankedUpGold' },
+        { key: 'dashboard.liveActivities.activities.rankedUpPartner' },
+        { key: 'dashboard.liveActivities.activities.rankedUpFounder' },
+        { key: 'dashboard.liveActivities.activities.rankedUpSilver' }
       ]
     },
     withdrawal: {
@@ -93,8 +94,8 @@ const generateRandomActivity = (): LiveActivity => {
       color: 'text-blue-600',
       bgColor: 'bg-blue-50',
       messages: [
-        { text: 'rút ${amount} về tài khoản', amount: Math.floor(Math.random() * 30000000) + 10000000 },
-        { text: 'chuyển ${amount} thành công', amount: Math.floor(Math.random() * 50000000) + 20000000 }
+        { key: 'dashboard.liveActivities.activities.withdrew', amount: Math.floor(Math.random() * 30000000) + 10000000 },
+        { key: 'dashboard.liveActivities.activities.transferredSuccess', amount: Math.floor(Math.random() * 50000000) + 20000000 }
       ]
     },
     referral: {
@@ -102,9 +103,9 @@ const generateRandomActivity = (): LiveActivity => {
       color: 'text-pink-600',
       bgColor: 'bg-pink-50',
       messages: [
-        { text: 'giới thiệu thành công 1 Partner mới' },
-        { text: 'nhận bonus giới thiệu ${amount}', amount: Math.floor(Math.random() * 5000000) + 1000000 },
-        { text: 'team mở rộng thêm 1 thành viên' }
+        { key: 'dashboard.liveActivities.activities.referredPartner' },
+        { key: 'dashboard.liveActivities.activities.referralBonus', amount: Math.floor(Math.random() * 5000000) + 1000000 },
+        { key: 'dashboard.liveActivities.activities.teamExpanded' }
       ]
     }
   };
@@ -112,15 +113,15 @@ const generateRandomActivity = (): LiveActivity => {
   const template = activityTemplates[randomType];
   const randomMessage = template.messages[Math.floor(Math.random() * template.messages.length)];
 
-  let messageText = randomMessage.text;
-  let amount = 'amount' in randomMessage ? randomMessage.amount : undefined;
+  let messageText = t(randomMessage.key);
+  const amount = 'amount' in randomMessage ? randomMessage.amount : undefined;
 
-  if (amount && messageText.includes('${amount}')) {
-    if (randomType === 'reward') {
-      messageText = messageText.replace('${amount}', formatNumber(amount));
-    } else {
-      messageText = messageText.replace('${amount}', formatVND(amount));
-    }
+  // Format amount based on activity type
+  if (amount !== undefined) {
+    const formattedAmount = randomType === 'reward'
+      ? formatNumber(amount)
+      : formatVND(amount);
+    messageText = t(randomMessage.key, { amount: formattedAmount });
   }
 
   return {
@@ -138,16 +139,17 @@ const generateRandomActivity = (): LiveActivity => {
 
 // Live Activities Ticker Component
 const LiveActivitiesTicker: React.FC = () => {
+  const t = useTranslation();
   const [activities, setActivities] = useState<LiveActivity[]>([]);
 
   useEffect(() => {
     // Initialize with 5 activities
-    const initialActivities = Array.from({ length: 5 }, () => generateRandomActivity());
+    const initialActivities = Array.from({ length: 5 }, () => generateRandomActivity(t));
     setActivities(initialActivities);
 
     // Add new activity every 3-5 seconds
     const interval = setInterval(() => {
-      const newActivity = generateRandomActivity();
+      const newActivity = generateRandomActivity(t);
       setActivities(prev => {
         const updated = [newActivity, ...prev];
         // Keep only last 10 activities
@@ -156,7 +158,7 @@ const LiveActivitiesTicker: React.FC = () => {
     }, Math.random() * 2000 + 3000); // 3-5 seconds
 
     return () => clearInterval(interval);
-  }, []);
+  }, [t]);
 
   return (
     <motion.div
@@ -177,21 +179,21 @@ const LiveActivitiesTicker: React.FC = () => {
             </motion.div>
             <div>
               <h3 className="font-bold text-gray-900 flex items-center gap-2">
-                Live Activities
+                {t('dashboard.liveActivities.title')}
                 <motion.span
                   animate={{ opacity: [1, 0.5, 1] }}
                   transition={{ repeat: Infinity, duration: 1.5 }}
                   className="flex items-center gap-1 text-xs bg-red-500 text-white px-2 py-0.5 rounded-full"
                 >
                   <span className="w-1.5 h-1.5 bg-white rounded-full" />
-                  LIVE
+                  {t('dashboard.liveActivities.live')}
                 </motion.span>
               </h3>
-              <p className="text-xs text-gray-500">Hoạt động đang diễn ra trên hệ thống</p>
+              <p className="text-xs text-gray-500">{t('dashboard.liveActivities.subtitle')}</p>
             </div>
           </div>
           <div className="text-right hidden sm:block">
-            <p className="text-xs text-gray-400">Cập nhật liên tục</p>
+            <p className="text-xs text-gray-400">{t('dashboard.liveActivities.updateContinuously')}</p>
           </div>
         </div>
       </div>
@@ -257,7 +259,7 @@ const LiveActivitiesTicker: React.FC = () => {
                           animate={{ scale: 1 }}
                           className="text-xs bg-red-500 text-white px-2 py-0.5 rounded-full font-semibold"
                         >
-                          NEW
+                          {t('dashboard.liveActivities.new')}
                         </motion.span>
                       )}
                     </div>
@@ -280,7 +282,7 @@ const LiveActivitiesTicker: React.FC = () => {
 
           {activities.length === 0 && (
             <div className="text-center py-12">
-              <p className="text-gray-400 text-sm">Đang tải hoạt động...</p>
+              <p className="text-gray-400 text-sm">{t('dashboard.liveActivities.loading')}</p>
             </div>
           )}
         </div>
@@ -290,10 +292,10 @@ const LiveActivitiesTicker: React.FC = () => {
       <div className="bg-gray-50 border-t border-gray-100 px-6 py-3">
         <div className="flex items-center justify-between text-xs">
           <span className="text-gray-500">
-            🔥 {activities.length} hoạt động gần đây
+            🔥 {t('dashboard.liveActivities.recent', { count: activities.length })}
           </span>
           <span className="text-gray-400">
-            Hệ thống đang sôi động!
+            {t('dashboard.liveActivities.systemActive')}
           </span>
         </div>
       </div>
@@ -302,29 +304,74 @@ const LiveActivitiesTicker: React.FC = () => {
 };
 
 export const Dashboard: React.FC = () => {
+  const t = useTranslation();
   const { user, revenueData, products, transactions } = useStore();
 
   // Revenue breakdown data
   const revenueBreakdown = [
-    { name: 'Direct Sales', value: user.totalSales * 0.7, color: '#00575A' },
-    { name: 'Team Bonus', value: user.totalSales * 0.25, color: '#FFBF00' },
-    { name: 'Referral', value: user.totalSales * 0.05, color: '#22c55e' }
+    { name: t('dashboard.revenueBreakdown.directSales'), value: user.totalSales * 0.7, color: '#00575A' },
+    { name: t('dashboard.revenueBreakdown.teamBonus'), value: user.totalSales * 0.25, color: '#FFBF00' },
+    { name: t('dashboard.revenueBreakdown.referral'), value: user.totalSales * 0.05, color: '#22c55e' }
   ];
 
   // Recent activities
   const recentActivities = [
-    { icon: CheckCircle2, label: 'Completed Quest: First Sale', time: '2 hours ago', color: 'text-green-600', bg: 'bg-green-50' },
-    { icon: Users, label: 'New team member joined', time: '5 hours ago', color: 'text-blue-600', bg: 'bg-blue-50' },
-    { icon: Package, label: 'Product shipped to customer', time: '1 day ago', color: 'text-purple-600', bg: 'bg-purple-50' },
-    { icon: Award, label: 'Reached Partner rank', time: '3 days ago', color: 'text-amber-600', bg: 'bg-amber-50' }
+    {
+      icon: CheckCircle2,
+      label: t('dashboard.recentActivity.completedQuest'),
+      time: t('dashboard.recentActivity.hoursAgo', { hours: 2 }),
+      color: 'text-green-600',
+      bg: 'bg-green-50'
+    },
+    {
+      icon: Users,
+      label: t('dashboard.recentActivity.newTeamMember'),
+      time: t('dashboard.recentActivity.hoursAgo', { hours: 5 }),
+      color: 'text-blue-600',
+      bg: 'bg-blue-50'
+    },
+    {
+      icon: Package,
+      label: t('dashboard.recentActivity.productShipped'),
+      time: t('dashboard.recentActivity.daysAgo', { days: 1 }),
+      color: 'text-purple-600',
+      bg: 'bg-purple-50'
+    },
+    {
+      icon: Award,
+      label: t('dashboard.recentActivity.reachedRank'),
+      time: t('dashboard.recentActivity.daysAgo', { days: 3 }),
+      color: 'text-amber-600',
+      bg: 'bg-amber-50'
+    }
   ];
 
   // Achievement badges
   const achievements = [
-    { icon: Crown, label: 'Top Seller', unlocked: true, color: 'from-yellow-400 to-amber-500' },
-    { icon: Target, label: 'Goal Crusher', unlocked: true, color: 'from-blue-400 to-cyan-500' },
-    { icon: Star, label: 'Team Leader', unlocked: false, color: 'from-gray-300 to-gray-400' },
-    { icon: Zap, label: 'Speed Demon', unlocked: false, color: 'from-gray-300 to-gray-400' }
+    {
+      icon: Crown,
+      label: t('dashboard.achievements.topSeller'),
+      unlocked: true,
+      color: 'from-yellow-400 to-amber-500'
+    },
+    {
+      icon: Target,
+      label: t('dashboard.achievements.goalCrusher'),
+      unlocked: true,
+      color: 'from-blue-400 to-cyan-500'
+    },
+    {
+      icon: Star,
+      label: t('dashboard.achievements.teamLeader'),
+      unlocked: false,
+      color: 'from-gray-300 to-gray-400'
+    },
+    {
+      icon: Zap,
+      label: t('dashboard.achievements.speedDemon'),
+      unlocked: false,
+      color: 'from-gray-300 to-gray-400'
+    }
   ];
 
   return (
@@ -340,12 +387,16 @@ export const Dashboard: React.FC = () => {
             >
               <Zap className="w-8 h-8 text-[#FFBF00]" />
             </motion.div>
-            Dashboard
+            {t('dashboard.title')}
           </h2>
-          <p className="text-gray-500 text-sm md:text-base">Welcome back, {user.name}! 🚀</p>
+          <p className="text-gray-500 text-sm md:text-base">
+            {t('dashboard.welcome', { name: user.name })} 🚀
+          </p>
         </div>
         <div className="text-right hidden sm:block">
-          <p className="text-xs font-bold text-gray-400 uppercase tracking-wider">Server Time</p>
+          <p className="text-xs font-bold text-gray-400 uppercase tracking-wider">
+            {t('dashboard.serverTime')}
+          </p>
           <p className="text-sm font-medium text-gray-800 font-mono">
             {new Date().toLocaleTimeString('vi-VN', {hour: '2-digit', minute: '2-digit'})}
           </p>
@@ -395,7 +446,9 @@ export const Dashboard: React.FC = () => {
               <div className="w-8 h-8 bg-[#00575A]/10 rounded-lg flex items-center justify-center">
                 <TrendingUp className="w-4 h-4 text-[#00575A]" />
               </div>
-              <h3 className="font-bold text-gray-900">Revenue Sources</h3>
+              <h3 className="font-bold text-gray-900">
+                {t('dashboard.revenueBreakdown.title')}
+              </h3>
             </div>
 
             <ResponsiveContainer width="100%" height={200}>
@@ -443,7 +496,9 @@ export const Dashboard: React.FC = () => {
               <div className="w-8 h-8 bg-blue-50 rounded-lg flex items-center justify-center">
                 <Clock className="w-4 h-4 text-blue-600" />
               </div>
-              <h3 className="font-bold text-gray-900">Recent Activity</h3>
+              <h3 className="font-bold text-gray-900">
+                {t('dashboard.recentActivity.title')}
+              </h3>
             </div>
 
             <div className="space-y-3">
@@ -480,7 +535,7 @@ export const Dashboard: React.FC = () => {
             <div className="relative z-10">
               <div className="flex items-center gap-2 mb-4">
                 <Award className="w-5 h-5 text-yellow-300" />
-                <h3 className="font-bold">Achievements</h3>
+                <h3 className="font-bold">{t('dashboard.achievements.title')}</h3>
               </div>
 
               <div className="grid grid-cols-2 gap-3">
@@ -512,7 +567,10 @@ export const Dashboard: React.FC = () => {
               </div>
 
               <p className="text-xs text-white/70 mt-4 text-center">
-                {achievements.filter(a => a.unlocked).length} / {achievements.length} unlocked
+                {t('dashboard.achievements.unlocked', {
+                  count: achievements.filter(a => a.unlocked).length,
+                  total: achievements.length
+                })}
               </p>
             </div>
           </motion.div>
@@ -524,20 +582,28 @@ export const Dashboard: React.FC = () => {
             transition={{ delay: 0.3 }}
             className="bg-white rounded-2xl border border-gray-100 shadow-sm p-6"
           >
-            <h3 className="font-bold text-gray-900 mb-4">Quick Stats</h3>
+            <h3 className="font-bold text-gray-900 mb-4">
+              {t('dashboard.quickStats.title')}
+            </h3>
             <div className="space-y-3">
               <div className="flex items-center justify-between">
-                <span className="text-sm text-gray-600">Total Transactions</span>
+                <span className="text-sm text-gray-600">
+                  {t('dashboard.quickStats.totalTransactions')}
+                </span>
                 <span className="font-bold text-gray-900">{transactions.length}</span>
               </div>
               <div className="h-px bg-gray-100" />
               <div className="flex items-center justify-between">
-                <span className="text-sm text-gray-600">Active Products</span>
+                <span className="text-sm text-gray-600">
+                  {t('dashboard.quickStats.activeProducts')}
+                </span>
                 <span className="font-bold text-gray-900">{products.length}</span>
               </div>
               <div className="h-px bg-gray-100" />
               <div className="flex items-center justify-between">
-                <span className="text-sm text-gray-600">Current Rank</span>
+                <span className="text-sm text-gray-600">
+                  {t('dashboard.quickStats.currentRank')}
+                </span>
                 <span className="font-bold text-[#FFBF00]">{user.rank}</span>
               </div>
             </div>

@@ -47,6 +47,10 @@ export const CURRENT_USER: User = {
   nextPayoutDate: '15/06/2024',
   estimatedBonus: 2400000,
   referralLink: 'wellnexus.vn/ref/VN-888',
+  // Token Balances (Initial state)
+  shopBalance: 5000000,      // 5M VND available in SHOP tokens
+  growBalance: 1500,         // 1,500 GROW tokens from completed quests
+  stakedGrowBalance: 500,    // 500 GROW tokens locked in staking
 };
 
 export const DAILY_QUESTS: Quest[] = [
