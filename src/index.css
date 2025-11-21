@@ -1,8 +1,19 @@
+/* Import Google Fonts - Outfit for headings, Plus Jakarta Sans for body */
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 @layer base {
+  html {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: 'Outfit', sans-serif;
+  }
+
   body {
     @apply bg-brand-bg text-brand-dark font-sans antialiased;
   }

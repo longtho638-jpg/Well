@@ -192,19 +192,9 @@ export default function LandingPage() {
   return (
     <>
       {/* ====================================================================== */}
-      {/* CUSTOM FONTS IMPORT */}
+      {/* CUSTOM STYLES */}
       {/* ====================================================================== */}
       <style>{`
-        @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800;900&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap');
-
-        .font-heading {
-          font-family: 'Outfit', sans-serif;
-        }
-
-        .font-body {
-          font-family: 'Plus Jakarta Sans', sans-serif;
-        }
-
         /* Noise Texture */
         .noise-texture {
           background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' /%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.05'/%3E%3C/svg%3E");
@@ -224,7 +214,7 @@ export default function LandingPage() {
         }
       `}</style>
 
-      <div className="min-h-screen bg-[#00575A] font-body text-gray-900 overflow-x-hidden">
+      <div className="min-h-screen bg-[#00575A] text-gray-900 overflow-x-hidden">
 
         {/* ================================================================== */}
         {/* STICKY GLASSMORPHIC HEADER */}
@@ -241,10 +231,10 @@ export default function LandingPage() {
               className="flex items-center gap-3"
               whileHover={{ scale: 1.02 }}
             >
-              <div className="w-10 h-10 bg-gradient-to-br from-[#FFBF00] to-yellow-500 rounded-xl flex items-center justify-center text-[#00575A] font-heading font-black text-xl shadow-lg shadow-[#FFBF00]/20">
+              <div className="w-10 h-10 bg-gradient-to-br from-[#FFBF00] to-yellow-500 rounded-xl flex items-center justify-center text-[#00575A] font-display font-black text-xl shadow-lg shadow-[#FFBF00]/20">
                 W
               </div>
-              <span className="font-heading font-bold text-xl text-white tracking-tight">
+              <span className="font-display font-bold text-xl text-white tracking-tight">
                 {LANDING_CONTENT.header.logo}
               </span>
             </motion.div>
@@ -255,7 +245,7 @@ export default function LandingPage() {
                 <a
                   key={idx}
                   href={item.href}
-                  className="text-sm font-medium text-white/70 hover:text-white transition-colors font-body"
+                  className="text-sm font-medium text-white/70 hover:text-white transition-colors"
                 >
                   {item.label}
                 </a>
@@ -266,7 +256,7 @@ export default function LandingPage() {
             <div className="flex items-center gap-3">
               <motion.button
                 onClick={handleJoin}
-                className="hidden md:block text-sm font-semibold text-white/80 hover:text-white px-5 py-2.5 rounded-xl transition-colors font-body"
+                className="hidden md:block text-sm font-semibold text-white/80 hover:text-white px-5 py-2.5 rounded-xl transition-colors"
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
               >
@@ -275,7 +265,7 @@ export default function LandingPage() {
 
               <motion.button
                 onClick={handleJoin}
-                className="text-sm font-bold bg-[#FFBF00] hover:bg-yellow-400 text-[#00575A] px-6 py-2.5 rounded-xl transition-all shadow-lg shadow-[#FFBF00]/20 font-body"
+                className="text-sm font-bold bg-[#FFBF00] hover:bg-yellow-400 text-[#00575A] px-6 py-2.5 rounded-xl transition-all shadow-lg shadow-[#FFBF00]/20"
                 whileHover={{
                   scale: 1.05,
                   boxShadow: '0 20px 40px rgba(255, 191, 0, 0.3)'
@@ -362,7 +352,7 @@ export default function LandingPage() {
                     <span className="relative inline-flex rounded-full h-2 w-2 bg-[#FFBF00]" />
                   </span>
                   <Sparkles className="w-4 h-4 text-[#FFBF00]" />
-                  <span className="text-sm font-bold text-[#FFBF00] uppercase tracking-wider font-heading">
+                  <span className="text-sm font-bold text-[#FFBF00] uppercase tracking-wider font-display">
                     {LANDING_CONTENT.hero.badge}
                   </span>
                 </div>
@@ -371,7 +361,7 @@ export default function LandingPage() {
               {/* Headline */}
               <motion.h1
                 variants={itemVariants}
-                className="font-heading font-black text-6xl md:text-7xl lg:text-8xl mb-6 leading-[0.95] tracking-tighter text-white"
+                className="font-display font-black text-7xl md:text-8xl lg:text-9xl mb-6 leading-[0.95] tracking-tight text-white drop-shadow-2xl"
               >
                 {LANDING_CONTENT.hero.headline}
                 <br />
@@ -383,7 +373,7 @@ export default function LandingPage() {
               {/* Subheadline */}
               <motion.p
                 variants={itemVariants}
-                className="text-lg md:text-xl lg:text-2xl text-white/80 mb-12 max-w-3xl mx-auto leading-relaxed font-light font-body"
+                className="text-lg md:text-xl lg:text-2xl text-white/80 mb-12 max-w-3xl mx-auto leading-relaxed font-light"
               >
                 {LANDING_CONTENT.hero.subheadline}
               </motion.p>
@@ -395,7 +385,7 @@ export default function LandingPage() {
               >
                 <motion.button
                   onClick={handleJoin}
-                  className="group relative bg-[#FFBF00] text-[#00575A] px-10 py-5 rounded-2xl font-bold text-lg flex items-center gap-3 shadow-2xl shadow-[#FFBF00]/30 font-heading overflow-hidden"
+                  className="group relative bg-[#FFBF00] text-[#00575A] px-10 py-5 rounded-2xl font-bold text-lg flex items-center gap-3 shadow-2xl shadow-[#FFBF00]/30 font-display overflow-hidden"
                   whileHover={{
                     scale: 1.05,
                     boxShadow: '0 25px 60px rgba(255, 191, 0, 0.5)'
@@ -420,7 +410,7 @@ export default function LandingPage() {
                 </motion.button>
 
                 <motion.button
-                  className="group px-10 py-5 rounded-2xl font-bold text-lg text-white border-2 border-white/20 hover:border-white/40 backdrop-blur-md bg-white/5 hover:bg-white/10 transition-all flex items-center gap-2 font-heading"
+                  className="group px-10 py-5 rounded-2xl font-bold text-lg text-white border-2 border-white/20 hover:border-white/40 backdrop-blur-md bg-white/5 hover:bg-white/10 transition-all flex items-center gap-2 font-display"
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
                 >
@@ -440,10 +430,10 @@ export default function LandingPage() {
                   { value: '98%', label: 'Satisfaction' }
                 ].map((stat, idx) => (
                   <div key={idx} className="text-center">
-                    <div className="text-3xl md:text-4xl font-black text-[#FFBF00] font-heading mb-1">
+                    <div className="text-3xl md:text-4xl font-black text-[#FFBF00] font-display mb-1">
                       {stat.value}
                     </div>
-                    <div className="text-sm text-white/60 font-medium font-body">
+                    <div className="text-sm text-white/60 font-medium">
                       {stat.label}
                     </div>
                   </div>
@@ -472,11 +462,11 @@ export default function LandingPage() {
             >
               <div className="inline-flex items-center gap-2 bg-[#FFBF00]/10 backdrop-blur-md border border-[#FFBF00]/20 rounded-full px-5 py-2 mb-6">
                 <Globe className="w-4 h-4 text-[#FFBF00]" />
-                <span className="text-sm font-bold text-[#FFBF00] uppercase tracking-wider font-heading">
+                <span className="text-sm font-bold text-[#FFBF00] uppercase tracking-wider font-display">
                   {LANDING_CONTENT.features.sectionBadge}
                 </span>
               </div>
-              <h2 className="text-4xl md:text-5xl lg:text-6xl font-black text-white mb-4 font-heading tracking-tight">
+              <h2 className="text-4xl md:text-5xl lg:text-6xl font-black text-white mb-4 font-display tracking-tight">
                 {LANDING_CONTENT.features.sectionTitle}
               </h2>
             </motion.div>
@@ -517,10 +507,10 @@ export default function LandingPage() {
                       </div>
 
                       {/* Content */}
-                      <h3 className="text-2xl font-bold text-white mb-3 font-heading">
+                      <h3 className="text-2xl font-bold text-white mb-3 font-display tracking-tight">
                         {feature.title}
                       </h3>
-                      <p className="text-white/70 leading-relaxed font-body">
+                      <p className="text-white/70 leading-relaxed">
                         {feature.description}
                       </p>
                     </div>
@@ -546,11 +536,11 @@ export default function LandingPage() {
               className="text-center mb-16"
             >
               <div className="inline-flex items-center gap-2 bg-white/5 backdrop-blur-md border border-white/10 rounded-full px-5 py-2 mb-6">
-                <span className="text-sm font-bold text-[#FFBF00] uppercase tracking-wider font-heading">
+                <span className="text-sm font-bold text-[#FFBF00] uppercase tracking-wider font-display">
                   {LANDING_CONTENT.testimonials.sectionBadge}
                 </span>
               </div>
-              <h2 className="text-4xl md:text-5xl font-black text-white font-heading">
+              <h2 className="text-4xl md:text-5xl font-black text-white font-display tracking-tight">
                 {LANDING_CONTENT.testimonials.sectionTitle}
               </h2>
             </motion.div>
@@ -569,11 +559,11 @@ export default function LandingPage() {
                   <div className="flex items-start gap-4 mb-6">
                     <div className="text-5xl">{testimonial.avatar}</div>
                     <div>
-                      <div className="font-bold text-white text-lg font-heading">{testimonial.author}</div>
-                      <div className="text-white/60 text-sm font-body">{testimonial.role}</div>
+                      <div className="font-bold text-white text-lg font-display">{testimonial.author}</div>
+                      <div className="text-white/60 text-sm">{testimonial.role}</div>
                     </div>
                   </div>
-                  <p className="text-white/80 leading-relaxed italic font-body text-lg">
+                  <p className="text-white/80 leading-relaxed italic text-lg">
                     "{testimonial.quote}"
                   </p>
                 </motion.div>
@@ -601,22 +591,22 @@ export default function LandingPage() {
               <div className="relative z-10">
                 <div className="inline-flex items-center gap-2 bg-[#FFBF00]/10 backdrop-blur-md border border-[#FFBF00]/20 rounded-full px-5 py-2 mb-6">
                   <Lock className="w-4 h-4 text-[#FFBF00]" />
-                  <span className="text-sm font-bold text-[#FFBF00] uppercase tracking-wider font-heading">
+                  <span className="text-sm font-bold text-[#FFBF00] uppercase tracking-wider font-display">
                     {LANDING_CONTENT.cta.badge}
                   </span>
                 </div>
 
-                <h2 className="text-4xl md:text-5xl lg:text-6xl font-black text-white mb-6 font-heading tracking-tight">
+                <h2 className="text-4xl md:text-5xl lg:text-6xl font-black text-white mb-6 font-display tracking-tight">
                   {LANDING_CONTENT.cta.headline}
                 </h2>
 
-                <p className="text-xl text-white/70 mb-10 max-w-2xl mx-auto font-body leading-relaxed">
+                <p className="text-xl text-white/70 mb-10 max-w-2xl mx-auto leading-relaxed">
                   {LANDING_CONTENT.cta.subheadline}
                 </p>
 
                 <motion.button
                   onClick={handleJoin}
-                  className="bg-[#FFBF00] text-[#00575A] px-12 py-6 rounded-2xl font-black text-xl shadow-2xl shadow-[#FFBF00]/30 font-heading inline-flex items-center gap-3"
+                  className="bg-[#FFBF00] text-[#00575A] px-12 py-6 rounded-2xl font-black text-xl shadow-2xl shadow-[#FFBF00]/30 font-display inline-flex items-center gap-3"
                   whileHover={{
                     scale: 1.05,
                     boxShadow: '0 30px 70px rgba(255, 191, 0, 0.5)'
@@ -643,14 +633,14 @@ export default function LandingPage() {
               {/* Brand Column */}
               <div className="lg:col-span-1">
                 <div className="flex items-center gap-3 mb-4">
-                  <div className="w-10 h-10 bg-gradient-to-br from-[#FFBF00] to-yellow-500 rounded-xl flex items-center justify-center text-[#00575A] font-heading font-black text-xl">
+                  <div className="w-10 h-10 bg-gradient-to-br from-[#FFBF00] to-yellow-500 rounded-xl flex items-center justify-center text-[#00575A] font-display font-black text-xl">
                     W
                   </div>
-                  <span className="font-heading font-bold text-xl">
+                  <span className="font-display font-bold text-xl">
                     {LANDING_CONTENT.header.logo}
                   </span>
                 </div>
-                <p className="text-white/60 text-sm leading-relaxed mb-6 font-body">
+                <p className="text-white/60 text-sm leading-relaxed mb-6">
                   {LANDING_CONTENT.footer.tagline}
                 </p>
 
@@ -691,13 +681,13 @@ export default function LandingPage() {
 
               {/* Product Links */}
               <div>
-                <h3 className="font-heading font-bold text-white mb-4">
+                <h3 className="font-display font-bold text-white mb-4">
                   {LANDING_CONTENT.footer.columns.product.title}
                 </h3>
                 <ul className="space-y-3">
                   {LANDING_CONTENT.footer.columns.product.links.map((link, idx) => (
                     <li key={idx}>
-                      <a href="#" className="text-white/60 hover:text-white transition-colors text-sm font-body">
+                      <a href="#" className="text-white/60 hover:text-white transition-colors text-sm">
                         {link}
                       </a>
                     </li>
@@ -707,13 +697,13 @@ export default function LandingPage() {
 
               {/* Company Links */}
               <div>
-                <h3 className="font-heading font-bold text-white mb-4">
+                <h3 className="font-display font-bold text-white mb-4">
                   {LANDING_CONTENT.footer.columns.company.title}
                 </h3>
                 <ul className="space-y-3">
                   {LANDING_CONTENT.footer.columns.company.links.map((link, idx) => (
                     <li key={idx}>
-                      <a href="#" className="text-white/60 hover:text-white transition-colors text-sm font-body">
+                      <a href="#" className="text-white/60 hover:text-white transition-colors text-sm">
                         {link}
                       </a>
                     </li>
@@ -723,13 +713,13 @@ export default function LandingPage() {
 
               {/* Resources Links */}
               <div>
-                <h3 className="font-heading font-bold text-white mb-4">
+                <h3 className="font-display font-bold text-white mb-4">
                   {LANDING_CONTENT.footer.columns.resources.title}
                 </h3>
                 <ul className="space-y-3">
                   {LANDING_CONTENT.footer.columns.resources.links.map((link, idx) => (
                     <li key={idx}>
-                      <a href="#" className="text-white/60 hover:text-white transition-colors text-sm font-body">
+                      <a href="#" className="text-white/60 hover:text-white transition-colors text-sm">
                         {link}
                       </a>
                     </li>
@@ -739,13 +729,13 @@ export default function LandingPage() {
 
               {/* Legal Links */}
               <div>
-                <h3 className="font-heading font-bold text-white mb-4">
+                <h3 className="font-display font-bold text-white mb-4">
                   {LANDING_CONTENT.footer.columns.legal.title}
                 </h3>
                 <ul className="space-y-3">
                   {LANDING_CONTENT.footer.columns.legal.links.map((link, idx) => (
                     <li key={idx}>
-                      <a href="#" className="text-white/60 hover:text-white transition-colors text-sm font-body">
+                      <a href="#" className="text-white/60 hover:text-white transition-colors text-sm">
                         {link}
                       </a>
                     </li>
@@ -757,17 +747,17 @@ export default function LandingPage() {
             {/* Newsletter Section */}
             <div className="border-t border-white/10 pt-12 pb-8">
               <div className="max-w-md mx-auto text-center">
-                <h3 className="font-heading font-bold text-xl text-white mb-3">
+                <h3 className="font-display font-bold text-xl text-white mb-3">
                   {LANDING_CONTENT.footer.newsletter.title}
                 </h3>
                 <div className="flex gap-2">
                   <input
                     type="email"
                     placeholder={LANDING_CONTENT.footer.newsletter.placeholder}
-                    className="flex-1 px-4 py-3 rounded-xl bg-white/5 border border-white/10 text-white placeholder-white/40 focus:outline-none focus:border-[#FFBF00]/50 font-body"
+                    className="flex-1 px-4 py-3 rounded-xl bg-white/5 border border-white/10 text-white placeholder-white/40 focus:outline-none focus:border-[#FFBF00]/50"
                   />
                   <motion.button
-                    className="px-6 py-3 rounded-xl bg-[#FFBF00] text-[#00575A] font-bold font-body"
+                    className="px-6 py-3 rounded-xl bg-[#FFBF00] text-[#00575A] font-bold"
                     whileHover={{ scale: 1.05 }}
                     whileTap={{ scale: 0.95 }}
                   >
@@ -778,7 +768,7 @@ export default function LandingPage() {
             </div>
 
             {/* Copyright */}
-            <div className="text-center text-white/40 text-sm font-body">
+            <div className="text-center text-white/40 text-sm">
               {LANDING_CONTENT.footer.copyright}
             </div>
           </div>
