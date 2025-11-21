@@ -2,10 +2,13 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import { Gift, Heart, Share2, Zap } from 'lucide-react';
 import { useStore } from '@/store';
+import { useTranslation } from '@/hooks';
 import { formatVND } from '@/utils/format';
 
 export const QuickActionsCard: React.FC = () => {
+  const t = useTranslation();
   const { user } = useStore();
+
   const handleSendGiftCard = () => {
     // TODO: Implement gift card sending logic
     alert('Tính năng gửi Gift Card đang được phát triển!');
@@ -67,7 +70,7 @@ export const QuickActionsCard: React.FC = () => {
       bgColor: 'bg-pink-50',
       iconColor: 'text-pink-600',
       onClick: handleSendGiftCard,
-      description: 'Tặng quà cho khách hàng',
+      description: t('dashboard.quickActions.shareProductDesc'),
     },
     {
       id: 'health-check',
@@ -81,13 +84,13 @@ export const QuickActionsCard: React.FC = () => {
     },
     {
       id: 'share-achievement',
-      label: 'Khoe thành tích',
+      label: t('dashboard.quickActions.shareAchievement'),
       icon: Share2,
       color: 'from-blue-500 to-cyan-600',
       bgColor: 'bg-blue-50',
       iconColor: 'text-blue-600',
       onClick: handleShareAchievement,
-      description: 'Chia sẻ thành công của bạn',
+      description: t('dashboard.quickActions.shareAchievementDesc'),
     },
   ];
 
@@ -103,7 +106,7 @@ export const QuickActionsCard: React.FC = () => {
           <Zap className="w-4 h-4 text-white" />
         </div>
         <div>
-          <h3 className="font-bold text-gray-900">Thao tác nhanh</h3>
+          <h3 className="font-bold text-gray-900">{t('dashboard.quickActions.title')}</h3>
           <p className="text-xs text-gray-500">Công cụ hỗ trợ kinh doanh</p>
         </div>
       </div>
