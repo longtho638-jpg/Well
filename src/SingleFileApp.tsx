@@ -400,7 +400,7 @@ const WalletView = ({ transactions }: { transactions: any[] }) => {
              <div className="bg-yellow-50 p-3 rounded-full w-fit mx-auto"><ShieldAlert className="w-6 h-6 text-yellow-600" /></div>
              <div>
                 <h4 className="font-bold text-gray-800">Tax Compliance Mode</h4>
-                <p className="text-xs text-gray-500 mt-1">Automatically deducts 10% PIT for income {'>'} 2,000,000 VNĐ according to Vietnam Law.</p>
+                <p className="text-xs text-gray-500 mt-1">Automatically deducts 10% PIT for income &gt; 2,000,000 VNĐ according to Vietnam Law.</p>
              </div>
              <button className="bg-[#FFBF00] hover:bg-yellow-400 text-[#00575A] font-bold py-3 rounded-xl w-full">Request Withdrawal</button>
          </div>
