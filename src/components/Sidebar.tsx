@@ -1,6 +1,6 @@
 
 import React, { useState } from 'react';
-import { LayoutDashboard, ShoppingBag, Wallet, LogOut, Sparkles, Bot, CheckCircle2, Circle, Users, Share2 } from 'lucide-react';
+import { LayoutDashboard, ShoppingBag, Wallet, LogOut, Sparkles, Bot, CheckCircle2, Circle, Users, Share2, Trophy, Heart, Megaphone } from 'lucide-react';
 import { getCoachAdvice } from '../services/geminiService';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useStore } from '../store';
@@ -21,7 +21,10 @@ export const Sidebar: React.FC<SidebarProps> = ({ onMobileClose }) => {
     { path: '/dashboard', label: 'Overview', icon: LayoutDashboard },
     { path: '/dashboard/marketplace', label: 'Marketplace', icon: ShoppingBag, matches: ['/dashboard/product'] },
     { path: '/dashboard/wallet', label: 'My Wallet', icon: Wallet },
-    { path: '/dashboard/health-coach', label: 'Health Coach', icon: Sparkles, badge: 'NEW' },
+    { path: '/dashboard/leaderboard', label: 'Leaderboard', icon: Trophy, badge: 'HOT' },
+    { path: '/dashboard/marketing-tools', label: 'Marketing Tools', icon: Megaphone, badge: 'NEW' },
+    { path: '/dashboard/health-check', label: 'Health Check', icon: Heart },
+    { path: '/dashboard/health-coach', label: 'Health Coach', icon: Sparkles, badge: 'AI' },
     { path: '/dashboard/copilot', label: 'The Copilot', icon: Bot, badge: 'AI' },
     { path: '/dashboard/team', label: 'Team Leader', icon: Users },
     { path: '/dashboard/referral', label: 'Giới Thiệu', icon: Share2 },

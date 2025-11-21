@@ -11,6 +11,9 @@ import CopilotPage from './pages/CopilotPage';
 import LeaderDashboard from './pages/LeaderDashboard';
 import ReferralPage from './pages/ReferralPage';
 import HealthCoach from './pages/HealthCoach';
+import HealthCheck from './pages/HealthCheck';
+import Leaderboard from './pages/Leaderboard';
+import MarketingTools from './pages/MarketingTools';
 import Admin from './pages/Admin';
 import PolicyEngine from './pages/Admin/PolicyEngine';
 import { useStore } from './store';
@@ -62,6 +65,9 @@ const App: React.FC = () => {
         <Route path="team" element={<LeaderDashboard />} />
         <Route path="referral" element={<ReferralPage />} />
         <Route path="health-coach" element={<HealthCoach />} />
+        <Route path="health-check" element={<HealthCheck />} />
+        <Route path="leaderboard" element={<Leaderboard />} />
+        <Route path="marketing-tools" element={<MarketingTools />} />
       </Route>
 
       {/* ============================================================ */}
