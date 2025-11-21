@@ -33,6 +33,13 @@ export interface User {
   shopBalance: number;      // SHOP token (VND) - from sales
   growBalance: number;      // GROW token - from quests/staking
   stakedGrowBalance: number; // Locked GROW tokens in staking
+  // Wealth OS Metrics (Investment-Grade Data)
+  businessValuation?: number;    // Valuation = Monthly Profit * 12 * PE Ratio
+  monthlyProfit?: number;        // Net profit (after tax & expenses)
+  projectedAnnualProfit?: number;// Annualized profit projection
+  equityValue?: number;          // GROW token equity value
+  cashflowValue?: number;        // SHOP token cashflow value
+  assetGrowthRate?: number;      // Monthly asset growth percentage
 }
 
 export interface Product {

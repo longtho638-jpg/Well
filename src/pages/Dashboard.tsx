@@ -24,7 +24,8 @@ import {
   TrendingDown,
   Gift,
   Sparkles,
-  Radio
+  Radio,
+  BarChart3
 } from 'lucide-react';
 import { PieChart, Pie, Cell, ResponsiveContainer, Legend, Tooltip } from 'recharts';
 import { formatVND, formatNumber } from '../utils/format';
@@ -405,6 +406,139 @@ export const Dashboard: React.FC = () => {
 
       {/* Hero Card - Full Width */}
       <HeroCard user={user} />
+
+      {/* ========================================================================= */}
+      {/* BUSINESS VALUATION CARD - THE CENTERPIECE (Wealth OS) */}
+      {/* ========================================================================= */}
+      <motion.div
+        initial={{ opacity: 0, scale: 0.95 }}
+        animate={{ opacity: 1, scale: 1 }}
+        transition={{ duration: 0.6 }}
+        className="relative overflow-hidden rounded-3xl shadow-2xl"
+      >
+        {/* Premium Gold Gradient Background */}
+        <div className="absolute inset-0 bg-gradient-to-br from-amber-400 via-yellow-500 to-orange-500" />
+
+        {/* Decorative Elements */}
+        <div className="absolute top-0 right-0 w-96 h-96 bg-white/10 rounded-full blur-3xl -mr-24 -mt-24" />
+        <div className="absolute bottom-0 left-0 w-80 h-80 bg-black/10 rounded-full blur-3xl -ml-20 -mb-20" />
+
+        <div className="relative z-10 p-8 md:p-12">
+          <div className="grid md:grid-cols-2 gap-8 items-center">
+            {/* Left: Valuation Display */}
+            <div>
+              <div className="flex items-center gap-3 mb-4">
+                <div className="w-12 h-12 bg-white/20 backdrop-blur-sm rounded-xl flex items-center justify-center">
+                  <BarChart3 className="w-6 h-6 text-white" />
+                </div>
+                <div>
+                  <p className="text-xs font-bold text-white/80 uppercase tracking-wider">
+                    {t('dashboard.valuation.title')}
+                  </p>
+                  <p className="text-xs text-white/60">
+                    {t('dashboard.valuation.subtitle')}
+                  </p>
+                </div>
+              </div>
+
+              {/* The Big Number */}
+              <div className="mb-6">
+                <motion.div
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.3 }}
+                  className="text-5xl md:text-6xl lg:text-7xl font-black text-white mb-2 font-display tracking-tight"
+                >
+                  {formatVND(user.businessValuation || 0)}
+                </motion.div>
+                <p className="text-white/80 text-sm">
+                  {t('dashboard.valuation.formula')}
+                  <span className="block text-xs text-white/60 mt-1">
+                    ({formatVND(user.monthlyProfit || 0)} × 12 × 5 PE Ratio)
+                  </span>
+                </p>
+              </div>
+
+              {/* Growth Indicator */}
+              <div className="inline-flex items-center gap-2 bg-white/20 backdrop-blur-md rounded-full px-4 py-2 border border-white/30">
+                <TrendingUp className="w-4 h-4 text-white" />
+                <span className="text-sm font-bold text-white">
+                  +{user.assetGrowthRate || 5}% MoM Growth
+                </span>
+              </div>
+            </div>
+
+            {/* Right: Asset Breakdown */}
+            <div className="bg-white/10 backdrop-blur-xl border border-white/20 rounded-2xl p-6">
+              <h3 className="text-white font-bold text-lg mb-4 flex items-center gap-2">
+                <Coins className="w-5 h-5" />
+                {t('dashboard.valuation.assetBreakdown')}
+              </h3>
+
+              <div className="space-y-4">
+                {/* Cashflow (SHOP) */}
+                <div className="flex items-center justify-between">
+                  <div>
+                    <p className="text-white/60 text-xs uppercase font-semibold tracking-wider">
+                      {t('dashboard.valuation.cashflow')}
+                    </p>
+                    <p className="text-white/90 text-sm">SHOP Token</p>
+                  </div>
+                  <div className="text-right">
+                    <p className="text-white font-bold text-lg">
+                      {formatVND(user.cashflowValue || 0)}
+                    </p>
+                  </div>
+                </div>
+
+                <div className="h-px bg-white/20" />
+
+                {/* Equity (GROW) */}
+                <div className="flex items-center justify-between">
+                  <div>
+                    <p className="text-white/60 text-xs uppercase font-semibold tracking-wider">
+                      {t('dashboard.valuation.equity')}
+                    </p>
+                    <p className="text-white/90 text-sm">GROW Token</p>
+                  </div>
+                  <div className="text-right">
+                    <p className="text-white font-bold text-lg">
+                      {formatVND(user.equityValue || 0)}
+                    </p>
+                  </div>
+                </div>
+
+                <div className="h-px bg-white/20" />
+
+                {/* Projected Annual Profit */}
+                <div className="flex items-center justify-between">
+                  <div>
+                    <p className="text-white/60 text-xs uppercase font-semibold tracking-wider">
+                      {t('dashboard.valuation.projectedAnnual')}
+                    </p>
+                    <p className="text-white/90 text-sm">Annualized Revenue</p>
+                  </div>
+                  <div className="text-right">
+                    <p className="text-white font-bold text-lg">
+                      {formatVND(user.projectedAnnualProfit || 0)}
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              {/* CTA */}
+              <motion.button
+                whileHover={{ scale: 1.02 }}
+                whileTap={{ scale: 0.98 }}
+                className="w-full mt-6 bg-white text-amber-600 font-bold py-3 rounded-xl flex items-center justify-center gap-2 shadow-lg hover:shadow-xl transition-all"
+              >
+                <Crown className="w-5 h-5" />
+                {t('dashboard.valuation.upgradePortfolio')}
+              </motion.button>
+            </div>
+          </div>
+        </div>
+      </motion.div>
 
       {/* Daily Quest Hub - Full Width */}
       <DailyQuestHub />
