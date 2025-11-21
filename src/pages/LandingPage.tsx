@@ -29,112 +29,114 @@ const LANDING_CONTENT = {
   header: {
     logo: 'WellNexus',
     navigation: [
-      { label: 'Về chúng tôi', href: '#about' },
-      { label: 'Tính năng', href: '#features' },
-      { label: 'Cộng đồng', href: '#community' },
-      { label: 'Bảng giá', href: '#pricing' }
+      { label: 'Cách hoạt động', href: '#how-it-works' },
+      { label: 'Công nghệ', href: '#technology' },
+      { label: 'Sản phẩm', href: '#products' },
+      { label: 'Cộng đồng', href: '#community' }
     ],
     cta: {
       login: 'Đăng nhập',
-      signup: 'Tham gia ngay'
+      signup: 'Bắt đầu bán hàng'
     }
   },
 
   hero: {
-    badge: 'Đang mở tuyển 200 Partner đầu tiên',
-    headline: 'Kinh Doanh Sức Khỏe',
-    headlineAccent: 'Thời Đại AI Agentic',
-    subheadline: 'Nền tảng Social Commerce trang bị cho bạn một AI Coach riêng biệt, sản phẩm Minh bạch nguồn gốc và Quy trình bán hàng tự động hóa.',
-    primaryCta: 'Truy cập Dashboard Demo',
-    secondaryCta: 'Tìm hiểu mô hình'
+    badge: 'Nền tảng #1 cho người bán sức khỏe tại Việt Nam',
+    headline: 'Kinh Doanh Sản Phẩm Sức Khỏe',
+    headlineAccent: 'Theo Cách Của Bạn',
+    subheadline: 'WellNexus là nền tảng cho phép bạn bán sản phẩm wellness chất lượng cao với công cụ AI tự động hóa, tính năng tuân thủ thuế, và hoa hồng minh bạch. Không cần vốn đầu tư, không cần kho hàng.',
+    primaryCta: 'Khám phá Dashboard Demo',
+    secondaryCta: 'Xem cách hoạt động'
   },
 
   features: {
-    sectionBadge: 'Tại sao chọn WellNexus?',
-    sectionTitle: 'Công cụ mạnh mẽ cho người tiên phong',
+    sectionBadge: 'Công nghệ tiên tiến',
+    sectionTitle: 'Công cụ thông minh giúp bạn bán hàng hiệu quả',
     items: [
       {
-        title: 'Agentic AI Coach',
-        description: 'Không còn cô đơn. AI phân tích dữ liệu bán hàng và gợi ý chiến lược mỗi ngày.',
+        title: 'AI Business Coach',
+        description: 'Trợ lý AI phân tích dữ liệu bán hàng của bạn và đưa ra gợi ý chiến lược cá nhân hóa hàng ngày. Giống như có một chuyên gia tư vấn 24/7.',
         icon: 'bot'
       },
       {
-        title: 'Minh Bạch Tuyệt Đối',
-        description: 'Truy xuất nguồn gốc sản phẩm bằng Blockchain. Tự động khấu trừ thuế TNCN đúng luật.',
+        title: 'Automated Tax Compliance',
+        description: 'Tự động tính toán và khấu trừ thuế TNCN theo đúng Thông tư 111/2013/TT-BTC. Báo cáo thuế đầy đủ, minh bạch từng giao dịch.',
         icon: 'shield'
       },
       {
-        title: 'Cộng Đồng Hỗ Trợ',
-        description: 'Học hỏi từ những Leader hàng đầu. Gamification biến việc bán hàng thành trò chơi thú vị.',
-        icon: 'users'
-      },
-      {
-        title: 'Phân Tích Thông Minh',
-        description: 'Dashboard theo dõi real-time với insights từ AI để tối ưu doanh thu.',
+        title: 'Real-Time Analytics',
+        description: 'Theo dõi doanh số, hoa hồng, và hiệu suất sản phẩm trong dashboard trực quan. Xuất báo cáo chi tiết bất cứ lúc nào.',
         icon: 'chart'
       },
       {
-        title: 'Tăng Trưởng Bền Vững',
-        description: 'Hệ thống MLM công bằng với hoa hồng minh bạch đến từng giao dịch.',
+        title: 'Product Discovery Engine',
+        description: 'AI đề xuất sản phẩm phù hợp dựa trên sở thích khách hàng và xu hướng thị trường. Tăng tỷ lệ chuyển đổi lên 40%.',
         icon: 'trending'
       },
       {
-        title: 'Founder Club Elite',
-        description: 'Chia sẻ 2% doanh thu toàn cầu khi đạt team volume 100 triệu VND.',
+        title: 'Transparent Commission',
+        description: 'Xem chi tiết cấu trúc hoa hồng cho từng sản phẩm. Không có phí ẩn. Không có điều khoản khó hiểu. 100% minh bạch.',
         icon: 'crown'
+      },
+      {
+        title: 'Community Learning Hub',
+        description: 'Truy cập thư viện video hướng dẫn, webinar, và khóa học từ những người bán hàng đầu. Học hỏi chiến lược thực chiến.',
+        icon: 'users'
       }
     ]
   },
 
   testimonials: {
-    sectionBadge: 'Câu chuyện thành công',
-    sectionTitle: 'Những người tiên phong đã làm được',
+    sectionBadge: 'Câu chuyện từ cộng đồng',
+    sectionTitle: 'Người bán thực tế chia sẻ hành trình',
     items: [
       {
-        quote: 'Chỉ sau 2 tháng, tôi đã đạt rank Partner với thu nhập ổn định 15 triệu/tháng. AI Coach như một mentor 24/7.',
+        quote: 'Tôi bắt đầu bán sản phẩm ANIMA 119 vì mình đã dùng và thấy hiệu quả. Trong 3 tháng đầu, tôi kiếm được ₫18 triệu hoa hồng từ 47 đơn hàng. AI Coach giúp tôi hiểu khách hàng nào quan tâm đến sản phẩm nào.',
         author: 'Lan Nguyễn',
-        role: 'Partner tại Hà Nội',
-        avatar: '👩‍💼'
+        role: 'Wellness Advocate, Hà Nội',
+        avatar: '👩‍💼',
+        metrics: '3 tháng • 47 đơn hàng • ₫18M hoa hồng'
       },
       {
-        quote: 'WellNexus giúp tôi xây dựng team 50 người mà không phải lo về quản lý hoa hồng. Hệ thống lo hết!',
+        quote: 'Tôi từng hoài nghi về bán hàng online. Nhưng WellNexus khác - không cần ép bạn bè mua, không cần tồn kho. Tôi chỉ chia sẻ sản phẩm tôi tin tưởng trong group yoga. Giờ đây, đây là thu nhập phụ ổn định ₫12-15 triệu/tháng.',
         author: 'Minh Trần',
-        role: 'Founder Club Member',
-        avatar: '👨‍💼'
+        role: 'Former Office Worker, TP.HCM',
+        avatar: '👨‍💼',
+        metrics: '6 tháng • 89 đơn hàng • ₫72M hoa hồng'
       }
     ]
   },
 
   cta: {
-    badge: 'Quyền lợi giới hạn',
-    headline: 'Sẵn sàng bắt đầu hành trình?',
-    subheadline: 'Tham gia ngay hôm nay để nhận gói quà tặng Founder trị giá 3.000.000đ và quyền lợi chia sẻ 2% doanh thu toàn cầu.',
-    buttonText: 'Đăng Ký Ngay'
+    badge: 'Miễn phí đăng ký',
+    headline: 'Sẵn sàng bắt đầu kinh doanh?',
+    subheadline: 'Tạo tài khoản người bán miễn phí ngay hôm nay. Không cần vốn đầu tư. Không phí hàng tháng. Chỉ trả commission khi bạn bán được hàng.',
+    buttonText: 'Tạo tài khoản ngay'
   },
 
   footer: {
-    tagline: 'Nền tảng Social Commerce thế hệ mới cho thị trường Việt Nam',
+    tagline: 'Nền tảng Social Commerce cho phép bạn bán sản phẩm wellness chất lượng cao với công cụ thông minh và hoa hồng minh bạch.',
     newsletter: {
-      title: 'Nhận tin tức mới nhất',
+      title: 'Nhận hướng dẫn bán hàng',
       placeholder: 'Email của bạn',
       buttonText: 'Đăng ký'
     },
     columns: {
       product: {
-        title: 'Sản Phẩm',
-        links: ['Dashboard', 'AI Coach', 'Marketplace', 'Wallet', 'Analytics']
+        title: 'Nền Tảng',
+        links: ['Dashboard', 'AI Coach', 'Product Catalog', 'Commission Tracker', 'Analytics']
       },
       company: {
-        title: 'Công Ty',
-        links: ['Về chúng tôi', 'Blog', 'Careers', 'Press Kit', 'Partners']
+        title: 'Kinh Doanh',
+        links: ['Cách hoạt động', 'Cấu trúc hoa hồng', 'Công cụ thuế', 'Hướng dẫn người bán', 'API Docs']
       },
       resources: {
         title: 'Tài Nguyên',
-        links: ['Documentation', 'Tutorials', 'Webinars', 'Community', 'Success Stories']
+        links: ['Help Center', 'Video Tutorials', 'Blog', 'Community Forum', 'Success Stories']
       },
       legal: {
         title: 'Pháp Lý',
-        links: ['Privacy Policy', 'Terms of Service', 'Cookie Policy', 'GDPR', 'Disclaimer']
+        links: ['Terms of Service', 'Privacy Policy', 'Tax Compliance', 'Business Registration', 'Security']
       }
     },
     social: {
@@ -425,9 +427,9 @@ export default function LandingPage() {
                 className="mt-12 md:mt-16 grid grid-cols-3 gap-4 md:gap-8 max-w-2xl mx-auto px-4 md:px-0"
               >
                 {[
-                  { value: '200+', label: 'Active Partners' },
-                  { value: '15M+', label: 'VND Paid Out' },
-                  { value: '98%', label: 'Satisfaction' }
+                  { value: '2,000+', label: 'Người bán hoạt động' },
+                  { value: '₫50M+', label: 'Hoa hồng chi trả' },
+                  { value: '4.8/5⭐', label: 'Đánh giá TB' }
                 ].map((stat, idx) => (
                   <div key={idx} className="text-center">
                     <div className="text-2xl md:text-3xl lg:text-4xl font-black text-[#FFBF00] font-display mb-1">
@@ -563,9 +565,15 @@ export default function LandingPage() {
                       <div className="text-white/60 text-xs md:text-sm">{testimonial.role}</div>
                     </div>
                   </div>
-                  <p className="text-white/80 leading-relaxed italic text-sm md:text-base lg:text-lg">
+                  <p className="text-white/80 leading-relaxed italic text-sm md:text-base lg:text-lg mb-4">
                     "{testimonial.quote}"
                   </p>
+                  {testimonial.metrics && (
+                    <div className="flex items-center gap-2 text-xs md:text-sm text-[#FFBF00]/80 font-medium">
+                      <CheckCircle2 className="w-4 h-4" />
+                      <span>{testimonial.metrics}</span>
+                    </div>
+                  )}
                 </motion.div>
               ))}
             </div>
