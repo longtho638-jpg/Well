@@ -4,19 +4,21 @@
 
 @layer base {
   :root {
-    --font-sans: 'Plus Jakarta Sans', sans-serif;
-    --font-display: 'Outfit', sans-serif;
+    --font-display: 'Manrope', sans-serif;
+    --font-body: 'Plus Jakarta Sans', sans-serif;
   }
 
   html {
-    font-family: var(--font-sans);
+    font-family: var(--font-body);
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility; /* Tối ưu hiển thị chữ */
   }
 
   h1, h2, h3, h4, h5, h6 {
     font-family: var(--font-display);
-    font-weight: 700; /* Mặc định tiêu đề phải đậm */
+    font-weight: 800; /* Manrope ExtraBold nhìn rất đẹp cho Tiếng Việt */
+    letter-spacing: -0.02em; /* Thu hẹp khoảng cách chữ để tạo cảm giác hiện đại */
   }
 
   /* Fix lỗi font cho các thẻ input/button */
