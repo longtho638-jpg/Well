@@ -19,10 +19,8 @@ export default {
         marigold: '#FFBF00',
       },
       fontFamily: {
-        // Default sans-serif - Plus Jakarta Sans for body text
-        sans: ['"Plus Jakarta Sans"', '-apple-system', 'BlinkMacSystemFont', '"Segoe UI"', 'sans-serif'],
-        // Display font - Outfit for headlines and hero text
-        display: ['"Outfit"', '-apple-system', 'BlinkMacSystemFont', '"Segoe UI"', 'sans-serif'],
+        sans: ['"Plus Jakarta Sans"', 'ui-sans-serif', 'system-ui', 'sans-serif'],
+        display: ['"Outfit"', 'ui-sans-serif', 'system-ui', 'sans-serif'],
       },
       animation: {
         'pulse-slow': 'pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite',
