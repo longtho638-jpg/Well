@@ -1,15 +1,17 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { Gift, Heart, Share2, Zap } from 'lucide-react';
+import { useStore } from '@/store';
+import { formatVND } from '@/utils/format';
 
 export const QuickActionsCard: React.FC = () => {
+  const { user } = useStore();
   const handleSendGiftCard = () => {
     // TODO: Implement gift card sending logic
     alert('Tính năng gửi Gift Card đang được phát triển!');
   };
 
   const handleShareHealthCheck = () => {
-    // TODO: Implement health check link sharing
     const healthCheckLink = 'https://wellnexus.app/health-check';
     if (navigator.share) {
       navigator.share({
@@ -28,8 +30,32 @@ export const QuickActionsCard: React.FC = () => {
   };
 
   const handleShareAchievement = () => {
-    // TODO: Implement achievement sharing
-    alert('Tính năng khoe thành tích đang được phát triển!');
+    // Create achievement message based on user's current stats
+    const achievementText = `🎉 Thành tích WellNexus của tôi:\n\n` +
+      `🏆 Cấp bậc: ${user.rank}\n` +
+      `💰 Doanh số: ${formatVND(user.totalSales)}\n` +
+      `👥 Team Volume: ${formatVND(user.teamVolume)}\n\n` +
+      `Tham gia cùng tôi tại WellNexus! 💪`;
+
+    const shareData = {
+      title: 'Thành tích WellNexus',
+      text: achievementText,
+      url: user.referralLink || 'https://wellnexus.app',
+    };
+
+    if (navigator.share) {
+      navigator.share(shareData).catch((error) => {
+        // User cancelled or error occurred, fallback to clipboard
+        if (error.name !== 'AbortError') {
+          navigator.clipboard.writeText(achievementText + '\n\n' + shareData.url);
+          alert('Thành tích đã được sao chép vào clipboard!');
+        }
+      });
+    } else {
+      // Fallback to clipboard for browsers that don't support Web Share API
+      navigator.clipboard.writeText(achievementText + '\n\n' + shareData.url);
+      alert('Thành tích đã được sao chép vào clipboard!');
+    }
   };
 
   const quickActions = [
