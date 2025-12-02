@@ -21,6 +21,7 @@ import CMS from './pages/Admin/CMS';
 import Partners from './pages/Admin/Partners';
 import Finance from './pages/Admin/Finance';
 import PolicyEngine from './pages/Admin/PolicyEngine';
+import AgentDashboard from './pages/AgentDashboard';
 import { useStore } from './store';
 import { ThemeProvider } from './context/ThemeContext';
 
@@ -81,6 +82,7 @@ const App: React.FC = () => {
         <Route path="health-check" element={<HealthCheck />} />
         <Route path="leaderboard" element={<Leaderboard />} />
         <Route path="marketing-tools" element={<MarketingTools />} />
+        <Route path="agents" element={<AgentDashboard />} />
       </Route>
 
       {/* ============================================================ */}

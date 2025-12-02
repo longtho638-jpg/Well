@@ -1,204 +1,100 @@
-import { useState, useEffect } from 'react';
-import {
-  signInWithEmailAndPassword,
-  createUserWithEmailAndPassword,
-  signOut as firebaseSignOut,
-  onAuthStateChanged,
-  User as FirebaseUser,
-  GoogleAuthProvider,
-  signInWithPopup,
-} from 'firebase/auth';
-import { auth } from '../services/firebase';
-import { userAPI } from '../services/api';
-import { User } from '../types';
+import { useEffect } from 'react';
+import { useStore } from '@/store';
+import { supabase } from '@/lib/supabase';
 
-interface AuthState {
-  user: User | null;
-  firebaseUser: FirebaseUser | null;
-  loading: boolean;
-  error: string | null;
-}
+export function useAuth() {
+  const { setUser, setIsAuthenticated } = useStore();
 
-interface AuthActions {
-  signIn: (email: string, password: string) => Promise<void>;
-  signUp: (email: string, password: string, displayName: string) => Promise<void>;
-  signInWithGoogle: () => Promise<void>;
-  signOut: () => Promise<void>;
-  clearError: () => void;
-}
-
-/**
- * Custom hook for Firebase Authentication
- * Manages authentication state and provides auth actions
- */
-export function useAuth(): AuthState & AuthActions {
-  const [user, setUser] = useState<User | null>(null);
-  const [firebaseUser, setFirebaseUser] = useState<FirebaseUser | null>(null);
-  const [loading, setLoading] = useState<boolean>(true);
-  const [error, setError] = useState<string | null>(null);
-
-  // Listen to auth state changes
   useEffect(() => {
-    const unsubscribe = onAuthStateChanged(
-      auth,
-      async (firebaseUser) => {
-        setLoading(true);
-        if (firebaseUser) {
-          try {
-            // Fetch user data from Firestore
-            const userData = await userAPI.getUser(firebaseUser.uid);
-            setUser(userData);
-            setFirebaseUser(firebaseUser);
-          } catch (err) {
-            console.error('Error fetching user data:', err);
-            setError('Failed to load user data');
-            setUser(null);
-          }
-        } else {
-          setUser(null);
-          setFirebaseUser(null);
+    // Check active session on mount
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      if (session?.user) {
+        // Fetch full user data from database
+        fetchUserData(session.user.id);
+      }
+    });
+
+    // Listen for auth state changes
+    const { data: { subscription } } = supabase.auth.onAuthStateChange(
+      async (event, session) => {
+        if (event === 'SIGNED_IN' && session?.user) {
+          await fetchUserData(session.user.id);
+        } else if (event === 'SIGNED_OUT') {
+          setIsAuthenticated(false);
         }
-        setLoading(false);
-      },
-      (err) => {
-        console.error('Auth state change error:', err);
-        setError(err.message);
-        setLoading(false);
       }
     );
 
-    return () => unsubscribe();
+    return () => subscription.unsubscribe();
   }, []);
 
-  /**
-   * Sign in with email and password
-   */
-  const signIn = async (email: string, password: string): Promise<void> => {
+  const fetchUserData = async (userId: string) => {
     try {
-      setLoading(true);
-      setError(null);
-      await signInWithEmailAndPassword(auth, email, password);
-    } catch (err: any) {
-      console.error('Sign in error:', err);
-      setError(err.message || 'Failed to sign in');
-      throw err;
-    } finally {
-      setLoading(false);
-    }
-  };
+      const { data, error } = await supabase
+        .from('users')
+        .select('*')
+        .eq('id', userId)
+        .single();
 
-  /**
-   * Sign up with email and password
-   */
-  const signUp = async (
-    email: string,
-    password: string,
-    displayName: string
-  ): Promise<void> => {
-    try {
-      setLoading(true);
-      setError(null);
+      if (error) throw error;
 
-      // Create Firebase auth user
-      const userCredential = await createUserWithEmailAndPassword(
-        auth,
-        email,
-        password
-      );
+      if (data) {
+        // Map Supabase user to app User type
+        const user = {
+          id: data.id,
+          name: data.name,
+          email: data.email,
+          rank: data.rank,
+          totalSales: data.total_sales,
+          teamVolume: data.team_volume,
+          shopBalance: data.shop_balance,
+          growBalance: data.grow_balance,
+          stakedGrowBalance: data.staked_grow_balance,
+          avatarUrl: data.avatar_url,
+          joinedAt: data.created_at,
+          kycStatus: true, // Default
+          referralLink: `wellnexus.vn/ref/${data.id}`,
+        };
 
-      // Create user document in Firestore
-      await userAPI.createUser(userCredential.user.uid, {
-        id: userCredential.user.uid,
-        name: displayName,
-        email: email,
-        rank: 'member' as any,
-        totalSales: 0,
-        teamVolume: 0,
-        avatarUrl: `https://ui-avatars.com/api/?name=${encodeURIComponent(displayName)}`,
-        joinedAt: new Date().toISOString(),
-        kycStatus: false,
-      });
-    } catch (err: any) {
-      console.error('Sign up error:', err);
-      setError(err.message || 'Failed to sign up');
-      throw err;
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  /**
-   * Sign in with Google
-   */
-  const signInWithGoogle = async (): Promise<void> => {
-    try {
-      setLoading(true);
-      setError(null);
-
-      const provider = new GoogleAuthProvider();
-      const userCredential = await signInWithPopup(auth, provider);
-
-      // Check if user document exists, if not create one
-      const existingUser = await userAPI.getUser(userCredential.user.uid);
-      if (!existingUser) {
-        await userAPI.createUser(userCredential.user.uid, {
-          id: userCredential.user.uid,
-          name: userCredential.user.displayName || 'User',
-          email: userCredential.user.email || '',
-          rank: 'member' as any,
-          totalSales: 0,
-          teamVolume: 0,
-          avatarUrl:
-            userCredential.user.photoURL ||
-            `https://ui-avatars.com/api/?name=${encodeURIComponent(userCredential.user.displayName || 'User')}`,
-          joinedAt: new Date().toISOString(),
-          kycStatus: false,
-        });
+        setUser(user as any);
+        setIsAuthenticated(true);
       }
-    } catch (err: any) {
-      console.error('Google sign in error:', err);
-      setError(err.message || 'Failed to sign in with Google');
-      throw err;
-    } finally {
-      setLoading(false);
+    } catch (error) {
+      console.error('[useAuth] Error fetching user:', error);
     }
-  };
-
-  /**
-   * Sign out
-   */
-  const signOut = async (): Promise<void> => {
-    try {
-      setLoading(true);
-      setError(null);
-      await firebaseSignOut(auth);
-      setUser(null);
-      setFirebaseUser(null);
-    } catch (err: any) {
-      console.error('Sign out error:', err);
-      setError(err.message || 'Failed to sign out');
-      throw err;
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  /**
-   * Clear error
-   */
-  const clearError = (): void => {
-    setError(null);
   };
 
   return {
-    user,
-    firebaseUser,
-    loading,
-    error,
-    signIn,
-    signUp,
-    signInWithGoogle,
-    signOut,
-    clearError,
+    signIn: (email: string, password: string) =>
+      supabase.auth.signInWithPassword({ email, password }),
+
+    signUp: async (email: string, password: string, name: string) => {
+      // 1. Sign up with Supabase Auth
+      const { data, error } = await supabase.auth.signUp({
+        email,
+        password,
+        options: {
+          data: { name }, // Store name in auth metadata
+        },
+      });
+
+      if (error) throw error;
+
+      // 2. Create user record in users table
+      if (data.user) {
+        await supabase.from('users').insert([
+          {
+            id: data.user.id,
+            email,
+            name,
+            rank: 'Member',
+          },
+        ]);
+      }
+
+      return data;
+    },
+
+    signOut: () => supabase.auth.signOut(),
   };
 }

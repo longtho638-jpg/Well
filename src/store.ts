@@ -18,6 +18,10 @@ import {
   REDEMPTION_ORDERS
 } from './data/mockData';
 import { generateTxHash, calculateStakingReward } from './utils/tokenomics';
+import { AgentState, AgentLog, AgentKPI } from './types/agentic';
+import { agentRegistry } from './agents';
+import { supabase } from './lib/supabase';
+import { UserRank } from './types';
 
 // ============================================================================
 // WEALTH OS CALCULATION ENGINE
@@ -110,6 +114,21 @@ interface AppState {
   redemptionItems: RedemptionItem[];
   redemptionOrders: RedemptionOrder[];
 
+  // Agent-OS State
+  agentState: AgentState;
+
+  // Agent Actions
+  executeAgent: (agentName: string, input: any) => Promise<any>;
+  getAgentLogs: (agentName?: string) => AgentLog[];
+  getAgentKPIs: (agentName: string) => AgentKPI[];
+  listAllAgents: () => any[];
+
+  // Supabase Sync Methods & Auth Helpers
+  fetchUserFromDB: () => Promise<void>;
+  persistAgentLog: (log: AgentLog) => Promise<void>;
+  setUser: (user: User | null) => void;
+  setIsAuthenticated: (isAuth: boolean) => void;
+
   // Actions (Simulating Backend Mutations)
   completeQuest: (questId: string) => void;
   simulateOrder: (productId: string) => Promise<void>;
@@ -154,9 +173,19 @@ export const useStore = create<AppState>((set, get) => ({
   redemptionItems: REDEMPTION_ITEMS,
   redemptionOrders: REDEMPTION_ORDERS,
 
+  // Agent-OS Initial State
+  agentState: {
+    activeAgents: new Map(),
+    agentLogs: [],
+    agentMetrics: new Map(),
+  },
+
   // Auth Actions
   login: () => set({ isAuthenticated: true }),
-  logout: () => set({ isAuthenticated: false }),
+  logout: async () => {
+    await supabase.auth.signOut();
+    set({ isAuthenticated: false, user: enrichUserWithWealthMetrics(CURRENT_USER) }); 
+  },
 
   // Quest Actions - FIXED: Cộng GROW tokens khi complete quest
   completeQuest: (questId) => set((state) => {
@@ -441,5 +470,126 @@ export const useStore = create<AppState>((set, get) => ({
 
     // Simulate processing delay
     await new Promise(resolve => setTimeout(resolve, 1500));
+  },
+
+  // ============================================================================
+  // AGENT-OS ACTIONS
+  // ============================================================================
+
+  /**
+   * Execute an agent action.
+   */
+  executeAgent: async (agentName, input) => {
+    const agent = agentRegistry.get(agentName);
+    if (!agent) {
+      throw new Error(`Agent "${agentName}" not found in registry`);
+    }
+
+    try {
+      const output = await agent.execute(input);
+
+      // Update logs in store
+      const newLogs = agent.getLogs();
+      set((state) => ({
+        agentState: {
+          ...state.agentState,
+          agentLogs: [...state.agentState.agentLogs, ...newLogs],
+        },
+      }));
+
+      return output;
+    } catch (error) {
+      console.error(`[AgentOS] Error executing ${agentName}:`, error);
+      throw error;
+    }
+  },
+
+  /**
+   * Get logs for a specific agent or all agents.
+   */
+  getAgentLogs: (agentName) => {
+    const logs = get().agentState.agentLogs;
+    return agentName
+      ? logs.filter((log) => log.agentName === agentName)
+      : logs;
+  },
+
+  /**
+   * Get KPIs for a specific agent.
+   */
+  getAgentKPIs: (agentName) => {
+    const agent = agentRegistry.get(agentName);
+    return agent ? agent.getKPIs() : [];
+  },
+
+  /**
+   * List all registered agents.
+   */
+  listAllAgents: () => {
+    return agentRegistry.listAll();
+  },
+
+  // ============================================================================
+  // SUPABASE SYNC METHODS
+  // ============================================================================
+
+  setUser: (user) => set({ user: user || CURRENT_USER }),
+  setIsAuthenticated: (isAuth) => set({ isAuthenticated: isAuth }),
+
+  /**
+   * Fetch user from Supabase (called after auth)
+   */
+  fetchUserFromDB: async () => {
+    const { data: { session } } = await supabase.auth.getSession();
+    if (!session?.user) return;
+
+    const { data, error } = await supabase
+      .from('users')
+      .select('*')
+      .eq('id', session.user.id)
+      .single();
+
+    if (data) {
+      // Map Supabase user to app User type
+      const user: User = {
+        id: data.id,
+        name: data.name,
+        email: data.email,
+        rank: data.rank as any, // Casting to UserRank, assuming DB matches
+        totalSales: data.total_sales,
+        teamVolume: data.team_volume,
+        shopBalance: data.shop_balance,
+        growBalance: data.grow_balance,
+        stakedGrowBalance: data.staked_grow_balance,
+        avatarUrl: data.avatar_url || 'https://api.dicebear.com/7.x/avataaars/svg?seed=Felix',
+        joinedAt: new Date(data.created_at).toISOString().split('T')[0],
+        kycStatus: false, // Default, assuming not in DB yet or default false
+        monthlyProfit: 0, // Calculated via enrich
+        businessValuation: 0, // Calculated via enrich
+        projectedAnnualProfit: 0, // Calculated via enrich
+        equityValue: 0, // Calculated via enrich
+        cashflowValue: 0, // Calculated via enrich
+        assetGrowthRate: 0, // Calculated via enrich
+      };
+      
+      set({ user: enrichUserWithWealthMetrics(user), isAuthenticated: true });
+    }
+  },
+
+  /**
+   * Persist agent log to Supabase
+   */
+  persistAgentLog: async (log: AgentLog) => {
+    const { data: { session } } = await supabase.auth.getSession();
+    
+    if (session?.user) {
+        await supabase.from('agent_logs').insert([{
+        agent_name: log.agentName,
+        action: log.action,
+        input: log.inputs,
+        output: log.outputs,
+        user_id: session.user.id
+        }]);
+    }
   }
 }));

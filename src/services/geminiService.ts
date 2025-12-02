@@ -1,7 +1,7 @@
-import { GoogleGenerativeAI } from "@google/generative-ai";
+import { agentRegistry } from '@/agents';
 
 // NOTE: In a real production app, engage a backend proxy to hide this key.
-const genAI = new GoogleGenerativeAI(import.meta.env.VITE_GEMINI_API_KEY || 'demo-key');
+// const genAI = new GoogleGenerativeAI(import.meta.env.VITE_GEMINI_API_KEY || 'demo-key'); // Removed direct usage
 
 export const getCoachAdvice = async (
   userName: string,
@@ -9,28 +9,49 @@ export const getCoachAdvice = async (
   pendingQuests: string[]
 ): Promise<string> => {
   try {
-    const model = genAI.getGenerativeModel({ model: "gemini-pro" });
-    const prompt = `
-      You are "The Coach", a motivational AI mentor for a Social Commerce platform (WellNexus).
-      User: ${userName}. Sales: ${salesData}. Pending Tasks: ${pendingQuests.join(', ')}.
-      Give 1 short, high-energy sentence of advice to help them grow. Use emojis.
-    `;
+    const agent = agentRegistry.get('Gemini Coach');
+    if (!agent) {
+      console.warn("Gemini Coach Agent not found, falling back to legacy behavior.");
+      throw new Error("Agent not found");
+    }
 
-    const result = await model.generateContent(prompt);
-    const response = await result.response;
-    const text = response.text();
+    // Construct user object to match Agent interface
+    const userMock = {
+      name: userName,
+      totalSales: salesData,
+      rank: 'Member', // Default for legacy compatibility
+      teamVolume: 0 // Default
+    };
 
-    return text || "Keep pushing! Success is just one connection away. 🚀";
+    const context = `Pending Tasks: ${pendingQuests.join(', ')}`;
+    
+    const result = await agent.execute({ 
+      action: 'getCoachAdvice', 
+      user: userMock,
+      context 
+    });
+
+    if (result && typeof result === 'string') {
+      return result;
+    }
+    return "Keep pushing! Success is just one connection away. 🚀";
+
   } catch (error) {
-    console.warn("AI Offline:", error);
+    console.warn("AI Coach Error:", error);
     return "Great things take time. Keep building your network! 🌟";
   }
 };
 
 export const checkCompliance = async (text: string): Promise<boolean> => {
   try {
-    // Simulated compliance check
-    // In real implementation: Call Gemini to check for medical claims
+    // The new agent has checkTaxCompliance, but the old service signature returned boolean.
+    // We'll maintain the signature but maybe log the check via agent if relevant transaction data existed.
+    // Since the old service didn't really check anything, we keep it simple but acknowledge the agent existance.
+    const agent = agentRegistry.get('Gemini Coach');
+    if (agent) {
+        // We could call agent.execute({ action: 'checkCompliance', ... }) if we had transaction object
+        // For now, just return true as per original, but maybe log in future.
+    }
     return true;
   } catch (e) {
     return true;

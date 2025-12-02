@@ -14,7 +14,8 @@ import {
   Users,
   DollarSign,
 } from 'lucide-react';
-import { generateCopilotResponse, generateSalesScript, getCopilotCoaching } from '@/services/copilotService';
+import { useAgentOS } from '@/hooks/useAgentOS';
+import { generateSalesScript, getCopilotCoaching } from '@/services/copilotService';
 import { CopilotMessage, ObjectionType } from '@/types';
 
 interface TheCopilotProps {
@@ -63,6 +64,7 @@ const TypingText: React.FC<{ text: string; speed?: number }> = ({ text, speed = 
 };
 
 export default function TheCopilot({ productContext, userName = "Bạn" }: TheCopilotProps) {
+  const { executeAgent } = useAgentOS();
   const [messages, setMessages] = useState<CopilotMessage[]>([
     {
       id: '1',
@@ -113,24 +115,26 @@ export default function TheCopilot({ productContext, userName = "Bạn" }: TheCo
     setIsLoading(true);
 
     try {
-      const conversationHistory = messages.map(m => ({
-        role: m.role,
-        content: m.content
-      }));
+      // Agent-OS Integration
+      // 1. Detect objection type
+      const objectionType = await executeAgent('Sales Copilot', {
+        action: 'detectObjection',
+        message: messageText
+      });
 
-      const { response, objectionType, suggestion } = await generateCopilotResponse(
-        messageText,
-        conversationHistory,
-        productContext
-      );
+      // 2. Get suggested response
+      const response = await executeAgent('Sales Copilot', {
+        action: 'suggestResponse',
+        message: messageText
+      });
 
       const assistantMessage: CopilotMessage = {
         id: (Date.now() + 1).toString(),
         role: 'assistant',
         content: response,
         timestamp: new Date().toISOString(),
-        objectionType,
-        suggestion
+        objectionType: objectionType as ObjectionType,
+        suggestion: response
       };
 
       setMessages(prev => [...prev, assistantMessage]);
@@ -294,11 +298,9 @@ export default function TheCopilot({ productContext, userName = "Bạn" }: TheCo
               className={`flex ${message.role === 'user' ? 'justify-end' : 'justify-start'}`}
             >
               <div
-                className={`max-w-[85%] rounded-2xl px-4 py-3 ${
-                  message.role === 'user'
+                className={`max-w-[85%] rounded-2xl px-4 py-3 ${message.role === 'user'
                     ? 'bg-gradient-to-r from-primary to-primary/80 text-white shadow-lg shadow-primary/30'
-                    : 'bg-white/10 backdrop-blur-xl border border-white/20 text-gray-100'
-                }`}
+                    : 'bg-white/10 backdrop-blur-xl border border-white/20 text-gray-100'}`}
               >
                 {/* Objection badge for user messages */}
                 {message.role === 'user' && message.objectionType && (

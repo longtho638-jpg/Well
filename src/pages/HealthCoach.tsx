@@ -19,6 +19,7 @@ import {
 import { useStore } from '@/store';
 import { formatVND } from '@/utils/format';
 import { useTranslation } from '@/hooks';
+import { useAgentOS } from '@/hooks/useAgentOS';
 
 interface Message {
   id: string;
@@ -54,73 +55,6 @@ interface PatientProfile {
   healthScore: number;
 }
 
-// Mock AI Response Logic
-const generateMockResponse = (userMessage: string, t: (key: string) => string): Message => {
-  const lowerMessage = userMessage.toLowerCase();
-
-  // Health symptom detection patterns
-  const sleepIssues = /mất ngủ|khó ngủ|ngủ không ngon|insomnia/i.test(lowerMessage);
-  const headache = /đau đầu|nhức đầu|headache/i.test(lowerMessage);
-  const stress = /stress|căng thẳng|lo âu|anxiety/i.test(lowerMessage);
-  const fatigue = /mệt mỏi|uể oải|tired|fatigue/i.test(lowerMessage);
-  const immunity = /miễn dịch|hay ốm|sức đề kháng|immunity/i.test(lowerMessage);
-
-  // Generate response based on symptoms
-  if (sleepIssues || headache || stress) {
-    return {
-      id: Date.now().toString(),
-      role: 'assistant',
-      content: t('healthCoach.sleepStressResponse'),
-      productRecommendation: {
-        comboName: t('healthCoach.comboRelaxation'),
-        products: [
-          { id: '1', name: 'ANIMA 119 - Viên Uống Thần Kinh', price: 15900000 },
-          { id: '3', name: 'ANIMA Immune Boost', price: 890000 }
-        ],
-        totalPrice: 16790000,
-        reason: t('healthCoach.reasonRelaxation')
-      },
-      timestamp: new Date()
-    };
-  }
-
-  if (fatigue || immunity) {
-    return {
-      id: Date.now().toString(),
-      role: 'assistant',
-      content: t('healthCoach.fatigueResponse'),
-      productRecommendation: {
-        comboName: t('healthCoach.comboEnergy'),
-        products: [
-          { id: '2', name: 'ANIMA Starter Kit', price: 4500000 },
-          { id: '3', name: 'ANIMA Immune Boost', price: 890000 }
-        ],
-        totalPrice: 5390000,
-        reason: t('healthCoach.reasonEnergy')
-      },
-      timestamp: new Date()
-    };
-  }
-
-  // Default greeting response
-  if (/xin chào|hi|hello|chào/i.test(lowerMessage)) {
-    return {
-      id: Date.now().toString(),
-      role: 'assistant',
-      content: t('healthCoach.greetingResponse'),
-      timestamp: new Date()
-    };
-  }
-
-  // Fallback response
-  return {
-    id: Date.now().toString(),
-    role: 'assistant',
-    content: t('healthCoach.fallbackResponse'),
-    timestamp: new Date()
-  };
-};
-
 // Mock data
 const MOCK_CHAT_HISTORY: ChatHistory[] = [
   {
@@ -153,7 +87,9 @@ const MOCK_PATIENT: PatientProfile = {
 
 export default function HealthCoach() {
   const t = useTranslation();
-  const { simulateOrder } = useStore();
+  const { user, simulateOrder } = useStore();
+  const { executeAgent } = useAgentOS();
+
   const [messages, setMessages] = useState<Message[]>([
     {
       id: '0',
@@ -188,16 +124,41 @@ export default function HealthCoach() {
     };
 
     setMessages(prev => [...prev, userMessage]);
+    const userInput = inputValue;
     setInputValue('');
     setIsTyping(true);
 
-    // Simulate AI thinking delay
-    await new Promise(resolve => setTimeout(resolve, 1500));
+    try {
+      // Execute GeminiCoachAgent
+      const aiResponseText = await executeAgent('Gemini Coach', {
+        action: 'getCoachAdvice',
+        user: user,
+        context: userInput
+      });
 
-    // Generate AI response
-    const aiResponse = generateMockResponse(inputValue, t);
-    setMessages(prev => [...prev, aiResponse]);
-    setIsTyping(false);
+      // Format AI response
+      const aiResponse: Message = {
+        id: Date.now().toString(),
+        role: 'assistant',
+        content: typeof aiResponseText === 'string' ? aiResponseText : aiResponseText.error || 'Xin lỗi, đã có lỗi xảy ra.',
+        timestamp: new Date()
+      };
+
+      setMessages(prev => [...prev, aiResponse]);
+    } catch (error) {
+      console.error('[HealthCoach] Agent execution error:', error);
+
+      const errorMessage: Message = {
+        id: Date.now().toString(),
+        role: 'assistant',
+        content: 'Xin lỗi, tôi gặp sự cố khi xử lý yêu cầu của bạn. Vui lòng thử lại.',
+        timestamp: new Date()
+      };
+
+      setMessages(prev => [...prev, errorMessage]);
+    } finally {
+      setIsTyping(false);
+    }
   };
 
   const handleQuickOrder = (recommendation: ProductRecommendation) => {
@@ -261,11 +222,10 @@ export default function HealthCoach() {
                 whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}
                 onClick={() => setSelectedHistory(chat.id)}
-                className={`w-full text-left p-4 rounded-xl transition-all duration-200 ${
-                  selectedHistory === chat.id
-                    ? 'bg-gradient-to-r from-primary/10 dark:from-primary/20 to-teal-600/10 dark:to-teal-600/20 border-2 border-primary/30 dark:border-primary/40 shadow-md'
-                    : 'bg-white dark:bg-slate-700 hover:bg-gray-50 dark:hover:bg-slate-600 border-2 border-transparent hover:border-gray-200 dark:hover:border-slate-500'
-                }`}
+                className={`w-full text-left p-4 rounded-xl transition-all duration-200 ${selectedHistory === chat.id
+                  ? 'bg-gradient-to-r from-primary/10 dark:from-primary/20 to-teal-600/10 dark:to-teal-600/20 border-2 border-primary/30 dark:border-primary/40 shadow-md'
+                  : 'bg-white dark:bg-slate-700 hover:bg-gray-50 dark:hover:bg-slate-600 border-2 border-transparent hover:border-gray-200 dark:hover:border-slate-500'
+                  }`}
               >
                 <h3 className="font-semibold text-gray-900 dark:text-slate-100 text-sm mb-1 line-clamp-1">
                   {chat.title}
@@ -326,18 +286,16 @@ export default function HealthCoach() {
                   animate={{ opacity: 1, y: 0, scale: 1 }}
                   exit={{ opacity: 0, scale: 0.9 }}
                   transition={{ delay: index * 0.05, type: 'spring', stiffness: 200 }}
-                  className={`flex gap-4 ${
-                    message.role === 'user' ? 'flex-row-reverse' : 'flex-row'
-                  }`}
+                  className={`flex gap-4 ${message.role === 'user' ? 'flex-row-reverse' : 'flex-row'
+                    }`}
                 >
                   {/* Avatar */}
                   <motion.div
                     whileHover={{ scale: 1.1, rotate: 5 }}
-                    className={`flex-shrink-0 w-12 h-12 rounded-2xl flex items-center justify-center shadow-lg ${
-                      message.role === 'user'
-                        ? 'bg-gradient-to-br from-accent to-yellow-500'
-                        : 'bg-gradient-to-br from-primary to-teal-600'
-                    }`}
+                    className={`flex-shrink-0 w-12 h-12 rounded-2xl flex items-center justify-center shadow-lg ${message.role === 'user'
+                      ? 'bg-gradient-to-br from-accent to-yellow-500'
+                      : 'bg-gradient-to-br from-primary to-teal-600'
+                      }`}
                   >
                     {message.role === 'user' ? (
                       <User className="w-6 h-6 text-white" />
@@ -348,17 +306,15 @@ export default function HealthCoach() {
 
                   {/* Message Content */}
                   <div
-                    className={`flex-1 max-w-2xl ${
-                      message.role === 'user' ? 'text-right' : 'text-left'
-                    }`}
+                    className={`flex-1 max-w-2xl ${message.role === 'user' ? 'text-right' : 'text-left'
+                      }`}
                   >
                     <motion.div
                       whileHover={{ scale: 1.01 }}
-                      className={`inline-block p-5 rounded-2xl shadow-lg backdrop-blur-sm ${
-                        message.role === 'user'
-                          ? 'bg-gradient-to-br from-accent to-yellow-500 text-white'
-                          : 'bg-white/90 text-gray-800 border border-gray-100'
-                      }`}
+                      className={`inline-block p-5 rounded-2xl shadow-lg backdrop-blur-sm ${message.role === 'user'
+                        ? 'bg-gradient-to-br from-accent to-yellow-500 text-white'
+                        : 'bg-white/90 text-gray-800 border border-gray-100'
+                        }`}
                     >
                       <p className="whitespace-pre-line leading-relaxed">
                         {message.content}
