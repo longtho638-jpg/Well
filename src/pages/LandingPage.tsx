@@ -1,5 +1,6 @@
 import React from 'react';
 import { motion } from 'framer-motion';
+import { ParticleBackground } from '@/components/ParticleBackground';
 import {
   ArrowRight,
   Sprout,
@@ -21,7 +22,8 @@ import {
   Star,
   Zap,
   Target,
-  Globe
+  Globe,
+  ChevronDown
 } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { useStore } from '../store';
@@ -269,116 +271,136 @@ export default function LandingPage() {
       {/* ================================================================== */}
       {/* HERO SECTION */}
       {/* ================================================================== */}
-      <section className="relative pt-32 pb-20 overflow-hidden">
-        {/* Animated Gradient Mesh Background */}
-        <div className="absolute inset-0 bg-gradient-to-br from-teal-50 via-violet-50 to-white" />
-        <motion.div 
-          className="absolute top-20 right-20 w-[500px] h-[500px] bg-gradient-to-br from-teal-400/30 to-violet-400/30 rounded-full blur-[120px]"
+      {/* ULTRA WOW HERO */}
+      <section className="relative min-h-screen flex items-center overflow-hidden bg-dark-ultra">
+        {/* Particle Background */}
+        <ParticleBackground />
+        
+        {/* Animated Gradient Blobs */}
+        <motion.div
+          className="absolute w-[800px] h-[800px] rounded-full top-0 right-0 animate-glow-pulse"
+          style={{
+            background: 'radial-gradient(circle, rgba(0,137,123,0.4) 0%, transparent 70%)'
+          }}
           animate={{
-            scale: [1, 1.2, 1],
-            opacity: [0.3, 0.5, 0.3]
+            x: ['-10%', '10%', '-10%'],
+            y: ['-5%', '5%', '-5%'],
+            scale: [1, 1.3, 1]
           }}
-          transition={{
-            duration: 8,
-            repeat: Infinity,
-            ease: "easeInOut"
-          }}
+          transition={{ duration: 20, repeat: Infinity, ease: "easeInOut" }}
         />
-        <motion.div 
-          className="absolute bottom-20 left-20 w-[400px] h-[400px] bg-gradient-to-br from-coral-400/20 to-amber-400/20 rounded-full blur-[100px]"
+        
+        <motion.div
+          className="absolute w-[700px] h-[700px] rounded-full bottom-0 left-0 animate-glow-pulse"
+          style={{
+            background: 'radial-gradient(circle, rgba(255,107,88,0.3) 0%, transparent 70%)'
+          }}
           animate={{
-            scale: [1, 1.3, 1],
-            opacity: [0.2, 0.4, 0.2]
+            x: ['10%', '-10%', '10%'],
+            y: ['5%', '-5%', '5%'],
+            scale: [1, 1.2, 1]
           }}
-          transition={{
-            duration: 10,
-            repeat: Infinity,
-            ease: "easeInOut",
-            delay: 1
-          }}
+          transition={{ duration: 25, repeat: Infinity, ease: "easeInOut", delay: 2 }}
         />
 
-        <div className="relative z-10 max-w-7xl mx-auto px-6 lg:px-12">
-          <motion.div
-            variants={staggerContainer}
-            initial="hidden"
-            animate="visible"
-            className="text-center max-w-5xl mx-auto"
+        {/* Content */}
+        <div className="relative z-10 max-w-7xl mx-auto px-6 text-center">
+          {/* Ultra Large 3D Headline */}
+          <motion.h1
+            className="font-display font-black leading-none mb-12"
+            style={{
+              fontSize: 'clamp(4rem, 15vw, 12rem)',
+              background: 'linear-gradient(135deg, #00897B, #9F7AEA, #FF6B58)',
+              WebkitBackgroundClip: 'text',
+              WebkitTextFillColor: 'transparent',
+              textShadow: '0 0 80px rgba(0,137,123,0.5), 0 0 120px rgba(159,122,234,0.3)',
+              fontFamily: "'Clash Display', sans-serif"
+            }}
+            initial={{ opacity: 0, y: 100, scale: 0.8 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1] }}
           >
-            {/* Badge */}
-            <motion.div variants={fadeInUp} className="mb-8 inline-flex">
-              <div className="glass-card inline-flex items-center gap-2 px-6 py-3 border border-teal-200/50 bg-white/50 backdrop-blur-sm rounded-full">
-                <Sparkles className="w-5 h-5 text-teal-600" />
-                <span className="text-sm font-bold text-teal-700 uppercase tracking-wider">
-                  {CONTENT.hero.badge}
-                </span>
-              </div>
-            </motion.div>
+            Transform
+            <br />
+            Health Into
+            <br />
+            <span className="text-white text-glow">Wealth</span>
+          </motion.h1>
 
-            {/* Headline with Clash Display */}
-            <motion.h1
-              variants={fadeInUp}
-              className="font-display text-6xl md:text-7xl lg:text-8xl mb-8 leading-tight tracking-tight"
-              style={{ fontFamily: "'Clash Display', sans-serif" }}
-            >
-              <span className="text-slate-900">
-                {CONTENT.hero.headline}
-              </span>
-              <br />
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#00575A] via-teal-600 to-[#00575A]">
-                {CONTENT.hero.headlineAccent}
-              </span>
-            </motion.h1>
-
-            {/* Subheadline */}
-            <motion.p
-              variants={fadeInUp}
-              className="text-xl md:text-2xl text-slate-600 mb-10 leading-relaxed max-w-3xl mx-auto"
-            >
-              {CONTENT.hero.subheadline}
-            </motion.p>
-
-            {/* Glassmorphism Stats Cards */}
-            <motion.div 
-              variants={fadeInUp}
-              className="grid grid-cols-3 gap-4 max-w-3xl mx-auto mb-10"
-            >
-              {[
-                { label: 'Active Users', value: '1M+', icon: Users },
-                { label: 'Revenue', value: '$50M', icon: TrendingUp },
-                { label: 'Products', value: '500+', icon: Award }
-              ].map((stat, idx) => {
-                const Icon = stat.icon;
-                return (
-                  <motion.div
-                    key={idx}
-                    className="glass-card p-4 text-center hover-lift bg-white/60 backdrop-blur-md border border-white/50 rounded-2xl shadow-lg"
-                    whileHover={{ scale: 1.05 }}
-                  >
-                    <Icon className="w-6 h-6 text-teal-600 mx-auto mb-2" />
-                    <div className="text-2xl font-bold text-slate-800 mb-1">{stat.value}</div>
-                    <div className="text-xs text-slate-600">{stat.label}</div>
-                  </motion.div>
-                );
-              })}
-            </motion.div>
-
-            {/* Premium CTA Button */}
-            <motion.div variants={fadeInUp}>
-              <motion.button
-                onClick={handleJoin}
-                className="btn-primary text-xl px-12 py-6 relative overflow-hidden group bg-gradient-to-r from-[#00575A] to-teal-600 text-white rounded-xl font-bold flex items-center justify-center gap-3 mx-auto shadow-2xl shadow-teal-500/30"
+          {/* 3D Floating Stats Cards */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-5xl mx-auto mb-16">
+            {[
+              { value: '1M+', label: 'Active Users', color: '#00897B', delay: 0.3 },
+              { value: '$50M', label: 'Revenue', color: '#9F7AEA', delay: 0.5 },
+              { value: '500+', label: 'Products', color: '#FF6B58', delay: 0.7 }
+            ].map((stat, idx) => (
+              <motion.div
+                key={idx}
+                className="glass-ultra card-3d p-8 rounded-3xl relative overflow-hidden group"
+                initial={{ opacity: 0, y: 100, rotateX: -45 }}
+                animate={{ opacity: 1, y: 0, rotateX: 0 }}
+                transition={{ delay: stat.delay, duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
                 whileHover={{ 
-                  scale: 1.05,
-                  boxShadow: "0 30px 60px rgba(0, 87, 90, 0.4)"
+                  scale: 1.1, 
+                  rotateY: 10,
+                  boxShadow: `0 0 60px ${stat.color}60`
                 }}
-                whileTap={{ scale: 0.98 }}
               >
-                <Rocket className="w-6 h-6 inline" />
-                {CONTENT.hero.primaryCta}
-                <ArrowRight className="w-6 h-6 inline group-hover:translate-x-2 transition-transform" />
-              </motion.button>
-            </motion.div>
+                <motion.div
+                  className="absolute inset-0 opacity-0 group-hover:opacity-100"
+                  style={{
+                    background: `radial-gradient(circle at top right, ${stat.color}30, transparent)`
+                  }}
+                  transition={{ duration: 0.3 }}
+                />
+                <div 
+                  className="text-7xl font-black mb-2 relative z-10"
+                  style={{
+                    background: `linear-gradient(135deg, ${stat.color}, #FFFFFF)`,
+                    WebkitBackgroundClip: 'text',
+                    WebkitTextFillColor: 'transparent'
+                  }}
+                >
+                  {stat.value}
+                </div>
+                <div className="text-white/70 text-sm relative z-10">{stat.label}</div>
+              </motion.div>
+            ))}
+          </div>
+
+          {/* Ultra Premium CTA */}
+          <motion.div
+            initial={{ opacity: 0, scale: 0.5 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ delay: 1, duration: 0.6 }}
+          >
+            <motion.button
+              onClick={handleJoin}
+              className="btn-ultra group relative"
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+            >
+              <span className="relative z-10 flex items-center gap-3">
+                <Rocket className="w-7 h-7" />
+                Start Your Journey
+                <ArrowRight className="w-7 h-7 group-hover:translate-x-2 transition-transform" />
+              </span>
+              <motion.div
+                className="absolute inset-0 bg-gradient-to-r from-coral-600 to-amber-500 rounded-xl"
+                initial={{ scale: 0, opacity: 0 }}
+                whileHover={{ scale: 1, opacity: 1 }}
+                transition={{ duration: 0.3 }}
+              />
+            </motion.button>
+          </motion.div>
+
+          {/* Scroll Indicator */}
+          <motion.div
+            className="absolute bottom-10 left-1/2 -translate-x-1/2"
+            animate={{ y: [0, 15, 0] }}
+            transition={{ duration: 2, repeat: Infinity, ease: 'easeInOut' }}
+          >
+            <ChevronDown className="w-12 h-12 text-white/30" />
           </motion.div>
         </div>
       </section>

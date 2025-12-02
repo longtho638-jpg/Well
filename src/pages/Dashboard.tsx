@@ -30,6 +30,8 @@ import {
 } from 'lucide-react';
 import { PieChart, Pie, Cell, ResponsiveContainer, Legend, Tooltip } from 'recharts';
 import { formatVND, formatNumber } from '../utils/format';
+import { ParticleBackground } from '@/components/ParticleBackground';
+import { CursorGlow } from '@/components/CursorGlow';
 
 // Activity types
 interface LiveActivity {
@@ -384,429 +386,468 @@ export const Dashboard: React.FC = () => {
   ];
 
   return (
-    <div className="space-y-6">
-      {/* Page Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-        <div>
-          <h2 className="text-2xl md:text-3xl font-bold text-brand-dark tracking-tight flex items-center gap-2">
-            <motion.div
-              initial={{ rotate: 0 }}
-              animate={{ rotate: 360 }}
-              transition={{ duration: 2, repeat: Infinity, ease: "linear" }}
-            >
-              <Zap className="w-8 h-8 text-[#FFBF00]" />
-            </motion.div>
-            {t('dashboard.title')}
-          </h2>
-          <p className="text-gray-500 text-sm md:text-base">
-            {t('dashboard.welcome', { name: user.name })} 🚀
-          </p>
-        </div>
-        <div className="text-right hidden sm:block">
-          <p className="text-xs font-bold text-gray-400 dark:text-slate-500 uppercase tracking-wider">
-            {t('dashboard.serverTime')}
-          </p>
-          <p className="text-sm font-medium text-gray-800 dark:text-slate-100 font-mono">
-            {new Date().toLocaleTimeString('vi-VN', {hour: '2-digit', minute: '2-digit'})}
-          </p>
-        </div>
-      </div>
-
-      {/* Hero Card - Full Width */}
-      <HeroCard user={user} />
-
-      {/* ========================================================================= */}
-      {/* PREMIUM STATS CARDS (Glassmorphism) */}
-      {/* ========================================================================= */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-        {[
-          { 
-            label: 'Total Balance', 
-            value: formatVND(walletData.total),
-            icon: Wallet,
-            gradient: 'from-teal-500 to-teal-600',
-            change: '+12.5%'
-          },
-          { 
-            label: 'Available', 
-            value: formatVND(walletData.available),
-            icon: DollarSign,
-            gradient: 'from-emerald-500 to-emerald-600',
-            change: '+8.2%'
-          },
-          { 
-            label: 'Pending', 
-            value: formatVND(walletData.pending),
-            icon: Clock,
-            gradient: 'from-amber-500 to-amber-600',
-            change: '+15.3%'
-          },
-          { 
-            label: 'Team Volume', 
-            value: formatVND(user?.teamVolume || 0),
-            icon: Users,
-            gradient: 'from-violet-500 to-violet-600',
-            change: '+22.1%'
-          }
-        ].map((stat, idx) => {
-          const Icon = stat.icon;
-          return (
-            <motion.div
-              key={idx}
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: idx * 0.1 }}
-            >
-              <div className="glass-card hover-lift group bg-white/80 backdrop-blur-xl border border-white/50 rounded-2xl p-6 shadow-sm hover:shadow-xl transition-all duration-300">
-                <div className="flex items-start justify-between mb-4">
-                  <div className={`w-14 h-14 rounded-xl bg-gradient-to-br \${stat.gradient} flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform duration-300`}>
-                    <Icon className="w-7 h-7 text-white" />
-                  </div>
-                  <div className="text-sm font-semibold text-emerald-600 bg-emerald-50 px-3 py-1 rounded-full border border-emerald-100">
-                    {stat.change}
-                  </div>
-                </div>
-                <div className="text-sm text-slate-500 font-medium mb-1">{stat.label}</div>
-                <div className="text-2xl md:text-3xl font-black text-transparent bg-clip-text bg-gradient-to-r from-slate-900 to-slate-700">
-                  {stat.value}
-                </div>
-              </div>
-            </motion.div>
-          );
-        })}
-      </div>
-
-      {/* ========================================================================= */}
-      {/* BUSINESS VALUATION CARD - THE CENTERPIECE (Wealth OS) */}
-      {/* ========================================================================= */}
-      <motion.div
-        initial={{ opacity: 0, scale: 0.95 }}
-        animate={{ opacity: 1, scale: 1 }}
-        transition={{ duration: 0.6 }}
-        className="relative overflow-hidden rounded-3xl shadow-2xl"
-      >
-        {/* Premium Gold Gradient Background */}
-        <div className="absolute inset-0 bg-gradient-to-br from-amber-400 via-yellow-500 to-orange-500" />
-
-        {/* Decorative Elements */}
-        <div className="absolute top-0 right-0 w-96 h-96 bg-white/10 rounded-full blur-3xl -mr-24 -mt-24" />
-        <div className="absolute bottom-0 left-0 w-80 h-80 bg-black/10 rounded-full blur-3xl -ml-20 -mb-20" />
-
-        <div className="relative z-10 p-8 md:p-12">
-          <div className="grid md:grid-cols-2 gap-8 items-center">
-            {/* Left: Valuation Display */}
-            <div>
-              <div className="flex items-center gap-3 mb-4">
-                <div className="w-12 h-12 bg-white/20 backdrop-blur-sm rounded-xl flex items-center justify-center">
-                  <BarChart3 className="w-6 h-6 text-white" />
-                </div>
-                <div>
-                  <p className="text-xs font-bold text-white/80 uppercase tracking-wider">
-                    {t('dashboard.valuation.title')}
-                  </p>
-                  <p className="text-xs text-white/60">
-                    {t('dashboard.valuation.subtitle')}
-                  </p>
-                </div>
-              </div>
-
-              {/* The Big Number */}
-              <div className="mb-6">
-                <motion.div
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.3 }}
-                  className="text-5xl md:text-6xl lg:text-7xl font-black text-white mb-2 font-display tracking-tight"
-                >
-                  {formatVND(user.businessValuation || 0)}
-                </motion.div>
-                <p className="text-white/80 text-sm">
-                  {t('dashboard.valuation.formula')}
-                  <span className="block text-xs text-white/60 mt-1">
-                    ({formatVND(user.monthlyProfit || 0)} × 12 × 5 PE Ratio)
-                  </span>
-                </p>
-              </div>
-
-              {/* Growth Indicator */}
-              <div className="inline-flex items-center gap-2 bg-white/20 backdrop-blur-md rounded-full px-4 py-2 border border-white/30">
-                <TrendingUp className="w-4 h-4 text-white" />
-                <span className="text-sm font-bold text-white">
-                  +{user.assetGrowthRate || 5}% MoM Growth
-                </span>
-              </div>
-            </div>
-
-            {/* Right: Asset Breakdown */}
-            <div className="bg-white/10 backdrop-blur-xl border border-white/20 rounded-2xl p-6">
-              <h3 className="text-white font-bold text-lg mb-4 flex items-center gap-2">
-                <Coins className="w-5 h-5" />
-                {t('dashboard.valuation.assetBreakdown')}
-              </h3>
-
-              <div className="space-y-4">
-                {/* Cashflow (SHOP) */}
-                <div className="flex items-center justify-between">
-                  <div>
-                    <p className="text-white/60 text-xs uppercase font-semibold tracking-wider">
-                      {t('dashboard.valuation.cashflow')}
-                    </p>
-                    <p className="text-white/90 text-sm">SHOP Token</p>
-                  </div>
-                  <div className="text-right">
-                    <p className="text-white font-bold text-lg">
-                      {formatVND(user.cashflowValue || 0)}
-                    </p>
-                  </div>
-                </div>
-
-                <div className="h-px bg-white/20" />
-
-                {/* Equity (GROW) */}
-                <div className="flex items-center justify-between">
-                  <div>
-                    <p className="text-white/60 text-xs uppercase font-semibold tracking-wider">
-                      {t('dashboard.valuation.equity')}
-                    </p>
-                    <p className="text-white/90 text-sm">GROW Token</p>
-                  </div>
-                  <div className="text-right">
-                    <p className="text-white font-bold text-lg">
-                      {formatVND(user.equityValue || 0)}
-                    </p>
-                  </div>
-                </div>
-
-                <div className="h-px bg-white/20" />
-
-                {/* Projected Annual Profit */}
-                <div className="flex items-center justify-between">
-                  <div>
-                    <p className="text-white/60 text-xs uppercase font-semibold tracking-wider">
-                      {t('dashboard.valuation.projectedAnnual')}
-                    </p>
-                    <p className="text-white/90 text-sm">Annualized Revenue</p>
-                  </div>
-                  <div className="text-right">
-                    <p className="text-white font-bold text-lg">
-                      {formatVND(user.projectedAnnualProfit || 0)}
-                    </p>
-                  </div>
-                </div>
-              </div>
-
-              {/* CTA */}
-              <motion.button
-                whileHover={{ scale: 1.02 }}
-                whileTap={{ scale: 0.98 }}
-                className="w-full mt-6 bg-white dark:bg-slate-800 hover:bg-gray-50 dark:hover:bg-slate-700 active:bg-gray-100 dark:active:bg-slate-600 text-amber-600 dark:text-amber-400 font-bold py-3 rounded-xl flex items-center justify-center gap-2 shadow-lg hover:shadow-xl transition-all duration-200 border border-transparent dark:border-slate-600"
+    <div className="min-h-screen bg-dark-ultra relative overflow-hidden">
+      <ParticleBackground />
+      <CursorGlow />
+      
+      <div className="relative z-10 p-6 space-y-6">
+        {/* Page Header */}
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+          <div>
+            <h2 className="text-2xl md:text-3xl font-bold text-white tracking-tight flex items-center gap-2">
+              <motion.div
+                initial={{ rotate: 0 }}
+                animate={{ rotate: 360 }}
+                transition={{ duration: 2, repeat: Infinity, ease: "linear" }}
               >
-                <Crown className="w-5 h-5" />
-                {t('dashboard.valuation.upgradePortfolio')}
-              </motion.button>
-            </div>
+                <Zap className="w-8 h-8 text-[#FFBF00]" />
+              </motion.div>
+              {t('dashboard.title')}
+            </h2>
+            <p className="text-white/60 text-sm md:text-base">
+              {t('dashboard.welcome', { name: user.name })} 🚀
+            </p>
+          </div>
+          <div className="text-right hidden sm:block">
+            <p className="text-xs font-bold text-white/40 uppercase tracking-wider">
+              {t('dashboard.serverTime')}
+            </p>
+            <p className="text-sm font-medium text-white/80 font-mono">
+              {new Date().toLocaleTimeString('vi-VN', {hour: '2-digit', minute: '2-digit'})}
+            </p>
           </div>
         </div>
-      </motion.div>
 
-      {/* Daily Quest Hub - Full Width */}
-      <DailyQuestHub />
+        {/* Hero Card - Full Width */}
+        <HeroCard user={user} />
 
-      {/* Main Grid - 3 columns on desktop */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        {/* Left Column - Stats + Chart (2 cols on desktop) */}
-        <div className="lg:col-span-2 space-y-6">
-          
-          {/* Revenue Chart and Live Activities - Side by Side */}
-          <div className="grid grid-cols-1 xl:grid-cols-2 gap-6">
-            {/* Revenue Chart */}
-            <RevenueChart data={revenueData} />
+        {/* ========================================================================= */}
+        {/* ULTRA WOW STATS CARDS (Glassmorphism + 3D) */}
+        {/* ========================================================================= */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+          {[
+            { 
+              label: 'Total Balance', 
+              value: formatVND(walletData.total),
+              icon: Wallet,
+              gradientStart: '#00897B',
+              gradientEnd: '#26A69A',
+              change: '+12.5%'
+            },
+            { 
+              label: 'Available', 
+              value: formatVND(walletData.available),
+              icon: DollarSign,
+              gradientStart: '#10B981',
+              gradientEnd: '#34D399',
+              change: '+8.2%'
+            },
+            { 
+              label: 'Pending', 
+              value: formatVND(walletData.pending),
+              icon: Clock,
+              gradientStart: '#F59E0B',
+              gradientEnd: '#FBBF24',
+              change: '+15.3%'
+            },
+            { 
+              label: 'Team Volume', 
+              value: formatVND(user?.teamVolume || 0),
+              icon: Users,
+              gradientStart: '#9F7AEA',
+              gradientEnd: '#B794F6',
+              change: '+22.1%'
+            }
+          ].map((stat, idx) => {
+            const Icon = stat.icon;
+            return (
+              <motion.div
+                key={idx}
+                initial={{ opacity: 0, y: 50, scale: 0.9 }}
+                animate={{ opacity: 1, y: 0, scale: 1 }}
+                transition={{ delay: idx * 0.1, duration: 0.6 }}
+                className="relative group"
+              >
+                <div className="glass-ultra card-3d rounded-3xl p-8 relative overflow-hidden">
+                  {/* Hover Gradient */}
+                  <motion.div
+                    className="absolute inset-0 opacity-0 group-hover:opacity-100"
+                    style={{
+                      background: `radial-gradient(circle at top right, \${stat.gradientStart}30, transparent)`
+                    }}
+                    transition={{ duration: 0.3 }}
+                  />
 
-            {/* Live Activities Ticker */}
-            <LiveActivitiesTicker />
-          </div>
+                  <div className="relative z-10">
+                    {/* Icon with Glow */}
+                    <div 
+                      className="w-20 h-20 rounded-2xl mb-6 flex items-center justify-center transform group-hover:scale-110 transition-transform"
+                      style={{
+                        background: `linear-gradient(135deg, \${stat.gradientStart}, \${stat.gradientEnd})`,
+                        boxShadow: `0 0 40px \${stat.gradientStart}60`
+                      }}
+                    >
+                      <Icon className="w-10 h-10 text-white" />
+                    </div>
 
-          {/* Top Products */}
-          <TopProducts products={products} />
-        </div>
+                    {/* Value with Gradient */}
+                    <div
+                      className="text-5xl font-black mb-2"
+                      style={{
+                        background: `linear-gradient(135deg, \${stat.gradientStart}, \${stat.gradientEnd})`,
+                        WebkitBackgroundClip: 'text',
+                        WebkitTextFillColor: 'transparent'
+                      }}
+                    >
+                      {stat.value}
+                    </div>
 
-        {/* Right Column - Sidebar widgets */}
-        <div className="space-y-6">
-          {/* Quick Actions Card - Priority position */}
-          <QuickActionsCard />
+                    <div className="text-white/60 text-sm mb-4">{stat.label}</div>
 
-          {/* Revenue Breakdown Donut Chart */}
-          <motion.div
-            initial={{ opacity: 0, x: 20 }}
-            animate={{ opacity: 1, x: 0 }}
-            className="bg-white dark:bg-slate-800 rounded-2xl border border-gray-100 dark:border-slate-700 shadow-sm p-6"
-          >
-            <div className="flex items-center gap-2 mb-4">
-              <div className="w-8 h-8 bg-[#00575A]/10 dark:bg-[#00575A]/20 rounded-lg flex items-center justify-center">
-                <TrendingUp className="w-4 h-4 text-[#00575A]" />
-              </div>
-              <h3 className="font-bold text-gray-900 dark:text-slate-100">
-                {t('dashboard.revenueBreakdown.title')}
-              </h3>
-            </div>
-
-            <ResponsiveContainer width="100%" height={200}>
-              <PieChart>
-                <Pie
-                  data={revenueBreakdown}
-                  cx="50%"
-                  cy="50%"
-                  innerRadius={50}
-                  outerRadius={80}
-                  paddingAngle={5}
-                  dataKey="value"
-                >
-                  {revenueBreakdown.map((entry, index) => (
-                    <Cell key={`cell-\${index}`} fill={entry.color} />
-                  ))}
-                </Pie>
-                <Tooltip formatter={(value: number) => `\${(value / 1000000).toFixed(1)}M ₫`} />
-              </PieChart>
-            </ResponsiveContainer>
-
-            <div className="space-y-2 mt-4">
-              {revenueBreakdown.map((item, idx) => (
-                <div key={idx} className="flex items-center justify-between text-xs">
-                  <div className="flex items-center gap-2">
-                    <div className="w-3 h-3 rounded-full" style={{ backgroundColor: item.color }} />
-                    <span className="text-gray-600 dark:text-slate-400">{item.name}</span>
+                    {/* Change Indicator */}
+                    <div className="flex items-center gap-2">
+                      <TrendingUp className="w-4 h-4 text-emerald-400" />
+                      <span className="text-emerald-400 font-semibold text-sm">{stat.change}</span>
+                    </div>
                   </div>
-                  <span className="font-semibold text-gray-900 dark:text-slate-100">
-                    {((item.value / user.totalSales) * 100).toFixed(0)}%
+                </div>
+              </motion.div>
+            );
+          })}
+        </div>
+
+        {/* ========================================================================= */}
+        {/* BUSINESS VALUATION CARD - THE CENTERPIECE (Wealth OS) */}
+        {/* ========================================================================= */}
+        <motion.div
+          initial={{ opacity: 0, scale: 0.95 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 0.6 }}
+          className="relative overflow-hidden rounded-3xl shadow-2xl"
+        >
+          {/* Premium Gold Gradient Background */}
+          <div className="absolute inset-0 bg-gradient-to-br from-amber-400 via-yellow-500 to-orange-500" />
+
+          {/* Decorative Elements */}
+          <div className="absolute top-0 right-0 w-96 h-96 bg-white/10 rounded-full blur-3xl -mr-24 -mt-24" />
+          <div className="absolute bottom-0 left-0 w-80 h-80 bg-black/10 rounded-full blur-3xl -ml-20 -mb-20" />
+
+          <div className="relative z-10 p-8 md:p-12">
+            <div className="grid md:grid-cols-2 gap-8 items-center">
+              {/* Left: Valuation Display */}
+              <div>
+                <div className="flex items-center gap-3 mb-4">
+                  <div className="w-12 h-12 bg-white/20 backdrop-blur-sm rounded-xl flex items-center justify-center">
+                    <BarChart3 className="w-6 h-6 text-white" />
+                  </div>
+                  <div>
+                    <p className="text-xs font-bold text-white/80 uppercase tracking-wider">
+                      {t('dashboard.valuation.title')}
+                    </p>
+                    <p className="text-xs text-white/60">
+                      {t('dashboard.valuation.subtitle')}
+                    </p>
+                  </div>
+                </div>
+
+                {/* The Big Number */}
+                <div className="mb-6">
+                  <motion.div
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.3 }}
+                    className="text-5xl md:text-6xl lg:text-7xl font-black text-white mb-2 font-display tracking-tight"
+                  >
+                    {formatVND(user.businessValuation || 0)}
+                  </motion.div>
+                  <p className="text-white/80 text-sm">
+                    {t('dashboard.valuation.formula')}
+                    <span className="block text-xs text-white/60 mt-1">
+                      ({formatVND(user.monthlyProfit || 0)} × 12 × 5 PE Ratio)
+                    </span>
+                  </p>
+                </div>
+
+                {/* Growth Indicator */}
+                <div className="inline-flex items-center gap-2 bg-white/20 backdrop-blur-md rounded-full px-4 py-2 border border-white/30">
+                  <TrendingUp className="w-4 h-4 text-white" />
+                  <span className="text-sm font-bold text-white">
+                    +{user.assetGrowthRate || 5}% MoM Growth
                   </span>
                 </div>
-              ))}
-            </div>
-          </motion.div>
-
-          {/* Recent Activity */}
-          <motion.div
-            initial={{ opacity: 0, x: 20 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ delay: 0.1 }}
-            className="bg-white dark:bg-slate-800 rounded-2xl border border-gray-100 dark:border-slate-700 shadow-sm p-6"
-          >
-            <div className="flex items-center gap-2 mb-4">
-              <div className="w-8 h-8 bg-blue-50 dark:bg-blue-900/20 rounded-lg flex items-center justify-center">
-                <Clock className="w-4 h-4 text-blue-600" />
               </div>
-              <h3 className="font-bold text-gray-900 dark:text-slate-100">
-                {t('dashboard.recentActivity.title')}
-              </h3>
-            </div>
 
-            <div className="space-y-3">
-              {recentActivities.map((activity, idx) => (
-                <motion.div
-                  key={idx}
-                  initial={{ opacity: 0, x: -10 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  transition={{ delay: idx * 0.1 }}
-                  className="flex items-start gap-3 p-3 rounded-xl hover:bg-gray-50 dark:hover:bg-slate-700 transition-colors"
+              {/* Right: Asset Breakdown */}
+              <div className="bg-white/10 backdrop-blur-xl border border-white/20 rounded-2xl p-6">
+                <h3 className="text-white font-bold text-lg mb-4 flex items-center gap-2">
+                  <Coins className="w-5 h-5" />
+                  {t('dashboard.valuation.assetBreakdown')}
+                </h3>
+
+                <div className="space-y-4">
+                  {/* Cashflow (SHOP) */}
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <p className="text-white/60 text-xs uppercase font-semibold tracking-wider">
+                        {t('dashboard.valuation.cashflow')}
+                      </p>
+                      <p className="text-white/90 text-sm">SHOP Token</p>
+                    </div>
+                    <div className="text-right">
+                      <p className="text-white font-bold text-lg">
+                        {formatVND(user.cashflowValue || 0)}
+                      </p>
+                    </div>
+                  </div>
+
+                  <div className="h-px bg-white/20" />
+
+                  {/* Equity (GROW) */}
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <p className="text-white/60 text-xs uppercase font-semibold tracking-wider">
+                        {t('dashboard.valuation.equity')}
+                      </p>
+                      <p className="text-white/90 text-sm">GROW Token</p>
+                    </div>
+                    <div className="text-right">
+                      <p className="text-white font-bold text-lg">
+                        {formatVND(user.equityValue || 0)}
+                      </p>
+                    </div>
+                  </div>
+
+                  <div className="h-px bg-white/20" />
+
+                  {/* Projected Annual Profit */}
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <p className="text-white/60 text-xs uppercase font-semibold tracking-wider">
+                        {t('dashboard.valuation.projectedAnnual')}
+                      </p>
+                      <p className="text-white/90 text-sm">Annualized Revenue</p>
+                    </div>
+                    <div className="text-right">
+                      <p className="text-white font-bold text-lg">
+                        {formatVND(user.projectedAnnualProfit || 0)}
+                      </p>
+                    </div>
+                  </div>
+                </div>
+
+                {/* CTA */}
+                <motion.button
+                  whileHover={{ scale: 1.02 }}
+                  whileTap={{ scale: 0.98 }}
+                  className="w-full mt-6 bg-white dark:bg-slate-800 hover:bg-gray-50 dark:hover:bg-slate-700 active:bg-gray-100 dark:active:bg-slate-600 text-amber-600 dark:text-amber-400 font-bold py-3 rounded-xl flex items-center justify-center gap-2 shadow-lg hover:shadow-xl transition-all duration-200 border border-transparent dark:border-slate-600"
                 >
-                  <div className={`w-8 h-8 \${activity.bg} rounded-lg flex items-center justify-center shrink-0`}>
-                    <activity.icon className={`w-4 h-4 \${activity.color}`} />
-                  </div>
-                  <div className="flex-1 min-w-0">
-                    <p className="text-sm font-medium text-gray-900 dark:text-slate-100 truncate">{activity.label}</p>
-                    <p className="text-xs text-gray-500 dark:text-slate-400">{activity.time}</p>
-                  </div>
-                </motion.div>
-              ))}
+                  <Crown className="w-5 h-5" />
+                  {t('dashboard.valuation.upgradePortfolio')}
+                </motion.button>
+              </div>
             </div>
-          </motion.div>
+          </div>
+        </motion.div>
 
-          {/* Achievement Badges */}
-          <motion.div
-            initial={{ opacity: 0, x: 20 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ delay: 0.2 }}
-            className="bg-gradient-to-br from-purple-600 to-indigo-700 rounded-2xl shadow-lg p-6 text-white relative overflow-hidden"
-          >
-            {/* Background decoration */}
-            <div className="absolute top-0 right-0 w-32 h-32 bg-white/10 rounded-full blur-3xl -mr-16 -mt-16" />
+        {/* Daily Quest Hub - Full Width */}
+        <DailyQuestHub />
 
-            <div className="relative z-10">
+        {/* Main Grid - 3 columns on desktop */}
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+          {/* Left Column - Stats + Chart (2 cols on desktop) */}
+          <div className="lg:col-span-2 space-y-6">
+            
+            {/* Revenue Chart and Live Activities - Side by Side */}
+            <div className="grid grid-cols-1 xl:grid-cols-2 gap-6">
+              {/* Revenue Chart */}
+              <RevenueChart data={revenueData} />
+
+              {/* Live Activities Ticker */}
+              <LiveActivitiesTicker />
+            </div>
+
+            {/* Top Products */}
+            <TopProducts products={products} />
+          </div>
+
+          {/* Right Column - Sidebar widgets */}
+          <div className="space-y-6">
+            {/* Quick Actions Card - Priority position */}
+            <QuickActionsCard />
+
+            {/* Revenue Breakdown Donut Chart */}
+            <motion.div
+              initial={{ opacity: 0, x: 20 }}
+              animate={{ opacity: 1, x: 0 }}
+              className="bg-white dark:bg-slate-800 rounded-2xl border border-gray-100 dark:border-slate-700 shadow-sm p-6"
+            >
               <div className="flex items-center gap-2 mb-4">
-                <Award className="w-5 h-5 text-yellow-300" />
-                <h3 className="font-bold">{t('dashboard.achievements.title')}</h3>
+                <div className="w-8 h-8 bg-[#00575A]/10 dark:bg-[#00575A]/20 rounded-lg flex items-center justify-center">
+                  <TrendingUp className="w-4 h-4 text-[#00575A]" />
+                </div>
+                <h3 className="font-bold text-gray-900 dark:text-slate-100">
+                  {t('dashboard.revenueBreakdown.title')}
+                </h3>
               </div>
 
-              <div className="grid grid-cols-2 gap-3">
-                {achievements.map((badge, idx) => (
+              <ResponsiveContainer width="100%" height={200}>
+                <PieChart>
+                  <Pie
+                    data={revenueBreakdown}
+                    cx="50%"
+                    cy="50%"
+                    innerRadius={50}
+                    outerRadius={80}
+                    paddingAngle={5}
+                    dataKey="value"
+                  >
+                    {revenueBreakdown.map((entry, index) => (
+                      <Cell key={`cell-\${index}`} fill={entry.color} />
+                    ))}
+                  </Pie>
+                  <Tooltip formatter={(value: number) => `\${(value / 1000000).toFixed(1)}M ₫`} />
+                </PieChart>
+              </ResponsiveContainer>
+
+              <div className="space-y-2 mt-4">
+                {revenueBreakdown.map((item, idx) => (
+                  <div key={idx} className="flex items-center justify-between text-xs">
+                    <div className="flex items-center gap-2">
+                      <div className="w-3 h-3 rounded-full" style={{ backgroundColor: item.color }} />
+                      <span className="text-gray-600 dark:text-slate-400">{item.name}</span>
+                    </div>
+                    <span className="font-semibold text-gray-900 dark:text-slate-100">
+                      {((item.value / user.totalSales) * 100).toFixed(0)}%
+                    </span>
+                  </div>
+                ))}
+              </div>
+            </motion.div>
+
+            {/* Recent Activity */}
+            <motion.div
+              initial={{ opacity: 0, x: 20 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ delay: 0.1 }}
+              className="bg-white dark:bg-slate-800 rounded-2xl border border-gray-100 dark:border-slate-700 shadow-sm p-6"
+            >
+              <div className="flex items-center gap-2 mb-4">
+                <div className="w-8 h-8 bg-blue-50 dark:bg-blue-900/20 rounded-lg flex items-center justify-center">
+                  <Clock className="w-4 h-4 text-blue-600" />
+                </div>
+                <h3 className="font-bold text-gray-900 dark:text-slate-100">
+                  {t('dashboard.recentActivity.title')}
+                </h3>
+              </div>
+
+              <div className="space-y-3">
+                {recentActivities.map((activity, idx) => (
                   <motion.div
                     key={idx}
-                    initial={{ scale: 0 }}
-                    animate={{ scale: 1 }}
-                    transition={{ delay: idx * 0.1, type: 'spring' }}
-                    className={`
-                      relative p-4 rounded-xl text-center
-                      \${badge.unlocked
-                        ? 'bg-gradient-to-br ' + badge.color + ' shadow-lg'
-                        : 'bg-white/10 backdrop-blur-sm opacity-50'
-                      }
-                    `}
+                    initial={{ opacity: 0, x: -10 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ delay: idx * 0.1 }}
+                    className="flex items-start gap-3 p-3 rounded-xl hover:bg-gray-50 dark:hover:bg-slate-700 transition-colors"
                   >
-                    <badge.icon className="w-8 h-8 mx-auto mb-2" />
-                    <p className="text-xs font-semibold">{badge.label}</p>
-                    {!badge.unlocked && (
-                      <div className="absolute inset-0 flex items-center justify-center">
-                        <div className="w-10 h-10 bg-gray-900/50 rounded-full flex items-center justify-center backdrop-blur-sm">
-                          <span className="text-xl">🔒</span>
-                        </div>
-                      </div>
-                    )}
+                    <div className={`w-8 h-8 \${activity.bg} rounded-lg flex items-center justify-center shrink-0`}>
+                      <activity.icon className={`w-4 h-4 \${activity.color}`} />
+                    </div>
+                    <div className="flex-1 min-w-0">
+                      <p className="text-sm font-medium text-gray-900 dark:text-slate-100 truncate">{activity.label}</p>
+                      <p className="text-xs text-gray-500 dark:text-slate-400">{activity.time}</p>
+                    </div>
                   </motion.div>
                 ))}
               </div>
+            </motion.div>
 
-              <p className="text-xs text-white/70 mt-4 text-center">
-                {t('dashboard.achievements.unlocked', {
-                  count: achievements.filter(a => a.unlocked).length,
-                  total: achievements.length
-                })}
-              </p>
-            </div>
-          </motion.div>
+            {/* Achievement Badges */}
+            <motion.div
+              initial={{ opacity: 0, x: 20 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ delay: 0.2 }}
+              className="bg-gradient-to-br from-purple-600 to-indigo-700 rounded-2xl shadow-lg p-6 text-white relative overflow-hidden"
+            >
+              {/* Background decoration */}
+              <div className="absolute top-0 right-0 w-32 h-32 bg-white/10 rounded-full blur-3xl -mr-16 -mt-16" />
 
-          {/* Quick Stats Summary */}
-          <motion.div
-            initial={{ opacity: 0, x: 20 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ delay: 0.3 }}
-            className="bg-white dark:bg-slate-800 rounded-2xl border border-gray-100 dark:border-slate-700 shadow-sm p-6"
-          >
-            <h3 className="font-bold text-gray-900 dark:text-slate-100 mb-4">
-              {t('dashboard.quickStats.title')}
-            </h3>
-            <div className="space-y-3">
-              <div className="flex items-center justify-between">
-                <span className="text-sm text-gray-600 dark:text-slate-400">
-                  {t('dashboard.quickStats.totalTransactions')}
-                </span>
-                <span className="font-bold text-gray-900 dark:text-slate-100">{transactions.length}</span>
+              <div className="relative z-10">
+                <div className="flex items-center gap-2 mb-4">
+                  <Award className="w-5 h-5 text-yellow-300" />
+                  <h3 className="font-bold">{t('dashboard.achievements.title')}</h3>
+                </div>
+
+                <div className="grid grid-cols-2 gap-3">
+                  {achievements.map((badge, idx) => (
+                    <motion.div
+                      key={idx}
+                      initial={{ scale: 0 }}
+                      animate={{ scale: 1 }}
+                      transition={{ delay: idx * 0.1, type: 'spring' }}
+                      className={`
+                        relative p-4 rounded-xl text-center
+                        \${badge.unlocked
+                          ? 'bg-gradient-to-br ' + badge.color + ' shadow-lg'
+                          : 'bg-white/10 backdrop-blur-sm opacity-50'
+                        }
+                      `}
+                    >
+                      <badge.icon className="w-8 h-8 mx-auto mb-2" />
+                      <p className="text-xs font-semibold">{badge.label}</p>
+                      {!badge.unlocked && (
+                        <div className="absolute inset-0 flex items-center justify-center">
+                          <div className="w-10 h-10 bg-gray-900/50 rounded-full flex items-center justify-center backdrop-blur-sm">
+                            <span className="text-xl">🔒</span>
+                          </div>
+                        </div>
+                      )}
+                    </motion.div>
+                  ))}
+                </div>
+
+                <p className="text-xs text-white/70 mt-4 text-center">
+                  {t('dashboard.achievements.unlocked', {
+                    count: achievements.filter(a => a.unlocked).length,
+                    total: achievements.length
+                  })}
+                </p>
               </div>
-              <div className="h-px bg-gray-100 dark:bg-slate-900" />
-              <div className="flex items-center justify-between">
-                <span className="text-sm text-gray-600 dark:text-slate-400">
-                  {t('dashboard.quickStats.activeProducts')}
-                </span>
-                <span className="font-bold text-gray-900 dark:text-slate-100">{products.length}</span>
+            </motion.div>
+
+            {/* Quick Stats Summary */}
+            <motion.div
+              initial={{ opacity: 0, x: 20 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ delay: 0.3 }}
+              className="bg-white dark:bg-slate-800 rounded-2xl border border-gray-100 dark:border-slate-700 shadow-sm p-6"
+            >
+              <h3 className="font-bold text-gray-900 dark:text-slate-100 mb-4">
+                {t('dashboard.quickStats.title')}
+              </h3>
+              <div className="space-y-3">
+                <div className="flex items-center justify-between">
+                  <span className="text-sm text-gray-600 dark:text-slate-400">
+                    {t('dashboard.quickStats.totalTransactions')}
+                  </span>
+                  <span className="font-bold text-gray-900 dark:text-slate-100">{transactions.length}</span>
+                </div>
+                <div className="h-px bg-gray-100 dark:bg-slate-900" />
+                <div className="flex items-center justify-between">
+                  <span className="text-sm text-gray-600 dark:text-slate-400">
+                    {t('dashboard.quickStats.activeProducts')}
+                  </span>
+                  <span className="font-bold text-gray-900 dark:text-slate-100">{products.length}</span>
+                </div>
+                <div className="h-px bg-gray-100 dark:bg-slate-900" />
+                <div className="flex items-center justify-between">
+                  <span className="text-sm text-gray-600 dark:text-slate-400">
+                    {t('dashboard.quickStats.currentRank')}
+                  </span>
+                  <span className="font-bold text-[#FFBF00]">{user.rank}</span>
+                </div>
               </div>
-              <div className="h-px bg-gray-100 dark:bg-slate-900" />
-              <div className="flex items-center justify-between">
-                <span className="text-sm text-gray-600 dark:text-slate-400">
-                  {t('dashboard.quickStats.currentRank')}
-                </span>
-                <span className="font-bold text-[#FFBF00]">{user.rank}</span>
-              </div>
-            </div>
-          </motion.div>
+            </motion.div>
+          </div>
         </div>
       </div>
     </div>
