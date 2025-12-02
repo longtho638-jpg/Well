@@ -3,6 +3,7 @@ import { BaseAgent } from './core/BaseAgent';
 import { ClaudeKitAdapter } from './claudekit/ClaudeKitAdapter';
 import { GeminiCoachAgent } from './custom/GeminiCoachAgent';
 import { SalesCopilotAgent } from './custom/SalesCopilotAgent';
+import { TheBeeAgent } from './custom/TheBeeAgent';
 
 /**
  * Central registry for all agents in the system.
@@ -33,6 +34,7 @@ class AgentRegistry {
     // Register custom agents first
     this.register(new GeminiCoachAgent());
     this.register(new SalesCopilotAgent());
+    this.register(new TheBeeAgent());
 
     // Then register ClaudeKit agents
     this.registerClaudeKitAgents();

@@ -272,6 +272,55 @@ export const useStore = create<AppState>((set, get) => ({
         revenueData: newRevenueData
       };
     });
+
+    // AGENTIC WORKFLOW: Trigger "The Bee" Reward Engine
+    const beeAgent = agentRegistry.get('The Bee');
+    if (beeAgent) {
+        const currentState = get();
+        try {
+            const rewardResult = await beeAgent.execute({
+                action: 'processReward',
+                transaction: newTransaction,
+                userRank: currentState.user.rank
+            });
+
+            if (rewardResult && rewardResult.rewardAmount) {
+                // Update User Balance with Rewards (GROW Tokens / Points)
+                set((state) => ({
+                    user: {
+                        ...state.user,
+                        growBalance: state.user.growBalance + rewardResult.rewardAmount
+                    },
+                    // Optionally add a transaction record for the reward
+                    transactions: [
+                        {
+                            id: `TX-REWARD-${Date.now()}`,
+                            userId: state.user.id,
+                            date: new Date().toISOString().split('T')[0],
+                            amount: rewardResult.rewardAmount,
+                            type: 'Team Volume Bonus', // Categorize as Bonus
+                            status: 'completed',
+                            taxDeducted: 0,
+                            hash: generateTxHash(),
+                            currency: 'GROW'
+                        },
+                        ...state.transactions
+                    ]
+                }));
+                
+                // Log agent execution
+                const newLogs = beeAgent.getLogs();
+                set((state) => ({
+                    agentState: {
+                        ...state.agentState,
+                        agentLogs: [...state.agentState.agentLogs, ...newLogs]
+                    }
+                }));
+            }
+        } catch (e) {
+            console.error("The Bee failed to distribute reward:", e);
+        }
+    }
   },
 
   // Staking Actions - NEW: Stake GROW tokens

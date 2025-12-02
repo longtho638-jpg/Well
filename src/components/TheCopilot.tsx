@@ -17,6 +17,7 @@ import {
 import { useAgentOS } from '@/hooks/useAgentOS';
 import { generateSalesScript, getCopilotCoaching } from '@/services/copilotService';
 import { CopilotMessage, ObjectionType } from '@/types';
+import { useToast } from '@/components/ui/Toast';
 
 interface TheCopilotProps {
   productContext?: string;
@@ -65,6 +66,7 @@ const TypingText: React.FC<{ text: string; speed?: number }> = ({ text, speed = 
 
 export default function TheCopilot({ productContext, userName = "Bạn" }: TheCopilotProps) {
   const { executeAgent } = useAgentOS();
+  const { showToast } = useToast();
   const [messages, setMessages] = useState<CopilotMessage[]>([
     {
       id: '1',
@@ -147,6 +149,7 @@ export default function TheCopilot({ productContext, userName = "Bạn" }: TheCo
         timestamp: new Date().toISOString()
       };
       setMessages(prev => [...prev, errorMessage]);
+      showToast('Failed to process message', 'error');
     } finally {
       setIsLoading(false);
     }
@@ -156,41 +159,54 @@ export default function TheCopilot({ productContext, userName = "Bạn" }: TheCo
     if (!productContext) return;
 
     setIsLoading(true);
-    const script = await generateSalesScript(
-      'Sản phẩm hiện tại',
-      productContext
-    );
+    try {
+      const script = await generateSalesScript(
+        'Sản phẩm hiện tại',
+        productContext
+      );
 
-    const scriptMessage: CopilotMessage = {
-      id: Date.now().toString(),
-      role: 'assistant',
-      content: script,
-      timestamp: new Date().toISOString()
-    };
+      const scriptMessage: CopilotMessage = {
+        id: Date.now().toString(),
+        role: 'assistant',
+        content: script,
+        timestamp: new Date().toISOString()
+      };
 
-    setMessages(prev => [...prev, scriptMessage]);
-    setIsLoading(false);
+      setMessages(prev => [...prev, scriptMessage]);
+      showToast('Sales script generated', 'success');
+    } catch (error) {
+      showToast('Failed to generate script', 'error');
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   const handleGetCoaching = async () => {
     setIsLoading(true);
     setShowCoaching(true);
 
-    const conversationHistory = messages
-      .filter(m => m.role !== 'assistant' || !m.content.includes('Xin chào'))
-      .map(m => ({ role: m.role, content: m.content }));
+    try {
+      const conversationHistory = messages
+        .filter(m => m.role !== 'assistant' || !m.content.includes('Xin chào'))
+        .map(m => ({ role: m.role, content: m.content }));
 
-    const tips = await getCopilotCoaching(conversationHistory);
-    setCoaching(tips);
-    setIsLoading(false);
+      const tips = await getCopilotCoaching(conversationHistory);
+      setCoaching(tips);
+      showToast('Coaching tips ready', 'success');
+    } catch (error) {
+      showToast('Failed to get coaching', 'error');
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   const copySuggestion = (text: string, messageId: string) => {
     navigator.clipboard.writeText(text);
     setCopiedSuggestion(messageId);
     setTimeout(() => setCopiedSuggestion(null), 2000);
+    showToast('Copied to clipboard', 'success');
   };
-
+  
   const getObjectionBadge = (type?: ObjectionType) => {
     if (!type) return null;
 

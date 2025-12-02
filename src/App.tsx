@@ -24,79 +24,82 @@ import PolicyEngine from './pages/Admin/PolicyEngine';
 import AgentDashboard from './pages/AgentDashboard';
 import { useStore } from './store';
 import { ThemeProvider } from './context/ThemeContext';
+import { ToastProvider } from './components/ui/Toast';
 
 const App: React.FC = () => {
   const { isAuthenticated } = useStore();
 
   return (
     <ThemeProvider>
-      <Routes>
-      {/* ============================================================ */}
-      {/* PUBLIC ROUTES: Landing & Venture Vision */}
-      {/* ============================================================ */}
-      <Route path="/" element={<LandingPage />} />
-      <Route path="/venture" element={<VenturePage />} />
+      <ToastProvider>
+        <Routes>
+        {/* ============================================================ */}
+        {/* PUBLIC ROUTES: Landing & Venture Vision */}
+        {/* ============================================================ */}
+        <Route path="/" element={<LandingPage />} />
+        <Route path="/venture" element={<VenturePage />} />
 
-      {/* ============================================================ */}
-      {/* ADMIN ROUTES: Mission Control with Nested Routes */}
-      {/* ============================================================ */}
-      <Route path="/admin" element={<Admin />}>
-        <Route index element={<Overview />} />
-        <Route path="cms" element={<CMS />} />
-        <Route path="partners" element={<Partners />} />
-        <Route path="finance" element={<Finance />} />
-        <Route path="policy-engine" element={<PolicyEngine />} />
-      </Route>
+        {/* ============================================================ */}
+        {/* ADMIN ROUTES: Mission Control with Nested Routes */}
+        {/* ============================================================ */}
+        <Route path="/admin" element={<Admin />}>
+          <Route index element={<Overview />} />
+          <Route path="cms" element={<CMS />} />
+          <Route path="partners" element={<Partners />} />
+          <Route path="finance" element={<Finance />} />
+          <Route path="policy-engine" element={<PolicyEngine />} />
+        </Route>
 
-      {/* ============================================================ */}
-      {/* PROTECTED ROUTES: Dashboard with AppLayout wrapper */}
-      {/* If authenticated -> Show AppLayout. If not -> Redirect to Landing */}
-      {/* ============================================================ */}
-      <Route
-        path="/dashboard"
-        element={isAuthenticated ? <AppLayout /> : <Navigate to="/" replace />}
-      >
-        {/* Dashboard Home */}
-        <Route index element={<Dashboard />} />
-
-        {/* Marketplace & Products */}
-        <Route path="marketplace" element={<Marketplace />} />
-        <Route path="product/:id" element={<ProductDetail />} />
-
-        {/* Commission Wallet */}
+        {/* ============================================================ */}
+        {/* PROTECTED ROUTES: Dashboard with AppLayout wrapper */}
+        {/* If authenticated -> Show AppLayout. If not -> Redirect to Landing */}
+        {/* ============================================================ */}
         <Route
-          path="wallet"
-          element={
-            <div className="space-y-6">
-              <h2 className="text-2xl md:text-3xl font-bold text-[#1F2937]">Commission Wallet</h2>
-              <CommissionWallet />
-            </div>
-          }
-        />
+          path="/dashboard"
+          element={isAuthenticated ? <AppLayout /> : <Navigate to="/" replace />}
+        >
+          {/* Dashboard Home */}
+          <Route index element={<Dashboard />} />
 
-        {/* Phase 2: Growth Features */}
-        <Route path="copilot" element={<CopilotPage />} />
-        <Route path="team" element={<LeaderDashboard />} />
-        <Route path="referral" element={<ReferralPage />} />
-        <Route path="health-coach" element={<HealthCoach />} />
-        <Route path="health-check" element={<HealthCheck />} />
-        <Route path="leaderboard" element={<Leaderboard />} />
-        <Route path="marketing-tools" element={<MarketingTools />} />
-        <Route path="agents" element={<AgentDashboard />} />
-      </Route>
+          {/* Marketplace & Products */}
+          <Route path="marketplace" element={<Marketplace />} />
+          <Route path="product/:id" element={<ProductDetail />} />
 
-      {/* ============================================================ */}
-      {/* LEGACY REDIRECTS: Old paths redirect to new structure */}
-      {/* ============================================================ */}
-      <Route path="/marketplace" element={<Navigate to="/dashboard/marketplace" replace />} />
-      <Route path="/wallet" element={<Navigate to="/dashboard/wallet" replace />} />
-      <Route path="/product/:id" element={<Navigate to="/dashboard/product/:id" replace />} />
+          {/* Commission Wallet */}
+          <Route
+            path="wallet"
+            element={
+              <div className="space-y-6">
+                <h2 className="text-2xl md:text-3xl font-bold text-[#1F2937]">Commission Wallet</h2>
+                <CommissionWallet />
+              </div>
+            }
+          />
 
-      {/* ============================================================ */}
-      {/* CATCH-ALL: Unknown routes redirect to home */}
-      {/* ============================================================ */}
-      <Route path="*" element={<Navigate to="/" replace />} />
-      </Routes>
+          {/* Phase 2: Growth Features */}
+          <Route path="copilot" element={<CopilotPage />} />
+          <Route path="team" element={<LeaderDashboard />} />
+          <Route path="referral" element={<ReferralPage />} />
+          <Route path="health-coach" element={<HealthCoach />} />
+          <Route path="health-check" element={<HealthCheck />} />
+          <Route path="leaderboard" element={<Leaderboard />} />
+          <Route path="marketing-tools" element={<MarketingTools />} />
+          <Route path="agents" element={<AgentDashboard />} />
+        </Route>
+
+        {/* ============================================================ */}
+        {/* LEGACY REDIRECTS: Old paths redirect to new structure */}
+        {/* ============================================================ */}
+        <Route path="/marketplace" element={<Navigate to="/dashboard/marketplace" replace />} />
+        <Route path="/wallet" element={<Navigate to="/dashboard/wallet" replace />} />
+        <Route path="/product/:id" element={<Navigate to="/dashboard/product/:id" replace />} />
+
+        {/* ============================================================ */}
+        {/* CATCH-ALL: Unknown routes redirect to home */}
+        {/* ============================================================ */}
+        <Route path="*" element={<Navigate to="/" replace />} />
+        </Routes>
+      </ToastProvider>
     </ThemeProvider>
   );
 };

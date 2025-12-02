@@ -83,6 +83,13 @@ CREATE TABLE agent_kpis (
   UNIQUE(agent_name, kpi_name)
 );
 
+-- Indexes for performance
+CREATE INDEX idx_transactions_user_id ON transactions(user_id);
+CREATE INDEX idx_agent_logs_user_id ON agent_logs(user_id);
+CREATE INDEX idx_agent_logs_agent_name ON agent_logs(agent_name);
+CREATE INDEX idx_agent_kpis_agent_name ON agent_kpis(agent_name);
+CREATE INDEX idx_team_members_leader_id ON team_members(leader_id);
+
 -- Enable Row Level Security
 ALTER TABLE users ENABLE ROW LEVEL SECURITY;
 ALTER TABLE transactions ENABLE ROW LEVEL SECURITY;
@@ -115,6 +122,14 @@ CREATE POLICY "Users can view own agent logs"
 CREATE POLICY "Users can insert own agent logs"
   ON agent_logs FOR INSERT
   WITH CHECK (auth.uid() = user_id);
+
+-- RLS Policies for agent KPIs (read-only for authenticated users for dashboard)
+ALTER TABLE agent_kpis ENABLE ROW LEVEL SECURITY;
+
+CREATE POLICY "Authenticated users can view agent KPIs"
+  ON agent_kpis FOR SELECT
+  TO authenticated
+  USING (true);
 
 -- RLS Policies for team members
 CREATE POLICY "Users can view own team"

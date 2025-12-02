@@ -1,14 +1,68 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useAgentOS } from '@/hooks/useAgentOS';
 import { AgentDefinition } from '@/types/agentic';
 import { Activity, Zap, BarChart3 } from 'lucide-react';
+import { useToast } from '@/components/ui/Toast';
+import { Skeleton } from '@/components/ui/Skeleton';
 
 export default function AgentDashboard() {
   const { listAgents, getTotalAgentCount, getAgentKPIs } = useAgentOS();
   const [selectedAgent, setSelectedAgent] = useState<string | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
+  const { showToast } = useToast();
 
   const agents = listAgents();
   const groupedAgents = groupByFunction(agents);
+
+  useEffect(() => {
+    // Simulate initial data loading
+    const timer = setTimeout(() => {
+      setIsLoading(false);
+      // showToast('Agent-OS Dashboard Ready', 'success'); // Optional: might be annoying on every load
+    }, 800);
+    return () => clearTimeout(timer);
+  }, []);
+
+  const handleAgentClick = (agentName: string) => {
+    setSelectedAgent(agentName);
+    // showToast(\`Viewing details for \${agentName}\`, 'info');
+  };
+
+  if (isLoading) {
+    return (
+      <div className="min-h-screen bg-background p-6">
+        <div className="mb-8 space-y-2">
+          <Skeleton width={300} height={40} />
+          <Skeleton width={500} height={20} />
+        </div>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+          {[1, 2, 3].map((i) => (
+            <div key={i} className="bg-white rounded-lg shadow-md p-6">
+               <div className="flex items-center justify-between">
+                 <div className="space-y-2">
+                   <Skeleton width={100} height={16} />
+                   <Skeleton width={60} height={36} />
+                 </div>
+                 <Skeleton variant="circular" width={48} height={48} />
+               </div>
+            </div>
+          ))}
+        </div>
+        <div className="space-y-6">
+           {[1, 2].map((i) => (
+             <div key={i} className="bg-white rounded-lg shadow-md p-6 space-y-4">
+               <Skeleton width={200} height={28} />
+               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                 {[1, 2, 3].map((j) => (
+                   <Skeleton key={j} variant="rectangular" height={120} className="rounded-lg" />
+                 ))}
+               </div>
+             </div>
+           ))}
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-background p-6">
@@ -53,7 +107,7 @@ export default function AgentDashboard() {
                   key={agent.agent_name}
                   agent={agent}
                   isSelected={selectedAgent === agent.agent_name}
-                  onClick={() => setSelectedAgent(agent.agent_name)}
+                  onClick={() => handleAgentClick(agent.agent_name)}
                   getKPIs={getAgentKPIs}
                 />
               ))}
