@@ -29,6 +29,12 @@ const PolicyEngine: React.FC = () => {
   const [simAOV, setSimAOV] = useState(1500000);
   const [fixedCost, setFixedCost] = useState(500000000); // 500tr chi phí vận hành
 
+  // 🆕 4. The Bee Agent - Commission Tiers (NEW POLICY)
+  const [ctvCommission, setCtvCommission] = useState(21); // CTV: 21%
+  const [startupCommission, setStartupCommission] = useState(25); // STARTUP+: 25%
+  const [sponsorBonus, setSponsorBonus] = useState(8); // AMBASSADOR+: 8%
+  const [rankUpThreshold, setRankUpThreshold] = useState(9900000); // 9.9M VND to upgrade
+
   // Derived Values
   const totalPayoutPercent = retailComm + agencyBonus + elitePool;
   const isRisk = totalPayoutPercent > 45;
@@ -45,6 +51,13 @@ const PolicyEngine: React.FC = () => {
     const config = {
       commissions: { retailComm, agencyBonus, elitePool },
       rules: { activationThreshold, whiteLabelGMV, whiteLabelPartners },
+      // 🆕 The Bee Agent Policy
+      beeAgentPolicy: {
+        ctvCommission,
+        startupCommission,
+        sponsorBonus,
+        rankUpThreshold
+      },
       timestamp: new Date().toISOString(),
     };
     localStorage.setItem('policy_engine_config', JSON.stringify(config));
@@ -240,6 +253,128 @@ const PolicyEngine: React.FC = () => {
               </div>
             </div>
           </motion.div>
+
+          {/* 🆕 THE BEE AGENT - Commission Tiers (NEW POLICY SECTION) */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.2 }}
+            className="bg-gradient-to-br from-amber-900/20 to-slate-800 p-6 rounded-xl border-2 border-amber-500/30 shadow-lg"
+          >
+            <h3 className="text-lg font-bold mb-3 text-amber-400 flex items-center gap-2">
+              <Zap size={20} className="animate-pulse" />
+              🐝 The Bee Agent - Chính Sách Tự Động
+            </h3>
+            <p className="text-xs text-slate-400 mb-5 bg-slate-900/50 p-2 rounded">
+              💡 Chính sách này <strong>tự động áp dụng</strong> khi The Bee xử lý đơn hàng (Supabase Edge Function)
+            </p>
+
+            {/* CTV Commission Slider */}
+            <div className="mb-5">
+              <div className="flex justify-between mb-2">
+                <label className="text-sm font-medium text-slate-200">
+                  Hoa hồng CTV <span className="text-xs text-slate-500">(Rank 8)</span>
+                </label>
+                <motion.span
+                  key={ctvCommission}
+                  initial={{ scale: 1.3, color: '#fbbf24' }}
+                  animate={{ scale: 1, color: '#fbbf24' }}
+                  className="text-amber-400 font-bold text-lg"
+                >
+                  {ctvCommission}%
+                </motion.span>
+              </div>
+              <input
+                type="range"
+                min="15"
+                max="25"
+                value={ctvCommission}
+                onChange={(e) => setCtvCommission(Number(e.target.value))}
+                className="w-full accent-amber-500 h-2 bg-slate-600 rounded-lg appearance-none cursor-pointer"
+              />
+              <p className="text-xs text-slate-500 mt-1">Dành cho Cộng tác viên (CTV) - Rank thấp nhất</p>
+            </div>
+
+            {/* STARTUP+ Commission Slider */}
+            <div className="mb-5">
+              <div className="flex justify-between mb-2">
+                <label className="text-sm font-medium text-slate-200">
+                  Hoa hồng STARTUP+ <span className="text-xs text-slate-500">(Rank 7 trở lên)</span>
+                </label>
+                <motion.span
+                  key={startupCommission}
+                  initial={{ scale: 1.3, color: '#22c55e' }}
+                  animate={{ scale: 1, color: '#22c55e' }}
+                  className="text-green-400 font-bold text-lg"
+                >
+                  {startupCommission}%
+                </motion.span>
+              </div>
+              <input
+                type="range"
+                min="20"
+                max="30"
+                value={startupCommission}
+                onChange={(e) => setStartupCommission(Number(e.target.value))}
+                className="w-full accent-green-500 h-2 bg-slate-600 rounded-lg appearance-none cursor-pointer"
+              />
+              <p className="text-xs text-slate-500 mt-1">Khởi Nghiệp trở lên - Hoa hồng cao hơn</p>
+            </div>
+
+            {/* Sponsor Bonus Slider */}
+            <div className="mb-5">
+              <div className="flex justify-between mb-2">
+                <label className="text-sm font-medium text-slate-200">
+                  Thưởng F1 <span className="text-xs text-slate-500">(AMBASSADOR+ only)</span>
+                </label>
+                <motion.span
+                  key={sponsorBonus}
+                  initial={{ scale: 1.3, color: '#a855f7' }}
+                  animate={{ scale: 1, color: '#a855f7' }}
+                  className="text-purple-400 font-bold text-lg"
+                >
+                  {sponsorBonus}%
+                </motion.span>
+              </div>
+              <input
+                type="range"
+                min="5"
+                max="12"
+                value={sponsorBonus}
+                onChange={(e) => setSponsorBonus(Number(e.target.value))}
+                className="w-full accent-purple-500 h-2 bg-slate-600 rounded-lg appearance-none cursor-pointer"
+              />
+              <p className="text-xs text-slate-500 mt-1">Sponsor (Đại Sứ+) nhận % từ doanh số F1 trực tiếp</p>
+            </div>
+
+            {/* Rank Up Threshold Input */}
+            <div className="mb-4">
+              <label className="block text-xs text-slate-400 mb-1 font-medium">
+                Ngưỡng thăng hạng STARTUP (VND)
+              </label>
+              <div className="relative">
+                <input
+                  type="number"
+                  value={rankUpThreshold}
+                  onChange={(e) => setRankUpThreshold(Number(e.target.value))}
+                  className="w-full bg-slate-900 border border-amber-500/50 rounded-lg p-3 text-white focus:border-amber-500 outline-none font-mono"
+                />
+                <span className="absolute right-3 top-3 text-slate-500 text-xs font-bold">VND</span>
+              </div>
+              <p className="text-xs text-slate-500 mt-1">
+                Khi <strong>lifetime sales ≥ ngưỡng này</strong>, CTV tự động lên STARTUP
+              </p>
+            </div>
+
+            {/* Info Box */}
+            <div className="mt-5 p-3 bg-gradient-to-r from-amber-900/30 to-orange-900/20 rounded-lg border border-amber-500/30">
+              <div className="text-xs text-amber-200 leading-relaxed">
+                <strong className="text-amber-400">💡 Sync với Edge Function:</strong>
+                <br />
+                Sau khi lưu, cần cập nhật file <code className="bg-slate-900 px-1 py-0.5 rounded text-amber-300">supabase/functions/agent-reward/index.ts</code> và redeploy.
+              </div>
+            </div>
+          </motion.div>
         </div>
 
         {/* RIGHT COLUMN: SIMULATION */}
@@ -358,9 +493,8 @@ const PolicyEngine: React.FC = () => {
                       />
                     </div>
                     <span
-                      className={`font-bold ${
-                        profitMargin > 20 ? 'text-green-400' : profitMargin > 10 ? 'text-yellow-400' : 'text-red-400'
-                      }`}
+                      className={`font-bold ${profitMargin > 20 ? 'text-green-400' : profitMargin > 10 ? 'text-yellow-400' : 'text-red-400'
+                        }`}
                     >
                       {profitMargin > 20 ? 'Excellent' : profitMargin > 10 ? 'Good' : 'At Risk'}
                     </span>
