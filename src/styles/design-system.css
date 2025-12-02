@@ -271,3 +271,29 @@ h1, h2, h3, h4, h5, h6 {
   animation: shimmer 2s infinite linear;
   border-radius: var(--radius-md);
 }
+
+/* Mobile Optimizations */
+@media (max-width: 768px) {
+  :root {
+    --text-5xl: 2.5rem;
+    --text-4xl: 2rem;
+    --text-3xl: 1.75rem;
+  }
+
+  .glass-card {
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+  }
+
+  .btn-primary,
+  .btn-secondary {
+    min-height: 48px; /* Touch-friendly */
+  }
+}
+
+/* Touch devices */
+@media (hover: none) {
+  .hover-lift:active {
+    transform: translateY(-2px);
+  }
+}

@@ -17,7 +17,8 @@ import {
   Minus,
   Trash2,
   Filter,
-  SlidersHorizontal
+  SlidersHorizontal,
+  ArrowRight
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Product } from '../types';
@@ -405,23 +406,76 @@ export const Marketplace: React.FC = () => {
                 {/* Products Grid */}
                 {filteredProducts.length > 0 ? (
                   <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                    {filteredProducts.map((p, idx) => {
-                      const isRecommended = aiSuggestion?.productIds.includes(p.id);
+                    {filteredProducts.map((product, idx) => {
+                      const isRecommended = aiSuggestion?.productIds.includes(product.id);
                       return (
                         <motion.div
-                          key={p.id}
-                          initial={{ opacity: 0, y: 20 }}
-                          animate={{ opacity: 1, y: 0 }}
+                          key={product.id}
+                          initial={{ opacity: 0, scale: 0.9 }}
+                          animate={{ opacity: 1, scale: 1 }}
                           transition={{ delay: idx * 0.05 }}
-                          className={isRecommended ? 'ring-2 ring-yellow-400 ring-offset-2 rounded-xl' : ''}
+                          className={`group ${isRecommended ? 'ring-2 ring-yellow-400 ring-offset-4 rounded-2xl' : ''}`}
                         >
                           {isRecommended && (
-                            <div className="bg-yellow-400 text-indigo-900 text-xs font-bold px-3 py-1 rounded-t-lg -mb-1 w-fit relative z-10 mx-auto flex items-center gap-1">
+                            <div className="absolute -top-3 left-1/2 -translate-x-1/2 bg-yellow-400 text-indigo-900 text-xs font-bold px-3 py-1 rounded-full z-20 flex items-center gap-1 shadow-lg">
                               <Sparkles className="w-3 h-3" /> {t('marketplace.aiRecommended')}
                             </div>
                           )}
-                          <div onClick={() => addToCart(p)}>
-                            <ProductCard product={p} />
+                          
+                          <div 
+                            className="glass-card overflow-hidden hover-lift cursor-pointer bg-white/80 dark:bg-slate-800/80 backdrop-blur-xl border border-white/50 dark:border-slate-700 rounded-2xl shadow-sm hover:shadow-xl transition-all duration-300 h-full flex flex-col"
+                            onClick={() => addToCart(product)}
+                          >
+                            {/* Image Container */}
+                            <div className="relative aspect-square overflow-hidden rounded-t-2xl mb-4">
+                              <img 
+                                src={product.imageUrl} 
+                                alt={product.name}
+                                className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                              />
+                              {/* Gradient Overlay on Hover */}
+                              <div className="absolute inset-0 bg-gradient-to-t from-slate-900/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-4">
+                                <button 
+                                  className="w-full bg-gradient-to-r from-primary to-teal-600 text-white py-3 rounded-xl font-bold flex items-center justify-center gap-2 shadow-lg transform translate-y-4 group-hover:translate-y-0 transition-transform duration-300"
+                                  onClick={(e) => {
+                                    e.stopPropagation();
+                                    addToCart(product);
+                                  }}
+                                >
+                                  <ShoppingCart className="w-4 h-4 inline" />
+                                  Thêm vào giỏ
+                                </button>
+                              </div>
+                            </div>
+
+                            <div className="p-4 pt-0 flex-1 flex flex-col">
+                              {/* Product Info */}
+                              <h3 className="font-bold text-lg text-slate-900 dark:text-slate-100 mb-2 line-clamp-2">
+                                {product.name}
+                              </h3>
+                              <p className="text-sm text-slate-600 dark:text-slate-400 mb-4 line-clamp-2 flex-1">
+                                {product.description}
+                              </p>
+                              
+                              {/* Price & Commission */}
+                              <div className="flex items-center justify-between mt-auto">
+                                <div>
+                                  <div className="text-xl md:text-2xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-primary to-teal-600">
+                                    {formatVND(product.price)}
+                                  </div>
+                                  <div className="text-xs text-emerald-600 font-semibold bg-emerald-50 dark:bg-emerald-900/20 px-2 py-0.5 rounded-full w-fit mt-1">
+                                    Hoa hồng {(product.commissionRate * 100).toFixed(0)}%
+                                  </div>
+                                </div>
+                                <motion.button
+                                  className="w-10 h-10 rounded-full bg-teal-50 dark:bg-teal-900/30 text-teal-600 dark:text-teal-400 flex items-center justify-center hover:bg-teal-600 hover:text-white transition-colors"
+                                  whileHover={{ scale: 1.1 }}
+                                  whileTap={{ scale: 0.9 }}
+                                >
+                                  <ArrowRight className="w-5 h-5" />
+                                </motion.button>
+                              </div>
+                            </div>
                           </div>
                         </motion.div>
                       );

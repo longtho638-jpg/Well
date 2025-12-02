@@ -270,31 +270,56 @@ export default function LandingPage() {
       {/* HERO SECTION */}
       {/* ================================================================== */}
       <section className="relative pt-32 pb-20 overflow-hidden">
-        {/* Background Elements */}
-        <div className="absolute top-20 right-20 w-[400px] h-[400px] bg-teal-400/20 rounded-full blur-[120px] animate-pulse" />
-        <div className="absolute bottom-20 left-20 w-[350px] h-[350px] bg-[#FFBF00]/20 rounded-full blur-[100px]" style={{ animationDelay: '1s' }} />
+        {/* Animated Gradient Mesh Background */}
+        <div className="absolute inset-0 bg-gradient-to-br from-teal-50 via-violet-50 to-white" />
+        <motion.div 
+          className="absolute top-20 right-20 w-[500px] h-[500px] bg-gradient-to-br from-teal-400/30 to-violet-400/30 rounded-full blur-[120px]"
+          animate={{
+            scale: [1, 1.2, 1],
+            opacity: [0.3, 0.5, 0.3]
+          }}
+          transition={{
+            duration: 8,
+            repeat: Infinity,
+            ease: "easeInOut"
+          }}
+        />
+        <motion.div 
+          className="absolute bottom-20 left-20 w-[400px] h-[400px] bg-gradient-to-br from-coral-400/20 to-amber-400/20 rounded-full blur-[100px]"
+          animate={{
+            scale: [1, 1.3, 1],
+            opacity: [0.2, 0.4, 0.2]
+          }}
+          transition={{
+            duration: 10,
+            repeat: Infinity,
+            ease: "easeInOut",
+            delay: 1
+          }}
+        />
 
         <div className="relative z-10 max-w-7xl mx-auto px-6 lg:px-12">
           <motion.div
             variants={staggerContainer}
             initial="hidden"
             animate="visible"
-            className="text-center max-w-4xl mx-auto"
+            className="text-center max-w-5xl mx-auto"
           >
             {/* Badge */}
-            <motion.div variants={fadeInUp} className="mb-6 inline-flex">
-              <div className="inline-flex items-center gap-2 bg-teal-50 border border-teal-200 rounded-full px-5 py-2">
-                <Sparkles className="w-4 h-4 text-teal-600" />
+            <motion.div variants={fadeInUp} className="mb-8 inline-flex">
+              <div className="glass-card inline-flex items-center gap-2 px-6 py-3 border border-teal-200/50 bg-white/50 backdrop-blur-sm rounded-full">
+                <Sparkles className="w-5 h-5 text-teal-600" />
                 <span className="text-sm font-bold text-teal-700 uppercase tracking-wider">
                   {CONTENT.hero.badge}
                 </span>
               </div>
             </motion.div>
 
-            {/* Headline */}
+            {/* Headline with Clash Display */}
             <motion.h1
               variants={fadeInUp}
-              className="font-black text-5xl md:text-6xl lg:text-7xl mb-6 leading-tight tracking-tight"
+              className="font-display text-6xl md:text-7xl lg:text-8xl mb-8 leading-tight tracking-tight"
+              style={{ fontFamily: "'Clash Display', sans-serif" }}
             >
               <span className="text-slate-900">
                 {CONTENT.hero.headline}
@@ -308,49 +333,50 @@ export default function LandingPage() {
             {/* Subheadline */}
             <motion.p
               variants={fadeInUp}
-              className="text-xl md:text-2xl text-slate-600 mb-8 leading-relaxed"
+              className="text-xl md:text-2xl text-slate-600 mb-10 leading-relaxed max-w-3xl mx-auto"
             >
               {CONTENT.hero.subheadline}
             </motion.p>
 
-            {/* Current Stage Badge */}
-            <motion.div
+            {/* Glassmorphism Stats Cards */}
+            <motion.div 
               variants={fadeInUp}
-              className="inline-flex items-center gap-3 bg-white border-2 border-teal-200 rounded-full px-6 py-3 mb-8 shadow-lg"
+              className="grid grid-cols-3 gap-4 max-w-3xl mx-auto mb-10"
             >
-              <div className="relative flex h-3 w-3">
-                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-teal-400 opacity-75" />
-                <span className="relative inline-flex rounded-full h-3 w-3 bg-teal-500" />
-              </div>
-              <Sprout className="w-5 h-5 text-teal-600" />
-              <span className="text-sm font-bold text-slate-700">
-                {CONTENT.hero.currentStage}
-              </span>
+              {[
+                { label: 'Active Users', value: '1M+', icon: Users },
+                { label: 'Revenue', value: '$50M', icon: TrendingUp },
+                { label: 'Products', value: '500+', icon: Award }
+              ].map((stat, idx) => {
+                const Icon = stat.icon;
+                return (
+                  <motion.div
+                    key={idx}
+                    className="glass-card p-4 text-center hover-lift bg-white/60 backdrop-blur-md border border-white/50 rounded-2xl shadow-lg"
+                    whileHover={{ scale: 1.05 }}
+                  >
+                    <Icon className="w-6 h-6 text-teal-600 mx-auto mb-2" />
+                    <div className="text-2xl font-bold text-slate-800 mb-1">{stat.value}</div>
+                    <div className="text-xs text-slate-600">{stat.label}</div>
+                  </motion.div>
+                );
+              })}
             </motion.div>
 
-            {/* CTA Buttons */}
-            <motion.div
-              variants={fadeInUp}
-              className="flex flex-col sm:flex-row gap-4 justify-center"
-            >
+            {/* Premium CTA Button */}
+            <motion.div variants={fadeInUp}>
               <motion.button
                 onClick={handleJoin}
-                className="group bg-gradient-to-r from-[#00575A] to-teal-600 text-white px-10 py-5 rounded-xl font-bold text-lg flex items-center justify-center gap-3 shadow-2xl shadow-teal-500/30"
-                whileHover={{ scale: 1.05, boxShadow: '0 30px 60px rgba(0, 87, 90, 0.4)' }}
+                className="btn-primary text-xl px-12 py-6 relative overflow-hidden group bg-gradient-to-r from-[#00575A] to-teal-600 text-white rounded-xl font-bold flex items-center justify-center gap-3 mx-auto shadow-2xl shadow-teal-500/30"
+                whileHover={{ 
+                  scale: 1.05,
+                  boxShadow: "0 30px 60px rgba(0, 87, 90, 0.4)"
+                }}
                 whileTap={{ scale: 0.98 }}
               >
-                <Rocket className="w-5 h-5" />
+                <Rocket className="w-6 h-6 inline" />
                 {CONTENT.hero.primaryCta}
-                <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
-              </motion.button>
-
-              <motion.button
-                onClick={() => document.getElementById('roadmap')?.scrollIntoView({ behavior: 'smooth' })}
-                className="px-10 py-5 rounded-xl font-bold text-lg text-slate-700 border-2 border-slate-300 hover:border-teal-500 bg-white hover:bg-teal-50 transition-all"
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-              >
-                {CONTENT.hero.secondaryCta}
+                <ArrowRight className="w-6 h-6 inline group-hover:translate-x-2 transition-transform" />
               </motion.button>
             </motion.div>
           </motion.div>

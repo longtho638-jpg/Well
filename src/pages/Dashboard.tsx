@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { HeroCard } from '../components/Dashboard/HeroCard';
-import { StatsGrid } from '../components/Dashboard/StatsGrid';
 import { RevenueChart } from '../components/Dashboard/RevenueChart';
 import { TopProducts } from '../components/Dashboard/TopProducts';
 import { QuickActionsCard } from '../components/Dashboard/QuickActionsCard';
@@ -25,7 +24,9 @@ import {
   Gift,
   Sparkles,
   Radio,
-  BarChart3
+  BarChart3,
+  Wallet,
+  DollarSign
 } from 'lucide-react';
 import { PieChart, Pie, Cell, ResponsiveContainer, Legend, Tooltip } from 'recharts';
 import { formatVND, formatNumber } from '../utils/format';
@@ -126,7 +127,7 @@ const generateRandomActivity = (t: (key: string, vars?: any) => string): LiveAct
   }
 
   return {
-    id: `activity-${Date.now()}-${Math.random()}`,
+    id: `activity-\${Date.now()}-\${Math.random()}`,
     type: randomType,
     userName: randomName,
     message: messageText,
@@ -221,7 +222,7 @@ const LiveActivitiesTicker: React.FC = () => {
                 <div className={`
                   flex items-start gap-3 p-3 rounded-xl border border-gray-100 dark:border-slate-700
                   hover:shadow-md transition-all duration-300 cursor-pointer
-                  ${activity.bgColor} ${index === 0 ? 'ring-2 ring-primary/20' : ''}
+                  \${activity.bgColor} \${index === 0 ? 'ring-2 ring-primary/20' : ''}
                 `}>
                   {/* Animated Icon */}
                   <motion.div
@@ -233,9 +234,9 @@ const LiveActivitiesTicker: React.FC = () => {
                       scale: { repeat: Infinity, duration: 2, delay: index * 0.2 },
                       rotate: { repeat: Infinity, duration: 1 }
                     }}
-                    className={`w-10 h-10 ${activity.bgColor} rounded-lg flex items-center justify-center shrink-0 shadow-sm`}
+                    className={`w-10 h-10 \${activity.bgColor} rounded-lg flex items-center justify-center shrink-0 shadow-sm`}
                   >
-                    <activity.icon className={`w-5 h-5 ${activity.color}`} />
+                    <activity.icon className={`w-5 h-5 \${activity.color}`} />
                   </motion.div>
 
                   {/* Content */}
@@ -307,6 +308,13 @@ const LiveActivitiesTicker: React.FC = () => {
 export const Dashboard: React.FC = () => {
   const t = useTranslation();
   const { user, revenueData, products, transactions } = useStore();
+
+  // Prepare Wallet Data for Stats
+  const walletData = {
+    total: user.shopBalance + (user.estimatedBonus || 0),
+    available: user.shopBalance,
+    pending: user.estimatedBonus || 0
+  };
 
   // Revenue breakdown data
   const revenueBreakdown = [
@@ -406,6 +414,67 @@ export const Dashboard: React.FC = () => {
 
       {/* Hero Card - Full Width */}
       <HeroCard user={user} />
+
+      {/* ========================================================================= */}
+      {/* PREMIUM STATS CARDS (Glassmorphism) */}
+      {/* ========================================================================= */}
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+        {[
+          { 
+            label: 'Total Balance', 
+            value: formatVND(walletData.total),
+            icon: Wallet,
+            gradient: 'from-teal-500 to-teal-600',
+            change: '+12.5%'
+          },
+          { 
+            label: 'Available', 
+            value: formatVND(walletData.available),
+            icon: DollarSign,
+            gradient: 'from-emerald-500 to-emerald-600',
+            change: '+8.2%'
+          },
+          { 
+            label: 'Pending', 
+            value: formatVND(walletData.pending),
+            icon: Clock,
+            gradient: 'from-amber-500 to-amber-600',
+            change: '+15.3%'
+          },
+          { 
+            label: 'Team Volume', 
+            value: formatVND(user?.teamVolume || 0),
+            icon: Users,
+            gradient: 'from-violet-500 to-violet-600',
+            change: '+22.1%'
+          }
+        ].map((stat, idx) => {
+          const Icon = stat.icon;
+          return (
+            <motion.div
+              key={idx}
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: idx * 0.1 }}
+            >
+              <div className="glass-card hover-lift group bg-white/80 backdrop-blur-xl border border-white/50 rounded-2xl p-6 shadow-sm hover:shadow-xl transition-all duration-300">
+                <div className="flex items-start justify-between mb-4">
+                  <div className={`w-14 h-14 rounded-xl bg-gradient-to-br \${stat.gradient} flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform duration-300`}>
+                    <Icon className="w-7 h-7 text-white" />
+                  </div>
+                  <div className="text-sm font-semibold text-emerald-600 bg-emerald-50 px-3 py-1 rounded-full border border-emerald-100">
+                    {stat.change}
+                  </div>
+                </div>
+                <div className="text-sm text-slate-500 font-medium mb-1">{stat.label}</div>
+                <div className="text-2xl md:text-3xl font-black text-transparent bg-clip-text bg-gradient-to-r from-slate-900 to-slate-700">
+                  {stat.value}
+                </div>
+              </div>
+            </motion.div>
+          );
+        })}
+      </div>
 
       {/* ========================================================================= */}
       {/* BUSINESS VALUATION CARD - THE CENTERPIECE (Wealth OS) */}
@@ -547,11 +616,7 @@ export const Dashboard: React.FC = () => {
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         {/* Left Column - Stats + Chart (2 cols on desktop) */}
         <div className="lg:col-span-2 space-y-6">
-          {/* Stats Grid */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            <StatsGrid user={user} />
-          </div>
-
+          
           {/* Revenue Chart and Live Activities - Side by Side */}
           <div className="grid grid-cols-1 xl:grid-cols-2 gap-6">
             {/* Revenue Chart */}
@@ -597,10 +662,10 @@ export const Dashboard: React.FC = () => {
                   dataKey="value"
                 >
                   {revenueBreakdown.map((entry, index) => (
-                    <Cell key={`cell-${index}`} fill={entry.color} />
+                    <Cell key={`cell-\${index}`} fill={entry.color} />
                   ))}
                 </Pie>
-                <Tooltip formatter={(value: number) => `${(value / 1000000).toFixed(1)}M ₫`} />
+                <Tooltip formatter={(value: number) => `\${(value / 1000000).toFixed(1)}M ₫`} />
               </PieChart>
             </ResponsiveContainer>
 
@@ -644,8 +709,8 @@ export const Dashboard: React.FC = () => {
                   transition={{ delay: idx * 0.1 }}
                   className="flex items-start gap-3 p-3 rounded-xl hover:bg-gray-50 dark:hover:bg-slate-700 transition-colors"
                 >
-                  <div className={`w-8 h-8 ${activity.bg} rounded-lg flex items-center justify-center shrink-0`}>
-                    <activity.icon className={`w-4 h-4 ${activity.color}`} />
+                  <div className={`w-8 h-8 \${activity.bg} rounded-lg flex items-center justify-center shrink-0`}>
+                    <activity.icon className={`w-4 h-4 \${activity.color}`} />
                   </div>
                   <div className="flex-1 min-w-0">
                     <p className="text-sm font-medium text-gray-900 dark:text-slate-100 truncate">{activity.label}</p>
@@ -681,7 +746,7 @@ export const Dashboard: React.FC = () => {
                     transition={{ delay: idx * 0.1, type: 'spring' }}
                     className={`
                       relative p-4 rounded-xl text-center
-                      ${badge.unlocked
+                      \${badge.unlocked
                         ? 'bg-gradient-to-br ' + badge.color + ' shadow-lg'
                         : 'bg-white/10 backdrop-blur-sm opacity-50'
                       }
