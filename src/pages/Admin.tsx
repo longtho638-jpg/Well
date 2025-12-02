@@ -15,6 +15,7 @@ import {
   X,
   Bot,
   Sparkles,
+  DollarSign,
 } from 'lucide-react';
 import { useTranslation } from '@/hooks';
 
@@ -63,6 +64,12 @@ const Admin: React.FC = () => {
       icon: <Wallet className="w-5 h-5" />,
       path: '/admin/finance',
       badge: '2' // Fraud alerts
+    },
+    {
+      id: 'orders',
+      label: 'Orders',
+      icon: <DollarSign className="w-5 h-5" />,
+      path: '/admin/orders'
     },
     {
       id: 'strategy',
@@ -126,22 +133,20 @@ const Admin: React.FC = () => {
             <button
               key={item.id}
               onClick={() => navigate(item.path)}
-              className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg transition-all relative ${
-                isActive(item.path)
-                  ? 'bg-[#00575A] text-white'
-                  : 'text-slate-600 hover:bg-slate-100'
-              }`}
+              className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg transition-all relative ${isActive(item.path)
+                ? 'bg-[#00575A] text-white'
+                : 'text-slate-600 hover:bg-slate-100'
+                }`}
             >
               {item.icon}
               {!sidebarCollapsed && (
                 <>
                   <span className="font-medium flex-1 text-left">{item.label}</span>
                   {item.badge && (
-                    <span className={`px-2 py-0.5 text-xs font-bold rounded-full ${
-                      isActive(item.path)
-                        ? 'bg-white/20 text-white'
-                        : 'bg-red-100 text-red-600'
-                    }`}>
+                    <span className={`px-2 py-0.5 text-xs font-bold rounded-full ${isActive(item.path)
+                      ? 'bg-white/20 text-white'
+                      : 'bg-red-100 text-red-600'
+                      }`}>
                       {item.badge}
                     </span>
                   )}
@@ -208,20 +213,18 @@ const Admin: React.FC = () => {
                       navigate(item.path);
                       setMobileMenuOpen(false);
                     }}
-                    className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg transition-all ${
-                      isActive(item.path)
-                        ? 'bg-[#00575A] text-white'
-                        : 'text-slate-600 hover:bg-slate-100'
-                    }`}
+                    className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg transition-all ${isActive(item.path)
+                      ? 'bg-[#00575A] text-white'
+                      : 'text-slate-600 hover:bg-slate-100'
+                      }`}
                   >
                     {item.icon}
                     <span className="font-medium flex-1 text-left">{item.label}</span>
                     {item.badge && (
-                      <span className={`px-2 py-0.5 text-xs font-bold rounded-full ${
-                        isActive(item.path)
-                          ? 'bg-white/20 text-white'
-                          : 'bg-red-100 text-red-600'
-                      }`}>
+                      <span className={`px-2 py-0.5 text-xs font-bold rounded-full ${isActive(item.path)
+                        ? 'bg-white/20 text-white'
+                        : 'bg-red-100 text-red-600'
+                        }`}>
                         {item.badge}
                       </span>
                     )}
