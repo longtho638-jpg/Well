@@ -25,6 +25,7 @@ import { Product } from '../types';
 import { useTranslation } from '../hooks';
 import { formatVND, formatNumber } from '../utils/format';
 import { ParticleBackground } from '@/components/ParticleBackground';
+import { BentoGrid, BentoCard, AuraBadge, GridPattern } from '@/components/ui/Aura';
 
 // Cart Item Interface
 interface CartItem {
@@ -175,31 +176,29 @@ export const Marketplace: React.FC = () => {
   const cartItemCount = cart.reduce((sum, item) => sum + item.quantity, 0);
 
   return (
-    <div className="min-h-screen bg-dark-ultra relative overflow-hidden pb-20">
-      <ParticleBackground />
-      
+    <div className="min-h-screen bg-black relative overflow-hidden pb-20">
+      <GridPattern />
+
       <div className="relative z-10">
         {/* Toggle Button */}
         <div className="sticky top-0 z-20 bg-white/10 dark:bg-slate-800/80 backdrop-blur-xl border-b border-white/10 p-4">
           <div className="max-w-7xl mx-auto flex gap-3">
             <button
               onClick={() => setShowRedemption(false)}
-              className={`flex-1 px-6 py-3.5 rounded-xl font-bold text-sm transition-all duration-300 flex items-center justify-center gap-2 ${
-                !showRedemption
-                  ? 'btn-primary shadow-lg'
-                  : 'glass-ultra text-white/60 hover:bg-white/10'
-              }`}
+              className={`flex-1 px-6 py-3.5 rounded-xl font-bold text-sm transition-all duration-300 flex items-center justify-center gap-2 ${!showRedemption
+                ? 'btn-primary shadow-lg'
+                : 'glass-ultra text-white/60 hover:bg-white/10'
+                }`}
             >
               <ShoppingCart className="w-5 h-5" />
               Mua Sản Phẩm
             </button>
             <button
               onClick={() => setShowRedemption(true)}
-              className={`flex-1 px-6 py-3.5 rounded-xl font-bold text-sm transition-all duration-300 flex items-center justify-center gap-2 ${
-                showRedemption
-                  ? 'bg-gradient-to-r from-purple-600 via-pink-600 to-orange-500 text-white shadow-lg'
-                  : 'glass-ultra text-white/60 hover:bg-white/10'
-              }`}
+              className={`flex-1 px-6 py-3.5 rounded-xl font-bold text-sm transition-all duration-300 flex items-center justify-center gap-2 ${showRedemption
+                ? 'bg-gradient-to-r from-purple-600 via-pink-600 to-orange-500 text-white shadow-lg'
+                : 'glass-ultra text-white/60 hover:bg-white/10'
+                }`}
             >
               <Award className="w-5 h-5" />
               Đổi Thưởng GROW
@@ -251,11 +250,10 @@ export const Marketplace: React.FC = () => {
                             <button
                               key={cat.value}
                               onClick={() => setSelectedProductCategory(cat.value as any)}
-                              className={`w-full px-4 py-3 rounded-xl text-sm font-medium transition-all duration-300 flex items-center gap-3 ${
-                                selectedProductCategory === cat.value
-                                  ? 'btn-primary text-white shadow-lg'
-                                  : 'glass-dark text-white/70 hover:bg-white/10'
-                              }`}
+                              className={`w-full px-4 py-3 rounded-xl text-sm font-medium transition-all duration-300 flex items-center gap-3 ${selectedProductCategory === cat.value
+                                ? 'btn-primary text-white shadow-lg'
+                                : 'glass-dark text-white/70 hover:bg-white/10'
+                                }`}
                             >
                               <span className="text-lg">{cat.icon}</span>
                               {cat.label}
@@ -277,11 +275,10 @@ export const Marketplace: React.FC = () => {
                             <button
                               key={price.value}
                               onClick={() => setSelectedPriceRange(price.value as any)}
-                              className={`w-full px-4 py-3 rounded-xl text-sm font-medium transition-all duration-300 text-left ${
-                                selectedPriceRange === price.value
-                                  ? 'bg-gradient-to-r from-amber-500 to-orange-500 text-white shadow-lg'
-                                  : 'glass-dark text-white/70 hover:bg-white/10'
-                              }`}
+                              className={`w-full px-4 py-3 rounded-xl text-sm font-medium transition-all duration-300 text-left ${selectedPriceRange === price.value
+                                ? 'bg-gradient-to-r from-amber-500 to-orange-500 text-white shadow-lg'
+                                : 'glass-dark text-white/70 hover:bg-white/10'
+                                }`}
                             >
                               <div className="flex items-center justify-between">
                                 <span>{price.label}</span>
@@ -407,106 +404,83 @@ export const Marketplace: React.FC = () => {
                     </div>
                   </motion.div>
 
-                  {/* Products Grid - ULTRA WOW */}
+                  {/* Products Grid - AURA BENTO */}
                   {filteredProducts.length > 0 ? (
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                    <BentoGrid className="grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                       {filteredProducts.map((product, idx) => {
                         const isRecommended = aiSuggestion?.productIds.includes(product.id);
                         return (
-                          <motion.div
+                          <BentoCard
                             key={product.id}
-                            className={`group relative ${isRecommended ? 'z-10' : ''}`}
-                            initial={{ opacity: 0, y: 50 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            transition={{ delay: idx * 0.1 }}
+                            colSpan={1}
+                            className={`group relative overflow-visible ${isRecommended ? 'ring-1 ring-yellow-500/50' : ''}`}
                           >
                             {isRecommended && (
-                              <motion.div 
-                                className="absolute -top-4 left-1/2 -translate-x-1/2 z-20"
-                                animate={{ y: [0, -5, 0] }}
-                                transition={{ duration: 2, repeat: Infinity }}
-                              >
-                                <div className="bg-gradient-to-r from-yellow-400 to-orange-500 text-white text-xs font-bold px-4 py-1.5 rounded-full shadow-lg flex items-center gap-1">
-                                  <Sparkles className="w-3 h-3" /> {t('marketplace.aiRecommended')}
-                                </div>
-                              </motion.div>
+                              <div className="absolute -top-3 left-1/2 -translate-x-1/2 z-20">
+                                <AuraBadge color="pink">AI Recommended</AuraBadge>
+                              </div>
                             )}
 
-                            <div className={`card-3d glass-ultra rounded-3xl overflow-hidden relative h-full flex flex-col ${isRecommended ? 'ring-2 ring-yellow-400/50 shadow-[0_0_30px_rgba(250,204,21,0.3)]' : ''}`}>
-                              {/* Image Container */}
-                              <div className="relative h-64 overflow-hidden">
-                                <motion.img
-                                  src={product.imageUrl}
-                                  alt={product.name}
-                                  className="w-full h-full object-cover"
-                                  whileHover={{ scale: 1.1 }}
-                                  transition={{ duration: 0.6 }}
-                                />
+                            {/* Image Area */}
+                            <div className="relative h-64 overflow-hidden rounded-t-3xl">
+                              <motion.img
+                                src={product.imageUrl}
+                                alt={product.name}
+                                className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                              />
+                              <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-60" />
 
-                                {/* Gradient Overlay on Hover */}
-                                <motion.div
-                                  className="absolute inset-0 bg-gradient-to-t from-slate-900 via-slate-900/70 to-transparent flex items-end p-6 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+                              {/* Overlay Actions */}
+                              <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-black/40 backdrop-blur-sm">
+                                <button
+                                  onClick={(e) => {
+                                    e.stopPropagation();
+                                    addToCart(product);
+                                  }}
+                                  className="btn-aura flex items-center gap-2 transform translate-y-4 group-hover:translate-y-0 transition-transform duration-300"
                                 >
-                                  <motion.button
-                                    className="w-full py-3 bg-white text-slate-900 rounded-xl font-bold text-sm shadow-xl flex items-center justify-center gap-2"
-                                    whileHover={{ scale: 1.05 }}
-                                    whileTap={{ scale: 0.95 }}
-                                    onClick={(e) => {
-                                      e.stopPropagation();
-                                      addToCart(product);
-                                    }}
-                                  >
-                                    <ShoppingCart className="w-4 h-4" />
-                                    Thêm vào giỏ
-                                  </motion.button>
-                                </motion.div>
-                              </div>
-
-                              {/* Product Info */}
-                              <div className="p-6 flex-1 flex flex-col">
-                                <h3 className="text-xl font-bold text-white mb-2 line-clamp-1 group-hover:text-teal-400 transition-colors">
-                                  {product.name}
-                                </h3>
-                                <p className="text-white/60 text-sm mb-4 line-clamp-2 flex-1">
-                                  {product.description}
-                                </p>
-
-                                {/* Price with Gradient */}
-                                <div className="flex items-center justify-between mt-auto">
-                                  <div>
-                                    <div
-                                      className="text-2xl font-black mb-1"
-                                      style={{
-                                        background: 'linear-gradient(135deg, #00897B, #9F7AEA)',
-                                        WebkitBackgroundClip: 'text',
-                                        WebkitTextFillColor: 'transparent'
-                                      }}
-                                    >
-                                      {formatVND(product.price)}
-                                    </div>
-                                    <div className="text-emerald-400 text-xs font-semibold bg-emerald-500/10 px-2 py-0.5 rounded-full w-fit">
-                                      Earn {product.commissionRate * 100}%
-                                    </div>
-                                  </div>
-
-                                  {/* Quick View Button */}
-                                  <motion.button
-                                    className="w-12 h-12 rounded-full bg-gradient-to-br from-teal-500 to-violet-500 flex items-center justify-center text-white shadow-lg"
-                                    whileHover={{ scale: 1.1, rotate: 45 }}
-                                    whileTap={{ scale: 0.9 }}
-                                    onClick={() => addToCart(product)}
-                                  >
-                                    <ArrowRight className="w-5 h-5" />
-                                  </motion.button>
-                                </div>
+                                  <ShoppingCart className="w-4 h-4" />
+                                  Add to Cart
+                                </button>
                               </div>
                             </div>
-                          </motion.div>
+
+                            {/* Content Area */}
+                            <div className="p-6 bg-neutral-900/80 backdrop-blur-md rounded-b-3xl border-t border-white/5">
+                              <div className="flex justify-between items-start mb-2">
+                                <h3 className="text-lg font-bold text-white line-clamp-1 group-hover:text-cyan-400 transition-colors">
+                                  {product.name}
+                                </h3>
+                              </div>
+
+                              <p className="text-neutral-400 text-sm mb-4 line-clamp-2 h-10">
+                                {product.description}
+                              </p>
+
+                              <div className="flex items-center justify-between mt-auto">
+                                <div>
+                                  <div className="text-2xl font-bold text-white tracking-tight">
+                                    {formatVND(product.price)}
+                                  </div>
+                                  <div className="text-xs text-emerald-400 font-medium mt-1">
+                                    Earn {product.commissionRate * 100}% Commission
+                                  </div>
+                                </div>
+
+                                <button
+                                  onClick={() => addToCart(product)}
+                                  className="w-10 h-10 rounded-full border border-white/10 flex items-center justify-center text-white hover:bg-white/10 transition-colors"
+                                >
+                                  <ArrowRight className="w-4 h-4" />
+                                </button>
+                              </div>
+                            </div>
+                          </BentoCard>
                         );
                       })}
-                    </div>
+                    </BentoGrid>
                   ) : (
-                    <div className="flex flex-col items-center justify-center h-64 text-center glass-ultra rounded-3xl border-2 border-dashed border-white/10">
+                    <div className="flex flex-col items-center justify-center h-64 text-center border border-dashed border-white/10 rounded-3xl bg-neutral-900/20">
                       <div className="p-4 bg-white/5 rounded-full mb-3">
                         <Search className="h-6 w-6 text-white/40" />
                       </div>
@@ -523,13 +497,13 @@ export const Marketplace: React.FC = () => {
         {showRedemption && (
           // ... (Redemption content wrapped in glass-ultra) ...
           <div className="max-w-7xl mx-auto p-6">
-             {/* Keep existing logic but style with glass-ultra */}
-             {/* For brevity, I'll assume the structure is similar and just apply the container classes */}
-             {/* In a real scenario, I'd rewrite this part too to match the aesthetic */}
-             <div className="text-white text-center py-20">
-                <h2 className="text-3xl font-bold mb-4">Khu Vực Đổi Thưởng</h2>
-                <p className="text-white/60">Coming soon with Ultra Wow redesign...</p>
-             </div>
+            {/* Keep existing logic but style with glass-ultra */}
+            {/* For brevity, I'll assume the structure is similar and just apply the container classes */}
+            {/* In a real scenario, I'd rewrite this part too to match the aesthetic */}
+            <div className="text-white text-center py-20">
+              <h2 className="text-3xl font-bold mb-4">Khu Vực Đổi Thưởng</h2>
+              <p className="text-white/60">Coming soon with Ultra Wow redesign...</p>
+            </div>
           </div>
         )}
 
@@ -564,33 +538,33 @@ export const Marketplace: React.FC = () => {
                   </div>
                   <p className="text-white/60 text-sm">{cartItemCount} sản phẩm</p>
                 </div>
-                
+
                 {/* ... items ... */}
                 <div className="flex-1 overflow-y-auto p-6 space-y-4">
-                    {/* ... map cart items with dark theme ... */}
-                    {cart.length > 0 && cart.map(item => (
-                        <div key={item.product.id} className="glass-ultra p-4 rounded-xl flex gap-4">
-                            <img src={item.product.imageUrl} className="w-20 h-20 rounded-lg object-cover" />
-                            <div className="flex-1">
-                                <h3 className="text-white font-bold">{item.product.name}</h3>
-                                <p className="text-teal-400 font-bold">{formatVND(item.product.price)}</p>
-                                {/* Quantity ... */}
-                            </div>
-                        </div>
-                    ))}
+                  {/* ... map cart items with dark theme ... */}
+                  {cart.length > 0 && cart.map(item => (
+                    <div key={item.product.id} className="glass-ultra p-4 rounded-xl flex gap-4">
+                      <img src={item.product.imageUrl} className="w-20 h-20 rounded-lg object-cover" />
+                      <div className="flex-1">
+                        <h3 className="text-white font-bold">{item.product.name}</h3>
+                        <p className="text-teal-400 font-bold">{formatVND(item.product.price)}</p>
+                        {/* Quantity ... */}
+                      </div>
+                    </div>
+                  ))}
                 </div>
 
                 {/* Footer */}
                 <div className="border-t border-white/10 p-6 bg-slate-900">
-                    <div className="space-y-2 mb-4">
-                        <div className="flex justify-between text-white">
-                            <span>Tổng tiền:</span>
-                            <span className="font-bold">{formatVND(cartTotal)}</span>
-                        </div>
+                  <div className="space-y-2 mb-4">
+                    <div className="flex justify-between text-white">
+                      <span>Tổng tiền:</span>
+                      <span className="font-bold">{formatVND(cartTotal)}</span>
                     </div>
-                    <button className="btn-primary w-full rounded-xl py-4 font-bold text-white shadow-lg">
-                        Thanh Toán
-                    </button>
+                  </div>
+                  <button className="btn-primary w-full rounded-xl py-4 font-bold text-white shadow-lg">
+                    Thanh Toán
+                  </button>
                 </div>
               </motion.div>
             </>

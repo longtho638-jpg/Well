@@ -27,6 +27,7 @@ import {
 } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { useStore } from '../store';
+import { BentoGrid, BentoCard, AuraBadge, GridPattern } from '../components/ui/Aura';
 
 // ============================================================================
 // CONTENT ARCHITECTURE - Growth Journey Map
@@ -271,137 +272,108 @@ export default function LandingPage() {
       {/* ================================================================== */}
       {/* HERO SECTION */}
       {/* ================================================================== */}
-      {/* ULTRA WOW HERO */}
-      <section className="relative min-h-screen flex items-center overflow-hidden bg-dark-ultra">
-        {/* Particle Background */}
-        <ParticleBackground />
-        
-        {/* Animated Gradient Blobs */}
-        <motion.div
-          className="absolute w-[800px] h-[800px] rounded-full top-0 right-0 animate-glow-pulse"
-          style={{
-            background: 'radial-gradient(circle, rgba(0,137,123,0.4) 0%, transparent 70%)'
-          }}
-          animate={{
-            x: ['-10%', '10%', '-10%'],
-            y: ['-5%', '5%', '-5%'],
-            scale: [1, 1.3, 1]
-          }}
-          transition={{ duration: 20, repeat: Infinity, ease: "easeInOut" }}
-        />
-        
-        <motion.div
-          className="absolute w-[700px] h-[700px] rounded-full bottom-0 left-0 animate-glow-pulse"
-          style={{
-            background: 'radial-gradient(circle, rgba(255,107,88,0.3) 0%, transparent 70%)'
-          }}
-          animate={{
-            x: ['10%', '-10%', '10%'],
-            y: ['5%', '-5%', '5%'],
-            scale: [1, 1.2, 1]
-          }}
-          transition={{ duration: 25, repeat: Infinity, ease: "easeInOut", delay: 2 }}
-        />
+      {/* MASTER LEVEL AURA HERO */}
+      <section className="relative min-h-screen flex flex-col items-center justify-center overflow-hidden bg-black pt-20 pb-20">
+        <GridPattern />
 
-        {/* Content */}
-        <div className="relative z-10 max-w-7xl mx-auto px-6 text-center">
-          {/* Ultra Large 3D Headline */}
-          <motion.h1
-            className="font-display font-black leading-none mb-12"
-            style={{
-              fontSize: 'clamp(4rem, 15vw, 12rem)',
-              background: 'linear-gradient(135deg, #00897B, #9F7AEA, #FF6B58)',
-              WebkitBackgroundClip: 'text',
-              WebkitTextFillColor: 'transparent',
-              textShadow: '0 0 80px rgba(0,137,123,0.5), 0 0 120px rgba(159,122,234,0.3)',
-              fontFamily: "'Clash Display', sans-serif"
-            }}
-            initial={{ opacity: 0, y: 100, scale: 0.8 }}
-            animate={{ opacity: 1, y: 0, scale: 1 }}
-            transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1] }}
-          >
-            Transform
-            <br />
-            Health Into
-            <br />
-            <span className="text-white text-glow">Wealth</span>
-          </motion.h1>
+        {/* Ambient Glow */}
+        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[1000px] h-[500px] bg-violet-900/20 blur-[120px] rounded-full pointer-events-none" />
+        <div className="absolute bottom-0 right-0 w-[800px] h-[600px] bg-cyan-900/10 blur-[100px] rounded-full pointer-events-none" />
 
-          {/* 3D Floating Stats Cards */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-5xl mx-auto mb-16">
-            {[
-              { value: '1M+', label: 'Active Users', color: '#00897B', delay: 0.3 },
-              { value: '$50M', label: 'Revenue', color: '#9F7AEA', delay: 0.5 },
-              { value: '500+', label: 'Products', color: '#FF6B58', delay: 0.7 }
-            ].map((stat, idx) => (
-              <motion.div
-                key={idx}
-                className="glass-ultra card-3d p-8 rounded-3xl relative overflow-hidden group"
-                initial={{ opacity: 0, y: 100, rotateX: -45 }}
-                animate={{ opacity: 1, y: 0, rotateX: 0 }}
-                transition={{ delay: stat.delay, duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-                whileHover={{ 
-                  scale: 1.1, 
-                  rotateY: 10,
-                  boxShadow: `0 0 60px ${stat.color}60`
-                }}
-              >
-                <motion.div
-                  className="absolute inset-0 opacity-0 group-hover:opacity-100"
-                  style={{
-                    background: `radial-gradient(circle at top right, ${stat.color}30, transparent)`
-                  }}
-                  transition={{ duration: 0.3 }}
-                />
-                <div 
-                  className="text-7xl font-black mb-2 relative z-10"
-                  style={{
-                    background: `linear-gradient(135deg, ${stat.color}, #FFFFFF)`,
-                    WebkitBackgroundClip: 'text',
-                    WebkitTextFillColor: 'transparent'
-                  }}
-                >
-                  {stat.value}
-                </div>
-                <div className="text-white/70 text-sm relative z-10">{stat.label}</div>
-              </motion.div>
-            ))}
+        <div className="relative z-10 max-w-7xl mx-auto px-6 w-full">
+
+          {/* Header Content */}
+          <div className="text-center mb-20">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5 }}
+              className="inline-flex items-center justify-center mb-6"
+            >
+              <AuraBadge color="cyan">MASTER LEVEL WELLNESS</AuraBadge>
+            </motion.div>
+
+            <motion.h1
+              className="text-6xl md:text-8xl font-bold tracking-tight text-white mb-6"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: 0.1 }}
+            >
+              The Operating System <br />
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-white to-white/50">
+                For Your Health Wealth.
+              </span>
+            </motion.h1>
+
+            <motion.p
+              className="text-xl text-neutral-400 max-w-2xl mx-auto mb-10"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: 0.2 }}
+            >
+              WellNexus combines AI-driven health coaching with a powerful community commerce engine.
+              Build your empire on the foundation of well-being.
+            </motion.p>
+
+            <motion.div
+              className="flex items-center justify-center gap-4"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: 0.3 }}
+            >
+              <button onClick={handleJoin} className="btn-aura">
+                Start Building
+              </button>
+              <button className="btn-aura-outline">
+                View Roadmap
+              </button>
+            </motion.div>
           </div>
 
-          {/* Ultra Premium CTA */}
-          <motion.div
-            initial={{ opacity: 0, scale: 0.5 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ delay: 1, duration: 0.6 }}
-          >
-            <motion.button
-              onClick={handleJoin}
-              className="btn-ultra group relative"
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-            >
-              <span className="relative z-10 flex items-center gap-3">
-                <Rocket className="w-7 h-7" />
-                Start Your Journey
-                <ArrowRight className="w-7 h-7 group-hover:translate-x-2 transition-transform" />
-              </span>
-              <motion.div
-                className="absolute inset-0 bg-gradient-to-r from-coral-600 to-amber-500 rounded-xl"
-                initial={{ scale: 0, opacity: 0 }}
-                whileHover={{ scale: 1, opacity: 1 }}
-                transition={{ duration: 0.3 }}
-              />
-            </motion.button>
-          </motion.div>
+          {/* Bento Grid Showcase */}
+          <BentoGrid>
+            <BentoCard colSpan={2} className="p-8 min-h-[300px] flex flex-col justify-between bg-neutral-900/40">
+              <div>
+                <div className="w-12 h-12 rounded-full bg-cyan-500/10 flex items-center justify-center mb-4 border border-cyan-500/20">
+                  <Sparkles className="w-6 h-6 text-cyan-400" />
+                </div>
+                <h3 className="text-2xl font-bold text-white mb-2">AI Health Coach</h3>
+                <p className="text-neutral-400">Personalized guidance powered by Gemini 1.5 Pro. Your 24/7 wellness companion.</p>
+              </div>
+              <div className="mt-8 w-full h-32 bg-gradient-to-r from-cyan-500/10 to-transparent rounded-xl border border-white/5 relative overflow-hidden">
+                <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-20"></div>
+              </div>
+            </BentoCard>
 
-          {/* Scroll Indicator */}
-          <motion.div
-            className="absolute bottom-10 left-1/2 -translate-x-1/2"
-            animate={{ y: [0, 15, 0] }}
-            transition={{ duration: 2, repeat: Infinity, ease: 'easeInOut' }}
-          >
-            <ChevronDown className="w-12 h-12 text-white/30" />
-          </motion.div>
+            <BentoCard colSpan={1} className="p-8 min-h-[300px] bg-neutral-900/40">
+              <div className="w-12 h-12 rounded-full bg-violet-500/10 flex items-center justify-center mb-4 border border-violet-500/20">
+                <TrendingUp className="w-6 h-6 text-violet-400" />
+              </div>
+              <h3 className="text-2xl font-bold text-white mb-2">Passive Income</h3>
+              <p className="text-neutral-400 mb-8">Automated commission tracking and multi-tier rewards.</p>
+              <div className="text-4xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-violet-400 to-pink-400">
+                $12,450
+              </div>
+              <div className="text-sm text-neutral-500 mt-1">Avg. Partner Earnings</div>
+            </BentoCard>
+
+            <BentoCard colSpan={1} className="p-8 min-h-[300px] bg-neutral-900/40">
+              <div className="w-12 h-12 rounded-full bg-pink-500/10 flex items-center justify-center mb-4 border border-pink-500/20">
+                <Users className="w-6 h-6 text-pink-400" />
+              </div>
+              <h3 className="text-2xl font-bold text-white mb-2">Community</h3>
+              <p className="text-neutral-400">Join 1,000+ founders building the future of wellness.</p>
+            </BentoCard>
+
+            <BentoCard colSpan={2} className="p-8 min-h-[300px] bg-neutral-900/40 flex items-center justify-between">
+              <div className="max-w-md">
+                <h3 className="text-2xl font-bold text-white mb-2">Global Expansion</h3>
+                <p className="text-neutral-400">Ready for SEA market domination. Multi-currency, multi-language support built-in.</p>
+              </div>
+              <Globe className="w-32 h-32 text-neutral-800" />
+            </BentoCard>
+          </BentoGrid>
+
         </div>
       </section>
 

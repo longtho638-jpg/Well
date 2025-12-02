@@ -26,12 +26,17 @@ import {
   Radio,
   BarChart3,
   Wallet,
-  DollarSign
+  DollarSign,
+  Trophy,
+  ArrowRight,
+  Activity,
+  ChevronRight
 } from 'lucide-react';
 import { PieChart, Pie, Cell, ResponsiveContainer, Legend, Tooltip } from 'recharts';
 import { formatVND, formatNumber } from '../utils/format';
 import { ParticleBackground } from '@/components/ParticleBackground';
 import { CursorGlow } from '@/components/CursorGlow';
+import { BentoGrid, BentoCard, AuraBadge, GridPattern } from '@/components/ui/Aura';
 
 // Activity types
 interface LiveActivity {
@@ -381,15 +386,16 @@ export const Dashboard: React.FC = () => {
       icon: Zap,
       label: t('dashboard.achievements.speedDemon'),
       unlocked: false,
+
       color: 'from-gray-300 to-gray-400'
     }
   ];
 
   return (
-    <div className="min-h-screen bg-dark-ultra relative overflow-hidden">
-      <ParticleBackground />
+    <div className="min-h-screen bg-black relative overflow-hidden">
+      <GridPattern />
       <CursorGlow />
-      
+
       <div className="relative z-10 p-6 space-y-6">
         {/* Page Header */}
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
@@ -413,7 +419,7 @@ export const Dashboard: React.FC = () => {
               {t('dashboard.serverTime')}
             </p>
             <p className="text-sm font-medium text-white/80 font-mono">
-              {new Date().toLocaleTimeString('vi-VN', {hour: '2-digit', minute: '2-digit'})}
+              {new Date().toLocaleTimeString('vi-VN', { hour: '2-digit', minute: '2-digit' })}
             </p>
           </div>
         </div>
@@ -424,97 +430,47 @@ export const Dashboard: React.FC = () => {
         {/* ========================================================================= */}
         {/* ULTRA WOW STATS CARDS (Glassmorphism + 3D) */}
         {/* ========================================================================= */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-          {[
-            { 
-              label: 'Total Balance', 
-              value: formatVND(walletData.total),
-              icon: Wallet,
-              gradientStart: '#00897B',
-              gradientEnd: '#26A69A',
-              change: '+12.5%'
-            },
-            { 
-              label: 'Available', 
-              value: formatVND(walletData.available),
-              icon: DollarSign,
-              gradientStart: '#10B981',
-              gradientEnd: '#34D399',
-              change: '+8.2%'
-            },
-            { 
-              label: 'Pending', 
-              value: formatVND(walletData.pending),
-              icon: Clock,
-              gradientStart: '#F59E0B',
-              gradientEnd: '#FBBF24',
-              change: '+15.3%'
-            },
-            { 
-              label: 'Team Volume', 
-              value: formatVND(user?.teamVolume || 0),
-              icon: Users,
-              gradientStart: '#9F7AEA',
-              gradientEnd: '#B794F6',
-              change: '+22.1%'
-            }
-          ].map((stat, idx) => {
-            const Icon = stat.icon;
-            return (
-              <motion.div
-                key={idx}
-                initial={{ opacity: 0, y: 50, scale: 0.9 }}
-                animate={{ opacity: 1, y: 0, scale: 1 }}
-                transition={{ delay: idx * 0.1, duration: 0.6 }}
-                className="relative group"
-              >
-                <div className="glass-ultra card-3d rounded-3xl p-8 relative overflow-hidden">
-                  {/* Hover Gradient */}
-                  <motion.div
-                    className="absolute inset-0 opacity-0 group-hover:opacity-100"
-                    style={{
-                      background: `radial-gradient(circle at top right, \${stat.gradientStart}30, transparent)`
-                    }}
-                    transition={{ duration: 0.3 }}
-                  />
+        {/* AURA DASHBOARD STATS */}
+        <BentoGrid className="mb-8">
+          <BentoCard colSpan={1} className="p-6 bg-neutral-900/50">
+            <div className="flex items-start justify-between mb-4">
+              <div className="w-10 h-10 rounded-full bg-cyan-500/10 flex items-center justify-center border border-cyan-500/20">
+                <Wallet className="w-5 h-5 text-cyan-400" />
+              </div>
+              <AuraBadge color="cyan">+12.5%</AuraBadge>
+            </div>
+            <div className="text-neutral-400 text-sm mb-1">Total Balance</div>
+            <div className="text-3xl font-bold text-white tracking-tight">
+              {formatVND(walletData.total)}
+            </div>
+          </BentoCard>
 
-                  <div className="relative z-10">
-                    {/* Icon with Glow */}
-                    <div 
-                      className="w-20 h-20 rounded-2xl mb-6 flex items-center justify-center transform group-hover:scale-110 transition-transform"
-                      style={{
-                        background: `linear-gradient(135deg, \${stat.gradientStart}, \${stat.gradientEnd})`,
-                        boxShadow: `0 0 40px \${stat.gradientStart}60`
-                      }}
-                    >
-                      <Icon className="w-10 h-10 text-white" />
-                    </div>
+          <BentoCard colSpan={1} className="p-6 bg-neutral-900/50">
+            <div className="flex items-start justify-between mb-4">
+              <div className="w-10 h-10 rounded-full bg-violet-500/10 flex items-center justify-center border border-violet-500/20">
+                <DollarSign className="w-5 h-5 text-violet-400" />
+              </div>
+              <AuraBadge color="violet">+8.2%</AuraBadge>
+            </div>
+            <div className="text-neutral-400 text-sm mb-1">Available</div>
+            <div className="text-3xl font-bold text-white tracking-tight">
+              {formatVND(walletData.available)}
+            </div>
+          </BentoCard>
 
-                    {/* Value with Gradient */}
-                    <div
-                      className="text-5xl font-black mb-2"
-                      style={{
-                        background: `linear-gradient(135deg, \${stat.gradientStart}, \${stat.gradientEnd})`,
-                        WebkitBackgroundClip: 'text',
-                        WebkitTextFillColor: 'transparent'
-                      }}
-                    >
-                      {stat.value}
-                    </div>
-
-                    <div className="text-white/60 text-sm mb-4">{stat.label}</div>
-
-                    {/* Change Indicator */}
-                    <div className="flex items-center gap-2">
-                      <TrendingUp className="w-4 h-4 text-emerald-400" />
-                      <span className="text-emerald-400 font-semibold text-sm">{stat.change}</span>
-                    </div>
-                  </div>
-                </div>
-              </motion.div>
-            );
-          })}
-        </div>
+          <BentoCard colSpan={1} className="p-6 bg-neutral-900/50">
+            <div className="flex items-start justify-between mb-4">
+              <div className="w-10 h-10 rounded-full bg-pink-500/10 flex items-center justify-center border border-pink-500/20">
+                <Users className="w-5 h-5 text-pink-400" />
+              </div>
+              <AuraBadge color="pink">+22.1%</AuraBadge>
+            </div>
+            <div className="text-neutral-400 text-sm mb-1">Team Volume</div>
+            <div className="text-3xl font-bold text-white tracking-tight">
+              {formatVND(user?.teamVolume || 0)}
+            </div>
+          </BentoCard>
+        </BentoGrid>
 
         {/* ========================================================================= */}
         {/* BUSINESS VALUATION CARD - THE CENTERPIECE (Wealth OS) */}
@@ -656,7 +612,7 @@ export const Dashboard: React.FC = () => {
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
           {/* Left Column - Stats + Chart (2 cols on desktop) */}
           <div className="lg:col-span-2 space-y-6">
-            
+
             {/* Revenue Chart and Live Activities - Side by Side */}
             <div className="grid grid-cols-1 xl:grid-cols-2 gap-6">
               {/* Revenue Chart */}
@@ -702,10 +658,10 @@ export const Dashboard: React.FC = () => {
                     dataKey="value"
                   >
                     {revenueBreakdown.map((entry, index) => (
-                      <Cell key={`cell-\${index}`} fill={entry.color} />
+                      <Cell key={`cell-${index}`} fill={entry.color} />
                     ))}
                   </Pie>
-                  <Tooltip formatter={(value: number) => `\${(value / 1000000).toFixed(1)}M ₫`} />
+                  <Tooltip formatter={(value: number) => `${(value / 1000000).toFixed(1)}M ₫`} />
                 </PieChart>
               </ResponsiveContainer>
 
@@ -749,8 +705,8 @@ export const Dashboard: React.FC = () => {
                     transition={{ delay: idx * 0.1 }}
                     className="flex items-start gap-3 p-3 rounded-xl hover:bg-gray-50 dark:hover:bg-slate-700 transition-colors"
                   >
-                    <div className={`w-8 h-8 \${activity.bg} rounded-lg flex items-center justify-center shrink-0`}>
-                      <activity.icon className={`w-4 h-4 \${activity.color}`} />
+                    <div className={`w-8 h-8 ${activity.bg} rounded-lg flex items-center justify-center shrink-0`}>
+                      <activity.icon className={`w-4 h-4 ${activity.color}`} />
                     </div>
                     <div className="flex-1 min-w-0">
                       <p className="text-sm font-medium text-gray-900 dark:text-slate-100 truncate">{activity.label}</p>
@@ -785,12 +741,12 @@ export const Dashboard: React.FC = () => {
                       animate={{ scale: 1 }}
                       transition={{ delay: idx * 0.1, type: 'spring' }}
                       className={`
-                        relative p-4 rounded-xl text-center
-                        \${badge.unlocked
+                          relative p-4 rounded-xl text-center
+                          ${badge.unlocked
                           ? 'bg-gradient-to-br ' + badge.color + ' shadow-lg'
                           : 'bg-white/10 backdrop-blur-sm opacity-50'
                         }
-                      `}
+                        `}
                     >
                       <badge.icon className="w-8 h-8 mx-auto mb-2" />
                       <p className="text-xs font-semibold">{badge.label}</p>
