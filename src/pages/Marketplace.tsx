@@ -25,6 +25,7 @@ import { Product } from '../types';
 import { useTranslation } from '../hooks';
 import { formatVND, formatNumber } from '../utils/format';
 import { ParticleBackground } from '@/components/ParticleBackground';
+import { CursorGlow } from '@/components/CursorGlow';
 import { BentoGrid, BentoCard, AuraBadge, GridPattern } from '@/components/ui/Aura';
 
 // Cart Item Interface
@@ -176,17 +177,19 @@ export const Marketplace: React.FC = () => {
   const cartItemCount = cart.reduce((sum, item) => sum + item.quantity, 0);
 
   return (
-    <div className="min-h-screen bg-black relative overflow-hidden pb-20">
+    <div className="min-h-screen bg-dark-ultra relative overflow-hidden pb-20">
+      <ParticleBackground />
+      <CursorGlow />
       <GridPattern />
 
       <div className="relative z-10">
         {/* Toggle Button */}
-        <div className="sticky top-0 z-20 bg-white/10 dark:bg-slate-800/80 backdrop-blur-xl border-b border-white/10 p-4">
+        <div className="sticky top-0 z-20 bg-slate-900/80 backdrop-blur-xl border-b border-white/10 p-4">
           <div className="max-w-7xl mx-auto flex gap-3">
             <button
               onClick={() => setShowRedemption(false)}
               className={`flex-1 px-6 py-3.5 rounded-xl font-bold text-sm transition-all duration-300 flex items-center justify-center gap-2 ${!showRedemption
-                ? 'btn-primary shadow-lg'
+                ? 'bg-gradient-to-r from-teal-600 to-teal-500 shadow-lg text-white'
                 : 'glass-ultra text-white/60 hover:bg-white/10'
                 }`}
             >
@@ -251,7 +254,7 @@ export const Marketplace: React.FC = () => {
                               key={cat.value}
                               onClick={() => setSelectedProductCategory(cat.value as any)}
                               className={`w-full px-4 py-3 rounded-xl text-sm font-medium transition-all duration-300 flex items-center gap-3 ${selectedProductCategory === cat.value
-                                ? 'btn-primary text-white shadow-lg'
+                                ? 'bg-gradient-to-r from-teal-600 to-teal-500 text-white shadow-lg'
                                 : 'glass-dark text-white/70 hover:bg-white/10'
                                 }`}
                             >
@@ -342,7 +345,7 @@ export const Marketplace: React.FC = () => {
                       {/* Cart Button */}
                       <button
                         onClick={() => setShowCart(true)}
-                        className="relative p-3 btn-primary text-white rounded-xl hover:shadow-lg transition-all duration-300"
+                        className="relative p-3 bg-gradient-to-r from-teal-600 to-teal-500 text-white rounded-xl hover:shadow-lg transition-all duration-300"
                       >
                         <ShoppingCart className="w-5 h-5" />
                         {cartItemCount > 0 && (
@@ -358,9 +361,9 @@ export const Marketplace: React.FC = () => {
                   <motion.div
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
-                    className="relative overflow-hidden rounded-2xl"
+                    className="relative overflow-hidden rounded-2xl border border-white/10"
                   >
-                    <div className="absolute inset-0 bg-gradient-to-r from-indigo-900 via-purple-900 to-indigo-900 animate-glow-pulse" />
+                    <div className="absolute inset-0 bg-gradient-to-r from-indigo-900/50 via-purple-900/50 to-indigo-900/50 animate-glow-pulse" />
                     <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGRlZnM+PHBhdHRlcm4gaWQ9ImdyaWQiIHdpZHRoPSI2MCIgaGVpZ2h0PSI2MCIgcGF0dGVyblVuaXRzPSJ1c2VyU3BhY2VPblVzZSI+PHBhdGggZD0iTSAxMCAwIEwgMCAwIDAgMTAiIGZpbGw9Im5vbmUiIHN0cm9rZT0id2hpdGUiIHN0cm9rZS1vcGFjaXR5PSIwLjA1IiBzdHJva2Utd2lkdGg9IjEiLz48L3BhdHRlcm4+PC9kZWZzPjxyZWN0IHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiIGZpbGw9InVybCgjZ3JpZCkiLz48L3N2Zz4=')] opacity-30" />
 
                     <div className="relative p-6 text-white">
@@ -498,8 +501,6 @@ export const Marketplace: React.FC = () => {
           // ... (Redemption content wrapped in glass-ultra) ...
           <div className="max-w-7xl mx-auto p-6">
             {/* Keep existing logic but style with glass-ultra */}
-            {/* For brevity, I'll assume the structure is similar and just apply the container classes */}
-            {/* In a real scenario, I'd rewrite this part too to match the aesthetic */}
             <div className="text-white text-center py-20">
               <h2 className="text-3xl font-bold mb-4">Khu Vực Đổi Thưởng</h2>
               <p className="text-white/60">Coming soon with Ultra Wow redesign...</p>
@@ -526,7 +527,7 @@ export const Marketplace: React.FC = () => {
                 className="fixed right-0 top-0 bottom-0 w-full sm:w-[480px] bg-slate-900 border-l border-white/10 shadow-2xl z-50 flex flex-col"
               >
                 {/* Cart Content */}
-                <div className="bg-gradient-to-r from-teal-900 to-slate-900 p-6 text-white border-b border-white/10">
+                <div className="bg-gradient-to-r from-teal-900/50 to-slate-900 p-6 text-white border-b border-white/10">
                   <div className="flex items-center justify-between mb-2">
                     <h2 className="text-2xl font-bold flex items-center gap-2">
                       <ShoppingCart className="w-6 h-6" />
@@ -549,9 +550,16 @@ export const Marketplace: React.FC = () => {
                         <h3 className="text-white font-bold">{item.product.name}</h3>
                         <p className="text-teal-400 font-bold">{formatVND(item.product.price)}</p>
                         {/* Quantity ... */}
+                        <div className="flex items-center gap-2 mt-2">
+                            <button onClick={() => updateQuantity(item.product.id, -1)} className="p-1 hover:bg-white/10 rounded text-white"><Minus size={14} /></button>
+                            <span className="text-white font-mono">{item.quantity}</span>
+                            <button onClick={() => updateQuantity(item.product.id, 1)} className="p-1 hover:bg-white/10 rounded text-white"><Plus size={14} /></button>
+                            <button onClick={() => removeFromCart(item.product.id)} className="ml-auto p-1 text-red-400 hover:bg-red-500/10 rounded"><Trash2 size={14} /></button>
+                        </div>
                       </div>
                     </div>
                   ))}
+                  {cart.length === 0 && <div className="text-white/40 text-center py-10">Giỏ hàng trống</div>}
                 </div>
 
                 {/* Footer */}
@@ -561,8 +569,12 @@ export const Marketplace: React.FC = () => {
                       <span>Tổng tiền:</span>
                       <span className="font-bold">{formatVND(cartTotal)}</span>
                     </div>
+                    <div className="flex justify-between text-emerald-400 text-sm">
+                      <span>Hoa hồng ước tính:</span>
+                      <span className="font-bold">+{formatVND(cartCommission)}</span>
+                    </div>
                   </div>
-                  <button className="btn-primary w-full rounded-xl py-4 font-bold text-white shadow-lg">
+                  <button className="w-full rounded-xl py-4 font-bold text-white shadow-lg bg-gradient-to-r from-teal-600 to-teal-500 hover:scale-[1.02] transition-transform">
                     Thanh Toán
                   </button>
                 </div>

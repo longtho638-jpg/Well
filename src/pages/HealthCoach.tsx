@@ -20,6 +20,8 @@ import { useStore } from '@/store';
 import { formatVND } from '@/utils/format';
 import { useTranslation } from '@/hooks';
 import { useAgentOS } from '@/hooks/useAgentOS';
+import { ParticleBackground } from '@/components/ParticleBackground';
+import { CursorGlow } from '@/components/CursorGlow';
 
 interface Message {
   id: string;
@@ -188,27 +190,30 @@ export default function HealthCoach() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 dark:from-slate-900 via-teal-50/30 dark:via-slate-800/30 to-amber-50/20 dark:to-slate-800/20">
+    <div className="min-h-screen bg-dark-ultra relative overflow-hidden">
+      <ParticleBackground />
+      <CursorGlow />
+
       {/* Main Container - 3 Column Layout */}
-      <div className="h-screen flex">
+      <div className="h-screen flex relative z-10">
         {/* LEFT SIDEBAR - Chat History */}
         <motion.div
           initial={{ x: -100, opacity: 0 }}
           animate={{ x: 0, opacity: 1 }}
-          className="w-80 bg-white dark:bg-slate-800 backdrop-blur-xl border-r border-gray-200 dark:border-slate-700 flex flex-col"
+          className="w-80 glass-dark border-r border-white/10 flex flex-col"
         >
           {/* Sidebar Header */}
-          <div className="p-6 border-b border-gray-200 dark:border-slate-700">
+          <div className="p-6 border-b border-white/10">
             <div className="flex items-center gap-3 mb-4">
-              <div className="w-12 h-12 bg-gradient-to-br from-primary to-teal-600 rounded-2xl flex items-center justify-center shadow-lg">
+              <div className="w-12 h-12 bg-gradient-to-br from-teal-500 to-teal-600 rounded-2xl flex items-center justify-center shadow-lg shadow-teal-500/30">
                 <History className="w-6 h-6 text-white" />
               </div>
               <div>
-                <h2 className="text-lg font-bold text-gray-900 dark:text-slate-100">Lịch Sử</h2>
-                <p className="text-xs text-gray-600 dark:text-slate-400">Các cuộc hội thoại</p>
+                <h2 className="text-lg font-bold text-white">Lịch Sử</h2>
+                <p className="text-xs text-white/60">Các cuộc hội thoại</p>
               </div>
             </div>
-            <button className="w-full bg-gradient-to-r from-primary to-teal-600 text-white py-3 px-4 rounded-xl font-semibold hover:shadow-lg transition-all duration-300 flex items-center justify-center gap-2 group">
+            <button className="w-full bg-gradient-to-r from-teal-600 to-teal-500 text-white py-3 px-4 rounded-xl font-semibold hover:shadow-lg transition-all duration-300 flex items-center justify-center gap-2 group">
               <MessageSquare className="w-5 h-5 group-hover:scale-110 transition-transform" />
               Tạo Cuộc Hội Thoại Mới
             </button>
@@ -223,18 +228,18 @@ export default function HealthCoach() {
                 whileTap={{ scale: 0.98 }}
                 onClick={() => setSelectedHistory(chat.id)}
                 className={`w-full text-left p-4 rounded-xl transition-all duration-200 ${selectedHistory === chat.id
-                  ? 'bg-gradient-to-r from-primary/10 dark:from-primary/20 to-teal-600/10 dark:to-teal-600/20 border-2 border-primary/30 dark:border-primary/40 shadow-md'
-                  : 'bg-white dark:bg-slate-700 hover:bg-gray-50 dark:hover:bg-slate-600 border-2 border-transparent hover:border-gray-200 dark:hover:border-slate-500'
+                  ? 'bg-gradient-to-r from-teal-500/20 to-teal-600/20 border border-teal-500/50 shadow-md'
+                  : 'hover:bg-white/5 border border-transparent hover:border-white/10'
                   }`}
               >
-                <h3 className="font-semibold text-gray-900 dark:text-slate-100 text-sm mb-1 line-clamp-1">
+                <h3 className="font-semibold text-white text-sm mb-1 line-clamp-1">
                   {chat.title}
                 </h3>
                 <div className="flex items-center justify-between">
-                  <span className="text-xs text-gray-600 dark:text-slate-400">
+                  <span className="text-xs text-white/60">
                     {chat.date.toLocaleDateString('vi-VN', { month: 'short', day: 'numeric' })}
                   </span>
-                  <span className="text-xs text-gray-500 dark:text-slate-400 flex items-center gap-1">
+                  <span className="text-xs text-white/40 flex items-center gap-1">
                     <MessageSquare className="w-3 h-3" />
                     {chat.messageCount}
                   </span>
@@ -245,31 +250,31 @@ export default function HealthCoach() {
         </motion.div>
 
         {/* CENTER - Main Chat Interface */}
-        <div className="flex-1 flex flex-col">
+        <div className="flex-1 flex flex-col glass-ultra border-x border-white/10">
           {/* Chat Header */}
           <motion.div
             initial={{ y: -20, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
-            className="bg-gradient-to-r from-primary to-teal-600 px-8 py-6 shadow-lg"
+            className="bg-gradient-to-r from-teal-600/50 to-teal-500/50 backdrop-blur-xl px-8 py-6 shadow-lg border-b border-white/10"
           >
             <div className="flex items-center gap-4">
               <motion.div
                 animate={{
                   boxShadow: isTyping
-                    ? ['0 0 0 0 rgba(0, 87, 90, 0.4)', '0 0 0 15px rgba(0, 87, 90, 0)']
-                    : '0 0 0 0 rgba(0, 87, 90, 0)'
+                    ? ['0 0 0 0 rgba(20, 184, 166, 0.4)', '0 0 0 15px rgba(20, 184, 166, 0)']
+                    : '0 0 0 0 rgba(20, 184, 166, 0)'
                 }}
                 transition={{ duration: 1.5, repeat: isTyping ? Infinity : 0 }}
-                className="w-16 h-16 bg-white/20 backdrop-blur-lg rounded-2xl flex items-center justify-center shadow-xl"
+                className="w-16 h-16 bg-white/10 backdrop-blur-lg rounded-2xl flex items-center justify-center shadow-xl border border-white/20"
               >
                 <Stethoscope className="w-8 h-8 text-white" />
               </motion.div>
               <div>
                 <h1 className="text-2xl font-bold text-white flex items-center gap-2">
                   {t('healthCoach.title')}
-                  <Sparkles className="w-5 h-5 text-accent animate-pulse" />
+                  <Sparkles className="w-5 h-5 text-yellow-400 animate-pulse" />
                 </h1>
-                <p className="text-teal-100 text-sm">
+                <p className="text-teal-200 text-sm">
                   {isTyping ? 'Đang phân tích và tư vấn...' : t('healthCoach.subtitle')}
                 </p>
               </div>
@@ -277,7 +282,7 @@ export default function HealthCoach() {
           </motion.div>
 
           {/* Messages Area */}
-          <div className="flex-1 overflow-y-auto p-6 space-y-6 bg-gradient-to-b from-transparent to-white/30">
+          <div className="flex-1 overflow-y-auto p-6 space-y-6">
             <AnimatePresence>
               {messages.map((message, index) => (
                 <motion.div
@@ -293,8 +298,8 @@ export default function HealthCoach() {
                   <motion.div
                     whileHover={{ scale: 1.1, rotate: 5 }}
                     className={`flex-shrink-0 w-12 h-12 rounded-2xl flex items-center justify-center shadow-lg ${message.role === 'user'
-                      ? 'bg-gradient-to-br from-accent to-yellow-500'
-                      : 'bg-gradient-to-br from-primary to-teal-600'
+                      ? 'bg-gradient-to-br from-yellow-500 to-orange-500'
+                      : 'bg-gradient-to-br from-teal-500 to-teal-600'
                       }`}
                   >
                     {message.role === 'user' ? (
@@ -312,8 +317,8 @@ export default function HealthCoach() {
                     <motion.div
                       whileHover={{ scale: 1.01 }}
                       className={`inline-block p-5 rounded-2xl shadow-lg backdrop-blur-sm ${message.role === 'user'
-                        ? 'bg-gradient-to-br from-accent to-yellow-500 text-white'
-                        : 'bg-white/90 text-gray-800 border border-gray-100'
+                        ? 'bg-gradient-to-br from-yellow-500/80 to-orange-500/80 text-white border border-yellow-400/30'
+                        : 'bg-white/10 text-white border border-white/10'
                         }`}
                     >
                       <p className="whitespace-pre-line leading-relaxed">
@@ -329,12 +334,12 @@ export default function HealthCoach() {
                         transition={{ delay: 0.3 }}
                         className="mt-4 inline-block w-full max-w-lg"
                       >
-                        <div className="bg-gradient-to-br from-white to-teal-50/50 backdrop-blur-xl border-2 border-primary/30 rounded-2xl p-6 shadow-2xl">
+                        <div className="bg-gradient-to-br from-teal-900/50 to-teal-800/50 backdrop-blur-xl border-2 border-teal-500/30 rounded-2xl p-6 shadow-2xl">
                           <div className="flex items-center gap-3 mb-4">
-                            <div className="w-10 h-10 bg-gradient-to-br from-primary to-teal-600 rounded-xl flex items-center justify-center">
+                            <div className="w-10 h-10 bg-gradient-to-br from-teal-500 to-teal-600 rounded-xl flex items-center justify-center shadow-lg shadow-teal-500/20">
                               <Package className="w-5 h-5 text-white" />
                             </div>
-                            <h3 className="font-bold text-lg text-primary">
+                            <h3 className="font-bold text-lg text-teal-300">
                               {message.productRecommendation.comboName}
                             </h3>
                           </div>
@@ -343,26 +348,26 @@ export default function HealthCoach() {
                             {message.productRecommendation.products.map((product) => (
                               <div
                                 key={product.id}
-                                className="flex justify-between items-center bg-white/80 rounded-xl p-3 border border-gray-100"
+                                className="flex justify-between items-center bg-white/5 rounded-xl p-3 border border-white/10"
                               >
                                 <div className="flex items-center gap-2">
-                                  <Pill className="w-4 h-4 text-primary" />
-                                  <span className="text-sm font-medium text-gray-700">{product.name}</span>
+                                  <Pill className="w-4 h-4 text-teal-400" />
+                                  <span className="text-sm font-medium text-white">{product.name}</span>
                                 </div>
-                                <span className="font-bold text-primary">
+                                <span className="font-bold text-teal-300">
                                   {formatVND(product.price)}
                                 </span>
                               </div>
                             ))}
-                            <div className="bg-gradient-to-r from-primary/10 to-teal-600/10 rounded-xl p-3 flex justify-between items-center border-2 border-primary/20">
-                              <span className="font-bold text-gray-900">{t('healthCoach.totalLabel')}</span>
-                              <span className="font-bold text-2xl text-primary">
+                            <div className="bg-gradient-to-r from-teal-500/20 to-teal-600/20 rounded-xl p-3 flex justify-between items-center border-2 border-teal-500/30">
+                              <span className="font-bold text-white">{t('healthCoach.totalLabel')}</span>
+                              <span className="font-bold text-2xl text-teal-300">
                                 {formatVND(message.productRecommendation.totalPrice)}
                               </span>
                             </div>
                           </div>
 
-                          <p className="text-sm text-gray-600 mb-4 italic bg-amber-50/50 p-3 rounded-lg border border-amber-200/50">
+                          <p className="text-sm text-yellow-200 mb-4 italic bg-yellow-900/20 p-3 rounded-lg border border-yellow-500/30">
                             💡 {message.productRecommendation.reason}
                           </p>
 
@@ -370,7 +375,7 @@ export default function HealthCoach() {
                             whileHover={{ scale: 1.02 }}
                             whileTap={{ scale: 0.98 }}
                             onClick={() => handleQuickOrder(message.productRecommendation!)}
-                            className="w-full bg-gradient-to-r from-primary to-teal-600 text-white py-4 px-6 rounded-xl font-bold hover:shadow-xl transition-all duration-300 flex items-center justify-center gap-2 group"
+                            className="w-full bg-gradient-to-r from-teal-600 to-teal-500 text-white py-4 px-6 rounded-xl font-bold hover:shadow-xl transition-all duration-300 flex items-center justify-center gap-2 group border border-teal-400/30"
                           >
                             <ShoppingCart className="w-5 h-5 group-hover:scale-110 transition-transform" />
                             {t('healthCoach.orderNow')}
@@ -380,7 +385,7 @@ export default function HealthCoach() {
                     )}
 
                     {/* Timestamp */}
-                    <p className="text-xs text-gray-400 mt-2 flex items-center gap-1 justify-end">
+                    <p className="text-xs text-white/40 mt-2 flex items-center gap-1 justify-end">
                       <Clock className="w-3 h-3" />
                       {message.timestamp.toLocaleTimeString('vi-VN', {
                         hour: '2-digit',
@@ -403,31 +408,31 @@ export default function HealthCoach() {
                 <motion.div
                   animate={{
                     boxShadow: [
-                      '0 0 0 0 rgba(0, 87, 90, 0.7)',
-                      '0 0 0 10px rgba(0, 87, 90, 0)'
+                      '0 0 0 0 rgba(20, 184, 166, 0.7)',
+                      '0 0 0 10px rgba(20, 184, 166, 0)'
                     ]
                   }}
                   transition={{ duration: 1.5, repeat: Infinity }}
-                  className="w-12 h-12 rounded-2xl bg-gradient-to-br from-primary to-teal-600 flex items-center justify-center shadow-lg"
+                  className="w-12 h-12 rounded-2xl bg-gradient-to-br from-teal-500 to-teal-600 flex items-center justify-center shadow-lg"
                 >
                   <Bot className="w-6 h-6 text-white" />
                 </motion.div>
-                <div className="bg-white/90 backdrop-blur-sm p-5 rounded-2xl shadow-lg border border-gray-100">
+                <div className="bg-white/10 backdrop-blur-sm p-5 rounded-2xl shadow-lg border border-white/10">
                   <div className="flex gap-2">
                     <motion.div
                       animate={{ y: [0, -10, 0] }}
                       transition={{ repeat: Infinity, duration: 0.6 }}
-                      className="w-3 h-3 bg-primary rounded-full"
+                      className="w-3 h-3 bg-teal-400 rounded-full"
                     />
                     <motion.div
                       animate={{ y: [0, -10, 0] }}
                       transition={{ repeat: Infinity, duration: 0.6, delay: 0.2 }}
-                      className="w-3 h-3 bg-primary rounded-full"
+                      className="w-3 h-3 bg-teal-400 rounded-full"
                     />
                     <motion.div
                       animate={{ y: [0, -10, 0] }}
                       transition={{ repeat: Infinity, duration: 0.6, delay: 0.4 }}
-                      className="w-3 h-3 bg-primary rounded-full"
+                      className="w-3 h-3 bg-teal-400 rounded-full"
                     />
                   </div>
                 </div>
@@ -438,7 +443,7 @@ export default function HealthCoach() {
           </div>
 
           {/* Input Area */}
-          <div className="border-t border-gray-200 dark:border-slate-700 p-6 bg-white dark:bg-slate-800 backdrop-blur-xl">
+          <div className="border-t border-white/10 p-6 bg-slate-900/50 backdrop-blur-xl">
             <div className="max-w-4xl mx-auto">
               <div className="flex gap-3">
                 <input
@@ -448,14 +453,14 @@ export default function HealthCoach() {
                   onChange={(e) => setInputValue(e.target.value)}
                   onKeyPress={handleKeyPress}
                   placeholder={t('healthCoach.placeholder')}
-                  className="flex-1 px-6 py-4 rounded-2xl border-2 border-gray-200 dark:border-slate-600 focus:border-primary focus:outline-none transition-all duration-300 bg-white dark:bg-slate-700 text-gray-900 dark:text-slate-100 shadow-sm"
+                  className="flex-1 px-6 py-4 rounded-2xl border-2 border-white/10 focus:border-teal-500 focus:outline-none transition-all duration-300 bg-white/5 text-white shadow-sm placeholder-white/30"
                 />
                 <motion.button
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
                   onClick={handleSendMessage}
                   disabled={!inputValue.trim()}
-                  className="bg-gradient-to-r from-primary to-teal-600 text-white px-8 py-4 rounded-2xl font-bold hover:shadow-xl transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2 group"
+                  className="bg-gradient-to-r from-teal-600 to-teal-500 text-white px-8 py-4 rounded-2xl font-bold hover:shadow-xl transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2 group border border-teal-400/30"
                 >
                   <Send className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
                   {t('healthCoach.send')}
@@ -464,7 +469,7 @@ export default function HealthCoach() {
 
               {/* Quick Suggestions */}
               <div className="mt-4 flex flex-wrap gap-2">
-                <p className="text-xs text-gray-600 dark:text-slate-400 w-full mb-1 font-semibold">
+                <p className="text-xs text-white/60 w-full mb-1 font-semibold">
                   💬 {t('healthCoach.quickSuggestionsLabel')}
                 </p>
                 {[
@@ -477,7 +482,7 @@ export default function HealthCoach() {
                     whileHover={{ scale: 1.05, y: -2 }}
                     whileTap={{ scale: 0.95 }}
                     onClick={() => setInputValue(suggestion)}
-                    className="text-sm bg-white dark:bg-slate-700 border-2 border-gray-200 dark:border-slate-600 text-gray-700 dark:text-slate-100 px-4 py-2 rounded-full hover:bg-primary dark:hover:bg-primary hover:text-white dark:hover:text-white hover:border-primary dark:hover:border-primary active:bg-teal-700 dark:active:bg-teal-700 transition-all duration-200 shadow-sm"
+                    className="text-sm bg-white/5 border border-white/10 text-white px-4 py-2 rounded-full hover:bg-teal-600/50 hover:border-teal-500 transition-all duration-200 shadow-sm"
                   >
                     {suggestion}
                   </motion.button>
@@ -491,33 +496,33 @@ export default function HealthCoach() {
         <motion.div
           initial={{ x: 100, opacity: 0 }}
           animate={{ x: 0, opacity: 1 }}
-          className="w-96 bg-gradient-to-b from-white dark:from-slate-800 to-teal-50/30 dark:to-slate-900/30 backdrop-blur-xl border-l border-gray-200 dark:border-slate-700 p-6 space-y-6 overflow-y-auto"
+          className="w-96 glass-dark border-l border-white/10 p-6 space-y-6 overflow-y-auto"
         >
           {/* Patient Profile Card */}
-          <div className="bg-white dark:bg-slate-800 backdrop-blur-sm rounded-2xl p-6 shadow-lg border border-gray-100 dark:border-slate-700">
+          <div className="bg-white/5 backdrop-blur-sm rounded-2xl p-6 shadow-lg border border-white/10">
             <div className="flex items-center gap-3 mb-4">
-              <div className="w-12 h-12 bg-gradient-to-br from-primary to-teal-600 rounded-2xl flex items-center justify-center shadow-lg">
+              <div className="w-12 h-12 bg-gradient-to-br from-teal-500 to-teal-600 rounded-2xl flex items-center justify-center shadow-lg shadow-teal-500/20">
                 <User className="w-6 h-6 text-white" />
               </div>
               <div>
-                <h3 className="font-bold text-gray-900 dark:text-slate-100">Hồ Sơ Khách Hàng</h3>
-                <p className="text-xs text-gray-600 dark:text-slate-400">Thông tin tư vấn</p>
+                <h3 className="font-bold text-white">Hồ Sơ Khách Hàng</h3>
+                <p className="text-xs text-white/60">Thông tin tư vấn</p>
               </div>
             </div>
 
             <div className="space-y-4">
-              <div className="flex items-center justify-between py-3 border-b border-gray-100 dark:border-slate-700">
-                <span className="text-sm text-gray-600 dark:text-slate-400">Tuổi</span>
-                <span className="font-bold text-gray-900 dark:text-slate-100">{MOCK_PATIENT.age} tuổi</span>
+              <div className="flex items-center justify-between py-3 border-b border-white/10">
+                <span className="text-sm text-white/60">Tuổi</span>
+                <span className="font-bold text-white">{MOCK_PATIENT.age} tuổi</span>
               </div>
 
               <div>
-                <p className="text-sm text-gray-600 dark:text-slate-400 mb-2">Vấn đề chính</p>
+                <p className="text-sm text-white/60 mb-2">Vấn đề chính</p>
                 <div className="flex flex-wrap gap-2">
                   {MOCK_PATIENT.mainConcerns.map((concern, idx) => (
                     <span
                       key={idx}
-                      className="text-xs bg-red-50 text-red-600 px-3 py-1.5 rounded-full border border-red-200 font-medium"
+                      className="text-xs bg-red-900/30 text-red-300 px-3 py-1.5 rounded-full border border-red-500/30 font-medium"
                     >
                       {concern}
                     </span>
@@ -526,23 +531,23 @@ export default function HealthCoach() {
               </div>
 
               <div>
-                <p className="text-sm text-gray-600 dark:text-slate-400 mb-2">Lịch sử mua hàng</p>
+                <p className="text-sm text-white/60 mb-2">Lịch sử mua hàng</p>
                 <div className="space-y-2">
                   {MOCK_PATIENT.purchaseHistory.map((item, idx) => (
                     <div
                       key={idx}
-                      className="flex items-center gap-2 bg-green-50 p-2 rounded-lg border border-green-200"
+                      className="flex items-center gap-2 bg-green-900/30 p-2 rounded-lg border border-green-500/30"
                     >
-                      <Package className="w-4 h-4 text-green-600" />
-                      <span className="text-xs font-medium text-green-700">{item}</span>
+                      <Package className="w-4 h-4 text-green-400" />
+                      <span className="text-xs font-medium text-green-300">{item}</span>
                     </div>
                   ))}
                 </div>
               </div>
 
-              <div className="flex items-center justify-between py-3 border-t border-gray-100 dark:border-slate-700">
-                <span className="text-sm text-gray-600 dark:text-slate-400">Lần tư vấn gần nhất</span>
-                <span className="text-xs font-semibold text-gray-900 dark:text-slate-100">
+              <div className="flex items-center justify-between py-3 border-t border-white/10">
+                <span className="text-sm text-white/60">Lần tư vấn gần nhất</span>
+                <span className="text-xs font-semibold text-white">
                   {MOCK_PATIENT.lastVisit.toLocaleDateString('vi-VN')}
                 </span>
               </div>
@@ -550,9 +555,9 @@ export default function HealthCoach() {
           </div>
 
           {/* Health Score Card */}
-          <div className="bg-gradient-to-br from-primary to-teal-600 rounded-2xl p-6 shadow-xl text-white">
+          <div className="bg-gradient-to-br from-teal-600 to-teal-800 rounded-2xl p-6 shadow-xl text-white border border-teal-500/30">
             <div className="flex items-center gap-3 mb-4">
-              <Heart className="w-8 h-8 text-accent" />
+              <Heart className="w-8 h-8 text-yellow-400" />
               <h3 className="font-bold text-lg">Điểm Sức Khỏe</h3>
             </div>
 
@@ -563,7 +568,7 @@ export default function HealthCoach() {
                     cx="64"
                     cy="64"
                     r="56"
-                    stroke="rgba(255,255,255,0.2)"
+                    stroke="rgba(255,255,255,0.1)"
                     strokeWidth="8"
                     fill="none"
                   />
@@ -574,7 +579,7 @@ export default function HealthCoach() {
                     cx="64"
                     cy="64"
                     r="56"
-                    stroke="#FFBF00"
+                    stroke="#FBBF24"
                     strokeWidth="8"
                     fill="none"
                     strokeDasharray="352"
@@ -594,21 +599,21 @@ export default function HealthCoach() {
 
           {/* Quick Stats */}
           <div className="grid grid-cols-2 gap-4">
-            <div className="bg-white dark:bg-slate-800 backdrop-blur-sm rounded-xl p-4 shadow-md border border-gray-100 dark:border-slate-700">
-              <Activity className="w-8 h-8 text-blue-500 mb-2" />
-              <p className="text-2xl font-bold text-gray-900 dark:text-slate-100">12</p>
-              <p className="text-xs text-gray-600 dark:text-slate-400">Tư vấn hoàn thành</p>
+            <div className="bg-white/5 backdrop-blur-sm rounded-xl p-4 shadow-md border border-white/10">
+              <Activity className="w-8 h-8 text-blue-400 mb-2" />
+              <p className="text-2xl font-bold text-white">12</p>
+              <p className="text-xs text-white/60">Tư vấn hoàn thành</p>
             </div>
-            <div className="bg-white dark:bg-slate-800 backdrop-blur-sm rounded-xl p-4 shadow-md border border-gray-100 dark:border-slate-700">
-              <TrendingUp className="w-8 h-8 text-green-500 mb-2" />
-              <p className="text-2xl font-bold text-gray-900 dark:text-slate-100">+15%</p>
-              <p className="text-xs text-gray-600 dark:text-slate-400">Cải thiện sức khỏe</p>
+            <div className="bg-white/5 backdrop-blur-sm rounded-xl p-4 shadow-md border border-white/10">
+              <TrendingUp className="w-8 h-8 text-green-400 mb-2" />
+              <p className="text-2xl font-bold text-white">+15%</p>
+              <p className="text-xs text-white/60">Cải thiện sức khỏe</p>
             </div>
           </div>
 
           {/* Disclaimer */}
-          <div className="bg-amber-50 dark:bg-slate-700 backdrop-blur-sm rounded-xl p-4 border border-amber-200 dark:border-slate-600">
-            <p className="text-xs text-amber-800 dark:text-slate-200 leading-relaxed">
+          <div className="bg-yellow-900/20 backdrop-blur-sm rounded-xl p-4 border border-yellow-500/20">
+            <p className="text-xs text-yellow-200 leading-relaxed">
               ⚠️ {t('healthCoach.disclaimerTech')} {t('healthCoach.disclaimerMedical')}
             </p>
           </div>

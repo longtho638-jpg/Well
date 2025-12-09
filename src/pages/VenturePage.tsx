@@ -2,30 +2,26 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import {
   ArrowRight,
-  Shield,
-  Users,
-  Bot,
-  TrendingUp,
-  Crown,
-  CheckCircle2,
-  Sparkles,
-  Mail,
-  Instagram,
-  Facebook,
-  Linkedin,
-  Zap,
   Globe,
   Network,
   Rocket,
   Lock,
   ChevronRight,
   Building2,
-  LineChart,
   Award,
-  MapPin
+  MapPin,
+  CheckCircle2,
+  TrendingUp,
+  Zap,
+  Mail,
+  Facebook,
+  Instagram,
+  Linkedin
 } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { useStore } from '../store';
+import { ParticleBackground } from '@/components/ParticleBackground';
+import { CursorGlow } from '@/components/CursorGlow';
 
 // ============================================================================
 // SMOOTH SCROLL UTILITY
@@ -198,66 +194,16 @@ export default function VenturePage() {
     }
   };
 
-  const scaleIn = {
-    hidden: { opacity: 0, scale: 0.8 },
-    visible: {
-      opacity: 1,
-      scale: 1,
-      transition: {
-        duration: 0.8,
-        ease: [0.16, 1, 0.3, 1]
-      }
-    }
-  };
-
   return (
     <>
-      {/* ====================================================================== */}
-      {/* CUSTOM STYLES - Premium Dark Theme */}
-      {/* ====================================================================== */}
       <style>{`
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Space+Grotesk:wght@400;500;600;700&display=swap');
-
-        body {
-          font-family: 'Inter', sans-serif;
-          background: #0a0a0a;
-        }
-
-        .font-display {
-          font-family: 'Space Grotesk', sans-serif;
-        }
-
-        html {
-          scroll-behavior: smooth;
-        }
-
-        .grain-overlay {
-          background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='4' numOctaves='4' /%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.08'/%3E%3C/svg%3E");
-        }
-
-        .mesh-gradient {
-          background:
-            radial-gradient(at 27% 37%, hsla(175, 100%, 17%, 0.3) 0px, transparent 50%),
-            radial-gradient(at 97% 21%, hsla(45, 100%, 50%, 0.15) 0px, transparent 50%),
-            radial-gradient(at 52% 99%, hsla(175, 100%, 12%, 0.4) 0px, transparent 50%),
-            radial-gradient(at 10% 29%, hsla(175, 100%, 20%, 0.2) 0px, transparent 50%);
-        }
-
-        .glow-text {
-          text-shadow: 0 0 40px rgba(255, 191, 0, 0.3);
-        }
-
-        @keyframes float {
-          0%, 100% { transform: translateY(0px); }
-          50% { transform: translateY(-20px); }
-        }
-
-        .animate-float {
-          animation: float 6s ease-in-out infinite;
-        }
+        .font-display { font-family: 'Space Grotesk', sans-serif; }
       `}</style>
 
-      <div className="min-h-screen bg-slate-950 text-white overflow-x-hidden">
+      <div className="min-h-screen bg-dark-ultra text-white overflow-x-hidden relative">
+        <ParticleBackground />
+        <CursorGlow />
 
         {/* ================================================================== */}
         {/* STICKY HEADER - Premium Dark */}
@@ -266,7 +212,7 @@ export default function VenturePage() {
           initial={{ y: -100 }}
           animate={{ y: 0 }}
           transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-          className="fixed top-0 w-full z-50 backdrop-blur-2xl bg-slate-950/80 border-b border-slate-800/50"
+          className="fixed top-0 w-full z-50 backdrop-blur-2xl bg-black/50 border-b border-white/10"
         >
           <div className="max-w-7xl mx-auto px-6 lg:px-12 h-20 flex items-center justify-between">
             {/* Logo */}
@@ -318,24 +264,12 @@ export default function VenturePage() {
         {/* ================================================================== */}
         {/* HERO SECTION - The Pitch (Dark Premium) */}
         {/* ================================================================== */}
-        <section id="hero" className="relative min-h-screen pt-32 pb-20 overflow-hidden">
-          {/* Background - Dark Mesh Gradient */}
-          <div className="absolute inset-0 z-0 mesh-gradient" />
-          <div className="absolute inset-0 z-0 grain-overlay" />
-
-          {/* Animated Grid Background */}
-          <div className="absolute inset-0 z-0 opacity-10">
-            <div className="absolute inset-0" style={{
-              backgroundImage: 'linear-gradient(rgba(255, 191, 0, 0.1) 1px, transparent 1px), linear-gradient(90deg, rgba(255, 191, 0, 0.1) 1px, transparent 1px)',
-              backgroundSize: '100px 100px'
-            }} />
-          </div>
-
+        <section id="hero" className="relative min-h-screen pt-32 pb-20 overflow-hidden flex items-center">
           {/* Glowing Orbs */}
           <div className="absolute top-20 right-20 w-[500px] h-[500px] bg-[#FFBF00]/20 rounded-full blur-[150px] animate-float" />
           <div className="absolute bottom-20 left-20 w-[400px] h-[400px] bg-[#00575A]/30 rounded-full blur-[120px]" style={{ animationDelay: '1s' }} />
 
-          <div className="relative z-10 max-w-7xl mx-auto px-6 lg:px-12">
+          <div className="relative z-10 max-w-7xl mx-auto px-6 lg:px-12 w-full">
             <motion.div
               variants={staggerContainer}
               initial="hidden"
@@ -344,7 +278,7 @@ export default function VenturePage() {
             >
               {/* Badge */}
               <motion.div variants={cinematicFadeIn} className="mb-8 inline-flex">
-                <div className="inline-flex items-center gap-3 bg-slate-900/50 backdrop-blur-xl border border-slate-800/50 rounded-full px-5 py-2.5">
+                <div className="inline-flex items-center gap-3 bg-white/5 backdrop-blur-xl border border-white/10 rounded-full px-5 py-2.5">
                   <span className="relative flex h-2 w-2">
                     <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#FFBF00] opacity-75" />
                     <span className="relative inline-flex rounded-full h-2 w-2 bg-[#FFBF00]" />
@@ -399,7 +333,7 @@ export default function VenturePage() {
 
                 <motion.button
                   onClick={() => smoothScrollTo('portfolio')}
-                  className="px-10 py-5 rounded-xl font-bold text-lg text-slate-300 border-2 border-slate-700 hover:border-[#FFBF00] bg-slate-900/50 backdrop-blur-xl hover:bg-slate-800/50 transition-all"
+                  className="px-10 py-5 rounded-xl font-bold text-lg text-slate-300 border-2 border-white/10 hover:border-[#FFBF00] bg-white/5 backdrop-blur-xl hover:bg-white/10 transition-all"
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
                 >
@@ -415,7 +349,7 @@ export default function VenturePage() {
                 {CONTENT.hero.stats.map((stat, idx) => (
                   <div key={idx} className="relative group">
                     <div className="absolute inset-0 bg-gradient-to-br from-[#FFBF00]/10 to-transparent rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity blur-xl" />
-                    <div className="relative bg-slate-900/50 backdrop-blur-xl border border-slate-800/50 rounded-2xl p-6 hover:border-[#FFBF00]/50 transition-all">
+                    <div className="glass-ultra relative rounded-2xl p-6 hover:border-[#FFBF00]/50 transition-all">
                       <div className="text-4xl lg:text-5xl font-black text-[#FFBF00] font-display mb-2">
                         {stat.value}
                       </div>
@@ -433,9 +367,7 @@ export default function VenturePage() {
         {/* ================================================================== */}
         {/* THE DEAL SECTION - Term Sheet Style */}
         {/* ================================================================== */}
-        <section id="deal" className="relative py-32 bg-slate-950">
-          <div className="absolute inset-0 grain-overlay opacity-50" />
-
+        <section id="deal" className="relative py-32 bg-dark-ultra">
           <div className="relative z-10 max-w-7xl mx-auto px-6 lg:px-12">
             {/* Section Header */}
             <motion.div
@@ -445,7 +377,7 @@ export default function VenturePage() {
               transition={{ duration: 0.8 }}
               className="text-center mb-20"
             >
-              <div className="inline-flex items-center gap-2 bg-slate-900/50 backdrop-blur-xl border border-slate-800/50 rounded-full px-5 py-2 mb-6">
+              <div className="inline-flex items-center gap-2 bg-white/5 backdrop-blur-xl border border-white/10 rounded-full px-5 py-2 mb-6">
                 <Lock className="w-4 h-4 text-[#FFBF00]" />
                 <span className="text-sm font-bold text-slate-300 uppercase tracking-wider">
                   {CONTENT.deal.sectionBadge}
@@ -476,7 +408,7 @@ export default function VenturePage() {
                     <div className="absolute -inset-0.5 bg-gradient-to-br from-[#FFBF00]/20 to-[#00575A]/20 rounded-3xl opacity-0 group-hover:opacity-100 transition-opacity blur-xl" />
 
                     {/* Card */}
-                    <div className="relative bg-slate-900/80 backdrop-blur-xl border border-slate-800/50 rounded-3xl p-8 h-full hover:border-[#FFBF00]/30 transition-all">
+                    <div className="glass-ultra relative rounded-3xl p-8 h-full hover:border-[#FFBF00]/30 transition-all">
                       {/* Icon */}
                       <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-[#FFBF00]/20 to-transparent border border-[#FFBF00]/20 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
                         <Icon className="w-8 h-8 text-[#FFBF00]" />
@@ -509,9 +441,7 @@ export default function VenturePage() {
         {/* ================================================================== */}
         {/* PORTFOLIO SECTION - Portfolio Companies */}
         {/* ================================================================== */}
-        <section id="portfolio" className="relative py-32 bg-slate-900">
-          <div className="absolute inset-0 grain-overlay opacity-30" />
-
+        <section id="portfolio" className="relative py-32 bg-black/40">
           <div className="relative z-10 max-w-7xl mx-auto px-6 lg:px-12">
             {/* Section Header */}
             <motion.div
@@ -521,7 +451,7 @@ export default function VenturePage() {
               transition={{ duration: 0.8 }}
               className="text-center mb-20"
             >
-              <div className="inline-flex items-center gap-2 bg-slate-950/50 backdrop-blur-xl border border-slate-800/50 rounded-full px-5 py-2 mb-6">
+              <div className="inline-flex items-center gap-2 bg-white/5 backdrop-blur-xl border border-white/10 rounded-full px-5 py-2 mb-6">
                 <Award className="w-4 h-4 text-[#FFBF00]" />
                 <span className="text-sm font-bold text-slate-300 uppercase tracking-wider">
                   {CONTENT.portfolio.sectionBadge}
@@ -550,7 +480,7 @@ export default function VenturePage() {
                   <div className="absolute -inset-0.5 bg-gradient-to-br from-[#FFBF00]/30 to-transparent rounded-3xl opacity-0 group-hover:opacity-100 transition-opacity blur-2xl" />
 
                   {/* Card */}
-                  <div className="relative bg-slate-950/80 backdrop-blur-xl border border-slate-800/50 rounded-3xl overflow-hidden hover:border-[#FFBF00]/30 transition-all">
+                  <div className="glass-ultra relative rounded-3xl overflow-hidden hover:border-[#FFBF00]/30 transition-all">
                     {/* Profile Image */}
                     <div className="relative h-64 overflow-hidden">
                       <img
@@ -571,7 +501,7 @@ export default function VenturePage() {
 
                       {/* Region */}
                       <div className="absolute bottom-4 left-4">
-                        <div className="flex items-center gap-2 bg-slate-950/50 backdrop-blur-xl border border-slate-800/50 rounded-full px-3 py-1.5">
+                        <div className="flex items-center gap-2 bg-black/50 backdrop-blur-xl border border-white/10 rounded-full px-3 py-1.5">
                           <MapPin className="w-3 h-3 text-slate-400" />
                           <span className="text-slate-300 font-medium text-xs">
                             {company.region}
@@ -593,7 +523,7 @@ export default function VenturePage() {
                       </p>
 
                       {/* Metrics */}
-                      <div className="flex items-center justify-between pt-4 border-t border-slate-800/50">
+                      <div className="flex items-center justify-between pt-4 border-t border-white/10">
                         <div>
                           <div className="text-sm text-slate-500">Growth</div>
                           <div className="text-lg font-bold text-emerald-400">
@@ -618,9 +548,7 @@ export default function VenturePage() {
         {/* ================================================================== */}
         {/* THE MARKET SECTION - SEA Vision */}
         {/* ================================================================== */}
-        <section id="market" className="relative py-32 bg-slate-950">
-          <div className="absolute inset-0 grain-overlay opacity-50" />
-
+        <section id="market" className="relative py-32 bg-dark-ultra">
           <div className="relative z-10 max-w-7xl mx-auto px-6 lg:px-12">
             {/* Section Header */}
             <motion.div
@@ -630,7 +558,7 @@ export default function VenturePage() {
               transition={{ duration: 0.8 }}
               className="text-center mb-20"
             >
-              <div className="inline-flex items-center gap-2 bg-slate-900/50 backdrop-blur-xl border border-slate-800/50 rounded-full px-5 py-2 mb-6">
+              <div className="inline-flex items-center gap-2 bg-white/5 backdrop-blur-xl border border-white/10 rounded-full px-5 py-2 mb-6">
                 <Network className="w-4 h-4 text-[#FFBF00]" />
                 <span className="text-sm font-bold text-slate-300 uppercase tracking-wider">
                   {CONTENT.market.sectionBadge}
@@ -650,7 +578,7 @@ export default function VenturePage() {
               whileInView={{ opacity: 1, scale: 1 }}
               viewport={{ once: true }}
               transition={{ duration: 1 }}
-              className="relative bg-slate-900/50 backdrop-blur-xl border border-slate-800/50 rounded-3xl p-12 mb-12"
+              className="glass-ultra relative rounded-3xl p-12 mb-12"
             >
               {/* Visual Map Representation */}
               <div className="relative h-[400px] mb-8">
@@ -691,7 +619,7 @@ export default function VenturePage() {
                     transition={{ delay: idx * 0.1, duration: 0.6 }}
                     className="relative group"
                   >
-                    <div className="bg-slate-950/50 backdrop-blur-xl border border-slate-800/50 rounded-2xl p-6 hover:border-[#FFBF00]/30 transition-all">
+                    <div className="glass-ultra rounded-2xl p-6 hover:border-[#FFBF00]/30 transition-all">
                       {/* Status Badge */}
                       <div className="flex items-center justify-between mb-4">
                         <span className="text-lg font-bold text-white font-display">
@@ -755,9 +683,7 @@ export default function VenturePage() {
         {/* ================================================================== */}
         {/* FOOTER - Premium Dark */}
         {/* ================================================================== */}
-        <footer className="relative bg-slate-950 text-white pt-20 pb-12 border-t border-slate-800/50">
-          <div className="absolute inset-0 grain-overlay opacity-30" />
-
+        <footer className="relative bg-black text-white pt-20 pb-12 border-t border-white/10">
           <div className="relative z-10 max-w-7xl mx-auto px-6 lg:px-12">
             {/* Main Footer Content */}
             <div className="grid md:grid-cols-2 gap-12 mb-16">
@@ -794,7 +720,7 @@ export default function VenturePage() {
                         href={social.href}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="w-12 h-12 rounded-xl bg-slate-900/50 hover:bg-slate-800/50 border border-slate-800/50 hover:border-[#FFBF00]/30 flex items-center justify-center transition-all"
+                        className="w-12 h-12 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 hover:border-[#FFBF00]/30 flex items-center justify-center transition-all"
                         whileHover={{ scale: 1.1, y: -2 }}
                         whileTap={{ scale: 0.95 }}
                       >
@@ -814,7 +740,7 @@ export default function VenturePage() {
                   <input
                     type="email"
                     placeholder={CONTENT.footer.newsletter.placeholder}
-                    className="flex-1 px-5 py-3 rounded-xl bg-slate-900/50 border border-slate-800/50 text-white placeholder-slate-500 focus:outline-none focus:border-[#FFBF00]/50 transition-colors backdrop-blur-xl"
+                    className="flex-1 px-5 py-3 rounded-xl bg-white/5 border border-white/10 text-white placeholder-slate-500 focus:outline-none focus:border-[#FFBF00]/50 transition-colors backdrop-blur-xl"
                   />
                   <motion.button
                     className="px-6 py-3 rounded-xl bg-[#FFBF00] text-slate-950 font-bold shadow-lg shadow-[#FFBF00]/20"
@@ -828,7 +754,7 @@ export default function VenturePage() {
             </div>
 
             {/* Copyright */}
-            <div className="text-center text-slate-500 text-sm pt-8 border-t border-slate-800/50">
+            <div className="text-center text-slate-500 text-sm pt-8 border-t border-white/10">
               {CONTENT.footer.copyright}
             </div>
           </div>

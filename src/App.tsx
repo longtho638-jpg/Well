@@ -43,6 +43,7 @@ const App: React.FC = () => {
             animate={{ opacity: 1, scale: 1, filter: 'blur(0px)' }}
             exit={{ opacity: 0, scale: 1.02, filter: 'blur(10px)' }}
             transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
+            className="w-full h-full"
           >
             <Routes location={location}>
               {/* ============================================================ */}
@@ -83,7 +84,7 @@ const App: React.FC = () => {
                   path="wallet"
                   element={
                     <div className="space-y-6">
-                      <h2 className="text-2xl md:text-3xl font-bold text-[#1F2937]">Commission Wallet</h2>
+                      <h2 className="text-2xl md:text-3xl font-bold text-white">Commission Wallet</h2>
                       <CommissionWallet />
                     </div>
                   }

@@ -30,6 +30,8 @@ import { formatVND, formatNumber } from '@/utils/format';
 import { TEAM_MEMBERS, TEAM_METRICS } from '@/data/mockData';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, PieChart, Pie, Cell } from 'recharts';
 import { useTranslation } from '@/hooks';
+import { ParticleBackground } from '@/components/ParticleBackground';
+import { CursorGlow } from '@/components/CursorGlow';
 
 export default function LeaderDashboard() {
   const t = useTranslation();
@@ -93,20 +95,20 @@ export default function LeaderDashboard() {
   const getRankBadgeColor = (rank: UserRank) => {
     switch (rank) {
       case 'Founder Club':
-        return 'bg-purple-100 text-purple-700';
+        return 'bg-purple-900/50 text-purple-400 border border-purple-500/30';
       case 'Partner':
-        return 'bg-blue-100 text-blue-700';
+        return 'bg-blue-900/50 text-blue-400 border border-blue-500/30';
       case 'Member':
-        return 'bg-gray-100 text-gray-700';
+        return 'bg-gray-800 text-gray-400 border border-gray-600/30';
       default:
-        return 'bg-gray-100 text-gray-700';
+        return 'bg-gray-800 text-gray-400 border border-gray-600/30';
     }
   };
 
   const getGrowthColor = (growth: number) => {
-    if (growth >= 30) return 'text-green-600';
-    if (growth >= 15) return 'text-blue-600';
-    return 'text-gray-600';
+    if (growth >= 30) return 'text-green-400';
+    if (growth >= 15) return 'text-blue-400';
+    return 'text-gray-400';
   };
 
   // AI Insights Handlers - TREE MAX LEVEL
@@ -137,43 +139,40 @@ export default function LeaderDashboard() {
   const getRiskBadgeColor = (riskLevel: 'high' | 'medium' | 'low') => {
     switch (riskLevel) {
       case 'high':
-        return 'bg-red-100 text-red-700';
+        return 'bg-red-900/50 text-red-400 border border-red-500/30';
       case 'medium':
-        return 'bg-yellow-100 text-yellow-700';
+        return 'bg-yellow-900/50 text-yellow-400 border border-yellow-500/30';
       case 'low':
-        return 'bg-green-100 text-green-700';
+        return 'bg-green-900/50 text-green-400 border border-green-500/30';
     }
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-white via-gray-50 to-white dark:from-[#0A0E27] dark:via-[#1A1F3A] dark:to-[#0A0E27] p-6 space-y-6 pb-20">
+    <div className="min-h-screen bg-dark-ultra p-6 space-y-6 pb-20 relative overflow-hidden">
+      <ParticleBackground />
+      <CursorGlow />
+
       {/* Header */}
       <motion.div
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
-        className="relative overflow-hidden"
+        className="glass-ultra rounded-3xl p-8 text-white relative overflow-hidden"
       >
-        {/* Background */}
-        <div className="absolute inset-0 bg-gradient-to-r from-primary to-primary/80 rounded-3xl" />
-        <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGRlZnM+PHBhdHRlcm4gaWQ9ImdyaWQiIHdpZHRoPSI2MCIgaGVpZ2h0PSI2MCIgcGF0dGVyblVuaXRzPSJ1c2VyU3BhY2VPblVzZSI+PHBhdGggZD0iTSAxMCAwIEwgMCAwIDAgMTAiIGZpbGw9Im5vbmUiIHN0cm9rZT0id2hpdGUiIHN0cm9rZS1vcGFjaXR5PSIwLjA1IiBzdHJva2Utd2lkdGg9IjEiLz48L3BhdHRlcm4+PC9kZWZzPjxyZWN0IHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiIGZpbGw9InVybCgjZ3JpZCkiLz48L3N2Zz4=')] opacity-30" />
-
-        {/* Content */}
-        <div className="relative p-8 text-white">
-          <div className="flex items-start justify-between">
-            <div className="flex-1">
-              <div className="flex items-center gap-3 mb-3">
-                <div className="w-14 h-14 bg-accent rounded-2xl flex items-center justify-center shadow-lg shadow-accent/30">
-                  <Crown className="w-8 h-8 text-primary" />
-                </div>
-                <div>
-                  <h1 className="text-4xl font-bold text-gray-900 dark:text-white">{t('team.leaderDashboard')}</h1>
-                  <p className="text-white/80 dark:text-white/80 text-sm">{t('team.subtitle')}</p>
-                </div>
+        <div className="absolute inset-0 bg-gradient-to-r from-teal-500/10 to-purple-500/10" />
+        <div className="relative z-10 flex items-start justify-between">
+          <div className="flex-1">
+            <div className="flex items-center gap-3 mb-3">
+              <div className="w-14 h-14 bg-gradient-to-br from-yellow-400 to-amber-600 rounded-2xl flex items-center justify-center shadow-lg shadow-amber-500/30">
+                <Crown className="w-8 h-8 text-white" />
               </div>
-              <p className="text-gray-700 dark:text-white/90 max-w-2xl mt-2">
-                {t('team.description')}
-              </p>
+              <div>
+                <h1 className="text-4xl font-bold">{t('team.leaderDashboard')}</h1>
+                <p className="text-white/60 text-sm">{t('team.subtitle')}</p>
+              </div>
             </div>
+            <p className="text-white/80 max-w-2xl mt-2">
+              {t('team.description')}
+            </p>
           </div>
         </div>
       </motion.div>
@@ -183,14 +182,14 @@ export default function LeaderDashboard() {
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.1 }}
-        className="bg-white/10 backdrop-blur-xl rounded-2xl p-2 flex gap-2 border border-white/20"
+        className="glass-ultra rounded-2xl p-2 flex gap-2"
       >
         <button
           onClick={() => setActiveTab('team')}
           className={`flex-1 px-6 py-3.5 rounded-xl font-bold text-sm transition-all duration-300 flex items-center justify-center gap-2 ${
             activeTab === 'team'
-              ? 'bg-gradient-to-r from-primary to-primary/80 text-white shadow-lg shadow-primary/30'
-              : 'text-gray-300 hover:bg-white/5'
+              ? 'bg-gradient-to-r from-teal-600 to-teal-500 text-white shadow-lg shadow-teal-500/30'
+              : 'text-gray-400 hover:bg-white/5'
           }`}
         >
           <Users className="w-5 h-5" />
@@ -201,7 +200,7 @@ export default function LeaderDashboard() {
           className={`flex-1 px-6 py-3.5 rounded-xl font-bold text-sm transition-all duration-300 flex items-center justify-center gap-2 ${
             activeTab === 'insights'
               ? 'bg-gradient-to-r from-orange-500 to-red-500 text-white shadow-lg shadow-orange-500/30'
-              : 'text-gray-300 hover:bg-white/5'
+              : 'text-gray-400 hover:bg-white/5'
           }`}
         >
           <Brain className="w-5 h-5" />
@@ -227,7 +226,7 @@ export default function LeaderDashboard() {
             <div className="absolute inset-0 bg-gradient-to-r from-yellow-500/20 via-orange-500/20 to-red-500/20 rounded-3xl blur-2xl" />
 
             {/* Card */}
-            <div className="relative bg-gradient-to-br from-white/10 to-white/5 backdrop-blur-xl border border-white/20 rounded-3xl p-8">
+            <div className="glass-ultra relative rounded-3xl p-8">
               <div className="flex items-center justify-between mb-6">
                 <div>
                   <h2 className="text-2xl font-bold text-white flex items-center gap-3">
@@ -236,7 +235,7 @@ export default function LeaderDashboard() {
                     </div>
                     Top 3 Tướng Tài
                   </h2>
-                  <p className="text-gray-600 dark:text-slate-400 text-sm mt-1">Doanh số cao nhất tháng này</p>
+                  <p className="text-white/60 text-sm mt-1">Doanh số cao nhất tháng này</p>
                 </div>
               </div>
 
@@ -262,7 +261,7 @@ export default function LeaderDashboard() {
                       </div>
                     </div>
                     <h3 className="text-white font-bold text-lg mb-1">{top3Performers[1].name}</h3>
-                    <p className="text-gray-600 dark:text-slate-400 text-sm mb-2">{top3Performers[1].rank}</p>
+                    <p className="text-white/60 text-sm mb-2">{top3Performers[1].rank}</p>
                     <div className="bg-white/10 backdrop-blur-sm rounded-xl p-3 border border-white/20">
                       <p className="text-gray-300 text-xs mb-1">Doanh số</p>
                       <p className="text-white font-bold">{formatVND(top3Performers[1].personalSales)}</p>
@@ -293,7 +292,7 @@ export default function LeaderDashboard() {
                       </div>
                     </div>
                     <h3 className="text-white font-bold text-xl mb-1">{top3Performers[0].name}</h3>
-                    <p className="text-yellow-500 dark:text-yellow-400 text-sm mb-2 flex items-center justify-center gap-1">
+                    <p className="text-yellow-400 text-sm mb-2 flex items-center justify-center gap-1">
                       <Star className="w-4 h-4" fill="currentColor" />
                       {top3Performers[0].rank}
                     </p>
@@ -324,7 +323,7 @@ export default function LeaderDashboard() {
                       </div>
                     </div>
                     <h3 className="text-white font-bold text-lg mb-1">{top3Performers[2].name}</h3>
-                    <p className="text-gray-600 dark:text-slate-400 text-sm mb-2">{top3Performers[2].rank}</p>
+                    <p className="text-white/60 text-sm mb-2">{top3Performers[2].rank}</p>
                     <div className="bg-white/10 backdrop-blur-sm rounded-xl p-3 border border-white/20">
                       <p className="text-gray-300 text-xs mb-1">Doanh số</p>
                       <p className="text-white font-bold">{formatVND(top3Performers[2].personalSales)}</p>
@@ -344,7 +343,7 @@ export default function LeaderDashboard() {
           className="relative group"
         >
           <div className="absolute inset-0 bg-gradient-to-br from-blue-500/20 to-blue-600/20 rounded-2xl blur-xl opacity-0 group-hover:opacity-100 transition-opacity" />
-          <div className="relative bg-white/10 backdrop-blur-xl rounded-2xl p-6 border border-white/20 hover:border-blue-500/50 transition-all">
+          <div className="glass-ultra relative rounded-2xl p-6 hover:border-blue-500/50 transition-all">
             <div className="flex items-center justify-between mb-3">
               <Users className="w-8 h-8 text-blue-400" />
               <span className="text-xs font-bold bg-blue-500/20 text-blue-300 px-2 py-1 rounded-full border border-blue-500/30">
@@ -363,7 +362,7 @@ export default function LeaderDashboard() {
           className="relative group"
         >
           <div className="absolute inset-0 bg-gradient-to-br from-green-500/20 to-green-600/20 rounded-2xl blur-xl opacity-0 group-hover:opacity-100 transition-opacity" />
-          <div className="relative bg-white/10 backdrop-blur-xl rounded-2xl p-6 border border-white/20 hover:border-green-500/50 transition-all">
+          <div className="glass-ultra relative rounded-2xl p-6 hover:border-green-500/50 transition-all">
             <div className="flex items-center justify-between mb-3">
               <DollarSign className="w-8 h-8 text-green-400" />
               <TrendingUp className="w-5 h-5 text-green-400" />
@@ -380,7 +379,7 @@ export default function LeaderDashboard() {
           className="relative group"
         >
           <div className="absolute inset-0 bg-gradient-to-br from-purple-500/20 to-purple-600/20 rounded-2xl blur-xl opacity-0 group-hover:opacity-100 transition-opacity" />
-          <div className="relative bg-white/10 backdrop-blur-xl rounded-2xl p-6 border border-white/20 hover:border-purple-500/50 transition-all">
+          <div className="glass-ultra relative rounded-2xl p-6 hover:border-purple-500/50 transition-all">
             <div className="flex items-center justify-between mb-3">
               <Target className="w-8 h-8 text-purple-400" />
               <span className="text-xs font-bold bg-green-500/20 text-green-300 px-2 py-1 rounded-full border border-green-500/30">
@@ -399,7 +398,7 @@ export default function LeaderDashboard() {
           className="relative group"
         >
           <div className="absolute inset-0 bg-gradient-to-br from-orange-500/20 to-orange-600/20 rounded-2xl blur-xl opacity-0 group-hover:opacity-100 transition-opacity" />
-          <div className="relative bg-white/10 backdrop-blur-xl rounded-2xl p-6 border border-white/20 hover:border-orange-500/50 transition-all">
+          <div className="glass-ultra relative rounded-2xl p-6 hover:border-orange-500/50 transition-all">
             <div className="flex items-center justify-between mb-3">
               <Award className="w-8 h-8 text-orange-400" />
               <Activity className="w-5 h-5 text-orange-400" />
@@ -420,7 +419,7 @@ export default function LeaderDashboard() {
           className="relative group"
         >
           <div className="absolute inset-0 bg-gradient-to-br from-cyan-500/10 to-blue-500/10 rounded-2xl blur-xl opacity-50" />
-          <div className="relative bg-white/10 backdrop-blur-xl rounded-2xl p-6 border border-white/20">
+          <div className="glass-ultra relative rounded-2xl p-6">
             <h3 className="font-bold text-white text-lg mb-4 flex items-center gap-2">
               <Activity className="w-5 h-5 text-cyan-400" />
               Network Health
@@ -472,7 +471,7 @@ export default function LeaderDashboard() {
           className="relative group"
         >
           <div className="absolute inset-0 bg-gradient-to-br from-purple-500/10 to-pink-500/10 rounded-2xl blur-xl opacity-50" />
-          <div className="relative bg-white/10 backdrop-blur-xl rounded-2xl p-6 border border-white/20">
+          <div className="glass-ultra relative rounded-2xl p-6">
             <h3 className="font-bold text-white text-lg mb-4 flex items-center gap-2">
               <Award className="w-5 h-5 text-purple-400" />
               {t('team.charts.rankDistribution')}
@@ -515,13 +514,13 @@ export default function LeaderDashboard() {
         className="relative group"
       >
         <div className="absolute inset-0 bg-gradient-to-br from-white/5 to-white/10 rounded-2xl blur-xl opacity-50" />
-        <div className="relative bg-white/10 backdrop-blur-xl border border-white/20 rounded-2xl overflow-hidden">
+        <div className="glass-ultra relative rounded-2xl overflow-hidden">
           {/* Header */}
           <div className="p-6 border-b border-white/10">
             <div className="flex flex-col md:flex-row gap-4 items-start md:items-center justify-between">
               <div>
                 <h3 className="font-bold text-white text-lg flex items-center gap-2">
-                  <Users className="w-5 h-5 text-primary" />
+                  <Users className="w-5 h-5 text-teal-400" />
                   {t('team.members.teamMembers')} ({filteredMembers.length})
                 </h3>
               </div>
@@ -535,7 +534,7 @@ export default function LeaderDashboard() {
                     value={searchTerm}
                     onChange={(e) => setSearchTerm(e.target.value)}
                     placeholder={t('team.members.search')}
-                    className="pl-9 pr-4 py-2.5 bg-white/10 border border-white/20 rounded-xl text-sm text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-primary/50 backdrop-blur-sm"
+                    className="pl-9 pr-4 py-2.5 bg-white/5 border border-white/20 rounded-xl text-sm text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-teal-500/50 backdrop-blur-sm"
                   />
                 </div>
 
@@ -543,26 +542,26 @@ export default function LeaderDashboard() {
                 <select
                   value={filterRank}
                   onChange={(e) => setFilterRank(e.target.value as UserRank | 'all')}
-                  className="px-4 py-2.5 bg-white/10 border border-white/20 rounded-xl text-sm text-white focus:outline-none focus:ring-2 focus:ring-primary/50 backdrop-blur-sm"
+                  className="px-4 py-2.5 bg-white/5 border border-white/20 rounded-xl text-sm text-white focus:outline-none focus:ring-2 focus:ring-teal-500/50 backdrop-blur-sm"
                 >
-                  <option value="all" className="bg-gray-800">{t('team.filters.allRanks')}</option>
-                  <option value="Partner" className="bg-gray-800">Partner</option>
-                  <option value="Member" className="bg-gray-800">Member</option>
+                  <option value="all" className="bg-gray-800 text-white">{t('team.filters.allRanks')}</option>
+                  <option value="Partner" className="bg-gray-800 text-white">Partner</option>
+                  <option value="Member" className="bg-gray-800 text-white">Member</option>
                 </select>
 
                 {/* Sort */}
                 <select
                   value={sortBy}
                   onChange={(e) => setSortBy(e.target.value as 'sales' | 'growth' | 'team')}
-                  className="px-4 py-2.5 bg-white/10 border border-white/20 rounded-xl text-sm text-white focus:outline-none focus:ring-2 focus:ring-primary/50 backdrop-blur-sm"
+                  className="px-4 py-2.5 bg-white/5 border border-white/20 rounded-xl text-sm text-white focus:outline-none focus:ring-2 focus:ring-teal-500/50 backdrop-blur-sm"
                 >
-                  <option value="sales" className="bg-gray-800">{t('team.filters.sortSales')}</option>
-                  <option value="growth" className="bg-gray-800">{t('team.filters.sortGrowth')}</option>
-                  <option value="team" className="bg-gray-800">{t('team.filters.sortTeam')}</option>
+                  <option value="sales" className="bg-gray-800 text-white">{t('team.filters.sortSales')}</option>
+                  <option value="growth" className="bg-gray-800 text-white">{t('team.filters.sortGrowth')}</option>
+                  <option value="team" className="bg-gray-800 text-white">{t('team.filters.sortTeam')}</option>
                 </select>
 
                 {/* Export */}
-                <button className="px-4 py-2.5 bg-gradient-to-r from-primary to-primary/80 hover:from-primary/90 hover:to-primary/70 text-white rounded-xl text-sm font-bold flex items-center gap-2 transition-all shadow-lg shadow-primary/30">
+                <button className="px-4 py-2.5 bg-gradient-to-r from-teal-600 to-teal-500 hover:scale-[1.02] text-white rounded-xl text-sm font-bold flex items-center gap-2 transition-all shadow-lg shadow-teal-500/30">
                   <Download className="w-4 h-4" />
                   {t('team.filters.export')}
                 </button>
@@ -722,8 +721,8 @@ export default function LeaderDashboard() {
             className="relative"
           >
             <div className="absolute inset-0 bg-gradient-to-br from-orange-500/10 to-red-500/10 rounded-2xl blur-xl opacity-50" />
-            <div className="relative bg-white/10 backdrop-blur-xl border border-white/20 rounded-2xl overflow-hidden">
-              <div className="bg-gradient-to-r from-orange-500/20 to-red-500/20 border-b border-white/10 p-6">
+            <div className="glass-ultra relative rounded-2xl overflow-hidden">
+              <div className="bg-gradient-to-r from-orange-900/50 to-red-900/50 border-b border-white/10 p-6">
                 <h3 className="font-bold text-white flex items-center gap-2 text-xl">
                   <AlertTriangle className="w-6 h-6 text-orange-400" />
                   Thành Viên Cần Chú Ý ({teamInsights.atRiskMembers.length})
@@ -740,7 +739,7 @@ export default function LeaderDashboard() {
                     initial={{ opacity: 0, x: -20 }}
                     animate={{ opacity: 1, x: 0 }}
                     transition={{ delay: index * 0.1 }}
-                    className="bg-gradient-to-br from-white/5 to-white/10 rounded-2xl p-6 border border-white/20 hover:border-orange-500/40 transition-all duration-300"
+                    className="bg-white/5 rounded-2xl p-6 border border-white/10 hover:border-orange-500/40 transition-all duration-300"
                   >
                     <div className="flex items-start gap-4">
                       {/* Avatar */}
@@ -826,7 +825,7 @@ export default function LeaderDashboard() {
                           <button
                             onClick={() => handleSendReminder(atRiskMember.member.id)}
                             disabled={actionLoading === `reminder-${atRiskMember.member.id}`}
-                            className="flex-1 flex items-center justify-center gap-2 bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white px-4 py-3 rounded-xl font-bold hover:shadow-lg transition-all duration-300 disabled:opacity-50"
+                            className="flex-1 flex items-center justify-center gap-2 bg-gradient-to-r from-blue-600 to-blue-500 text-white px-4 py-3 rounded-xl font-bold hover:shadow-lg transition-all duration-300 disabled:opacity-50"
                           >
                             {actionLoading === `reminder-${atRiskMember.member.id}` ? (
                               <>
@@ -843,7 +842,7 @@ export default function LeaderDashboard() {
                           <button
                             onClick={() => handleSendGift(atRiskMember.member.id)}
                             disabled={actionLoading === `gift-${atRiskMember.member.id}`}
-                            className="flex-1 flex items-center justify-center gap-2 bg-gradient-to-r from-purple-500 via-pink-500 to-purple-600 hover:from-purple-600 hover:via-pink-600 hover:to-purple-700 text-white px-4 py-3 rounded-xl font-bold hover:shadow-lg transition-all duration-300 disabled:opacity-50"
+                            className="flex-1 flex items-center justify-center gap-2 bg-gradient-to-r from-purple-600 via-pink-600 to-purple-500 text-white px-4 py-3 rounded-xl font-bold hover:shadow-lg transition-all duration-300 disabled:opacity-50"
                           >
                             {actionLoading === `gift-${atRiskMember.member.id}` ? (
                               <>
