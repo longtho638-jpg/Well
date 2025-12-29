@@ -29,6 +29,9 @@ export interface User {
   nextPayoutDate?: string;
   estimatedBonus?: number;
   referralLink?: string;
+  // Security & Role-Based Access
+  role?: 'user' | 'admin' | 'super_admin';
+  isAdmin?: boolean;
   // Token Balances (Dual Token System)
   shopBalance: number;      // SHOP token (VND) - from sales
   growBalance: number;      // GROW token - from quests/staking

@@ -5,6 +5,7 @@ import { Dashboard } from './pages/Dashboard';
 import { Marketplace } from './pages/Marketplace';
 import { ProductDetail } from './pages/ProductDetail';
 import CommissionWallet from './components/CommissionWallet';
+import { AdminRoute } from './components/AdminRoute';
 import LandingPage from './pages/LandingPage';
 import VenturePage from './pages/VenturePage';
 import CopilotPage from './pages/CopilotPage';
@@ -57,8 +58,9 @@ const App: React.FC = () => {
 
               {/* ============================================================ */}
               {/* ADMIN ROUTES: Mission Control with Nested Routes */}
+              {/* PROTECTED: Requires admin role */}
               {/* ============================================================ */}
-              <Route path="/admin" element={<Admin />}>
+              <Route path="/admin" element={<AdminRoute><Admin /></AdminRoute>}>
                 <Route index element={<Overview />} />
                 <Route path="cms" element={<CMS />} />
                 <Route path="partners" element={<Partners />} />
