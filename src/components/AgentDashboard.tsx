@@ -27,7 +27,12 @@ export function AgentDashboard() {
             name: agent.definition.agent_name,
             status: 'active' as const,
             function: agent.definition.business_function,
-            kpis: agent.definition.success_kpis,
+            kpis: agent.definition.success_kpis.map(kpi => ({
+                name: kpi.name,
+                current: kpi.current || 0,
+                target: kpi.target,
+                unit: kpi.unit,
+            })),
             actions: agent.definition.core_actions,
         }));
 

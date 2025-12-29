@@ -53,6 +53,7 @@ const App: React.FC = () => {
               <Route path="/" element={<LandingPage />} />
               <Route path="/venture" element={<VenturePage />} />
               <Route path="/agencyos-demo" element={<AgencyOSDemo />} />
+              <Route path="/agent-ecosystem" element={<NewAgentDashboard />} />
 
               {/* ============================================================ */}
               {/* ADMIN ROUTES: Mission Control with Nested Routes */}
