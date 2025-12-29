@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WellNexus - Agent Ecosystem Dashboard</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+        @keyframes fade-in {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .animate-pulse { animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite; }
+        .animate-fade-in { animation: fade-in 0.5s ease-out forwards; }
+        .card { transition: all 0.3s; }
+        .card:hover { transform: translateY(-4px); box-shadow: 0 20px 40px rgba(0,0,0,0.1); }
+    </style>
+</head>
+<body class="min-h-screen bg-gradient-to-br from-gray-50 via-blue-50 to-purple-50">
+    <div class="p-6 space-y-6">
+        <!-- Header -->
+        <div class="space-y-2 animate-fade-in">
+            <div class="flex items-center gap-3">
+                <span class="text-4xl animate-pulse">⚡</span>
+                <h1 class="text-4xl font-bold bg-gradient-to-r from-purple-600 to-blue-600 bg-clip-text text-transparent">
+                    Agent Ecosystem
+                </h1>
+            </div>
+            <p class="text-gray-600 text-lg">
+                Monitoring <span class="font-bold text-purple-600">30</span> intelligent agents
+            </p>
+        </div>
+
+        <!-- Summary Cards -->
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+            <div class="card p-6 bg-gradient-to-br from-blue-500 to-blue-600 rounded-xl shadow-lg">
+                <div class="flex items-center justify-between text-white">
+                    <div>
+                        <p class="text-sm opacity-90">Total Agents</p>
+                        <p class="text-3xl font-bold">30</p>
+                    </div>
+                    <span class="text-4xl opacity-80">📊</span>
+                </div>
+            </div>
+            <div class="card p-6 bg-gradient-to-br from-green-500 to-green-600 rounded-xl shadow-lg">
+                <div class="flex items-center justify-between text-white">
+                    <div>
+                        <p class="text-sm opacity-90">Active Now</p>
+                        <p class="text-3xl font-bold">30</p>
+                    </div>
+                    <span class="text-4xl opacity-80">✅</span>
+                </div>
+            </div>
+            <div class="card p-6 bg-gradient-to-br from-purple-500 to-purple-600 rounded-xl shadow-lg">
+                <div class="flex items-center justify-between text-white">
+                    <div>
+                        <p class="text-sm opacity-90">Total KPIs</p>
+                        <p class="text-3xl font-bold">90</p>
+                    </div>
+                    <span class="text-4xl opacity-80">📈</span>
+                </div>
+            </div>
+            <div class="card p-6 bg-gradient-to-br from-orange-500 to-orange-600 rounded-xl shadow-lg">
+                <div class="flex items-center justify-between text-white">
+                    <div>
+                        <p class="text-sm opacity-90">Total Actions</p>
+                        <p class="text-3xl font-bold">150</p>
+                    </div>
+                    <span class="text-4xl opacity-80">⚡</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Agent Grid -->
+        <div class="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-4" id="agent-grid"></div>
+    </div>
+
+    <script>
+        const agents = [
+            { name: "Gemini Coach", function: "Customer Success & Support", kpis: [{ name: "Sessions", current: 245, target: 500, unit: "sessions" }], actions: 5 },
+            { name: "Sales Copilot", function: "Sales & Marketing", kpis: [{ name: "Leads", current: 120, target: 200, unit: "leads" }], actions: 4 },
+            { name: "The Bee", function: "Product & UX", kpis: [{ name: "Tasks", current: 89, target: 150, unit: "tasks" }], actions: 6 },
+            { name: "AgencyOS Agent", function: "Operations & Logistics", kpis: [{ name: "Commands", current: 85, target: 100, unit: "commands" }], actions: 85 },
+            { name: "Debugger Agent", function: "Operations & Logistics", kpis: [{ name: "Bugs Fixed", current: 0, target: 100, unit: "bugs" }], actions: 4 },
+            { name: "Code Reviewer", function: "Operations & Logistics", kpis: [{ name: "PRs Reviewed", current: 0, target: 200, unit: "reviews" }], actions: 4 },
+            { name: "Scout Agent", function: "Operations & Logistics", kpis: [{ name: "Patterns Found", current: 0, target: 100, unit: "patterns" }], actions: 4 },
+            { name: "Docs Manager", function: "Operations & Logistics", kpis: [{ name: "Docs Generated", current: 0, target: 50, unit: "docs" }], actions: 4 },
+            { name: "Scout External", function: "Operations & Logistics", kpis: [{ name: "Searches", current: 0, target: 100, unit: "searches" }], actions: 4 },
+            { name: "Project Manager", function: "Operations & Logistics", kpis: [{ name: "Reports", current: 0, target: 50, unit: "reports" }], actions: 4 },
+            { name: "React Expert", function: "Product & UX", kpis: [{ name: "Components", current: 156, target: 200, unit: "components" }], actions: 3 },
+            { name: "Next.js Expert", function: "Product & UX", kpis: [{ name: "Routes", current: 45, target: 100, unit: "routes" }], actions: 3 },
+            { name: "Node.js Expert", function: "IT & Infra / DevOps", kpis: [{ name: "APIs", current: 67, target: 100, unit: "endpoints" }], actions: 3 },
+            { name: "TypeScript Expert", function: "IT & Infra / DevOps", kpis: [{ name: "Types", current: 234, target: 300, unit: "types" }], actions: 3 },
+            { name: "Postgres Expert", function: "IT & Infra / DevOps", kpis: [{ name: "Queries", current: 89, target: 150, unit: "queries" }], actions: 3 },
+            { name: "MongoDB Expert", function: "IT & Infra / DevOps", kpis: [{ name: "Collections", current: 23, target: 50, unit: "collections" }], actions: 3 },
+            { name: "Testing Expert", function: "Operations & Logistics", kpis: [{ name: "Coverage", current: 100, target: 100, unit: "%" }], actions: 3 },
+            { name: "Playwright Expert", function: "Operations & Logistics", kpis: [{ name: "E2E Tests", current: 34, target: 50, unit: "tests" }], actions: 3 },
+            { name: "Jest Expert", function: "Operations & Logistics", kpis: [{ name: "Unit Tests", current: 108, target: 150, unit: "tests" }], actions: 3 },
+            { name: "Vitest Expert", function: "Operations & Logistics", kpis: [{ name: "Tests", current: 108, target: 150, unit: "tests" }], actions: 3 },
+            { name: "Docker Expert", function: "IT & Infra / DevOps", kpis: [{ name: "Containers", current: 5, target: 10, unit: "containers" }], actions: 3 },
+            { name: "Kubernetes Expert", function: "IT & Infra / DevOps", kpis: [{ name: "Pods", current: 8, target: 20, unit: "pods" }], actions: 3 },
+            { name: "AWS Expert", function: "IT & Infra / DevOps", kpis: [{ name: "Services", current: 12, target: 30, unit: "services" }], actions: 3 },
+            { name: "Security Expert", function: "IT & Infra / DevOps", kpis: [{ name: "Audits", current: 5, target: 12, unit: "audits" }], actions: 3 },
+            { name: "Performance Expert", function: "Operations & Logistics", kpis: [{ name: "Optimizations", current: 23, target: 50, unit: "fixes" }], actions: 3 },
+            { name: "API Design Expert", function: "Product & UX", kpis: [{ name: "Endpoints", current: 45, target: 100, unit: "endpoints" }], actions: 3 },
+            { name: "GraphQL Expert", function: "IT & Infra / DevOps", kpis: [{ name: "Schemas", current: 12, target: 30, unit: "schemas" }], actions: 3 },
+            { name: "Redis Expert", function: "IT & Infra / DevOps", kpis: [{ name: "Cache Hits", current: 89, target: 95, unit: "%" }], actions: 3 },
+            { name: "CI/CD Expert", function: "IT & Infra / DevOps", kpis: [{ name: "Pipelines", current: 8, target: 15, unit: "pipelines" }], actions: 3 },
+            { name: "Monitoring Expert", function: "Operations & Logistics", kpis: [{ name: "Alerts", current: 2, target: 10, unit: "alerts" }], actions: 3 },
+        ];
+
+        const grid = document.getElementById('agent-grid');
+        
+        agents.forEach((agent, idx) => {
+            const progress = Math.min((agent.kpis[0].current / agent.kpis[0].target) * 100, 100);
+            const card = document.createElement('div');
+            card.className = 'card p-5 bg-white rounded-xl shadow-md border border-gray-100 animate-fade-in';
+            card.style.animationDelay = `${idx * 50}ms`;
+            card.innerHTML = `
+                <div class="space-y-3">
+                    <div class="flex items-center justify-between">
+                        <h3 class="font-bold text-lg text-gray-800">${agent.name}</h3>
+                        <span class="relative flex h-3 w-3">
+                            <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
+                            <span class="relative inline-flex rounded-full h-3 w-3 bg-green-500"></span>
+                        </span>
+                    </div>
+                    <div class="inline-block">
+                        <span class="px-3 py-1 bg-gradient-to-r from-blue-100 to-purple-100 text-blue-700 rounded-full text-xs font-medium">
+                            ${agent.function}
+                        </span>
+                    </div>
+                    <div class="space-y-2 pt-2">
+                        <p class="text-xs font-semibold text-gray-700 uppercase tracking-wide">Performance</p>
+                        <div class="space-y-1">
+                            <div class="flex justify-between text-xs">
+                                <span class="text-gray-600">${agent.kpis[0].name}</span>
+                                <span class="font-mono font-semibold text-gray-800">
+                                    ${agent.kpis[0].current}/${agent.kpis[0].target} ${agent.kpis[0].unit}
+                                </span>
+                            </div>
+                            <div class="w-full bg-gray-200 rounded-full h-2 overflow-hidden">
+                                <div class="bg-gradient-to-r from-blue-500 to-purple-500 h-2 rounded-full transition-all duration-500 ease-out" style="width: ${progress}%"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="pt-3 border-t border-gray-100 flex items-center justify-between">
+                        <p class="text-xs text-gray-500">${agent.actions} actions</p>
+                        <span class="text-purple-500">⚡</span>
+                    </div>
+                </div>
+            `;
+            grid.appendChild(card);
+        });
+    </script>
+</body>
+</html>
