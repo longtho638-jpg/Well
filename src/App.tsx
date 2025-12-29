@@ -22,6 +22,8 @@ import Finance from './pages/Admin/Finance';
 import PolicyEngine from './pages/Admin/PolicyEngine';
 import OrderManagement from './pages/Admin/OrderManagement';
 import AgentDashboard from './pages/AgentDashboard';
+import AgencyOSDemo from './pages/AgencyOSDemo';
+import { AgentDashboard as NewAgentDashboard } from './components/AgentDashboard';
 import { useStore } from './store';
 import { ThemeProvider } from './context/ThemeContext';
 import { ToastProvider } from './components/ui/Toast';
@@ -50,6 +52,7 @@ const App: React.FC = () => {
               {/* ============================================================ */}
               <Route path="/" element={<LandingPage />} />
               <Route path="/venture" element={<VenturePage />} />
+              <Route path="/agencyos-demo" element={<AgencyOSDemo />} />
 
               {/* ============================================================ */}
               {/* ADMIN ROUTES: Mission Control with Nested Routes */}

@@ -1,0 +1,19 @@
+{
+    "status": "healthy",
+    "version": "2.0.0",
+    "timestamp": "2025-12-29T10:11:00Z",
+    "features": {
+        "agencyos": true,
+        "agents": 24,
+        "commands": 85,
+        "analytics": true,
+        "errorBoundary": true,
+        "rateLimiting": true,
+        "securityHeaders": true
+    },
+    "integrations": {
+        "supabase": true,
+        "gemini": true,
+        "vercel": true
+    }
+}

@@ -4,6 +4,13 @@ import { ClaudeKitAdapter } from './claudekit/ClaudeKitAdapter';
 import { GeminiCoachAgent } from './custom/GeminiCoachAgent';
 import { SalesCopilotAgent } from './custom/SalesCopilotAgent';
 import { TheBeeAgent } from './custom/TheBeeAgent';
+import { AgencyOSAgent } from './custom/AgencyOSAgent';
+import { DebuggerAgent } from './custom/DebuggerAgent';
+import { CodeReviewerAgent } from './custom/CodeReviewerAgent';
+import { ScoutAgent } from './custom/ScoutAgent';
+import { DocsManagerAgent } from './custom/DocsManagerAgent';
+import { ScoutExternalAgent } from './custom/ScoutExternalAgent';
+import { ProjectManagerAgent } from './custom/ProjectManagerAgent';
 
 /**
  * Central registry for all agents in the system.
@@ -35,6 +42,13 @@ class AgentRegistry {
     this.register(new GeminiCoachAgent());
     this.register(new SalesCopilotAgent());
     this.register(new TheBeeAgent());
+    this.register(new AgencyOSAgent()); // 85+ AgencyOS commands
+    this.register(new DebuggerAgent()); // Production debugging
+    this.register(new CodeReviewerAgent()); // Code review
+    this.register(new ScoutAgent()); // Codebase exploration
+    this.register(new DocsManagerAgent()); // Documentation
+    this.register(new ScoutExternalAgent()); // Web research
+    this.register(new ProjectManagerAgent()); // Coordination
 
     // Then register ClaudeKit agents
     this.registerClaudeKitAgents();
@@ -51,31 +65,31 @@ class AgentRegistry {
       { name: 'nextjs-expert', function: 'Product & UX' },
       { name: 'nodejs-expert', function: 'IT & Infra / DevOps' },
       { name: 'typescript-expert', function: 'IT & Infra / DevOps' },
-      
+
       // Database agents
       { name: 'postgres-expert', function: 'IT & Infra / DevOps' },
       { name: 'mongodb-expert', function: 'IT & Infra / DevOps' },
-      
+
       // Testing agents
       { name: 'testing-expert', function: 'Operations & Logistics' },
       { name: 'playwright-expert', function: 'Operations & Logistics' },
       { name: 'jest-testing-expert', function: 'Operations & Logistics' },
       { name: 'vitest-testing-expert', function: 'Operations & Logistics' },
-      
+
       // DevOps agents
       { name: 'docker-expert', function: 'IT & Infra / DevOps' },
       { name: 'devops-expert', function: 'IT & Infra / DevOps' },
       { name: 'github-actions-expert', function: 'IT & Infra / DevOps' },
-      
+
       // Code quality
       { name: 'code-review-expert', function: 'IT & Infra / DevOps' },
       { name: 'refactoring-expert', function: 'IT & Infra / DevOps' },
       { name: 'linting-expert', function: 'IT & Infra / DevOps' },
-      
+
       // Frontend
       { name: 'css-styling-expert', function: 'Product & UX' },
       { name: 'accessibility-expert', function: 'Product & UX' },
-      
+
       // General
       { name: 'research-expert', function: 'Market & Research' },
       { name: 'documentation-expert', function: 'Data & Analytics' },

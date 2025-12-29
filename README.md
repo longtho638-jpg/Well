@@ -4,7 +4,8 @@ A Hybrid Community Commerce platform for Vietnam, powered by a robust Agentic Op
 
 ## ✨ Key Features
 
-- 🤖 **Agent-OS** - A swarm of 22+ AI agents (Coach, Sales Copilot, Reward Engine, Compliance) working together.
+- 🤖 **Agent-OS** - A swarm of 24+ AI agents (Coach, Sales Copilot, Reward Engine, Compliance) working together.
+- ⚡ **AgencyOS Integration** - 85+ automation commands for Marketing, Sales, Finance, Operations, Strategy, and AI Agents.
 - 🛍️ **Social Commerce** - MLM/Affiliate marketplace with commission tracking.
 - 💰 **HealthFi Wallet** - Dual-token system (SHOP for cashflow, GROW for equity) with automated tax compliance.
 - 📊 **Agent Dashboard** - Real-time monitoring of AI agent performance and KPIs.
@@ -91,9 +92,11 @@ src/
 
 ## 📝 Documentation
 
+- [**AGENCYOS_INTEGRATION.md**](./AGENCYOS_INTEGRATION.md) - AgencyOS Integration Guide (85+ Commands).
 - [**BIZ_PLAN_2026.md**](./BIZ_PLAN_2026.md) - Vision and Roadmap.
 - [**DESIGN_SYSTEM.md**](./DESIGN_SYSTEM.md) - UI/UX Guidelines.
 - [**Agent Dashboard**](/dashboard/agents) - Visualize active agents (in-app).
+- [**AgencyOS Demo**](/agencyos-demo) - Interactive command demo (in-app).
 
 ## 🤝 Contributing
 
