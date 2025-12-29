@@ -25,6 +25,9 @@ import OrderManagement from './pages/Admin/OrderManagement';
 import AgentDashboard from './pages/AgentDashboard';
 import AgencyOSDemo from './pages/AgencyOSDemo';
 import { AgentDashboard as NewAgentDashboard } from './components/AgentDashboard';
+import Login from './pages/Login';
+import Signup from './pages/Signup';
+import { useAuth } from './hooks/useAuth';
 import { useStore } from './store';
 import { ThemeProvider } from './context/ThemeContext';
 import { ToastProvider } from './components/ui/Toast';
@@ -34,6 +37,9 @@ import { AnimatePresence, motion } from 'framer-motion';
 const App: React.FC = () => {
   const { isAuthenticated } = useStore();
   const location = useLocation();
+
+  // Initialize auth listener
+  useAuth();
 
   return (
     <ThemeProvider>
@@ -55,6 +61,8 @@ const App: React.FC = () => {
               <Route path="/venture" element={<VenturePage />} />
               <Route path="/agencyos-demo" element={<AgencyOSDemo />} />
               <Route path="/agent-ecosystem" element={<NewAgentDashboard />} />
+              <Route path="/login" element={<Login />} />
+              <Route path="/signup" element={<Signup />} />
 
               {/* ============================================================ */}
               {/* ADMIN ROUTES: Mission Control with Nested Routes */}
@@ -75,7 +83,7 @@ const App: React.FC = () => {
               {/* ============================================================ */}
               <Route
                 path="/dashboard"
-                element={isAuthenticated ? <AppLayout /> : <Navigate to="/" replace />}
+                element={isAuthenticated ? <AppLayout /> : <Navigate to="/login" replace />}
               >
                 {/* Dashboard Home */}
                 <Route index element={<Dashboard />} />

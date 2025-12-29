@@ -189,11 +189,9 @@ const CONTENT = {
 // ============================================================================
 export default function LandingPage() {
   const navigate = useNavigate();
-  const { login } = useStore();
 
   const handleJoin = () => {
-    login();
-    navigate('/dashboard');
+    navigate('/signup');
   };
 
   const handleVisionClick = () => {

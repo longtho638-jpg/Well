@@ -87,7 +87,6 @@ function enrichUserWithWealthMetrics(user: User): User {
 interface AppState {
   // Auth State
   isAuthenticated: boolean;
-  login: () => void;
   logout: () => void;
 
   // Data Models
@@ -181,10 +180,10 @@ export const useStore = create<AppState>((set, get) => ({
   },
 
   // Auth Actions
-  login: () => set({ isAuthenticated: true }),
+  // login: REMOVED - Use Supabase Auth instead
   logout: async () => {
     await supabase.auth.signOut();
-    set({ isAuthenticated: false, user: enrichUserWithWealthMetrics(CURRENT_USER) }); 
+    set({ isAuthenticated: false, user: enrichUserWithWealthMetrics(CURRENT_USER) });
   },
 
   // Quest Actions - FIXED: Cộng GROW tokens khi complete quest
@@ -246,11 +245,11 @@ export const useStore = create<AppState>((set, get) => ({
     set((state) => {
       const newRevenueData = [...state.revenueData];
       if (newRevenueData.length > 0) {
-         const lastIdx = newRevenueData.length - 1;
-         newRevenueData[lastIdx] = {
-             ...newRevenueData[lastIdx],
-             value: newRevenueData[lastIdx].value + product.price
-         };
+        const lastIdx = newRevenueData.length - 1;
+        newRevenueData[lastIdx] = {
+          ...newRevenueData[lastIdx],
+          value: newRevenueData[lastIdx].value + product.price
+        };
       }
 
       // Update user and recalculate Wealth OS metrics
@@ -276,50 +275,50 @@ export const useStore = create<AppState>((set, get) => ({
     // AGENTIC WORKFLOW: Trigger "The Bee" Reward Engine
     const beeAgent = agentRegistry.get('The Bee');
     if (beeAgent) {
-        const currentState = get();
-        try {
-            const rewardResult = await beeAgent.execute({
-                action: 'processReward',
-                transaction: newTransaction,
-                userRank: currentState.user.rank
-            });
+      const currentState = get();
+      try {
+        const rewardResult = await beeAgent.execute({
+          action: 'processReward',
+          transaction: newTransaction,
+          userRank: currentState.user.rank
+        });
 
-            if (rewardResult && rewardResult.rewardAmount) {
-                // Update User Balance with Rewards (GROW Tokens / Points)
-                set((state) => ({
-                    user: {
-                        ...state.user,
-                        growBalance: state.user.growBalance + rewardResult.rewardAmount
-                    },
-                    // Optionally add a transaction record for the reward
-                    transactions: [
-                        {
-                            id: `TX-REWARD-${Date.now()}`,
-                            userId: state.user.id,
-                            date: new Date().toISOString().split('T')[0],
-                            amount: rewardResult.rewardAmount,
-                            type: 'Team Volume Bonus', // Categorize as Bonus
-                            status: 'completed',
-                            taxDeducted: 0,
-                            hash: generateTxHash(),
-                            currency: 'GROW'
-                        },
-                        ...state.transactions
-                    ]
-                }));
-                
-                // Log agent execution
-                const newLogs = beeAgent.getLogs();
-                set((state) => ({
-                    agentState: {
-                        ...state.agentState,
-                        agentLogs: [...state.agentState.agentLogs, ...newLogs]
-                    }
-                }));
+        if (rewardResult && rewardResult.rewardAmount) {
+          // Update User Balance with Rewards (GROW Tokens / Points)
+          set((state) => ({
+            user: {
+              ...state.user,
+              growBalance: state.user.growBalance + rewardResult.rewardAmount
+            },
+            // Optionally add a transaction record for the reward
+            transactions: [
+              {
+                id: `TX-REWARD-${Date.now()}`,
+                userId: state.user.id,
+                date: new Date().toISOString().split('T')[0],
+                amount: rewardResult.rewardAmount,
+                type: 'Team Volume Bonus', // Categorize as Bonus
+                status: 'completed',
+                taxDeducted: 0,
+                hash: generateTxHash(),
+                currency: 'GROW'
+              },
+              ...state.transactions
+            ]
+          }));
+
+          // Log agent execution
+          const newLogs = beeAgent.getLogs();
+          set((state) => ({
+            agentState: {
+              ...state.agentState,
+              agentLogs: [...state.agentState.agentLogs, ...newLogs]
             }
-        } catch (e) {
-            console.error("The Bee failed to distribute reward:", e);
+          }));
         }
+      } catch (e) {
+        console.error("The Bee failed to distribute reward:", e);
+      }
     }
   },
 
@@ -620,7 +619,7 @@ export const useStore = create<AppState>((set, get) => ({
         cashflowValue: 0, // Calculated via enrich
         assetGrowthRate: 0, // Calculated via enrich
       };
-      
+
       set({ user: enrichUserWithWealthMetrics(user), isAuthenticated: true });
     }
   },
@@ -630,15 +629,15 @@ export const useStore = create<AppState>((set, get) => ({
    */
   persistAgentLog: async (log: AgentLog) => {
     const { data: { session } } = await supabase.auth.getSession();
-    
+
     if (session?.user) {
-        await supabase.from('agent_logs').insert([{
+      await supabase.from('agent_logs').insert([{
         agent_name: log.agentName,
         action: log.action,
         input: log.inputs,
         output: log.outputs,
         user_id: session.user.id
-        }]);
+      }]);
     }
   }
 }));

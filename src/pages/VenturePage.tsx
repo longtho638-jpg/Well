@@ -166,11 +166,9 @@ const CONTENT = {
 // ============================================================================
 export default function VenturePage() {
   const navigate = useNavigate();
-  const { login } = useStore();
 
   const handleJoin = () => {
-    login();
-    navigate('/dashboard');
+    navigate('/signup');
   };
 
   // Animation Variants - Cinematic Style
@@ -697,11 +695,10 @@ export default function VenturePage() {
                         <span className="text-lg font-bold text-white font-display">
                           {region.name}
                         </span>
-                        <span className={`text-xs font-bold px-2 py-1 rounded-full ${
-                          region.status === 'Active' ? 'bg-emerald-500/20 text-emerald-400' :
-                          region.status === 'Expanding' ? 'bg-[#FFBF00]/20 text-[#FFBF00]' :
-                          'bg-slate-700/20 text-slate-400'
-                        }`}>
+                        <span className={`text-xs font-bold px-2 py-1 rounded-full ${region.status === 'Active' ? 'bg-emerald-500/20 text-emerald-400' :
+                            region.status === 'Expanding' ? 'bg-[#FFBF00]/20 text-[#FFBF00]' :
+                              'bg-slate-700/20 text-slate-400'
+                          }`}>
                           {region.status}
                         </span>
                       </div>
