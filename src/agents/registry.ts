@@ -35,6 +35,19 @@ class AgentRegistry {
   }
 
   /**
+   * Get all registered agents.
+   */
+  getAll(): BaseAgent[] {
+    return Array.from(this.agents.values());
+  }
+
+  getByFunction(businessFunction: AgentFunction): BaseAgent[] {
+    return this.getAll().filter(
+      (agent) => agent.definition.business_function === businessFunction
+    );
+  }
+
+  /**
    * Register default agents including ClaudeKit agents.
    */
   private registerDefaultAgents(): void {
