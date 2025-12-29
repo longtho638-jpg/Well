@@ -5,7 +5,7 @@ import { AgentDefinition, AgentLog, AgentKPI, AgentPolicy } from '@/types/agenti
  * Provides common functionality for policy checking, logging, and KPI tracking.
  */
 export abstract class BaseAgent {
-  protected definition: AgentDefinition;
+  public definition: AgentDefinition;
   protected logs: AgentLog[] = [];
 
   constructor(definition: AgentDefinition) {
