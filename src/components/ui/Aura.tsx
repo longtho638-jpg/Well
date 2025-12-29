@@ -103,8 +103,12 @@ export const AuraBadge: React.FC<{ children: React.ReactNode; color?: 'cyan' | '
 
 // ===== GRID PATTERN BACKGROUND =====
 
-export const GridPattern: React.FC = () => {
+interface GridPatternProps {
+    className?: string;
+}
+
+export const GridPattern: React.FC<GridPatternProps> = ({ className = '' }) => {
     return (
-        <div className="absolute inset-0 -z-10 h-full w-full bg-black bg-grid-pattern [mask-image:radial-gradient(ellipse_at_center,transparent_20%,black)]" />
+        <div className={`absolute inset-0 -z-10 h-full w-full bg-black bg-grid-pattern [mask-image:radial-gradient(ellipse_at_center,transparent_20%,black)] ${className}`} />
     );
 };
