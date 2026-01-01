@@ -30,6 +30,8 @@ import {
   ResponsiveContainer,
   Tooltip
 } from 'recharts';
+import { ParticleBackground } from '@/components/ParticleBackground';
+import { CursorGlow } from '@/components/CursorGlow';
 
 // Quiz questions structure
 interface Question {
@@ -289,21 +291,24 @@ export default function HealthCheck() {
 
   if (showResults) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-violet-50 dark:from-slate-900 via-purple-50 dark:via-slate-800 to-pink-50 dark:to-slate-900 p-6">
+      <div className="min-h-screen bg-dark-ultra p-6 relative overflow-hidden">
+        <ParticleBackground />
+        <CursorGlow />
+
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          className="max-w-7xl mx-auto space-y-6"
+          className="max-w-7xl mx-auto space-y-6 relative z-10"
         >
           {/* Results Hero */}
           <motion.div
             initial={{ opacity: 0, y: -30 }}
             animate={{ opacity: 1, y: 0 }}
-            className="bg-gradient-to-r from-primary via-teal-600 to-cyan-600 rounded-3xl shadow-2xl overflow-hidden relative"
+            className="glass-ultra rounded-3xl shadow-2xl overflow-hidden relative"
           >
             {/* Decorative Elements */}
-            <div className="absolute inset-0 bg-gradient-to-br from-white/10 to-transparent" />
-            <div className="absolute top-0 right-0 w-96 h-96 bg-accent/20 rounded-full blur-3xl" />
+            <div className="absolute inset-0 bg-gradient-to-br from-teal-500/20 via-blue-600/20 to-purple-600/20" />
+            <div className="absolute top-0 right-0 w-96 h-96 bg-purple-500/20 rounded-full blur-3xl" />
 
             <div className="relative p-12 text-white">
               <motion.div
@@ -314,12 +319,12 @@ export default function HealthCheck() {
               >
                 <div className="flex-1">
                   <div className="flex items-center gap-4 mb-4">
-                    <div className="w-16 h-16 bg-white/20 backdrop-blur-xl rounded-2xl flex items-center justify-center shadow-xl">
-                      <Award className="w-10 h-10 text-accent" />
+                    <div className="w-16 h-16 bg-white/10 backdrop-blur-xl rounded-2xl flex items-center justify-center shadow-xl border border-white/20">
+                      <Award className="w-10 h-10 text-yellow-400" />
                     </div>
                     <div>
                       <h1 className="text-4xl font-bold mb-2">{t('healthCheck.resultsTitle')}</h1>
-                      <p className="text-teal-100 text-lg">{t('healthCheck.yourHealthScore')}</p>
+                      <p className="text-white/60 text-lg">{t('healthCheck.yourHealthScore')}</p>
                     </div>
                   </div>
                 </div>
@@ -329,7 +334,7 @@ export default function HealthCheck() {
                   initial={{ scale: 0, rotate: -180 }}
                   animate={{ scale: 1, rotate: 0 }}
                   transition={{ type: 'spring', delay: 0.4 }}
-                  className="w-48 h-48 bg-white/20 backdrop-blur-2xl rounded-3xl flex items-center justify-center shadow-2xl border-4 border-white/30"
+                  className="w-48 h-48 bg-white/10 backdrop-blur-2xl rounded-3xl flex items-center justify-center shadow-2xl border-4 border-white/20"
                 >
                   <div className="text-center">
                     <motion.p
@@ -340,7 +345,7 @@ export default function HealthCheck() {
                     >
                       {healthScore}
                     </motion.p>
-                    <p className="text-white text-xl font-semibold opacity-90">/100</p>
+                    <p className="text-white/80 text-xl font-semibold opacity-90">/100</p>
                   </div>
                 </motion.div>
               </motion.div>
@@ -351,13 +356,13 @@ export default function HealthCheck() {
                 transition={{ delay: 0.6 }}
                 className="mt-6"
               >
-                <div className="inline-block bg-white/20 backdrop-blur-xl px-6 py-3 rounded-full border border-white/30">
+                <div className="inline-block bg-white/10 backdrop-blur-xl px-6 py-3 rounded-full border border-white/20">
                   <p className="text-xl font-bold text-white flex items-center gap-2">
-                    <Sparkles className="w-6 h-6 text-accent" />
+                    <Sparkles className="w-6 h-6 text-yellow-400" />
                     {getScoreLabel(healthScore)}
                   </p>
                 </div>
-                <p className="text-teal-100 mt-4 text-lg max-w-2xl">
+                <p className="text-white/80 mt-4 text-lg max-w-2xl">
                   {getScoreDescription(healthScore)}
                 </p>
               </motion.div>
@@ -369,40 +374,41 @@ export default function HealthCheck() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.8 }}
-            className="bg-white/90 backdrop-blur-xl rounded-3xl shadow-2xl p-8 border border-gray-100"
+            className="glass-ultra rounded-3xl shadow-2xl p-8"
           >
             <div className="flex items-center gap-3 mb-6">
-              <div className="w-12 h-12 bg-gradient-to-br from-primary to-teal-600 rounded-2xl flex items-center justify-center shadow-lg">
+              <div className="w-12 h-12 bg-gradient-to-br from-teal-500 to-teal-600 rounded-2xl flex items-center justify-center shadow-lg">
                 <TrendingUp className="w-6 h-6 text-white" />
               </div>
               <div>
-                <h2 className="text-2xl font-bold text-gray-900">Phân Tích Chi Tiết</h2>
-                <p className="text-sm text-gray-600">Điểm số từng khía cạnh sức khỏe</p>
+                <h2 className="text-2xl font-bold text-white">Phân Tích Chi Tiết</h2>
+                <p className="text-sm text-white/60">Điểm số từng khía cạnh sức khỏe</p>
               </div>
             </div>
 
             <ResponsiveContainer width="100%" height={400}>
               <RadarChart data={healthDimensions}>
-                <PolarGrid stroke="#e5e7eb" />
+                <PolarGrid stroke="#ffffff30" />
                 <PolarAngleAxis
                   dataKey="dimension"
-                  tick={{ fill: '#374151', fontSize: 14, fontWeight: 600 }}
+                  tick={{ fill: '#ffffff90', fontSize: 14, fontWeight: 600 }}
                 />
-                <PolarRadiusAxis angle={90} domain={[0, 100]} tick={{ fill: '#9ca3af' }} />
+                <PolarRadiusAxis angle={90} domain={[0, 100]} tick={{ fill: '#ffffff60' }} />
                 <Radar
                   name="Điểm Sức Khỏe"
                   dataKey="score"
-                  stroke="#00575A"
-                  fill="#00575A"
+                  stroke="#2dd4bf"
+                  fill="#2dd4bf"
                   fillOpacity={0.5}
                   strokeWidth={3}
                 />
                 <Tooltip
                   contentStyle={{
                     borderRadius: '12px',
-                    border: '2px solid #00575A',
-                    backgroundColor: 'rgba(255, 255, 255, 0.95)',
-                    backdropFilter: 'blur(10px)'
+                    border: '1px solid rgba(255, 255, 255, 0.2)',
+                    backgroundColor: 'rgba(0, 0, 0, 0.8)',
+                    backdropFilter: 'blur(10px)',
+                    color: 'white'
                   }}
                 />
               </RadarChart>
@@ -415,11 +421,11 @@ export default function HealthCheck() {
                   initial={{ opacity: 0, scale: 0.9 }}
                   animate={{ opacity: 1, scale: 1 }}
                   transition={{ delay: 1 + idx * 0.1 }}
-                  className="bg-gradient-to-br from-primary/5 dark:from-primary/10 to-teal-50 dark:to-slate-700 rounded-xl p-4 border border-primary/20 dark:border-primary/30"
+                  className="bg-white/5 rounded-xl p-4 border border-white/10"
                 >
-                  <p className="text-sm font-semibold text-gray-700 dark:text-slate-300 mb-1">{dim.dimension}</p>
-                  <p className="text-3xl font-bold text-primary dark:text-cyan-400">{dim.score}</p>
-                  <div className="mt-2 h-2 bg-gray-200 rounded-full overflow-hidden">
+                  <p className="text-sm font-semibold text-white/80 mb-1">{dim.dimension}</p>
+                  <p className="text-3xl font-bold text-teal-400">{dim.score}</p>
+                  <div className="mt-2 h-2 bg-white/10 rounded-full overflow-hidden">
                     <motion.div
                       initial={{ width: 0 }}
                       animate={{ width: `${dim.score}%` }}
@@ -439,14 +445,14 @@ export default function HealthCheck() {
             transition={{ delay: 1.2 }}
           >
             <div className="flex items-center gap-3 mb-6">
-              <div className="w-12 h-12 bg-gradient-to-br from-accent to-yellow-500 rounded-2xl flex items-center justify-center shadow-lg">
+              <div className="w-12 h-12 bg-gradient-to-br from-yellow-400 to-orange-500 rounded-2xl flex items-center justify-center shadow-lg">
                 <Sparkles className="w-6 h-6 text-white" />
               </div>
               <div>
-                <h2 className="text-2xl font-bold text-gray-900 dark:text-slate-100">
+                <h2 className="text-2xl font-bold text-white">
                   {t('healthCheck.recommendationsTitle')}
                 </h2>
-                <p className="text-sm text-gray-600 dark:text-slate-400">Sản phẩm được AI đề xuất dành riêng cho bạn</p>
+                <p className="text-sm text-white/60">Sản phẩm được AI đề xuất dành riêng cho bạn</p>
               </div>
             </div>
 
@@ -463,8 +469,8 @@ export default function HealthCheck() {
                     transition={{ delay: 1.4 + index * 0.15 }}
                     className={`
                       ${isLarge ? 'md:col-span-2 lg:row-span-2' : ''}
-                      bg-gradient-to-br from-white dark:from-slate-800 to-gray-50/50 dark:to-slate-700 backdrop-blur-xl rounded-2xl shadow-xl border-2 overflow-hidden
-                      ${product.priority === 'high' ? 'border-primary/30 dark:border-primary/40' : 'border-gray-200 dark:border-slate-600'}
+                      glass-ultra rounded-2xl shadow-xl overflow-hidden
+                      ${product.priority === 'high' ? 'border-teal-500/50' : ''}
                       hover:shadow-2xl hover:scale-[1.02] transition-all duration-300 group
                     `}
                   >
@@ -481,14 +487,14 @@ export default function HealthCheck() {
                     <div className={`p-6 ${isLarge ? 'lg:p-8' : ''}`}>
                       {/* Product Header */}
                       <div className="flex items-start gap-4 mb-4">
-                        <div className={`${isLarge ? 'w-16 h-16' : 'w-12 h-12'} bg-gradient-to-br from-primary to-teal-600 rounded-2xl flex items-center justify-center shadow-lg flex-shrink-0 group-hover:scale-110 transition-transform`}>
+                        <div className={`${isLarge ? 'w-16 h-16' : 'w-12 h-12'} bg-gradient-to-br from-teal-500 to-teal-600 rounded-2xl flex items-center justify-center shadow-lg flex-shrink-0 group-hover:scale-110 transition-transform`}>
                           <Package className={`${isLarge ? 'w-8 h-8' : 'w-6 h-6'} text-white`} />
                         </div>
                         <div className="flex-1">
-                          <h3 className={`${isLarge ? 'text-2xl' : 'text-lg'} font-bold text-gray-900 dark:text-slate-100 mb-2 group-hover:text-primary transition-colors`}>
+                          <h3 className={`${isLarge ? 'text-2xl' : 'text-lg'} font-bold text-white mb-2 group-hover:text-teal-400 transition-colors`}>
                             {product.name}
                           </h3>
-                          <p className={`${isLarge ? 'text-base' : 'text-sm'} text-gray-600 dark:text-slate-400 leading-relaxed`}>
+                          <p className={`${isLarge ? 'text-base' : 'text-sm'} text-white/60 leading-relaxed`}>
                             {product.reason}
                           </p>
                         </div>
@@ -498,20 +504,20 @@ export default function HealthCheck() {
                       <div className={`space-y-2 mb-6 ${isLarge ? '' : 'max-h-32 overflow-hidden'}`}>
                         {product.benefits.slice(0, isLarge ? 4 : 2).map((benefit, idx) => (
                           <div key={idx} className="flex items-start gap-2">
-                            <CheckCircle2 className="w-4 h-4 text-green-500 flex-shrink-0 mt-0.5" />
-                            <span className="text-sm text-gray-700 dark:text-slate-300 leading-relaxed">{benefit}</span>
+                            <CheckCircle2 className="w-4 h-4 text-teal-400 flex-shrink-0 mt-0.5" />
+                            <span className="text-sm text-white/80 leading-relaxed">{benefit}</span>
                           </div>
                         ))}
                         {!isLarge && product.benefits.length > 2 && (
-                          <p className="text-xs text-gray-500 italic">+{product.benefits.length - 2} lợi ích khác...</p>
+                          <p className="text-xs text-white/40 italic">+{product.benefits.length - 2} lợi ích khác...</p>
                         )}
                       </div>
 
                       {/* Price & CTA */}
-                      <div className="flex items-center justify-between gap-4 pt-4 border-t border-gray-200 dark:border-slate-600">
+                      <div className="flex items-center justify-between gap-4 pt-4 border-t border-white/10">
                         <div>
-                          <p className="text-xs text-gray-500 dark:text-slate-400 mb-1">{t('healthCheck.priceLabel')}</p>
-                          <p className={`${isLarge ? 'text-3xl' : 'text-2xl'} font-bold bg-gradient-to-r from-primary to-teal-600 bg-clip-text text-transparent`}>
+                          <p className="text-xs text-white/60 mb-1">{t('healthCheck.priceLabel')}</p>
+                          <p className={`${isLarge ? 'text-3xl' : 'text-2xl'} font-bold text-teal-400`}>
                             {formatVND(product.price)}
                           </p>
                         </div>
@@ -519,7 +525,7 @@ export default function HealthCheck() {
                           whileHover={{ scale: 1.05 }}
                           whileTap={{ scale: 0.95 }}
                           onClick={() => handleOrderRecommendation(product.id)}
-                          className={`${isLarge ? 'px-8 py-4 text-base' : 'px-6 py-3 text-sm'} bg-gradient-to-r from-primary to-teal-600 text-white rounded-xl font-bold hover:shadow-xl transition-all duration-300 flex items-center gap-2 group`}
+                          className={`${isLarge ? 'px-8 py-4 text-base' : 'px-6 py-3 text-sm'} bg-gradient-to-r from-teal-600 to-teal-500 text-white rounded-xl font-bold hover:shadow-xl transition-all duration-300 flex items-center gap-2 group`}
                         >
                           <ShoppingBag className={`${isLarge ? 'w-5 h-5' : 'w-4 h-4'} group-hover:scale-110 transition-transform`} />
                           {t('healthCheck.orderNow')}
@@ -537,9 +543,9 @@ export default function HealthCheck() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 1.8 }}
-            className="bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 rounded-3xl shadow-2xl overflow-hidden relative"
+            className="glass-ultra rounded-3xl shadow-2xl overflow-hidden relative"
           >
-            <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAwIiBoZWlnaHQ9IjIwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZGVmcz48cGF0dGVybiBpZD0iZ3JpZCIgd2lkdGg9IjQwIiBoZWlnaHQ9IjQwIiBwYXR0ZXJuVW5pdHM9InVzZXJTcGFjZU9uVXNlIj48cGF0aCBkPSJNIDQwIDAgTCAwIDAgMCA0MCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSJ3aGl0ZSIgc3Ryb2tlLW9wYWNpdHk9IjAuMSIgc3Ryb2tlLXdpZHRoPSIxIi8+PC9wYXR0ZXJuPjwvZGVmcz48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSJ1cmwoI2dyaWQpIi8+PC9zdmc+')] opacity-20" />
+            <div className="absolute inset-0 bg-gradient-to-r from-purple-900/50 to-pink-900/50" />
 
             <div className="relative p-12">
               <div className="flex flex-col md:flex-row items-center justify-between gap-8">
@@ -550,7 +556,7 @@ export default function HealthCheck() {
                       rotate: [0, 5, -5, 0]
                     }}
                     transition={{ duration: 2, repeat: Infinity }}
-                    className="w-20 h-20 bg-white/20 backdrop-blur-2xl rounded-3xl flex items-center justify-center shadow-2xl border border-white/30"
+                    className="w-20 h-20 bg-white/10 backdrop-blur-2xl rounded-3xl flex items-center justify-center shadow-2xl border border-white/20"
                   >
                     <MessageCircle className="w-10 h-10" />
                   </motion.div>
@@ -558,7 +564,7 @@ export default function HealthCheck() {
                     <h3 className="text-3xl font-bold mb-2">
                       {t('healthCheck.consultationTitle')}
                     </h3>
-                    <p className="text-purple-100 text-lg">
+                    <p className="text-white/80 text-lg">
                       {t('healthCheck.consultationDescription')}
                     </p>
                   </div>
@@ -589,7 +595,7 @@ export default function HealthCheck() {
                 setCurrentStep(0);
                 setAnswers({});
               }}
-              className="text-gray-600 hover:text-primary transition-colors font-semibold text-lg flex items-center gap-2 mx-auto group"
+              className="text-white/60 hover:text-white transition-colors font-semibold text-lg flex items-center gap-2 mx-auto group"
             >
               <ArrowLeft className="w-5 h-5 group-hover:-translate-x-1 transition-transform" />
               {t('healthCheck.restartQuiz')}
@@ -602,21 +608,24 @@ export default function HealthCheck() {
 
   // Quiz Interface (Full Screen per Question)
   return (
-    <div className="min-h-screen bg-gradient-to-br from-purple-50 dark:from-slate-900 via-pink-50 dark:via-slate-800 to-blue-50 dark:to-slate-900 flex items-center justify-center p-6">
+    <div className="min-h-screen bg-dark-ultra flex items-center justify-center p-6 relative overflow-hidden">
+      <ParticleBackground />
+      <CursorGlow />
+
       <motion.div
         initial={{ opacity: 0, scale: 0.95 }}
         animate={{ opacity: 1, scale: 1 }}
-        className="w-full max-w-4xl"
+        className="w-full max-w-4xl relative z-10"
       >
         {/* Quiz Card */}
-        <div className="bg-white dark:bg-slate-800 backdrop-blur-xl rounded-3xl shadow-2xl overflow-hidden border border-gray-200 dark:border-slate-700">
+        <div className="glass-ultra rounded-3xl shadow-2xl overflow-hidden">
           {/* Progress Bar */}
-          <div className="h-3 bg-gray-200 dark:bg-slate-700">
+          <div className="h-3 bg-white/10">
             <motion.div
               initial={{ width: 0 }}
               animate={{ width: `${progress}%` }}
               transition={{ duration: 0.5, ease: 'easeOut' }}
-              className="h-full bg-gradient-to-r from-primary via-teal-600 to-cyan-500 relative overflow-hidden"
+              className="h-full bg-gradient-to-r from-teal-500 to-cyan-500 relative overflow-hidden"
             >
               <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent animate-shimmer" />
             </motion.div>
@@ -630,12 +639,12 @@ export default function HealthCheck() {
                 initial={{ scale: 0, rotate: -180 }}
                 animate={{ scale: 1, rotate: 0 }}
                 transition={{ type: 'spring', stiffness: 200 }}
-                className="inline-block bg-gradient-to-br from-primary to-teal-600 p-6 rounded-3xl mb-6 shadow-2xl"
+                className="inline-block bg-gradient-to-br from-teal-500 to-teal-600 p-6 rounded-3xl mb-6 shadow-2xl"
               >
                 <currentQuestion.icon className="w-16 h-16 text-white" />
               </motion.div>
 
-              <p className="text-sm font-bold text-primary dark:text-cyan-400 mb-3 tracking-wider uppercase">
+              <p className="text-sm font-bold text-teal-400 mb-3 tracking-wider uppercase">
                 {t('healthCheck.questionProgress', { current: currentStep + 1, total: quizQuestions.length })}
               </p>
 
@@ -643,7 +652,7 @@ export default function HealthCheck() {
                 key={`q-${currentStep}`}
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
-                className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-slate-100 leading-tight"
+                className="text-3xl md:text-4xl font-bold text-white leading-tight"
               >
                 {currentQuestion.question}
               </motion.h2>
@@ -664,13 +673,13 @@ export default function HealthCheck() {
                     whileTap={{ scale: 0.98 }}
                     className={`w-full p-6 rounded-2xl border-3 text-left transition-all duration-300 ${
                       answers[currentQuestion.id] === option.value
-                        ? 'border-primary dark:border-cyan-400 bg-gradient-to-r from-primary/10 dark:from-primary/20 to-teal-50 dark:to-slate-700 shadow-xl scale-105'
-                        : 'border-gray-200 dark:border-slate-600 bg-white dark:bg-slate-800 hover:border-primary/50 dark:hover:border-primary/40 hover:bg-gray-50 dark:hover:bg-slate-700 shadow-md hover:shadow-lg'
+                        ? 'border-teal-500 bg-gradient-to-r from-teal-500/20 to-teal-600/20 shadow-xl scale-105'
+                        : 'border-white/10 bg-white/5 hover:border-teal-500/50 hover:bg-white/10 shadow-md hover:shadow-lg'
                     }`}
                   >
                     <div className="flex items-center justify-between">
                       <span className={`font-semibold text-lg ${
-                        answers[currentQuestion.id] === option.value ? 'text-primary dark:text-cyan-400' : 'text-gray-900 dark:text-slate-100'
+                        answers[currentQuestion.id] === option.value ? 'text-teal-400' : 'text-white'
                       }`}>
                         {option.label}
                       </span>
@@ -678,7 +687,7 @@ export default function HealthCheck() {
                         <motion.div
                           initial={{ scale: 0 }}
                           animate={{ scale: 1 }}
-                          className="w-8 h-8 bg-gradient-to-br from-primary to-teal-600 rounded-full flex items-center justify-center"
+                          className="w-8 h-8 bg-gradient-to-br from-teal-500 to-teal-600 rounded-full flex items-center justify-center"
                         >
                           <CheckCircle2 className="w-5 h-5 text-white" />
                         </motion.div>
@@ -698,8 +707,8 @@ export default function HealthCheck() {
                 disabled={currentStep === 0}
                 className={`flex items-center gap-2 px-8 py-4 rounded-2xl font-bold text-lg transition-all duration-300 ${
                   currentStep === 0
-                    ? 'text-gray-400 dark:text-slate-500 cursor-not-allowed'
-                    : 'text-gray-700 dark:text-slate-300 hover:bg-gray-100 dark:hover:bg-slate-700 active:bg-gray-200 dark:active:bg-slate-600 hover:shadow-md'
+                    ? 'text-white/20 cursor-not-allowed'
+                    : 'text-white/80 hover:bg-white/10 active:bg-white/20 hover:shadow-md'
                 }`}
               >
                 <ArrowLeft className="w-6 h-6" />
@@ -713,8 +722,8 @@ export default function HealthCheck() {
                 disabled={!answers[currentQuestion.id]}
                 className={`flex items-center gap-2 px-10 py-4 rounded-2xl font-bold text-lg transition-all duration-300 shadow-lg ${
                   answers[currentQuestion.id]
-                    ? 'bg-gradient-to-r from-primary to-teal-600 text-white hover:shadow-2xl hover:scale-105'
-                    : 'bg-gray-200 dark:bg-slate-700 text-gray-400 dark:text-slate-500 cursor-not-allowed'
+                    ? 'bg-gradient-to-r from-teal-600 to-teal-500 text-white hover:shadow-2xl hover:scale-105'
+                    : 'bg-white/10 text-white/40 cursor-not-allowed'
                 }`}
               >
                 {currentStep === quizQuestions.length - 1 ? (
@@ -740,7 +749,7 @@ export default function HealthCheck() {
           transition={{ delay: 0.3 }}
           className="mt-6 text-center"
         >
-          <p className="text-sm text-gray-600 dark:text-slate-400 flex items-center justify-center gap-2">
+          <p className="text-sm text-white/60 flex items-center justify-center gap-2">
             <Heart className="w-4 h-4 text-red-500" />
             {t('healthCheck.timeInfo')}
           </p>

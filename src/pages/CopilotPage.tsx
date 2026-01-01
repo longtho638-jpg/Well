@@ -4,6 +4,8 @@ import { useStore } from '@/store';
 import { Bot, Target, MessageCircle, TrendingUp, Clock, Sparkles, Plus, X, Zap } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useTranslation } from '@/hooks';
+import { ParticleBackground } from '@/components/ParticleBackground';
+import { CursorGlow } from '@/components/CursorGlow';
 
 // Chat History Interface
 interface ChatSession {
@@ -114,28 +116,33 @@ export default function CopilotPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-50 via-blue-50 to-purple-50 pb-20">
+    <div className="min-h-screen bg-dark-ultra pb-20 relative overflow-hidden">
+      <ParticleBackground />
+      <CursorGlow />
+
       {/* Header */}
-      <div className="bg-gradient-to-r from-primary to-primary/80 p-8 text-white sticky top-0 z-10 shadow-xl">
+      <div className="glass-ultra border-b border-white/10 p-8 text-white sticky top-0 z-10 shadow-xl backdrop-blur-xl">
         <div className="max-w-7xl mx-auto">
           <div className="flex items-start justify-between">
             <div className="flex-1">
               <div className="flex items-center gap-3 mb-3">
-                <div className="w-14 h-14 bg-accent rounded-2xl flex items-center justify-center shadow-lg shadow-accent/30">
-                  <Bot className="w-8 h-8 text-primary" />
+                <div className="w-14 h-14 bg-gradient-to-br from-teal-500 to-teal-600 rounded-2xl flex items-center justify-center shadow-lg shadow-teal-500/30">
+                  <Bot className="w-8 h-8 text-white" />
                 </div>
                 <div>
-                  <h1 className="text-4xl font-bold">{t('copilot.title')}</h1>
-                  <p className="text-white/80 text-sm">{t('copilot.subtitle')}</p>
+                  <h1 className="text-4xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-white to-white/70">
+                    {t('copilot.title')}
+                  </h1>
+                  <p className="text-white/60 text-sm">{t('copilot.subtitle')}</p>
                 </div>
               </div>
-              <p className="text-white/90 max-w-2xl">
+              <p className="text-white/80 max-w-2xl">
                 {t('copilot.description')}
               </p>
             </div>
             <button
               onClick={() => setShowHistory(!showHistory)}
-              className="lg:hidden p-3 bg-white/20 hover:bg-white/30 rounded-xl transition-colors"
+              className="lg:hidden p-3 bg-white/10 hover:bg-white/20 rounded-xl transition-colors text-white"
             >
               {showHistory ? <X className="w-5 h-5" /> : <Clock className="w-5 h-5" />}
             </button>
@@ -143,7 +150,7 @@ export default function CopilotPage() {
         </div>
       </div>
 
-      <div className="max-w-7xl mx-auto p-6">
+      <div className="max-w-7xl mx-auto p-6 relative z-10">
         <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
           {/* Sidebar - Chat History */}
           <AnimatePresence>
@@ -157,16 +164,16 @@ export default function CopilotPage() {
                 {/* New Chat Button */}
                 <button
                   onClick={handleNewChat}
-                  className="w-full bg-gradient-to-r from-primary to-teal-600 text-white px-6 py-4 rounded-xl font-bold text-sm hover:shadow-xl transition-all duration-300 flex items-center justify-center gap-2"
+                  className="w-full bg-gradient-to-r from-teal-600 to-teal-500 text-white px-6 py-4 rounded-xl font-bold text-sm hover:shadow-xl hover:scale-[1.02] transition-all duration-300 flex items-center justify-center gap-2"
                 >
                   <Plus className="w-5 h-5" />
                   Chat Mới
                 </button>
 
                 {/* Chat History Card */}
-                <div className="bg-white/70 backdrop-blur-xl rounded-2xl p-6 border border-gray-200 shadow-xl sticky top-32 max-h-[calc(100vh-200px)] overflow-y-auto">
-                  <h3 className="font-bold text-gray-900 text-lg mb-4 flex items-center gap-2">
-                    <Clock className="w-5 h-5 text-primary" />
+                <div className="glass-ultra rounded-2xl p-6 border border-white/10 shadow-xl sticky top-32 max-h-[calc(100vh-200px)] overflow-y-auto">
+                  <h3 className="font-bold text-white text-lg mb-4 flex items-center gap-2">
+                    <Clock className="w-5 h-5 text-teal-400" />
                     Lịch Sử Chat
                   </h3>
                   <div className="space-y-2">
@@ -179,19 +186,19 @@ export default function CopilotPage() {
                         onClick={() => setSelectedSession(session.id)}
                         className={`w-full text-left p-4 rounded-xl transition-all duration-300 ${
                           selectedSession === session.id
-                            ? 'bg-gradient-to-r from-primary/10 to-teal-600/10 border-2 border-primary shadow-md'
-                            : 'bg-gray-50 hover:bg-gray-100 border border-gray-200'
+                            ? 'bg-gradient-to-r from-teal-500/20 to-teal-600/20 border border-teal-500/50 shadow-md'
+                            : 'bg-white/5 hover:bg-white/10 border border-white/5'
                         }`}
                       >
-                        <h4 className="font-semibold text-gray-900 text-sm mb-1 line-clamp-1">
+                        <h4 className="font-semibold text-white text-sm mb-1 line-clamp-1">
                           {session.title}
                         </h4>
-                        <p className="text-xs text-gray-600 mb-2 line-clamp-1">
+                        <p className="text-xs text-white/60 mb-2 line-clamp-1">
                           {session.preview}
                         </p>
                         <div className="flex items-center gap-2">
-                          <Clock className="w-3 h-3 text-gray-400" />
-                          <span className="text-xs text-gray-500">
+                          <Clock className="w-3 h-3 text-white/40" />
+                          <span className="text-xs text-white/40">
                             {formatTimestamp(session.timestamp)}
                           </span>
                         </div>
@@ -210,9 +217,9 @@ export default function CopilotPage() {
               {!showHistory && (
                 <button
                   onClick={() => setShowHistory(true)}
-                  className="lg:hidden w-full bg-white dark:bg-slate-800 border border-gray-200 dark:border-slate-600 px-4 py-3 rounded-xl font-medium text-sm hover:bg-gray-50 dark:hover:bg-slate-700 active:bg-gray-100 dark:active:bg-slate-600 text-gray-700 dark:text-slate-100 transition-all duration-200 flex items-center justify-center gap-2"
+                  className="lg:hidden w-full glass-ultra border border-white/10 px-4 py-3 rounded-xl font-medium text-sm hover:bg-white/10 active:bg-white/20 text-white transition-all duration-200 flex items-center justify-center gap-2"
                 >
-                  <Clock className="w-5 h-5 text-primary" />
+                  <Clock className="w-5 h-5 text-teal-400" />
                   Xem Lịch Sử Chat
                 </button>
               )}
@@ -229,11 +236,11 @@ export default function CopilotPage() {
                       transition={{ delay: index * 0.1 }}
                       className="relative group"
                     >
-                      <div className="absolute inset-0 bg-gradient-to-br from-primary/10 to-teal-600/10 rounded-xl blur-xl opacity-0 group-hover:opacity-100 transition-opacity" />
-                      <div className="relative bg-white/70 dark:bg-slate-800/70 backdrop-blur-xl rounded-xl p-6 border border-gray-200 dark:border-slate-700 hover:border-primary/50 hover:shadow-xl transition-all duration-300">
-                        <Icon className="w-8 h-8 text-primary mb-3" />
-                        <h3 className="font-bold text-gray-900 dark:text-slate-100 mb-2">{feature.title}</h3>
-                        <p className="text-sm text-gray-600 dark:text-slate-400">{feature.description}</p>
+                      <div className="absolute inset-0 bg-gradient-to-br from-teal-500/10 to-purple-500/10 rounded-xl blur-xl opacity-0 group-hover:opacity-100 transition-opacity" />
+                      <div className="glass-ultra relative rounded-xl p-6 border border-white/10 hover:border-teal-500/30 hover:shadow-xl transition-all duration-300 h-full">
+                        <Icon className="w-8 h-8 text-teal-400 mb-3" />
+                        <h3 className="font-bold text-white mb-2">{feature.title}</h3>
+                        <p className="text-sm text-white/60">{feature.description}</p>
                       </div>
                     </motion.div>
                   );
@@ -245,13 +252,14 @@ export default function CopilotPage() {
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.4 }}
-                className="bg-gradient-to-r from-purple-50 to-pink-50 rounded-2xl p-6 border border-purple-200"
+                className="glass-ultra rounded-2xl p-6 border border-white/10 relative overflow-hidden"
               >
-                <h3 className="font-bold text-gray-900 dark:text-slate-100 mb-4 flex items-center gap-2">
-                  <Sparkles className="w-5 h-5 text-purple-600" />
+                <div className="absolute inset-0 bg-gradient-to-r from-purple-900/20 to-pink-900/20 pointer-events-none" />
+                <h3 className="font-bold text-white mb-4 flex items-center gap-2 relative z-10">
+                  <Sparkles className="w-5 h-5 text-purple-400" />
                   Gợi Ý Prompt - Click để dùng ngay
                 </h3>
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3 relative z-10">
                   {promptSuggestions.map((suggestion, index) => (
                     <motion.button
                       key={index}
@@ -260,15 +268,15 @@ export default function CopilotPage() {
                       transition={{ delay: 0.5 + index * 0.05 }}
                       whileHover={{ scale: 1.02 }}
                       whileTap={{ scale: 0.98 }}
-                      className="bg-white dark:bg-slate-800 hover:bg-gradient-to-r hover:from-purple-100 hover:to-pink-100 dark:hover:from-purple-900/20 dark:hover:to-pink-900/20 rounded-xl p-4 border-2 border-gray-200 dark:border-slate-700 hover:border-purple-400 transition-all duration-300 text-left group"
+                      className="glass-dark hover:bg-white/10 rounded-xl p-4 border border-white/10 hover:border-purple-500/50 transition-all duration-300 text-left group"
                     >
                       <div className="flex items-center gap-3 mb-2">
                         <span className="text-2xl">{suggestion.icon}</span>
-                        <h4 className="font-semibold text-gray-900 dark:text-slate-100 text-sm group-hover:text-purple-700 dark:group-hover:text-purple-400 transition-colors">
+                        <h4 className="font-semibold text-white text-sm group-hover:text-purple-300 transition-colors">
                           {suggestion.title}
                         </h4>
                       </div>
-                      <p className="text-xs text-gray-600 dark:text-slate-400 line-clamp-2">
+                      <p className="text-xs text-white/60 line-clamp-2">
                         {suggestion.prompt}
                       </p>
                     </motion.button>
@@ -281,24 +289,24 @@ export default function CopilotPage() {
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.8 }}
-                className="bg-gradient-to-br from-blue-50 dark:from-blue-900/20 to-indigo-50 dark:to-indigo-900/20 rounded-xl p-6 border border-blue-200 dark:border-blue-900/30"
+                className="glass-ultra rounded-xl p-6 border border-white/10 bg-gradient-to-br from-blue-900/20 to-indigo-900/20"
               >
-                <h3 className="font-bold text-gray-900 dark:text-slate-100 mb-4 flex items-center gap-2">
-                  <Zap className="w-5 h-5 text-blue-600" />
+                <h3 className="font-bold text-white mb-4 flex items-center gap-2">
+                  <Zap className="w-5 h-5 text-blue-400" />
                   {t('copilot.stats.title')}
                 </h3>
                 <div className="grid grid-cols-3 gap-6">
                   <div className="text-center">
-                    <p className="text-3xl font-bold text-primary mb-1">12</p>
-                    <p className="text-xs text-gray-600">{t('copilot.stats.objectionsHandled')}</p>
+                    <p className="text-3xl font-bold text-teal-400 mb-1">12</p>
+                    <p className="text-xs text-white/60">{t('copilot.stats.objectionsHandled')}</p>
                   </div>
                   <div className="text-center">
-                    <p className="text-3xl font-bold text-primary mb-1">8</p>
-                    <p className="text-xs text-gray-600">{t('copilot.stats.scriptsCreated')}</p>
+                    <p className="text-3xl font-bold text-teal-400 mb-1">8</p>
+                    <p className="text-xs text-white/60">{t('copilot.stats.scriptsCreated')}</p>
                   </div>
                   <div className="text-center">
-                    <p className="text-3xl font-bold text-green-600 mb-1">85%</p>
-                    <p className="text-xs text-gray-600">{t('copilot.stats.conversionRate')}</p>
+                    <p className="text-3xl font-bold text-green-400 mb-1">85%</p>
+                    <p className="text-xs text-white/60">{t('copilot.stats.conversionRate')}</p>
                   </div>
                 </div>
               </motion.div>
@@ -320,27 +328,27 @@ export default function CopilotPage() {
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 1.2 }}
-                className="bg-white/70 dark:bg-slate-800/70 backdrop-blur-xl rounded-xl p-6 border border-gray-200 dark:border-slate-700"
+                className="glass-ultra rounded-xl p-6 border border-white/10"
               >
-                <h3 className="font-bold text-gray-900 dark:text-slate-100 mb-4 flex items-center gap-2">
+                <h3 className="font-bold text-white mb-4 flex items-center gap-2">
                   <span className="text-xl">💡</span>
                   {t('copilot.tips.title')}
                 </h3>
-                <ul className="space-y-3 text-sm text-gray-600 dark:text-slate-400">
+                <ul className="space-y-3 text-sm text-white/60">
                   <li className="flex gap-3 items-start">
-                    <span className="bg-accent text-primary font-bold px-2 py-1 rounded-lg text-xs">1</span>
+                    <span className="bg-yellow-500/20 text-yellow-400 font-bold px-2 py-1 rounded-lg text-xs border border-yellow-500/30">1</span>
                     <span className="flex-1">{t('copilot.tips.tip1')}</span>
                   </li>
                   <li className="flex gap-3 items-start">
-                    <span className="bg-accent text-primary font-bold px-2 py-1 rounded-lg text-xs">2</span>
+                    <span className="bg-yellow-500/20 text-yellow-400 font-bold px-2 py-1 rounded-lg text-xs border border-yellow-500/30">2</span>
                     <span className="flex-1">{t('copilot.tips.tip2')}</span>
                   </li>
                   <li className="flex gap-3 items-start">
-                    <span className="bg-accent text-primary font-bold px-2 py-1 rounded-lg text-xs">3</span>
+                    <span className="bg-yellow-500/20 text-yellow-400 font-bold px-2 py-1 rounded-lg text-xs border border-yellow-500/30">3</span>
                     <span className="flex-1">{t('copilot.tips.tip3')}</span>
                   </li>
                   <li className="flex gap-3 items-start">
-                    <span className="bg-accent text-primary font-bold px-2 py-1 rounded-lg text-xs">4</span>
+                    <span className="bg-yellow-500/20 text-yellow-400 font-bold px-2 py-1 rounded-lg text-xs border border-yellow-500/30">4</span>
                     <span className="flex-1">{t('copilot.tips.tip4')}</span>
                   </li>
                 </ul>
