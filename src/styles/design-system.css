@@ -210,17 +210,17 @@ body {
     rgba(255, 107, 88, 0.4) 0%,
     rgba(255, 107, 88, 0) 70%
   );
+
+  /* Ultra Premium Shadows */
+  --shadow-ultra:
+    0 50px 100px -20px rgba(0, 137, 123, 0.3),
+    0 30px 60px -30px rgba(159, 122, 234, 0.3),
+    0 -2px 6px 0 rgba(255, 255, 255, 0.1) inset;
+
+  --shadow-glow-teal: 0 0 60px rgba(0, 137, 123, 0.6);
+  --shadow-glow-coral: 0 0 60px rgba(255, 107, 88, 0.6);
+  --shadow-glow-violet: 0 0 60px rgba(159, 122, 234, 0.6);
 }
-
-/* Ultra Premium Shadows */
---shadow-ultra:
-  0 50px 100px -20px rgba(0, 137, 123, 0.3),
-  0 30px 60px -30px rgba(159, 122, 234, 0.3),
-  0 -2px 6px 0 rgba(255, 255, 255, 0.1) inset;
-
---shadow-glow-teal: 0 0 60px rgba(0, 137, 123, 0.6);
---shadow-glow-coral: 0 0 60px rgba(255, 107, 88, 0.6);
---shadow-glow-violet: 0 0 60px rgba(159, 122, 234, 0.6);
 
 /* Glassmorphism Ultra */
 .glass-ultra {
