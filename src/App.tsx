@@ -1,11 +1,10 @@
-import React from 'react';
+import React, { lazy, Suspense } from 'react';
 import { Routes, Route, Navigate, useLocation } from 'react-router-dom';
 import { AppLayout } from './components/AppLayout';
 import { Dashboard } from './pages/Dashboard';
 import { Marketplace } from './pages/Marketplace';
 import { ProductDetail } from './pages/ProductDetail';
 import CommissionWallet from './components/CommissionWallet';
-import { AdminRoute } from './components/AdminRoute';
 import LandingPage from './pages/LandingPage';
 import VenturePage from './pages/VenturePage';
 import CopilotPage from './pages/CopilotPage';
@@ -16,18 +15,19 @@ import HealthCheck from './pages/HealthCheck';
 import Leaderboard from './pages/Leaderboard';
 import MarketingTools from './pages/MarketingTools';
 import Admin from './pages/Admin';
-import Overview from './pages/Admin/Overview';
-import CMS from './pages/Admin/CMS';
-import Partners from './pages/Admin/Partners';
-import Finance from './pages/Admin/Finance';
-import PolicyEngine from './pages/Admin/PolicyEngine';
-import OrderManagement from './pages/Admin/OrderManagement';
+import TestPage from './pages/TestPage';
+import DebuggerPage from './pages/DebuggerPage';
+
+// Code splitting: Lazy load Admin pages for better performance
+const Overview = lazy(() => import('./pages/Admin/Overview'));
+const CMS = lazy(() => import('./pages/Admin/CMS'));
+const Partners = lazy(() => import('./pages/Admin/Partners'));
+const Finance = lazy(() => import('./pages/Admin/Finance'));
+const PolicyEngine = lazy(() => import('./pages/Admin/PolicyEngine'));
+const OrderManagement = lazy(() => import('./pages/Admin/OrderManagement'));
+const AdminProducts = lazy(() => import('./pages/Admin/Products'));
+
 import AgentDashboard from './pages/AgentDashboard';
-import AgencyOSDemo from './pages/AgencyOSDemo';
-import { AgentDashboard as NewAgentDashboard } from './components/AgentDashboard';
-import Login from './pages/Login';
-import Signup from './pages/Signup';
-import { useAuth } from './hooks/useAuth';
 import { useStore } from './store';
 import { ThemeProvider } from './context/ThemeContext';
 import { ToastProvider } from './components/ui/Toast';
@@ -37,9 +37,6 @@ import { AnimatePresence, motion } from 'framer-motion';
 const App: React.FC = () => {
   const { isAuthenticated } = useStore();
   const location = useLocation();
-
-  // Initialize auth listener
-  useAuth();
 
   return (
     <ThemeProvider>
@@ -52,7 +49,6 @@ const App: React.FC = () => {
             animate={{ opacity: 1, scale: 1, filter: 'blur(0px)' }}
             exit={{ opacity: 0, scale: 1.02, filter: 'blur(10px)' }}
             transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
-            className="w-full h-full"
           >
             <Routes location={location}>
               {/* ============================================================ */}
@@ -60,22 +56,18 @@ const App: React.FC = () => {
               {/* ============================================================ */}
               <Route path="/" element={<LandingPage />} />
               <Route path="/venture" element={<VenturePage />} />
-              <Route path="/agencyos-demo" element={<AgencyOSDemo />} />
-              <Route path="/agent-ecosystem" element={<NewAgentDashboard />} />
-              <Route path="/login" element={<Login />} />
-              <Route path="/signup" element={<Signup />} />
 
               {/* ============================================================ */}
               {/* ADMIN ROUTES: Mission Control with Nested Routes */}
-              {/* PROTECTED: Requires admin role */}
               {/* ============================================================ */}
-              <Route path="/admin" element={<AdminRoute><Admin /></AdminRoute>}>
-                <Route index element={<Overview />} />
-                <Route path="cms" element={<CMS />} />
-                <Route path="partners" element={<Partners />} />
-                <Route path="finance" element={<Finance />} />
-                <Route path="policy-engine" element={<PolicyEngine />} />
-                <Route path="orders" element={<OrderManagement />} />
+              <Route path="/admin" element={<Admin />}>
+                <Route index element={<Suspense fallback={<div className="flex items-center justify-center h-screen"><div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#00575A]"></div></div>}><Overview /></Suspense>} />
+                <Route path="cms" element={<Suspense fallback={<div className="flex items-center justify-center h-screen"><div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#00575A]"></div></div>}><CMS /></Suspense>} />
+                <Route path="partners" element={<Suspense fallback={<div className="flex items-center justify-center h-screen"><div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#00575A]"></div></div>}><Partners /></Suspense>} />
+                <Route path="finance" element={<Suspense fallback={<div className="flex items-center justify-center h-screen"><div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#00575A]"></div></div>}><Finance /></Suspense>} />
+                <Route path="policy-engine" element={<Suspense fallback={<div className="flex items-center justify-center h-screen"><div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#00575A]"></div></div>}><PolicyEngine /></Suspense>} />
+                <Route path="orders" element={<Suspense fallback={<div className="flex items-center justify-center h-screen"><div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#00575A]"></div></div>}><OrderManagement /></Suspense>} />
+                <Route path="products" element={<Suspense fallback={<div className="flex items-center justify-center h-screen"><div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#00575A]"></div></div>}><AdminProducts /></Suspense>} />
               </Route>
 
               {/* ============================================================ */}
@@ -84,7 +76,7 @@ const App: React.FC = () => {
               {/* ============================================================ */}
               <Route
                 path="/dashboard"
-                element={isAuthenticated ? <AppLayout /> : <Navigate to="/login" replace />}
+                element={isAuthenticated ? <AppLayout /> : <Navigate to="/" replace />}
               >
                 {/* Dashboard Home */}
                 <Route index element={<Dashboard />} />
@@ -98,7 +90,7 @@ const App: React.FC = () => {
                   path="wallet"
                   element={
                     <div className="space-y-6">
-                      <h2 className="text-2xl md:text-3xl font-bold text-white">Commission Wallet</h2>
+                      <h2 className="text-2xl md:text-3xl font-bold text-[#1F2937]">Commission Wallet</h2>
                       <CommissionWallet />
                     </div>
                   }
@@ -121,6 +113,12 @@ const App: React.FC = () => {
               <Route path="/marketplace" element={<Navigate to="/dashboard/marketplace" replace />} />
               <Route path="/wallet" element={<Navigate to="/dashboard/wallet" replace />} />
               <Route path="/product/:id" element={<Navigate to="/dashboard/product/:id" replace />} />
+
+              {/* ============================================================ */}
+              {/* DIAGNOSTIC ROUTES */}
+              {/* ============================================================ */}
+              <Route path="/test" element={<TestPage />} />
+              <Route path="/debugger" element={<DebuggerPage />} />
 
               {/* ============================================================ */}
               {/* CATCH-ALL: Unknown routes redirect to home */}

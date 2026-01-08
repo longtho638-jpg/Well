@@ -79,6 +79,7 @@ export class SalesCopilotAgent extends BaseAgent {
           enforcement: 'hard',
         },
       ],
+      visibility: 'all'
     };
 
     super(definition);
@@ -102,11 +103,11 @@ export class SalesCopilotAgent extends BaseAgent {
         case 'detectObjection':
           if (!message) throw new Error('Message required for objection detection');
           output = this.detectObjection(message);
-          
+
           // Update KPI
           const detectKpi = this.definition.success_kpis.find(k => k.name === 'Objection Detection Accuracy');
           if (detectKpi) {
-             detectKpi.current = (detectKpi.current || 0) + 1;
+            detectKpi.current = (detectKpi.current || 0) + 1;
           }
           break;
 
@@ -114,11 +115,11 @@ export class SalesCopilotAgent extends BaseAgent {
           if (!message) throw new Error('Message required for response suggestion');
           const objectionType = this.detectObjection(message);
           output = this.getObjectionResponse(objectionType);
-          
+
           // Update KPI
           const responseKpi = this.definition.success_kpis.find(k => k.name === 'Response Acceptance Rate');
           if (responseKpi) {
-             responseKpi.current = (responseKpi.current || 0) + 1;
+            responseKpi.current = (responseKpi.current || 0) + 1;
           }
           break;
 

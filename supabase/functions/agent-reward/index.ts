@@ -1,189 +1,303 @@
-// @ts-nocheck
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
-import { createClient } from "https://esm.sh/@supabase/supabase-js@2.0.0";
+import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
 
-// --- CẤU HÌNH CHÍNH SÁCH (POLICY CONFIG) ---
-// Dựa trên file: CHÍNH SÁCH CODE - WELL NEXUS.xlsx
-const POLICY = {
+// --- POLICY ENGINE v3.0: DYNAMIC CONFIGURATION ---
+// Policies are now fetched from the database in real-time.
+// Default fallback values are provided for safety.
+
+const DEFAULT_POLICY = {
+    // Cấp bậc (Mapping ID từ 1-8 theo file CSV)
     RANKS: {
-        AMBASSADOR: { id: 'ambassador', level: 6 }, // Đại Sứ
-        STARTUP: { id: 'startup', level: 7 }, // Khởi Nghiệp
-        CTV: { id: 'ctv', level: 8 }  // Cộng tác viên
+        THIEN_LONG: 1,
+        PHUONG_HOANG: 2,
+        DAI_SU_DIAMOND: 3,
+        DAI_SU_GOLD: 4,
+        DAI_SU_SILVER: 5,
+        DAI_SU: 6,         // Mốc bắt đầu hưởng F1 8%
+        KHOI_NGHIEP: 7,    // Mốc hưởng Max hoa hồng trực tiếp 25%
+        CTV: 8             // Mốc thấp nhất 21%
     },
-    COMMISSION: {
-        DIRECT_CTV: 0.21,      // 21% cho CTV
-        DIRECT_STARTUP: 0.25,  // 25% cho Khởi Nghiệp trở lên
-        SPONSOR_BONUS: 0.08    // 8% cho Bảo trợ (ĐK: Bảo trợ >= Đại Sứ)
+
+    // Hoa hồng bán lẻ trực tiếp (Direct Commission)
+    COMMISSION_RATES: {
+        CTV: 0.21,         // 21% cho CTV (Row 8)
+        LEADER: 0.25       // 25% cho Khởi Nghiệp trở lên (Row 7)
     },
-    THRESHOLDS: {
-        RANK_UP_STARTUP: 9900000, // 9.9 Triệu để lên Khởi Nghiệp
-        POINT_RATIO: 100000       // 100k VNĐ = 1 Nexus Point
-    }
+
+    // Hoa hồng quản lý F1 (Sponsor Bonus)
+    F1_BONUS_RATE: 0.08, // 8% trên doanh số F1 (Áp dụng từ Đại Sứ trở lên)
+
+    // Điều kiện thăng cấp (Rank Up)
+    UPGRADE_THRESHOLD_STARTUP: 9900000, // 9.9 Triệu VND (Row 7)
+
+    // Tỷ lệ đổi điểm (Mining Point)
+    POINT_CONVERSION: 100000, // 100k VND = 1 Point
+
+    // Admin 3.1: Dynamic Rank Upgrades (fallback to empty)
+    rankUpgrades: []
 };
 
-const corsHeaders = {
-    'Access-Control-Allow-Origin': '*',
-    'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
-};
-
-serve(async (req) => {
-    if (req.method === 'OPTIONS') {
-        return new Response('ok', { headers: corsHeaders });
-    }
-
+/**
+ * Fetch policy configuration from database
+ * Falls back to default values if fetch fails
+ */
+async function fetchPolicyConfig(supabase: any) {
     try {
-        // 1. KHỞI TẠO SUPABASE ADMIN (Service Role)
-        const supabaseAdmin = createClient(
-            Deno.env.get('SUPABASE_URL') ?? '',
-            Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') ?? ''
-        );
+        const { data, error } = await supabase
+            .from('policy_config')
+            .select('value')
+            .eq('key', 'global_policy')
+            .single();
 
-        // 2. NHẬN WEBHOOK PAYLOAD
-        const payload = await req.json();
-        console.log("🐝 The Bee Woke Up! Payload:", payload);
-
-        // Chỉ chạy khi Order chuyển sang 'completed' (Đã thanh toán)
-        const record = payload.record; // Dữ liệu dòng 'orders'
-        const oldRecord = payload.old_record;
-
-        // Chặn trùng lặp & kiểm tra trạng thái
-        if (record.status !== 'completed') {
-            return new Response(JSON.stringify({ message: "Order not completed yet." }), {
-                headers: { ...corsHeaders, 'Content-Type': 'application/json' },
-            });
+        if (error || !data) {
+            console.warn('[PolicyEngine] Using default policy (DB fetch failed):', error);
+            return DEFAULT_POLICY;
         }
 
-        // Nếu đơn hàng đã hoàn thành trước đó rồi thì bỏ qua (Idempotency)
-        if (oldRecord && oldRecord.status === 'completed') {
-            return new Response(JSON.stringify({ message: "Already processed." }), {
-                headers: { ...corsHeaders, 'Content-Type': 'application/json' },
-            });
+        const config = data.value;
+
+        // Map database config to POLICY structure
+        return {
+            RANKS: DEFAULT_POLICY.RANKS, // Ranks are static
+            COMMISSION_RATES: {
+                CTV: (config.beeAgentPolicy?.ctvCommission || 21) / 100,
+                LEADER: (config.beeAgentPolicy?.startupCommission || 25) / 100
+            },
+            F1_BONUS_RATE: (config.beeAgentPolicy?.sponsorBonus || 8) / 100,
+            UPGRADE_THRESHOLD_STARTUP: config.beeAgentPolicy?.rankUpThreshold || 9900000,
+            POINT_CONVERSION: 100000, // Fixed
+            rankUpgrades: config.rankUpgrades || [] // Admin 3.1: Dynamic rank upgrades
+        };
+    } catch (err) {
+        console.error('[PolicyEngine] Error fetching config:', err);
+        return DEFAULT_POLICY;
+    }
+}
+
+
+serve(async (req) => {
+    try {
+        // 1. Khởi tạo Supabase Admin Client (Bypass RLS)
+        const supabase = createClient(
+            Deno.env.get("SUPABASE_URL") ?? "",
+            Deno.env.get("SUPABASE_SERVICE_ROLE_KEY") ?? ""
+        );
+
+        // 🆕 1.5. Fetch Dynamic Policy from Database (Policy Engine v3.0)
+        const POLICY = await fetchPolicyConfig(supabase);
+        console.log('[PolicyEngine] Loaded policy:', {
+            CTV: POLICY.COMMISSION_RATES.CTV,
+            LEADER: POLICY.COMMISSION_RATES.LEADER,
+            F1: POLICY.F1_BONUS_RATE,
+            UPGRADE: POLICY.UPGRADE_THRESHOLD_STARTUP
+        });
+
+        // 2. Nhận dữ liệu từ Webhook (Khi Order Status -> 'completed')
+        const { record, old_record } = await req.json();
+
+        // Chỉ chạy khi đơn hàng mới chuyển sang 'completed'
+        if (record.status !== "completed" || old_record?.status === "completed") {
+            return new Response("Skipped: Not a new completion", { status: 200 });
         }
 
         const orderId = record.id;
         const userId = record.user_id;
         const orderTotal = Number(record.total_vnd);
 
-        // 3. LẤY THÔNG TIN NGƯỜI MUA (BUYER)
-        const { data: buyer, error: buyerError } = await supabaseAdmin
-            .from('profiles')
-            .select('id, role, rank_level, sponsor_id, email, full_name')
-            .eq('id', userId)
+        console.log(`[TheBee] Processing Order: ${orderId} - Total: ${orderTotal}`);
+
+        // 3. Lấy thông tin người mua (Buyer) và Người bảo trợ (Sponsor)
+        // Note: Using 'users' table directly or 'profiles' view if created.
+        // The migration created a 'profiles' view mapping to 'users'.
+        const { data: buyer, error: profileError } = await supabase
+            .from("profiles")
+            .select("id, role, role_id, sponsor_id") // role_id là số 1-8
+            .eq("id", userId)
             .single();
 
-        if (buyerError || !buyer) throw new Error("Buyer profile not found");
-
-        // --- LOGIC A: TÍNH HOA HỒNG TRỰC TIẾP (DIRECT COMMISSION) ---
-        // Luật: CTV -> 21%, Khởi Nghiệp trở lên -> 25%
-        let commissionRate = POLICY.COMMISSION.DIRECT_CTV;
-        if (buyer.rank_level <= POLICY.RANKS.STARTUP.level) {
-            commissionRate = POLICY.COMMISSION.DIRECT_STARTUP;
+        if (profileError || !buyer) {
+            console.error("Buyer profile error:", profileError);
+            throw new Error("Buyer profile not found");
         }
 
-        const directCommissionAmount = orderTotal * commissionRate;
+        // --- LOGIC 1: TÍNH HOA HỒNG TRỰC TIẾP (DIRECT SALES) ---
+        // Rule: CTV (8) = 21%, Khởi Nghiệp (7) trở lên = 25%
+        let directRate = POLICY.COMMISSION_RATES.CTV;
+        // Default to CTV if role_id is missing or null
+        const buyerRoleId = buyer.role_id || POLICY.RANKS.CTV;
 
-        // Ghi nhận giao dịch Hoa hồng
-        await supabaseAdmin.from('transactions').insert({
-            user_id: buyer.id,
-            amount: directCommissionAmount,
-            type: 'cashback', // Hoặc 'commission'
-            description: `Hoa hồng bán lẻ (${commissionRate * 100}%) đơn hàng #${orderId.slice(0, 8)}`,
-            metadata: { order_id: orderId, rate: commissionRate }
+        if (buyerRoleId <= POLICY.RANKS.KHOI_NGHIEP) {
+            directRate = POLICY.COMMISSION_RATES.LEADER;
+        }
+
+        const directCommission = orderTotal * directRate;
+
+        // Ghi nhận giao dịch hoa hồng cho chính người mua (Cashback/Discount)
+        await supabase.from("transactions").insert({
+            user_id: userId,
+            amount: directCommission,
+            type: "direct_commission", // Loại: Bán hàng trực tiếp
+            description: `Hoa hồng bán lẻ ${directRate * 100}% đơn hàng ${orderId}`,
+            status: "completed"
         });
 
-        // Cộng tiền vào Ví (Pending Cashback)
-        await supabaseAdmin.rpc('increment_wallet_cashback', {
-            user_uuid: buyer.id,
-            amount_add: directCommissionAmount
+        // Cộng tiền vào ví pending của Buyer
+        await supabase.rpc("increment_pending_balance", {
+            x_user_id: userId,
+            x_amount: directCommission
         });
 
-        // --- LOGIC B: ĐÀO POINT (NEXUS POINTS) ---
-        // Luật: 100k = 1 Point
-        const pointsEarned = Math.floor(orderTotal / POLICY.THRESHOLDS.POINT_RATIO);
+        // --- LOGIC 2: TÍNH ĐIỂM THƯỞNG (NEXUS POINTS) ---
+        // Rule: 100k = 1 Point
+        const pointsEarned = Math.floor(orderTotal / POLICY.POINT_CONVERSION);
         if (pointsEarned > 0) {
-            await supabaseAdmin.from('transactions').insert({
-                user_id: buyer.id,
+            await supabase.from("transactions").insert({
+                user_id: userId,
                 amount: pointsEarned,
-                type: 'earn_mining',
-                description: `Thưởng Point mua hàng đơn #${orderId.slice(0, 8)}`,
-                metadata: { order_id: orderId }
+                type: "earn_mining",
+                description: `Mining reward từ đơn hàng ${orderId}`,
+                status: "completed"
             });
 
-            // Cộng Point vào Ví
-            await supabaseAdmin.rpc('increment_wallet_point', {
-                user_uuid: buyer.id,
-                amount_add: pointsEarned
+            // Update ví Point
+            await supabase.rpc("increment_point_balance", {
+                x_user_id: userId,
+                x_amount: pointsEarned
             });
         }
 
-        // --- LOGIC C: THĂNG CẤP TỰ ĐỘNG (RANK UP) ---
-        // Luật: Tổng doanh thu >= 9.9tr và đang là CTV -> Lên Khởi Nghiệp
-        if (buyer.role === 'ctv' || buyer.rank_level === 8) {
-            // Tính tổng doanh thu trọn đời (bao gồm đơn vừa xong)
-            const { data: orders } = await supabaseAdmin
-                .from('orders')
-                .select('total_vnd')
-                .eq('user_id', buyer.id)
-                .eq('status', 'completed');
-
-            const lifetimeSales = orders?.reduce((sum, o) => sum + Number(o.total_vnd), 0) || 0;
-
-            if (lifetimeSales >= POLICY.THRESHOLDS.RANK_UP_STARTUP) {
-                // Cập nhật lên Khởi Nghiệp
-                await supabaseAdmin.from('profiles').update({
-                    role: 'startup',
-                    rank_level: POLICY.RANKS.STARTUP.level
-                }).eq('id', buyer.id);
-
-                console.log(`🚀 User ${buyer.email} upgraded to STARTUP!`);
-
-                // Gửi thông báo (Giả lập hoặc dùng Resend ở đây)
-                // await sendEmail(buyer.email, "Chúc mừng thăng hạng Khởi Nghiệp!");
-            }
-        }
-
-        // --- LOGIC D: HOA HỒNG QUẢN LÝ (SPONSOR BONUS) ---
-        // Luật: Người bảo trợ >= Đại Sứ (Level 6) nhận 8% doanh thu F1
+        // --- LOGIC 3: TÍNH THƯỞNG F1 (SPONSOR BONUS) ---
+        // Rule: Sponsor phải từ Đại Sứ (Rank 6) trở lên mới được 8%
         if (buyer.sponsor_id) {
-            const { data: sponsor } = await supabaseAdmin
-                .from('profiles')
-                .select('id, role, rank_level')
-                .eq('id', buyer.sponsor_id)
+            const { data: sponsor } = await supabase
+                .from("profiles")
+                .select("id, role_id")
+                .eq("id", buyer.sponsor_id)
                 .single();
 
             if (sponsor) {
-                // Chỉ Đại Sứ (Level 6) trở lên (số càng nhỏ level càng cao) mới được nhận
-                if (sponsor.rank_level <= POLICY.RANKS.AMBASSADOR.level) {
-                    const sponsorBonus = orderTotal * POLICY.COMMISSION.SPONSOR_BONUS;
+                const sponsorRoleId = sponsor.role_id || POLICY.RANKS.CTV;
+                // Kiểm tra điều kiện Rank của Sponsor (<= 6)
+                if (sponsorRoleId <= POLICY.RANKS.DAI_SU) {
+                    const f1Bonus = orderTotal * POLICY.F1_BONUS_RATE;
 
-                    await supabaseAdmin.from('transactions').insert({
+                    await supabase.from("transactions").insert({
                         user_id: sponsor.id,
-                        amount: sponsorBonus,
-                        type: 'referral_bonus',
-                        description: `Thưởng quản lý 8% từ F1 (${buyer.full_name}) đơn #${orderId.slice(0, 8)}`,
-                        metadata: { order_id: orderId, source_user_id: buyer.id }
+                        amount: f1Bonus,
+                        type: "sponsor_bonus", // Loại: Thưởng quản lý
+                        description: `Thưởng 8% F1 từ đơn hàng của user ${userId}`,
+                        status: "completed"
                     });
 
-                    // Cộng tiền vào Ví Sponsor
-                    await supabaseAdmin.rpc('increment_wallet_cashback', {
-                        user_uuid: sponsor.id,
-                        amount_add: sponsorBonus
+                    // Cộng tiền vào ví pending của Sponsor
+                    await supabase.rpc("increment_pending_balance", {
+                        x_user_id: sponsor.id,
+                        x_amount: f1Bonus
                     });
 
-                    console.log(`💰 Sponsor ${sponsor.id} received bonus: ${sponsorBonus}`);
+                    console.log(`[Bonus] Paid ${f1Bonus} to Sponsor ${sponsor.id}`);
+                } else {
+                    console.log(`[Bonus] Sponsor ${sponsor.id} rank ${sponsorRoleId} too low for F1 bonus (Requires <= 6)`);
                 }
             }
         }
 
-        return new Response(JSON.stringify({ success: true, points: pointsEarned }), {
-            headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+
+        // --- LOGIC 4: KIỂM TRA THĂNG CẤP (RANK UP) - ADMIN 3.1: DYNAMIC ---
+        //Check ALL possible rank upgrades based on dynamic policy
+        const rankUpgrades = (POLICY.rankUpgrades || []) as any[];
+
+        // Find applicable upgrade for current user rank
+        const applicableUpgrade = rankUpgrades.find(
+            (upgrade: any) => upgrade.fromRank === buyerRoleId
+        );
+
+        if (applicableUpgrade) {
+            console.log(`[RankUp] Checking upgrade: ${applicableUpgrade.name}`);
+
+            // Calculate lifetime sales
+            const { data: orders } = await supabase
+                .from('orders')
+                .select('total_vnd')
+                .eq('user_id', userId)
+                .eq('status', 'completed');
+
+            const lifetimeSales = orders?.reduce((sum: number, o: any) => sum + Number(o.total_vnd), 0) || 0;
+
+            // Get user's team volume
+            const { data: userData } = await supabase
+                .from('users')
+                .select('team_volume')
+                .eq('id', userId)
+                .single();
+
+            const teamVolume = userData?.team_volume || 0;
+
+            // Count direct downlines
+            const { data: downlines } = await supabase
+                .from('users')
+                .select('id, role_id')
+                .eq('sponsor_id', userId);
+
+            const directDownlinesCount = downlines?.length || 0;
+
+            // Check if downlines meet minimum rank requirement
+            let meetsDownlineRankRequirement = true;
+            if (applicableUpgrade.conditions.minDownlineRank) {
+                const qualifiedDownlines = downlines?.filter(
+                    (d: any) => d.role_id <= applicableUpgrade.conditions.minDownlineRank
+                ) || [];
+                meetsDownlineRankRequirement = qualifiedDownlines.length >= (applicableUpgrade.conditions.directDownlinesRequired || 0);
+            }
+
+            // Multi-condition check (AND logic)
+            const conditions = applicableUpgrade.conditions;
+            const meetsSales = !conditions.salesRequired || lifetimeSales >= conditions.salesRequired;
+            const meetsTeamVolume = !conditions.teamVolumeRequired || teamVolume >= conditions.teamVolumeRequired;
+            const meetsDownlines = !conditions.directDownlinesRequired || directDownlinesCount >= conditions.directDownlinesRequired;
+
+            console.log(`[RankUp] Conditions Check:`, {
+                sales: `${lifetimeSales} >= ${conditions.salesRequired || 0} (${meetsSales})`,
+                teamVolume: `${teamVolume} >= ${conditions.teamVolumeRequired || 0} (${meetsTeamVolume})`,
+                downlines: `${directDownlinesCount} >= ${conditions.directDownlinesRequired || 0} (${meetsDownlines})`,
+                downlineRank: meetsDownlineRankRequirement
+            });
+
+            if (meetsSales && meetsTeamVolume && meetsDownlines && meetsDownlineRankRequirement) {
+                // Perform upgrade
+                const rankNames = {
+                    7: 'Khởi Nghiệp',
+                    6: 'Đại Sứ',
+                    5: 'Đại Sứ Silver',
+                    4: 'Đại Sứ Gold',
+                    3: 'Đại Sứ Diamond',
+                    2: 'Phượng Hoàng',
+                    1: 'Thiên Long'
+                };
+
+                await supabase
+                    .from('users')
+                    .update({
+                        rank: rankNames[applicableUpgrade.toRank as keyof typeof rankNames] || 'Unknown',
+                        role_id: applicableUpgrade.toRank
+                    })
+                    .eq('id', userId);
+
+                console.log(`[RankUp] ✅ User ${userId} upgraded: ${applicableUpgrade.name} (${buyerRoleId} → ${applicableUpgrade.toRank})`);
+
+                // TODO: Send congratulation email via Resend API
+            } else {
+                console.log(`[RankUp] User ${userId} not ready for upgrade yet`);
+            }
+        }
+
+
+        return new Response(JSON.stringify({ success: true, message: "Reward processed" }), {
+            headers: { "Content-Type": "application/json" },
         });
 
     } catch (error) {
-        console.error("❌ Agent The Bee Error:", error);
-        return new Response(JSON.stringify({ error: error.message }), {
-            status: 400,
-            headers: { ...corsHeaders, 'Content-Type': 'application/json' },
-        });
+        console.error("[TheBee Error]:", error);
+        return new Response(JSON.stringify({ error: error.message }), { status: 500 });
     }
 });

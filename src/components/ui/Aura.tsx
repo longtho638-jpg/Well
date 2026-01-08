@@ -53,7 +53,7 @@ export const BentoCard: React.FC<BentoCardProps> = ({
 
     const Content = (
         <div
-            className={`group relative border border-white/10 bg-neutral-900/50 overflow-hidden rounded-3xl ${colClasses[colSpan]} ${rowClasses[rowSpan]} ${className}`}
+            className={`group relative border border-white/10 bg-zinc-900/50 overflow-hidden rounded-3xl ${colClasses[colSpan]} ${rowClasses[rowSpan]} ${className}`}
             onMouseMove={handleMouseMove}
         >
             <motion.div
@@ -62,7 +62,7 @@ export const BentoCard: React.FC<BentoCardProps> = ({
                     background: useMotionTemplate`
             radial-gradient(
               650px circle at ${mouseX}px ${mouseY}px,
-              rgba(255,255,255,0.1),
+              rgba(16, 185, 129, 0.1),
               transparent 80%
             )
           `
@@ -83,14 +83,15 @@ export const BentoCard: React.FC<BentoCardProps> = ({
 
 // ===== GLOWING BADGE =====
 
-export const AuraBadge: React.FC<{ children: React.ReactNode; color?: 'cyan' | 'violet' | 'pink' }> = ({
+export const AuraBadge: React.FC<{ children: React.ReactNode; color?: 'cyan' | 'violet' | 'pink' | 'emerald' }> = ({
     children,
     color = 'cyan'
 }) => {
     const colors = {
         cyan: 'bg-cyan-500/10 text-cyan-400 border-cyan-500/20',
         violet: 'bg-violet-500/10 text-violet-400 border-violet-500/20',
-        pink: 'bg-pink-500/10 text-pink-400 border-pink-500/20'
+        pink: 'bg-pink-500/10 text-pink-400 border-pink-500/20',
+        emerald: 'bg-emerald-500/10 text-emerald-400 border-emerald-500/20'
     };
 
     return (
@@ -103,12 +104,8 @@ export const AuraBadge: React.FC<{ children: React.ReactNode; color?: 'cyan' | '
 
 // ===== GRID PATTERN BACKGROUND =====
 
-interface GridPatternProps {
-    className?: string;
-}
-
-export const GridPattern: React.FC<GridPatternProps> = ({ className = '' }) => {
+export const GridPattern: React.FC<{ className?: string }> = ({ className = '' }) => {
     return (
-        <div className={`absolute inset-0 -z-10 h-full w-full bg-black bg-grid-pattern [mask-image:radial-gradient(ellipse_at_center,transparent_20%,black)] ${className}`} />
+        <div className={`absolute inset-0 -z-10 h-full w-full bg-zinc-950 bg-grid-pattern [mask-image:radial-gradient(ellipse_at_center,transparent_20%,black)] ${className}`} />
     );
 };

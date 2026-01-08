@@ -99,6 +99,7 @@ export class DebuggerAgent extends BaseAgent {
                     notes: 'Ensures safe recovery if fix fails',
                 },
             ],
+            visibility: 'all',
         });
     }
 

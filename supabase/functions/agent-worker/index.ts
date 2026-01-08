@@ -1,0 +1,79 @@
+// Supabase Edge Function: The Core Agent Worker
+// Deno Runtime - High Performance, Low Latency
+
+import { createClient } from 'https://esm.sh/@supabase/supabase-js@2'
+
+const supabase = createClient(
+  Deno.env.get('SUPABASE_URL') ?? '',
+  Deno.env.get('SERVICE_ROLE_KEY') ?? '' // Dùng Key quyền lực để ghi đè RLS
+)
+
+Deno.serve(async (req) => {
+  // 1. Worker nhận tín hiệu (Cron hoặc Webhook gọi định kỳ)
+  // Trong thực tế, ta dùng pg_net hoặc cron để gọi function này mỗi giây
+
+  // 2. Lấy 100 jobs pending
+  const { data: jobs, error } = await supabase
+    .from('agent_jobs')
+    .select('*')
+    .eq('status', 'pending')
+    .limit(100)
+
+  if (!jobs || jobs.length === 0) {
+    return new Response(JSON.stringify({ message: 'No jobs' }), { headers: { 'Content-Type': 'application/json' } })
+  }
+
+  const results = []
+
+  // 3. Xử lý song song (Parallel Processing)
+  await Promise.all(jobs.map(async (job) => {
+    try {
+      // Mark as processing (Optimistic Locking)
+      await supabase.from('agent_jobs').update({ status: 'processing' }).eq('id', job.id)
+
+      // --- ROUTING AGENT ---
+      if (job.agent_name === 'The Bee' && job.action === 'process_reward') {
+        await runTheBee(job.payload)
+      }
+      // ---------------------
+
+      // Mark as completed
+      await supabase.from('agent_jobs').update({
+        status: 'completed',
+        processed_at: new Date().toISOString()
+      }).eq('id', job.id)
+
+      results.push({ id: job.id, status: 'ok' })
+
+    } catch (err) {
+      console.error(`Job ${job.id} failed:`, err)
+      // Retry logic: Mark failed, increment attempts
+      await supabase.from('agent_jobs').update({
+        status: 'failed',
+        error_message: err.message,
+        attempts: job.attempts + 1
+      }).eq('id', job.id)
+    }
+  }))
+
+  return new Response(JSON.stringify({ processed: results.length }), { headers: { 'Content-Type': 'application/json' } })
+})
+
+// --- AGENT LOGIC: THE BEE ---
+async function runTheBee(payload: any) {
+  const { user_id, amount, transaction_id } = payload
+
+  // 1. Delegate Logic to Database (Bee 2.0)
+  // The RPC 'distribute_reward' now handles:
+  // - Looking up Bonus Revenue (DTTT) from Product
+  // - Applying correct rate (21% vs 25%) based on User Rank
+  // - Auto-Rank Upgrade
+
+  const { error } = await supabase.rpc('distribute_reward', {
+    p_user_id: user_id,
+    p_amount: amount, // Pass full amount as fallback base
+    p_source_tx: transaction_id
+  })
+
+  if (error) throw new Error(error.message)
+}

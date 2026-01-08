@@ -23,15 +23,15 @@ import {
   AlertCircle,
   Star,
   Sparkles,
+  Zap,
 } from 'lucide-react';
+import NetworkTree from '@/components/NetworkTree';
 import { useStore } from '@/store';
-import { TeamMember, UserRank } from '@/types';
+import { TeamMember, UserRank, RANK_NAMES } from '@/types';
 import { formatVND, formatNumber } from '@/utils/format';
 import { TEAM_MEMBERS, TEAM_METRICS } from '@/data/mockData';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, PieChart, Pie, Cell } from 'recharts';
 import { useTranslation } from '@/hooks';
-import { ParticleBackground } from '@/components/ParticleBackground';
-import { CursorGlow } from '@/components/CursorGlow';
 
 export default function LeaderDashboard() {
   const t = useTranslation();
@@ -41,7 +41,7 @@ export default function LeaderDashboard() {
   const [sortBy, setSortBy] = useState<'sales' | 'growth' | 'team'>('sales');
 
   // Tab management - TREE MAX LEVEL
-  const [activeTab, setActiveTab] = useState<'team' | 'insights'>('team');
+  const [activeTab, setActiveTab] = useState<'team' | 'insights' | 'tree'>('team');
   const [actionLoading, setActionLoading] = useState<string | null>(null);
 
   // Filter and sort team members
@@ -88,27 +88,32 @@ export default function LeaderDashboard() {
   ];
 
   const rankDistribution = [
-    { name: 'Partner', value: TEAM_MEMBERS.filter(m => m.rank === 'Partner').length, color: '#00575A' },
-    { name: 'Member', value: TEAM_MEMBERS.filter(m => m.rank === 'Member').length, color: '#FFBF00' }
+    { name: 'Đại Sứ', value: TEAM_MEMBERS.filter(m => m.rank === UserRank.DAI_SU).length, color: '#00575A' },
+    { name: 'CTV', value: TEAM_MEMBERS.filter(m => m.rank === UserRank.CTV).length, color: '#FFBF00' }
   ];
 
   const getRankBadgeColor = (rank: UserRank) => {
     switch (rank) {
-      case 'Founder Club':
-        return 'bg-purple-900/50 text-purple-400 border border-purple-500/30';
-      case 'Partner':
-        return 'bg-blue-900/50 text-blue-400 border border-blue-500/30';
-      case 'Member':
-        return 'bg-gray-800 text-gray-400 border border-gray-600/30';
+      case UserRank.THIEN_LONG:
+      case UserRank.PHUONG_HOANG:
+        return 'bg-purple-100 text-purple-700';
+      case UserRank.DAI_SU_DIAMOND:
+      case UserRank.DAI_SU_GOLD:
+      case UserRank.DAI_SU_SILVER:
+      case UserRank.DAI_SU:
+        return 'bg-blue-100 text-blue-700';
+      case UserRank.KHOI_NGHIEP:
+        return 'bg-green-100 text-green-700';
       default:
-        return 'bg-gray-800 text-gray-400 border border-gray-600/30';
+        return 'bg-gray-100 text-gray-700';
     }
   };
 
+
   const getGrowthColor = (growth: number) => {
-    if (growth >= 30) return 'text-green-400';
-    if (growth >= 15) return 'text-blue-400';
-    return 'text-gray-400';
+    if (growth >= 30) return 'text-green-600';
+    if (growth >= 15) return 'text-blue-600';
+    return 'text-gray-600';
   };
 
   // AI Insights Handlers - TREE MAX LEVEL
@@ -139,40 +144,43 @@ export default function LeaderDashboard() {
   const getRiskBadgeColor = (riskLevel: 'high' | 'medium' | 'low') => {
     switch (riskLevel) {
       case 'high':
-        return 'bg-red-900/50 text-red-400 border border-red-500/30';
+        return 'bg-red-100 text-red-700';
       case 'medium':
-        return 'bg-yellow-900/50 text-yellow-400 border border-yellow-500/30';
+        return 'bg-yellow-100 text-yellow-700';
       case 'low':
-        return 'bg-green-900/50 text-green-400 border border-green-500/30';
+        return 'bg-green-100 text-green-700';
     }
   };
 
   return (
-    <div className="min-h-screen bg-dark-ultra p-6 space-y-6 pb-20 relative overflow-hidden">
-      <ParticleBackground />
-      <CursorGlow />
-
+    <div className="min-h-screen bg-zinc-50 dark:bg-zinc-950 p-6 space-y-6 pb-20 transition-colors duration-300">
       {/* Header */}
       <motion.div
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
-        className="glass-ultra rounded-3xl p-8 text-white relative overflow-hidden"
+        className="relative overflow-hidden"
       >
-        <div className="absolute inset-0 bg-gradient-to-r from-teal-500/10 to-purple-500/10" />
-        <div className="relative z-10 flex items-start justify-between">
-          <div className="flex-1">
-            <div className="flex items-center gap-3 mb-3">
-              <div className="w-14 h-14 bg-gradient-to-br from-yellow-400 to-amber-600 rounded-2xl flex items-center justify-center shadow-lg shadow-amber-500/30">
-                <Crown className="w-8 h-8 text-white" />
+        {/* Background */}
+        <div className="absolute inset-0 bg-gradient-to-r from-emerald-900 via-zinc-900 to-black rounded-3xl" />
+        <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGRlZnM+PHBhdHRlcm4gaWQ9ImdyaWQiIHdpZHRoPSI2MCIgaGVpZ2h0PSI2MCIgcGF0dGVyblVuaXRzPSJ1c2VyU3BhY2VPblVzZSI+PHBhdGggZD0iTSAxMCAwIEwgMCAwIDAgMTAiIGZpbGw9Im5vbmUiIHN0cm9rZT0iIzEwYjk4MSIgc3Ryb2tlLW9wYWNpdHk9IjAuMSIgc3Ryb2tlLXdpZHRoPSIxIi8+PC9wYXR0ZXJuPjwvZGVmcz48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSJ1cmwoI2dyaWQpIi8+PC9zdmc+')] opacity-20" />
+
+        {/* Content */}
+        <div className="relative p-8 text-white">
+          <div className="flex items-start justify-between">
+            <div className="flex-1">
+              <div className="flex items-center gap-3 mb-3">
+                <div className="w-14 h-14 bg-accent rounded-2xl flex items-center justify-center shadow-lg shadow-accent/30">
+                  <Crown className="w-8 h-8 text-primary" />
+                </div>
+                <div>
+                  <h1 className="text-4xl font-bold text-zinc-900 dark:text-white">{t('team.leaderDashboard')}</h1>
+                  <p className="text-zinc-500 dark:text-zinc-400 text-sm">{t('team.subtitle')}</p>
+                </div>
               </div>
-              <div>
-                <h1 className="text-4xl font-bold">{t('team.leaderDashboard')}</h1>
-                <p className="text-white/60 text-sm">{t('team.subtitle')}</p>
-              </div>
+              <p className="text-zinc-600 dark:text-zinc-300 max-w-2xl mt-2">
+                {t('team.description')}
+              </p>
             </div>
-            <p className="text-white/80 max-w-2xl mt-2">
-              {t('team.description')}
-            </p>
           </div>
         </div>
       </motion.div>
@@ -182,26 +190,24 @@ export default function LeaderDashboard() {
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.1 }}
-        className="glass-ultra rounded-2xl p-2 flex gap-2"
+        className="bg-white/80 dark:bg-zinc-900/50 backdrop-blur-xl rounded-2xl p-2 flex gap-2 border border-zinc-200 dark:border-zinc-800"
       >
         <button
           onClick={() => setActiveTab('team')}
-          className={`flex-1 px-6 py-3.5 rounded-xl font-bold text-sm transition-all duration-300 flex items-center justify-center gap-2 ${
-            activeTab === 'team'
-              ? 'bg-gradient-to-r from-teal-600 to-teal-500 text-white shadow-lg shadow-teal-500/30'
-              : 'text-gray-400 hover:bg-white/5'
-          }`}
+          className={`flex-1 px-6 py-3.5 rounded-xl font-bold text-sm transition-all duration-300 flex items-center justify-center gap-2 ${activeTab === 'team'
+            ? 'bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 shadow-lg shadow-emerald-500/10'
+            : 'text-zinc-400 hover:bg-zinc-100 dark:bg-zinc-800'
+            }`}
         >
           <Users className="w-5 h-5" />
           Quản Lý Đội Nhóm
         </button>
         <button
           onClick={() => setActiveTab('insights')}
-          className={`flex-1 px-6 py-3.5 rounded-xl font-bold text-sm transition-all duration-300 flex items-center justify-center gap-2 ${
-            activeTab === 'insights'
-              ? 'bg-gradient-to-r from-orange-500 to-red-500 text-white shadow-lg shadow-orange-500/30'
-              : 'text-gray-400 hover:bg-white/5'
-          }`}
+          className={`flex-1 px-6 py-3.5 rounded-xl font-bold text-sm transition-all duration-300 flex items-center justify-center gap-2 ${activeTab === 'insights'
+            ? 'bg-orange-500/10 text-orange-400 border border-orange-500/20 shadow-lg shadow-orange-500/10'
+            : 'text-zinc-400 hover:bg-zinc-100 dark:bg-zinc-800'
+            }`}
         >
           <Brain className="w-5 h-5" />
           AI Insights
@@ -210,6 +216,16 @@ export default function LeaderDashboard() {
               {teamInsights.highRiskCount}
             </span>
           )}
+        </button>
+        <button
+          onClick={() => setActiveTab('tree')}
+          className={`flex-1 px-6 py-3.5 rounded-xl font-bold text-sm transition-all duration-300 flex items-center justify-center gap-2 ${activeTab === 'tree'
+            ? 'bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 shadow-lg shadow-emerald-500/10'
+            : 'text-zinc-400 hover:bg-zinc-100 dark:bg-zinc-800'
+            }`}
+        >
+          <Zap className="w-5 h-5" />
+          Sơ Đồ Hệ Thống
         </button>
       </motion.div>
 
@@ -226,7 +242,7 @@ export default function LeaderDashboard() {
             <div className="absolute inset-0 bg-gradient-to-r from-yellow-500/20 via-orange-500/20 to-red-500/20 rounded-3xl blur-2xl" />
 
             {/* Card */}
-            <div className="glass-ultra relative rounded-3xl p-8">
+            <div className="relative bg-white/80 dark:bg-zinc-900/50 backdrop-blur-xl border border-zinc-200 dark:border-zinc-800 rounded-3xl p-8">
               <div className="flex items-center justify-between mb-6">
                 <div>
                   <h2 className="text-2xl font-bold text-white flex items-center gap-3">
@@ -235,7 +251,7 @@ export default function LeaderDashboard() {
                     </div>
                     Top 3 Tướng Tài
                   </h2>
-                  <p className="text-white/60 text-sm mt-1">Doanh số cao nhất tháng này</p>
+                  <p className="text-zinc-400 text-sm mt-1">Doanh số cao nhất tháng này</p>
                 </div>
               </div>
 
@@ -261,9 +277,9 @@ export default function LeaderDashboard() {
                       </div>
                     </div>
                     <h3 className="text-white font-bold text-lg mb-1">{top3Performers[1].name}</h3>
-                    <p className="text-white/60 text-sm mb-2">{top3Performers[1].rank}</p>
-                    <div className="bg-white/10 backdrop-blur-sm rounded-xl p-3 border border-white/20">
-                      <p className="text-gray-300 text-xs mb-1">Doanh số</p>
+                    <p className="text-zinc-400 text-sm mb-2">{top3Performers[1].rank}</p>
+                    <div className="bg-zinc-100 dark:bg-zinc-800/50 backdrop-blur-sm rounded-xl p-3 border border-zinc-300 dark:border-zinc-700">
+                      <p className="text-zinc-400 text-xs mb-1">Doanh số</p>
                       <p className="text-white font-bold">{formatVND(top3Performers[1].personalSales)}</p>
                     </div>
                   </motion.div>
@@ -296,7 +312,7 @@ export default function LeaderDashboard() {
                       <Star className="w-4 h-4" fill="currentColor" />
                       {top3Performers[0].rank}
                     </p>
-                    <div className="bg-gradient-to-br from-yellow-500/20 to-orange-500/20 backdrop-blur-sm rounded-xl p-4 border border-yellow-500/40">
+                    <div className="bg-yellow-500/10 backdrop-blur-sm rounded-xl p-4 border border-yellow-500/20">
                       <p className="text-yellow-200 text-xs mb-1">Doanh số</p>
                       <p className="text-white font-bold text-lg">{formatVND(top3Performers[0].personalSales)}</p>
                     </div>
@@ -323,9 +339,9 @@ export default function LeaderDashboard() {
                       </div>
                     </div>
                     <h3 className="text-white font-bold text-lg mb-1">{top3Performers[2].name}</h3>
-                    <p className="text-white/60 text-sm mb-2">{top3Performers[2].rank}</p>
-                    <div className="bg-white/10 backdrop-blur-sm rounded-xl p-3 border border-white/20">
-                      <p className="text-gray-300 text-xs mb-1">Doanh số</p>
+                    <p className="text-zinc-400 text-sm mb-2">{top3Performers[2].rank}</p>
+                    <div className="bg-zinc-100 dark:bg-zinc-800/50 backdrop-blur-sm rounded-xl p-3 border border-zinc-300 dark:border-zinc-700">
+                      <p className="text-zinc-400 text-xs mb-1">Doanh số</p>
                       <p className="text-white font-bold">{formatVND(top3Performers[2].personalSales)}</p>
                     </div>
                   </motion.div>
@@ -336,314 +352,314 @@ export default function LeaderDashboard() {
 
           {/* Key Metrics */}
           <div className="grid md:grid-cols-4 gap-4">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.3 }}
-          className="relative group"
-        >
-          <div className="absolute inset-0 bg-gradient-to-br from-blue-500/20 to-blue-600/20 rounded-2xl blur-xl opacity-0 group-hover:opacity-100 transition-opacity" />
-          <div className="glass-ultra relative rounded-2xl p-6 hover:border-blue-500/50 transition-all">
-            <div className="flex items-center justify-between mb-3">
-              <Users className="w-8 h-8 text-blue-400" />
-              <span className="text-xs font-bold bg-blue-500/20 text-blue-300 px-2 py-1 rounded-full border border-blue-500/30">
-                {TEAM_METRICS.activeMembers}/{TEAM_METRICS.totalMembers} {t('team.metrics.active')}
-              </span>
-            </div>
-            <h3 className="text-3xl font-bold text-white mb-1">{TEAM_METRICS.totalMembers}</h3>
-            <p className="text-sm text-gray-400">{t('team.metrics.totalMembers')}</p>
-          </div>
-        </motion.div>
-
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.4 }}
-          className="relative group"
-        >
-          <div className="absolute inset-0 bg-gradient-to-br from-green-500/20 to-green-600/20 rounded-2xl blur-xl opacity-0 group-hover:opacity-100 transition-opacity" />
-          <div className="glass-ultra relative rounded-2xl p-6 hover:border-green-500/50 transition-all">
-            <div className="flex items-center justify-between mb-3">
-              <DollarSign className="w-8 h-8 text-green-400" />
-              <TrendingUp className="w-5 h-5 text-green-400" />
-            </div>
-            <h3 className="text-3xl font-bold text-white mb-1">{formatVND(TEAM_METRICS.totalTeamVolume)}</h3>
-            <p className="text-sm text-gray-400">{t('team.metrics.teamVolume')}</p>
-          </div>
-        </motion.div>
-
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.5 }}
-          className="relative group"
-        >
-          <div className="absolute inset-0 bg-gradient-to-br from-purple-500/20 to-purple-600/20 rounded-2xl blur-xl opacity-0 group-hover:opacity-100 transition-opacity" />
-          <div className="glass-ultra relative rounded-2xl p-6 hover:border-purple-500/50 transition-all">
-            <div className="flex items-center justify-between mb-3">
-              <Target className="w-8 h-8 text-purple-400" />
-              <span className="text-xs font-bold bg-green-500/20 text-green-300 px-2 py-1 rounded-full border border-green-500/30">
-                +{TEAM_METRICS.monthlyGrowth}%
-              </span>
-            </div>
-            <h3 className="text-3xl font-bold text-white mb-1">{formatVND(TEAM_METRICS.averageSalesPerMember)}</h3>
-            <p className="text-sm text-gray-400">{t('team.metrics.averageSales')}</p>
-          </div>
-        </motion.div>
-
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.6 }}
-          className="relative group"
-        >
-          <div className="absolute inset-0 bg-gradient-to-br from-orange-500/20 to-orange-600/20 rounded-2xl blur-xl opacity-0 group-hover:opacity-100 transition-opacity" />
-          <div className="glass-ultra relative rounded-2xl p-6 hover:border-orange-500/50 transition-all">
-            <div className="flex items-center justify-between mb-3">
-              <Award className="w-8 h-8 text-orange-400" />
-              <Activity className="w-5 h-5 text-orange-400" />
-            </div>
-            <h3 className="text-3xl font-bold text-white mb-1">{TEAM_METRICS.topPerformers.length}</h3>
-            <p className="text-sm text-gray-400">{t('team.metrics.topPerformers')}</p>
-          </div>
-        </motion.div>
-      </div>
-
-      {/* Charts - Network Health & Rank Distribution */}
-      <div className="grid md:grid-cols-2 gap-6">
-        {/* Network Health - Donut Chart */}
-        <motion.div
-          initial={{ opacity: 0, x: -20 }}
-          animate={{ opacity: 1, x: 0 }}
-          transition={{ delay: 0.7 }}
-          className="relative group"
-        >
-          <div className="absolute inset-0 bg-gradient-to-br from-cyan-500/10 to-blue-500/10 rounded-2xl blur-xl opacity-50" />
-          <div className="glass-ultra relative rounded-2xl p-6">
-            <h3 className="font-bold text-white text-lg mb-4 flex items-center gap-2">
-              <Activity className="w-5 h-5 text-cyan-400" />
-              Network Health
-            </h3>
-            <ResponsiveContainer width="100%" height={250}>
-              <PieChart>
-                <Pie
-                  data={networkHealthData}
-                  cx="50%"
-                  cy="50%"
-                  innerRadius={60}
-                  outerRadius={90}
-                  paddingAngle={5}
-                  dataKey="value"
-                  label={({ name, value, percent }) => `${name}: ${value} (${(percent * 100).toFixed(0)}%)`}
-                >
-                  {networkHealthData.map((entry, index) => (
-                    <Cell key={`cell-${index}`} fill={entry.color} />
-                  ))}
-                </Pie>
-                <Tooltip
-                  contentStyle={{
-                    backgroundColor: 'rgba(0, 0, 0, 0.8)',
-                    border: '1px solid rgba(255, 255, 255, 0.2)',
-                    borderRadius: '12px',
-                    color: 'white'
-                  }}
-                />
-              </PieChart>
-            </ResponsiveContainer>
-
-            {/* Legend */}
-            <div className="flex justify-center gap-4 mt-4">
-              {networkHealthData.map((item, index) => (
-                <div key={index} className="flex items-center gap-2">
-                  <div className="w-3 h-3 rounded-full" style={{ backgroundColor: item.color }} />
-                  <span className="text-gray-300 text-sm">{item.name}</span>
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.3 }}
+              className="relative group"
+            >
+              <div className="absolute inset-0 bg-gradient-to-br from-blue-500/10 to-blue-600/10 rounded-2xl blur-xl opacity-0 group-hover:opacity-100 transition-opacity" />
+              <div className="relative bg-zinc-900/50 backdrop-blur-xl rounded-2xl p-6 border border-zinc-800 hover:border-blue-500/30 transition-all">
+                <div className="flex items-center justify-between mb-3">
+                  <Users className="w-8 h-8 text-blue-400" />
+                  <span className="text-xs font-bold bg-blue-500/10 text-blue-300 px-2 py-1 rounded-full border border-blue-500/20">
+                    {TEAM_METRICS.activeMembers}/{TEAM_METRICS.totalMembers} {t('team.metrics.active')}
+                  </span>
                 </div>
-              ))}
-            </div>
-          </div>
-        </motion.div>
+                <h3 className="text-3xl font-bold text-white mb-1">{TEAM_METRICS.totalMembers}</h3>
+                <p className="text-sm text-zinc-400">{t('team.metrics.totalMembers')}</p>
+              </div>
+            </motion.div>
 
-        {/* Rank Distribution */}
-        <motion.div
-          initial={{ opacity: 0, x: 20 }}
-          animate={{ opacity: 1, x: 0 }}
-          transition={{ delay: 0.8 }}
-          className="relative group"
-        >
-          <div className="absolute inset-0 bg-gradient-to-br from-purple-500/10 to-pink-500/10 rounded-2xl blur-xl opacity-50" />
-          <div className="glass-ultra relative rounded-2xl p-6">
-            <h3 className="font-bold text-white text-lg mb-4 flex items-center gap-2">
-              <Award className="w-5 h-5 text-purple-400" />
-              {t('team.charts.rankDistribution')}
-            </h3>
-            <ResponsiveContainer width="100%" height={250}>
-              <PieChart>
-                <Pie
-                  data={rankDistribution}
-                  cx="50%"
-                  cy="50%"
-                  labelLine={false}
-                  label={({ name, value, percent }) => `${name}: ${value} (${(percent * 100).toFixed(0)}%)`}
-                  outerRadius={90}
-                  fill="#8884d8"
-                  dataKey="value"
-                >
-                  {rankDistribution.map((entry, index) => (
-                    <Cell key={`cell-${index}`} fill={entry.color} />
-                  ))}
-                </Pie>
-                <Tooltip
-                  contentStyle={{
-                    backgroundColor: 'rgba(0, 0, 0, 0.8)',
-                    border: '1px solid rgba(255, 255, 255, 0.2)',
-                    borderRadius: '12px',
-                    color: 'white'
-                  }}
-                />
-              </PieChart>
-            </ResponsiveContainer>
-          </div>
-        </motion.div>
-      </div>
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.4 }}
+              className="relative group"
+            >
+              <div className="absolute inset-0 bg-gradient-to-br from-emerald-500/10 to-emerald-600/10 rounded-2xl blur-xl opacity-0 group-hover:opacity-100 transition-opacity" />
+              <div className="relative bg-zinc-900/50 backdrop-blur-xl rounded-2xl p-6 border border-zinc-800 hover:border-emerald-500/30 transition-all">
+                <div className="flex items-center justify-between mb-3">
+                  <DollarSign className="w-8 h-8 text-emerald-400" />
+                  <TrendingUp className="w-5 h-5 text-emerald-400" />
+                </div>
+                <h3 className="text-3xl font-bold text-white mb-1">{formatVND(TEAM_METRICS.totalTeamVolume)}</h3>
+                <p className="text-sm text-zinc-400">{t('team.metrics.teamVolume')}</p>
+              </div>
+            </motion.div>
 
-      {/* Team Members Table */}
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.9 }}
-        className="relative group"
-      >
-        <div className="absolute inset-0 bg-gradient-to-br from-white/5 to-white/10 rounded-2xl blur-xl opacity-50" />
-        <div className="glass-ultra relative rounded-2xl overflow-hidden">
-          {/* Header */}
-          <div className="p-6 border-b border-white/10">
-            <div className="flex flex-col md:flex-row gap-4 items-start md:items-center justify-between">
-              <div>
-                <h3 className="font-bold text-white text-lg flex items-center gap-2">
-                  <Users className="w-5 h-5 text-teal-400" />
-                  {t('team.members.teamMembers')} ({filteredMembers.length})
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.5 }}
+              className="relative group"
+            >
+              <div className="absolute inset-0 bg-gradient-to-br from-purple-500/10 to-purple-600/10 rounded-2xl blur-xl opacity-0 group-hover:opacity-100 transition-opacity" />
+              <div className="relative bg-zinc-900/50 backdrop-blur-xl rounded-2xl p-6 border border-zinc-800 hover:border-purple-500/30 transition-all">
+                <div className="flex items-center justify-between mb-3">
+                  <Target className="w-8 h-8 text-purple-400" />
+                  <span className="text-xs font-bold bg-emerald-500/10 text-emerald-300 px-2 py-1 rounded-full border border-emerald-500/20">
+                    +{TEAM_METRICS.monthlyGrowth}%
+                  </span>
+                </div>
+                <h3 className="text-3xl font-bold text-white mb-1">{formatVND(TEAM_METRICS.averageSalesPerMember)}</h3>
+                <p className="text-sm text-zinc-400">{t('team.metrics.averageSales')}</p>
+              </div>
+            </motion.div>
+
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.6 }}
+              className="relative group"
+            >
+              <div className="absolute inset-0 bg-gradient-to-br from-orange-500/10 to-orange-600/10 rounded-2xl blur-xl opacity-0 group-hover:opacity-100 transition-opacity" />
+              <div className="relative bg-zinc-900/50 backdrop-blur-xl rounded-2xl p-6 border border-zinc-800 hover:border-orange-500/30 transition-all">
+                <div className="flex items-center justify-between mb-3">
+                  <Award className="w-8 h-8 text-orange-400" />
+                  <Activity className="w-5 h-5 text-orange-400" />
+                </div>
+                <h3 className="text-3xl font-bold text-white mb-1">{TEAM_METRICS.topPerformers.length}</h3>
+                <p className="text-sm text-zinc-400">{t('team.metrics.topPerformers')}</p>
+              </div>
+            </motion.div>
+          </div>
+
+          {/* Charts - Network Health & Rank Distribution */}
+          <div className="grid md:grid-cols-2 gap-6">
+            {/* Network Health - Donut Chart */}
+            <motion.div
+              initial={{ opacity: 0, x: -20 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ delay: 0.7 }}
+              className="relative group"
+            >
+              <div className="absolute inset-0 bg-gradient-to-br from-cyan-500/10 to-blue-500/10 rounded-2xl blur-xl opacity-50" />
+              <div className="relative bg-zinc-900/50 backdrop-blur-xl rounded-2xl p-6 border border-zinc-800">
+                <h3 className="font-bold text-white text-lg mb-4 flex items-center gap-2">
+                  <Activity className="w-5 h-5 text-cyan-400" />
+                  Network Health
                 </h3>
+                <ResponsiveContainer width="100%" height={250}>
+                  <PieChart>
+                    <Pie
+                      data={networkHealthData}
+                      cx="50%"
+                      cy="50%"
+                      innerRadius={60}
+                      outerRadius={90}
+                      paddingAngle={5}
+                      dataKey="value"
+                      label={({ name, value, percent }) => `${name}: ${value} (${(percent * 100).toFixed(0)}%)`}
+                    >
+                      {networkHealthData.map((entry, index) => (
+                        <Cell key={`cell-${index}`} fill={entry.color} />
+                      ))}
+                    </Pie>
+                    <Tooltip
+                      contentStyle={{
+                        backgroundColor: 'rgba(0, 0, 0, 0.8)',
+                        border: '1px solid rgba(255, 255, 255, 0.2)',
+                        borderRadius: '12px',
+                        color: 'white'
+                      }}
+                    />
+                  </PieChart>
+                </ResponsiveContainer>
+
+                {/* Legend */}
+                <div className="flex justify-center gap-4 mt-4">
+                  {networkHealthData.map((item, index) => (
+                    <div key={index} className="flex items-center gap-2">
+                      <div className="w-3 h-3 rounded-full" style={{ backgroundColor: item.color }} />
+                      <span className="text-zinc-400 text-sm">{item.name}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </motion.div>
+
+            {/* Rank Distribution */}
+            <motion.div
+              initial={{ opacity: 0, x: 20 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ delay: 0.8 }}
+              className="relative group"
+            >
+              <div className="absolute inset-0 bg-gradient-to-br from-purple-500/10 to-pink-500/10 rounded-2xl blur-xl opacity-50" />
+              <div className="relative bg-zinc-900/50 backdrop-blur-xl rounded-2xl p-6 border border-zinc-800">
+                <h3 className="font-bold text-white text-lg mb-4 flex items-center gap-2">
+                  <Award className="w-5 h-5 text-purple-400" />
+                  {t('team.charts.rankDistribution')}
+                </h3>
+                <ResponsiveContainer width="100%" height={250}>
+                  <PieChart>
+                    <Pie
+                      data={rankDistribution}
+                      cx="50%"
+                      cy="50%"
+                      labelLine={false}
+                      label={({ name, value, percent }) => `${name}: ${value} (${(percent * 100).toFixed(0)}%)`}
+                      outerRadius={90}
+                      fill="#8884d8"
+                      dataKey="value"
+                    >
+                      {rankDistribution.map((entry, index) => (
+                        <Cell key={`cell-${index}`} fill={entry.color} />
+                      ))}
+                    </Pie>
+                    <Tooltip
+                      contentStyle={{
+                        backgroundColor: 'rgba(0, 0, 0, 0.8)',
+                        border: '1px solid rgba(255, 255, 255, 0.2)',
+                        borderRadius: '12px',
+                        color: 'white'
+                      }}
+                    />
+                  </PieChart>
+                </ResponsiveContainer>
+              </div>
+            </motion.div>
+          </div>
+
+          {/* Team Members Table */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.9 }}
+            className="relative group"
+          >
+            <div className="absolute inset-0 bg-gradient-to-br from-white/5 to-white/10 rounded-2xl blur-xl opacity-50" />
+            <div className="relative bg-white/80 dark:bg-zinc-900/50 backdrop-blur-xl border border-zinc-200 dark:border-zinc-800 rounded-2xl overflow-hidden">
+              {/* Header */}
+              <div className="p-6 border-b border-zinc-800">
+                <div className="flex flex-col md:flex-row gap-4 items-start md:items-center justify-between">
+                  <div>
+                    <h3 className="font-bold text-white text-lg flex items-center gap-2">
+                      <Users className="w-5 h-5 text-primary" />
+                      {t('team.members.teamMembers')} ({filteredMembers.length})
+                    </h3>
+                  </div>
+
+                  <div className="flex flex-col md:flex-row gap-3 w-full md:w-auto">
+                    {/* Search */}
+                    <div className="relative">
+                      <Search className="w-4 h-4 text-zinc-400 absolute left-3 top-1/2 -translate-y-1/2" />
+                      <input
+                        type="text"
+                        value={searchTerm}
+                        onChange={(e) => setSearchTerm(e.target.value)}
+                        placeholder={t('team.members.search')}
+                        className="pl-9 pr-4 py-2.5 bg-zinc-100 dark:bg-zinc-800/50 border border-zinc-300 dark:border-zinc-700 rounded-xl text-sm text-white placeholder-zinc-500 focus:outline-none focus:ring-2 focus:ring-emerald-500/50 backdrop-blur-sm"
+                      />
+                    </div>
+
+                    {/* Filter by Rank */}
+                    <select
+                      value={filterRank}
+                      onChange={(e) => setFilterRank(e.target.value as UserRank | 'all')}
+                      className="px-4 py-2.5 bg-zinc-100 dark:bg-zinc-800/50 border border-zinc-300 dark:border-zinc-700 rounded-xl text-sm text-white focus:outline-none focus:ring-2 focus:ring-emerald-500/50 backdrop-blur-sm"
+                    >
+                      <option value="all" className="bg-zinc-900">{t('team.filters.allRanks')}</option>
+                      <option value="Partner" className="bg-zinc-900">Partner</option>
+                      <option value="Member" className="bg-zinc-900">Member</option>
+                    </select>
+
+                    {/* Sort */}
+                    <select
+                      value={sortBy}
+                      onChange={(e) => setSortBy(e.target.value as 'sales' | 'growth' | 'team')}
+                      className="px-4 py-2.5 bg-zinc-100 dark:bg-zinc-800/50 border border-zinc-300 dark:border-zinc-700 rounded-xl text-sm text-white focus:outline-none focus:ring-2 focus:ring-emerald-500/50 backdrop-blur-sm"
+                    >
+                      <option value="sales" className="bg-zinc-900">{t('team.filters.sortSales')}</option>
+                      <option value="growth" className="bg-zinc-900">{t('team.filters.sortGrowth')}</option>
+                      <option value="team" className="bg-zinc-900">{t('team.filters.sortTeam')}</option>
+                    </select>
+
+                    {/* Export */}
+                    <button className="px-4 py-2.5 bg-emerald-500 hover:bg-emerald-600 text-white rounded-xl text-sm font-bold flex items-center gap-2 transition-all shadow-lg shadow-emerald-500/30">
+                      <Download className="w-4 h-4" />
+                      {t('team.filters.export')}
+                    </button>
+                  </div>
+                </div>
               </div>
 
-              <div className="flex flex-col md:flex-row gap-3 w-full md:w-auto">
-                {/* Search */}
-                <div className="relative">
-                  <Search className="w-4 h-4 text-gray-400 absolute left-3 top-1/2 -translate-y-1/2" />
-                  <input
-                    type="text"
-                    value={searchTerm}
-                    onChange={(e) => setSearchTerm(e.target.value)}
-                    placeholder={t('team.members.search')}
-                    className="pl-9 pr-4 py-2.5 bg-white/5 border border-white/20 rounded-xl text-sm text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-teal-500/50 backdrop-blur-sm"
-                  />
-                </div>
-
-                {/* Filter by Rank */}
-                <select
-                  value={filterRank}
-                  onChange={(e) => setFilterRank(e.target.value as UserRank | 'all')}
-                  className="px-4 py-2.5 bg-white/5 border border-white/20 rounded-xl text-sm text-white focus:outline-none focus:ring-2 focus:ring-teal-500/50 backdrop-blur-sm"
-                >
-                  <option value="all" className="bg-gray-800 text-white">{t('team.filters.allRanks')}</option>
-                  <option value="Partner" className="bg-gray-800 text-white">Partner</option>
-                  <option value="Member" className="bg-gray-800 text-white">Member</option>
-                </select>
-
-                {/* Sort */}
-                <select
-                  value={sortBy}
-                  onChange={(e) => setSortBy(e.target.value as 'sales' | 'growth' | 'team')}
-                  className="px-4 py-2.5 bg-white/5 border border-white/20 rounded-xl text-sm text-white focus:outline-none focus:ring-2 focus:ring-teal-500/50 backdrop-blur-sm"
-                >
-                  <option value="sales" className="bg-gray-800 text-white">{t('team.filters.sortSales')}</option>
-                  <option value="growth" className="bg-gray-800 text-white">{t('team.filters.sortGrowth')}</option>
-                  <option value="team" className="bg-gray-800 text-white">{t('team.filters.sortTeam')}</option>
-                </select>
-
-                {/* Export */}
-                <button className="px-4 py-2.5 bg-gradient-to-r from-teal-600 to-teal-500 hover:scale-[1.02] text-white rounded-xl text-sm font-bold flex items-center gap-2 transition-all shadow-lg shadow-teal-500/30">
-                  <Download className="w-4 h-4" />
-                  {t('team.filters.export')}
-                </button>
+              {/* Table */}
+              <div className="overflow-x-auto">
+                <table className="w-full">
+                  <thead className="bg-zinc-900/50 border-b border-zinc-800">
+                    <tr>
+                      <th className="px-6 py-4 text-left text-xs font-bold text-zinc-400 uppercase tracking-wider">{t('team.members.member')}</th>
+                      <th className="px-6 py-4 text-left text-xs font-bold text-zinc-400 uppercase tracking-wider">{t('team.members.rank')}</th>
+                      <th className="px-6 py-4 text-right text-xs font-bold text-zinc-400 uppercase tracking-wider">{t('team.members.personalSales')}</th>
+                      <th className="px-6 py-4 text-right text-xs font-bold text-zinc-400 uppercase tracking-wider">{t('team.members.teamVolume')}</th>
+                      <th className="px-6 py-4 text-center text-xs font-bold text-zinc-400 uppercase tracking-wider">{t('team.members.downlines')}</th>
+                      <th className="px-6 py-4 text-center text-xs font-bold text-zinc-400 uppercase tracking-wider">{t('team.members.growth')}</th>
+                      <th className="px-6 py-4 text-center text-xs font-bold text-zinc-400 uppercase tracking-wider">{t('team.members.actions')}</th>
+                    </tr>
+                  </thead>
+                  <tbody className="divide-y divide-zinc-800">
+                    {filteredMembers.map((member, index) => (
+                      <motion.tr
+                        key={member.id}
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        transition={{ delay: index * 0.05 }}
+                        className="hover:bg-zinc-100 dark:bg-zinc-800/30 transition-colors"
+                      >
+                        <td className="px-6 py-4">
+                          <div className="flex items-center gap-3">
+                            <img
+                              src={member.avatarUrl}
+                              alt={member.name}
+                              className="w-10 h-10 rounded-full ring-2 ring-white/20"
+                            />
+                            <div>
+                              <p className="font-medium text-white">{member.name}</p>
+                              <p className="text-xs text-zinc-400">{member.email}</p>
+                            </div>
+                          </div>
+                        </td>
+                        <td className="px-6 py-4">
+                          <span className={`px-2 py-1 rounded-full text-xs font-medium ${getRankBadgeColor(member.rank)}`}>
+                            {RANK_NAMES[member.rank]}
+                          </span>
+                        </td>
+                        <td className="px-6 py-4 text-right font-medium text-white">
+                          {formatVND(member.personalSales)}
+                        </td>
+                        <td className="px-6 py-4 text-right font-medium text-white">
+                          {formatVND(member.teamVolume)}
+                        </td>
+                        <td className="px-6 py-4 text-center">
+                          <span className="text-sm font-medium text-zinc-300">{member.activeDownlines}</span>
+                        </td>
+                        <td className="px-6 py-4 text-center">
+                          <span className={`text-sm font-bold ${getGrowthColor(member.monthlyGrowth)}`}>
+                            +{member.monthlyGrowth}%
+                          </span>
+                        </td>
+                        <td className="px-6 py-4">
+                          <div className="flex items-center justify-center gap-2">
+                            <button className="p-2 hover:bg-zinc-100 dark:bg-zinc-800 active:bg-zinc-700 rounded-lg transition-all duration-200 group" title={t('team.actions.sendEmail')}>
+                              <Mail className="w-4 h-4 text-zinc-400 group-hover:text-blue-400 transition-colors duration-200" />
+                            </button>
+                            <button className="p-2 hover:bg-zinc-100 dark:bg-zinc-800 active:bg-zinc-700 rounded-lg transition-all duration-200 group" title={t('team.actions.call')}>
+                              <Phone className="w-4 h-4 text-zinc-400 group-hover:text-green-400 transition-colors duration-200" />
+                            </button>
+                            <button className="p-2 hover:bg-zinc-100 dark:bg-zinc-800 active:bg-zinc-700 rounded-lg transition-all duration-200 group" title={t('team.actions.moreActions')}>
+                              <MoreVertical className="w-4 h-4 text-zinc-400 group-hover:text-purple-400 transition-colors duration-200" />
+                            </button>
+                          </div>
+                        </td>
+                      </motion.tr>
+                    ))}
+                  </tbody>
+                </table>
               </div>
             </div>
-          </div>
-
-          {/* Table */}
-          <div className="overflow-x-auto">
-            <table className="w-full">
-              <thead className="bg-white/5 border-b border-white/10">
-                <tr>
-                  <th className="px-6 py-4 text-left text-xs font-bold text-gray-400 uppercase tracking-wider">{t('team.members.member')}</th>
-                  <th className="px-6 py-4 text-left text-xs font-bold text-gray-400 uppercase tracking-wider">{t('team.members.rank')}</th>
-                  <th className="px-6 py-4 text-right text-xs font-bold text-gray-400 uppercase tracking-wider">{t('team.members.personalSales')}</th>
-                  <th className="px-6 py-4 text-right text-xs font-bold text-gray-400 uppercase tracking-wider">{t('team.members.teamVolume')}</th>
-                  <th className="px-6 py-4 text-center text-xs font-bold text-gray-400 uppercase tracking-wider">{t('team.members.downlines')}</th>
-                  <th className="px-6 py-4 text-center text-xs font-bold text-gray-400 uppercase tracking-wider">{t('team.members.growth')}</th>
-                  <th className="px-6 py-4 text-center text-xs font-bold text-gray-400 uppercase tracking-wider">{t('team.members.actions')}</th>
-                </tr>
-              </thead>
-              <tbody className="divide-y divide-white/5">
-                {filteredMembers.map((member, index) => (
-                  <motion.tr
-                    key={member.id}
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    transition={{ delay: index * 0.05 }}
-                    className="hover:bg-white/5 transition-colors"
-                  >
-                    <td className="px-6 py-4">
-                      <div className="flex items-center gap-3">
-                        <img
-                          src={member.avatarUrl}
-                          alt={member.name}
-                          className="w-10 h-10 rounded-full ring-2 ring-white/20"
-                        />
-                        <div>
-                          <p className="font-medium text-white">{member.name}</p>
-                          <p className="text-xs text-gray-400">{member.email}</p>
-                        </div>
-                      </div>
-                    </td>
-                    <td className="px-6 py-4">
-                      <span className={`text-xs px-3 py-1.5 rounded-lg font-bold border ${getRankBadgeColor(member.rank)}`}>
-                        {member.rank}
-                      </span>
-                    </td>
-                    <td className="px-6 py-4 text-right font-medium text-white">
-                      {formatVND(member.personalSales)}
-                    </td>
-                    <td className="px-6 py-4 text-right font-medium text-white">
-                      {formatVND(member.teamVolume)}
-                    </td>
-                    <td className="px-6 py-4 text-center">
-                      <span className="text-sm font-medium text-gray-300">{member.activeDownlines}</span>
-                    </td>
-                    <td className="px-6 py-4 text-center">
-                      <span className={`text-sm font-bold ${getGrowthColor(member.monthlyGrowth)}`}>
-                        +{member.monthlyGrowth}%
-                      </span>
-                    </td>
-                    <td className="px-6 py-4">
-                      <div className="flex items-center justify-center gap-2">
-                        <button className="p-2 hover:bg-white/10 active:bg-white/20 rounded-lg transition-all duration-200 group" title={t('team.actions.sendEmail')}>
-                          <Mail className="w-4 h-4 text-gray-400 group-hover:text-blue-400 transition-colors duration-200" />
-                        </button>
-                        <button className="p-2 hover:bg-white/10 active:bg-white/20 rounded-lg transition-all duration-200 group" title={t('team.actions.call')}>
-                          <Phone className="w-4 h-4 text-gray-400 group-hover:text-green-400 transition-colors duration-200" />
-                        </button>
-                        <button className="p-2 hover:bg-white/10 active:bg-white/20 rounded-lg transition-all duration-200 group" title={t('team.actions.moreActions')}>
-                          <MoreVertical className="w-4 h-4 text-gray-400 group-hover:text-purple-400 transition-colors duration-200" />
-                        </button>
-                      </div>
-                    </td>
-                  </motion.tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-        </div>
-      </motion.div>
+          </motion.div>
         </>
       )}
 
@@ -721,13 +737,13 @@ export default function LeaderDashboard() {
             className="relative"
           >
             <div className="absolute inset-0 bg-gradient-to-br from-orange-500/10 to-red-500/10 rounded-2xl blur-xl opacity-50" />
-            <div className="glass-ultra relative rounded-2xl overflow-hidden">
-              <div className="bg-gradient-to-r from-orange-900/50 to-red-900/50 border-b border-white/10 p-6">
-                <h3 className="font-bold text-white flex items-center gap-2 text-xl">
+            <div className="relative bg-white/80 dark:bg-white/10 backdrop-blur-xl border border-zinc-200 dark:border-white/20 rounded-2xl overflow-hidden">
+              <div className="bg-gradient-to-r from-orange-500/20 to-red-500/20 border-b border-white/10 p-6">
+                <h3 className="font-bold text-zinc-900 dark:text-white flex items-center gap-2 text-xl">
                   <AlertTriangle className="w-6 h-6 text-orange-400" />
                   Thành Viên Cần Chú Ý ({teamInsights.atRiskMembers.length})
                 </h3>
-                <p className="text-sm text-gray-300 mt-1">
+                <p className="text-sm text-zinc-500 dark:text-gray-300 mt-1">
                   AI phát hiện những thành viên cần hỗ trợ và động viên
                 </p>
               </div>
@@ -739,7 +755,7 @@ export default function LeaderDashboard() {
                     initial={{ opacity: 0, x: -20 }}
                     animate={{ opacity: 1, x: 0 }}
                     transition={{ delay: index * 0.1 }}
-                    className="bg-white/5 rounded-2xl p-6 border border-white/10 hover:border-orange-500/40 transition-all duration-300"
+                    className="bg-zinc-50 dark:bg-white/5 rounded-2xl p-6 border border-zinc-200 dark:border-white/20 hover:border-orange-500/40 transition-all duration-300"
                   >
                     <div className="flex items-start gap-4">
                       {/* Avatar */}
@@ -753,10 +769,10 @@ export default function LeaderDashboard() {
                       <div className="flex-1">
                         <div className="flex items-center justify-between mb-2">
                           <div>
-                            <h4 className="font-bold text-white text-lg">
+                            <h4 className="font-bold text-zinc-900 dark:text-white text-lg">
                               {atRiskMember.member.name}
                             </h4>
-                            <p className="text-sm text-gray-400">{atRiskMember.member.email}</p>
+                            <p className="text-sm text-zinc-500 dark:text-gray-400">{atRiskMember.member.email}</p>
                           </div>
                           <span className={`text-xs px-3 py-1.5 rounded-full font-bold border ${getRiskBadgeColor(atRiskMember.riskLevel)}`}>
                             {atRiskMember.riskLevel === 'high' && 'Rủi ro cao'}
@@ -797,85 +813,63 @@ export default function LeaderDashboard() {
                           </ul>
                         </div>
 
-                        {/* Stats */}
-                        <div className="grid grid-cols-3 gap-3 mb-4">
-                          <div className="bg-white/5 border border-white/10 rounded-xl p-2">
-                            <p className="text-xs text-gray-400">Doanh số</p>
-                            <p className="text-sm font-bold text-white">
-                              {formatVND(atRiskMember.member.personalSales)}
-                            </p>
-                          </div>
-                          <div className="bg-white/5 border border-white/10 rounded-xl p-2">
-                            <p className="text-xs text-gray-400">Tăng trưởng</p>
-                            <p className="text-sm font-bold text-white">
-                              +{atRiskMember.member.monthlyGrowth}%
-                            </p>
-                          </div>
-                          <div className="bg-white/5 border border-white/10 rounded-xl p-2">
-                            <p className="text-xs text-gray-400">Không hoạt động</p>
-                            <p className="text-sm font-bold text-orange-400 flex items-center gap-1">
-                              <Clock className="w-3 h-3" />
-                              {atRiskMember.daysInactive} ngày
-                            </p>
-                          </div>
-                        </div>
-
                         {/* Action Buttons */}
-                        <div className="flex gap-3">
+                        <div className="flex gap-3 mt-4">
                           <button
                             onClick={() => handleSendReminder(atRiskMember.member.id)}
                             disabled={actionLoading === `reminder-${atRiskMember.member.id}`}
-                            className="flex-1 flex items-center justify-center gap-2 bg-gradient-to-r from-blue-600 to-blue-500 text-white px-4 py-3 rounded-xl font-bold hover:shadow-lg transition-all duration-300 disabled:opacity-50"
+                            className="flex-1 py-2.5 bg-zinc-200 dark:bg-white/10 hover:bg-zinc-300 dark:hover:bg-white/20 text-zinc-900 dark:text-white rounded-xl text-sm font-bold transition-all flex items-center justify-center gap-2 disabled:opacity-50"
                           >
                             {actionLoading === `reminder-${atRiskMember.member.id}` ? (
-                              <>
-                                <Bell className="w-4 h-4 animate-bounce" />
-                                Đang gửi...
-                              </>
+                              <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
                             ) : (
-                              <>
-                                <Bell className="w-4 h-4" />
-                                Nhắc nhở
-                              </>
+                              <Mail className="w-4 h-4" />
                             )}
+                            Gửi nhắc nhở
                           </button>
                           <button
                             onClick={() => handleSendGift(atRiskMember.member.id)}
                             disabled={actionLoading === `gift-${atRiskMember.member.id}`}
-                            className="flex-1 flex items-center justify-center gap-2 bg-gradient-to-r from-purple-600 via-pink-600 to-purple-500 text-white px-4 py-3 rounded-xl font-bold hover:shadow-lg transition-all duration-300 disabled:opacity-50"
+                            className="flex-1 py-2.5 bg-gradient-to-r from-orange-500 to-red-500 hover:from-orange-600 hover:to-red-600 text-white rounded-xl text-sm font-bold transition-all flex items-center justify-center gap-2 shadow-lg shadow-orange-500/20 disabled:opacity-50"
                           >
                             {actionLoading === `gift-${atRiskMember.member.id}` ? (
-                              <>
-                                <GiftIcon className="w-4 h-4 animate-bounce" />
-                                Đang tặng...
-                              </>
+                              <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
                             ) : (
-                              <>
-                                <GiftIcon className="w-4 h-4" />
-                                Tặng quà 200k
-                              </>
+                              <GiftIcon className="w-4 h-4" />
                             )}
+                            Tặng quà khích lệ
                           </button>
                         </div>
                       </div>
                     </div>
                   </motion.div>
                 ))}
-
-                {teamInsights.atRiskMembers.length === 0 && (
-                  <div className="text-center py-12">
-                    <div className="mb-4 flex justify-center">
-                      <div className="p-4 bg-green-500/10 rounded-2xl">
-                        <CheckCircle2 className="w-16 h-16 text-green-400" />
-                      </div>
-                    </div>
-                    <h4 className="text-lg font-bold text-white mb-2">Tuyệt vời!</h4>
-                    <p className="text-gray-400">Không có thành viên nào cần chú ý đặc biệt</p>
-                  </div>
-                )}
               </div>
             </div>
           </motion.div>
+          <select
+            className="border border-slate-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-[#00575A] focus:border-transparent outline-none"
+            value={filterRank}
+            onChange={(e) => setFilterRank(e.target.value === 'all' ? 'all' : Number(e.target.value) as UserRank)}
+          >
+            <option value="all">All Ranks</option>
+            <option value={UserRank.THIEN_LONG}>{RANK_NAMES[UserRank.THIEN_LONG]}</option>
+            <option value={UserRank.PHUONG_HOANG}>{RANK_NAMES[UserRank.PHUONG_HOANG]}</option>
+            <option value={UserRank.DAI_SU}>{RANK_NAMES[UserRank.DAI_SU]}</option>
+            <option value={UserRank.KHOI_NGHIEP}>{RANK_NAMES[UserRank.KHOI_NGHIEP]}</option>
+            <option value={UserRank.CTV}>{RANK_NAMES[UserRank.CTV]}</option>
+          </select>
+        </motion.div>
+      )}
+
+      {/* Network Tree Tab */}
+      {activeTab === 'tree' && (
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          className="space-y-6"
+        >
+          <NetworkTree />
         </motion.div>
       )}
     </div>

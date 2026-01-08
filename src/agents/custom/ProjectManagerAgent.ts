@@ -65,6 +65,7 @@ export class ProjectManagerAgent extends BaseAgent {
                     notes: 'Prevent project delays',
                 },
             ],
+            visibility: 'all',
         });
     }
 

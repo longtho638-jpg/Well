@@ -95,6 +95,7 @@ export class CodeReviewerAgent extends BaseAgent {
                     notes: 'Can be overridden with justification',
                 },
             ],
+            visibility: 'all',
         });
     }
 

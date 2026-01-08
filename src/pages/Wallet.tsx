@@ -96,7 +96,7 @@ export const Wallet: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-white via-gray-50 to-white dark:from-[#0A0E27] dark:via-[#1A1F3A] dark:to-[#0A0E27] p-6">
+    <div className="min-h-screen bg-zinc-50 dark:bg-zinc-950 p-6 transition-colors duration-300">
       {/* Hero Section - Total Portfolio */}
       <motion.div
         initial={{ opacity: 0, y: -30 }}
@@ -104,8 +104,9 @@ export const Wallet: React.FC = () => {
         className="relative mb-8 overflow-hidden"
       >
         {/* Gradient Background with Mesh Effect */}
-        <div className="absolute inset-0 bg-gradient-to-br from-purple-600 via-indigo-600 to-blue-700 rounded-3xl" />
-        <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGRlZnM+PHBhdHRlcm4gaWQ9ImdyaWQiIHdpZHRoPSI2MCIgaGVpZ2h0PSI2MCIgcGF0dGVyblVuaXRzPSJ1c2VyU3BhY2VPblVzZSI+PHBhdGggZD0iTSAxMCAwIEwgMCAwIDAgMTAiIGZpbGw9Im5vbmUiIHN0cm9rZT0id2hpdGUiIHN0cm9rZS1vcGFjaXR5PSIwLjA1IiBzdHJva2Utd2lkdGg9IjEiLz48L3BhdHRlcm4+PC9kZWZzPjxyZWN0IHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiIGZpbGw9InVybCgjZ3JpZCkiLz48L3N2Zz4=')] opacity-40" />
+        {/* Gradient Background with Mesh Effect */}
+        <div className="absolute inset-0 bg-gradient-to-br from-emerald-900 via-zinc-900 to-black rounded-3xl" />
+        <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGRlZnM+PHBhdHRlcm4gaWQ9ImdyaWQiIHdpZHRoPSI2MCIgaGVpZ2h0PSI2MCIgcGF0dGVyblVuaXRzPSJ1c2VyU3BhY2VPblVzZSI+PHBhdGggZD0iTSAxMCAwIEwgMCAwIDAgMTAiIGZpbGw9Im5vbmUiIHN0cm9rZT0iIzEwYjk4MSIgc3Ryb2tlLW9wYWNpdHk9IjAuMSIgc3Ryb2tlLXdpZHRoPSIxIi8+PC9wYXR0ZXJuPjwvZGVmcz48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSJ1cmwoI2dyaWQpIi8+PC9zdmc+')] opacity-20" />
 
         {/* Content */}
         <div className="relative p-8">
@@ -119,7 +120,7 @@ export const Wallet: React.FC = () => {
             </div>
             <button
               onClick={() => setHideBalance(!hideBalance)}
-              className="p-3 bg-white/10 hover:bg-white/20 backdrop-blur-sm rounded-xl transition-all"
+              className="p-3 bg-white/20 hover:bg-white/30 backdrop-blur-sm rounded-xl transition-all border border-white/20"
             >
               {hideBalance ? (
                 <EyeOff className="w-5 h-5 text-white" />
@@ -131,7 +132,7 @@ export const Wallet: React.FC = () => {
 
           {/* Total Portfolio Value */}
           <div className="mb-4">
-            <p className="text-white/70 text-sm mb-2">Tổng Tài Sản</p>
+            <p className="text-zinc-200 text-sm mb-2">Tổng Tài Sản</p>
             {hideBalance ? (
               <p className="text-6xl font-bold text-white">••••••</p>
             ) : (
@@ -139,7 +140,7 @@ export const Wallet: React.FC = () => {
                 <h2 className="text-6xl font-bold text-white font-mono">
                   <AnimatedCounter value={totalPortfolioVND} decimals={0} />
                 </h2>
-                <span className="text-2xl text-white/80">{t('common.currency.vnd')}</span>
+                <span className="text-2xl text-zinc-300">{t('common.currency.vnd')}</span>
               </div>
             )}
           </div>
@@ -147,12 +148,12 @@ export const Wallet: React.FC = () => {
           {/* Quick Stats */}
           <div className="flex gap-6">
             <div className="flex items-center gap-2">
-              <div className="p-2 bg-green-500/20 rounded-lg">
-                <ArrowUpRight className="w-4 h-4 text-green-400" />
+              <div className="p-2 bg-emerald-500/10 rounded-lg border border-emerald-500/20">
+                <ArrowUpRight className="w-4 h-4 text-emerald-400" />
               </div>
               <div>
-                <p className="text-white/60 text-xs">Tháng này</p>
-                <p className="text-white font-semibold">+12.5%</p>
+                <p className="text-zinc-300 text-xs">Tháng này</p>
+                <p className="text-emerald-300 font-semibold">+12.5%</p>
               </div>
             </div>
             <div className="flex items-center gap-2">
@@ -160,8 +161,8 @@ export const Wallet: React.FC = () => {
                 <Sparkles className="w-4 h-4 text-blue-400" />
               </div>
               <div>
-                <p className="text-white/60 text-xs">APY Staking</p>
-                <p className="text-white font-semibold">12.0%</p>
+                <p className="text-zinc-300 text-xs">APY Staking</p>
+                <p className="text-cyan-300 font-semibold">12.0%</p>
               </div>
             </div>
           </div>
@@ -181,7 +182,7 @@ export const Wallet: React.FC = () => {
           <div className="absolute inset-0 bg-gradient-to-r from-teal-500 to-cyan-500 rounded-3xl blur-2xl opacity-30 group-hover:opacity-50 transition-opacity" />
 
           {/* Card Content - Glassmorphism */}
-          <div className="relative bg-gradient-to-br from-white/10 to-white/5 backdrop-blur-xl border border-teal-500/30 rounded-3xl p-8 hover:border-teal-500/60 transition-all">
+          <div className="relative bg-white dark:bg-zinc-900/50 backdrop-blur-xl border border-zinc-200 dark:border-zinc-800 rounded-3xl p-8 hover:border-emerald-500/30 transition-all shadow-sm">
             {/* Header */}
             <div className="flex items-center justify-between mb-6">
               <div className="flex items-center gap-3">
@@ -189,27 +190,27 @@ export const Wallet: React.FC = () => {
                   <Coins className="w-7 h-7 text-white" />
                 </div>
                 <div>
-                  <p className="text-white text-lg font-bold">
+                  <p className="text-zinc-900 dark:text-white text-lg font-bold">
                     {t('wallet.balance.shopToken')}
                   </p>
-                  <p className="text-gray-400 dark:text-slate-400 text-xs">VND Stablecoin • 1:1000</p>
+                  <p className="text-zinc-500 dark:text-zinc-400 text-xs">VND Stablecoin • 1:1000</p>
                 </div>
               </div>
             </div>
 
             {/* Balance */}
             <div className="mb-6">
-              <p className="text-gray-400 dark:text-slate-400 text-sm mb-2">
+              <p className="text-zinc-500 dark:text-zinc-400 text-sm mb-2">
                 {t('wallet.balance.total')}
               </p>
               {hideBalance ? (
-                <p className="text-5xl font-bold text-white">••••••</p>
+                <p className="text-5xl font-bold text-zinc-900 dark:text-white">••••••</p>
               ) : (
                 <>
-                  <p className="text-5xl font-bold text-white font-mono mb-1">
+                  <p className="text-5xl font-bold text-zinc-900 dark:text-white font-mono mb-1">
                     <AnimatedCounter value={totalShopBalance} decimals={0} />
                   </p>
-                  <p className="text-teal-400 text-lg font-mono">
+                  <p className="text-teal-600 dark:text-teal-400 text-lg font-mono">
                     ≈ {(totalShopBalance / 1000).toLocaleString('vi-VN')} {t('common.currency.vnd')}
                   </p>
                 </>
@@ -217,7 +218,7 @@ export const Wallet: React.FC = () => {
             </div>
 
             {/* Breakdown */}
-            <div className="grid grid-cols-3 gap-3 mb-6 p-4 bg-black/30 rounded-2xl backdrop-blur-sm">
+            <div className="grid grid-cols-3 gap-3 mb-6 p-4 bg-black/20 rounded-2xl border border-white/5">
               <div>
                 <p className="text-gray-500 text-xs mb-1">
                   {t('wallet.balance.available')}
@@ -227,16 +228,16 @@ export const Wallet: React.FC = () => {
                 </p>
               </div>
               <div>
-                <p className="text-gray-500 text-xs mb-1">
+                <p className="text-zinc-500 dark:text-gray-500 text-xs mb-1">
                   {t('wallet.balance.locked')}
                 </p>
-                <p className="text-amber-400 font-mono text-sm font-semibold">0</p>
+                <p className="text-amber-500 dark:text-amber-400 font-mono text-sm font-semibold">0</p>
               </div>
               <div>
-                <p className="text-gray-500 text-xs mb-1">
+                <p className="text-zinc-500 dark:text-gray-500 text-xs mb-1">
                   {t('wallet.balance.staked')}
                 </p>
-                <p className="text-teal-400 font-mono text-sm font-semibold">0</p>
+                <p className="text-teal-600 dark:text-teal-400 font-mono text-sm font-semibold">0</p>
               </div>
             </div>
 
@@ -246,7 +247,7 @@ export const Wallet: React.FC = () => {
                 <Download className="w-5 h-5" />
                 Nạp SHOP
               </button>
-              <button className="flex-1 bg-white/10 hover:bg-white/20 text-white font-bold py-3.5 rounded-xl transition-all flex items-center justify-center gap-2 border border-white/20 backdrop-blur-sm hover:-translate-y-0.5">
+              <button className="flex-1 bg-white dark:bg-zinc-800 hover:bg-zinc-50 dark:hover:bg-zinc-700 text-zinc-900 dark:text-white font-bold py-3.5 rounded-xl transition-all flex items-center justify-center gap-2 border border-zinc-200 dark:border-zinc-700 hover:-translate-y-0.5 shadow-sm">
                 <Upload className="w-5 h-5" />
                 {t('wallet.actions.withdraw')}
               </button>
@@ -265,7 +266,7 @@ export const Wallet: React.FC = () => {
           <div className="absolute inset-0 bg-gradient-to-r from-purple-500 via-pink-500 to-purple-600 rounded-3xl blur-2xl opacity-30 group-hover:opacity-50 transition-opacity" />
 
           {/* Card Content - Glassmorphism */}
-          <div className="relative bg-gradient-to-br from-white/10 to-white/5 backdrop-blur-xl border border-purple-500/30 rounded-3xl p-8 hover:border-purple-500/60 transition-all">
+          <div className="relative bg-white dark:bg-zinc-900/50 backdrop-blur-xl border border-zinc-200 dark:border-zinc-800 rounded-3xl p-8 hover:border-purple-500/30 transition-all shadow-sm">
             {/* Header */}
             <div className="flex items-center justify-between mb-6">
               <div className="flex items-center gap-3">
@@ -273,10 +274,10 @@ export const Wallet: React.FC = () => {
                   <Zap className="w-7 h-7 text-white" />
                 </div>
                 <div>
-                  <p className="text-white text-lg font-bold">
+                  <p className="text-zinc-900 dark:text-white text-lg font-bold">
                     {t('wallet.balance.growToken')}
                   </p>
-                  <p className="text-gray-400 text-xs">Governance Token</p>
+                  <p className="text-zinc-500 dark:text-zinc-400 text-xs">Governance Token</p>
                 </div>
               </div>
               <div className="px-3 py-1.5 rounded-full bg-gradient-to-r from-purple-500/20 to-pink-500/20 border border-purple-500/30 text-purple-300 text-xs font-bold">
@@ -286,23 +287,23 @@ export const Wallet: React.FC = () => {
 
             {/* Balance */}
             <div className="mb-6">
-              <p className="text-gray-400 dark:text-slate-400 text-sm mb-2">
+              <p className="text-zinc-500 dark:text-zinc-400 text-sm mb-2">
                 {t('wallet.balance.total')}
               </p>
               {hideBalance ? (
-                <p className="text-5xl font-bold text-white">••••••</p>
+                <p className="text-5xl font-bold text-zinc-900 dark:text-white">••••••</p>
               ) : (
                 <>
-                  <p className="text-5xl font-bold text-white font-mono mb-1">
+                  <p className="text-5xl font-bold text-zinc-900 dark:text-white font-mono mb-1">
                     <AnimatedCounter value={totalGrowBalance} decimals={2} />
                   </p>
-                  <p className="text-purple-400 text-lg font-mono">GROW</p>
+                  <p className="text-purple-600 dark:text-purple-400 text-lg font-mono">GROW</p>
                 </>
               )}
             </div>
 
             {/* Breakdown */}
-            <div className="grid grid-cols-3 gap-3 mb-6 p-4 bg-black/30 rounded-2xl backdrop-blur-sm">
+            <div className="grid grid-cols-3 gap-3 mb-6 p-4 bg-black/20 rounded-2xl border border-white/5">
               <div>
                 <p className="text-gray-500 text-xs mb-1">
                   {t('wallet.balance.available')}
@@ -312,16 +313,16 @@ export const Wallet: React.FC = () => {
                 </p>
               </div>
               <div>
-                <p className="text-gray-500 text-xs mb-1">
+                <p className="text-zinc-500 dark:text-gray-500 text-xs mb-1">
                   {t('wallet.balance.locked')}
                 </p>
-                <p className="text-amber-400 font-mono text-sm font-semibold">0</p>
+                <p className="text-amber-500 dark:text-amber-400 font-mono text-sm font-semibold">0</p>
               </div>
               <div>
-                <p className="text-gray-500 text-xs mb-1">
+                <p className="text-zinc-500 dark:text-gray-500 text-xs mb-1">
                   {t('wallet.balance.staked')}
                 </p>
-                <p className="text-purple-400 font-mono text-sm font-semibold">
+                <p className="text-purple-600 dark:text-purple-400 font-mono text-sm font-semibold">
                   {hideBalance ? '••••' : user.stakedGrowBalance.toLocaleString()}
                 </p>
               </div>
@@ -350,7 +351,7 @@ export const Wallet: React.FC = () => {
                 <Lock className="w-5 h-5" />
                 {t('wallet.actions.stake')}
               </button>
-              <button className="flex-1 bg-white/10 hover:bg-white/20 text-white font-bold py-3.5 rounded-xl transition-all flex items-center justify-center gap-2 border border-white/20 backdrop-blur-sm hover:-translate-y-0.5">
+              <button className="flex-1 bg-white dark:bg-zinc-800 hover:bg-zinc-50 dark:hover:bg-zinc-700 text-zinc-900 dark:text-white font-bold py-3.5 rounded-xl transition-all flex items-center justify-center gap-2 border border-zinc-200 dark:border-zinc-700 hover:-translate-y-0.5 shadow-sm">
                 <TrendingUp className="w-5 h-5" />
                 {t('wallet.staking.rewards')}
               </button>
@@ -370,17 +371,17 @@ export const Wallet: React.FC = () => {
         <div className="absolute inset-0 bg-gradient-to-r from-cyan-500/10 to-blue-500/10 rounded-3xl blur-xl opacity-50" />
 
         {/* Card */}
-        <div className="relative bg-gradient-to-br from-white/10 to-white/5 backdrop-blur-xl border border-white/10 rounded-3xl p-8 hover:border-white/20 transition-all">
+        <div className="relative bg-white dark:bg-zinc-900/50 backdrop-blur-xl border border-zinc-200 dark:border-zinc-800 rounded-3xl p-8 transition-all shadow-sm">
           {/* Header */}
           <div className="flex items-center justify-between mb-6">
             <div>
-              <h2 className="text-2xl font-bold text-white flex items-center gap-3">
+              <h2 className="text-2xl font-bold text-zinc-900 dark:text-white flex items-center gap-3">
                 <div className="p-2 bg-[#00FFA3]/20 rounded-xl">
-                  <Hash className="w-6 h-6 text-[#00FFA3]" />
+                  <Hash className="w-6 h-6 text-emerald-600 dark:text-[#00FFA3]" />
                 </div>
                 {t('wallet.transactions.title')}
               </h2>
-              <p className="text-gray-400 text-sm mt-1">Blockchain Explorer</p>
+              <p className="text-zinc-500 text-sm mt-1">Blockchain Explorer</p>
             </div>
 
             {/* Filter Pills */}
@@ -389,11 +390,10 @@ export const Wallet: React.FC = () => {
                 <button
                   key={f}
                   onClick={() => setFilter(f)}
-                  className={`px-5 py-2.5 rounded-xl font-bold text-sm transition-all ${
-                    filter === f
-                      ? 'bg-gradient-to-r from-[#00FFA3] to-cyan-400 text-black shadow-lg shadow-[#00FFA3]/30'
-                      : 'bg-white/10 text-gray-400 hover:bg-white/20 active:bg-white/30 backdrop-blur-sm border border-white/10 transition-all duration-200'
-                  }`}
+                  className={`px-5 py-2.5 rounded-xl font-bold text-sm transition-all ${filter === f
+                    ? 'bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20'
+                    : 'bg-zinc-100 dark:bg-zinc-800/50 text-zinc-500 dark:text-zinc-400 hover:bg-zinc-200 dark:hover:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 transition-all duration-200'
+                    }`}
                 >
                   {f === 'all' ? t('common.filter') : f}
                 </button>
@@ -405,23 +405,23 @@ export const Wallet: React.FC = () => {
           <div className="overflow-x-auto">
             <table className="w-full">
               <thead>
-                <tr className="border-b border-white/10">
-                  <th className="text-left text-gray-400 font-bold text-xs uppercase tracking-wider py-4 px-4">
+                <tr className="border-b border-zinc-200 dark:border-zinc-800">
+                  <th className="text-left text-zinc-500 dark:text-gray-400 font-bold text-xs uppercase tracking-wider py-4 px-4">
                     {t('wallet.transactions.date')}
                   </th>
-                  <th className="text-left text-gray-400 font-bold text-xs uppercase tracking-wider py-4 px-4">
+                  <th className="text-left text-zinc-500 dark:text-gray-400 font-bold text-xs uppercase tracking-wider py-4 px-4">
                     {t('wallet.transactions.type')}
                   </th>
-                  <th className="text-left text-gray-400 font-bold text-xs uppercase tracking-wider py-4 px-4">
+                  <th className="text-left text-zinc-500 dark:text-gray-400 font-bold text-xs uppercase tracking-wider py-4 px-4">
                     {t('wallet.transactions.amount')}
                   </th>
-                  <th className="text-left text-gray-400 font-bold text-xs uppercase tracking-wider py-4 px-4">
+                  <th className="text-left text-zinc-500 dark:text-gray-400 font-bold text-xs uppercase tracking-wider py-4 px-4">
                     Currency
                   </th>
-                  <th className="text-left text-gray-400 font-bold text-xs uppercase tracking-wider py-4 px-4">
+                  <th className="text-left text-zinc-500 dark:text-gray-400 font-bold text-xs uppercase tracking-wider py-4 px-4">
                     {t('wallet.transactions.status')}
                   </th>
-                  <th className="text-left text-gray-400 font-bold text-xs uppercase tracking-wider py-4 px-4">
+                  <th className="text-left text-zinc-500 dark:text-gray-400 font-bold text-xs uppercase tracking-wider py-4 px-4">
                     {t('wallet.transactions.hash')}
                   </th>
                 </tr>
@@ -433,39 +433,38 @@ export const Wallet: React.FC = () => {
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
                     transition={{ delay: index * 0.05 }}
-                    className="border-b border-white/5 hover:bg-white/5 transition-colors group/row"
+
+                    className="border-b border-zinc-200 dark:border-zinc-800 hover:bg-zinc-50 dark:hover:bg-zinc-800/30 transition-colors group/row"
                   >
                     <td className="py-4 px-4">
-                      <p className="text-gray-300 text-sm font-medium">
+                      <p className="text-zinc-700 dark:text-zinc-300 text-sm font-medium">
                         {new Date(tx.date).toLocaleDateString('vi-VN')}
                       </p>
-                      <p className="text-gray-500 text-xs font-mono">
+                      <p className="text-zinc-500 text-xs font-mono">
                         {new Date(tx.date).toLocaleTimeString('vi-VN')}
                       </p>
                     </td>
                     <td className="py-4 px-4">
-                      <p className="text-white text-sm font-medium">{getTransactionType(tx.type)}</p>
+                      <p className="text-zinc-900 dark:text-white text-sm font-medium">{getTransactionType(tx.type)}</p>
                     </td>
                     <td className="py-4 px-4">
-                      <p className={`font-mono text-sm font-bold ${
-                        tx.type === 'Withdrawal' ? 'text-red-400' : 'text-green-400'
-                      }`}>
+                      <p className={`font-mono text-sm font-bold ${tx.type === 'Withdrawal' ? 'text-red-500 dark:text-red-400' : 'text-emerald-600 dark:text-emerald-400'
+                        }`}>
                         {tx.type === 'Withdrawal' ? '-' : '+'}
                         {tx.amount.toLocaleString()}
                       </p>
                       {tx.taxDeducted && tx.taxDeducted > 0 && (
-                        <p className="text-gray-500 text-xs font-mono">
+                        <p className="text-zinc-500 text-xs font-mono">
                           {t('wallet.transactions.tax')}: -{tx.taxDeducted.toLocaleString()}
                         </p>
                       )}
                     </td>
                     <td className="py-4 px-4">
                       <span
-                        className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold ${
-                          tx.currency === 'SHOP'
-                            ? 'bg-gradient-to-r from-teal-500/20 to-cyan-500/20 text-teal-300 border border-teal-500/30'
-                            : 'bg-gradient-to-r from-purple-500/20 to-pink-500/20 text-purple-300 border border-purple-500/30'
-                        }`}
+                        className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold ${tx.currency === 'SHOP'
+                          ? 'bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20'
+                          : 'bg-purple-500/10 dark:bg-gradient-to-r dark:from-purple-500/20 dark:to-pink-500/20 text-purple-600 dark:text-purple-300 border border-purple-500/30'
+                          }`}
                       >
                         {tx.currency === 'SHOP' ? (
                           <Coins className="w-3.5 h-3.5" />
@@ -477,11 +476,10 @@ export const Wallet: React.FC = () => {
                     </td>
                     <td className="py-4 px-4">
                       <span
-                        className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold ${
-                          tx.status === 'completed'
-                            ? 'bg-green-500/20 text-green-300 border border-green-500/30'
-                            : 'bg-amber-500/20 text-amber-300 border border-amber-500/30'
-                        }`}
+                        className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold ${tx.status === 'completed'
+                          ? 'bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20'
+                          : 'bg-amber-500/10 dark:bg-amber-500/20 text-amber-600 dark:text-amber-300 border border-amber-500/30'
+                          }`}
                       >
                         {tx.status === 'completed' ? (
                           <CheckCircle className="w-3.5 h-3.5" />
@@ -493,28 +491,28 @@ export const Wallet: React.FC = () => {
                     </td>
                     <td className="py-4 px-4">
                       <div className="flex items-center gap-2">
-                        <code className="text-[#00FFA3] text-xs font-mono bg-[#00FFA3]/10 px-2 py-1 rounded border border-[#00FFA3]/20">
+                        <code className="text-emerald-600 dark:text-emerald-400 text-xs font-mono bg-emerald-500/10 px-2 py-1 rounded border border-emerald-500/20">
                           {tx.hash.slice(0, 10)}...{tx.hash.slice(-8)}
                         </code>
                         <button
                           onClick={() => handleCopyHash(tx.hash)}
-                          className="p-2 hover:bg-white/10 rounded-lg transition-all group/btn opacity-0 group-hover/row:opacity-100"
+                          className="p-2 hover:bg-zinc-100 dark:hover:bg-zinc-800 rounded-lg transition-all group/btn opacity-0 group-hover/row:opacity-100"
                           title={t('common.copy')}
                         >
                           {copiedHash === tx.hash ? (
-                            <CheckCircle className="w-4 h-4 text-green-400" />
+                            <CheckCircle className="w-4 h-4 text-emerald-600 dark:text-emerald-400" />
                           ) : (
-                            <Copy className="w-4 h-4 text-gray-400 group-hover/btn:text-[#00FFA3]" />
+                            <Copy className="w-4 h-4 text-zinc-400 dark:text-zinc-500 group-hover/btn:text-emerald-600 dark:group-hover/btn:text-emerald-400" />
                           )}
                         </button>
                         <a
                           href={`https://bscscan.com/tx/${tx.hash}`}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="p-2 hover:bg-white/10 rounded-lg transition-all group/btn opacity-0 group-hover/row:opacity-100"
+                          className="p-2 hover:bg-zinc-100 dark:hover:bg-zinc-800 rounded-lg transition-all group/btn opacity-0 group-hover/row:opacity-100"
                           title="View on BSCScan"
                         >
-                          <ExternalLink className="w-4 h-4 text-gray-400 group-hover/btn:text-[#00FFA3]" />
+                          <ExternalLink className="w-4 h-4 text-zinc-400 dark:text-zinc-500 group-hover/btn:text-emerald-600 dark:group-hover/btn:text-emerald-400" />
                         </a>
                       </div>
                     </td>
@@ -525,23 +523,25 @@ export const Wallet: React.FC = () => {
           </div>
 
           {/* Empty State */}
-          {filteredTransactions.length === 0 && (
-            <div className="text-center py-16">
-              <div className="mb-4 flex justify-center">
-                <div className="p-4 bg-white/5 rounded-2xl">
-                  <Hash className="w-16 h-16 text-gray-600" />
+          {
+            filteredTransactions.length === 0 && (
+              <div className="text-center py-16">
+                <div className="mb-4 flex justify-center">
+                  <div className="p-4 bg-zinc-100 dark:bg-zinc-900 rounded-2xl border border-zinc-200 dark:border-zinc-800">
+                    <Hash className="w-16 h-16 text-zinc-300 dark:text-zinc-700" />
+                  </div>
                 </div>
+                <p className="text-zinc-500 text-lg font-medium mb-1">
+                  {t('wallet.transactions.noTransactions')}
+                </p>
+                <p className="text-zinc-600 text-sm">
+                  {filter === 'all'
+                    ? 'Your transaction history will appear here'
+                    : `No ${filter} transactions yet`}
+                </p>
               </div>
-              <p className="text-gray-400 text-lg font-medium mb-1">
-                {t('wallet.transactions.noTransactions')}
-              </p>
-              <p className="text-gray-500 text-sm">
-                {filter === 'all'
-                  ? 'Your transaction history will appear here'
-                  : `No ${filter} transactions yet`}
-              </p>
-            </div>
-          )}
+            )
+          }
         </div>
       </motion.div>
     </div>

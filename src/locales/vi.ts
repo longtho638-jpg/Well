@@ -45,6 +45,8 @@ export const vi = {
     admin: 'Quản trị',
     settings: 'Cài đặt',
     logout: 'Đăng xuất',
+    darkMode: 'Giao diện tối',
+    lightMode: 'Giao diện sáng',
   },
 
   // Dashboard Page

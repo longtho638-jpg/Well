@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
   Users,
@@ -17,201 +17,94 @@ import {
   Calendar,
   Award,
   AlertCircle,
+  Save,
+  X,
+  Loader2,
+  Edit2
 } from 'lucide-react';
 import { formatVND } from '@/utils/format';
+import { supabase } from '@/lib/supabase';
+import { UserRank, RANK_NAMES } from '@/types';
+import { useToast } from '@/components/ui/Toast';
 
 // ============================================================
-// TYPES & MOCK DATA
+// TYPES
 // ============================================================
 
 interface Partner {
   id: string;
   name: string;
-  rank: string;
-  sales: number;
-  status: 'Active' | 'Banned' | 'Dormant';
-  aiScore: number; // 0-100
-  behavior: 'growing' | 'stable' | 'declining' | 'dormant' | 'near-upgrade';
-  joinDate: string;
   email: string;
-  phone: string;
-  teamSize: number;
+  rank: UserRank;
+  roleId: number;
+  totalSales: number;
+  pendingCashback: number;
+  pointBalance: number;
+  joinDate: string;
+  status: 'Active' | 'Banned' | 'Dormant';
   lastActivity: string;
+  avatarUrl?: string;
 }
 
 interface FilterOption {
   id: string;
   label: string;
   value: string;
-  count: number;
 }
 
-const mockPartners: Partner[] = [
-  {
-    id: 'P001',
-    name: 'Lan Nguyen',
-    rank: 'Founder',
-    sales: 125000000,
-    status: 'Active',
-    aiScore: 95,
-    behavior: 'growing',
-    joinDate: '2024-01-15',
-    email: 'lan.nguyen@example.com',
-    phone: '+84 90 123 4567',
-    teamSize: 12,
-    lastActivity: '2 hours ago',
-  },
-  {
-    id: 'P002',
-    name: 'Minh Tran',
-    rank: 'Partner',
-    sales: 89000000,
-    status: 'Active',
-    aiScore: 88,
-    behavior: 'near-upgrade',
-    joinDate: '2024-02-20',
-    email: 'minh.tran@example.com',
-    phone: '+84 91 234 5678',
-    teamSize: 8,
-    lastActivity: '1 day ago',
-  },
-  {
-    id: 'P003',
-    name: 'Huong Le',
-    rank: 'Member',
-    sales: 32000000,
-    status: 'Active',
-    aiScore: 72,
-    behavior: 'stable',
-    joinDate: '2024-03-10',
-    email: 'huong.le@example.com',
-    phone: '+84 92 345 6789',
-    teamSize: 3,
-    lastActivity: '3 days ago',
-  },
-  {
-    id: 'P004',
-    name: 'Tuan Vo',
-    rank: 'Partner',
-    sales: 67000000,
-    status: 'Banned',
-    aiScore: 45,
-    behavior: 'declining',
-    joinDate: '2024-01-05',
-    email: 'tuan.vo@example.com',
-    phone: '+84 93 456 7890',
-    teamSize: 5,
-    lastActivity: '2 weeks ago',
-  },
-  {
-    id: 'P005',
-    name: 'Mai Pham',
-    rank: 'Member',
-    sales: 15000000,
-    status: 'Dormant',
-    aiScore: 35,
-    behavior: 'dormant',
-    joinDate: '2024-02-01',
-    email: 'mai.pham@example.com',
-    phone: '+84 94 567 8901',
-    teamSize: 1,
-    lastActivity: '1 month ago',
-  },
-];
-
 const filterOptions: FilterOption[] = [
-  { id: 'all', label: 'All Partners', value: 'all', count: 245 },
-  { id: 'growing', label: '🚀 Growing', value: 'growing', count: 78 },
-  { id: 'near-upgrade', label: '⭐ Near Upgrade', value: 'near-upgrade', count: 23 },
-  { id: 'stable', label: '✅ Stable', value: 'stable', count: 102 },
-  { id: 'declining', label: '📉 Declining', value: 'declining', count: 18 },
-  { id: 'dormant', label: '😴 Dormant', value: 'dormant', count: 24 },
+  { id: 'all', label: 'All Partners', value: 'all' },
+  { id: 'active', label: 'Active', value: 'Active' },
+  { id: 'banned', label: 'Banned', value: 'Banned' },
 ];
-
-// ============================================================
-// AI INSIGHTS COMPONENT
-// ============================================================
-
-const AIInsights: React.FC<{ partner: Partner }> = ({ partner }) => {
-  const insights = {
-    growing: {
-      icon: <TrendingUp className="w-5 h-5 text-green-600" />,
-      color: 'bg-green-50 border-green-200 text-green-900',
-      title: 'High Growth Partner',
-      suggestions: [
-        'Consider featuring in success stories',
-        'Invite to leadership training program',
-        'Offer advanced product samples',
-      ],
-    },
-    'near-upgrade': {
-      icon: <Sparkles className="w-5 h-5 text-amber-600" />,
-      color: 'bg-amber-50 border-amber-200 text-amber-900',
-      title: 'Close to Rank Upgrade',
-      suggestions: [
-        `Send birthday gift (${formatVND(500000)} voucher)`,
-        'Schedule 1-on-1 coaching call',
-        'Share rank upgrade checklist',
-      ],
-    },
-    stable: {
-      icon: <Check className="w-5 h-5 text-blue-600" />,
-      color: 'bg-blue-50 border-blue-200 text-blue-900',
-      title: 'Consistent Performer',
-      suggestions: [
-        'Maintain regular check-ins',
-        'Share seasonal promotions',
-        'Invite to community events',
-      ],
-    },
-    declining: {
-      icon: <TrendingDown className="w-5 h-5 text-orange-600" />,
-      color: 'bg-orange-50 border-orange-200 text-orange-900',
-      title: 'Needs Attention',
-      suggestions: [
-        'Send personalized re-engagement email',
-        'Offer product refresh consultation',
-        'Share new earning opportunities',
-      ],
-    },
-    dormant: {
-      icon: <AlertCircle className="w-5 h-5 text-red-600" />,
-      color: 'bg-red-50 border-red-200 text-red-900',
-      title: 'At Risk',
-      suggestions: [
-        'Urgent: Call within 24 hours',
-        'Offer reactivation bonus',
-        'Survey reasons for inactivity',
-      ],
-    },
-  };
-
-  const insight = insights[partner.behavior];
-
-  return (
-    <div className={`p-4 rounded-lg border ${insight.color}`}>
-      <div className="flex items-center gap-2 mb-3">
-        {insight.icon}
-        <h4 className="font-semibold">{insight.title}</h4>
-        <span className="ml-auto text-xs font-medium">AI Score: {partner.aiScore}/100</span>
-      </div>
-      <div className="space-y-2">
-        {insight.suggestions.map((suggestion, index) => (
-          <div key={index} className="flex items-start gap-2 text-sm">
-            <Bot className="w-4 h-4 mt-0.5 flex-shrink-0" />
-            <span>{suggestion}</span>
-          </div>
-        ))}
-      </div>
-    </div>
-  );
-};
 
 // ============================================================
 // PARTNER DETAIL MODAL
 // ============================================================
 
-const PartnerDetailModal: React.FC<{ partner: Partner; onClose: () => void }> = ({ partner, onClose }) => {
+const PartnerDetailModal: React.FC<{
+  partner: Partner;
+  onClose: () => void;
+  onUpdate: () => void;
+}> = ({ partner, onClose, onUpdate }) => {
+  const { showToast } = useToast();
+  const [isEditing, setIsEditing] = useState(false);
+  const [loading, setLoading] = useState(false);
+
+  // Edit State
+  const [formData, setFormData] = useState({
+    rank: partner.rank,
+    pendingCashback: partner.pendingCashback,
+    pointBalance: partner.pointBalance,
+    totalSales: partner.totalSales
+  });
+
+  const handleSave = async () => {
+    setLoading(true);
+    try {
+      const { error } = await supabase
+        .from('users')
+        .update({
+          role_id: formData.rank, // Map rank to role_id
+          pending_cashback: formData.pendingCashback,
+          point_balance: formData.pointBalance,
+          total_sales: formData.totalSales
+        })
+        .eq('id', partner.id);
+
+      if (error) throw error;
+
+      showToast('Partner updated successfully', 'success');
+      onUpdate(); // Refresh list
+      setIsEditing(false);
+    } catch (error) {
+      console.error('Error updating partner:', error);
+      showToast('Failed to update partner', 'error');
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
     <motion.div
       initial={{ opacity: 0 }}
@@ -233,103 +126,128 @@ const PartnerDetailModal: React.FC<{ partner: Partner; onClose: () => void }> = 
             <div>
               <h2 className="text-2xl font-display font-bold text-slate-900">{partner.name}</h2>
               <div className="flex items-center gap-2 mt-2">
-                <span className={`px-3 py-1 rounded-full text-xs font-medium ${
-                  partner.rank === 'Founder'
-                    ? 'bg-amber-100 text-amber-700'
-                    : partner.rank === 'Partner'
-                    ? 'bg-blue-100 text-blue-700'
-                    : 'bg-slate-100 text-slate-700'
-                }`}>
-                  {partner.rank}
+                <span className={`px-3 py-1 rounded-full text-xs font-medium bg-blue-100 text-blue-700`}>
+                  {RANK_NAMES[partner.rank] || 'Unknown'}
                 </span>
-                <span className={`px-3 py-1 rounded-full text-xs font-medium ${
-                  partner.status === 'Active'
-                    ? 'bg-green-100 text-green-700'
-                    : partner.status === 'Dormant'
-                    ? 'bg-amber-100 text-amber-700'
-                    : 'bg-red-100 text-red-700'
-                }`}>
+                <span className="px-3 py-1 rounded-full text-xs font-medium bg-green-100 text-green-700">
                   {partner.status}
                 </span>
               </div>
             </div>
             <button onClick={onClose} className="p-2 hover:bg-slate-100 rounded-lg transition-colors">
-              <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-              </svg>
+              <X className="w-6 h-6" />
             </button>
           </div>
         </div>
 
         {/* Content */}
         <div className="p-6 space-y-6">
-          {/* Contact Info */}
-          <div className="grid grid-cols-2 gap-4">
-            <div className="flex items-center gap-3">
-              <Mail className="w-5 h-5 text-slate-400" />
-              <div>
-                <p className="text-xs text-slate-500">Email</p>
-                <p className="text-sm font-medium text-slate-900">{partner.email}</p>
+          <div className="flex justify-between items-center">
+            <h3 className="font-semibold text-slate-900">Partner Details</h3>
+            {!isEditing ? (
+              <button
+                onClick={() => setIsEditing(true)}
+                className="flex items-center gap-2 text-sm text-[#00575A] hover:underline"
+              >
+                <Edit2 className="w-4 h-4" /> Edit Metrics
+              </button>
+            ) : (
+              <div className="flex gap-2">
+                <button
+                  onClick={() => setIsEditing(false)}
+                  className="px-3 py-1 text-sm text-slate-600 hover:bg-slate-100 rounded"
+                >
+                  Cancel
+                </button>
+                <button
+                  onClick={handleSave}
+                  disabled={loading}
+                  className="px-3 py-1 text-sm bg-[#00575A] text-white rounded hover:bg-[#004447] flex items-center gap-2"
+                >
+                  {loading && <Loader2 className="w-3 h-3 animate-spin" />}
+                  Save Changes
+                </button>
               </div>
+            )}
+          </div>
+
+          <div className="grid grid-cols-2 gap-6">
+            {/* Rank */}
+            <div>
+              <label className="block text-xs text-slate-500 mb-1">Rank</label>
+              {isEditing ? (
+                <select
+                  value={formData.rank}
+                  onChange={(e) => setFormData({ ...formData, rank: Number(e.target.value) })}
+                  className="w-full p-2 border border-slate-200 rounded-lg"
+                >
+                  {Object.entries(RANK_NAMES).map(([value, label]) => (
+                    <option key={value} value={value}>{label}</option>
+                  ))}
+                </select>
+              ) : (
+                <p className="text-sm font-medium text-slate-900">{RANK_NAMES[partner.rank]}</p>
+              )}
             </div>
-            <div className="flex items-center gap-3">
-              <Phone className="w-5 h-5 text-slate-400" />
-              <div>
-                <p className="text-xs text-slate-500">Phone</p>
-                <p className="text-sm font-medium text-slate-900">{partner.phone}</p>
-              </div>
+
+            {/* Sales */}
+            <div>
+              <label className="block text-xs text-slate-500 mb-1">Total Sales</label>
+              {isEditing ? (
+                <input
+                  type="number"
+                  value={formData.totalSales}
+                  onChange={(e) => setFormData({ ...formData, totalSales: Number(e.target.value) })}
+                  className="w-full p-2 border border-slate-200 rounded-lg"
+                />
+              ) : (
+                <p className="text-sm font-medium text-slate-900">{formatVND(partner.totalSales)}</p>
+              )}
             </div>
-            <div className="flex items-center gap-3">
-              <Calendar className="w-5 h-5 text-slate-400" />
-              <div>
-                <p className="text-xs text-slate-500">Join Date</p>
-                <p className="text-sm font-medium text-slate-900">{partner.joinDate}</p>
-              </div>
+
+            {/* Pending Cashback */}
+            <div>
+              <label className="block text-xs text-slate-500 mb-1">Pending Cashback</label>
+              {isEditing ? (
+                <input
+                  type="number"
+                  value={formData.pendingCashback}
+                  onChange={(e) => setFormData({ ...formData, pendingCashback: Number(e.target.value) })}
+                  className="w-full p-2 border border-slate-200 rounded-lg"
+                />
+              ) : (
+                <p className="text-sm font-medium text-slate-900">{formatVND(partner.pendingCashback)}</p>
+              )}
             </div>
-            <div className="flex items-center gap-3">
-              <Users className="w-5 h-5 text-slate-400" />
-              <div>
-                <p className="text-xs text-slate-500">Team Size</p>
-                <p className="text-sm font-medium text-slate-900">{partner.teamSize} members</p>
-              </div>
+
+            {/* Points */}
+            <div>
+              <label className="block text-xs text-slate-500 mb-1">Point Balance</label>
+              {isEditing ? (
+                <input
+                  type="number"
+                  value={formData.pointBalance}
+                  onChange={(e) => setFormData({ ...formData, pointBalance: Number(e.target.value) })}
+                  className="w-full p-2 border border-slate-200 rounded-lg"
+                />
+              ) : (
+                <p className="text-sm font-medium text-slate-900">{partner.pointBalance.toLocaleString()} pts</p>
+              )}
             </div>
           </div>
 
-          {/* Performance */}
-          <div className="bg-slate-50 rounded-lg p-4">
-            <h3 className="font-semibold text-slate-900 mb-3 flex items-center gap-2">
-              <Award className="w-5 h-5 text-[#00575A]" />
-              Performance
-            </h3>
+          <div className="border-t border-slate-200 pt-6">
+            <h3 className="font-semibold text-slate-900 mb-3">Contact Info</h3>
             <div className="grid grid-cols-2 gap-4">
               <div>
-                <p className="text-xs text-slate-500">Total Sales</p>
-                <p className="text-xl font-bold text-slate-900">{formatVND(partner.sales)}</p>
+                <p className="text-xs text-slate-500">Email</p>
+                <p className="text-sm text-slate-900">{partner.email}</p>
               </div>
               <div>
-                <p className="text-xs text-slate-500">Last Activity</p>
-                <p className="text-xl font-bold text-slate-900">{partner.lastActivity}</p>
+                <p className="text-xs text-slate-500">Joined</p>
+                <p className="text-sm text-slate-900">{partner.joinDate}</p>
               </div>
             </div>
-          </div>
-
-          {/* AI Insights */}
-          <AIInsights partner={partner} />
-
-          {/* Quick Actions */}
-          <div className="grid grid-cols-3 gap-3">
-            <button className="px-4 py-3 bg-[#00575A] text-white rounded-lg hover:bg-[#004447] transition-colors flex items-center justify-center gap-2 text-sm font-medium">
-              <Mail className="w-4 h-4" />
-              Send Email
-            </button>
-            <button className="px-4 py-3 bg-amber-100 text-amber-700 rounded-lg hover:bg-amber-200 transition-colors flex items-center justify-center gap-2 text-sm font-medium">
-              <Gift className="w-4 h-4" />
-              Send Gift
-            </button>
-            <button className="px-4 py-3 bg-slate-100 text-slate-700 rounded-lg hover:bg-slate-200 transition-colors flex items-center justify-center gap-2 text-sm font-medium">
-              <Phone className="w-4 h-4" />
-              Call
-            </button>
           </div>
         </div>
       </motion.div>
@@ -342,16 +260,57 @@ const PartnerDetailModal: React.FC<{ partner: Partner; onClose: () => void }> = 
 // ============================================================
 
 const Partners: React.FC = () => {
+  const [partners, setPartners] = useState<Partner[]>([]);
+  const [loading, setLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedFilter, setSelectedFilter] = useState('all');
   const [selectedPartner, setSelectedPartner] = useState<Partner | null>(null);
+  const { showToast } = useToast();
+
+  const fetchPartners = async () => {
+    setLoading(true);
+    try {
+      const { data, error } = await supabase
+        .from('users')
+        .select('*')
+        .order('created_at', { ascending: false });
+
+      if (error) throw error;
+
+      const formattedPartners: Partner[] = (data || []).map((user: any) => ({
+        id: user.id,
+        name: user.name || 'Unknown',
+        email: user.email || '',
+        rank: (user.role_id as UserRank) || UserRank.CTV,
+        roleId: user.role_id || 8,
+        totalSales: user.total_sales || 0,
+        pendingCashback: user.pending_cashback || 0,
+        pointBalance: user.point_balance || 0,
+        joinDate: new Date(user.created_at).toLocaleDateString('vi-VN'),
+        status: 'Active', // Default
+        lastActivity: new Date(user.updated_at || user.created_at).toLocaleDateString('vi-VN'),
+        avatarUrl: user.avatar_url
+      }));
+
+      setPartners(formattedPartners);
+    } catch (error) {
+      console.error('Error fetching partners:', error);
+      showToast('Failed to load partners', 'error');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchPartners();
+  }, []);
 
   // Filter partners
-  const filteredPartners = mockPartners.filter((partner) => {
+  const filteredPartners = partners.filter((partner) => {
     const matchesSearch =
       partner.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      partner.id.toLowerCase().includes(searchQuery.toLowerCase());
-    const matchesFilter = selectedFilter === 'all' || partner.behavior === selectedFilter;
+      partner.email.toLowerCase().includes(searchQuery.toLowerCase());
+    const matchesFilter = selectedFilter === 'all' || partner.status === selectedFilter;
     return matchesSearch && matchesFilter;
   });
 
@@ -363,8 +322,8 @@ const Partners: React.FC = () => {
     >
       {/* Page Header */}
       <div>
-        <h2 className="text-3xl font-display font-bold text-slate-900">Partner CRM</h2>
-        <p className="text-slate-500 mt-1">AI-powered partner intelligence & management</p>
+        <h2 className="text-3xl font-display font-bold text-slate-900">Partner CRM (Bee 3.0)</h2>
+        <p className="text-slate-500 mt-1">Manage users, ranks, and balances directly.</p>
       </div>
 
       {/* Search & Filters */}
@@ -375,7 +334,7 @@ const Partners: React.FC = () => {
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-400" />
             <input
               type="text"
-              placeholder="Search by name or ID..."
+              placeholder="Search by name or email..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               className="w-full pl-10 pr-4 py-2 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#00575A] focus:border-transparent"
@@ -392,11 +351,19 @@ const Partners: React.FC = () => {
             >
               {filterOptions.map((option) => (
                 <option key={option.id} value={option.value}>
-                  {option.label} ({option.count})
+                  {option.label}
                 </option>
               ))}
             </select>
           </div>
+
+          <button
+            onClick={fetchPartners}
+            className="p-2 bg-slate-100 rounded-lg hover:bg-slate-200 transition-colors"
+            title="Refresh Data"
+          >
+            <Loader2 className={`w-5 h-5 text-slate-600 ${loading ? 'animate-spin' : ''}`} />
+          </button>
         </div>
       </div>
 
@@ -416,10 +383,10 @@ const Partners: React.FC = () => {
                   Sales
                 </th>
                 <th className="px-6 py-4 text-left text-xs font-medium text-slate-500 uppercase tracking-wider">
-                  AI Score
+                  Pending Cashback
                 </th>
                 <th className="px-6 py-4 text-left text-xs font-medium text-slate-500 uppercase tracking-wider">
-                  Behavior
+                  Points
                 </th>
                 <th className="px-6 py-4 text-left text-xs font-medium text-slate-500 uppercase tracking-wider">
                   Status
@@ -430,82 +397,58 @@ const Partners: React.FC = () => {
               </tr>
             </thead>
             <tbody className="divide-y divide-slate-200">
-              {filteredPartners.map((partner) => (
-                <tr key={partner.id} className="hover:bg-slate-50 transition-colors">
-                  <td className="px-6 py-4">
-                    <div>
-                      <p className="text-sm font-medium text-slate-900">{partner.name}</p>
-                      <p className="text-xs text-slate-500 font-mono">{partner.id}</p>
-                    </div>
-                  </td>
-                  <td className="px-6 py-4">
-                    <span className={`px-3 py-1 rounded-full text-xs font-medium ${
-                      partner.rank === 'Founder'
-                        ? 'bg-amber-100 text-amber-700'
-                        : partner.rank === 'Partner'
-                        ? 'bg-blue-100 text-blue-700'
-                        : 'bg-slate-100 text-slate-700'
-                    }`}>
-                      {partner.rank}
-                    </span>
-                  </td>
-                  <td className="px-6 py-4 text-sm text-slate-900">{formatVND(partner.sales)}</td>
-                  <td className="px-6 py-4">
-                    <div className="flex items-center gap-2">
-                      <div className="flex-1 bg-slate-100 rounded-full h-2 max-w-[80px]">
-                        <div
-                          className={`h-full rounded-full transition-all ${
-                            partner.aiScore >= 80
-                              ? 'bg-green-600'
-                              : partner.aiScore >= 60
-                              ? 'bg-amber-600'
-                              : 'bg-red-600'
-                          }`}
-                          style={{ width: `${partner.aiScore}%` }}
-                        />
-                      </div>
-                      <span className="text-sm font-medium text-slate-600">{partner.aiScore}</span>
-                    </div>
-                  </td>
-                  <td className="px-6 py-4">
-                    <div className="flex items-center gap-1 text-sm">
-                      {partner.behavior === 'growing' && <TrendingUp className="w-4 h-4 text-green-600" />}
-                      {partner.behavior === 'declining' && <TrendingDown className="w-4 h-4 text-red-600" />}
-                      {partner.behavior === 'near-upgrade' && <Sparkles className="w-4 h-4 text-amber-600" />}
-                      {partner.behavior === 'stable' && <Check className="w-4 h-4 text-blue-600" />}
-                      {partner.behavior === 'dormant' && <AlertCircle className="w-4 h-4 text-slate-400" />}
-                      <span className="text-slate-600 capitalize">{partner.behavior.replace('-', ' ')}</span>
-                    </div>
-                  </td>
-                  <td className="px-6 py-4">
-                    <span className={`px-3 py-1 rounded-full text-xs font-medium ${
-                      partner.status === 'Active'
-                        ? 'bg-green-100 text-green-700'
-                        : partner.status === 'Dormant'
-                        ? 'bg-amber-100 text-amber-700'
-                        : 'bg-red-100 text-red-700'
-                    }`}>
-                      {partner.status}
-                    </span>
-                  </td>
-                  <td className="px-6 py-4">
-                    <div className="flex items-center gap-2">
-                      <button
-                        onClick={() => setSelectedPartner(partner)}
-                        className="p-2 hover:bg-blue-100 rounded-lg transition-colors text-blue-600"
-                      >
-                        <Eye className="w-4 h-4" />
-                      </button>
-                      <button className="p-2 hover:bg-green-100 rounded-lg transition-colors text-green-600">
-                        <Check className="w-4 h-4" />
-                      </button>
-                      <button className="p-2 hover:bg-red-100 rounded-lg transition-colors text-red-600">
-                        <Lock className="w-4 h-4" />
-                      </button>
-                    </div>
+              {loading ? (
+                <tr>
+                  <td colSpan={7} className="px-6 py-8 text-center text-slate-500">
+                    <Loader2 className="w-8 h-8 animate-spin mx-auto mb-2" />
+                    Loading partners...
                   </td>
                 </tr>
-              ))}
+              ) : filteredPartners.length === 0 ? (
+                <tr>
+                  <td colSpan={7} className="px-6 py-8 text-center text-slate-500">
+                    No partners found.
+                  </td>
+                </tr>
+              ) : (
+                filteredPartners.map((partner) => (
+                  <tr key={partner.id} className="hover:bg-slate-50 transition-colors">
+                    <td className="px-6 py-4">
+                      <div>
+                        <p className="text-sm font-medium text-slate-900">{partner.name}</p>
+                        <p className="text-xs text-slate-500">{partner.email}</p>
+                      </div>
+                    </td>
+                    <td className="px-6 py-4">
+                      <span className={`px-3 py-1 rounded-full text-xs font-medium bg-blue-50 text-blue-700`}>
+                        {RANK_NAMES[partner.rank] || 'Unknown'}
+                      </span>
+                    </td>
+                    <td className="px-6 py-4 text-sm text-slate-900">{formatVND(partner.totalSales)}</td>
+                    <td className="px-6 py-4 text-sm text-slate-900">{formatVND(partner.pendingCashback)}</td>
+                    <td className="px-6 py-4 text-sm text-slate-900">{partner.pointBalance.toLocaleString()}</td>
+                    <td className="px-6 py-4">
+                      <span className={`px-3 py-1 rounded-full text-xs font-medium ${partner.status === 'Active'
+                          ? 'bg-green-100 text-green-700'
+                          : 'bg-red-100 text-red-700'
+                        }`}>
+                        {partner.status}
+                      </span>
+                    </td>
+                    <td className="px-6 py-4">
+                      <div className="flex items-center gap-2">
+                        <button
+                          onClick={() => setSelectedPartner(partner)}
+                          className="p-2 hover:bg-blue-100 rounded-lg transition-colors text-blue-600"
+                          title="View & Edit"
+                        >
+                          <Eye className="w-4 h-4" />
+                        </button>
+                      </div>
+                    </td>
+                  </tr>
+                ))
+              )}
             </tbody>
           </table>
         </div>
@@ -517,6 +460,10 @@ const Partners: React.FC = () => {
           <PartnerDetailModal
             partner={selectedPartner}
             onClose={() => setSelectedPartner(null)}
+            onUpdate={() => {
+              fetchPartners();
+              setSelectedPartner(null);
+            }}
           />
         )}
       </AnimatePresence>

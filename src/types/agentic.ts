@@ -11,6 +11,7 @@ export interface AgentDefinition {
   risk_and_failure_modes: string[];
   human_in_the_loop_points: string[];
   policy_and_constraints: AgentPolicy[];
+  visibility: 'user' | 'admin' | 'all';
 }
 
 export type AgentFunction =

@@ -85,7 +85,7 @@ export function CommandPalette({ isOpen, onClose }: CommandPaletteProps) {
             const result = await agent.execute({
                 action: 'executeCommand',
                 command,
-            });
+            }) as { success: boolean; message?: string; output?: string; error?: string };
 
             const executionTime = Date.now() - startTime;
 

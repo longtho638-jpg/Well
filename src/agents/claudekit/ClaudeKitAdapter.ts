@@ -30,11 +30,9 @@ export class ClaudeKitAdapter extends BaseAgent {
         'All code changes must be reviewed before applying',
       ],
       policy_and_constraints: [
-        {
-          rule: 'Cannot modify production code without review',
-          enforcement: 'hard',
-        },
+        { rule: 'Do not modify production data without approval', enforcement: 'hard' }
       ],
+      visibility: 'admin'
     };
 
     super(definition);

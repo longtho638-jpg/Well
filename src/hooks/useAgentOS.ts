@@ -22,21 +22,21 @@ export function useAgentOS() {
     if (useCache) {
       const cacheKey = `${agentName}-${JSON.stringify(input)}`;
       const cachedEntry = cache.current.get(cacheKey);
-      
+
       if (cachedEntry && (Date.now() - cachedEntry.timestamp < CACHE_DURATION)) {
-        console.log(`[AgentOS] Cache hit for ${agentName}`);
+        // console.log(`[AgentOS] Cache hit for ${agentName}`);
         return cachedEntry.data;
       }
     }
 
     try {
       const result = await executeAgentStore(agentName, input);
-      
+
       if (useCache) {
         const cacheKey = `${agentName}-${JSON.stringify(input)}`;
         cache.current.set(cacheKey, { data: result, timestamp: Date.now() });
       }
-      
+
       return result;
     } catch (error) {
       console.error(`[AgentOS] Execution failed for ${agentName}`, error);
@@ -60,5 +60,18 @@ export function useAgentOS() {
 
     // Convenience methods
     getTotalAgentCount: () => agentRegistry.count(),
+
+    // Role Check (Mocked for now, but ready for Supabase Auth)
+    getUserRole: async () => {
+      // In a real app, this would fetch from Supabase Auth / Users table
+      // const { data: { user } } = await supabase.auth.getUser();
+      // const { data: profile } = await supabase.from('users').select('rank').eq('id', user.id).single();
+      // return profile?.rank || 'Member';
+
+      // For SEED Demo: We return 'Member' by default to show the "User View"
+      // The user can toggle to "Admin View" via the hidden button if they know where it is, 
+      // OR we can implement a real check if the user is logged in.
+      return 'Member';
+    }
   };
 }

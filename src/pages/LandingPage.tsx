@@ -189,17 +189,49 @@ const CONTENT = {
 // ============================================================================
 export default function LandingPage() {
   const navigate = useNavigate();
+  const { login } = useStore();
 
   const handleJoin = () => {
-    navigate('/signup');
+    login();
+    navigate('/dashboard');
   };
 
   const handleVisionClick = () => {
     navigate('/venture');
   };
 
+  // Animation Variants
+  const fadeInUp = {
+    hidden: { opacity: 0, y: 40 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: { duration: 0.6, ease: [0.16, 1, 0.3, 1] }
+    }
+  };
+
+  const staggerContainer = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.15,
+        delayChildren: 0.2
+      }
+    }
+  };
+
+  const scaleIn = {
+    hidden: { opacity: 0, scale: 0.9 },
+    visible: {
+      opacity: 1,
+      scale: 1,
+      transition: { duration: 0.5, ease: [0.16, 1, 0.3, 1] }
+    }
+  };
+
   return (
-    <div className="min-h-screen bg-dark-ultra overflow-x-hidden">
+    <div className="min-h-screen bg-zinc-950 overflow-x-hidden selection:bg-emerald-900 selection:text-emerald-100">
       {/* ================================================================== */}
       {/* STICKY HEADER */}
       {/* ================================================================== */}
@@ -207,19 +239,19 @@ export default function LandingPage() {
         initial={{ y: -100 }}
         animate={{ y: 0 }}
         transition={{ duration: 0.6 }}
-        className="fixed top-0 w-full z-50 backdrop-blur-xl bg-black/50 border-b border-white/10 shadow-sm"
+        className="fixed top-0 w-full z-50 backdrop-blur-xl bg-zinc-950/80 border-b border-zinc-800 shadow-sm"
       >
         <div className="max-w-7xl mx-auto px-6 lg:px-12 h-20 flex items-center justify-between">
           {/* Logo */}
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 bg-gradient-to-br from-[#00897B] to-[#FF6B58] rounded-xl flex items-center justify-center text-white font-bold text-xl shadow-lg shadow-teal-500/30">
+            <div className="w-10 h-10 bg-gradient-to-br from-emerald-500 to-cyan-500 rounded-xl flex items-center justify-center text-black font-bold text-xl shadow-lg shadow-emerald-500/20">
               W
             </div>
             <div>
-              <div className="font-bold text-xl text-white tracking-tight">
+              <div className="font-bold text-xl text-zinc-100 tracking-tight">
                 {CONTENT.footer.logo}
               </div>
-              <div className="text-xs text-slate-400 font-medium">
+              <div className="text-xs text-zinc-500 font-medium">
                 Evolution Map
               </div>
             </div>
@@ -228,8 +260,8 @@ export default function LandingPage() {
           {/* Action Button */}
           <motion.button
             onClick={handleJoin}
-            className="bg-gradient-to-r from-[#00897B] to-[#FF6B58] hover:opacity-90 text-white px-6 py-2.5 rounded-xl font-bold text-sm shadow-lg transition-all"
-            whileHover={{ scale: 1.05, boxShadow: '0 20px 40px rgba(0, 137, 123, 0.3)' }}
+            className="bg-zinc-100 hover:bg-white text-zinc-900 px-6 py-2.5 rounded-xl font-bold text-sm shadow-lg shadow-white/10 transition-all"
+            whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
           >
             Bắt Đầu Ngay
@@ -238,145 +270,117 @@ export default function LandingPage() {
       </motion.nav>
 
       {/* ================================================================== */}
-      {/* HERO SECTION - ULTRA WOW */}
+      {/* HERO SECTION */}
       {/* ================================================================== */}
-      <section className="relative min-h-screen flex items-center overflow-hidden bg-dark-ultra">
-        {/* Particle Background */}
-        <ParticleBackground />
+      {/* MASTER LEVEL AURA HERO */}
+      <section className="relative min-h-screen flex flex-col items-center justify-center overflow-hidden bg-zinc-950 pt-20 pb-20">
+        <GridPattern />
 
-        {/* Animated Gradient Blobs */}
-        <motion.div
-          className="absolute w-[800px] h-[800px] rounded-full top-0 right-0 animate-glow-pulse"
-          style={{
-            background: 'radial-gradient(circle, rgba(0,137,123,0.4) 0%, transparent 70%)'
-          }}
-          animate={{
-            x: ['-10%', '10%', '-10%'],
-            y: ['-5%', '5%', '-5%'],
-            scale: [1, 1.3, 1]
-          }}
-          transition={{ duration: 20, repeat: Infinity, ease: "easeInOut" }}
-        />
+        {/* Ambient Glow */}
+        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[1000px] h-[500px] bg-violet-900/20 blur-[120px] rounded-full pointer-events-none" />
+        <div className="absolute bottom-0 right-0 w-[800px] h-[600px] bg-cyan-900/10 blur-[100px] rounded-full pointer-events-none" />
 
-        <motion.div
-          className="absolute w-[700px] h-[700px] rounded-full bottom-0 left-0 animate-glow-pulse"
-          style={{
-            background: 'radial-gradient(circle, rgba(255,107,88,0.3) 0%, transparent 70%)'
-          }}
-          animate={{
-            x: ['10%', '-10%', '10%'],
-            y: ['5%', '-5%', '5%'],
-            scale: [1, 1.2, 1]
-          }}
-          transition={{ duration: 25, repeat: Infinity, ease: "easeInOut", delay: 2 }}
-        />
+        <div className="relative z-10 max-w-7xl mx-auto px-6 w-full">
 
-        {/* Content */}
-        <div className="relative z-10 max-w-7xl mx-auto px-6 text-center">
-          {/* Ultra Large 3D Headline */}
-          <motion.h1
-            className="font-display font-black leading-none mb-12"
-            style={{
-              fontSize: 'clamp(4rem, 15vw, 12rem)',
-              background: 'linear-gradient(135deg, #00897B, #9F7AEA, #FF6B58)',
-              WebkitBackgroundClip: 'text',
-              WebkitTextFillColor: 'transparent',
-              textShadow: '0 0 80px rgba(0,137,123,0.5), 0 0 120px rgba(159,122,234,0.3)',
-              fontFamily: "'Clash Display', sans-serif"
-            }}
-            initial={{ opacity: 0, y: 100, scale: 0.8 }}
-            animate={{ opacity: 1, y: 0, scale: 1 }}
-            transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1] }}
-          >
-            Transform
-            <br />
-            Health Into
-            <br />
-            <span className="text-white text-glow">Wealth</span>
-          </motion.h1>
+          {/* Header Content */}
+          <div className="text-center mb-20">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5 }}
+              className="inline-flex items-center justify-center mb-6"
+            >
+              <AuraBadge color="cyan">MASTER LEVEL WELLNESS</AuraBadge>
+            </motion.div>
 
-          {/* 3D Floating Stats Cards */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-5xl mx-auto mb-16">
-            {[
-              { value: '1M+', label: 'Active Users', color: '#00897B', delay: 0.3 },
-              { value: '$50M', label: 'Revenue', color: '#9F7AEA', delay: 0.5 },
-              { value: '500+', label: 'Products', color: '#FF6B58', delay: 0.7 }
-            ].map((stat, idx) => (
-              <motion.div
-                key={idx}
-                className="glass-ultra card-3d p-8 rounded-3xl relative overflow-hidden group"
-                initial={{ opacity: 0, y: 100, rotateX: -45 }}
-                animate={{ opacity: 1, y: 0, rotateX: 0 }}
-                transition={{ delay: stat.delay, duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-                whileHover={{
-                  scale: 1.1,
-                  rotateY: 10,
-                  boxShadow: `0 0 60px ${stat.color}60`
-                }}
-              >
-                <motion.div
-                  className="absolute inset-0 opacity-0 group-hover:opacity-100"
-                  style={{
-                    background: `radial-gradient(circle at top right, ${stat.color}30, transparent)`
-                  }}
-                  transition={{ duration: 0.3 }}
-                />
-                <div
-                  className="text-7xl font-black mb-2 relative z-10"
-                  style={{
-                    background: `linear-gradient(135deg, ${stat.color}, #FFFFFF)`,
-                    WebkitBackgroundClip: 'text',
-                    WebkitTextFillColor: 'transparent'
-                  }}
-                >
-                  {stat.value}
-                </div>
-                <div className="text-white/70 text-sm relative z-10">{stat.label}</div>
-              </motion.div>
-            ))}
+            <motion.h1
+              className="text-6xl md:text-8xl font-bold tracking-tight text-white mb-6"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: 0.1 }}
+            >
+              The Operating System <br />
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-white to-white/50">
+                For Your Health Wealth.
+              </span>
+            </motion.h1>
+
+            <motion.p
+              className="text-xl text-zinc-400 max-w-2xl mx-auto mb-10"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: 0.2 }}
+            >
+              WellNexus combines AI-driven health coaching with a powerful community commerce engine.
+              Build your empire on the foundation of well-being.
+            </motion.p>
+
+            <motion.div
+              className="flex items-center justify-center gap-4"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: 0.3 }}
+            >
+              <button onClick={handleJoin} className="btn-aura">
+                Start Building
+              </button>
+              <button className="btn-aura-outline">
+                View Roadmap
+              </button>
+            </motion.div>
           </div>
 
-          {/* Ultra Premium CTA */}
-          <motion.div
-            initial={{ opacity: 0, scale: 0.5 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ delay: 1, duration: 0.6 }}
-          >
-            <motion.button
-              onClick={handleJoin}
-              className="btn-ultra group relative"
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-            >
-              <span className="relative z-10 flex items-center gap-3">
-                <Rocket className="w-7 h-7" />
-                Start Your Journey
-                <ArrowRight className="w-7 h-7 group-hover:translate-x-2 transition-transform" />
-              </span>
-              <motion.div
-                className="absolute inset-0 bg-gradient-to-r from-coral-600 to-amber-500 rounded-xl"
-                initial={{ scale: 0, opacity: 0 }}
-                whileHover={{ scale: 1, opacity: 1 }}
-                transition={{ duration: 0.3 }}
-              />
-            </motion.button>
-          </motion.div>
+          {/* Bento Grid Showcase */}
+          <BentoGrid>
+            <BentoCard colSpan={2} className="p-8 min-h-[300px] flex flex-col justify-between bg-zinc-900/40">
+              <div>
+                <div className="w-12 h-12 rounded-full bg-cyan-500/10 flex items-center justify-center mb-4 border border-cyan-500/20">
+                  <Sparkles className="w-6 h-6 text-cyan-400" />
+                </div>
+                <h3 className="text-2xl font-bold text-white mb-2">AI Health Coach</h3>
+                <p className="text-zinc-400">Personalized guidance powered by Gemini 1.5 Pro. Your 24/7 wellness companion.</p>
+              </div>
+              <div className="mt-8 w-full h-32 bg-gradient-to-r from-cyan-500/10 to-transparent rounded-xl border border-white/5 relative overflow-hidden">
+                <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-20"></div>
+              </div>
+            </BentoCard>
 
-          {/* Scroll Indicator */}
-          <motion.div
-            className="absolute bottom-10 left-1/2 -translate-x-1/2"
-            animate={{ y: [0, 15, 0] }}
-            transition={{ duration: 2, repeat: Infinity, ease: 'easeInOut' }}
-          >
-            <ChevronDown className="w-12 h-12 text-white/30" />
-          </motion.div>
+            <BentoCard colSpan={1} className="p-8 min-h-[300px] bg-zinc-900/40">
+              <div className="w-12 h-12 rounded-full bg-violet-500/10 flex items-center justify-center mb-4 border border-violet-500/20">
+                <TrendingUp className="w-6 h-6 text-violet-400" />
+              </div>
+              <h3 className="text-2xl font-bold text-white mb-2">Passive Income</h3>
+              <p className="text-zinc-400 mb-8">Automated commission tracking and multi-tier rewards.</p>
+              <div className="text-4xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-violet-400 to-pink-400">
+                $12,450
+              </div>
+              <div className="text-sm text-zinc-500 mt-1">Avg. Partner Earnings</div>
+            </BentoCard>
+
+            <BentoCard colSpan={1} className="p-8 min-h-[300px] bg-zinc-900/40">
+              <div className="w-12 h-12 rounded-full bg-pink-500/10 flex items-center justify-center mb-4 border border-pink-500/20">
+                <Users className="w-6 h-6 text-pink-400" />
+              </div>
+              <h3 className="text-2xl font-bold text-white mb-2">Community</h3>
+              <p className="text-zinc-400">Join 1,000+ founders building the future of wellness.</p>
+            </BentoCard>
+
+            <BentoCard colSpan={2} className="p-8 min-h-[300px] bg-zinc-900/40 flex items-center justify-between">
+              <div className="max-w-md">
+                <h3 className="text-2xl font-bold text-white mb-2">Global Expansion</h3>
+                <p className="text-zinc-400">Ready for SEA market domination. Multi-currency, multi-language support built-in.</p>
+              </div>
+              <Globe className="w-32 h-32 text-zinc-800" />
+            </BentoCard>
+          </BentoGrid>
+
         </div>
       </section>
 
       {/* ================================================================== */}
       {/* THE ROADMAP SECTION - 4 Stages */}
       {/* ================================================================== */}
-      <section id="roadmap" className="relative py-32 bg-dark-ultra">
+      <section id="roadmap" className="relative py-32 bg-zinc-950">
         <div className="max-w-7xl mx-auto px-6 lg:px-12">
           {/* Section Header */}
           <motion.div
@@ -386,16 +390,16 @@ export default function LandingPage() {
             transition={{ duration: 0.6 }}
             className="text-center mb-20"
           >
-            <div className="inline-flex items-center gap-2 bg-teal-900/30 border border-teal-500/30 rounded-full px-5 py-2 mb-6">
-              <Target className="w-4 h-4 text-teal-400" />
-              <span className="text-sm font-bold text-teal-400 uppercase tracking-wider">
+            <div className="inline-flex items-center gap-2 bg-emerald-500/10 border border-emerald-500/20 rounded-full px-5 py-2 mb-6">
+              <Target className="w-4 h-4 text-emerald-400" />
+              <span className="text-sm font-bold text-emerald-400 uppercase tracking-wider">
                 {CONTENT.roadmap.sectionBadge}
               </span>
             </div>
-            <h2 className="text-4xl md:text-5xl lg:text-6xl font-black text-white mb-6">
+            <h2 className="text-4xl md:text-5xl lg:text-6xl font-black text-zinc-100 mb-6">
               {CONTENT.roadmap.sectionTitle}
             </h2>
-            <p className="text-xl text-slate-400 max-w-3xl mx-auto">
+            <p className="text-xl text-zinc-400 max-w-3xl mx-auto">
               {CONTENT.roadmap.subheadline}
             </p>
           </motion.div>
@@ -423,9 +427,9 @@ export default function LandingPage() {
                   )}
 
                   {/* Card */}
-                  <div className={`glass-ultra relative border-2 ${isActive ? stage.borderColor : 'border-white/10'} rounded-3xl p-8 h-full transition-all ${isLocked ? 'opacity-50' : ''}`}>
+                  <div className={`relative bg-zinc-900/50 border ${isActive ? stage.borderColor : 'border-zinc-800'} rounded-3xl p-8 h-full transition-all ${isLocked ? 'opacity-50' : ''}`}>
                     {/* Icon */}
-                    <div className={`w-16 h-16 rounded-2xl bg-gradient-to-br ${stage.gradient} flex items-center justify-center mb-6 shadow-lg ${isActive ? 'ring-4 ring-offset-2 ring-teal-900/50' : ''}`}>
+                    <div className={`w-16 h-16 rounded-2xl bg-gradient-to-br ${stage.gradient} flex items-center justify-center mb-6 shadow-lg ${isActive ? 'ring-4 ring-offset-2 ring-' + stage.color + '-200' : ''}`}>
                       <StageIcon className="w-8 h-8 text-white" />
                       {isLocked && (
                         <div className="absolute inset-0 flex items-center justify-center bg-black/50 rounded-2xl">
@@ -435,7 +439,7 @@ export default function LandingPage() {
                     </div>
 
                     {/* Status Badge */}
-                    <div className={`inline-flex items-center gap-2 px-3 py-1.5 rounded-full mb-4 ${isActive ? 'bg-teal-900/50 text-teal-400' : 'bg-slate-800 text-slate-400'}`}>
+                    <div className={`inline-flex items-center gap-2 px-3 py-1.5 rounded-full mb-4 ${isActive ? stage.bgGlow + ' ' + stage.textColor : 'bg-slate-100 text-slate-600'}`}>
                       {isActive && <div className="w-2 h-2 rounded-full bg-current animate-pulse" />}
                       <span className="text-xs font-bold uppercase tracking-wider">
                         {stage.statusLabel}
@@ -443,12 +447,12 @@ export default function LandingPage() {
                     </div>
 
                     {/* Name */}
-                    <h3 className={`text-2xl font-black mb-3 ${isActive ? stage.textColor : 'text-slate-200'}`}>
+                    <h3 className={`text-2xl font-black mb-3 ${isActive ? stage.textColor : 'text-zinc-200'}`}>
                       {stage.name}
                     </h3>
 
                     {/* Description */}
-                    <p className="text-slate-300 font-medium mb-2">
+                    <p className="text-slate-600 font-medium mb-2">
                       {stage.description}
                     </p>
                     <p className="text-sm text-slate-500 mb-6 italic">
@@ -459,8 +463,8 @@ export default function LandingPage() {
                     <ul className="space-y-3 mb-6">
                       {stage.benefits.map((benefit, bidx) => (
                         <li key={bidx} className="flex items-start gap-2">
-                          <CheckCircle2 className={`w-4 h-4 flex-shrink-0 mt-0.5 ${isActive ? stage.textColor : 'text-slate-500'}`} />
-                          <span className="text-sm text-slate-400 leading-relaxed">
+                          <CheckCircle2 className={`w-4 h-4 flex-shrink-0 mt-0.5 ${isActive ? stage.textColor : 'text-slate-400'}`} />
+                          <span className="text-sm text-zinc-400 leading-relaxed">
                             {benefit}
                           </span>
                         </li>
@@ -469,7 +473,7 @@ export default function LandingPage() {
 
                     {/* Unlock Condition or Action */}
                     {stage.unlockCondition ? (
-                      <div className="pt-4 border-t border-white/10">
+                      <div className="pt-4 border-t border-slate-200">
                         <div className="flex items-center gap-2 text-xs text-slate-500">
                           <Lock className="w-3 h-3" />
                           <span>Mở khóa khi đạt {stage.unlockCondition}</span>
@@ -487,8 +491,8 @@ export default function LandingPage() {
                         <ChevronRight className="w-4 h-4" />
                       </motion.button>
                     ) : (
-                      <div className="pt-4 border-t border-white/10">
-                        <div className="flex items-center gap-2 text-xs font-bold text-teal-400">
+                      <div className="pt-4 border-t border-slate-200">
+                        <div className="flex items-center gap-2 text-xs font-bold text-teal-600">
                           <Star className="w-3 h-3" />
                           <span>Giai đoạn hiện tại</span>
                         </div>
@@ -505,7 +509,7 @@ export default function LandingPage() {
       {/* ================================================================== */}
       {/* WHY NOW SECTION */}
       {/* ================================================================== */}
-      <section className="relative py-32 bg-dark-ultra">
+      <section className="relative py-32 bg-zinc-950">
         <div className="max-w-7xl mx-auto px-6 lg:px-12">
           {/* Section Header */}
           <motion.div
@@ -515,16 +519,16 @@ export default function LandingPage() {
             transition={{ duration: 0.6 }}
             className="text-center mb-20"
           >
-            <div className="inline-flex items-center gap-2 bg-amber-900/30 border border-amber-500/30 rounded-full px-5 py-2 mb-6">
-              <Zap className="w-4 h-4 text-amber-500" />
-              <span className="text-sm font-bold text-amber-500 uppercase tracking-wider">
+            <div className="inline-flex items-center gap-2 bg-amber-50 border border-amber-200 rounded-full px-5 py-2 mb-6">
+              <Zap className="w-4 h-4 text-amber-600" />
+              <span className="text-sm font-bold text-amber-700 uppercase tracking-wider">
                 {CONTENT.whyNow.sectionBadge}
               </span>
             </div>
-            <h2 className="text-4xl md:text-5xl lg:text-6xl font-black text-white mb-6">
+            <h2 className="text-4xl md:text-5xl lg:text-6xl font-black text-zinc-100 mb-6">
               {CONTENT.whyNow.sectionTitle}
             </h2>
-            <p className="text-xl text-slate-400 max-w-3xl mx-auto">
+            <p className="text-xl text-zinc-400 max-w-3xl mx-auto">
               {CONTENT.whyNow.subheadline}
             </p>
           </motion.div>
@@ -542,24 +546,24 @@ export default function LandingPage() {
                   transition={{ delay: idx * 0.1, duration: 0.6 }}
                   className="group relative"
                 >
-                  <div className="glass-ultra relative border border-white/10 rounded-2xl p-6 h-full hover:border-teal-500/50 hover:shadow-xl transition-all">
+                  <div className="relative bg-zinc-900/50 border border-zinc-800 rounded-2xl p-6 h-full hover:border-emerald-500/50 hover:shadow-xl transition-all">
                     {/* Highlight Badge */}
-                    <div className="absolute -top-3 -right-3 bg-gradient-to-r from-amber-500 to-orange-600 text-white text-xs font-bold px-3 py-1 rounded-full shadow-lg">
+                    <div className="absolute -top-3 -right-3 bg-gradient-to-r from-amber-500 to-orange-500 text-white text-xs font-bold px-3 py-1 rounded-full shadow-lg">
                       {benefit.highlight}
                     </div>
 
                     {/* Icon */}
-                    <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-teal-500 to-teal-600 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
-                      <BenefitIcon className="w-6 h-6 text-white" />
+                    <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-emerald-500 to-cyan-500 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+                      <BenefitIcon className="w-6 h-6 text-black" />
                     </div>
 
                     {/* Title */}
-                    <h3 className="text-lg font-bold text-white mb-2">
+                    <h3 className="text-lg font-bold text-zinc-100 mb-2">
                       {benefit.title}
                     </h3>
 
                     {/* Description */}
-                    <p className="text-sm text-slate-400 leading-relaxed">
+                    <p className="text-sm text-zinc-400 leading-relaxed">
                       {benefit.description}
                     </p>
                   </div>
@@ -577,8 +581,8 @@ export default function LandingPage() {
           >
             <motion.button
               onClick={handleJoin}
-              className="group bg-gradient-to-r from-[#00897B] to-[#FF6B58] text-white px-12 py-6 rounded-xl font-bold text-xl flex items-center justify-center gap-3 mx-auto shadow-2xl shadow-teal-500/30"
-              whileHover={{ scale: 1.05, boxShadow: '0 30px 60px rgba(0, 137, 123, 0.4)' }}
+              className="group bg-gradient-to-r from-[#00575A] to-teal-600 text-white px-12 py-6 rounded-xl font-bold text-xl flex items-center justify-center gap-3 mx-auto shadow-2xl shadow-teal-500/30"
+              whileHover={{ scale: 1.05, boxShadow: '0 30px 60px rgba(0, 87, 90, 0.4)' }}
               whileTap={{ scale: 0.98 }}
             >
               <Users className="w-6 h-6" />
@@ -592,14 +596,14 @@ export default function LandingPage() {
       {/* ================================================================== */}
       {/* FOOTER */}
       {/* ================================================================== */}
-      <footer className="relative bg-black text-white pt-20 pb-12 border-t border-white/10">
+      <footer className="relative bg-zinc-950 text-white pt-20 pb-12 border-t border-zinc-800">
         <div className="max-w-7xl mx-auto px-6 lg:px-12">
           {/* Main Footer Content */}
           <div className="grid md:grid-cols-2 gap-12 mb-16">
             {/* Brand */}
             <div>
               <div className="flex items-center gap-3 mb-4">
-                <div className="w-12 h-12 bg-gradient-to-br from-[#00897B] to-[#FF6B58] rounded-xl flex items-center justify-center text-white font-bold text-2xl shadow-lg">
+                <div className="w-12 h-12 bg-gradient-to-br from-emerald-500 to-cyan-500 rounded-xl flex items-center justify-center text-black font-bold text-2xl shadow-lg">
                   W
                 </div>
                 <div>
@@ -645,7 +649,7 @@ export default function LandingPage() {
                 <input
                   type="email"
                   placeholder={CONTENT.footer.newsletter.placeholder}
-                  className="flex-1 px-5 py-3 rounded-xl bg-slate-900 border border-slate-700 text-white placeholder-slate-500 focus:outline-none focus:border-teal-500 transition-colors"
+                  className="flex-1 px-5 py-3 rounded-xl bg-zinc-900 border border-zinc-800 text-white placeholder-zinc-500 focus:outline-none focus:border-emerald-500 transition-colors"
                 />
                 <motion.button
                   className="px-6 py-3 rounded-xl bg-teal-600 hover:bg-teal-700 text-white font-bold shadow-lg"

@@ -1,19 +1,27 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import { AlertTriangle, Save, DollarSign, Users, TrendingUp, Zap, Target } from 'lucide-react';
+import { AlertTriangle, Save, DollarSign, Users, TrendingUp, Zap, Target, CheckCircle2 } from 'lucide-react';
+import { supabase } from '@/lib/supabase';
 
 /**
- * POLICY ENGINE v2.0
- * Bộ não chiến lược cho WellNexus Platform
+ * POLICY ENGINE v3.0 (BEE 3.0 CORE)
+ * Bộ não chiến lược cho WellNexus Platform - Real-time Database Sync
  *
  * Features:
  * - 3-tier commission structure with dynamic sliders
  * - Real-time payout risk monitoring
  * - Game rules configuration
  * - Financial simulation engine
+ * - 🆕 Database-backed configuration (no manual redeployment needed)
  */
 
+
 const PolicyEngine: React.FC = () => {
+  // Loading state
+  const [loading, setLoading] = useState(true);
+  const [saving, setSaving] = useState(false);
+  const [lastSaved, setLastSaved] = useState<string | null>(null);
+
   // 1. Commission Config State (3 Tầng)
   const [retailComm, setRetailComm] = useState(25);
   const [agencyBonus, setAgencyBonus] = useState(10);
@@ -35,6 +43,68 @@ const PolicyEngine: React.FC = () => {
   const [sponsorBonus, setSponsorBonus] = useState(8); // AMBASSADOR+: 8%
   const [rankUpThreshold, setRankUpThreshold] = useState(9900000); // 9.9M VND to upgrade
 
+  // 🆕 5. Admin 3.1: Dynamic Rank Upgrades
+  interface RankUpgrade {
+    fromRank: number;
+    toRank: number;
+    name: string;
+    conditions: {
+      salesRequired?: number;
+      teamVolumeRequired?: number;
+      directDownlinesRequired?: number;
+      minDownlineRank?: number;
+    };
+  }
+  const [rankUpgrades, setRankUpgrades] = useState<RankUpgrade[]>([]);
+
+  // 🆕 Fetch policy from database on mount
+  useEffect(() => {
+    fetchPolicyConfig();
+  }, []);
+
+  const fetchPolicyConfig = async () => {
+    try {
+      const { data, error } = await supabase
+        .from('policy_config')
+        .select('value')
+        .eq('key', 'global_policy')
+        .single();
+
+      if (error) throw error;
+
+      if (data && data.value) {
+        const config = data.value as any;
+        // Load commission settings
+        if (config.commissions) {
+          setRetailComm(config.commissions.retailComm || 25);
+          setAgencyBonus(config.commissions.agencyBonus || 10);
+          setElitePool(config.commissions.elitePool || 3);
+        }
+        // Load rules
+        if (config.rules) {
+          setActivationThreshold(config.rules.activationThreshold || 6000000);
+          setWhiteLabelGMV(config.rules.whiteLabelGMV || 1000000000);
+          setWhiteLabelPartners(config.rules.whiteLabelPartners || 50);
+        }
+        // Load Bee Agent Policy
+        if (config.beeAgentPolicy) {
+          setCtvCommission(config.beeAgentPolicy.ctvCommission || 21);
+          setStartupCommission(config.beeAgentPolicy.startupCommission || 25);
+          setSponsorBonus(config.beeAgentPolicy.sponsorBonus || 8);
+          setRankUpThreshold(config.beeAgentPolicy.rankUpThreshold || 9900000);
+        }
+        // Load Rank Upgrades (Admin 3.1)
+        if (config.rankUpgrades && Array.isArray(config.rankUpgrades)) {
+          setRankUpgrades(config.rankUpgrades);
+        }
+      }
+    } catch (error) {
+      console.error('Error fetching policy config:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   // Derived Values
   const totalPayoutPercent = retailComm + agencyBonus + elitePool;
   const isRisk = totalPayoutPercent > 45;
@@ -44,25 +114,61 @@ const PolicyEngine: React.FC = () => {
   const simProfit = simGMV - simTotalPayout - fixedCost;
   const profitMargin = simGMV > 0 ? (simProfit / simGMV) * 100 : 0;
 
+
+  const handleSaveConfig = async () => {
+    setSaving(true);
+    try {
+      const config = {
+        commissions: { retailComm, agencyBonus, elitePool },
+        rules: { activationThreshold, whiteLabelGMV, whiteLabelPartners },
+        // 🆕 The Bee Agent Policy
+        beeAgentPolicy: {
+          ctvCommission,
+          startupCommission,
+          sponsorBonus,
+          rankUpThreshold
+        },
+        // 🆕 Admin 3.1: Rank Upgrades
+        rankUpgrades
+      };
+
+      const { data: { session } } = await supabase.auth.getSession();
+
+      const { error } = await supabase
+        .from('policy_config')
+        .update({
+          value: config,
+          updated_at: new Date().toISOString(),
+          updated_by: session?.user?.id || null
+        })
+        .eq('key', 'global_policy');
+
+      if (error) throw error;
+
+      setLastSaved(new Date().toLocaleTimeString('vi-VN'));
+      alert('✅ Policy Configuration Saved Successfully! Changes are now live.');
+    } catch (error: any) {
+      console.error('Error saving policy config:', error);
+      alert(`❌ Failed to save configuration: ${error.message}`);
+    } finally {
+      setSaving(false);
+    }
+  };
+
+
   const formatVND = (num: number) =>
     new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(num);
 
-  const handleSaveConfig = () => {
-    const config = {
-      commissions: { retailComm, agencyBonus, elitePool },
-      rules: { activationThreshold, whiteLabelGMV, whiteLabelPartners },
-      // 🆕 The Bee Agent Policy
-      beeAgentPolicy: {
-        ctvCommission,
-        startupCommission,
-        sponsorBonus,
-        rankUpThreshold
-      },
-      timestamp: new Date().toISOString(),
-    };
-    localStorage.setItem('policy_engine_config', JSON.stringify(config));
-    alert('✅ Policy Configuration Saved Successfully!');
-  };
+  if (loading) {
+    return (
+      <div className="bg-slate-900 text-slate-100 p-6 rounded-2xl shadow-2xl border border-slate-700 min-h-[800px] flex items-center justify-center">
+        <div className="text-center">
+          <div className="w-12 h-12 border-4 border-emerald-500 border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
+          <p className="text-slate-400">Loading Policy Configuration...</p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="bg-slate-900 text-slate-100 p-6 rounded-2xl shadow-2xl border border-slate-700 min-h-[800px]">
@@ -71,15 +177,23 @@ const PolicyEngine: React.FC = () => {
         <div>
           <h2 className="text-2xl font-display font-bold text-white flex items-center gap-2">
             <div className="w-3 h-3 rounded-full bg-green-500 animate-pulse" />
-            POLICY ENGINE v2.0
+            POLICY ENGINE v3.0 (Bee 3.0 Core)
           </h2>
-          <p className="text-slate-400 text-sm mt-1">Trung tâm điều phối chiến lược & Dòng tiền</p>
+          <p className="text-slate-400 text-sm mt-1">Trung tâm điều phối chiến lược & Dòng tiền - Real-time Sync</p>
+          {lastSaved && (
+            <p className="text-emerald-400 text-xs mt-1 flex items-center gap-1">
+              <CheckCircle2 size={12} />
+              Last saved: {lastSaved}
+            </p>
+          )}
         </div>
         <button
           onClick={handleSaveConfig}
-          className="flex items-center gap-2 bg-[#FFBF00] text-[#00575A] px-4 py-2 rounded-lg font-bold hover:bg-yellow-400 transition-all shadow-lg"
+          disabled={saving}
+          className="flex items-center gap-2 bg-[#FFBF00] text-[#00575A] px-4 py-2 rounded-lg font-bold hover:bg-yellow-400 transition-all shadow-lg disabled:opacity-50 disabled:cursor-not-allowed"
         >
-          <Save size={18} /> Lưu Cấu Hình
+          <Save size={18} className={saving ? 'animate-spin' : ''} />
+          {saving ? 'Saving...' : 'Lưu Cấu Hình'}
         </button>
       </div>
 
@@ -367,11 +481,117 @@ const PolicyEngine: React.FC = () => {
             </div>
 
             {/* Info Box */}
-            <div className="mt-5 p-3 bg-gradient-to-r from-amber-900/30 to-orange-900/20 rounded-lg border border-amber-500/30">
-              <div className="text-xs text-amber-200 leading-relaxed">
-                <strong className="text-amber-400">💡 Sync với Edge Function:</strong>
+            <div className="mt-5 p-3 bg-gradient-to-r from-emerald-900/30 to-green-900/20 rounded-lg border border-emerald-500/30">
+              <div className="text-xs text-emerald-200 leading-relaxed">
+                <strong className="text-emerald-400 flex items-center gap-1">
+                  <CheckCircle2 size={14} />
+                  ✅ Real-time Sync Enabled:
+                </strong>
                 <br />
-                Sau khi lưu, cần cập nhật file <code className="bg-slate-900 px-1 py-0.5 rounded text-amber-300">supabase/functions/agent-reward/index.ts</code> và redeploy.
+                Mọi thay đổi sẽ <strong>tự động áp dụng</strong> cho Edge Function <code className="bg-slate-900 px-1 py-0.5 rounded text-emerald-300">agent-reward</code> ng
+
+                ay lập tức. Không cần redeploy!
+              </div>
+            </div>
+          </motion.div>
+
+          {/* 🎖️ Admin 3.1: RANK LADDER (Dynamic Rank Upgrades) */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.3 }}
+            className="bg-gradient-to-br from-purple-900/20 to-slate-800 p-6 rounded-xl border-2 border-purple-500/30 shadow-lg"
+          >
+            <h3 className="text-lg font-bold mb-3 text-purple-400 flex items-center gap-2">
+              🎖️ Thang Hạng Động (Dynamic Rank Ladder)
+            </h3>
+            <p className="text-xs text-slate-400 mb-5 bg-slate-900/50 p-2 rounded">
+              💡 Cấu hình điều kiện thăng hạng cho <strong>tất cả các bậc</strong>. Multi-condition: Sales + Team Volume + Downlines.
+            </p>
+
+            {/* Rank Upgrades Table */}
+            <div className="overflow-x-auto">
+              <table className="w-full text-sm">
+                <thead>
+                  <tr className="border-b border-slate-700">
+                    <th className="text-left p-2 text-slate-400 font-medium">From → To</th>
+                    <th className="text-left p-2 text-slate-400 font-medium">Sales Required (VND)</th>
+                    <th className="text-left p-2 text-slate-400 font-medium">Team Volume (VND)</th>
+                    <th className="text-left p-2 text-slate-400 font-medium">Downlines (#)</th>
+                    <th className="text-left p-2 text-slate-400 font-medium">Min Rank</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {rankUpgrades.map((upgrade, index) => (
+                    <tr key={index} className="border-b border-slate-800 hover:bg-slate-800/50">
+                      <td className="p-2">
+                        <span className="text-white font-medium">{upgrade.name}</span>
+                      </td>
+                      <td className="p-2">
+                        <input
+                          type="number"
+                          value={upgrade.conditions.salesRequired || 0}
+                          onChange={(e) => {
+                            const newUpgrades = [...rankUpgrades];
+                            newUpgrades[index].conditions.salesRequired = Number(e.target.value);
+                            setRankUpgrades(newUpgrades);
+                          }}
+                          className="w-full bg-slate-900 border border-slate-600 rounded px-2 py-1 text-white text-xs focus:border-purple-500 outline-none"
+                        />
+                      </td>
+                      <td className="p-2">
+                        <input
+                          type="number"
+                          value={upgrade.conditions.teamVolumeRequired || 0}
+                          onChange={(e) => {
+                            const newUpgrades = [...rankUpgrades];
+                            newUpgrades[index].conditions.teamVolumeRequired = Number(e.target.value);
+                            setRankUpgrades(newUpgrades);
+                          }}
+                          className="w-full bg-slate-900 border border-slate-600 rounded px-2 py-1 text-white text-xs focus:border-purple-500 outline-none"
+                          placeholder="Optional"
+                        />
+                      </td>
+                      <td className="p-2">
+                        <input
+                          type="number"
+                          value={upgrade.conditions.directDownlinesRequired || 0}
+                          onChange={(e) => {
+                            const newUpgrades = [...rankUpgrades];
+                            newUpgrades[index].conditions.directDownlinesRequired = Number(e.target.value);
+                            setRankUpgrades(newUpgrades);
+                          }}
+                          className="w-full bg-slate-900 border border-slate-600 rounded px-2 py-1 text-white text-xs focus:border-purple-500 outline-none"
+                          placeholder="Optional"
+                        />
+                      </td>
+                      <td className="p-2">
+                        <input
+                          type="number"
+                          min="1"
+                          max="8"
+                          value={upgrade.conditions.minDownlineRank || 0}
+                          onChange={(e) => {
+                            const newUpgrades = [...rankUpgrades];
+                            newUpgrades[index].conditions.minDownlineRank = Number(e.target.value);
+                            setRankUpgrades(newUpgrades);
+                          }}
+                          className="w-full bg-slate-900 border border-slate-600 rounded px-2 py-1 text-white text-xs focus:border-purple-500 outline-none"
+                          placeholder="Optional"
+                        />
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+
+            {/* Info Box */}
+            <div className="mt-5 p-3 bg-gradient-to-r from-purple-900/30 to-indigo-900/20 rounded-lg border border-purple-500/30">
+              <div className="text-xs text-purple-200 leading-relaxed">
+                <strong className="text-purple-400">💡 Multi-Condition Logic:</strong>
+                <br />
+                Để thăng hạng, user phải đạt <strong>TẤT CẢ</strong> điều kiện (AND logic). Để bỏ qua điều kiện, để trống hoặc = 0.
               </div>
             </div>
           </motion.div>

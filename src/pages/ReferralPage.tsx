@@ -28,8 +28,6 @@ import { formatVND } from '@/utils/format';
 import { REFERRALS, REFERRAL_STATS } from '@/data/mockData';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 import { useTranslation } from '@/hooks';
-import { ParticleBackground } from '@/components/ParticleBackground';
-import { CursorGlow } from '@/components/CursorGlow';
 
 export default function ReferralPage() {
   const t = useTranslation();
@@ -84,11 +82,11 @@ export default function ReferralPage() {
   const getStatusIcon = (status: Referral['status']) => {
     switch (status) {
       case 'active':
-        return <CheckCircle className="w-5 h-5 text-green-400" />;
+        return <CheckCircle className="w-5 h-5 text-green-500" />;
       case 'registered':
-        return <UserPlus className="w-5 h-5 text-blue-400" />;
+        return <UserPlus className="w-5 h-5 text-blue-500" />;
       case 'pending':
-        return <Clock className="w-5 h-5 text-yellow-400" />;
+        return <Clock className="w-5 h-5 text-yellow-500" />;
       case 'expired':
         return <XCircle className="w-5 h-5 text-gray-400" />;
       default:
@@ -98,10 +96,10 @@ export default function ReferralPage() {
 
   const getStatusBadge = (status: Referral['status']) => {
     const badges = {
-      active: 'bg-green-900/50 text-green-400 border-green-500/30',
-      registered: 'bg-blue-900/50 text-blue-400 border-blue-500/30',
-      pending: 'bg-yellow-900/50 text-yellow-400 border-yellow-500/30',
-      expired: 'bg-gray-800 text-gray-400 border-gray-600/30'
+      active: 'bg-green-100 text-green-700 border-green-200',
+      registered: 'bg-blue-100 text-blue-700 border-blue-200',
+      pending: 'bg-yellow-100 text-yellow-700 border-yellow-200',
+      expired: 'bg-gray-100 text-gray-700 border-gray-200'
     };
     return badges[status] || badges.pending;
   };
@@ -130,20 +128,17 @@ export default function ReferralPage() {
   const f2Referrals = REFERRALS.filter(r => r.level === 2);
 
   return (
-    <div className="min-h-screen bg-dark-ultra space-y-6 pb-20 relative overflow-hidden">
-      <ParticleBackground />
-      <CursorGlow />
-
+    <div className="space-y-6 pb-20">
       {/* Hero Section */}
       <motion.div
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
-        className="glass-ultra rounded-3xl shadow-2xl overflow-hidden relative"
+        className="bg-gradient-to-br from-primary via-teal-600 to-cyan-600 dark:from-teal-800 dark:via-teal-900 dark:to-cyan-900 rounded-3xl shadow-2xl overflow-hidden relative"
       >
         {/* Decorative Elements */}
-        <div className="absolute inset-0 bg-gradient-to-br from-teal-500/20 via-blue-600/20 to-purple-600/20" />
-        <div className="absolute top-0 right-0 w-96 h-96 bg-purple-500/20 rounded-full blur-3xl" />
-        <div className="absolute bottom-0 left-0 w-64 h-64 bg-teal-500/20 rounded-full blur-3xl" />
+        <div className="absolute inset-0 bg-gradient-to-br from-white/10 dark:from-white/5 to-transparent" />
+        <div className="absolute top-0 right-0 w-96 h-96 bg-accent/20 dark:bg-accent/10 rounded-full blur-3xl" />
+        <div className="absolute bottom-0 left-0 w-64 h-64 bg-purple-500/20 dark:bg-purple-500/10 rounded-full blur-3xl" />
 
         <div className="relative p-12">
           <div className="flex items-start justify-between mb-8">
@@ -155,16 +150,16 @@ export default function ReferralPage() {
                     rotate: [0, 360]
                   }}
                   transition={{ duration: 3, repeat: Infinity, ease: 'easeInOut' }}
-                  className="w-16 h-16 bg-white/10 backdrop-blur-xl rounded-2xl flex items-center justify-center shadow-2xl border border-white/20"
+                  className="w-16 h-16 bg-white/20 backdrop-blur-xl rounded-2xl flex items-center justify-center shadow-2xl border border-white/30"
                 >
-                  <Share2 className="w-8 h-8 text-teal-400" />
+                  <Share2 className="w-8 h-8 text-white" />
                 </motion.div>
                 <div>
                   <h1 className="text-4xl font-bold text-white mb-2">{t('referral.title')}</h1>
-                  <p className="text-white/60 text-lg">{t('referral.subtitle')}</p>
+                  <p className="text-teal-100 text-lg">{t('referral.subtitle')}</p>
                 </div>
               </div>
-              <p className="text-white/80 max-w-2xl text-lg">
+              <p className="text-white/90 max-w-2xl text-lg">
                 {t('referral.description')}
               </p>
             </div>
@@ -174,10 +169,10 @@ export default function ReferralPage() {
               initial={{ scale: 0, rotate: -180 }}
               animate={{ scale: 1, rotate: 0 }}
               transition={{ type: 'spring', delay: 0.2 }}
-              className="glass-ultra rounded-3xl p-8 shadow-2xl min-w-[280px]"
+              className="bg-white/20 backdrop-blur-2xl rounded-3xl p-8 shadow-2xl border-2 border-white/30 min-w-[280px]"
             >
               <div className="text-center">
-                <p className="text-teal-400 text-sm mb-2 font-semibold">TỔNG THU NHẬP</p>
+                <p className="text-teal-100 text-sm mb-2 font-semibold">TỔNG THU NHẬP</p>
                 <motion.p
                   initial={{ scale: 0 }}
                   animate={{ scale: 1 }}
@@ -186,7 +181,7 @@ export default function ReferralPage() {
                 >
                   {formatVND(REFERRAL_STATS.totalBonus)}
                 </motion.p>
-                <div className="flex items-center justify-center gap-2 text-yellow-400">
+                <div className="flex items-center justify-center gap-2 text-accent">
                   <TrendingUp className="w-5 h-5" />
                   <span className="font-bold">+{REFERRAL_STATS.monthlyReferrals} tháng này</span>
                 </div>
@@ -200,19 +195,19 @@ export default function ReferralPage() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.3 }}
-              className="bg-white/5 backdrop-blur-xl rounded-2xl p-6 border border-white/10"
+              className="bg-white/15 backdrop-blur-xl rounded-2xl p-6 border border-white/20"
             >
               <div className="flex items-center gap-3 mb-3">
-                <div className="w-12 h-12 bg-white/10 rounded-xl flex items-center justify-center">
+                <div className="w-12 h-12 bg-white/20 rounded-xl flex items-center justify-center">
                   <Users className="w-6 h-6 text-white" />
                 </div>
                 <div>
                   <p className="text-3xl font-bold text-white">{REFERRAL_STATS.totalReferrals}</p>
-                  <p className="text-white/60 text-sm">{t('referral.stats.totalReferrals')}</p>
+                  <p className="text-teal-100 text-sm">{t('referral.stats.totalReferrals')}</p>
                 </div>
               </div>
-              <div className="flex items-center gap-2 text-teal-400 text-sm">
-                <span className="font-bold bg-teal-500/20 px-2 py-1 rounded-full">
+              <div className="flex items-center gap-2 text-accent text-sm">
+                <span className="font-bold bg-accent/20 px-2 py-1 rounded-full">
                   {REFERRAL_STATS.activeReferrals} {t('referral.stats.active')}
                 </span>
               </div>
@@ -222,18 +217,18 @@ export default function ReferralPage() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.4 }}
-              className="bg-white/5 backdrop-blur-xl rounded-2xl p-6 border border-white/10"
+              className="bg-white/15 backdrop-blur-xl rounded-2xl p-6 border border-white/20"
             >
               <div className="flex items-center gap-3 mb-3">
-                <div className="w-12 h-12 bg-white/10 rounded-xl flex items-center justify-center">
+                <div className="w-12 h-12 bg-white/20 rounded-xl flex items-center justify-center">
                   <Target className="w-6 h-6 text-white" />
                 </div>
                 <div>
                   <p className="text-3xl font-bold text-white">{REFERRAL_STATS.conversionRate}%</p>
-                  <p className="text-white/60 text-sm">{t('referral.stats.conversionRate')}</p>
+                  <p className="text-teal-100 text-sm">{t('referral.stats.conversionRate')}</p>
                 </div>
               </div>
-              <div className="text-teal-400 text-sm font-bold">
+              <div className="text-accent text-sm font-bold">
                 Xuất sắc! 🎯
               </div>
             </motion.div>
@@ -242,18 +237,18 @@ export default function ReferralPage() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.5 }}
-              className="bg-white/5 backdrop-blur-xl rounded-2xl p-6 border border-white/10"
+              className="bg-white/15 backdrop-blur-xl rounded-2xl p-6 border border-white/20"
             >
               <div className="flex items-center gap-3 mb-3">
-                <div className="w-12 h-12 bg-white/10 rounded-xl flex items-center justify-center">
+                <div className="w-12 h-12 bg-white/20 rounded-xl flex items-center justify-center">
                   <Gift className="w-6 h-6 text-white" />
                 </div>
                 <div>
                   <p className="text-3xl font-bold text-white">{REFERRAL_STATS.monthlyReferrals}</p>
-                  <p className="text-white/60 text-sm">{t('referral.stats.monthlyReferrals')}</p>
+                  <p className="text-teal-100 text-sm">{t('referral.stats.monthlyReferrals')}</p>
                 </div>
               </div>
-              <div className="text-teal-400 text-sm font-bold">
+              <div className="text-accent text-sm font-bold">
                 Tuyệt vời! 🎉
               </div>
             </motion.div>
@@ -267,28 +262,28 @@ export default function ReferralPage() {
           initial={{ opacity: 0, x: -20 }}
           animate={{ opacity: 1, x: 0 }}
           transition={{ delay: 0.2 }}
-          className="glass-ultra rounded-2xl shadow-xl p-8"
+          className="bg-gradient-to-br from-white to-blue-50/50 dark:from-slate-800 dark:to-slate-800/50 backdrop-blur-xl rounded-2xl shadow-xl border border-gray-100 dark:border-slate-700 p-8"
         >
           <div className="flex items-start justify-between mb-6">
             <div>
-              <h3 className="font-bold text-white text-2xl mb-2 flex items-center gap-2">
-                <Share2 className="w-6 h-6 text-teal-400" />
+              <h3 className="font-bold text-gray-900 dark:text-slate-100 text-2xl mb-2 flex items-center gap-2">
+                <Share2 className="w-6 h-6 text-primary dark:text-teal-400" />
                 {t('referral.link.title')}
               </h3>
-              <p className="text-sm text-white/60">{t('referral.link.description')}</p>
+              <p className="text-sm text-gray-600 dark:text-slate-400">{t('referral.link.description')}</p>
             </div>
           </div>
 
           {/* Link Input */}
-          <div className="bg-white/5 rounded-xl p-4 flex items-center gap-3 mb-6 shadow-md border-2 border-white/10">
-            <div className="flex-1 font-mono text-sm text-white/80 truncate">
+          <div className="bg-white dark:bg-slate-900 rounded-xl p-4 flex items-center gap-3 mb-6 shadow-md border-2 border-primary/20 dark:border-teal-600/30">
+            <div className="flex-1 font-mono text-sm text-gray-700 dark:text-slate-300 truncate">
               {referralUrl}
             </div>
             <motion.button
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
               onClick={copyReferralLink}
-              className="px-5 py-2.5 bg-gradient-to-r from-teal-600 to-teal-500 hover:shadow-lg text-white rounded-lg flex items-center gap-2 transition-all font-semibold"
+              className="px-5 py-2.5 bg-gradient-to-r from-primary to-teal-600 hover:shadow-lg active:scale-95 active:shadow-inner text-white rounded-lg flex items-center gap-2 transition-all font-semibold"
             >
               {copiedLink ? (
                 <>
@@ -310,48 +305,48 @@ export default function ReferralPage() {
               whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.98 }}
               onClick={shareViaZalo}
-              className="px-4 py-3 bg-white/5 hover:bg-white/10 border-2 border-white/10 rounded-xl flex items-center gap-3 justify-center transition-all shadow-sm group"
+              className="px-4 py-3 bg-white dark:bg-slate-900 hover:bg-blue-50 dark:hover:bg-slate-800 active:bg-blue-100 dark:active:bg-slate-700 border-2 border-gray-200 dark:border-slate-600 hover:border-blue-300 dark:hover:border-blue-500 rounded-xl flex items-center gap-3 justify-center transition-all shadow-sm group"
             >
               <div className="w-10 h-10 bg-blue-500 rounded-lg flex items-center justify-center group-hover:scale-110 transition-transform">
                 <MessageCircle className="w-5 h-5 text-white" />
               </div>
-              <span className="font-semibold text-white">Zalo</span>
+              <span className="font-semibold text-gray-900 dark:text-slate-100">Zalo</span>
             </motion.button>
 
             <motion.button
               whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.98 }}
               onClick={shareViaFacebook}
-              className="px-4 py-3 bg-white/5 hover:bg-white/10 border-2 border-white/10 rounded-xl flex items-center gap-3 justify-center transition-all shadow-sm group"
+              className="px-4 py-3 bg-white dark:bg-slate-900 hover:bg-blue-50 dark:hover:bg-slate-800 active:bg-blue-100 dark:active:bg-slate-700 border-2 border-gray-200 dark:border-slate-600 hover:border-blue-300 dark:hover:border-blue-500 rounded-xl flex items-center gap-3 justify-center transition-all shadow-sm group"
             >
               <div className="w-10 h-10 bg-blue-600 rounded-lg flex items-center justify-center group-hover:scale-110 transition-transform">
                 <span className="text-white font-bold text-lg">f</span>
               </div>
-              <span className="font-semibold text-white">Facebook</span>
+              <span className="font-semibold text-gray-900 dark:text-slate-100">Facebook</span>
             </motion.button>
 
             <motion.button
               whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.98 }}
               onClick={shareViaTelegram}
-              className="px-4 py-3 bg-white/5 hover:bg-white/10 border-2 border-white/10 rounded-xl flex items-center gap-3 justify-center transition-all shadow-sm group"
+              className="px-4 py-3 bg-white dark:bg-slate-900 hover:bg-sky-50 dark:hover:bg-slate-800 active:bg-sky-100 dark:active:bg-slate-700 border-2 border-gray-200 dark:border-slate-600 hover:border-sky-300 dark:hover:border-sky-500 rounded-xl flex items-center gap-3 justify-center transition-all shadow-sm group"
             >
               <div className="w-10 h-10 bg-sky-500 rounded-lg flex items-center justify-center group-hover:scale-110 transition-transform">
                 <MessageCircle className="w-5 h-5 text-white" />
               </div>
-              <span className="font-semibold text-white">Telegram</span>
+              <span className="font-semibold text-gray-900 dark:text-slate-100">Telegram</span>
             </motion.button>
 
             <motion.button
               whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.98 }}
               onClick={shareViaEmail}
-              className="px-4 py-3 bg-white/5 hover:bg-white/10 border-2 border-white/10 rounded-xl flex items-center gap-3 justify-center transition-all shadow-sm group"
+              className="px-4 py-3 bg-white dark:bg-slate-900 hover:bg-red-50 dark:hover:bg-slate-800 active:bg-red-100 dark:active:bg-slate-700 border-2 border-gray-200 dark:border-slate-600 hover:border-red-300 dark:hover:border-red-500 rounded-xl flex items-center gap-3 justify-center transition-all shadow-sm group"
             >
               <div className="w-10 h-10 bg-red-500 rounded-lg flex items-center justify-center group-hover:scale-110 transition-transform">
                 <Mail className="w-5 h-5 text-white" />
               </div>
-              <span className="font-semibold text-white">Email</span>
+              <span className="font-semibold text-gray-900 dark:text-slate-100">Email</span>
             </motion.button>
           </div>
 
@@ -360,7 +355,7 @@ export default function ReferralPage() {
             whileHover={{ scale: 1.02 }}
             whileTap={{ scale: 0.98 }}
             onClick={() => setShowQRCode(!showQRCode)}
-            className="w-full px-6 py-4 bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-500 hover:to-pink-500 text-white rounded-xl flex items-center justify-center gap-3 transition-all shadow-lg font-bold text-lg group"
+            className="w-full px-6 py-4 bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 active:scale-95 text-white rounded-xl flex items-center justify-center gap-3 transition-all shadow-lg font-bold text-lg group"
           >
             <QrCode className="w-6 h-6 group-hover:rotate-12 transition-transform" />
             {showQRCode ? 'Ẩn QR Code' : 'Hiển Thị QR Code'}
@@ -376,23 +371,23 @@ export default function ReferralPage() {
               exit={{ opacity: 0, x: 20, scale: 0.9 }}
               transition={{ type: 'spring', stiffness: 200 }}
               ref={qrCodeRef}
-              className="glass-ultra rounded-2xl shadow-xl p-8"
+              className="bg-gradient-to-br from-purple-50 to-pink-50 dark:from-purple-900/20 dark:to-pink-900/20 rounded-2xl shadow-xl border border-purple-200 dark:border-purple-800 p-8"
             >
               <div className="text-center">
                 <div className="flex items-center justify-center gap-3 mb-6">
-                  <QrCode className="w-8 h-8 text-purple-400" />
-                  <h3 className="font-bold text-white text-2xl">QR Code Giới Thiệu</h3>
+                  <QrCode className="w-8 h-8 text-purple-600 dark:text-purple-400" />
+                  <h3 className="font-bold text-gray-900 dark:text-slate-100 text-2xl">QR Code Giới Thiệu</h3>
                 </div>
 
-                <div className="bg-white rounded-2xl p-6 shadow-lg inline-block mb-6">
+                <div className="bg-white dark:bg-slate-800 rounded-2xl p-6 shadow-lg inline-block mb-6">
                   <img
                     src={qrCodeUrl}
                     alt="Referral QR Code"
                     className="w-64 h-64 mx-auto"
                   />
                   <div className="mt-4 text-center">
-                    <p className="text-sm font-bold text-gray-900 mb-1">WellNexus</p>
-                    <p className="text-xs text-gray-500">Quét mã để tham gia</p>
+                    <p className="text-sm font-bold text-gray-900 dark:text-slate-100 mb-1">WellNexus</p>
+                    <p className="text-xs text-gray-500 dark:text-slate-400">Quét mã để tham gia</p>
                   </div>
                 </div>
 
@@ -400,13 +395,13 @@ export default function ReferralPage() {
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
                   onClick={downloadQRCode}
-                  className="w-full px-6 py-4 bg-gradient-to-r from-purple-600 to-pink-600 text-white rounded-xl flex items-center justify-center gap-3 transition-all shadow-lg font-bold group"
+                  className="w-full px-6 py-4 bg-gradient-to-r from-purple-600 to-pink-600 text-white rounded-xl flex items-center justify-center gap-3 transition-all shadow-lg active:scale-95 font-bold group"
                 >
                   <Download className="w-5 h-5 group-hover:translate-y-1 transition-transform" />
                   Tải Xuống QR Code
                 </motion.button>
 
-                <p className="text-xs text-white/60 mt-4">
+                <p className="text-xs text-gray-600 dark:text-slate-400 mt-4">
                   💡 In QR Code để đưa vào tài liệu marketing hoặc danh thiếp
                 </p>
               </div>
@@ -420,72 +415,72 @@ export default function ReferralPage() {
             initial={{ opacity: 0, x: 20 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ delay: 0.3 }}
-            className="glass-ultra rounded-2xl shadow-xl p-8"
+            className="bg-gradient-to-br from-purple-50 to-pink-50 dark:from-purple-900/20 dark:to-pink-900/20 rounded-2xl shadow-xl border border-purple-100 dark:border-purple-800 p-8"
           >
             <div className="flex items-center gap-3 mb-6">
               <div className="w-12 h-12 bg-gradient-to-br from-purple-500 to-pink-500 rounded-2xl flex items-center justify-center shadow-lg">
                 <Gift className="w-6 h-6 text-white" />
               </div>
               <div>
-                <h3 className="font-bold text-white text-2xl">Chương Trình Thưởng</h3>
-                <p className="text-sm text-white/60">Nhận hoa hồng hấp dẫn</p>
+                <h3 className="font-bold text-gray-900 dark:text-slate-100 text-2xl">Chương Trình Thưởng</h3>
+                <p className="text-sm text-gray-600 dark:text-slate-400">Nhận hoa hồng hấp dẫn</p>
               </div>
             </div>
 
             <div className="space-y-4">
               <motion.div
                 whileHover={{ scale: 1.02 }}
-                className="bg-white/5 rounded-xl p-6 shadow-md border border-white/10 hover:border-purple-500/50 transition-all"
+                className="bg-white dark:bg-slate-800 rounded-xl p-6 shadow-md border-2 border-purple-200 dark:border-purple-700 hover:border-purple-400 dark:hover:border-purple-500 transition-all"
               >
                 <div className="flex items-center gap-4 mb-3">
                   <div className="w-14 h-14 bg-gradient-to-br from-green-400 to-emerald-500 rounded-2xl flex items-center justify-center shadow-lg">
                     <span className="text-3xl">🎁</span>
                   </div>
                   <div className="flex-1">
-                    <h4 className="font-bold text-white text-lg">Đăng Ký Thành Công</h4>
-                    <p className="text-sm text-white/60">Mỗi người đăng ký qua link của bạn</p>
+                    <h4 className="font-bold text-gray-900 dark:text-slate-100 text-lg">Đăng Ký Thành Công</h4>
+                    <p className="text-sm text-gray-600 dark:text-slate-400">Mỗi người đăng ký qua link của bạn</p>
                   </div>
                   <div className="text-right">
-                    <p className="text-2xl font-bold text-green-400">+50K</p>
-                    <p className="text-xs text-white/40">ngay lập tức</p>
+                    <p className="text-2xl font-bold text-green-600 dark:text-green-400">+50K</p>
+                    <p className="text-xs text-gray-500 dark:text-slate-500">ngay lập tức</p>
                   </div>
                 </div>
               </motion.div>
 
               <motion.div
                 whileHover={{ scale: 1.02 }}
-                className="bg-white/5 rounded-xl p-6 shadow-md border border-white/10 hover:border-purple-500/50 transition-all"
+                className="bg-white dark:bg-slate-800 rounded-xl p-6 shadow-md border-2 border-purple-200 dark:border-purple-700 hover:border-purple-400 dark:hover:border-purple-500 transition-all"
               >
                 <div className="flex items-center gap-4 mb-3">
                   <div className="w-14 h-14 bg-gradient-to-br from-blue-400 to-cyan-500 rounded-2xl flex items-center justify-center shadow-lg">
                     <span className="text-3xl">💰</span>
                   </div>
                   <div className="flex-1">
-                    <h4 className="font-bold text-white text-lg">Mua Hàng Đầu Tiên</h4>
-                    <p className="text-sm text-white/60">Khi người được giới thiệu mua hàng</p>
+                    <h4 className="font-bold text-gray-900 dark:text-slate-100 text-lg">Mua Hàng Đầu Tiên</h4>
+                    <p className="text-sm text-gray-600 dark:text-slate-400">Khi người được giới thiệu mua hàng</p>
                   </div>
                   <div className="text-right">
-                    <p className="text-2xl font-bold text-blue-400">+10%</p>
-                    <p className="text-xs text-white/40">doanh thu</p>
+                    <p className="text-2xl font-bold text-blue-600 dark:text-blue-400">+10%</p>
+                    <p className="text-xs text-gray-500 dark:text-slate-500">doanh thu</p>
                   </div>
                 </div>
               </motion.div>
 
               <motion.div
                 whileHover={{ scale: 1.02 }}
-                className="bg-white/5 rounded-xl p-6 shadow-md border border-white/10 hover:border-purple-500/50 transition-all"
+                className="bg-white dark:bg-slate-800 rounded-xl p-6 shadow-md border-2 border-purple-200 dark:border-purple-700 hover:border-purple-400 dark:hover:border-purple-500 transition-all"
               >
                 <div className="flex items-center gap-4 mb-3">
                   <div className="w-14 h-14 bg-gradient-to-br from-yellow-400 to-orange-500 rounded-2xl flex items-center justify-center shadow-lg">
                     <span className="text-3xl">🏆</span>
                   </div>
                   <div className="flex-1">
-                    <h4 className="font-bold text-white text-lg">Cột Mốc 10 Người</h4>
-                    <p className="text-sm text-white/60">10 người active trong mạng lưới</p>
+                    <h4 className="font-bold text-gray-900 dark:text-slate-100 text-lg">Cột Mốc 10 Người</h4>
+                    <p className="text-sm text-gray-600 dark:text-slate-400">10 người active trong mạng lưới</p>
                   </div>
                   <div className="text-right">
-                    <p className="text-2xl font-bold text-orange-400">+1M</p>
-                    <p className="text-xs text-white/40">thưởng đặc biệt</p>
+                    <p className="text-2xl font-bold text-orange-600 dark:text-orange-400">+1M</p>
+                    <p className="text-xs text-gray-500 dark:text-slate-500">thưởng đặc biệt</p>
                   </div>
                 </div>
               </motion.div>
@@ -495,22 +490,21 @@ export default function ReferralPage() {
       </div>
 
       {/* Tabs */}
-      <div className="flex gap-2 border-b border-white/10">
+      <div className="flex gap-2 border-b-2 border-gray-200 dark:border-slate-700">
         <motion.button
           whileHover={{ scale: 1.02 }}
           whileTap={{ scale: 0.98 }}
           onClick={() => setSelectedTab('overview')}
-          className={`px-8 py-4 font-bold text-lg transition-all relative ${
-            selectedTab === 'overview'
-              ? 'text-teal-400'
-              : 'text-white/60 hover:text-white'
-          }`}
+          className={`px-8 py-4 font-bold text-lg transition-all relative ${selectedTab === 'overview'
+              ? 'text-primary dark:text-teal-400'
+              : 'text-gray-600 dark:text-slate-400 hover:text-gray-900 dark:hover:text-slate-200'
+            }`}
         >
           Tổng Quan
           {selectedTab === 'overview' && (
             <motion.div
               layoutId="activeTab"
-              className="absolute bottom-0 left-0 right-0 h-1 bg-gradient-to-r from-teal-400 to-cyan-400 rounded-t-full"
+              className="absolute bottom-0 left-0 right-0 h-1 bg-gradient-to-r from-primary to-teal-600 dark:from-teal-400 dark:to-cyan-400 rounded-t-full"
             />
           )}
         </motion.button>
@@ -519,17 +513,16 @@ export default function ReferralPage() {
           whileHover={{ scale: 1.02 }}
           whileTap={{ scale: 0.98 }}
           onClick={() => setSelectedTab('network')}
-          className={`px-8 py-4 font-bold text-lg transition-all relative ${
-            selectedTab === 'network'
-              ? 'text-teal-400'
-              : 'text-white/60 hover:text-white'
-          }`}
+          className={`px-8 py-4 font-bold text-lg transition-all relative ${selectedTab === 'network'
+              ? 'text-primary dark:text-teal-400'
+              : 'text-gray-600 dark:text-slate-400 hover:text-gray-900 dark:hover:text-slate-200'
+            }`}
         >
           Mạng Lưới ({REFERRALS.length})
           {selectedTab === 'network' && (
             <motion.div
               layoutId="activeTab"
-              className="absolute bottom-0 left-0 right-0 h-1 bg-gradient-to-r from-teal-400 to-cyan-400 rounded-t-full"
+              className="absolute bottom-0 left-0 right-0 h-1 bg-gradient-to-r from-primary to-teal-600 dark:from-teal-400 dark:to-cyan-400 rounded-t-full"
             />
           )}
         </motion.button>
@@ -546,43 +539,42 @@ export default function ReferralPage() {
             className="space-y-6"
           >
             {/* Trend Chart */}
-            <div className="glass-ultra rounded-2xl shadow-xl p-8">
+            <div className="bg-white/90 dark:bg-slate-800/90 backdrop-blur-xl rounded-2xl shadow-xl border border-gray-100 dark:border-slate-700 p-8">
               <div className="flex items-center gap-3 mb-6">
-                <div className="w-12 h-12 bg-gradient-to-br from-teal-500 to-teal-600 rounded-2xl flex items-center justify-center shadow-lg">
+                <div className="w-12 h-12 bg-gradient-to-br from-primary to-teal-600 dark:from-teal-600 dark:to-cyan-600 rounded-2xl flex items-center justify-center shadow-lg">
                   <TrendingUp className="w-6 h-6 text-white" />
                 </div>
                 <div>
-                  <h3 className="font-bold text-white text-2xl">Xu Hướng Giới Thiệu</h3>
-                  <p className="text-sm text-white/60">Biểu đồ tăng trưởng theo thời gian</p>
+                  <h3 className="font-bold text-gray-900 dark:text-slate-100 text-2xl">Xu Hướng Giới Thiệu</h3>
+                  <p className="text-sm text-gray-600 dark:text-slate-400">Biểu đồ tăng trưởng theo thời gian</p>
                 </div>
               </div>
 
               <ResponsiveContainer width="100%" height={350}>
                 <LineChart data={referralTrendData}>
-                  <CartesianGrid strokeDasharray="3 3" stroke="#ffffff10" />
-                  <XAxis dataKey="month" tick={{ fontSize: 14, fontWeight: 600, fill: '#ffffff80' }} />
-                  <YAxis yAxisId="left" tick={{ fontSize: 12, fill: '#ffffff80' }} />
-                  <YAxis yAxisId="right" orientation="right" tick={{ fontSize: 12, fill: '#ffffff80' }} />
+                  <CartesianGrid strokeDasharray="3 3" stroke="#f0f0f0" />
+                  <XAxis dataKey="month" tick={{ fontSize: 14, fontWeight: 600 }} />
+                  <YAxis yAxisId="left" tick={{ fontSize: 12 }} />
+                  <YAxis yAxisId="right" orientation="right" tick={{ fontSize: 12 }} />
                   <Tooltip
                     formatter={(value: number, name: string) =>
                       name === 'revenue' ? formatVND(value) : value
                     }
                     contentStyle={{
                       borderRadius: '12px',
-                      border: '1px solid rgba(255, 255, 255, 0.1)',
-                      backgroundColor: 'rgba(0, 0, 0, 0.8)',
-                      backdropFilter: 'blur(10px)',
-                      color: 'white'
+                      border: '2px solid #00575A',
+                      backgroundColor: 'rgba(255, 255, 255, 0.95)',
+                      backdropFilter: 'blur(10px)'
                     }}
                   />
                   <Line
                     yAxisId="left"
                     type="monotone"
                     dataKey="referrals"
-                    stroke="#26A69A"
+                    stroke="#00575A"
                     strokeWidth={4}
                     name="Số người giới thiệu"
-                    dot={{ r: 6, fill: '#26A69A', strokeWidth: 2, stroke: '#fff' }}
+                    dot={{ r: 6, fill: '#00575A', strokeWidth: 2, stroke: '#fff' }}
                   />
                   <Line
                     yAxisId="right"
@@ -606,23 +598,23 @@ export default function ReferralPage() {
             className="space-y-6"
           >
             {/* Network Visualization */}
-            <div className="glass-ultra rounded-2xl shadow-xl p-8">
+            <div className="bg-white/90 dark:bg-slate-800/90 backdrop-blur-xl rounded-2xl shadow-xl border border-gray-100 dark:border-slate-700 p-8">
               <div className="flex items-center gap-3 mb-6">
-                <div className="w-12 h-12 bg-gradient-to-br from-teal-500 to-teal-600 rounded-2xl flex items-center justify-center shadow-lg">
+                <div className="w-12 h-12 bg-gradient-to-br from-primary to-teal-600 dark:from-teal-600 dark:to-cyan-600 rounded-2xl flex items-center justify-center shadow-lg">
                   <Network className="w-6 h-6 text-white" />
                 </div>
                 <div>
-                  <h3 className="font-bold text-white text-2xl">Cấu Trúc Mạng Lưới</h3>
-                  <p className="text-sm text-white/60">Hệ thống F1 & F2 của bạn</p>
+                  <h3 className="font-bold text-gray-900 dark:text-slate-100 text-2xl">Cấu Trúc Mạng Lưới</h3>
+                  <p className="text-sm text-gray-600 dark:text-slate-400">Hệ thống F1 & F2 của bạn</p>
                 </div>
               </div>
 
               {/* F1 Level */}
               <div className="mb-8">
                 <div className="flex items-center gap-2 mb-4">
-                  <Award className="w-6 h-6 text-teal-400" />
-                  <h4 className="font-bold text-xl text-white">Cấp F1</h4>
-                  <span className="bg-teal-500/20 text-teal-400 px-3 py-1 rounded-full text-sm font-bold border border-teal-500/30">
+                  <Award className="w-6 h-6 text-primary dark:text-teal-400" />
+                  <h4 className="font-bold text-xl text-gray-900 dark:text-slate-100">Cấp F1</h4>
+                  <span className="bg-primary/10 dark:bg-teal-500/20 text-primary dark:text-teal-400 px-3 py-1 rounded-full text-sm font-bold">
                     {f1Referrals.length} người
                   </span>
                 </div>
@@ -635,12 +627,12 @@ export default function ReferralPage() {
                       animate={{ opacity: 1, scale: 1 }}
                       transition={{ delay: index * 0.1 }}
                       whileHover={{ scale: 1.03, y: -5 }}
-                      className="bg-white/5 rounded-2xl p-6 shadow-lg border border-white/10 hover:border-teal-500/50 hover:shadow-xl transition-all"
+                      className="bg-gradient-to-br from-white to-teal-50/50 dark:from-slate-800 dark:to-teal-900/20 rounded-2xl p-6 shadow-lg border-2 border-primary/30 dark:border-teal-600/40 hover:border-primary dark:hover:border-teal-500 hover:shadow-xl transition-all"
                     >
                       {/* Avatar & Name */}
                       <div className="flex items-center gap-4 mb-4">
                         <div className="relative">
-                          <div className="w-16 h-16 bg-gradient-to-br from-teal-600 to-teal-500 rounded-2xl flex items-center justify-center text-white font-bold text-2xl shadow-lg">
+                          <div className="w-16 h-16 bg-gradient-to-br from-primary to-teal-600 dark:from-teal-600 dark:to-cyan-600 rounded-2xl flex items-center justify-center text-white font-bold text-2xl shadow-lg">
                             {referral.referredName?.charAt(0) || '?'}
                           </div>
                           <div className="absolute -top-1 -right-1">
@@ -648,10 +640,10 @@ export default function ReferralPage() {
                           </div>
                         </div>
                         <div className="flex-1">
-                          <p className="font-bold text-white text-lg">
+                          <p className="font-bold text-gray-900 dark:text-slate-100 text-lg">
                             {referral.referredName || 'Chưa đăng ký'}
                           </p>
-                          <p className="text-xs text-white/60">{referral.referredEmail}</p>
+                          <p className="text-xs text-gray-500 dark:text-slate-400">{referral.referredEmail}</p>
                         </div>
                       </div>
 
@@ -661,22 +653,22 @@ export default function ReferralPage() {
                       </div>
 
                       {/* Stats */}
-                      <div className="space-y-2 pt-3 border-t border-white/10">
+                      <div className="space-y-2 pt-3 border-t border-gray-200 dark:border-slate-700">
                         <div className="flex items-center justify-between text-sm">
-                          <span className="text-white/60">Doanh thu:</span>
-                          <span className="font-bold text-teal-400">
+                          <span className="text-gray-600 dark:text-slate-400">Doanh thu:</span>
+                          <span className="font-bold text-primary dark:text-teal-400">
                             {referral.totalRevenue > 0 ? formatVND(referral.totalRevenue) : '-'}
                           </span>
                         </div>
                         <div className="flex items-center justify-between text-sm">
-                          <span className="text-white/60">Hoa hồng:</span>
-                          <span className="font-bold text-green-400">
+                          <span className="text-gray-600 dark:text-slate-400">Hoa hồng:</span>
+                          <span className="font-bold text-green-600 dark:text-green-400">
                             {referral.referralBonus > 0 ? formatVND(referral.referralBonus) : '-'}
                           </span>
                         </div>
                         <div className="flex items-center justify-between text-sm">
-                          <span className="text-white/60">Ngày tham gia:</span>
-                          <span className="text-white font-semibold">
+                          <span className="text-gray-600 dark:text-slate-400">Ngày tham gia:</span>
+                          <span className="text-gray-900 dark:text-slate-100 font-semibold">
                             {new Date(referral.createdAt).toLocaleDateString('vi-VN', {
                               day: '2-digit',
                               month: '2-digit'
@@ -692,9 +684,9 @@ export default function ReferralPage() {
               {/* F2 Level */}
               <div>
                 <div className="flex items-center gap-2 mb-4">
-                  <Zap className="w-6 h-6 text-yellow-400" />
-                  <h4 className="font-bold text-xl text-white">Cấp F2</h4>
-                  <span className="bg-yellow-500/20 text-yellow-400 px-3 py-1 rounded-full text-sm font-bold border border-yellow-500/30">
+                  <Zap className="w-6 h-6 text-accent dark:text-yellow-400" />
+                  <h4 className="font-bold text-xl text-gray-900 dark:text-slate-100">Cấp F2</h4>
+                  <span className="bg-accent/10 dark:bg-yellow-500/20 text-accent dark:text-yellow-400 px-3 py-1 rounded-full text-sm font-bold">
                     {f2Referrals.length} người
                   </span>
                 </div>
@@ -707,14 +699,14 @@ export default function ReferralPage() {
                       animate={{ opacity: 1, scale: 1 }}
                       transition={{ delay: 0.3 + index * 0.05 }}
                       whileHover={{ scale: 1.05 }}
-                      className="bg-white/5 rounded-xl p-4 shadow-md border border-white/10 hover:border-yellow-500/50 hover:shadow-lg transition-all"
+                      className="bg-white dark:bg-slate-800 rounded-xl p-4 shadow-md border border-gray-200 dark:border-slate-700 hover:border-accent dark:hover:border-yellow-500 hover:shadow-lg transition-all"
                     >
                       <div className="flex items-center gap-3 mb-2">
-                        <div className="w-12 h-12 bg-gradient-to-br from-yellow-500 to-orange-500 rounded-xl flex items-center justify-center text-white font-bold text-lg shadow-md">
+                        <div className="w-12 h-12 bg-gradient-to-br from-accent to-yellow-500 dark:from-yellow-500 dark:to-orange-500 rounded-xl flex items-center justify-center text-white font-bold text-lg shadow-md">
                           {referral.referredName?.charAt(0) || '?'}
                         </div>
                         <div className="flex-1 min-w-0">
-                          <p className="font-bold text-white text-sm truncate">
+                          <p className="font-bold text-gray-900 dark:text-slate-100 text-sm truncate">
                             {referral.referredName || 'Chưa đăng ký'}
                           </p>
                         </div>
@@ -725,7 +717,7 @@ export default function ReferralPage() {
                           {getStatusLabel(referral.status)}
                         </span>
                         {referral.referralBonus > 0 && (
-                          <span className="font-bold text-green-400">
+                          <span className="font-bold text-green-600 dark:text-green-400">
                             +{Math.round(referral.referralBonus / 1000)}K
                           </span>
                         )}

@@ -20,8 +20,6 @@ import { useStore } from '@/store';
 import { formatVND } from '@/utils/format';
 import { useTranslation } from '@/hooks';
 import { useAgentOS } from '@/hooks/useAgentOS';
-import { ParticleBackground } from '@/components/ParticleBackground';
-import { CursorGlow } from '@/components/CursorGlow';
 
 interface Message {
   id: string;
@@ -190,30 +188,27 @@ export default function HealthCoach() {
   };
 
   return (
-    <div className="min-h-screen bg-dark-ultra relative overflow-hidden">
-      <ParticleBackground />
-      <CursorGlow />
-
+    <div className="min-h-screen bg-zinc-50 dark:bg-zinc-950 transition-colors duration-300">
       {/* Main Container - 3 Column Layout */}
-      <div className="h-screen flex relative z-10">
+      <div className="h-screen flex">
         {/* LEFT SIDEBAR - Chat History */}
         <motion.div
           initial={{ x: -100, opacity: 0 }}
           animate={{ x: 0, opacity: 1 }}
-          className="w-80 glass-dark border-r border-white/10 flex flex-col"
+          className="w-80 bg-white dark:bg-zinc-900 backdrop-blur-xl border-r border-zinc-200 dark:border-zinc-800 flex flex-col"
         >
           {/* Sidebar Header */}
-          <div className="p-6 border-b border-white/10">
+          <div className="p-6 border-b border-zinc-200 dark:border-zinc-800">
             <div className="flex items-center gap-3 mb-4">
-              <div className="w-12 h-12 bg-gradient-to-br from-teal-500 to-teal-600 rounded-2xl flex items-center justify-center shadow-lg shadow-teal-500/30">
+              <div className="w-12 h-12 bg-gradient-to-br from-primary to-teal-600 rounded-2xl flex items-center justify-center shadow-lg">
                 <History className="w-6 h-6 text-white" />
               </div>
               <div>
-                <h2 className="text-lg font-bold text-white">Lịch Sử</h2>
-                <p className="text-xs text-white/60">Các cuộc hội thoại</p>
+                <h2 className="text-lg font-bold text-zinc-900 dark:text-zinc-100">Lịch Sử</h2>
+                <p className="text-xs text-zinc-500 dark:text-zinc-500">Các cuộc hội thoại</p>
               </div>
             </div>
-            <button className="w-full bg-gradient-to-r from-teal-600 to-teal-500 text-white py-3 px-4 rounded-xl font-semibold hover:shadow-lg transition-all duration-300 flex items-center justify-center gap-2 group">
+            <button className="w-full bg-gradient-to-r from-primary to-teal-600 text-white py-3 px-4 rounded-xl font-semibold hover:shadow-lg transition-all duration-300 flex items-center justify-center gap-2 group">
               <MessageSquare className="w-5 h-5 group-hover:scale-110 transition-transform" />
               Tạo Cuộc Hội Thoại Mới
             </button>
@@ -228,18 +223,18 @@ export default function HealthCoach() {
                 whileTap={{ scale: 0.98 }}
                 onClick={() => setSelectedHistory(chat.id)}
                 className={`w-full text-left p-4 rounded-xl transition-all duration-200 ${selectedHistory === chat.id
-                  ? 'bg-gradient-to-r from-teal-500/20 to-teal-600/20 border border-teal-500/50 shadow-md'
-                  : 'hover:bg-white/5 border border-transparent hover:border-white/10'
+                  ? 'bg-emerald-500/10 border-2 border-emerald-500/30 shadow-md'
+                  : 'bg-zinc-100 dark:bg-zinc-800/30 hover:bg-zinc-200 dark:hover:bg-zinc-800 border-2 border-transparent hover:border-zinc-300 dark:hover:border-zinc-700'
                   }`}
               >
-                <h3 className="font-semibold text-white text-sm mb-1 line-clamp-1">
+                <h3 className="font-semibold text-zinc-900 dark:text-zinc-100 text-sm mb-1 line-clamp-1">
                   {chat.title}
                 </h3>
                 <div className="flex items-center justify-between">
-                  <span className="text-xs text-white/60">
+                  <span className="text-xs text-zinc-500 dark:text-zinc-500">
                     {chat.date.toLocaleDateString('vi-VN', { month: 'short', day: 'numeric' })}
                   </span>
-                  <span className="text-xs text-white/40 flex items-center gap-1">
+                  <span className="text-xs text-zinc-500 dark:text-zinc-500 flex items-center gap-1">
                     <MessageSquare className="w-3 h-3" />
                     {chat.messageCount}
                   </span>
@@ -250,31 +245,31 @@ export default function HealthCoach() {
         </motion.div>
 
         {/* CENTER - Main Chat Interface */}
-        <div className="flex-1 flex flex-col glass-ultra border-x border-white/10">
+        <div className="flex-1 flex flex-col">
           {/* Chat Header */}
           <motion.div
             initial={{ y: -20, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
-            className="bg-gradient-to-r from-teal-600/50 to-teal-500/50 backdrop-blur-xl px-8 py-6 shadow-lg border-b border-white/10"
+            className="bg-white/80 dark:bg-zinc-900/80 backdrop-blur-xl border-b border-zinc-200 dark:border-zinc-800 px-8 py-6 shadow-lg"
           >
             <div className="flex items-center gap-4">
               <motion.div
                 animate={{
                   boxShadow: isTyping
-                    ? ['0 0 0 0 rgba(20, 184, 166, 0.4)', '0 0 0 15px rgba(20, 184, 166, 0)']
-                    : '0 0 0 0 rgba(20, 184, 166, 0)'
+                    ? ['0 0 0 0 rgba(0, 87, 90, 0.4)', '0 0 0 15px rgba(0, 87, 90, 0)']
+                    : '0 0 0 0 rgba(0, 87, 90, 0)'
                 }}
                 transition={{ duration: 1.5, repeat: isTyping ? Infinity : 0 }}
-                className="w-16 h-16 bg-white/10 backdrop-blur-lg rounded-2xl flex items-center justify-center shadow-xl border border-white/20"
+                className="w-16 h-16 bg-zinc-100 dark:bg-zinc-800 rounded-2xl flex items-center justify-center shadow-xl border border-zinc-200 dark:border-zinc-700"
               >
-                <Stethoscope className="w-8 h-8 text-white" />
+                <Stethoscope className="w-8 h-8 text-teal-600 dark:text-white" />
               </motion.div>
               <div>
-                <h1 className="text-2xl font-bold text-white flex items-center gap-2">
+                <h1 className="text-2xl font-bold text-zinc-900 dark:text-zinc-100 flex items-center gap-2">
                   {t('healthCoach.title')}
-                  <Sparkles className="w-5 h-5 text-yellow-400 animate-pulse" />
+                  <Sparkles className="w-5 h-5 text-emerald-400 animate-pulse" />
                 </h1>
-                <p className="text-teal-200 text-sm">
+                <p className="text-zinc-500 dark:text-zinc-400 text-sm">
                   {isTyping ? 'Đang phân tích và tư vấn...' : t('healthCoach.subtitle')}
                 </p>
               </div>
@@ -282,7 +277,7 @@ export default function HealthCoach() {
           </motion.div>
 
           {/* Messages Area */}
-          <div className="flex-1 overflow-y-auto p-6 space-y-6">
+          <div className="flex-1 overflow-y-auto p-6 space-y-6 bg-zinc-50 dark:bg-zinc-950">
             <AnimatePresence>
               {messages.map((message, index) => (
                 <motion.div
@@ -298,14 +293,14 @@ export default function HealthCoach() {
                   <motion.div
                     whileHover={{ scale: 1.1, rotate: 5 }}
                     className={`flex-shrink-0 w-12 h-12 rounded-2xl flex items-center justify-center shadow-lg ${message.role === 'user'
-                      ? 'bg-gradient-to-br from-yellow-500 to-orange-500'
-                      : 'bg-gradient-to-br from-teal-500 to-teal-600'
+                      ? 'bg-zinc-100 dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700'
+                      : 'bg-emerald-500/10 border border-emerald-500/20'
                       }`}
                   >
                     {message.role === 'user' ? (
-                      <User className="w-6 h-6 text-white" />
+                      <User className="w-6 h-6 text-zinc-700 dark:text-zinc-100" />
                     ) : (
-                      <Bot className="w-6 h-6 text-white" />
+                      <Bot className="w-6 h-6 text-emerald-600 dark:text-emerald-400" />
                     )}
                   </motion.div>
 
@@ -317,8 +312,8 @@ export default function HealthCoach() {
                     <motion.div
                       whileHover={{ scale: 1.01 }}
                       className={`inline-block p-5 rounded-2xl shadow-lg backdrop-blur-sm ${message.role === 'user'
-                        ? 'bg-gradient-to-br from-yellow-500/80 to-orange-500/80 text-white border border-yellow-400/30'
-                        : 'bg-white/10 text-white border border-white/10'
+                        ? 'bg-zinc-100 dark:bg-zinc-800 text-zinc-900 dark:text-zinc-100 border border-zinc-200 dark:border-zinc-700'
+                        : 'bg-white dark:bg-zinc-900 text-zinc-700 dark:text-zinc-300 border border-zinc-200 dark:border-zinc-800'
                         }`}
                     >
                       <p className="whitespace-pre-line leading-relaxed">
@@ -334,12 +329,12 @@ export default function HealthCoach() {
                         transition={{ delay: 0.3 }}
                         className="mt-4 inline-block w-full max-w-lg"
                       >
-                        <div className="bg-gradient-to-br from-teal-900/50 to-teal-800/50 backdrop-blur-xl border-2 border-teal-500/30 rounded-2xl p-6 shadow-2xl">
+                        <div className="bg-white/80 dark:bg-zinc-900/50 backdrop-blur-xl border-2 border-emerald-500/30 rounded-2xl p-6 shadow-2xl">
                           <div className="flex items-center gap-3 mb-4">
-                            <div className="w-10 h-10 bg-gradient-to-br from-teal-500 to-teal-600 rounded-xl flex items-center justify-center shadow-lg shadow-teal-500/20">
-                              <Package className="w-5 h-5 text-white" />
+                            <div className="w-10 h-10 bg-emerald-500/10 rounded-xl flex items-center justify-center border border-emerald-500/20">
+                              <Package className="w-5 h-5 text-emerald-600 dark:text-emerald-400" />
                             </div>
-                            <h3 className="font-bold text-lg text-teal-300">
+                            <h3 className="font-bold text-lg text-emerald-600 dark:text-emerald-400">
                               {message.productRecommendation.comboName}
                             </h3>
                           </div>
@@ -348,26 +343,26 @@ export default function HealthCoach() {
                             {message.productRecommendation.products.map((product) => (
                               <div
                                 key={product.id}
-                                className="flex justify-between items-center bg-white/5 rounded-xl p-3 border border-white/10"
+                                className="flex justify-between items-center bg-zinc-50 dark:bg-zinc-800/50 rounded-xl p-3 border border-zinc-200 dark:border-zinc-700"
                               >
                                 <div className="flex items-center gap-2">
-                                  <Pill className="w-4 h-4 text-teal-400" />
-                                  <span className="text-sm font-medium text-white">{product.name}</span>
+                                  <Pill className="w-4 h-4 text-emerald-600 dark:text-emerald-400" />
+                                  <span className="text-sm font-medium text-zinc-700 dark:text-zinc-300">{product.name}</span>
                                 </div>
-                                <span className="font-bold text-teal-300">
+                                <span className="font-bold text-emerald-600 dark:text-emerald-400">
                                   {formatVND(product.price)}
                                 </span>
                               </div>
                             ))}
-                            <div className="bg-gradient-to-r from-teal-500/20 to-teal-600/20 rounded-xl p-3 flex justify-between items-center border-2 border-teal-500/30">
-                              <span className="font-bold text-white">{t('healthCoach.totalLabel')}</span>
-                              <span className="font-bold text-2xl text-teal-300">
+                            <div className="bg-emerald-500/10 rounded-xl p-3 flex justify-between items-center border-2 border-emerald-500/20">
+                              <span className="font-bold text-zinc-900 dark:text-zinc-100">{t('healthCoach.totalLabel')}</span>
+                              <span className="font-bold text-2xl text-emerald-600 dark:text-emerald-400">
                                 {formatVND(message.productRecommendation.totalPrice)}
                               </span>
                             </div>
                           </div>
 
-                          <p className="text-sm text-yellow-200 mb-4 italic bg-yellow-900/20 p-3 rounded-lg border border-yellow-500/30">
+                          <p className="text-sm text-zinc-600 dark:text-zinc-400 mb-4 italic bg-zinc-50 dark:bg-zinc-800/50 p-3 rounded-lg border border-zinc-200 dark:border-zinc-700">
                             💡 {message.productRecommendation.reason}
                           </p>
 
@@ -375,7 +370,7 @@ export default function HealthCoach() {
                             whileHover={{ scale: 1.02 }}
                             whileTap={{ scale: 0.98 }}
                             onClick={() => handleQuickOrder(message.productRecommendation!)}
-                            className="w-full bg-gradient-to-r from-teal-600 to-teal-500 text-white py-4 px-6 rounded-xl font-bold hover:shadow-xl transition-all duration-300 flex items-center justify-center gap-2 group border border-teal-400/30"
+                            className="w-full bg-gradient-to-r from-primary to-teal-600 text-white py-4 px-6 rounded-xl font-bold hover:shadow-xl transition-all duration-300 flex items-center justify-center gap-2 group"
                           >
                             <ShoppingCart className="w-5 h-5 group-hover:scale-110 transition-transform" />
                             {t('healthCoach.orderNow')}
@@ -385,7 +380,7 @@ export default function HealthCoach() {
                     )}
 
                     {/* Timestamp */}
-                    <p className="text-xs text-white/40 mt-2 flex items-center gap-1 justify-end">
+                    <p className="text-xs text-zinc-500 dark:text-zinc-500 mt-2 flex items-center gap-1 justify-end">
                       <Clock className="w-3 h-3" />
                       {message.timestamp.toLocaleTimeString('vi-VN', {
                         hour: '2-digit',
@@ -408,31 +403,31 @@ export default function HealthCoach() {
                 <motion.div
                   animate={{
                     boxShadow: [
-                      '0 0 0 0 rgba(20, 184, 166, 0.7)',
-                      '0 0 0 10px rgba(20, 184, 166, 0)'
+                      '0 0 0 0 rgba(0, 87, 90, 0.7)',
+                      '0 0 0 10px rgba(0, 87, 90, 0)'
                     ]
                   }}
                   transition={{ duration: 1.5, repeat: Infinity }}
-                  className="w-12 h-12 rounded-2xl bg-gradient-to-br from-teal-500 to-teal-600 flex items-center justify-center shadow-lg"
+                  className="w-12 h-12 rounded-2xl bg-zinc-100 dark:bg-zinc-800 flex items-center justify-center shadow-lg border border-zinc-200 dark:border-zinc-700"
                 >
-                  <Bot className="w-6 h-6 text-white" />
+                  <Bot className="w-6 h-6 text-emerald-600 dark:text-emerald-400" />
                 </motion.div>
-                <div className="bg-white/10 backdrop-blur-sm p-5 rounded-2xl shadow-lg border border-white/10">
+                <div className="bg-white dark:bg-zinc-900 backdrop-blur-sm p-5 rounded-2xl shadow-lg border border-zinc-200 dark:border-zinc-800">
                   <div className="flex gap-2">
                     <motion.div
                       animate={{ y: [0, -10, 0] }}
                       transition={{ repeat: Infinity, duration: 0.6 }}
-                      className="w-3 h-3 bg-teal-400 rounded-full"
+                      className="w-3 h-3 bg-emerald-500 rounded-full"
                     />
                     <motion.div
                       animate={{ y: [0, -10, 0] }}
                       transition={{ repeat: Infinity, duration: 0.6, delay: 0.2 }}
-                      className="w-3 h-3 bg-teal-400 rounded-full"
+                      className="w-3 h-3 bg-emerald-500 rounded-full"
                     />
                     <motion.div
                       animate={{ y: [0, -10, 0] }}
                       transition={{ repeat: Infinity, duration: 0.6, delay: 0.4 }}
-                      className="w-3 h-3 bg-teal-400 rounded-full"
+                      className="w-3 h-3 bg-emerald-500 rounded-full"
                     />
                   </div>
                 </div>
@@ -443,7 +438,7 @@ export default function HealthCoach() {
           </div>
 
           {/* Input Area */}
-          <div className="border-t border-white/10 p-6 bg-slate-900/50 backdrop-blur-xl">
+          <div className="border-t border-zinc-200 dark:border-zinc-800 p-6 bg-white dark:bg-zinc-900 backdrop-blur-xl">
             <div className="max-w-4xl mx-auto">
               <div className="flex gap-3">
                 <input
@@ -453,14 +448,14 @@ export default function HealthCoach() {
                   onChange={(e) => setInputValue(e.target.value)}
                   onKeyPress={handleKeyPress}
                   placeholder={t('healthCoach.placeholder')}
-                  className="flex-1 px-6 py-4 rounded-2xl border-2 border-white/10 focus:border-teal-500 focus:outline-none transition-all duration-300 bg-white/5 text-white shadow-sm placeholder-white/30"
+                  className="flex-1 px-6 py-4 rounded-2xl border-2 border-zinc-200 dark:border-zinc-700 focus:border-emerald-500 focus:outline-none transition-all duration-300 bg-zinc-50 dark:bg-zinc-800 text-zinc-900 dark:text-zinc-100 shadow-sm placeholder-zinc-400 dark:placeholder-zinc-500"
                 />
                 <motion.button
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
                   onClick={handleSendMessage}
                   disabled={!inputValue.trim()}
-                  className="bg-gradient-to-r from-teal-600 to-teal-500 text-white px-8 py-4 rounded-2xl font-bold hover:shadow-xl transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2 group border border-teal-400/30"
+                  className="bg-gradient-to-r from-primary to-teal-600 text-white px-8 py-4 rounded-2xl font-bold hover:shadow-xl transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2 group"
                 >
                   <Send className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
                   {t('healthCoach.send')}
@@ -469,7 +464,7 @@ export default function HealthCoach() {
 
               {/* Quick Suggestions */}
               <div className="mt-4 flex flex-wrap gap-2">
-                <p className="text-xs text-white/60 w-full mb-1 font-semibold">
+                <p className="text-xs text-zinc-500 dark:text-zinc-500 w-full mb-1 font-semibold">
                   💬 {t('healthCoach.quickSuggestionsLabel')}
                 </p>
                 {[
@@ -482,7 +477,7 @@ export default function HealthCoach() {
                     whileHover={{ scale: 1.05, y: -2 }}
                     whileTap={{ scale: 0.95 }}
                     onClick={() => setInputValue(suggestion)}
-                    className="text-sm bg-white/5 border border-white/10 text-white px-4 py-2 rounded-full hover:bg-teal-600/50 hover:border-teal-500 transition-all duration-200 shadow-sm"
+                    className="text-sm bg-zinc-100 dark:bg-zinc-800 border-2 border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300 px-4 py-2 rounded-full hover:bg-emerald-600 hover:text-white hover:border-emerald-600 active:bg-emerald-700 transition-all duration-200 shadow-sm"
                   >
                     {suggestion}
                   </motion.button>
@@ -496,58 +491,55 @@ export default function HealthCoach() {
         <motion.div
           initial={{ x: 100, opacity: 0 }}
           animate={{ x: 0, opacity: 1 }}
-          className="w-96 glass-dark border-l border-white/10 p-6 space-y-6 overflow-y-auto"
+          className="w-96 bg-white dark:bg-zinc-900 backdrop-blur-xl border-l border-zinc-200 dark:border-zinc-800 p-6 space-y-6 overflow-y-auto"
         >
           {/* Patient Profile Card */}
-          <div className="bg-white/5 backdrop-blur-sm rounded-2xl p-6 shadow-lg border border-white/10">
+          <div className="bg-zinc-50 dark:bg-zinc-800/50 backdrop-blur-sm rounded-2xl p-6 shadow-lg border border-zinc-200 dark:border-zinc-700">
             <div className="flex items-center gap-3 mb-4">
-              <div className="w-12 h-12 bg-gradient-to-br from-teal-500 to-teal-600 rounded-2xl flex items-center justify-center shadow-lg shadow-teal-500/20">
-                <User className="w-6 h-6 text-white" />
+              <div className="w-12 h-12 bg-zinc-200 dark:bg-zinc-700 rounded-2xl flex items-center justify-center shadow-lg">
+                <User className="w-6 h-6 text-zinc-500 dark:text-zinc-300" />
               </div>
               <div>
-                <h3 className="font-bold text-white">Hồ Sơ Khách Hàng</h3>
-                <p className="text-xs text-white/60">Thông tin tư vấn</p>
+                <h3 className="font-bold text-zinc-900 dark:text-zinc-100">Hồ Sơ Khách Hàng</h3>
+                <p className="text-xs text-zinc-500 dark:text-zinc-500">Thông tin tư vấn</p>
               </div>
             </div>
 
             <div className="space-y-4">
-              <div className="flex items-center justify-between py-3 border-b border-white/10">
-                <span className="text-sm text-white/60">Tuổi</span>
-                <span className="font-bold text-white">{MOCK_PATIENT.age} tuổi</span>
+              <div className="flex items-center justify-between py-3 border-b border-zinc-200 dark:border-zinc-700">
+                <span className="text-sm text-zinc-500 dark:text-zinc-400">Tuổi</span>
+                <span className="font-bold text-zinc-900 dark:text-zinc-100">{MOCK_PATIENT.age} tuổi</span>
               </div>
 
               <div>
-                <p className="text-sm text-white/60 mb-2">Vấn đề chính</p>
+                <p className="text-sm text-zinc-500 dark:text-zinc-400 mb-2">Vấn đề chính</p>
                 <div className="flex flex-wrap gap-2">
                   {MOCK_PATIENT.mainConcerns.map((concern, idx) => (
                     <span
                       key={idx}
-                      className="text-xs bg-red-900/30 text-red-300 px-3 py-1.5 rounded-full border border-red-500/30 font-medium"
+                      className="text-xs bg-red-50 text-red-600 px-3 py-1.5 rounded-full border border-red-200 font-medium"
                     >
                       {concern}
                     </span>
                   ))}
                 </div>
-              </div>
-
-              <div>
-                <p className="text-sm text-white/60 mb-2">Lịch sử mua hàng</p>
+                <p className="text-sm text-zinc-500 dark:text-zinc-400 mb-2">Lịch sử mua hàng</p>
                 <div className="space-y-2">
                   {MOCK_PATIENT.purchaseHistory.map((item, idx) => (
                     <div
                       key={idx}
-                      className="flex items-center gap-2 bg-green-900/30 p-2 rounded-lg border border-green-500/30"
+                      className="flex items-center gap-2 bg-emerald-500/10 p-2 rounded-lg border border-emerald-500/20"
                     >
-                      <Package className="w-4 h-4 text-green-400" />
-                      <span className="text-xs font-medium text-green-300">{item}</span>
+                      <Package className="w-4 h-4 text-emerald-400" />
+                      <span className="text-xs font-medium text-emerald-600 dark:text-emerald-300">{item}</span>
                     </div>
                   ))}
                 </div>
               </div>
 
-              <div className="flex items-center justify-between py-3 border-t border-white/10">
-                <span className="text-sm text-white/60">Lần tư vấn gần nhất</span>
-                <span className="text-xs font-semibold text-white">
+              <div className="flex items-center justify-between py-3 border-t border-zinc-200 dark:border-zinc-700">
+                <span className="text-sm text-zinc-500 dark:text-zinc-400">Lần tư vấn gần nhất</span>
+                <span className="text-xs font-semibold text-zinc-900 dark:text-zinc-100">
                   {MOCK_PATIENT.lastVisit.toLocaleDateString('vi-VN')}
                 </span>
               </div>
@@ -555,9 +547,9 @@ export default function HealthCoach() {
           </div>
 
           {/* Health Score Card */}
-          <div className="bg-gradient-to-br from-teal-600 to-teal-800 rounded-2xl p-6 shadow-xl text-white border border-teal-500/30">
+          <div className="bg-white dark:bg-zinc-800 rounded-2xl p-6 shadow-xl text-zinc-900 dark:text-white border border-zinc-200 dark:border-zinc-700">
             <div className="flex items-center gap-3 mb-4">
-              <Heart className="w-8 h-8 text-yellow-400" />
+              <Heart className="w-8 h-8 text-emerald-600 dark:text-emerald-400" />
               <h3 className="font-bold text-lg">Điểm Sức Khỏe</h3>
             </div>
 
@@ -568,7 +560,8 @@ export default function HealthCoach() {
                     cx="64"
                     cy="64"
                     r="56"
-                    stroke="rgba(255,255,255,0.1)"
+                    stroke="currentColor"
+                    className="text-zinc-200 dark:text-white/20"
                     strokeWidth="8"
                     fill="none"
                   />
@@ -579,7 +572,7 @@ export default function HealthCoach() {
                     cx="64"
                     cy="64"
                     r="56"
-                    stroke="#FBBF24"
+                    stroke="#FFBF00"
                     strokeWidth="8"
                     fill="none"
                     strokeDasharray="352"
@@ -592,28 +585,28 @@ export default function HealthCoach() {
               </div>
             </div>
 
-            <p className="text-center text-teal-100 text-sm">
+            <p className="text-center text-zinc-500 dark:text-zinc-400 text-sm">
               Điểm số tốt! Tiếp tục duy trì lối sống lành mạnh.
             </p>
           </div>
 
           {/* Quick Stats */}
           <div className="grid grid-cols-2 gap-4">
-            <div className="bg-white/5 backdrop-blur-sm rounded-xl p-4 shadow-md border border-white/10">
-              <Activity className="w-8 h-8 text-blue-400 mb-2" />
-              <p className="text-2xl font-bold text-white">12</p>
-              <p className="text-xs text-white/60">Tư vấn hoàn thành</p>
+            <div className="bg-zinc-50 dark:bg-zinc-800/50 backdrop-blur-sm rounded-xl p-4 shadow-md border border-zinc-200 dark:border-zinc-700">
+              <Activity className="w-8 h-8 text-blue-500 dark:text-blue-400 mb-2" />
+              <p className="text-2xl font-bold text-zinc-900 dark:text-zinc-100">12</p>
+              <p className="text-xs text-zinc-500 dark:text-zinc-500">Tư vấn hoàn thành</p>
             </div>
-            <div className="bg-white/5 backdrop-blur-sm rounded-xl p-4 shadow-md border border-white/10">
-              <TrendingUp className="w-8 h-8 text-green-400 mb-2" />
-              <p className="text-2xl font-bold text-white">+15%</p>
-              <p className="text-xs text-white/60">Cải thiện sức khỏe</p>
+            <div className="bg-zinc-50 dark:bg-zinc-800/50 backdrop-blur-sm rounded-xl p-4 shadow-md border border-zinc-200 dark:border-zinc-700">
+              <TrendingUp className="w-8 h-8 text-emerald-600 dark:text-emerald-400 mb-2" />
+              <p className="text-2xl font-bold text-zinc-900 dark:text-zinc-100">+15%</p>
+              <p className="text-xs text-zinc-500 dark:text-zinc-500">Cải thiện sức khỏe</p>
             </div>
           </div>
 
           {/* Disclaimer */}
-          <div className="bg-yellow-900/20 backdrop-blur-sm rounded-xl p-4 border border-yellow-500/20">
-            <p className="text-xs text-yellow-200 leading-relaxed">
+          <div className="bg-amber-500/10 backdrop-blur-sm rounded-xl p-4 border border-amber-500/20">
+            <p className="text-xs text-amber-500 leading-relaxed">
               ⚠️ {t('healthCoach.disclaimerTech')} {t('healthCoach.disclaimerMedical')}
             </p>
           </div>

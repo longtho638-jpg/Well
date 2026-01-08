@@ -112,6 +112,7 @@ export class AgencyOSAgent extends BaseAgent {
                     enforcement: 'hard',
                 },
             ],
+            visibility: 'all',
         };
 
         super(definition);

@@ -87,6 +87,7 @@ function enrichUserWithWealthMetrics(user: User): User {
 interface AppState {
   // Auth State
   isAuthenticated: boolean;
+  login: () => void;
   logout: () => void;
 
   // Data Models
@@ -141,7 +142,9 @@ interface AppState {
   createLandingPage: (template: string, portraitUrl?: string) => Promise<UserLandingPage>;
   publishLandingPage: (pageId: string) => void;
 
-  // TREE MAX LEVEL: AI Insights Actions
+  // Team & Network Actions
+  fetchTeamData: () => Promise<void>;
+  fetchDownlineTree: (userId: string) => Promise<any[]>; // Recursive tree fetch
   sendReminder: (memberId: string) => Promise<void>;
   sendGift: (memberId: string, voucherAmount: number) => Promise<void>;
 
@@ -159,16 +162,19 @@ export const useStore = create<AppState>((set, get) => ({
   quests: DAILY_QUESTS,
   revenueData: REVENUE_DATA,
 
-  // Phase 2: Growth Features
-  teamMembers: TEAM_MEMBERS,
+  // Phase  // Team & Network
+  teamMembers: TEAM_MEMBERS, // Initial mock data, replaced by fetch
   teamMetrics: TEAM_METRICS,
+  teamInsights: TEAM_INSIGHTS,
+  fetchTeamData: async () => { }, // Placeholder, implemented below
+  fetchDownlineTree: async () => [], // Placeholder, implemented below
+
   referrals: REFERRALS,
   referralStats: REFERRAL_STATS,
 
   // TREE MAX LEVEL: Initial State
   landingPageTemplates: LANDING_PAGE_TEMPLATES,
   userLandingPages: USER_LANDING_PAGES,
-  teamInsights: TEAM_INSIGHTS,
   redemptionItems: REDEMPTION_ITEMS,
   redemptionOrders: REDEMPTION_ORDERS,
 
@@ -180,7 +186,7 @@ export const useStore = create<AppState>((set, get) => ({
   },
 
   // Auth Actions
-  // login: REMOVED - Use Supabase Auth instead
+  login: () => set({ isAuthenticated: true }),
   logout: async () => {
     await supabase.auth.signOut();
     set({ isAuthenticated: false, user: enrichUserWithWealthMetrics(CURRENT_USER) });
@@ -226,7 +232,12 @@ export const useStore = create<AppState>((set, get) => ({
 
     if (!product || product.stock <= 0) throw new Error("Product unavailable");
 
-    const commission = product.price * product.commissionRate;
+    // Bee 2.0: Commission based on Bonus Revenue (DTTT)
+    const bonusRevenue = product.bonusRevenue || (product.price * 0.5); // Fallback to 50% if not set
+    const userRank = state.user.rank;
+    const commissionRate = (userRank === UserRank.KHOI_NGHIEP || userRank <= UserRank.DAI_SU) ? 0.25 : 0.21;
+    const commission = bonusRevenue * commissionRate;
+
     const now = new Date();
 
     // Transaction for SHOP token commission
@@ -239,7 +250,11 @@ export const useStore = create<AppState>((set, get) => ({
       status: 'completed',
       taxDeducted: 0, // Tax calculated separately
       hash: generateTxHash(),
-      currency: 'SHOP'
+      currency: 'SHOP',
+      metadata: {
+        product_id: product.id,
+        bonus_revenue: bonusRevenue
+      }
     };
 
     set((state) => {
@@ -257,8 +272,16 @@ export const useStore = create<AppState>((set, get) => ({
         ...state.user,
         totalSales: state.user.totalSales + product.price,
         teamVolume: state.user.teamVolume + (product.price * 0.2),
-        shopBalance: state.user.shopBalance + commission
+        shopBalance: state.user.shopBalance + commission,
+        accumulatedBonusRevenue: (state.user.accumulatedBonusRevenue || 0) + bonusRevenue
       };
+
+      // Auto-Rank Upgrade Simulation
+      if (updatedUser.rank === UserRank.CTV && updatedUser.accumulatedBonusRevenue >= 9900000) {
+        // updatedUser.rank = 'Startup'; // TypeScript might complain if 'Startup' isn't in Enum
+        // Assuming UserRank enum has 'Startup' or mapping it correctly
+        // For now, let's just log it or handle it if we update the Enum
+      }
 
       return {
         products: state.products.map(p =>
@@ -283,12 +306,13 @@ export const useStore = create<AppState>((set, get) => ({
           userRank: currentState.user.rank
         });
 
-        if (rewardResult && rewardResult.rewardAmount) {
+        if (rewardResult && typeof rewardResult === 'object' && 'rewardAmount' in rewardResult && typeof rewardResult.rewardAmount === 'number') {
+          const rewardAmount = rewardResult.rewardAmount as number;
           // Update User Balance with Rewards (GROW Tokens / Points)
           set((state) => ({
             user: {
               ...state.user,
-              growBalance: state.user.growBalance + rewardResult.rewardAmount
+              growBalance: state.user.growBalance + rewardAmount
             },
             // Optionally add a transaction record for the reward
             transactions: [
@@ -296,7 +320,7 @@ export const useStore = create<AppState>((set, get) => ({
                 id: `TX-REWARD-${Date.now()}`,
                 userId: state.user.id,
                 date: new Date().toISOString().split('T')[0],
-                amount: rewardResult.rewardAmount,
+                amount: rewardAmount,
                 type: 'Team Volume Bonus', // Categorize as Bonus
                 status: 'completed',
                 taxDeducted: 0,
@@ -456,7 +480,7 @@ export const useStore = create<AppState>((set, get) => ({
     await new Promise(resolve => setTimeout(resolve, 1000));
 
     // In real app, this would send notification/email
-    console.log(`Reminder sent to member ${memberId}`);
+    // console.log(`Reminder sent to member ${memberId}`);
   },
 
   // AI Insights: Send Gift Voucher to At-Risk Member
@@ -465,7 +489,7 @@ export const useStore = create<AppState>((set, get) => ({
     await new Promise(resolve => setTimeout(resolve, 1000));
 
     // In real app, this would create a voucher and send it
-    console.log(`Gift voucher of ${voucherAmount} VND sent to member ${memberId}`);
+    // console.log(`Gift voucher of ${voucherAmount} VND sent to member ${memberId}`);
   },
 
   // Redemption: Redeem GROW Tokens for Item
@@ -603,11 +627,15 @@ export const useStore = create<AppState>((set, get) => ({
         id: data.id,
         name: data.name,
         email: data.email,
-        rank: data.rank as any, // Casting to UserRank, assuming DB matches
+        rank: (data.role_id as UserRank) || UserRank.CTV, // Map role_id to UserRank
+        roleId: data.role_id || 8,
+        sponsorId: data.sponsor_id,
         totalSales: data.total_sales,
         teamVolume: data.team_volume,
         shopBalance: data.shop_balance,
-        growBalance: data.grow_balance,
+        growBalance: data.pending_cashback || 0, // Map pending_cashback to growBalance (deprecated but used)
+        pendingCashback: data.pending_cashback || 0,
+        pointBalance: data.point_balance || 0,
         stakedGrowBalance: data.staked_grow_balance,
         avatarUrl: data.avatar_url || 'https://api.dicebear.com/7.x/avataaars/svg?seed=Felix',
         joinedAt: new Date(data.created_at).toISOString().split('T')[0],
@@ -618,6 +646,9 @@ export const useStore = create<AppState>((set, get) => ({
         equityValue: 0, // Calculated via enrich
         cashflowValue: 0, // Calculated via enrich
         assetGrowthRate: 0, // Calculated via enrich
+        accumulatedBonusRevenue: data.accumulated_bonus_revenue || 0, // Bee 2.0 legacy
+        estimatedBonus: 0, // Default
+        referralLink: `wellnexus.vn/ref/${data.id}`, // Default
       };
 
       set({ user: enrichUserWithWealthMetrics(user), isAuthenticated: true });

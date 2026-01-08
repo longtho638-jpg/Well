@@ -1,10 +1,26 @@
 export type AppView = 'dashboard' | 'marketplace' | 'wallet';
 
 export enum UserRank {
-  MEMBER = 'Member',
-  PARTNER = 'Partner',
-  FOUNDER_CLUB = 'Founder Club',
+  THIEN_LONG = 1,
+  PHUONG_HOANG = 2,
+  DAI_SU_DIAMOND = 3,
+  DAI_SU_GOLD = 4,
+  DAI_SU_SILVER = 5,
+  DAI_SU = 6,
+  KHOI_NGHIEP = 7,
+  CTV = 8,
 }
+
+export const RANK_NAMES = {
+  [UserRank.THIEN_LONG]: 'Thiên Long',
+  [UserRank.PHUONG_HOANG]: 'Phượng Hoàng',
+  [UserRank.DAI_SU_DIAMOND]: 'Đại Sứ Diamond',
+  [UserRank.DAI_SU_GOLD]: 'Đại Sứ Gold',
+  [UserRank.DAI_SU_SILVER]: 'Đại Sứ Silver',
+  [UserRank.DAI_SU]: 'Đại Sứ',
+  [UserRank.KHOI_NGHIEP]: 'Khởi Nghiệp',
+  [UserRank.CTV]: 'Cộng Tác Viên',
+} as const;
 
 export type TransactionType = 'Direct Sale' | 'Team Volume Bonus' | 'Withdrawal';
 
@@ -21,20 +37,23 @@ export interface User {
   name: string;
   email: string;
   rank: UserRank;
+  roleId: number;
+  role?: 'admin' | 'super_admin' | 'user'; // For admin route protection
+  isAdmin?: boolean; // Quick admin check
+  sponsorId?: string;
   totalSales: number;
   teamVolume: number;
   avatarUrl: string;
   joinedAt: string;
   kycStatus: boolean;
   nextPayoutDate?: string;
-  estimatedBonus?: number;
-  referralLink?: string;
-  // Security & Role-Based Access
-  role?: 'user' | 'admin' | 'super_admin';
-  isAdmin?: boolean;
+  estimatedBonus?: number; // Restored
+  referralLink?: string;   // Restored
   // Token Balances (Dual Token System)
   shopBalance: number;      // SHOP token (VND) - from sales
-  growBalance: number;      // GROW token - from quests/staking
+  growBalance: number; // Deprecated, mapped to pendingCashback
+  pendingCashback?: number;
+  pointBalance?: number;
   stakedGrowBalance: number; // Locked GROW tokens in staking
   // Wealth OS Metrics (Investment-Grade Data)
   businessValuation?: number;    // Valuation = Monthly Profit * 12 * PE Ratio
@@ -42,13 +61,16 @@ export interface User {
   projectedAnnualProfit?: number;// Annualized profit projection
   equityValue?: number;          // GROW token equity value
   cashflowValue?: number;        // SHOP token cashflow value
-  assetGrowthRate?: number;      // Monthly asset growth percentage
+  assetGrowthRate?: number;      // Asset growth rate
+  // Bee 2.0: Bonus Revenue (Doanh thu tính thưởng)
+  accumulatedBonusRevenue?: number;
 }
 
 export interface Product {
   id: string;
   name: string;
   price: number;
+  bonusRevenue?: number; // Doanh thu tính thưởng (Bee 2.0)
   commissionRate: number;
   imageUrl: string;
   description: string;
@@ -62,10 +84,17 @@ export interface Transaction {
   date: string;
   amount: number;
   type: TransactionType;
-  status: 'pending' | 'completed';
+  status: 'pending' | 'completed' | 'failed';
   taxDeducted?: number;
-  hash: string;
+  hash?: string;
   currency: TokenType;
+  metadata?: {
+    source_tx_id?: string;
+    trigger_agent?: string;
+    reward_rate?: string;
+    timestamp?: string;
+    [key: string]: any;
+  };
 }
 
 export interface Quest {

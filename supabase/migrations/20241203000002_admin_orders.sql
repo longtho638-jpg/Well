@@ -9,6 +9,8 @@ ALTER TABLE transactions ADD COLUMN IF NOT EXISTS payment_proof_url TEXT;
 -- If you have separate 'orders' table, adjust accordingly
 
 -- 3. Admin permissions for founders to see ALL orders/transactions
+-- 3. Admin permissions for founders to see ALL orders/transactions
+DROP POLICY IF EXISTS "Founders can view all transactions" ON transactions;
 CREATE POLICY "Founders can view all transactions"
   ON transactions FOR SELECT
   TO authenticated
@@ -21,6 +23,7 @@ CREATE POLICY "Founders can view all transactions"
   );
 
 -- 4. Admin permissions for founders to UPDATE all orders/transactions
+DROP POLICY IF EXISTS "Founders can update all transactions" ON transactions;
 CREATE POLICY "Founders can update all transactions"
   ON transactions FOR UPDATE
   TO authenticated

@@ -25,8 +25,6 @@ import { useStore } from '@/store';
 import { formatVND, formatNumber } from '@/utils/format';
 import { useTranslation } from '@/hooks';
 import { LandingPageTemplateType } from '@/types';
-import { ParticleBackground } from '@/components/ParticleBackground';
-import { CursorGlow } from '@/components/CursorGlow';
 
 // Gift Card Interface
 interface GiftCard {
@@ -165,7 +163,7 @@ export default function MarketingTools() {
           url: affiliateLink
         });
       } catch (err) {
-        console.log('Share cancelled');
+        // User cancelled share - no action needed
       }
     } else {
       handleCopyText(affiliateLink, 'qr-link');
@@ -204,43 +202,40 @@ export default function MarketingTools() {
   };
 
   return (
-    <div className="min-h-screen bg-dark-ultra p-6 relative overflow-hidden">
-      <ParticleBackground />
-      <CursorGlow />
-
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 dark:from-slate-900 via-purple-50 dark:via-slate-800 to-pink-50 dark:to-slate-900 p-6">
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
-        className="max-w-7xl mx-auto space-y-6 relative z-10"
+        className="max-w-7xl mx-auto space-y-6"
       >
         {/* Page Header */}
-        <div className="bg-gradient-to-r from-teal-500/20 via-blue-500/20 to-teal-500/20 rounded-2xl p-8 text-white shadow-2xl backdrop-blur-xl border border-white/10">
+        <div className="bg-gradient-to-r from-primary via-teal-600 to-primary rounded-2xl p-8 text-white shadow-2xl">
           <div className="flex items-center gap-4 mb-4">
-            <div className="bg-white/10 backdrop-blur-sm p-4 rounded-2xl border border-white/20">
-              <Sparkles className="w-10 h-10 text-yellow-400" />
+            <div className="bg-white/20 backdrop-blur-sm p-4 rounded-2xl">
+              <Sparkles className="w-10 h-10 text-accent" />
             </div>
             <div>
               <h1 className="text-4xl font-bold">{t('marketing.title')}</h1>
-              <p className="text-white/60 text-sm mt-1">
+              <p className="text-teal-100 text-sm mt-1">
                 {t('marketing.subtitle')}
               </p>
             </div>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-6">
-            <div className="bg-white/5 backdrop-blur-sm rounded-xl p-4 border border-white/10">
-              <Gift className="w-6 h-6 text-yellow-400 mb-2" />
-              <p className="text-sm text-white/60">{t('marketing.stats.giftCards')}</p>
+            <div className="bg-white/10 backdrop-blur-sm rounded-xl p-4 border border-white/20">
+              <Gift className="w-6 h-6 text-accent mb-2" />
+              <p className="text-sm text-teal-100">{t('marketing.stats.giftCards')}</p>
               <p className="text-2xl font-bold">{giftCards.length}</p>
             </div>
-            <div className="bg-white/5 backdrop-blur-sm rounded-xl p-4 border border-white/10">
-              <FileText className="w-6 h-6 text-yellow-400 mb-2" />
-              <p className="text-sm text-white/60">{t('marketing.stats.contentTemplates')}</p>
+            <div className="bg-white/10 backdrop-blur-sm rounded-xl p-4 border border-white/20">
+              <FileText className="w-6 h-6 text-accent mb-2" />
+              <p className="text-sm text-teal-100">{t('marketing.stats.contentTemplates')}</p>
               <p className="text-2xl font-bold">{contentTemplates.length}</p>
             </div>
-            <div className="bg-white/5 backdrop-blur-sm rounded-xl p-4 border border-white/10">
-              <QrCode className="w-6 h-6 text-yellow-400 mb-2" />
-              <p className="text-sm text-white/60">{t('marketing.stats.affiliateLink')}</p>
+            <div className="bg-white/10 backdrop-blur-sm rounded-xl p-4 border border-white/20">
+              <QrCode className="w-6 h-6 text-accent mb-2" />
+              <p className="text-sm text-teal-100">{t('marketing.stats.affiliateLink')}</p>
               <p className="text-2xl font-bold">{t('marketing.stats.active')}</p>
             </div>
           </div>
@@ -251,22 +246,22 @@ export default function MarketingTools() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.1 }}
-          className="glass-ultra rounded-2xl shadow-xl overflow-hidden"
+          className="bg-white dark:bg-slate-800 rounded-2xl shadow-xl overflow-hidden"
         >
-          <div className="bg-gradient-to-r from-pink-900/50 to-purple-900/50 border-b border-white/10 p-6">
+          <div className="bg-gradient-to-r from-pink-50 dark:from-slate-700 to-purple-50 dark:to-slate-700 border-b border-gray-200 dark:border-slate-700 p-6">
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-3">
                 <div className="bg-gradient-to-br from-pink-500 to-purple-600 p-3 rounded-xl shadow-lg">
                   <Gift className="w-6 h-6 text-white" />
                 </div>
                 <div>
-                  <h2 className="text-2xl font-bold text-white">{t('marketing.giftCards.title')}</h2>
-                  <p className="text-sm text-white/60">{t('marketing.giftCards.subtitle')}</p>
+                  <h2 className="text-2xl font-bold text-gray-900 dark:text-slate-100">{t('marketing.giftCards.title')}</h2>
+                  <p className="text-sm text-gray-600 dark:text-slate-400">{t('marketing.giftCards.subtitle')}</p>
                 </div>
               </div>
               <button
                 onClick={() => setShowCreateCard(!showCreateCard)}
-                className="flex items-center gap-2 bg-gradient-to-r from-pink-500 to-purple-600 text-white px-6 py-3 rounded-xl font-semibold hover:shadow-lg transition-all duration-300"
+                className="flex items-center gap-2 bg-gradient-to-r from-pink-500 to-purple-600 text-white px-6 py-3 rounded-xl font-semibold hover:shadow-lg active:scale-95 active:shadow-inner transition-all duration-300"
               >
                 <Plus className="w-5 h-5" />
                 {t('marketing.giftCards.createNew')}
@@ -281,12 +276,12 @@ export default function MarketingTools() {
                 initial={{ opacity: 0, height: 0 }}
                 animate={{ opacity: 1, height: 'auto' }}
                 exit={{ opacity: 0, height: 0 }}
-                className="bg-white/5 rounded-xl p-6 mb-6 border border-pink-500/30"
+                className="bg-gradient-to-br from-pink-50 dark:from-slate-700 to-purple-50 dark:to-slate-700 rounded-xl p-6 mb-6 border-2 border-pink-200 dark:border-slate-600"
               >
-                <h3 className="text-lg font-bold text-white mb-4">{t('marketing.giftCards.createTitle')}</h3>
+                <h3 className="text-lg font-bold text-gray-900 dark:text-slate-100 mb-4">{t('marketing.giftCards.createTitle')}</h3>
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
                   <div>
-                    <label className="block text-sm font-medium text-white/80 mb-2">
+                    <label className="block text-sm font-medium text-gray-700 dark:text-slate-300 mb-2">
                       {t('marketing.giftCards.codeLabel')}
                     </label>
                     <input
@@ -294,11 +289,11 @@ export default function MarketingTools() {
                       value={newCardCode}
                       onChange={(e) => setNewCardCode(e.target.value)}
                       placeholder={t('marketing.giftCards.codePlaceholder')}
-                      className="w-full px-4 py-2 rounded-lg border-2 border-white/10 bg-white/5 text-white placeholder:text-white/30 focus:border-pink-500 focus:ring-2 focus:ring-pink-500/20 focus:outline-none transition-all duration-200"
+                      className="w-full px-4 py-2 rounded-lg border-2 border-gray-300 dark:border-slate-600 bg-white dark:bg-slate-800 text-gray-900 dark:text-slate-100 placeholder:text-gray-400 dark:placeholder:text-slate-500 focus:border-pink-500 dark:focus:border-pink-400 focus:ring-2 focus:ring-pink-500/20 dark:focus:ring-pink-400/20 focus:outline-none transition-all duration-200"
                     />
                   </div>
                   <div>
-                    <label className="block text-sm font-medium text-white/80 mb-2">
+                    <label className="block text-sm font-medium text-gray-700 dark:text-slate-300 mb-2">
                       {t('marketing.giftCards.valueLabel')}
                     </label>
                     <input
@@ -306,34 +301,34 @@ export default function MarketingTools() {
                       value={newCardDiscount}
                       onChange={(e) => setNewCardDiscount(e.target.value)}
                       placeholder={newCardType === 'fixed' ? '200000' : '15'}
-                      className="w-full px-4 py-2 rounded-lg border-2 border-white/10 bg-white/5 text-white placeholder:text-white/30 focus:border-pink-500 focus:ring-2 focus:ring-pink-500/20 focus:outline-none transition-all duration-200"
+                      className="w-full px-4 py-2 rounded-lg border-2 border-gray-300 dark:border-slate-600 bg-white dark:bg-slate-800 text-gray-900 dark:text-slate-100 placeholder:text-gray-400 dark:placeholder:text-slate-500 focus:border-pink-500 dark:focus:border-pink-400 focus:ring-2 focus:ring-pink-500/20 dark:focus:ring-pink-400/20 focus:outline-none transition-all duration-200"
                     />
                   </div>
                   <div>
-                    <label className="block text-sm font-medium text-white/80 mb-2">
+                    <label className="block text-sm font-medium text-gray-700 dark:text-slate-300 mb-2">
                       {t('marketing.giftCards.typeLabel')}
                     </label>
                     <select
                       value={newCardType}
                       onChange={(e) => setNewCardType(e.target.value as 'percentage' | 'fixed')}
-                      className="w-full px-4 py-2 rounded-lg border-2 border-white/10 bg-white/5 text-white focus:border-pink-500 focus:ring-2 focus:ring-pink-500/20 focus:outline-none transition-all duration-200"
+                      className="w-full px-4 py-2 rounded-lg border-2 border-gray-300 dark:border-slate-600 bg-white dark:bg-slate-800 text-gray-900 dark:text-slate-100 focus:border-pink-500 dark:focus:border-pink-400 focus:ring-2 focus:ring-pink-500/20 dark:focus:ring-pink-400/20 focus:outline-none transition-all duration-200"
                     >
-                      <option value="fixed" className="bg-slate-800">{t('marketing.giftCards.typeFixed')}</option>
-                      <option value="percentage" className="bg-slate-800">{t('marketing.giftCards.typePercentage')}</option>
+                      <option value="fixed">{t('marketing.giftCards.typeFixed')}</option>
+                      <option value="percentage">{t('marketing.giftCards.typePercentage')}</option>
                     </select>
                   </div>
                 </div>
                 <div className="flex gap-3">
                   <button
                     onClick={handleCreateGiftCard}
-                    className="flex items-center gap-2 bg-gradient-to-r from-pink-500 to-purple-600 text-white px-6 py-2 rounded-lg font-semibold hover:shadow-lg transition-all duration-300"
+                    className="flex items-center gap-2 bg-gradient-to-r from-pink-500 to-purple-600 text-white px-6 py-2 rounded-lg font-semibold hover:shadow-lg active:scale-95 transition-all duration-300"
                   >
                     <CheckCircle2 className="w-5 h-5" />
                     {t('marketing.giftCards.createButton')}
                   </button>
                   <button
                     onClick={() => setShowCreateCard(false)}
-                    className="px-6 py-2 rounded-lg border-2 border-white/10 bg-white/5 text-white hover:bg-white/10 transition-all duration-200"
+                    className="px-6 py-2 rounded-lg border-2 border-gray-300 dark:border-slate-600 bg-white dark:bg-slate-800 text-gray-700 dark:text-slate-100 hover:bg-gray-50 dark:hover:bg-slate-700 active:bg-gray-100 dark:active:bg-slate-600 transition-all duration-200"
                   >
                     {t('marketing.giftCards.cancel')}
                   </button>
@@ -349,41 +344,41 @@ export default function MarketingTools() {
                   initial={{ opacity: 0, x: -20 }}
                   animate={{ opacity: 1, x: 0 }}
                   transition={{ delay: index * 0.1 }}
-                  className="bg-gradient-to-br from-pink-900/20 to-purple-900/20 rounded-xl p-6 border-2 border-pink-500/30 hover:border-pink-500/50 hover:shadow-lg transition-all duration-300"
+                  className="bg-gradient-to-br from-pink-100 dark:from-slate-700 via-purple-100 dark:via-slate-700 to-blue-100 dark:to-slate-700 rounded-xl p-6 border-2 border-pink-200 dark:border-slate-600 hover:shadow-lg transition-all duration-300"
                 >
                   <div className="flex items-start justify-between mb-4">
                     <div>
                       <div className="flex items-center gap-2 mb-2">
-                        <Tag className="w-5 h-5 text-pink-400" />
-                        <h3 className="text-2xl font-bold text-white">{card.code}</h3>
+                        <Tag className="w-5 h-5 text-pink-600" />
+                        <h3 className="text-2xl font-bold text-gray-900 dark:text-slate-100">{card.code}</h3>
                       </div>
-                      <p className="text-3xl font-bold text-pink-400">
+                      <p className="text-3xl font-bold text-pink-600 dark:text-pink-400">
                         {card.type === 'fixed' ? formatVND(card.discount) : `${card.discount}%`}
                       </p>
                     </div>
                     <button
                       onClick={() => handleCopyText(card.code, card.id)}
-                      className="bg-white/10 p-2 rounded-lg hover:bg-white/20 transition-colors border border-white/10"
+                      className="bg-white dark:bg-slate-800 p-2 rounded-lg hover:bg-pink-50 dark:hover:bg-slate-700 active:bg-pink-100 dark:active:bg-slate-600 transition-colors border border-pink-200 dark:border-slate-600"
                     >
                       {copiedText === card.id ? (
-                        <CheckCircle2 className="w-5 h-5 text-green-400" />
+                        <CheckCircle2 className="w-5 h-5 text-green-600" />
                       ) : (
-                        <Copy className="w-5 h-5 text-pink-400" />
+                        <Copy className="w-5 h-5 text-pink-600" />
                       )}
                     </button>
                   </div>
 
                   <div className="space-y-2">
                     <div className="flex items-center justify-between text-sm">
-                      <span className="text-white/60">{t('marketing.giftCards.usageCount')}</span>
-                      <span className="font-bold text-white flex items-center gap-1">
-                        <Eye className="w-4 h-4 text-purple-400" />
+                      <span className="text-gray-600 dark:text-slate-400">{t('marketing.giftCards.usageCount')}</span>
+                      <span className="font-bold text-gray-900 dark:text-slate-100 flex items-center gap-1">
+                        <Eye className="w-4 h-4 text-purple-600" />
                         {card.usageCount}
                       </span>
                     </div>
                     <div className="flex items-center justify-between text-sm">
-                      <span className="text-white/60">{t('marketing.giftCards.createdDate')}</span>
-                      <span className="font-medium text-white">
+                      <span className="text-gray-600 dark:text-slate-400">{t('marketing.giftCards.createdDate')}</span>
+                      <span className="font-medium text-gray-900 dark:text-slate-100">
                         {card.createdAt.toLocaleDateString('vi-VN')}
                       </span>
                     </div>
@@ -399,16 +394,16 @@ export default function MarketingTools() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.2 }}
-          className="glass-ultra rounded-2xl shadow-xl overflow-hidden"
+          className="bg-white dark:bg-slate-800 rounded-2xl shadow-xl overflow-hidden"
         >
-          <div className="bg-gradient-to-r from-blue-900/50 to-cyan-900/50 border-b border-white/10 p-6">
+          <div className="bg-gradient-to-r from-blue-50 dark:from-slate-700 to-cyan-50 dark:to-slate-700 border-b border-gray-200 dark:border-slate-700 p-6">
             <div className="flex items-center gap-3">
               <div className="bg-gradient-to-br from-blue-500 to-cyan-600 p-3 rounded-xl shadow-lg">
                 <FileText className="w-6 h-6 text-white" />
               </div>
               <div>
-                <h2 className="text-2xl font-bold text-white">{t('marketing.contentLibrary.title')}</h2>
-                <p className="text-sm text-white/60">{t('marketing.contentLibrary.subtitle')}</p>
+                <h2 className="text-2xl font-bold text-gray-900 dark:text-slate-100">{t('marketing.contentLibrary.title')}</h2>
+                <p className="text-sm text-gray-600 dark:text-slate-400">{t('marketing.contentLibrary.subtitle')}</p>
               </div>
             </div>
           </div>
@@ -421,7 +416,7 @@ export default function MarketingTools() {
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: 0.3 + index * 0.1 }}
-                  className="bg-white/5 rounded-xl border border-white/10 overflow-hidden hover:shadow-xl transition-all duration-300"
+                  className="bg-white dark:bg-slate-800 rounded-xl border-2 border-gray-200 dark:border-slate-700 overflow-hidden hover:shadow-xl transition-all duration-300"
                 >
                   <div className="relative h-48 overflow-hidden">
                     <img
@@ -430,7 +425,7 @@ export default function MarketingTools() {
                       className="w-full h-full object-cover"
                     />
                     <div className="absolute top-3 right-3">
-                      <span className="bg-black/50 backdrop-blur-sm px-3 py-1 rounded-full text-xs font-semibold text-white border border-white/20">
+                      <span className="bg-white dark:bg-slate-800 backdrop-blur-sm px-3 py-1 rounded-full text-xs font-semibold text-primary dark:text-cyan-400 border border-primary/20 dark:border-cyan-400/20">
                         {template.category === 'product' && t('marketing.contentLibrary.categories.product')}
                         {template.category === 'testimonial' && t('marketing.contentLibrary.categories.testimonial')}
                         {template.category === 'tips' && t('marketing.contentLibrary.categories.tips')}
@@ -440,17 +435,17 @@ export default function MarketingTools() {
                   </div>
 
                   <div className="p-4">
-                    <h3 className="text-lg font-bold text-white mb-2">
+                    <h3 className="text-lg font-bold text-gray-900 dark:text-slate-100 mb-2">
                       {template.title}
                     </h3>
-                    <p className="text-sm text-white/60 mb-4 line-clamp-3 whitespace-pre-line">
+                    <p className="text-sm text-gray-600 dark:text-slate-400 mb-4 line-clamp-3 whitespace-pre-line">
                       {template.content}
                     </p>
 
                     <div className="flex gap-2">
                       <button
                         onClick={() => handleCopyText(template.content, `content-${template.id}`)}
-                        className="flex-1 flex items-center justify-center gap-2 bg-gradient-to-r from-blue-500 to-cyan-600 text-white px-4 py-2 rounded-lg font-semibold hover:shadow-lg transition-all duration-300"
+                        className="flex-1 flex items-center justify-center gap-2 bg-gradient-to-r from-blue-500 to-cyan-600 text-white px-4 py-2 rounded-lg font-semibold hover:shadow-lg active:scale-95 transition-all duration-300"
                       >
                         {copiedText === `content-${template.id}` ? (
                           <>
@@ -466,7 +461,7 @@ export default function MarketingTools() {
                       </button>
                       <button
                         onClick={() => handleDownloadImage(template.imageUrl, `${template.title}.jpg`)}
-                        className="flex items-center justify-center gap-2 bg-white/10 border border-blue-400/30 text-blue-400 px-4 py-2 rounded-lg font-semibold hover:bg-white/20 transition-all duration-200"
+                        className="flex items-center justify-center gap-2 bg-white dark:bg-slate-700 border-2 border-blue-500 dark:border-blue-400 text-blue-600 dark:text-blue-400 px-4 py-2 rounded-lg font-semibold hover:bg-blue-50 dark:hover:bg-slate-600 active:bg-blue-100 dark:active:bg-slate-500 active:scale-95 transition-all duration-200"
                       >
                         <Download className="w-4 h-4" />
                         {t('marketing.contentLibrary.downloadImage')}
@@ -484,16 +479,16 @@ export default function MarketingTools() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.6 }}
-          className="glass-ultra rounded-2xl shadow-xl overflow-hidden"
+          className="bg-white dark:bg-slate-800 rounded-2xl shadow-xl overflow-hidden"
         >
-          <div className="bg-gradient-to-r from-green-900/50 to-teal-900/50 border-b border-white/10 p-6">
+          <div className="bg-gradient-to-r from-green-50 dark:from-slate-700 to-teal-50 dark:to-slate-700 border-b border-gray-200 dark:border-slate-700 p-6">
             <div className="flex items-center gap-3">
               <div className="bg-gradient-to-br from-green-500 to-teal-600 p-3 rounded-xl shadow-lg">
                 <QrCode className="w-6 h-6 text-white" />
               </div>
               <div>
-                <h2 className="text-2xl font-bold text-white">{t('marketing.affiliate.title')}</h2>
-                <p className="text-sm text-white/60">{t('marketing.affiliate.subtitle')}</p>
+                <h2 className="text-2xl font-bold text-gray-900 dark:text-slate-100">{t('marketing.affiliate.title')}</h2>
+                <p className="text-sm text-gray-600 dark:text-slate-400">{t('marketing.affiliate.subtitle')}</p>
               </div>
             </div>
           </div>
@@ -503,7 +498,7 @@ export default function MarketingTools() {
               {/* Affiliate Link */}
               <div className="space-y-4">
                 <div>
-                  <label className="block text-sm font-medium text-white/80 mb-2">
+                  <label className="block text-sm font-medium text-gray-700 dark:text-slate-300 mb-2">
                     {t('marketing.affiliate.linkLabel')}
                   </label>
                   <div className="flex gap-2">
@@ -511,11 +506,11 @@ export default function MarketingTools() {
                       type="text"
                       value={affiliateLink}
                       readOnly
-                      className="flex-1 px-4 py-3 rounded-lg border-2 border-white/10 bg-white/5 text-white font-mono text-sm"
+                      className="flex-1 px-4 py-3 rounded-lg border-2 border-gray-300 dark:border-slate-600 bg-gray-50 dark:bg-slate-700 text-gray-700 dark:text-slate-300 font-mono text-sm"
                     />
                     <button
                       onClick={() => handleCopyText(affiliateLink, 'affiliate-link')}
-                      className="bg-gradient-to-r from-green-500 to-teal-600 text-white px-6 py-3 rounded-lg font-semibold hover:shadow-lg transition-all duration-300"
+                      className="bg-gradient-to-r from-green-500 to-teal-600 text-white px-6 py-3 rounded-lg font-semibold hover:shadow-lg active:scale-95 transition-all duration-300"
                     >
                       {copiedText === 'affiliate-link' ? (
                         <CheckCircle2 className="w-5 h-5" />
@@ -526,66 +521,66 @@ export default function MarketingTools() {
                   </div>
                 </div>
 
-                <div className="bg-gradient-to-br from-green-900/20 to-teal-900/20 rounded-xl p-6 border-2 border-green-500/30">
-                  <h3 className="font-bold text-white mb-3 flex items-center gap-2">
-                    <TrendingUp className="w-5 h-5 text-green-400" />
+                <div className="bg-gradient-to-br from-green-50 dark:from-slate-700 to-teal-50 dark:to-slate-700 rounded-xl p-6 border-2 border-green-200 dark:border-slate-600">
+                  <h3 className="font-bold text-gray-900 dark:text-slate-100 mb-3 flex items-center gap-2">
+                    <TrendingUp className="w-5 h-5 text-green-600" />
                     {t('marketing.affiliate.stats.title')}
                   </h3>
                   <div className="space-y-2">
                     <div className="flex items-center justify-between">
-                      <span className="text-sm text-white/60">{t('marketing.affiliate.stats.clicks')}</span>
-                      <span className="font-bold text-white">245</span>
+                      <span className="text-sm text-gray-600 dark:text-slate-400">{t('marketing.affiliate.stats.clicks')}</span>
+                      <span className="font-bold text-gray-900 dark:text-slate-100">245</span>
                     </div>
                     <div className="flex items-center justify-between">
-                      <span className="text-sm text-white/60">{t('marketing.affiliate.stats.signups')}</span>
-                      <span className="font-bold text-green-400">12</span>
+                      <span className="text-sm text-gray-600 dark:text-slate-400">{t('marketing.affiliate.stats.signups')}</span>
+                      <span className="font-bold text-green-600 dark:text-green-400">12</span>
                     </div>
                     <div className="flex items-center justify-between">
-                      <span className="text-sm text-white/60">{t('marketing.affiliate.stats.conversion')}</span>
-                      <span className="font-bold text-teal-400">4.9%</span>
+                      <span className="text-sm text-gray-600 dark:text-slate-400">{t('marketing.affiliate.stats.conversion')}</span>
+                      <span className="font-bold text-primary dark:text-cyan-400">4.9%</span>
                     </div>
                   </div>
                 </div>
 
-                <div className="bg-blue-900/20 rounded-xl p-4 border border-blue-500/30">
-                  <p className="text-sm text-white/80">{t('marketing.affiliate.tip')}</p>
+                <div className="bg-blue-50 dark:bg-slate-700 rounded-xl p-4 border border-blue-200 dark:border-slate-600">
+                  <p className="text-sm text-gray-700 dark:text-slate-300">{t('marketing.affiliate.tip')}</p>
                 </div>
               </div>
 
               {/* QR Code */}
               <div className="flex flex-col items-center justify-center">
-                <div className="bg-white/5 p-8 rounded-2xl border-4 border-white/10 shadow-2xl">
+                <div className="bg-gradient-to-br from-green-100 dark:from-slate-700 to-teal-100 dark:to-slate-700 p-8 rounded-2xl border-4 border-white dark:border-slate-600 shadow-2xl">
                   <img
                     src={qrCodeUrl}
                     alt="QR Code"
                     className="w-64 h-64 rounded-xl"
                   />
                   <div className="mt-4 text-center">
-                    <p className="text-sm font-semibold text-white mb-1">
+                    <p className="text-sm font-semibold text-gray-700 dark:text-slate-200 mb-1">
                       {user.name}
                     </p>
-                    <p className="text-xs text-white/60">{t('marketing.affiliate.partnerLabel')}</p>
+                    <p className="text-xs text-gray-500 dark:text-slate-400">{t('marketing.affiliate.partnerLabel')}</p>
                   </div>
                 </div>
 
                 <div className="flex gap-3 mt-6">
                   <button
                     onClick={handleDownloadQRCode}
-                    className="flex items-center gap-2 bg-gradient-to-r from-green-500 to-teal-600 text-white px-6 py-3 rounded-xl font-semibold hover:shadow-lg transition-all duration-300"
+                    className="flex items-center gap-2 bg-gradient-to-r from-green-500 to-teal-600 text-white px-6 py-3 rounded-xl font-semibold hover:shadow-lg active:scale-95 transition-all duration-300"
                   >
                     <Download className="w-5 h-5" />
                     {t('marketing.affiliate.downloadQR')}
                   </button>
                   <button
                     onClick={handleShareQRCode}
-                    className="flex items-center gap-2 bg-white/10 border-2 border-green-400/50 text-green-400 px-6 py-3 rounded-xl font-semibold hover:bg-white/20 transition-all duration-300"
+                    className="flex items-center gap-2 bg-white dark:bg-slate-700 border-2 border-green-500 dark:border-green-400 text-green-600 dark:text-green-400 px-6 py-3 rounded-xl font-semibold hover:bg-green-50 dark:hover:bg-slate-600 active:bg-green-100 dark:active:bg-slate-500 active:scale-95 transition-all duration-300"
                   >
                     <Share2 className="w-5 h-5" />
                     {t('marketing.affiliate.share')}
                   </button>
                 </div>
 
-                <p className="text-xs text-white/40 text-center mt-4 max-w-xs">
+                <p className="text-xs text-gray-500 dark:text-slate-400 text-center mt-4 max-w-xs">
                   {t('marketing.affiliate.qrTip')}
                 </p>
               </div>
@@ -598,9 +593,9 @@ export default function MarketingTools() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.7 }}
-          className="glass-ultra rounded-2xl shadow-xl overflow-hidden"
+          className="bg-white dark:bg-slate-800 rounded-2xl shadow-xl overflow-hidden"
         >
-          <div className="bg-gradient-to-r from-purple-600 via-pink-600 to-orange-500 border-b border-white/10 p-6">
+          <div className="bg-gradient-to-r from-purple-600 via-pink-600 to-orange-500 border-b border-gray-200 p-6">
             <div className="flex items-center gap-3">
               <div className="bg-white/20 backdrop-blur-sm p-3 rounded-xl shadow-lg">
                 <Wand2 className="w-6 h-6 text-white" />
@@ -608,7 +603,7 @@ export default function MarketingTools() {
               <div>
                 <h2 className="text-2xl font-bold text-white flex items-center gap-2">
                   AI Landing Builder
-                  <span className="bg-yellow-400 text-purple-900 text-xs px-3 py-1 rounded-full font-bold">NEW</span>
+                  <span className="bg-accent text-primary text-xs px-3 py-1 rounded-full font-bold">NEW</span>
                 </h2>
                 <p className="text-white/90 text-sm">Tạo trang tuyển dụng chuyên nghiệp với AI trong 60 giây</p>
               </div>
@@ -620,8 +615,8 @@ export default function MarketingTools() {
               {/* Template Selection */}
               <div className="space-y-6">
                 <div>
-                  <h3 className="font-bold text-white mb-3 flex items-center gap-2">
-                    <Palette className="w-5 h-5 text-purple-400" />
+                  <h3 className="font-bold text-gray-900 dark:text-slate-100 mb-3 flex items-center gap-2">
+                    <Palette className="w-5 h-5 text-purple-600" />
                     Chọn Template
                   </h3>
                   <div className="grid grid-cols-1 gap-3">
@@ -631,11 +626,10 @@ export default function MarketingTools() {
                         onClick={() => setSelectedTemplate(template.type)}
                         whileHover={{ scale: 1.02 }}
                         whileTap={{ scale: 0.98 }}
-                        className={`relative overflow-hidden rounded-xl p-4 text-left transition-all duration-300 ${
-                          selectedTemplate === template.type
-                            ? 'ring-4 ring-purple-500 bg-gradient-to-r from-purple-900/30 to-pink-900/30'
-                            : 'bg-white/5 hover:bg-white/10'
-                        }`}
+                        className={`relative overflow-hidden rounded-xl p-4 text-left transition-all duration-300 ${selectedTemplate === template.type
+                          ? 'ring-4 ring-purple-500 bg-gradient-to-r from-purple-50 dark:from-slate-700 to-pink-50 dark:to-slate-700'
+                          : 'bg-gray-50 dark:bg-slate-700 hover:bg-gray-100 dark:hover:bg-slate-600'
+                          }`}
                       >
                         <div className="flex items-center gap-4">
                           <img
@@ -644,11 +638,11 @@ export default function MarketingTools() {
                             className="w-20 h-20 rounded-lg object-cover"
                           />
                           <div className="flex-1">
-                            <h4 className="font-bold text-white">{template.name}</h4>
-                            <p className="text-sm text-white/60">{template.description}</p>
+                            <h4 className="font-bold text-gray-900 dark:text-slate-100">{template.name}</h4>
+                            <p className="text-sm text-gray-600 dark:text-slate-400">{template.description}</p>
                           </div>
                           {selectedTemplate === template.type && (
-                            <CheckCircle2 className="w-6 h-6 text-purple-400" />
+                            <CheckCircle2 className="w-6 h-6 text-purple-600" />
                           )}
                         </div>
                       </motion.button>
@@ -658,11 +652,11 @@ export default function MarketingTools() {
 
                 {/* Portrait Upload */}
                 <div>
-                  <h3 className="font-bold text-white mb-3 flex items-center gap-2">
-                    <Upload className="w-5 h-5 text-purple-400" />
+                  <h3 className="font-bold text-gray-900 dark:text-slate-100 mb-3 flex items-center gap-2">
+                    <Upload className="w-5 h-5 text-purple-600" />
                     Upload Ảnh Chân Dung
                   </h3>
-                  <div className="border-2 border-dashed border-white/20 rounded-xl p-6 hover:border-purple-400 transition-colors">
+                  <div className="border-2 border-dashed border-gray-300 dark:border-slate-600 rounded-xl p-6 hover:border-purple-500 dark:hover:border-purple-400 transition-colors">
                     <input
                       type="file"
                       accept="image/*"
@@ -679,15 +673,15 @@ export default function MarketingTools() {
                             className="w-20 h-20 rounded-full object-cover"
                           />
                           <div>
-                            <p className="text-sm font-medium text-white">Ảnh đã tải lên</p>
-                            <p className="text-xs text-white/60">Click để thay đổi</p>
+                            <p className="text-sm font-medium text-gray-900">Ảnh đã tải lên</p>
+                            <p className="text-xs text-gray-600">Click để thay đổi</p>
                           </div>
                         </div>
                       ) : (
                         <div className="text-center">
-                          <ImageIcon className="w-12 h-12 text-white/40 mx-auto mb-2" />
-                          <p className="text-sm font-medium text-white">Click để tải ảnh lên</p>
-                          <p className="text-xs text-white/60">JPG, PNG, tối đa 5MB</p>
+                          <ImageIcon className="w-12 h-12 text-gray-400 dark:text-slate-500 mx-auto mb-2" />
+                          <p className="text-sm font-medium text-gray-900 dark:text-slate-100">Click để tải ảnh lên</p>
+                          <p className="text-xs text-gray-600 dark:text-slate-400">JPG, PNG, tối đa 5MB</p>
                         </div>
                       )}
                     </label>
@@ -698,7 +692,7 @@ export default function MarketingTools() {
                 <button
                   onClick={handleGenerateBio}
                   disabled={isGeneratingBio}
-                  className="w-full flex items-center justify-center gap-2 bg-gradient-to-r from-purple-600 via-pink-600 to-orange-500 text-white px-8 py-4 rounded-xl font-bold text-lg hover:shadow-2xl transition-all duration-300 disabled:opacity-50"
+                  className="w-full flex items-center justify-center gap-2 bg-gradient-to-r from-purple-600 via-pink-600 to-orange-500 text-white px-8 py-4 rounded-xl font-bold text-lg hover:shadow-2xl active:scale-95 transition-all duration-300 disabled:opacity-50 disabled:active:scale-100"
                 >
                   {isGeneratingBio ? (
                     <>
@@ -716,8 +710,8 @@ export default function MarketingTools() {
 
               {/* Preview / Result */}
               <div className="space-y-4">
-                <h3 className="font-bold text-white flex items-center gap-2">
-                  <Eye className="w-5 h-5 text-purple-400" />
+                <h3 className="font-bold text-gray-900 dark:text-slate-100 flex items-center gap-2">
+                  <Eye className="w-5 h-5 text-purple-600" />
                   Preview Landing Page
                 </h3>
 
@@ -725,92 +719,92 @@ export default function MarketingTools() {
                   <motion.div
                     initial={{ opacity: 0, scale: 0.95 }}
                     animate={{ opacity: 1, scale: 1 }}
-                    className="bg-gradient-to-br from-purple-900/30 to-pink-900/30 rounded-xl p-6 border-2 border-purple-500/30"
+                    className="bg-gradient-to-br from-purple-50 dark:from-slate-700 to-pink-50 dark:to-slate-700 rounded-xl p-6 border-2 border-purple-200 dark:border-slate-600"
                   >
                     <div className="flex items-center gap-4 mb-4">
                       {portraitUrl && (
                         <img
                           src={portraitUrl}
                           alt="Portrait"
-                          className="w-24 h-24 rounded-full object-cover ring-4 ring-purple-500/30 shadow-lg"
+                          className="w-24 h-24 rounded-full object-cover ring-4 ring-white dark:ring-slate-800 shadow-lg"
                         />
                       )}
                       <div>
-                        <h4 className="text-2xl font-bold text-white">{user.name}</h4>
-                        <p className="text-sm text-purple-400 font-semibold">{user.rank}</p>
+                        <h4 className="text-2xl font-bold text-gray-900 dark:text-slate-100">{user.name}</h4>
+                        <p className="text-sm text-purple-600 dark:text-purple-400 font-semibold">{user.rank}</p>
                       </div>
                     </div>
 
-                    <div className="bg-white/5 rounded-lg p-4 mb-4">
-                      <p className="text-sm text-white/80 leading-relaxed whitespace-pre-line">
+                    <div className="bg-white dark:bg-slate-800 rounded-lg p-4 mb-4">
+                      <p className="text-sm text-gray-700 dark:text-slate-300 leading-relaxed whitespace-pre-line">
                         {generatedLandingPage.aiGeneratedBio}
                       </p>
                     </div>
 
                     <div className="space-y-3">
-                      <div className="flex items-center justify-between bg-white/5 rounded-lg p-3">
-                        <span className="text-sm text-white/60">Link Landing Page:</span>
+                      <div className="flex items-center justify-between bg-white dark:bg-slate-800 rounded-lg p-3">
+                        <span className="text-sm text-gray-600 dark:text-slate-400">Link Landing Page:</span>
                         <div className="flex items-center gap-2">
-                          <code className="text-xs bg-purple-900/50 text-purple-300 px-2 py-1 rounded">
+                          <code className="text-xs bg-purple-100 dark:bg-purple-900 text-purple-700 dark:text-purple-300 px-2 py-1 rounded">
                             {generatedLandingPage.publishedUrl}
                           </code>
                           <button
                             onClick={() => handleCopyText(generatedLandingPage.publishedUrl, 'landing-url')}
-                            className="p-1 hover:bg-white/10 rounded"
+                            className="p-1 hover:bg-purple-100 rounded"
                           >
                             {copiedText === 'landing-url' ? (
-                              <CheckCircle2 className="w-4 h-4 text-green-400" />
+                              <CheckCircle2 className="w-4 h-4 text-green-600" />
                             ) : (
-                              <Copy className="w-4 h-4 text-purple-400" />
+                              <Copy className="w-4 h-4 text-purple-600" />
                             )}
                           </button>
                         </div>
                       </div>
 
                       <div className="grid grid-cols-3 gap-3 text-center">
-                        <div className="bg-white/5 rounded-lg p-3">
-                          <Eye className="w-5 h-5 text-blue-400 mx-auto mb-1" />
-                          <p className="text-lg font-bold text-white">{generatedLandingPage.views}</p>
-                          <p className="text-xs text-white/60">Lượt xem</p>
+                        <div className="bg-white dark:bg-slate-800 rounded-lg p-3">
+                          <Eye className="w-5 h-5 text-blue-600 dark:text-blue-400 mx-auto mb-1" />
+                          <p className="text-lg font-bold text-gray-900 dark:text-slate-100">{generatedLandingPage.views}</p>
+                          <p className="text-xs text-gray-600 dark:text-slate-400">Lượt xem</p>
                         </div>
-                        <div className="bg-white/5 rounded-lg p-3">
-                          <TrendingUp className="w-5 h-5 text-green-400 mx-auto mb-1" />
-                          <p className="text-lg font-bold text-white">{generatedLandingPage.conversions}</p>
-                          <p className="text-xs text-white/60">Chuyển đổi</p>
+                        <div className="bg-white dark:bg-slate-800 rounded-lg p-3">
+                          <TrendingUp className="w-5 h-5 text-green-600 dark:text-green-400 mx-auto mb-1" />
+                          <p className="text-lg font-bold text-gray-900 dark:text-slate-100">{generatedLandingPage.conversions}</p>
+                          <p className="text-xs text-gray-600 dark:text-slate-400">Chuyển đổi</p>
                         </div>
-                        <div className="bg-white/5 rounded-lg p-3">
-                          <BarChart3 className="w-5 h-5 text-purple-400 mx-auto mb-1" />
-                          <p className="text-lg font-bold text-white">
+                        <div className="bg-white dark:bg-slate-800 rounded-lg p-3">
+                          <BarChart3 className="w-5 h-5 text-purple-600 dark:text-purple-400 mx-auto mb-1" />
+                          <p className="text-lg font-bold text-gray-900 dark:text-slate-100">
                             {generatedLandingPage.views > 0
                               ? ((generatedLandingPage.conversions / generatedLandingPage.views) * 100).toFixed(1)
                               : '0.0'}%
                           </p>
-                          <p className="text-xs text-white/60">Tỷ lệ</p>
+                          <p className="text-xs text-gray-600 dark:text-slate-400">Tỷ lệ</p>
                         </div>
                       </div>
 
                       {!generatedLandingPage.isPublished ? (
                         <button
                           onClick={handlePublishLandingPage}
-                          className="w-full flex items-center justify-center gap-2 bg-gradient-to-r from-green-600 to-teal-600 text-white px-6 py-3 rounded-xl font-bold hover:shadow-lg transition-all duration-300"
+                          className="w-full flex items-center justify-center gap-2 bg-gradient-to-r from-green-600 to-teal-600 text-white px-6 py-3 rounded-xl font-bold hover:shadow-lg active:scale-95 transition-all duration-300"
                         >
                           <ExternalLink className="w-5 h-5" />
                           Xuất Bản Ngay
                         </button>
                       ) : (
-                        <div className="bg-green-900/20 border-2 border-green-500/50 rounded-xl p-4 text-center">
-                          <CheckCircle2 className="w-8 h-8 text-green-400 mx-auto mb-2" />
-                          <p className="text-sm font-bold text-green-300">Landing Page Đã Xuất Bản!</p>
-                          <p className="text-xs text-green-400">Link đã sẵn sàng để chia sẻ</p>
+                        <div className="bg-green-50 dark:bg-green-900/20 border-2 border-green-500 dark:border-green-600 rounded-xl p-4 text-center">
+                          <CheckCircle2 className="w-8 h-8 text-green-600 dark:text-green-400 mx-auto mb-2" />
+                          <p className="text-sm font-bold text-green-800 dark:text-green-300">Landing Page Đã Xuất Bản!</p>
+                          <p className="text-xs text-green-700 dark:text-green-400">Link đã sẵn sàng để chia sẻ</p>
                         </div>
                       )}
                     </div>
                   </motion.div>
                 ) : (
-                  <div className="bg-white/5 rounded-xl p-12 text-center border-2 border-dashed border-white/20">
-                    <Wand2 className="w-16 h-16 text-white/40 mx-auto mb-4" />
-                    <p className="text-white/80 font-medium">Chọn template và click "AI Viết Câu Chuyện"</p>
-                    <p className="text-sm text-white/60 mt-2">AI sẽ tạo landing page chuyên nghiệp cho bạn</p>
+                  <div className="bg-gray-50 dark:bg-slate-700 rounded-xl p-12 text-center border-2 border-dashed border-gray-300 dark:border-slate-600">
+                    <Wand2 className="w-16 h-16 text-gray-400 dark:text-slate-500 mx-auto mb-4" />
+                    <p className="text-gray-600 dark:text-slate-300 font-medium">Chọn template và click "AI Viết Câu Chuyện"</p>
+                    <p className="text-sm text-gray-500 dark:text-slate-400 mt-2">AI sẽ tạo landing page chuyên nghiệp cho bạn</p>
                   </div>
                 )}
               </div>
@@ -818,23 +812,23 @@ export default function MarketingTools() {
 
             {/* Existing Landing Pages */}
             {userLandingPages.length > 0 && (
-              <div className="mt-8 pt-8 border-t border-white/10">
-                <h3 className="font-bold text-white mb-4">Landing Pages Đã Tạo ({userLandingPages.length})</h3>
+              <div className="mt-8 pt-8 border-t border-gray-200 dark:border-slate-700">
+                <h3 className="font-bold text-gray-900 dark:text-slate-100 mb-4">Landing Pages Đã Tạo ({userLandingPages.length})</h3>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   {userLandingPages.map((page) => (
                     <div
                       key={page.id}
-                      className="bg-gradient-to-br from-purple-900/20 to-pink-900/20 rounded-xl p-4 border border-purple-500/20"
+                      className="bg-gradient-to-br from-purple-50 dark:from-slate-700 to-pink-50 dark:to-slate-700 rounded-xl p-4 border border-purple-200 dark:border-slate-600"
                     >
                       <div className="flex items-center justify-between mb-2">
-                        <span className="text-sm font-bold text-white">{page.template}</span>
+                        <span className="text-sm font-bold text-gray-900 dark:text-slate-100">{page.template}</span>
                         {page.isPublished && (
-                          <span className="bg-green-500/20 text-green-400 text-xs px-2 py-1 rounded-full font-bold">
+                          <span className="bg-green-100 text-green-700 text-xs px-2 py-1 rounded-full font-bold">
                             Live
                           </span>
                         )}
                       </div>
-                      <div className="flex items-center justify-between text-xs text-white/60">
+                      <div className="flex items-center justify-between text-xs text-gray-600 dark:text-slate-400">
                         <span>👁️ {page.views} views</span>
                         <span>✅ {page.conversions} conversions</span>
                       </div>

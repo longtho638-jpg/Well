@@ -63,4 +63,4 @@ ALTER TABLE transactions ADD COLUMN IF NOT EXISTS metadata JSONB;
 -- Create index for performance
 CREATE INDEX IF NOT EXISTS idx_transactions_user_id ON transactions(user_id);
 CREATE INDEX IF NOT EXISTS idx_transactions_type ON transactions(type);
-CREATE INDEX IF NOT EXISTS idx_users_sponsor_id ON users(sponsor_id);
+-- CREATE INDEX IF NOT EXISTS idx_users_sponsor_id ON users(sponsor_id); -- Column does not exist yet

@@ -49,6 +49,8 @@ export class TheBeeAgent extends BaseAgent {
         'Suspicious activity patterns',
       ],
       policy_and_constraints: [
+        { rule: 'Never modify user balance without audit log', enforcement: 'hard' },
+        { rule: 'Double check transaction hash uniqueness', enforcement: 'hard' },
         {
           rule: 'Standard reward rate is 5% of total VND value',
           enforcement: 'hard',
@@ -58,6 +60,7 @@ export class TheBeeAgent extends BaseAgent {
           enforcement: 'hard',
         },
       ],
+      visibility: 'all'
     };
 
     super(definition);
@@ -88,7 +91,7 @@ export class TheBeeAgent extends BaseAgent {
       }
 
       this.log(action, input, output);
-      
+
       // Update KPI: Points Distributed
       const pointsKpi = this.definition.success_kpis.find(k => k.name === 'Points Distributed');
       if (pointsKpi && output.rewardAmount) {

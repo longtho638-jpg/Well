@@ -39,40 +39,65 @@
     font-family: var(--font-body) !important;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
-    text-rendering: optimizeLegibility; /* Tối ưu hiển thị chữ */
-    font-feature-settings: 'kern' 1, 'liga' 1, 'calt' 1; /* Enable OpenType features */
-    -webkit-text-size-adjust: 100%; /* Prevent font scaling in landscape */
+    text-rendering: optimizeLegibility;
+    /* Tối ưu hiển thị chữ */
+    font-feature-settings: 'kern' 1, 'liga' 1, 'calt' 1;
+    /* Enable OpenType features */
+    -webkit-text-size-adjust: 100%;
+    /* Prevent font scaling in landscape */
     -moz-text-size-adjust: 100%;
     text-size-adjust: 100%;
     font-weight: var(--font-weight-normal) !important;
-    font-size: var(--text-base) !important; /* Force 16px default */
+    font-size: var(--text-base) !important;
+    /* Force 16px default */
   }
 
   /* Force consistent font for ALL elements - No exceptions */
   * {
-    font-synthesis: none !important; /* Prevent browser from synthesizing missing glyphs */
-    font-family: inherit !important; /* Force inheritance */
+    font-synthesis: none !important;
+    /* Prevent browser from synthesizing missing glyphs */
+    font-family: inherit !important;
+    /* Force inheritance */
   }
 
   /* CRITICAL: Force Manrope for ALL headings with Vietnamese character support */
-  h1, h2, h3, h4, h5, h6 {
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
     font-family: var(--font-display) !important;
-    font-weight: var(--font-weight-extrabold) !important; /* Consistent 800 for all headings */
-    letter-spacing: -0.02em !important; /* Thu hẹp khoảng cách chữ */
+    font-weight: var(--font-weight-extrabold) !important;
+    /* Consistent 800 for all headings */
+    letter-spacing: -0.02em !important;
+    /* Thu hẹp khoảng cách chữ */
     font-feature-settings: 'kern' 1, 'liga' 1 !important;
     font-variant-ligatures: common-ligatures;
     text-rendering: optimizeLegibility;
   }
 
   /* Body elements use body font with normal weight */
-  body, div, span, p, a, li, td, th, label {
+  body,
+  div,
+  span,
+  p,
+  a,
+  li,
+  td,
+  th,
+  label {
     font-family: var(--font-body) !important;
     font-weight: var(--font-weight-normal);
-    unicode-range: U+0000-00FF, U+0100-017F, U+0180-024F, U+1E00-1EFF; /* Latin + Vietnamese */
+    unicode-range: U+0000-00FF, U+0100-017F, U+0180-024F, U+1E00-1EFF;
+    /* Latin + Vietnamese */
   }
 
   /* Fix lỗi font cho các thẻ input/button */
-  input, button, textarea, select {
+  input,
+  button,
+  textarea,
+  select {
     font-family: inherit !important;
   }
 
@@ -102,7 +127,8 @@
   }
 
   .font-black {
-    font-weight: var(--font-weight-extrabold) !important; /* Map to 800 for consistency */
+    font-weight: var(--font-weight-extrabold) !important;
+    /* Map to 800 for consistency */
   }
 
   /* ================================================================ */
@@ -125,73 +151,88 @@
   /* Override ALL Tailwind text utilities with FIXED px values */
   /* This ensures Tiếng Việt and English render EXACTLY the same */
 
-  .text-2xs, [class*="text-[10px]"] {
-    font-size: var(--text-2xs) !important; /* 10px */
+  .text-2xs,
+  [class*="text-[10px]"] {
+    font-size: var(--text-2xs) !important;
+    /* 10px */
     line-height: 1.5 !important;
   }
 
   .text-xs {
-    font-size: var(--text-xs) !important; /* 12px */
+    font-size: var(--text-xs) !important;
+    /* 12px */
     line-height: 1.5 !important;
   }
 
   .text-sm {
-    font-size: var(--text-sm) !important; /* 14px */
+    font-size: var(--text-sm) !important;
+    /* 14px */
     line-height: 1.5 !important;
   }
 
   .text-base {
-    font-size: var(--text-base) !important; /* 16px */
+    font-size: var(--text-base) !important;
+    /* 16px */
     line-height: 1.6 !important;
   }
 
   .text-lg {
-    font-size: var(--text-lg) !important; /* 18px */
+    font-size: var(--text-lg) !important;
+    /* 18px */
     line-height: 1.6 !important;
   }
 
   .text-xl {
-    font-size: var(--text-xl) !important; /* 20px */
+    font-size: var(--text-xl) !important;
+    /* 20px */
     line-height: 1.5 !important;
   }
 
   .text-2xl {
-    font-size: var(--text-2xl) !important; /* 24px */
+    font-size: var(--text-2xl) !important;
+    /* 24px */
     line-height: 1.4 !important;
   }
 
   .text-3xl {
-    font-size: var(--text-3xl) !important; /* 30px */
+    font-size: var(--text-3xl) !important;
+    /* 30px */
     line-height: 1.3 !important;
   }
 
   .text-4xl {
-    font-size: var(--text-4xl) !important; /* 36px */
+    font-size: var(--text-4xl) !important;
+    /* 36px */
     line-height: 1.2 !important;
   }
 
   .text-5xl {
-    font-size: var(--text-5xl) !important; /* 48px */
+    font-size: var(--text-5xl) !important;
+    /* 48px */
     line-height: 1.2 !important;
   }
 
   .text-6xl {
-    font-size: var(--text-6xl) !important; /* 60px */
+    font-size: var(--text-6xl) !important;
+    /* 60px */
     line-height: 1.1 !important;
   }
 
   .text-7xl {
-    font-size: var(--text-7xl) !important; /* 72px */
+    font-size: var(--text-7xl) !important;
+    /* 72px */
     line-height: 1.1 !important;
   }
 
   .text-8xl {
-    font-size: var(--text-8xl) !important; /* 96px */
+    font-size: var(--text-8xl) !important;
+    /* 96px */
     line-height: 1.1 !important;
   }
 
   .text-9xl {
-    font-size: var(--text-9xl) !important; /* 128px */
+    font-size: var(--text-9xl) !important;
+    /* 128px */
     line-height: 1.1 !important;
   }
 
@@ -216,7 +257,10 @@
   }
 
   /* Code and monospace should still work */
-  code, pre, kbd, samp {
+  code,
+  pre,
+  kbd,
+  samp {
     font-family: ui-monospace, 'Cascadia Code', 'Source Code Pro', Menlo, Monaco, 'Courier New', monospace !important;
   }
 
@@ -238,13 +282,16 @@
   width: 8px;
   height: 8px;
 }
+
 ::-webkit-scrollbar-track {
   background: transparent;
 }
+
 ::-webkit-scrollbar-thumb {
   background: #cbd5e1;
   border-radius: 4px;
 }
+
 ::-webkit-scrollbar-thumb:hover {
   background: #94a3b8;
 }
@@ -253,6 +300,7 @@
 .dark ::-webkit-scrollbar-thumb {
   background: #475569;
 }
+
 .dark ::-webkit-scrollbar-thumb:hover {
   background: #64748b;
 }
@@ -263,7 +311,92 @@
     -ms-overflow-style: none;
     scrollbar-width: none;
   }
+
   .scrollbar-hide::-webkit-scrollbar {
     display: none;
+  }
+
+  /* ================================================================ */
+  /* GOD TIER UTILITIES - 10x WOW FACTOR */
+  /* ================================================================ */
+
+  @layer components {
+
+    /* Glassmorphism */
+    .glass-pearl {
+      @apply bg-white/70 backdrop-blur-xl border border-white/40 shadow-xl shadow-indigo-500/10;
+    }
+
+    .dark .glass-pearl {
+      @apply bg-zinc-900/70 border-zinc-700/50 shadow-black/50;
+    }
+
+    .glass-void {
+      @apply bg-black/40 backdrop-blur-2xl border border-white/10 shadow-2xl shadow-black/50;
+    }
+
+    /* Text Glow */
+    .text-glow {
+      text-shadow: 0 0 20px rgba(255, 255, 255, 0.5);
+    }
+
+    .text-glow-brand {
+      text-shadow: 0 0 20px rgba(0, 87, 90, 0.3);
+    }
+
+    .dark .text-glow-brand {
+      text-shadow: 0 0 20px rgba(45, 212, 191, 0.5);
+    }
+
+    /* 3D Tilt & Lift */
+    .hover-lift {
+      @apply transition-all duration-300 ease-out hover:-translate-y-1 hover:shadow-2xl hover:shadow-indigo-500/20;
+    }
+
+    .dark .hover-lift {
+      @apply hover:shadow-teal-500/10;
+    }
+
+    /* Liquid Button Animation */
+    .btn-liquid {
+      @apply relative overflow-hidden transition-all duration-300;
+    }
+
+    .btn-liquid::after {
+      content: '';
+      @apply absolute inset-0 bg-white/20 translate-x-[-100%] skew-x-[-15deg] transition-transform duration-500;
+    }
+
+    .btn-liquid:hover::after {
+      @apply translate-x-[100%];
+    }
+
+    /* Gradient Text */
+    .text-gradient-gold {
+      @apply bg-clip-text text-transparent bg-gradient-to-r from-yellow-400 via-orange-500 to-yellow-400 bg-300% animate-gradient;
+    }
+  }
+
+  /* Animations */
+  @keyframes gradient {
+    0% {
+      background-position: 0% 50%;
+    }
+
+    50% {
+      background-position: 100% 50%;
+    }
+
+    100% {
+      background-position: 0% 50%;
+    }
+  }
+
+  .animate-gradient {
+    animation: gradient 6s ease infinite;
+  }
+
+  .bg-300% {
+    background-size: 300% 300%;
   }
 }

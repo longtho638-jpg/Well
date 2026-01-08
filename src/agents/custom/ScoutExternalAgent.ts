@@ -65,6 +65,7 @@ export class ScoutExternalAgent extends BaseAgent {
                     notes: 'Prevent service disruption',
                 },
             ],
+            visibility: 'all',
         });
     }
 

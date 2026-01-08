@@ -18,6 +18,7 @@ import {
 } from 'lucide-react';
 import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 import { formatVND } from '@/utils/format';
+import { useToast } from '@/components/ui/Toast';
 
 // ============================================================
 // TYPES & MOCK DATA
@@ -309,14 +310,20 @@ const LivePulse: React.FC = () => {
 const Overview: React.FC = () => {
   const [aiActions, setAIActions] = useState<AIAction[]>(mockAIActions);
 
-  const handleApprove = (actionId: string) => {
+  const { showToast } = useToast();
+
+  const handleApprove = async (actionId: string) => {
+    // Simulate API Call
+    await new Promise(resolve => setTimeout(resolve, 500));
     setAIActions((prev) => prev.filter((a) => a.id !== actionId));
-    // TODO: Call API to approve action
+    showToast('Action approved successfully', 'success');
   };
 
-  const handleReject = (actionId: string) => {
+  const handleReject = async (actionId: string) => {
+    // Simulate API Call
+    await new Promise(resolve => setTimeout(resolve, 500));
     setAIActions((prev) => prev.filter((a) => a.id !== actionId));
-    // TODO: Call API to reject action
+    showToast('Action rejected', 'info');
   };
 
   return (

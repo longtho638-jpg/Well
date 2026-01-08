@@ -2,7 +2,7 @@
 CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
 
 -- Users table
-CREATE TABLE users (
+CREATE TABLE IF NOT EXISTS users (
   id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
   email TEXT UNIQUE NOT NULL,
   name TEXT NOT NULL,
@@ -18,7 +18,7 @@ CREATE TABLE users (
 );
 
 -- Products table
-CREATE TABLE products (
+CREATE TABLE IF NOT EXISTS products (
   id TEXT PRIMARY KEY,
   name TEXT NOT NULL,
   description TEXT,
@@ -31,7 +31,7 @@ CREATE TABLE products (
 );
 
 -- Transactions table
-CREATE TABLE transactions (
+CREATE TABLE IF NOT EXISTS transactions (
   id TEXT PRIMARY KEY,
   user_id UUID REFERENCES users(id) ON DELETE CASCADE,
   date TIMESTAMPTZ DEFAULT NOW(),
@@ -45,7 +45,7 @@ CREATE TABLE transactions (
 );
 
 -- Team members table
-CREATE TABLE team_members (
+CREATE TABLE IF NOT EXISTS team_members (
   id TEXT PRIMARY KEY,
   leader_id UUID REFERENCES users(id) ON DELETE CASCADE,
   name TEXT NOT NULL,
@@ -61,7 +61,7 @@ CREATE TABLE team_members (
 );
 
 -- Agent logs table
-CREATE TABLE agent_logs (
+CREATE TABLE IF NOT EXISTS agent_logs (
   id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
   agent_name TEXT NOT NULL,
   action TEXT NOT NULL,
@@ -72,7 +72,7 @@ CREATE TABLE agent_logs (
 );
 
 -- Agent KPIs table
-CREATE TABLE agent_kpis (
+CREATE TABLE IF NOT EXISTS agent_kpis (
   id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
   agent_name TEXT NOT NULL,
   kpi_name TEXT NOT NULL,
@@ -97,28 +97,34 @@ ALTER TABLE agent_logs ENABLE ROW LEVEL SECURITY;
 ALTER TABLE team_members ENABLE ROW LEVEL SECURITY;
 
 -- RLS Policies for users
+DROP POLICY IF EXISTS "Users can view own data" ON users;
 CREATE POLICY "Users can view own data"
   ON users FOR SELECT
   USING (auth.uid() = id);
 
+DROP POLICY IF EXISTS "Users can update own data" ON users;
 CREATE POLICY "Users can update own data"
   ON users FOR UPDATE
   USING (auth.uid() = id);
 
 -- RLS Policies for transactions
+DROP POLICY IF EXISTS "Users can view own transactions" ON transactions;
 CREATE POLICY "Users can view own transactions"
   ON transactions FOR SELECT
   USING (auth.uid() = user_id);
 
+DROP POLICY IF EXISTS "Users can insert own transactions" ON transactions;
 CREATE POLICY "Users can insert own transactions"
   ON transactions FOR INSERT
   WITH CHECK (auth.uid() = user_id);
 
 -- RLS Policies for agent logs
+DROP POLICY IF EXISTS "Users can view own agent logs" ON agent_logs;
 CREATE POLICY "Users can view own agent logs"
   ON agent_logs FOR SELECT
   USING (auth.uid() = user_id);
 
+DROP POLICY IF EXISTS "Users can insert own agent logs" ON agent_logs;
 CREATE POLICY "Users can insert own agent logs"
   ON agent_logs FOR INSERT
   WITH CHECK (auth.uid() = user_id);
@@ -126,17 +132,20 @@ CREATE POLICY "Users can insert own agent logs"
 -- RLS Policies for agent KPIs (read-only for authenticated users for dashboard)
 ALTER TABLE agent_kpis ENABLE ROW LEVEL SECURITY;
 
+DROP POLICY IF EXISTS "Authenticated users can view agent KPIs" ON agent_kpis;
 CREATE POLICY "Authenticated users can view agent KPIs"
   ON agent_kpis FOR SELECT
   TO authenticated
   USING (true);
 
 -- RLS Policies for team members
+DROP POLICY IF EXISTS "Users can view own team" ON team_members;
 CREATE POLICY "Users can view own team"
   ON team_members FOR SELECT
   USING (auth.uid() = leader_id);
 
 -- Products are public (everyone can read)
+DROP POLICY IF EXISTS "Public products read" ON products;
 CREATE POLICY "Public products read"
   ON products FOR SELECT
   TO authenticated, anon

@@ -16,6 +16,7 @@ import {
   Bot,
   Sparkles,
   DollarSign,
+  Package,
 } from 'lucide-react';
 import { useTranslation } from '@/hooks';
 
@@ -72,6 +73,12 @@ const Admin: React.FC = () => {
       path: '/admin/orders'
     },
     {
+      id: 'products',
+      label: 'Products',
+      icon: <Package className="w-5 h-5" />,
+      path: '/admin/products'
+    },
+    {
       id: 'strategy',
       label: 'Strategy',
       icon: <Settings className="w-5 h-5" />,
@@ -80,33 +87,33 @@ const Admin: React.FC = () => {
   ];
 
   return (
-    <div className="min-h-screen bg-slate-50 flex">
+    <div className="min-h-screen bg-zinc-950 flex">
       {/* ============================================================ */}
       {/* SIDEBAR - Desktop */}
       {/* ============================================================ */}
       <motion.aside
         initial={false}
         animate={{ width: sidebarCollapsed ? 80 : 280 }}
-        className="bg-white border-r border-slate-200 flex flex-col fixed h-screen z-30 hidden md:flex"
+        className="bg-zinc-900 border-r border-zinc-800 flex flex-col fixed h-screen z-30 hidden md:flex"
       >
         {/* Logo */}
-        <div className="h-16 border-b border-slate-200 flex items-center justify-between px-6">
+        <div className="h-16 border-b border-zinc-800 flex items-center justify-between px-6">
           {!sidebarCollapsed && (
             <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               className="flex items-center gap-2"
             >
-              <Bot className="w-6 h-6 text-[#00575A]" />
-              <h1 className="font-display font-bold text-xl text-[#00575A]">
+              <Bot className="w-6 h-6 text-emerald-400" />
+              <h1 className="font-display font-bold text-xl text-zinc-100">
                 Mission Control
               </h1>
             </motion.div>
           )}
-          {sidebarCollapsed && <Bot className="w-6 h-6 text-[#00575A] mx-auto" />}
+          {sidebarCollapsed && <Bot className="w-6 h-6 text-emerald-400 mx-auto" />}
           <button
             onClick={() => setSidebarCollapsed(!sidebarCollapsed)}
-            className="p-2 hover:bg-slate-100 rounded-lg transition-colors text-slate-600"
+            className="p-2 hover:bg-zinc-800 rounded-lg transition-colors text-zinc-400"
           >
             {sidebarCollapsed ? <ChevronRight className="w-5 h-5" /> : <ChevronLeft className="w-5 h-5" />}
           </button>
@@ -117,13 +124,13 @@ const Admin: React.FC = () => {
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            className="mx-4 mt-4 p-3 bg-gradient-to-br from-[#00575A]/5 to-transparent border border-[#00575A]/20 rounded-lg"
+            className="mx-4 mt-4 p-3 bg-emerald-500/10 border border-emerald-500/20 rounded-lg"
           >
             <div className="flex items-center gap-2 mb-1">
-              <Sparkles className="w-4 h-4 text-[#00575A]" />
-              <span className="text-xs font-medium text-[#00575A]">AI Sentinel Active</span>
+              <Sparkles className="w-4 h-4 text-emerald-400" />
+              <span className="text-xs font-medium text-emerald-400">AI Sentinel Active</span>
             </div>
-            <p className="text-xs text-slate-600">Monitoring 245 partners</p>
+            <p className="text-xs text-zinc-400">Monitoring 245 partners</p>
           </motion.div>
         )}
 
@@ -134,8 +141,8 @@ const Admin: React.FC = () => {
               key={item.id}
               onClick={() => navigate(item.path)}
               className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg transition-all relative ${isActive(item.path)
-                ? 'bg-[#00575A] text-white'
-                : 'text-slate-600 hover:bg-slate-100'
+                ? 'bg-emerald-500/10 text-emerald-400 border border-emerald-500/20'
+                : 'text-zinc-400 hover:bg-zinc-800 hover:text-zinc-100'
                 }`}
             >
               {item.icon}
@@ -144,8 +151,8 @@ const Admin: React.FC = () => {
                   <span className="font-medium flex-1 text-left">{item.label}</span>
                   {item.badge && (
                     <span className={`px-2 py-0.5 text-xs font-bold rounded-full ${isActive(item.path)
-                      ? 'bg-white/20 text-white'
-                      : 'bg-red-100 text-red-600'
+                      ? 'bg-emerald-500/20 text-emerald-300'
+                      : 'bg-red-500/10 text-red-400'
                       }`}>
                       {item.badge}
                     </span>
@@ -162,15 +169,15 @@ const Admin: React.FC = () => {
         </nav>
 
         {/* Footer */}
-        <div className="p-4 border-t border-slate-200">
+        <div className="p-4 border-t border-zinc-800">
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-full bg-gradient-to-br from-[#00575A] to-[#004447] flex items-center justify-center text-white font-bold">
+            <div className="w-10 h-10 rounded-full bg-zinc-800 flex items-center justify-center text-emerald-400 font-bold border border-zinc-700">
               A
             </div>
             {!sidebarCollapsed && (
               <div className="flex-1">
-                <p className="text-sm font-medium text-slate-900">Admin</p>
-                <p className="text-xs text-slate-500">Super User</p>
+                <p className="text-sm font-medium text-zinc-100">Admin</p>
+                <p className="text-xs text-zinc-500">Super User</p>
               </div>
             )}
           </div>
@@ -193,13 +200,13 @@ const Admin: React.FC = () => {
               initial={{ x: -280 }}
               animate={{ x: 0 }}
               exit={{ x: -280 }}
-              className="w-280 bg-white h-full flex flex-col"
+              className="w-280 bg-zinc-900 h-full flex flex-col border-r border-zinc-800"
               onClick={(e) => e.stopPropagation()}
             >
-              <div className="h-16 border-b border-slate-200 flex items-center justify-between px-6">
+              <div className="h-16 border-b border-zinc-800 flex items-center justify-between px-6">
                 <div className="flex items-center gap-2">
-                  <Bot className="w-6 h-6 text-[#00575A]" />
-                  <h1 className="font-display font-bold text-xl text-[#00575A]">Mission Control</h1>
+                  <Bot className="w-6 h-6 text-emerald-400" />
+                  <h1 className="font-display font-bold text-xl text-zinc-100">Mission Control</h1>
                 </div>
                 <button onClick={() => setMobileMenuOpen(false)} className="p-2">
                   <X className="w-5 h-5" />
@@ -214,16 +221,16 @@ const Admin: React.FC = () => {
                       setMobileMenuOpen(false);
                     }}
                     className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg transition-all ${isActive(item.path)
-                      ? 'bg-[#00575A] text-white'
-                      : 'text-slate-600 hover:bg-slate-100'
+                      ? 'bg-emerald-500/10 text-emerald-400 border border-emerald-500/20'
+                      : 'text-zinc-400 hover:bg-zinc-800'
                       }`}
                   >
                     {item.icon}
                     <span className="font-medium flex-1 text-left">{item.label}</span>
                     {item.badge && (
                       <span className={`px-2 py-0.5 text-xs font-bold rounded-full ${isActive(item.path)
-                        ? 'bg-white/20 text-white'
-                        : 'bg-red-100 text-red-600'
+                        ? 'bg-emerald-500/20 text-emerald-300'
+                        : 'bg-red-500/10 text-red-400'
                         }`}>
                         {item.badge}
                       </span>
@@ -244,25 +251,25 @@ const Admin: React.FC = () => {
         style={{ marginLeft: sidebarCollapsed ? 80 : 280 }}
       >
         {/* Header */}
-        <header className="h-16 bg-white border-b border-slate-200 flex items-center justify-between px-6 sticky top-0 z-20">
+        <header className="h-16 bg-zinc-900 border-b border-zinc-800 flex items-center justify-between px-6 sticky top-0 z-20">
           <div className="flex items-center gap-4">
-            <button className="md:hidden p-2" onClick={() => setMobileMenuOpen(true)}>
+            <button className="md:hidden p-2 text-zinc-400" onClick={() => setMobileMenuOpen(true)}>
               <Menu className="w-6 h-6" />
             </button>
-            <div className="flex items-center gap-2 text-sm text-slate-600">
+            <div className="flex items-center gap-2 text-sm text-zinc-500">
               <span>Admin</span>
               <span>/</span>
-              <span className="text-slate-900 font-medium">
+              <span className="text-zinc-100 font-medium">
                 {navItems.find(item => isActive(item.path))?.label || 'Overview'}
               </span>
             </div>
           </div>
           <div className="flex items-center gap-3">
-            <button className="p-2 hover:bg-slate-100 rounded-lg transition-colors">
-              <Search className="w-5 h-5 text-slate-600" />
+            <button className="p-2 hover:bg-zinc-800 rounded-lg transition-colors">
+              <Search className="w-5 h-5 text-zinc-400" />
             </button>
-            <button className="p-2 hover:bg-slate-100 rounded-lg transition-colors relative">
-              <AlertCircle className="w-5 h-5 text-slate-600" />
+            <button className="p-2 hover:bg-zinc-800 rounded-lg transition-colors relative">
+              <AlertCircle className="w-5 h-5 text-zinc-400" />
               <span className="absolute top-1 right-1 w-2 h-2 bg-red-500 rounded-full"></span>
             </button>
           </div>

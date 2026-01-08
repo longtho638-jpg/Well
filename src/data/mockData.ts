@@ -38,7 +38,8 @@ export const CURRENT_USER: User = {
   id: 'VN-888',
   name: 'Nguyen Van An',
   email: 'an.nguyen@wellnexus.vn',
-  rank: UserRank.PARTNER,
+  rank: UserRank.DAI_SU,
+  roleId: 6, // Added roleId
   totalSales: 16000000,
   teamVolume: 45000000,
   avatarUrl: 'https://ui-avatars.com/api/?name=Nguyen+Van+An&background=00575A&color=fff',
@@ -83,28 +84,28 @@ export const REVENUE_DATA: ChartDataPoint[] = [
 ];
 
 export const TRANSACTIONS: Transaction[] = [
-    {
-        id: 'TX-01',
-        userId: 'VN-888',
-        date: '2024-05-20',
-        amount: 5000000,
-        type: 'Team Volume Bonus',
-        status: 'completed',
-        taxDeducted: 500000,
-        hash: generateTxHash(),
-        currency: 'SHOP'
-    },
-    {
-        id: 'TX-02',
-        userId: 'VN-888',
-        date: '2024-05-22',
-        amount: 375000,
-        type: 'Direct Sale',
-        status: 'completed',
-        taxDeducted: 0,
-        hash: generateTxHash(),
-        currency: 'SHOP'
-    },
+  {
+    id: 'TX-01',
+    userId: 'VN-888',
+    date: '2024-05-20',
+    amount: 5000000,
+    type: 'Team Volume Bonus',
+    status: 'completed',
+    taxDeducted: 500000,
+    hash: generateTxHash(),
+    currency: 'SHOP'
+  },
+  {
+    id: 'TX-02',
+    userId: 'VN-888',
+    date: '2024-05-22',
+    amount: 375000,
+    type: 'Direct Sale',
+    status: 'completed',
+    taxDeducted: 0,
+    hash: generateTxHash(),
+    currency: 'SHOP'
+  },
 ];
 
 // ===== PHASE 2: TEAM & REFERRAL DATA =====
@@ -114,7 +115,7 @@ export const TEAM_MEMBERS: TeamMember[] = [
     id: 'VN-1001',
     name: 'Trần Thị Mai',
     email: 'mai.tran@example.com',
-    rank: UserRank.PARTNER,
+    rank: UserRank.DAI_SU,
     joinedAt: '2024-02-10',
     avatarUrl: 'https://ui-avatars.com/api/?name=Tran+Thi+Mai&background=6366f1&color=fff',
     personalSales: 12000000,
@@ -128,7 +129,7 @@ export const TEAM_MEMBERS: TeamMember[] = [
     id: 'VN-1002',
     name: 'Lê Văn Hùng',
     email: 'hung.le@example.com',
-    rank: UserRank.MEMBER,
+    rank: UserRank.CTV,
     joinedAt: '2024-03-15',
     avatarUrl: 'https://ui-avatars.com/api/?name=Le+Van+Hung&background=8b5cf6&color=fff',
     personalSales: 8500000,
@@ -142,7 +143,7 @@ export const TEAM_MEMBERS: TeamMember[] = [
     id: 'VN-1003',
     name: 'Phạm Minh Tuấn',
     email: 'tuan.pham@example.com',
-    rank: UserRank.PARTNER,
+    rank: UserRank.DAI_SU,
     joinedAt: '2024-01-20',
     avatarUrl: 'https://ui-avatars.com/api/?name=Pham+Minh+Tuan&background=ec4899&color=fff',
     personalSales: 15000000,
@@ -156,7 +157,7 @@ export const TEAM_MEMBERS: TeamMember[] = [
     id: 'VN-1004',
     name: 'Nguyễn Thị Hoa',
     email: 'hoa.nguyen@example.com',
-    rank: UserRank.MEMBER,
+    rank: UserRank.CTV,
     joinedAt: '2024-04-05',
     avatarUrl: 'https://ui-avatars.com/api/?name=Nguyen+Thi+Hoa&background=f59e0b&color=fff',
     personalSales: 5200000,
@@ -170,7 +171,7 @@ export const TEAM_MEMBERS: TeamMember[] = [
     id: 'VN-1005',
     name: 'Đỗ Quang Minh',
     email: 'minh.do@example.com',
-    rank: UserRank.MEMBER,
+    rank: UserRank.CTV,
     joinedAt: '2024-04-20',
     avatarUrl: 'https://ui-avatars.com/api/?name=Do+Quang+Minh&background=10b981&color=fff',
     personalSales: 3800000,
@@ -354,7 +355,7 @@ function calculateAtRiskMembers(): AtRiskMember[] {
     }
 
     // Check downlines
-    if (member.activeDownlines === 0 && member.rank === 'Partner') {
+    if (member.activeDownlines === 0 && member.rank === UserRank.DAI_SU) {
       riskReasons.push('Chưa phát triển đội nhóm');
       suggestedActions.push('Hướng dẫn tuyển dụng');
     }

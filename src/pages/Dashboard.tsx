@@ -4,6 +4,7 @@ import { RevenueChart } from '../components/Dashboard/RevenueChart';
 import { TopProducts } from '../components/Dashboard/TopProducts';
 import { QuickActionsCard } from '../components/Dashboard/QuickActionsCard';
 import { DailyQuestHub } from '../components/Dashboard/DailyQuestHub';
+import RankProgressBar from '../components/RankProgressBar';
 import { useStore } from '../store';
 import { useTranslation } from '../hooks';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -69,8 +70,8 @@ const generateRandomActivity = (t: (key: string, vars?: any) => string): LiveAct
   const activityTemplates = {
     reward: {
       icon: Coins,
-      color: 'text-yellow-400',
-      bgColor: 'bg-yellow-900/20',
+      color: 'text-yellow-600',
+      bgColor: 'bg-yellow-50 dark:bg-yellow-900/20',
       messages: [
         { key: 'dashboard.liveActivities.activities.earnedGrow', amount: Math.floor(Math.random() * 900) + 100 },
         { key: 'dashboard.liveActivities.activities.rewardedGrow', amount: Math.floor(Math.random() * 1500) + 500 },
@@ -79,8 +80,8 @@ const generateRandomActivity = (t: (key: string, vars?: any) => string): LiveAct
     },
     order: {
       icon: ShoppingBag,
-      color: 'text-green-400',
-      bgColor: 'bg-green-900/20',
+      color: 'text-green-600',
+      bgColor: 'bg-green-50 dark:bg-green-900/20',
       messages: [
         { key: 'dashboard.liveActivities.activities.completedOrder', amount: Math.floor(Math.random() * 8000000) + 2000000 },
         { key: 'dashboard.liveActivities.activities.soldSuccess', amount: Math.floor(Math.random() * 15000000) + 5000000 },
@@ -89,8 +90,8 @@ const generateRandomActivity = (t: (key: string, vars?: any) => string): LiveAct
     },
     rank_up: {
       icon: Award,
-      color: 'text-purple-400',
-      bgColor: 'bg-purple-900/20',
+      color: 'text-purple-600',
+      bgColor: 'bg-purple-50 dark:bg-purple-900/20',
       messages: [
         { key: 'dashboard.liveActivities.activities.rankedUpGold' },
         { key: 'dashboard.liveActivities.activities.rankedUpPartner' },
@@ -100,8 +101,8 @@ const generateRandomActivity = (t: (key: string, vars?: any) => string): LiveAct
     },
     withdrawal: {
       icon: TrendingDown,
-      color: 'text-blue-400',
-      bgColor: 'bg-blue-900/20',
+      color: 'text-blue-600',
+      bgColor: 'bg-blue-50 dark:bg-blue-900/20',
       messages: [
         { key: 'dashboard.liveActivities.activities.withdrew', amount: Math.floor(Math.random() * 30000000) + 10000000 },
         { key: 'dashboard.liveActivities.activities.transferredSuccess', amount: Math.floor(Math.random() * 50000000) + 20000000 }
@@ -109,8 +110,8 @@ const generateRandomActivity = (t: (key: string, vars?: any) => string): LiveAct
     },
     referral: {
       icon: Gift,
-      color: 'text-pink-400',
-      bgColor: 'bg-pink-900/20',
+      color: 'text-pink-600',
+      bgColor: 'bg-pink-50 dark:bg-pink-900/20',
       messages: [
         { key: 'dashboard.liveActivities.activities.referredPartner' },
         { key: 'dashboard.liveActivities.activities.referralBonus', amount: Math.floor(Math.random() * 5000000) + 1000000 },
@@ -173,10 +174,11 @@ const LiveActivitiesTicker: React.FC = () => {
     <motion.div
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
-      className="glass-ultra rounded-2xl border border-white/10 shadow-sm overflow-hidden"
+      className="bg-white dark:bg-zinc-900 rounded-2xl border border-zinc-200 dark:border-zinc-800 shadow-sm overflow-hidden"
     >
       {/* Header */}
-      <div className="bg-gradient-to-r from-red-900/20 via-orange-900/20 to-yellow-900/20 border-b border-white/10 px-6 py-4">
+      {/* Header */}
+      <div className="bg-white dark:bg-zinc-900/50 border-b border-zinc-200 dark:border-zinc-800 px-6 py-4">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-3">
             <motion.div
@@ -187,7 +189,7 @@ const LiveActivitiesTicker: React.FC = () => {
               <Radio className="w-5 h-5 text-white" />
             </motion.div>
             <div>
-              <h3 className="font-bold text-slate-100 flex items-center gap-2">
+              <h3 className="font-bold text-zinc-900 dark:text-zinc-100 flex items-center gap-2">
                 {t('dashboard.liveActivities.title')}
                 <motion.span
                   animate={{ opacity: [1, 0.5, 1] }}
@@ -198,11 +200,11 @@ const LiveActivitiesTicker: React.FC = () => {
                   {t('dashboard.liveActivities.live')}
                 </motion.span>
               </h3>
-              <p className="text-xs text-slate-400">{t('dashboard.liveActivities.subtitle')}</p>
+              <p className="text-xs text-zinc-500 dark:text-zinc-400">{t('dashboard.liveActivities.subtitle')}</p>
             </div>
           </div>
           <div className="text-right hidden sm:block">
-            <p className="text-xs text-slate-500">{t('dashboard.liveActivities.updateContinuously')}</p>
+            <p className="text-xs text-zinc-500 dark:text-zinc-400">{t('dashboard.liveActivities.updateContinuously')}</p>
           </div>
         </div>
       </div>
@@ -210,8 +212,8 @@ const LiveActivitiesTicker: React.FC = () => {
       {/* Ticker Container */}
       <div className="h-[400px] overflow-hidden relative">
         {/* Gradient overlays for fade effect */}
-        <div className="absolute top-0 left-0 right-0 h-8 bg-gradient-to-b from-slate-900/50 to-transparent z-10 pointer-events-none" />
-        <div className="absolute bottom-0 left-0 right-0 h-8 bg-gradient-to-t from-slate-900/50 to-transparent z-10 pointer-events-none" />
+        <div className="absolute top-0 left-0 right-0 h-8 bg-gradient-to-b from-zinc-900 to-transparent z-10 pointer-events-none" />
+        <div className="absolute bottom-0 left-0 right-0 h-8 bg-gradient-to-t from-zinc-900 to-transparent z-10 pointer-events-none" />
 
         {/* Scrollable Content */}
         <div className="h-full overflow-y-auto px-6 py-4 space-y-2 scrollbar-hide">
@@ -227,9 +229,9 @@ const LiveActivitiesTicker: React.FC = () => {
                 className="relative"
               >
                 <div className={`
-                  flex items-start gap-3 p-3 rounded-xl border border-white/10
-                  hover:bg-white/5 transition-all duration-300 cursor-pointer
-                  \${activity.bgColor} \${index === 0 ? 'ring-2 ring-primary/20' : ''}
+                  flex items-start gap-3 p-3 rounded-xl border border-zinc-200 dark:border-zinc-800/50
+                  hover:bg-zinc-100 dark:bg-zinc-800/50 transition-all duration-300 cursor-pointer
+                  \${index === 0 ? 'bg-zinc-100 dark:bg-zinc-800/30 ring-1 ring-emerald-500/20' : ''}
                 `}>
                   {/* Animated Icon */}
                   <motion.div
@@ -248,13 +250,13 @@ const LiveActivitiesTicker: React.FC = () => {
 
                   {/* Content */}
                   <div className="flex-1 min-w-0">
-                    <p className="text-sm text-slate-100">
-                      <span className="font-bold">{activity.userName}</span>
+                    <p className="text-sm text-zinc-200">
+                      <span className="font-bold text-white">{activity.userName}</span>
                       {' '}
-                      <span className="text-slate-400">{activity.message}</span>
+                      <span className="text-zinc-500 dark:text-zinc-400">{activity.message}</span>
                     </p>
                     <div className="flex items-center gap-2 mt-1">
-                      <p className="text-xs text-slate-500 flex items-center gap-1">
+                      <p className="text-xs text-zinc-500 dark:text-zinc-400 flex items-center gap-1">
                         <Clock className="w-3 h-3" />
                         {activity.timestamp.toLocaleTimeString('vi-VN', {
                           hour: '2-digit',
@@ -291,19 +293,19 @@ const LiveActivitiesTicker: React.FC = () => {
 
           {activities.length === 0 && (
             <div className="text-center py-12">
-              <p className="text-slate-500 text-sm">{t('dashboard.liveActivities.loading')}</p>
+              <p className="text-gray-400 dark:text-slate-500 text-sm">{t('dashboard.liveActivities.loading')}</p>
             </div>
           )}
         </div>
       </div>
 
       {/* Footer Stats */}
-      <div className="bg-slate-900/50 border-t border-white/10 px-6 py-3">
+      <div className="bg-white dark:bg-zinc-900 border-t border-zinc-200 dark:border-zinc-800 px-6 py-3">
         <div className="flex items-center justify-between text-xs">
-          <span className="text-slate-400">
+          <span className="text-zinc-500 dark:text-zinc-400">
             🔥 {t('dashboard.liveActivities.recent', { count: activities.length })}
           </span>
-          <span className="text-slate-500">
+          <span className="text-zinc-500 dark:text-zinc-400">
             {t('dashboard.liveActivities.systemActive')}
           </span>
         </div>
@@ -325,7 +327,7 @@ export const Dashboard: React.FC = () => {
 
   // Revenue breakdown data
   const revenueBreakdown = [
-    { name: t('dashboard.revenueBreakdown.directSales'), value: user.totalSales * 0.7, color: '#00897B' },
+    { name: t('dashboard.revenueBreakdown.directSales'), value: user.totalSales * 0.7, color: '#00575A' },
     { name: t('dashboard.revenueBreakdown.teamBonus'), value: user.totalSales * 0.25, color: '#FFBF00' },
     { name: t('dashboard.revenueBreakdown.referral'), value: user.totalSales * 0.05, color: '#22c55e' }
   ];
@@ -336,29 +338,29 @@ export const Dashboard: React.FC = () => {
       icon: CheckCircle2,
       label: t('dashboard.recentActivity.completedQuest'),
       time: t('dashboard.recentActivity.hoursAgo', { hours: 2 }),
-      color: 'text-green-400',
-      bg: 'bg-green-900/20'
+      color: 'text-green-600',
+      bg: 'bg-green-50'
     },
     {
       icon: Users,
       label: t('dashboard.recentActivity.newTeamMember'),
       time: t('dashboard.recentActivity.hoursAgo', { hours: 5 }),
-      color: 'text-blue-400',
-      bg: 'bg-blue-900/20'
+      color: 'text-blue-600',
+      bg: 'bg-blue-50'
     },
     {
       icon: Package,
       label: t('dashboard.recentActivity.productShipped'),
       time: t('dashboard.recentActivity.daysAgo', { days: 1 }),
-      color: 'text-purple-400',
-      bg: 'bg-purple-900/20'
+      color: 'text-purple-600',
+      bg: 'bg-purple-50'
     },
     {
       icon: Award,
       label: t('dashboard.recentActivity.reachedRank'),
       time: t('dashboard.recentActivity.daysAgo', { days: 3 }),
-      color: 'text-amber-400',
-      bg: 'bg-amber-900/20'
+      color: 'text-amber-600',
+      bg: 'bg-amber-50'
     }
   ];
 
@@ -392,15 +394,15 @@ export const Dashboard: React.FC = () => {
   ];
 
   return (
-    <div className="min-h-screen bg-dark-ultra relative overflow-hidden">
-      <ParticleBackground />
+    <div className="min-h-screen bg-zinc-50 dark:bg-zinc-950 relative overflow-hidden transition-colors duration-300">
+      <GridPattern />
       <CursorGlow />
 
       <div className="relative z-10 p-6 space-y-6">
         {/* Page Header */}
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
           <div>
-            <h2 className="text-2xl md:text-3xl font-bold text-white tracking-tight flex items-center gap-2">
+            <h2 className="text-2xl md:text-3xl font-bold text-zinc-900 dark:text-white tracking-tight flex items-center gap-2">
               <motion.div
                 initial={{ rotate: 0 }}
                 animate={{ rotate: 360 }}
@@ -410,15 +412,15 @@ export const Dashboard: React.FC = () => {
               </motion.div>
               {t('dashboard.title')}
             </h2>
-            <p className="text-white/60 text-sm md:text-base">
+            <p className="text-zinc-500 dark:text-white/60 text-sm md:text-base">
               {t('dashboard.welcome', { name: user.name })} 🚀
             </p>
           </div>
           <div className="text-right hidden sm:block">
-            <p className="text-xs font-bold text-white/40 uppercase tracking-wider">
+            <p className="text-xs font-bold text-zinc-400 dark:text-white/40 uppercase tracking-wider">
               {t('dashboard.serverTime')}
             </p>
-            <p className="text-sm font-medium text-white/80 font-mono">
+            <p className="text-sm font-medium text-zinc-600 dark:text-white/80 font-mono">
               {new Date().toLocaleTimeString('vi-VN', { hour: '2-digit', minute: '2-digit' })}
             </p>
           </div>
@@ -427,101 +429,56 @@ export const Dashboard: React.FC = () => {
         {/* Hero Card - Full Width */}
         <HeroCard user={user} />
 
+        {/* WOW: Rank Progress Bar */}
+        <RankProgressBar
+          currentRank={user.rank}
+          accumulatedBonusRevenue={user.accumulatedBonusRevenue || 0}
+        />
+
         {/* ========================================================================= */}
         {/* ULTRA WOW STATS CARDS (Glassmorphism + 3D) */}
         {/* ========================================================================= */}
         {/* AURA DASHBOARD STATS */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-          {[
-            {
-              label: 'Total Balance',
-              value: formatVND(walletData.total),
-              icon: Wallet,
-              gradientStart: '#00897B',
-              gradientEnd: '#26A69A',
-              change: '+12.5%'
-            },
-            {
-              label: 'Available',
-              value: formatVND(walletData.available),
-              icon: DollarSign,
-              gradientStart: '#10B981',
-              gradientEnd: '#34D399',
-              change: '+8.2%'
-            },
-            {
-              label: 'Pending',
-              value: formatVND(walletData.pending),
-              icon: Clock,
-              gradientStart: '#F59E0B',
-              gradientEnd: '#FBBF24',
-              change: '+15.3%'
-            },
-            {
-              label: 'Team Volume',
-              value: formatVND(user?.teamVolume || 0),
-              icon: Users,
-              gradientStart: '#9F7AEA',
-              gradientEnd: '#B794F6',
-              change: '+22.1%'
-            }
-          ].map((stat, idx) => {
-            const Icon = stat.icon;
-            return (
-              <motion.div
-                key={idx}
-                initial={{ opacity: 0, y: 50, scale: 0.9 }}
-                animate={{ opacity: 1, y: 0, scale: 1 }}
-                transition={{ delay: idx * 0.1, duration: 0.6 }}
-                className="relative group"
-              >
-                <div className="glass-ultra card-3d rounded-3xl p-8 relative overflow-hidden">
-                  {/* Hover Gradient */}
-                  <motion.div
-                    className="absolute inset-0 opacity-0 group-hover:opacity-100"
-                    style={{
-                      background: `radial-gradient(circle at top right, \${stat.gradientStart}30, transparent)`
-                    }}
-                    transition={{ duration: 0.3 }}
-                  />
+        <BentoGrid className="mb-8">
+          <BentoCard colSpan={1} className="p-6 bg-white dark:bg-zinc-900/50">
+            <div className="flex items-start justify-between mb-4">
+              <div className="w-10 h-10 rounded-full bg-cyan-500/10 flex items-center justify-center border border-cyan-500/20">
+                <Wallet className="w-5 h-5 text-cyan-400" />
+              </div>
+              <AuraBadge color="cyan">+12.5%</AuraBadge>
+            </div>
+            <div className="text-neutral-400 text-sm mb-1">Total Balance</div>
+            <div className="text-3xl font-bold text-white tracking-tight">
+              {formatVND(walletData.total)}
+            </div>
+          </BentoCard>
 
-                  <div className="relative z-10">
-                    {/* Icon with Glow */}
-                    <div
-                      className="w-20 h-20 rounded-2xl mb-6 flex items-center justify-center transform group-hover:scale-110 transition-transform"
-                      style={{
-                        background: `linear-gradient(135deg, \${stat.gradientStart}, \${stat.gradientEnd})`,
-                        boxShadow: `0 0 40px \${stat.gradientStart}60`
-                      }}
-                    >
-                      <Icon className="w-10 h-10 text-white" />
-                    </div>
+          <BentoCard colSpan={1} className="p-6 bg-white dark:bg-zinc-900/50">
+            <div className="flex items-start justify-between mb-4">
+              <div className="w-10 h-10 rounded-full bg-violet-500/10 flex items-center justify-center border border-violet-500/20">
+                <DollarSign className="w-5 h-5 text-violet-400" />
+              </div>
+              <AuraBadge color="violet">+8.2%</AuraBadge>
+            </div>
+            <div className="text-neutral-400 text-sm mb-1">Available</div>
+            <div className="text-3xl font-bold text-white tracking-tight">
+              {formatVND(walletData.available)}
+            </div>
+          </BentoCard>
 
-                    {/* Value with Gradient */}
-                    <div
-                      className="text-4xl font-black mb-2"
-                      style={{
-                        background: `linear-gradient(135deg, \${stat.gradientStart}, \${stat.gradientEnd})`,
-                        WebkitBackgroundClip: 'text',
-                        WebkitTextFillColor: 'transparent'
-                      }}
-                    >
-                      {stat.value}
-                    </div>
-
-                    <div className="text-white/60 text-sm mb-4">{stat.label}</div>
-
-                    {/* Change Indicator */}
-                    <div className="flex items-center gap-2">
-                      <TrendingUp className="w-4 h-4 text-emerald-400" />
-                      <span className="text-emerald-400 font-semibold text-sm">{stat.change}</span>
-                    </div>
-                  </div>
-                </div>
-              </motion.div>
-            );
-          })}
-        </div>
+          <BentoCard colSpan={1} className="p-6 bg-white dark:bg-zinc-900/50">
+            <div className="flex items-start justify-between mb-4">
+              <div className="w-10 h-10 rounded-full bg-pink-500/10 flex items-center justify-center border border-pink-500/20">
+                <Users className="w-5 h-5 text-pink-400" />
+              </div>
+              <AuraBadge color="pink">+22.1%</AuraBadge>
+            </div>
+            <div className="text-neutral-400 text-sm mb-1">Team Volume</div>
+            <div className="text-3xl font-bold text-white tracking-tight">
+              {formatVND(user?.teamVolume || 0)}
+            </div>
+          </BentoCard>
+        </BentoGrid>
 
         {/* ========================================================================= */}
         {/* BUSINESS VALUATION CARD - THE CENTERPIECE (Wealth OS) */}
@@ -646,7 +603,7 @@ export const Dashboard: React.FC = () => {
                 <motion.button
                   whileHover={{ scale: 1.02 }}
                   whileTap={{ scale: 0.98 }}
-                  className="w-full mt-6 bg-white/90 hover:bg-white active:bg-gray-100 text-amber-600 font-bold py-3 rounded-xl flex items-center justify-center gap-2 shadow-lg hover:shadow-xl transition-all duration-200"
+                  className="w-full mt-6 bg-white dark:bg-slate-800 hover:bg-gray-50 dark:hover:bg-slate-700 active:bg-gray-100 dark:active:bg-slate-600 text-amber-600 dark:text-amber-400 font-bold py-3 rounded-xl flex items-center justify-center gap-2 shadow-lg hover:shadow-xl transition-all duration-200 border border-transparent dark:border-slate-600"
                 >
                   <Crown className="w-5 h-5" />
                   {t('dashboard.valuation.upgradePortfolio')}
@@ -686,13 +643,13 @@ export const Dashboard: React.FC = () => {
             <motion.div
               initial={{ opacity: 0, x: 20 }}
               animate={{ opacity: 1, x: 0 }}
-              className="glass-ultra rounded-2xl border border-white/10 shadow-sm p-6"
+              className="bg-white dark:bg-zinc-900 rounded-2xl border border-zinc-200 dark:border-zinc-800 shadow-sm p-6"
             >
               <div className="flex items-center gap-2 mb-4">
-                <div className="w-8 h-8 bg-[#00897B]/20 rounded-lg flex items-center justify-center">
-                  <TrendingUp className="w-4 h-4 text-[#00897B]" />
+                <div className="w-8 h-8 bg-[#00575A]/10 dark:bg-[#00575A]/20 rounded-lg flex items-center justify-center">
+                  <TrendingUp className="w-4 h-4 text-[#00575A]" />
                 </div>
-                <h3 className="font-bold text-slate-100">
+                <h3 className="font-bold text-zinc-900 dark:text-zinc-100">
                   {t('dashboard.revenueBreakdown.title')}
                 </h3>
               </div>
@@ -709,7 +666,7 @@ export const Dashboard: React.FC = () => {
                     dataKey="value"
                   >
                     {revenueBreakdown.map((entry, index) => (
-                      <Cell key={`cell-\${index}`} fill={entry.color} />
+                      <Cell key={`cell-${index}`} fill={entry.color} />
                     ))}
                   </Pie>
                   <Tooltip formatter={(value: number) => `${(value / 1000000).toFixed(1)}M ₫`} />
@@ -721,9 +678,9 @@ export const Dashboard: React.FC = () => {
                   <div key={idx} className="flex items-center justify-between text-xs">
                     <div className="flex items-center gap-2">
                       <div className="w-3 h-3 rounded-full" style={{ backgroundColor: item.color }} />
-                      <span className="text-slate-400">{item.name}</span>
+                      <span className="text-zinc-500 dark:text-zinc-400">{item.name}</span>
                     </div>
-                    <span className="font-semibold text-slate-100">
+                    <span className="font-semibold text-zinc-900 dark:text-zinc-100">
                       {((item.value / user.totalSales) * 100).toFixed(0)}%
                     </span>
                   </div>
@@ -736,13 +693,13 @@ export const Dashboard: React.FC = () => {
               initial={{ opacity: 0, x: 20 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ delay: 0.1 }}
-              className="glass-ultra rounded-2xl border border-white/10 shadow-sm p-6"
+              className="bg-white dark:bg-zinc-900 rounded-2xl border border-zinc-200 dark:border-zinc-800 shadow-sm p-6"
             >
               <div className="flex items-center gap-2 mb-4">
-                <div className="w-8 h-8 bg-blue-900/20 rounded-lg flex items-center justify-center">
-                  <Clock className="w-4 h-4 text-blue-400" />
+                <div className="w-8 h-8 bg-blue-50 dark:bg-blue-900/20 rounded-lg flex items-center justify-center">
+                  <Clock className="w-4 h-4 text-blue-600" />
                 </div>
-                <h3 className="font-bold text-slate-100">
+                <h3 className="font-bold text-zinc-900 dark:text-zinc-100">
                   {t('dashboard.recentActivity.title')}
                 </h3>
               </div>
@@ -754,14 +711,14 @@ export const Dashboard: React.FC = () => {
                     initial={{ opacity: 0, x: -10 }}
                     animate={{ opacity: 1, x: 0 }}
                     transition={{ delay: idx * 0.1 }}
-                    className="flex items-start gap-3 p-3 rounded-xl hover:bg-white/5 transition-colors"
+                    className="flex items-start gap-3 p-3 rounded-xl hover:bg-gray-50 dark:hover:bg-slate-700 transition-colors"
                   >
                     <div className={`w-8 h-8 ${activity.bg} rounded-lg flex items-center justify-center shrink-0`}>
                       <activity.icon className={`w-4 h-4 ${activity.color}`} />
                     </div>
                     <div className="flex-1 min-w-0">
-                      <p className="text-sm font-medium text-slate-100 truncate">{activity.label}</p>
-                      <p className="text-xs text-slate-400">{activity.time}</p>
+                      <p className="text-sm font-medium text-zinc-900 dark:text-zinc-100 truncate">{activity.label}</p>
+                      <p className="text-xs text-zinc-500 dark:text-zinc-400">{activity.time}</p>
                     </div>
                   </motion.div>
                 ))}
@@ -826,28 +783,28 @@ export const Dashboard: React.FC = () => {
               initial={{ opacity: 0, x: 20 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ delay: 0.3 }}
-              className="glass-ultra rounded-2xl border border-white/10 shadow-sm p-6"
+              className="bg-white dark:bg-zinc-900 rounded-2xl border border-zinc-200 dark:border-zinc-800 shadow-sm p-6"
             >
-              <h3 className="font-bold text-slate-100 mb-4">
+              <h3 className="font-bold text-zinc-900 dark:text-zinc-100 mb-4">
                 {t('dashboard.quickStats.title')}
               </h3>
               <div className="space-y-3">
                 <div className="flex items-center justify-between">
-                  <span className="text-sm text-slate-400">
+                  <span className="text-sm text-zinc-500 dark:text-zinc-400">
                     {t('dashboard.quickStats.totalTransactions')}
                   </span>
-                  <span className="font-bold text-slate-100">{transactions.length}</span>
+                  <span className="font-bold text-zinc-900 dark:text-zinc-100">{transactions.length}</span>
                 </div>
-                <div className="h-px bg-white/10" />
+                <div className="h-px bg-zinc-100 dark:bg-zinc-800" />
                 <div className="flex items-center justify-between">
-                  <span className="text-sm text-slate-400">
+                  <span className="text-sm text-zinc-500 dark:text-zinc-400">
                     {t('dashboard.quickStats.activeProducts')}
                   </span>
-                  <span className="font-bold text-slate-100">{products.length}</span>
+                  <span className="font-bold text-zinc-900 dark:text-zinc-100">{products.length}</span>
                 </div>
-                <div className="h-px bg-white/10" />
+                <div className="h-px bg-zinc-100 dark:bg-zinc-800" />
                 <div className="flex items-center justify-between">
-                  <span className="text-sm text-slate-400">
+                  <span className="text-sm text-zinc-500 dark:text-zinc-400">
                     {t('dashboard.quickStats.currentRank')}
                   </span>
                   <span className="font-bold text-[#FFBF00]">{user.rank}</span>

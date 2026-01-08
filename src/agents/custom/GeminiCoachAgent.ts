@@ -78,6 +78,7 @@ export class GeminiCoachAgent extends BaseAgent {
           enforcement: 'soft',
         },
       ],
+      visibility: 'all'
     };
 
     super(definition);
@@ -110,7 +111,7 @@ export class GeminiCoachAgent extends BaseAgent {
         case 'getCoachAdvice':
           if (!user) throw new Error('User required for coaching advice');
           output = await this.getCoachAdvice(user, context);
-          
+
           // Update KPIs
           const kpi = this.definition.success_kpis.find(k => k.name === 'User Satisfaction');
           if (kpi) {
@@ -218,7 +219,7 @@ Trả lời bằng tiếng Việt, giọng điệu thân thiện và động vi�
    */
   private getFallbackCoachingAdvice(user: User): string {
     const advice = [
-      `Chào ${user.name}! Bạn đang làm rất tốt với doanh số ${user.totalSales.toLocaleString('vi-VN')} VND.`, 
+      `Chào ${user.name}! Bạn đang làm rất tốt với doanh số ${user.totalSales.toLocaleString('vi-VN')} VND.`,
       '',
       '💡 **3 gợi ý để cải thiện:**',
       '1. **Tăng tần suất tiếp cận khách hàng**: Hãy thử liên hệ ít nhất 5 khách hàng tiềm năng mỗi ngày.',

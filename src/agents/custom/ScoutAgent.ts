@@ -88,6 +88,7 @@ export class ScoutAgent extends BaseAgent {
                     notes: 'Do not scan node_modules, .git, etc.',
                 },
             ],
+            visibility: 'all',
         });
     }
 

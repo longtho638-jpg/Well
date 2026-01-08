@@ -12,8 +12,8 @@ import { vi, type TranslationKeys } from '@/locales/vi';
 
 type NestedKeyOf<ObjectType extends object> = {
   [Key in keyof ObjectType & (string | number)]: ObjectType[Key] extends object
-    ? `${Key}` | `${Key}.${NestedKeyOf<ObjectType[Key]>}`
-    : `${Key}`;
+  ? `${Key}` | `${Key}.${NestedKeyOf<ObjectType[Key]>}`
+  : `${Key}`;
 }[keyof ObjectType & (string | number)];
 
 type TranslationKey = NestedKeyOf<TranslationKeys>;
@@ -24,13 +24,13 @@ type Variables = Record<string, string | number>;
  * Get nested value from object using dot notation
  * @example getNestedValue(vi, 'dashboard.welcome') // Returns the translation string
  */
-function getNestedValue(obj: any, path: string): string {
+function getNestedValue(obj: Record<string, unknown>, path: string): string {
   const keys = path.split('.');
-  let result = obj;
+  let result: unknown = obj;
 
   for (const key of keys) {
     if (result && typeof result === 'object' && key in result) {
-      result = result[key];
+      result = (result as Record<string, unknown>)[key];
     } else {
       console.warn(`Translation key not found: ${path}`);
       return path; // Return key as fallback

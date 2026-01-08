@@ -206,7 +206,7 @@ export default function TheCopilot({ productContext, userName = "Bạn" }: TheCo
     setTimeout(() => setCopiedSuggestion(null), 2000);
     showToast('Copied to clipboard', 'success');
   };
-  
+
   const getObjectionBadge = (type?: ObjectionType) => {
     if (!type) return null;
 
@@ -228,12 +228,12 @@ export default function TheCopilot({ productContext, userName = "Bạn" }: TheCo
   };
 
   return (
-    <div className="flex flex-col h-[600px] bg-gradient-to-br from-[#0A0E27] via-[#1A1F3A] to-[#0A0E27] rounded-3xl shadow-2xl overflow-hidden border border-white/10">
+    <div className="flex flex-col h-[600px] bg-zinc-50 dark:bg-zinc-950 rounded-3xl shadow-2xl overflow-hidden border border-zinc-200 dark:border-zinc-800 transition-colors duration-300">
       {/* Header */}
       <div className="relative overflow-hidden">
         {/* Background */}
-        <div className="absolute inset-0 bg-gradient-to-r from-primary to-primary/80" />
-        <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGRlZnM+PHBhdHRlcm4gaWQ9ImdyaWQiIHdpZHRoPSI2MCIgaGVpZ2h0PSI2MCIgcGF0dGVyblVuaXRzPSJ1c2VyU3BhY2VPblVzZSI+PHBhdGggZD0iTSAxMCAwIEwgMCAwIDAgMTAiIGZpbGw9Im5vbmUiIHN0cm9rZT0id2hpdGUiIHN0cm9rZS1vcGFjaXR5PSIwLjA1IiBzdHJva2Utd2lkdGg9IjEiLz48L3BhdHRlcm4+PC9kZWZzPjxyZWN0IHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiIGZpbGw9InVybCgjZ3JpZCkiLz48L3N2Zz4=')] opacity-20" />
+        <div className="absolute inset-0 bg-gradient-to-r from-emerald-900 via-zinc-900 to-black" />
+        <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGRlZnM+PHBhdHRlcm4gaWQ9ImdyaWQiIHdpZHRoPSI2MCIgaGVpZ2h0PSI2MCIgcGF0dGVyblVuaXRzPSJ1c2VyU3BhY2VPblVzZSI+PHBhdGggZD0iTSAxMCAwIEwgMCAwIDAgMTAiIGZpbGw9Im5vbmUiIHN0cm9rZT0iIzEwYjk4MSIgc3Ryb2tlLW9wYWNpdHk9IjAuMSIgc3Ryb2tlLXdpZHRoPSIxIi8+PC9wYXR0ZXJuPjwvZGVmcz48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSJ1cmwoI2dyaWQpIi8+PC9zdmc+')] opacity-20" />
 
         {/* Content */}
         <div className="relative p-4 flex items-center justify-between">
@@ -250,9 +250,9 @@ export default function TheCopilot({ productContext, userName = "Bạn" }: TheCo
                   ]
                 }}
                 transition={{ repeat: Infinity, duration: 2, ease: 'easeInOut' }}
-                className="w-12 h-12 bg-gradient-to-br from-accent to-yellow-500 rounded-2xl flex items-center justify-center shadow-lg"
+                className="w-12 h-12 bg-white dark:bg-zinc-800 rounded-2xl flex items-center justify-center shadow-lg border border-zinc-200 dark:border-zinc-700"
               >
-                <Bot className="w-7 h-7 text-primary" />
+                <Bot className="w-7 h-7 text-emerald-400" />
               </motion.div>
               <motion.div
                 animate={{
@@ -260,21 +260,21 @@ export default function TheCopilot({ productContext, userName = "Bạn" }: TheCo
                   opacity: [0.5, 0.8, 0.5],
                 }}
                 transition={{ repeat: Infinity, duration: 2, ease: 'easeInOut' }}
-                className="absolute inset-0 bg-accent rounded-2xl blur-md -z-10"
+                className="absolute inset-0 bg-emerald-500/20 rounded-2xl blur-md -z-10"
               />
             </div>
 
             <div>
-              <h3 className="font-bold text-white flex items-center gap-2 text-lg">
+              <h3 className="font-bold text-zinc-900 dark:text-white flex items-center gap-2 text-lg">
                 The Copilot
                 <motion.div
                   animate={{ rotate: [0, 10, -10, 0] }}
                   transition={{ repeat: Infinity, duration: 2, ease: 'easeInOut' }}
                 >
-                  <Sparkles className="w-4 h-4 text-accent" />
+                  <Sparkles className="w-4 h-4 text-emerald-400" />
                 </motion.div>
               </h3>
-              <p className="text-xs text-white/80">AI Sales Assistant • Powered by Gemini</p>
+              <p className="text-xs text-zinc-400">AI Sales Assistant • Powered by Gemini</p>
             </div>
           </div>
 
@@ -283,7 +283,7 @@ export default function TheCopilot({ productContext, userName = "Bạn" }: TheCo
               <button
                 onClick={handleGenerateScript}
                 disabled={isLoading}
-                className="px-3 py-2 bg-white/10 hover:bg-white/20 backdrop-blur-sm text-white text-xs font-bold rounded-xl flex items-center gap-1.5 transition-all border border-white/20 hover:border-white/40 disabled:opacity-50"
+                className="px-3 py-2 bg-white dark:bg-zinc-800 hover:bg-zinc-100 dark:hover:bg-zinc-700 text-zinc-700 dark:text-white text-xs font-bold rounded-xl flex items-center gap-1.5 transition-all border border-zinc-200 dark:border-zinc-700 hover:border-zinc-300 dark:hover:border-zinc-600 disabled:opacity-50"
                 title="Generate sales script"
               >
                 <MessageSquare className="w-3.5 h-3.5" />
@@ -293,7 +293,7 @@ export default function TheCopilot({ productContext, userName = "Bạn" }: TheCo
             <button
               onClick={handleGetCoaching}
               disabled={isLoading || messages.length < 3}
-              className="px-3 py-2 bg-white/10 hover:bg-white/20 backdrop-blur-sm text-white text-xs font-bold rounded-xl flex items-center gap-1.5 transition-all border border-white/20 hover:border-white/40 disabled:opacity-50"
+              className="px-3 py-2 bg-zinc-800 hover:bg-zinc-700 text-white text-xs font-bold rounded-xl flex items-center gap-1.5 transition-all border border-zinc-700 hover:border-zinc-600 disabled:opacity-50"
               title="Get coaching tips"
             >
               <TrendingUp className="w-3.5 h-3.5" />
@@ -304,7 +304,7 @@ export default function TheCopilot({ productContext, userName = "Bạn" }: TheCo
       </div>
 
       {/* Messages */}
-      <div className="flex-1 overflow-y-auto p-4 space-y-4 bg-gradient-to-b from-[#0A0E27]/50 to-[#1A1F3A]/50">
+      <div className="flex-1 overflow-y-auto p-4 space-y-4 bg-zinc-50 dark:bg-zinc-950">
         <AnimatePresence>
           {messages.map((message, index) => (
             <motion.div
@@ -315,8 +315,8 @@ export default function TheCopilot({ productContext, userName = "Bạn" }: TheCo
             >
               <div
                 className={`max-w-[85%] rounded-2xl px-4 py-3 ${message.role === 'user'
-                    ? 'bg-gradient-to-r from-primary to-primary/80 text-white shadow-lg shadow-primary/30'
-                    : 'bg-white/10 backdrop-blur-xl border border-white/20 text-gray-100'}`}
+                  ? 'bg-emerald-600 text-white shadow-lg shadow-emerald-900/20'
+                  : 'bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 text-zinc-800 dark:text-zinc-200 shadow-sm'}`}
               >
                 {/* Objection badge for user messages */}
                 {message.role === 'user' && message.objectionType && (
@@ -351,96 +351,85 @@ export default function TheCopilot({ productContext, userName = "Bạn" }: TheCo
                         {copiedSuggestion === message.id ? (
                           <Check className="w-3.5 h-3.5 text-green-400" />
                         ) : (
-                          <Copy className="w-3.5 h-3.5 text-gray-400" />
+                          <Copy className="w-3.5 h-3.5 text-zinc-400 group-hover:text-white transition-colors" />
                         )}
                       </button>
                     </div>
+
+                    {/* Loading Indicator */}
+                    {isLoading && (
+                      <motion.div
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        className="flex justify-start mt-2"
+                      >
+                        <div className="bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-2xl px-4 py-3">
+                          <div className="flex gap-2">
+                            <motion.div
+                              className="w-2 h-2 bg-emerald-500 rounded-full"
+                              animate={{ y: [0, -8, 0] }}
+                              transition={{ repeat: Infinity, duration: 0.6, delay: 0 }}
+                            />
+                            <motion.div
+                              className="w-2 h-2 bg-accent rounded-full"
+                              animate={{ y: [0, -8, 0] }}
+                              transition={{ repeat: Infinity, duration: 0.6, delay: 0.15 }}
+                            />
+                            <motion.div
+                              className="w-2 h-2 bg-accent rounded-full"
+                              animate={{ y: [0, -8, 0] }}
+                              transition={{ repeat: Infinity, duration: 0.6, delay: 0.3 }}
+                            />
+                          </div>
+                        </div>
+                      </motion.div>
+                    )}
+
+                    {/* Suggestion Chips */}
+                    {showSuggestions && messages.length <= 1 && !isLoading && (
+                      <motion.div
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        className="space-y-2 mt-3"
+                      >
+                        <p className="text-zinc-400 text-xs font-medium">💡 Gợi ý câu hỏi:</p>
+                        <div className="grid grid-cols-2 gap-2">
+                          {suggestionChips.map((chip, index) => {
+                            const Icon = chip.icon;
+                            return (
+                              <motion.button
+                                key={index}
+                                initial={{ opacity: 0, scale: 0.9 }}
+                                animate={{ opacity: 1, scale: 1 }}
+                                transition={{ delay: index * 0.1 }}
+                                whileHover={{ scale: 1.02 }}
+                                whileTap={{ scale: 0.98 }}
+                                onClick={() => handleSend(chip.text)}
+                                className="relative group overflow-hidden rounded-xl p-3 text-left transition-all bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 hover:border-zinc-300 dark:hover:border-zinc-700 shadow-sm"
+                              >
+                                <div className={`absolute inset-0 bg-gradient-to-br ${chip.color} opacity-0 group-hover:opacity-10 transition-opacity`} />
+                                <div className="flex items-center gap-2 mb-1">
+                                  <Icon className="w-4 h-4 text-zinc-400 group-hover:text-white transition-colors" />
+                                  <span className="text-xs font-bold text-zinc-300 group-hover:text-white transition-colors">
+                                    Gợi ý {index + 1}
+                                  </span>
+                                </div>
+                                <p className="text-xs text-zinc-400 group-hover:text-zinc-300 transition-colors line-clamp-2">
+                                  {chip.text}
+                                </p>
+                              </motion.button>
+                            );
+                          })}
+                        </div>
+                      </motion.div>
+                    )}
                   </div>
                 )}
-
-                <div className="text-xs opacity-50 mt-2">
-                  {new Date(message.timestamp).toLocaleTimeString('vi-VN', {
-                    hour: '2-digit',
-                    minute: '2-digit'
-                  })}
-                </div>
               </div>
             </motion.div>
           ))}
+          <div ref={messagesEndRef} />
         </AnimatePresence>
-
-        {/* Loading Indicator */}
-        {isLoading && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            className="flex justify-start"
-          >
-            <div className="bg-white/10 backdrop-blur-xl border border-white/20 rounded-2xl px-4 py-3">
-              <div className="flex gap-2">
-                <motion.div
-                  className="w-2 h-2 bg-accent rounded-full"
-                  animate={{ y: [0, -8, 0] }}
-                  transition={{ repeat: Infinity, duration: 0.6, delay: 0 }}
-                />
-                <motion.div
-                  className="w-2 h-2 bg-accent rounded-full"
-                  animate={{ y: [0, -8, 0] }}
-                  transition={{ repeat: Infinity, duration: 0.6, delay: 0.15 }}
-                />
-                <motion.div
-                  className="w-2 h-2 bg-accent rounded-full"
-                  animate={{ y: [0, -8, 0] }}
-                  transition={{ repeat: Infinity, duration: 0.6, delay: 0.3 }}
-                />
-              </div>
-            </div>
-          </motion.div>
-        )}
-
-        {/* Suggestion Chips */}
-        {showSuggestions && messages.length <= 1 && !isLoading && (
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            className="space-y-2"
-          >
-            <p className="text-gray-400 text-xs font-medium">💡 Gợi ý câu hỏi:</p>
-            <div className="grid grid-cols-2 gap-2">
-              {suggestionChips.map((chip, index) => {
-                const Icon = chip.icon;
-                return (
-                  <motion.button
-                    key={index}
-                    initial={{ opacity: 0, scale: 0.9 }}
-                    animate={{ opacity: 1, scale: 1 }}
-                    transition={{ delay: index * 0.1 }}
-                    whileHover={{ scale: 1.02 }}
-                    whileTap={{ scale: 0.98 }}
-                    onClick={() => handleSend(chip.text)}
-                    className={`relative group overflow-hidden rounded-xl p-3 text-left transition-all`}
-                  >
-                    {/* Gradient Background */}
-                    <div className={`absolute inset-0 bg-gradient-to-r ${chip.color} opacity-10 group-hover:opacity-20 transition-opacity`} />
-                    <div className={`absolute inset-0 bg-gradient-to-r ${chip.color} opacity-0 group-hover:opacity-10 blur-xl transition-opacity`} />
-
-                    {/* Content */}
-                    <div className="relative flex items-center gap-2">
-                      <div className={`p-1.5 rounded-lg bg-gradient-to-r ${chip.color} bg-opacity-20`}>
-                        <Icon className="w-3.5 h-3.5 text-white" />
-                      </div>
-                      <span className="text-xs font-medium text-gray-300 group-hover:text-white transition-colors flex-1">
-                        {chip.text}
-                      </span>
-                    </div>
-                  </motion.button>
-                );
-              })}
-            </div>
-          </motion.div>
-        )}
-
-        <div ref={messagesEndRef} />
       </div>
 
       {/* Coaching Panel */}
@@ -450,7 +439,7 @@ export default function TheCopilot({ productContext, userName = "Bạn" }: TheCo
             initial={{ height: 0, opacity: 0 }}
             animate={{ height: 'auto', opacity: 1 }}
             exit={{ height: 0, opacity: 0 }}
-            className="border-t border-white/10 bg-blue-500/10 backdrop-blur-xl p-4"
+            className="border-t border-zinc-800 bg-blue-500/10 backdrop-blur-xl p-4"
           >
             <div className="flex items-start gap-3">
               <AlertCircle className="w-5 h-5 text-blue-400 flex-shrink-0 mt-0.5" />
@@ -470,7 +459,7 @@ export default function TheCopilot({ productContext, userName = "Bạn" }: TheCo
       </AnimatePresence>
 
       {/* Input */}
-      <div className="p-4 bg-gradient-to-r from-[#0A0E27] to-[#1A1F3A] border-t border-white/10">
+      <div className="p-4 bg-white dark:bg-zinc-900 border-t border-zinc-200 dark:border-zinc-800">
         <div className="flex gap-2">
           <input
             type="text"
@@ -478,13 +467,13 @@ export default function TheCopilot({ productContext, userName = "Bạn" }: TheCo
             onChange={(e) => setInput(e.target.value)}
             onKeyPress={(e) => e.key === 'Enter' && handleSend()}
             placeholder="Nhập câu phản đối của khách hàng..."
-            className="flex-1 px-4 py-3 bg-white/10 backdrop-blur-sm border border-white/20 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary/50 text-sm text-white placeholder-gray-400 transition-all"
+            className="flex-1 px-4 py-3 bg-zinc-100 dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 rounded-xl focus:outline-none focus:ring-2 focus:ring-emerald-500/50 focus:border-emerald-500/50 text-sm text-zinc-900 dark:text-white placeholder-zinc-500 transition-all"
             disabled={isLoading}
           />
           <button
             onClick={() => handleSend()}
             disabled={isLoading || !input.trim()}
-            className="px-5 py-3 bg-gradient-to-r from-primary to-primary/80 hover:from-primary/90 hover:to-primary/70 text-white rounded-xl flex items-center gap-2 transition-all disabled:opacity-50 disabled:cursor-not-allowed shadow-lg shadow-primary/30 font-bold"
+            className="px-5 py-3 bg-emerald-600 hover:bg-emerald-500 text-white rounded-xl flex items-center gap-2 transition-all disabled:opacity-50 disabled:cursor-not-allowed shadow-lg shadow-emerald-500/30 font-bold"
           >
             <Send className="w-4 h-4" />
           </button>

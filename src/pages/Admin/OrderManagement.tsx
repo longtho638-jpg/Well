@@ -9,6 +9,7 @@ import { supabase } from '@/lib/supabase';
 import { useStore } from '@/store';
 import { useNavigate } from 'react-router-dom';
 import { useToast } from '@/components/ui/Toast';
+import { UserRank } from '@/types';
 
 interface PendingOrder {
     id: string;
@@ -34,7 +35,7 @@ const OrderManagement: React.FC = () => {
 
     // Security: Redirect if not founder
     useEffect(() => {
-        if (user && user.rank !== 'Partner') {
+        if (user && user.rank !== UserRank.DAI_SU) {
             showToast('Access denied. Founders only.', 'error');
             navigate('/dashboard');
         }
@@ -145,7 +146,7 @@ const OrderManagement: React.FC = () => {
         });
     };
 
-    if (user?.rank !== 'Partner') {
+    if (user?.rank !== UserRank.DAI_SU) {
         return null; // Will redirect via useEffect
     }
 

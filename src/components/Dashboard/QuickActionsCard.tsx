@@ -4,14 +4,19 @@ import { Gift, Heart, Share2, Zap } from 'lucide-react';
 import { useStore } from '@/store';
 import { useTranslation } from '@/hooks';
 import { formatVND } from '@/utils/format';
+import { useToast } from '@/components/ui/Toast';
 
 export const QuickActionsCard: React.FC = () => {
   const t = useTranslation();
   const { user } = useStore();
 
+  const { showToast } = useToast();
+
   const handleSendGiftCard = () => {
-    // TODO: Implement gift card sending logic
-    alert('Tính năng gửi Gift Card đang được phát triển!');
+    // Mock logic for SEED phase
+    const code = 'GIFT-' + Math.random().toString(36).substr(2, 6).toUpperCase();
+    navigator.clipboard.writeText(code);
+    showToast(`Gift Card created: ${code} (Copied)`, 'success');
   };
 
   const handleShareHealthCheck = () => {

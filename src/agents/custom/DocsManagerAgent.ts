@@ -65,6 +65,7 @@ export class DocsManagerAgent extends BaseAgent {
                     notes: 'Consistent formatting and structure',
                 },
             ],
+            visibility: 'all',
         });
     }
 

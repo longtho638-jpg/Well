@@ -7,40 +7,60 @@
 @import url('https://api.fontshare.com/v2/css?f[]=clash-display@500,600,700&display=swap');
 
 :root {
-  /* ===== THE VOID PALETTE ===== */
-  --bg-void: #000000;
-  /* Pure Black */
-  --bg-panel: #0A0A0A;
-  /* Panel Background */
-  --bg-surface: #111111;
-  /* Card Surface */
-  --bg-elevated: #1A1A1A;
-  /* Hover State */
+  /* 
+   * MAX LEVEL WOW - ZINC/EMERALD PALETTE 
+   * Base: Zinc 950 (#09090b)
+   * Panel: Zinc 900 (#18181b)
+   * Border: Zinc 800 (#27272a)
+   * Accents: Emerald 500 (#10b981) -> Cyan 500 (#06b6d4)
+   */
 
-  /* ===== ELECTRIC ACCENTS ===== */
-  --accent-cyan: #00F0FF;
-  --accent-violet: #7000FF;
-  --accent-pink: #FF0055;
-  --accent-amber: #FFB800;
+  /* Backgrounds */
+  --bg-void: #09090b;
+  /* Zinc 950 - Deepest */
+  --bg-panel: #18181b;
+  /* Zinc 900 - Panels */
+  --bg-surface: #27272a;
+  /* Zinc 800 - Cards/Hover */
+  --bg-elevated: #3f3f46;
+  /* Zinc 700 - Popovers */
 
-  /* ===== BORDERS & GLOWS ===== */
+  /* Text */
+  --text-primary: #f4f4f5;
+  /* Zinc 100 */
+  --text-secondary: #a1a1aa;
+  /* Zinc 400 */
+  --text-muted: #71717a;
+  /* Zinc 500 */
+
+  /* Borders */
   --border-subtle: rgba(255, 255, 255, 0.08);
-  --border-muted: rgba(255, 255, 255, 0.04);
-  --border-highlight: rgba(255, 255, 255, 0.2);
+  --border-muted: #27272a;
+  /* Zinc 800 */
+  --border-highlight: #3f3f46;
+  /* Zinc 700 */
 
-  --glow-cyan: 0 0 20px rgba(0, 240, 255, 0.3);
-  --glow-violet: 0 0 20px rgba(112, 0, 255, 0.3);
+  /* Electric Accents */
+  --accent-cyan: #06b6d4;
+  /* Cyan 500 */
+  --accent-emerald: #10b981;
+  /* Emerald 500 */
+  --accent-violet: #8b5cf6;
+  /* Violet 500 (Secondary) */
+  --accent-pink: #ec4899;
+  /* Pink 500 (Secondary) */
+  --accent-amber: #f59e0b;
+  /* Amber 500 (Warning) */
 
-  /* ===== TEXT ===== */
-  --text-primary: #EDEDED;
-  --text-secondary: #A1A1A1;
-  --text-tertiary: #525252;
+  /* Glows */
+  --glow-emerald: 0 0 20px rgba(16, 185, 129, 0.3);
+  --glow-cyan: 0 0 20px rgba(6, 182, 212, 0.3);
 
-  /* ===== GRADIENTS ===== */
-  --gradient-aura: linear-gradient(135deg, var(--bg-panel) 0%, var(--bg-void) 100%);
-  --gradient-glow: radial-gradient(circle at center, rgba(255, 255, 255, 0.03) 0%, transparent 70%);
-  --gradient-text-aura: linear-gradient(to right, #FFFFFF, #A1A1A1);
-  --gradient-border-aura: linear-gradient(to bottom right, rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0.02));
+  /* Gradients */
+  --gradient-aura: linear-gradient(135deg, #09090b 0%, #18181b 100%);
+  --gradient-glow: radial-gradient(circle at center, rgba(16, 185, 129, 0.15) 0%, transparent 70%);
+  --gradient-text-aura: linear-gradient(to right, #10b981, #06b6d4);
+  --gradient-border-aura: linear-gradient(to bottom right, rgba(16, 185, 129, 0.5), rgba(6, 182, 212, 0.5));
 
   /* ===== SPACING & RADIUS ===== */
   --radius-sm: 8px;
