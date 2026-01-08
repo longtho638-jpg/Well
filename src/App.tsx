@@ -15,8 +15,11 @@ import HealthCheck from './pages/HealthCheck';
 import Leaderboard from './pages/Leaderboard';
 import MarketingTools from './pages/MarketingTools';
 import Admin from './pages/Admin';
+import Login from './pages/Login';
+import Signup from './pages/Signup';
 import TestPage from './pages/TestPage';
 import DebuggerPage from './pages/DebuggerPage';
+import { AdminRoute } from './components/AdminRoute';
 
 // Code splitting: Lazy load Admin pages for better performance
 const Overview = lazy(() => import('./pages/Admin/Overview'));
@@ -52,15 +55,17 @@ const App: React.FC = () => {
           >
             <Routes location={location}>
               {/* ============================================================ */}
-              {/* PUBLIC ROUTES: Landing & Venture Vision */}
+              {/* PUBLIC ROUTES: Landing, Auth & Venture Vision */}
               {/* ============================================================ */}
               <Route path="/" element={<LandingPage />} />
+              <Route path="/login" element={<Login />} />
+              <Route path="/signup" element={<Signup />} />
               <Route path="/venture" element={<VenturePage />} />
 
               {/* ============================================================ */}
-              {/* ADMIN ROUTES: Mission Control with Nested Routes */}
+              {/* ADMIN ROUTES: Mission Control with Nested Routes (Protected) */}
               {/* ============================================================ */}
-              <Route path="/admin" element={<Admin />}>
+              <Route path="/admin" element={<AdminRoute><Admin /></AdminRoute>}>
                 <Route index element={<Suspense fallback={<div className="flex items-center justify-center h-screen"><div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#00575A]"></div></div>}><Overview /></Suspense>} />
                 <Route path="cms" element={<Suspense fallback={<div className="flex items-center justify-center h-screen"><div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#00575A]"></div></div>}><CMS /></Suspense>} />
                 <Route path="partners" element={<Suspense fallback={<div className="flex items-center justify-center h-screen"><div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#00575A]"></div></div>}><Partners /></Suspense>} />

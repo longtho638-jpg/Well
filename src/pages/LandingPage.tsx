@@ -192,8 +192,7 @@ export default function LandingPage() {
   const { login } = useStore();
 
   const handleJoin = () => {
-    login();
-    navigate('/dashboard');
+    navigate('/signup');
   };
 
   const handleVisionClick = () => {
