@@ -29,13 +29,12 @@ import NetworkTree from '@/components/NetworkTree';
 import { useStore } from '@/store';
 import { TeamMember, UserRank, RANK_NAMES } from '@/types';
 import { formatVND, formatNumber } from '@/utils/format';
-import { TEAM_MEMBERS, TEAM_METRICS } from '@/data/mockData';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, PieChart, Pie, Cell } from 'recharts';
 import { useTranslation } from '@/hooks';
 
 export default function LeaderDashboard() {
   const t = useTranslation();
-  const { user, teamInsights, sendReminder, sendGift } = useStore();
+  const { user, teamInsights, teamMembers, teamMetrics, sendReminder, sendGift, fetchTeamData } = useStore();
   const [searchTerm, setSearchTerm] = useState('');
   const [filterRank, setFilterRank] = useState<UserRank | 'all'>('all');
   const [sortBy, setSortBy] = useState<'sales' | 'growth' | 'team'>('sales');
@@ -45,7 +44,7 @@ export default function LeaderDashboard() {
   const [actionLoading, setActionLoading] = useState<string | null>(null);
 
   // Filter and sort team members
-  const filteredMembers = TEAM_MEMBERS
+  const filteredMembers = teamMembers
     .filter(member => {
       const matchesSearch = member.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
         member.email.toLowerCase().includes(searchTerm.toLowerCase());
@@ -66,30 +65,30 @@ export default function LeaderDashboard() {
     });
 
   // Top 3 performers
-  const top3Performers = [...TEAM_MEMBERS]
+  const top3Performers = [...teamMembers]
     .sort((a, b) => b.personalSales - a.personalSales)
     .slice(0, 3);
 
   // Chart data
-  const performanceData = TEAM_MEMBERS.slice(0, 5).map(m => ({
+  const performanceData = teamMembers.slice(0, 5).map(m => ({
     name: m.name.split(' ').pop(),
     sales: m.personalSales / 1000000,
     team: m.teamVolume / 1000000
   }));
 
   // Network Health Data
-  const activeCount = TEAM_MEMBERS.filter(m => m.monthlyGrowth > 0).length;
-  const inactiveCount = TEAM_MEMBERS.length - activeCount;
+  const activeCount = teamMembers.filter(m => m.monthlyGrowth > 0).length;
+  const inactiveCount = teamMembers.length - activeCount;
 
   const networkHealthData = [
     { name: 'Active', value: activeCount, color: '#10B981' },
-    { name: 'At Risk', value: Math.floor(TEAM_MEMBERS.length * 0.15), color: '#F59E0B' },
-    { name: 'Inactive', value: inactiveCount - Math.floor(TEAM_MEMBERS.length * 0.15), color: '#EF4444' }
+    { name: 'At Risk', value: Math.floor(teamMembers.length * 0.15), color: '#F59E0B' },
+    { name: 'Inactive', value: inactiveCount - Math.floor(teamMembers.length * 0.15), color: '#EF4444' }
   ];
 
   const rankDistribution = [
-    { name: 'Đại Sứ', value: TEAM_MEMBERS.filter(m => m.rank === UserRank.DAI_SU).length, color: '#00575A' },
-    { name: 'CTV', value: TEAM_MEMBERS.filter(m => m.rank === UserRank.CTV).length, color: '#FFBF00' }
+    { name: 'Đại Sứ', value: teamMembers.filter(m => m.rank === UserRank.DAI_SU).length, color: '#00575A' },
+    { name: 'CTV', value: teamMembers.filter(m => m.rank === UserRank.CTV).length, color: '#FFBF00' }
   ];
 
   const getRankBadgeColor = (rank: UserRank) => {
@@ -363,10 +362,10 @@ export default function LeaderDashboard() {
                 <div className="flex items-center justify-between mb-3">
                   <Users className="w-8 h-8 text-blue-400" />
                   <span className="text-xs font-bold bg-blue-500/10 text-blue-300 px-2 py-1 rounded-full border border-blue-500/20">
-                    {TEAM_METRICS.activeMembers}/{TEAM_METRICS.totalMembers} {t('team.metrics.active')}
+                    {teamMetrics.activeMembers}/{teamMetrics.totalMembers} {t('team.metrics.active')}
                   </span>
                 </div>
-                <h3 className="text-3xl font-bold text-white mb-1">{TEAM_METRICS.totalMembers}</h3>
+                <h3 className="text-3xl font-bold text-white mb-1">{teamMetrics.totalMembers}</h3>
                 <p className="text-sm text-zinc-400">{t('team.metrics.totalMembers')}</p>
               </div>
             </motion.div>
@@ -383,7 +382,7 @@ export default function LeaderDashboard() {
                   <DollarSign className="w-8 h-8 text-emerald-400" />
                   <TrendingUp className="w-5 h-5 text-emerald-400" />
                 </div>
-                <h3 className="text-3xl font-bold text-white mb-1">{formatVND(TEAM_METRICS.totalTeamVolume)}</h3>
+                <h3 className="text-3xl font-bold text-white mb-1">{formatVND(teamMetrics.totalTeamVolume)}</h3>
                 <p className="text-sm text-zinc-400">{t('team.metrics.teamVolume')}</p>
               </div>
             </motion.div>
@@ -399,10 +398,10 @@ export default function LeaderDashboard() {
                 <div className="flex items-center justify-between mb-3">
                   <Target className="w-8 h-8 text-purple-400" />
                   <span className="text-xs font-bold bg-emerald-500/10 text-emerald-300 px-2 py-1 rounded-full border border-emerald-500/20">
-                    +{TEAM_METRICS.monthlyGrowth}%
+                    +{teamMetrics.monthlyGrowth}%
                   </span>
                 </div>
-                <h3 className="text-3xl font-bold text-white mb-1">{formatVND(TEAM_METRICS.averageSalesPerMember)}</h3>
+                <h3 className="text-3xl font-bold text-white mb-1">{formatVND(teamMetrics.averageSalesPerMember)}</h3>
                 <p className="text-sm text-zinc-400">{t('team.metrics.averageSales')}</p>
               </div>
             </motion.div>
@@ -419,7 +418,7 @@ export default function LeaderDashboard() {
                   <Award className="w-8 h-8 text-orange-400" />
                   <Activity className="w-5 h-5 text-orange-400" />
                 </div>
-                <h3 className="text-3xl font-bold text-white mb-1">{TEAM_METRICS.topPerformers.length}</h3>
+                <h3 className="text-3xl font-bold text-white mb-1">{teamMetrics.topPerformers.length}</h3>
                 <p className="text-sm text-zinc-400">{t('team.metrics.topPerformers')}</p>
               </div>
             </motion.div>

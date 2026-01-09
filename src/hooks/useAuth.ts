@@ -3,7 +3,7 @@ import { useStore } from '@/store';
 import { supabase } from '@/lib/supabase';
 
 export function useAuth() {
-  const { setUser, setIsAuthenticated } = useStore();
+  const { setUser, setIsAuthenticated, fetchRealData } = useStore();
 
   useEffect(() => {
     // Check active session on mount
@@ -62,6 +62,9 @@ export function useAuth() {
 
         setUser(user as any);
         setIsAuthenticated(true);
+
+        // Load real data from Supabase after login
+        fetchRealData();
       }
     } catch (error) {
       console.error('[useAuth] Error fetching user:', error);

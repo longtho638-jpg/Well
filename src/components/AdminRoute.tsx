@@ -25,8 +25,13 @@ export function AdminRoute({ children }: AdminRouteProps) {
     }
 
     // Check 2: Must have admin role
-    // For now, we'll check for admin email or role field
-    const isAdmin = user?.email?.includes('admin') ||
+    // SECURITY FIX: Use whitelist instead of email.includes('admin')
+    const ADMIN_EMAILS = [
+        'longtho638@gmail.com',
+        'doanhnhancaotuan@gmail.com'
+    ];
+
+    const isAdmin = ADMIN_EMAILS.includes(user?.email || '') ||
         user?.role === 'admin' ||
         user?.role === 'super_admin' ||
         user?.isAdmin === true;

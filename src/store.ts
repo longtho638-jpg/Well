@@ -18,6 +18,7 @@ import {
   REDEMPTION_ORDERS
 } from './data/mockData';
 import { generateTxHash, calculateStakingReward } from './utils/tokenomics';
+import { calculatePIT } from './utils/tax';
 import { AgentState, AgentLog, AgentKPI } from './types/agentic';
 import { agentRegistry } from './agents';
 import { supabase } from './lib/supabase';
@@ -125,6 +126,9 @@ interface AppState {
 
   // Supabase Sync Methods & Auth Helpers
   fetchUserFromDB: () => Promise<void>;
+  fetchProducts: () => Promise<void>;
+  fetchTransactions: () => Promise<void>;
+  fetchRealData: () => Promise<void>;
   persistAgentLog: (log: AgentLog) => Promise<void>;
   setUser: (user: User | null) => void;
   setIsAuthenticated: (isAuth: boolean) => void;
@@ -166,8 +170,13 @@ export const useStore = create<AppState>((set, get) => ({
   teamMembers: TEAM_MEMBERS, // Initial mock data, replaced by fetch
   teamMetrics: TEAM_METRICS,
   teamInsights: TEAM_INSIGHTS,
-  fetchTeamData: async () => { }, // Placeholder, implemented below
-  fetchDownlineTree: async () => [], // Placeholder, implemented below
+  fetchTeamData: async () => {
+    // Implemented in fetchTeamData method below
+  },
+  fetchDownlineTree: async (userId: string) => {
+    // Implemented in fetchDownlineTree method below
+    return [];
+  },
 
   referrals: REFERRALS,
   referralStats: REFERRAL_STATS,
@@ -405,13 +414,16 @@ export const useStore = create<AppState>((set, get) => ({
     };
   }),
 
-  // Withdrawal Actions - NEW: Withdraw SHOP tokens to bank
+  // Withdrawal Actions - Apply PIT tax (10% for >= 2M VND)
   withdrawShopTokens: async (amount) => {
     const state = get();
 
     if (amount <= 0 || amount > state.user.shopBalance) {
       throw new Error("Invalid withdrawal amount");
     }
+
+    // Calculate PIT (10% for amounts >= 2,000,000 VND)
+    const taxResult = calculatePIT(amount);
 
     const newTransaction: Transaction = {
       id: `TX-WITHDRAW-${Date.now().toString().slice(-6)}`,
@@ -420,7 +432,7 @@ export const useStore = create<AppState>((set, get) => ({
       amount: amount,
       type: 'Withdrawal',
       status: 'completed',
-      taxDeducted: 0, // Tax deducted in backend
+      taxDeducted: taxResult.taxAmount, // FIX: Apply PIT tax
       hash: generateTxHash(),
       currency: 'SHOP'
     };
@@ -428,7 +440,7 @@ export const useStore = create<AppState>((set, get) => ({
     set((state) => ({
       user: {
         ...state.user,
-        shopBalance: state.user.shopBalance - amount
+        shopBalance: state.user.shopBalance - amount // Deduct gross, net after tax goes to bank
       },
       transactions: [newTransaction, ...state.transactions]
     }));
@@ -605,7 +617,42 @@ export const useStore = create<AppState>((set, get) => ({
   // SUPABASE SYNC METHODS
   // ============================================================================
 
-  setUser: (user) => set({ user: user || CURRENT_USER }),
+  setUser: (user) => {
+    if (user === null) {
+      // FIX: On logout, reset to clean state instead of mock data
+      set({
+        user: {
+          id: '',
+          name: '',
+          email: '',
+          rank: UserRank.CTV,
+          roleId: 8,
+          sponsorId: null,
+          totalSales: 0,
+          teamVolume: 0,
+          shopBalance: 0,
+          growBalance: 0,
+          pendingCashback: 0,
+          pointBalance: 0,
+          stakedGrowBalance: 0,
+          avatarUrl: '',
+          joinedAt: '',
+          kycStatus: false,
+          monthlyProfit: 0,
+          businessValuation: 0,
+          projectedAnnualProfit: 0,
+          equityValue: 0,
+          cashflowValue: 0,
+          assetGrowthRate: 0,
+          accumulatedBonusRevenue: 0,
+          estimatedBonus: 0,
+          referralLink: '',
+        } as User
+      });
+    } else {
+      set({ user });
+    }
+  },
   setIsAuthenticated: (isAuth) => set({ isAuthenticated: isAuth }),
 
   /**
@@ -630,28 +677,112 @@ export const useStore = create<AppState>((set, get) => ({
         rank: (data.role_id as UserRank) || UserRank.CTV, // Map role_id to UserRank
         roleId: data.role_id || 8,
         sponsorId: data.sponsor_id,
-        totalSales: data.total_sales,
-        teamVolume: data.team_volume,
-        shopBalance: data.shop_balance,
-        growBalance: data.pending_cashback || 0, // Map pending_cashback to growBalance (deprecated but used)
+        totalSales: data.total_sales || 0,
+        teamVolume: data.team_volume || 0,
+        shopBalance: data.shop_balance || 0,
+        // FIX: Map growBalance from correct field (grow_balance or fallback)
+        growBalance: data.grow_balance || data.pending_cashback || 0,
         pendingCashback: data.pending_cashback || 0,
         pointBalance: data.point_balance || 0,
-        stakedGrowBalance: data.staked_grow_balance,
+        stakedGrowBalance: data.staked_grow_balance || 0,
         avatarUrl: data.avatar_url || 'https://api.dicebear.com/7.x/avataaars/svg?seed=Felix',
         joinedAt: new Date(data.created_at).toISOString().split('T')[0],
-        kycStatus: false, // Default, assuming not in DB yet or default false
+        kycStatus: false, // Default
         monthlyProfit: 0, // Calculated via enrich
         businessValuation: 0, // Calculated via enrich
         projectedAnnualProfit: 0, // Calculated via enrich
         equityValue: 0, // Calculated via enrich
         cashflowValue: 0, // Calculated via enrich
         assetGrowthRate: 0, // Calculated via enrich
-        accumulatedBonusRevenue: data.accumulated_bonus_revenue || 0, // Bee 2.0 legacy
-        estimatedBonus: 0, // Default
-        referralLink: `wellnexus.vn/ref/${data.id}`, // Default
+        accumulatedBonusRevenue: data.accumulated_bonus_revenue || 0,
+        estimatedBonus: 0,
+        referralLink: `wellnexus.vn/ref/${data.id}`,
       };
 
       set({ user: enrichUserWithWealthMetrics(user), isAuthenticated: true });
+    }
+  },
+
+  /**
+   * Fetch products from Supabase
+   */
+  fetchProducts: async () => {
+    const { data, error } = await supabase
+      .from('products')
+      .select('*')
+      .order('sales_count', { ascending: false });
+
+    if (data && data.length > 0) {
+      const products: Product[] = data.map(p => ({
+        id: p.id,
+        name: p.name,
+        description: p.description || '',
+        price: p.price,
+        commissionRate: p.commission_rate || 0.25,
+        bonusRevenue: p.bonus_revenue || p.price * 0.5,
+        imageUrl: p.image_url || 'https://placehold.co/400',
+        salesCount: p.sales_count || 0,
+        stock: p.stock || 100,
+        isNew: false,
+        rating: 4.5,
+        category: 'health'
+      }));
+      set({ products });
+    }
+  },
+
+  /**
+   * Fetch transactions from Supabase
+   */
+  fetchTransactions: async () => {
+    const { data: { session } } = await supabase.auth.getSession();
+    if (!session?.user) return;
+
+    const { data, error } = await supabase
+      .from('transactions')
+      .select('*')
+      .eq('user_id', session.user.id)
+      .order('created_at', { ascending: false })
+      .limit(50);
+
+    if (data && data.length > 0) {
+      const transactions: Transaction[] = data.map(t => ({
+        id: t.id,
+        userId: t.user_id,
+        date: t.date || new Date(t.created_at).toISOString().split('T')[0],
+        amount: t.amount,
+        type: t.type || 'Direct Sale',
+        status: t.status || 'completed',
+        taxDeducted: t.tax_deducted || 0,
+        hash: t.hash || '',
+        currency: t.currency || 'SHOP',
+        metadata: t.metadata || {}
+      }));
+      set({ transactions });
+    }
+  },
+
+  /**
+   * Fetch all real data from Supabase (products, transactions, team)
+   * FIX: Added error handling for resilient data loading
+   */
+  fetchRealData: async () => {
+    const store = get();
+    try {
+      await Promise.allSettled([
+        store.fetchProducts(),
+        store.fetchTransactions(),
+        store.fetchTeamData()
+      ]).then(results => {
+        results.forEach((result, index) => {
+          if (result.status === 'rejected') {
+            const names = ['fetchProducts', 'fetchTransactions', 'fetchTeamData'];
+            console.error(`[Store] ${names[index]} failed:`, result.reason);
+          }
+        });
+      });
+    } catch (error) {
+      console.error('[Store] fetchRealData failed:', error);
     }
   },
 

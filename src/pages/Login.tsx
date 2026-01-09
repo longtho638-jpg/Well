@@ -18,20 +18,38 @@ export default function Login() {
         e.preventDefault();
         setLoading(true);
         setError('');
+        console.log('[Login] Starting login for:', email);
 
         try {
-            const { error } = await signIn(email, password);
-            // If error exists, it will be returned. If not, useAuth's listener handles the state update.
-            if (error) throw error;
+            console.log('[Login] Calling signIn...');
 
+            // Add timeout to prevent indefinite hang (30s for slow networks)
+            const timeoutPromise = new Promise((_, reject) =>
+                setTimeout(() => reject(new Error('Đăng nhập quá thời gian. Vui lòng kiểm tra kết nối mạng và thử lại.')), 30000)
+            );
+
+            const signInPromise = signIn(email, password);
+            const result = await Promise.race([signInPromise, timeoutPromise]) as any;
+
+            console.log('[Login] signIn result:', { data: result?.data, error: result?.error });
+
+            // If error exists, it will be returned. If not, useAuth's listener handles the state update.
+            if (result?.error) throw result.error;
+
+            console.log('[Login] Success! Navigating to dashboard...');
+            setLoading(false);
             // Navigate to dashboard on success (listener will update store state)
             // Small delay to ensure state updates
             setTimeout(() => navigate('/dashboard'), 500);
 
         } catch (err: any) {
-            console.error('Login failed:', err);
-            setError(err.message || 'Đăng nhập thất bại. Vui lòng kiểm tra lại thông tin.');
-        } finally {
+            console.error('[Login] Login failed:', err);
+            // Better error message for network/fetch errors
+            let errorMessage = err.message || 'Đăng nhập thất bại. Vui lòng kiểm tra lại thông tin.';
+            if (err.message?.includes('fetch') || err.message?.includes('network') || err.message?.includes('ENOTFOUND')) {
+                errorMessage = 'Không thể kết nối đến máy chủ. Vui lòng kiểm tra kết nối mạng và thử lại.';
+            }
+            setError(errorMessage);
             setLoading(false);
         }
     };

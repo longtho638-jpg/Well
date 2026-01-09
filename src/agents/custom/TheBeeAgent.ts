@@ -1,5 +1,6 @@
 import { BaseAgent } from '../core/BaseAgent';
 import { AgentDefinition } from '@/types/agentic';
+import { UserRank } from '@/types';
 
 /**
  * The Bee - Reward Engine Agent.
@@ -69,7 +70,7 @@ export class TheBeeAgent extends BaseAgent {
   /**
    * Execute reward logic.
    */
-  async execute(input: { action: string; transaction?: any; userRank?: string }): Promise<any> {
+  async execute(input: { action: string; transaction?: any; userRank?: UserRank | string }): Promise<any> {
     const { action, transaction, userRank } = input;
 
     const canProceed = await this.checkPolicies(action, input);
@@ -83,7 +84,7 @@ export class TheBeeAgent extends BaseAgent {
       switch (action) {
         case 'processReward':
           if (!transaction) throw new Error('Transaction required for processing');
-          output = this.processReward(transaction, userRank || 'Member');
+          output = this.processReward(transaction, userRank ?? UserRank.CTV);
           break;
 
         default:
@@ -108,14 +109,29 @@ export class TheBeeAgent extends BaseAgent {
 
   /**
    * Calculate and return reward details.
+   * FIX: Now uses UserRank enum for proper rank matching.
+   * 
+   * Reward tiers:
+   * - Base (CTV): 5%
+   * - Mid (DAI_SU - DAI_SU_DIAMOND): 6%
+   * - Top (PHUONG_HOANG - THIEN_LONG): 8%
    */
-  private processReward(transaction: { amount: number; type: string }, rank: string) {
+  private processReward(transaction: { amount: number; type: string }, rank: UserRank | string) {
     // Base rate: 5%
     let rate = 0.05;
 
-    // Rank multipliers (Gamification)
-    if (rank === 'Partner') rate = 0.06; // +1%
-    if (rank === 'Founder Club') rate = 0.08; // +3%
+    // Convert string to number if needed (for backward compatibility)
+    const rankNum = typeof rank === 'number' ? rank : UserRank.CTV;
+
+    // Rank multipliers (Gamification) - Using UserRank enum
+    // DAI_SU (6) to DAI_SU_DIAMOND (3) get 6%
+    if (rankNum <= UserRank.DAI_SU && rankNum >= UserRank.DAI_SU_DIAMOND) {
+      rate = 0.06; // +1%
+    }
+    // PHUONG_HOANG (2) and THIEN_LONG (1) get 8%
+    if (rankNum <= UserRank.PHUONG_HOANG) {
+      rate = 0.08; // +3%
+    }
 
     const rewardAmount = Math.floor(transaction.amount * rate);
 
@@ -129,3 +145,4 @@ export class TheBeeAgent extends BaseAgent {
     };
   }
 }
+

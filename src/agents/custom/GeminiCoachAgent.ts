@@ -85,8 +85,9 @@ export class GeminiCoachAgent extends BaseAgent {
 
     // Initialize Gemini API
     const apiKey = import.meta.env.VITE_GEMINI_API_KEY;
-    if (!apiKey) {
-      console.warn('[GeminiCoachAgent] No API key found. Agent will return fallback responses.');
+    // Only warn in development - production uses fallback by design
+    if (!apiKey && import.meta.env.DEV) {
+      console.debug('[GeminiCoachAgent] No API key - using fallback responses');
     }
     this.genAI = new GoogleGenerativeAI(apiKey || 'dummy-key');
     this.model = this.genAI.getGenerativeModel({ model: 'gemini-2.0-flash-exp' });

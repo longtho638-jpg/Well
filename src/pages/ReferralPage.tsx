@@ -37,7 +37,7 @@ export default function ReferralPage() {
   const [showQRCode, setShowQRCode] = useState(false);
   const qrCodeRef = useRef<HTMLDivElement>(null);
 
-  const referralUrl = `https://${REFERRAL_STATS.referralLink}`;
+  const referralUrl = `https://${user.referralLink || `wellnexus.vn/ref/${user.id}`}`;
   const qrCodeUrl = `https://api.qrserver.com/v1/create-qr-code/?size=400x400&data=${encodeURIComponent(referralUrl)}&margin=20&qzone=2&color=00575A`;
 
   const copyReferralLink = () => {
@@ -496,8 +496,8 @@ export default function ReferralPage() {
           whileTap={{ scale: 0.98 }}
           onClick={() => setSelectedTab('overview')}
           className={`px-8 py-4 font-bold text-lg transition-all relative ${selectedTab === 'overview'
-              ? 'text-primary dark:text-teal-400'
-              : 'text-gray-600 dark:text-slate-400 hover:text-gray-900 dark:hover:text-slate-200'
+            ? 'text-primary dark:text-teal-400'
+            : 'text-gray-600 dark:text-slate-400 hover:text-gray-900 dark:hover:text-slate-200'
             }`}
         >
           Tổng Quan
@@ -514,8 +514,8 @@ export default function ReferralPage() {
           whileTap={{ scale: 0.98 }}
           onClick={() => setSelectedTab('network')}
           className={`px-8 py-4 font-bold text-lg transition-all relative ${selectedTab === 'network'
-              ? 'text-primary dark:text-teal-400'
-              : 'text-gray-600 dark:text-slate-400 hover:text-gray-900 dark:hover:text-slate-200'
+            ? 'text-primary dark:text-teal-400'
+            : 'text-gray-600 dark:text-slate-400 hover:text-gray-900 dark:hover:text-slate-200'
             }`}
         >
           Mạng Lưới ({REFERRALS.length})
