@@ -22,7 +22,7 @@ import { calculatePIT } from './utils/tax';
 import { AgentState, AgentLog, AgentKPI } from './types/agentic';
 import { agentRegistry } from './agents';
 import { supabase } from './lib/supabase';
-import { UserRank } from './types';
+import { UserRank, RANK_NAMES } from './types';
 
 // ============================================================================
 // WEALTH OS CALCULATION ENGINE
@@ -173,9 +173,41 @@ export const useStore = create<AppState>((set, get) => ({
   fetchTeamData: async () => {
     // Implemented in fetchTeamData method below
   },
-  fetchDownlineTree: async (userId: string) => {
-    // Implemented in fetchDownlineTree method below
-    return [];
+  fetchDownlineTree: async (userId: string): Promise<any[]> => {
+    try {
+      // Fetch direct children (F1) from Supabase
+      const { data, error } = await supabase
+        .from('users')
+        .select('id, name, role_id, total_sales, team_volume, avatar_url, created_at')
+        .eq('sponsor_id', userId);
+
+      if (error) {
+        console.error('fetchDownlineTree error:', error);
+        return [];
+      }
+
+      if (!data || data.length === 0) return [];
+
+      // Map to TreeNode structure with recursive children fetch
+      const nodes = await Promise.all(
+        data.map(async (user) => ({
+          id: user.id,
+          name: user.name || 'Unknown',
+          rank: RANK_NAMES[user.role_id as UserRank] || 'CTV',
+          roleId: user.role_id || 8,
+          sales: user.total_sales || 0,
+          teamVolume: user.team_volume || 0,
+          avatarUrl: user.avatar_url,
+          joinDate: user.created_at,
+          children: await get().fetchDownlineTree(user.id) // Recursive
+        }))
+      );
+
+      return nodes;
+    } catch (error) {
+      console.error('fetchDownlineTree exception:', error);
+      return [];
+    }
   },
 
   referrals: REFERRALS,
