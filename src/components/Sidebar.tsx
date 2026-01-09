@@ -1,12 +1,16 @@
 
 import React, { useState } from 'react';
-import { LayoutDashboard, ShoppingBag, Wallet, LogOut, Sparkles, Bot, CheckCircle2, Circle, Users, Share2, Trophy, Heart, Megaphone, Moon, Sun, Activity } from 'lucide-react';
+import { LayoutDashboard, ShoppingBag, Wallet, LogOut, Sparkles, Bot, CheckCircle2, Circle, Users, Share2, Trophy, Heart, Megaphone, Moon, Sun, Activity, Shield } from 'lucide-react';
 import { getCoachAdvice } from '../services/geminiService';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useStore } from '../store';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useTranslation } from '../hooks';
 import { useTheme } from '../context/ThemeContext';
+
+// Admin emails - must match AdminRoute.tsx
+const ADMIN_EMAILS = ['longtho638@gmail.com', 'doanhnhancaotuan@gmail.com'];
+
 
 interface SidebarProps {
   onMobileClose?: () => void;
@@ -21,6 +25,9 @@ export const Sidebar: React.FC<SidebarProps> = ({ onMobileClose }) => {
   const [advice, setAdvice] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
 
+  // Check if current user is admin
+  const isAdmin = ADMIN_EMAILS.includes(user?.email || '') || user?.role === 'admin' || user?.isAdmin === true;
+
   const menuItems = [
     { path: '/dashboard', label: t('nav.dashboard'), icon: LayoutDashboard },
     { path: '/dashboard/marketplace', label: t('nav.marketplace'), icon: ShoppingBag, matches: ['/dashboard/product'] },
@@ -33,6 +40,8 @@ export const Sidebar: React.FC<SidebarProps> = ({ onMobileClose }) => {
     { path: '/dashboard/copilot', label: t('nav.copilot'), icon: Bot, badge: 'AI' },
     { path: '/dashboard/team', label: t('nav.team'), icon: Users },
     { path: '/dashboard/referral', label: t('nav.referral'), icon: Share2 },
+    // Admin menu - only visible to admin users
+    ...(isAdmin ? [{ path: '/admin', label: t('nav.admin'), icon: Shield, badge: 'ADMIN' }] : []),
   ];
 
   const handleNav = (path: string) => {
