@@ -16,9 +16,7 @@ export default defineConfig({
             if (id.includes('react') || id.includes('react-dom') || id.includes('react-router')) {
               return 'vendor-react';
             }
-            if (id.includes('recharts')) {
-              return 'vendor-charts';
-            }
+            // Note: recharts removed from manual chunks due to circular dependency with React
             if (id.includes('firebase')) {
               return 'vendor-firebase';
             }
