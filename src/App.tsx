@@ -45,93 +45,83 @@ const App: React.FC = () => {
     <ThemeProvider>
       <ToastProvider>
         <CursorGlow />
-        <AnimatePresence mode="wait">
-          <motion.div
-            key={location.pathname}
-            initial={{ opacity: 0, scale: 0.98, filter: 'blur(10px)' }}
-            animate={{ opacity: 1, scale: 1, filter: 'blur(0px)' }}
-            exit={{ opacity: 0, scale: 1.02, filter: 'blur(10px)' }}
-            transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
+        <Routes>
+          {/* ============================================================ */}
+          {/* PUBLIC ROUTES: Landing, Auth & Venture Vision */}
+          {/* ============================================================ */}
+          <Route path="/" element={<LandingPage />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/signup" element={<Signup />} />
+          <Route path="/venture" element={<VenturePage />} />
+
+          {/* ============================================================ */}
+          {/* ADMIN ROUTES: Mission Control with Nested Routes (Protected) */}
+          {/* ============================================================ */}
+          <Route path="/admin" element={<AdminRoute><Admin /></AdminRoute>}>
+            <Route index element={<Suspense fallback={<div className="flex items-center justify-center h-screen"><div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#00575A]"></div></div>}><Overview /></Suspense>} />
+            <Route path="cms" element={<Suspense fallback={<div className="flex items-center justify-center h-screen"><div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#00575A]"></div></div>}><CMS /></Suspense>} />
+            <Route path="partners" element={<Suspense fallback={<div className="flex items-center justify-center h-screen"><div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#00575A]"></div></div>}><Partners /></Suspense>} />
+            <Route path="finance" element={<Suspense fallback={<div className="flex items-center justify-center h-screen"><div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#00575A]"></div></div>}><Finance /></Suspense>} />
+            <Route path="policy-engine" element={<Suspense fallback={<div className="flex items-center justify-center h-screen"><div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#00575A]"></div></div>}><PolicyEngine /></Suspense>} />
+            <Route path="orders" element={<Suspense fallback={<div className="flex items-center justify-center h-screen"><div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#00575A]"></div></div>}><OrderManagement /></Suspense>} />
+            <Route path="products" element={<Suspense fallback={<div className="flex items-center justify-center h-screen"><div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#00575A]"></div></div>}><AdminProducts /></Suspense>} />
+          </Route>
+
+          {/* ============================================================ */}
+          {/* PROTECTED ROUTES: Dashboard with AppLayout wrapper */}
+          {/* If authenticated -> Show AppLayout. If not -> Redirect to Landing */}
+          {/* ============================================================ */}
+          <Route
+            path="/dashboard"
+            element={isAuthenticated ? <AppLayout /> : <Navigate to="/" replace />}
           >
-            <Routes location={location}>
-              {/* ============================================================ */}
-              {/* PUBLIC ROUTES: Landing, Auth & Venture Vision */}
-              {/* ============================================================ */}
-              <Route path="/" element={<LandingPage />} />
-              <Route path="/login" element={<Login />} />
-              <Route path="/signup" element={<Signup />} />
-              <Route path="/venture" element={<VenturePage />} />
+            {/* Dashboard Home */}
+            <Route index element={<Dashboard />} />
 
-              {/* ============================================================ */}
-              {/* ADMIN ROUTES: Mission Control with Nested Routes (Protected) */}
-              {/* ============================================================ */}
-              <Route path="/admin" element={<AdminRoute><Admin /></AdminRoute>}>
-                <Route index element={<Suspense fallback={<div className="flex items-center justify-center h-screen"><div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#00575A]"></div></div>}><Overview /></Suspense>} />
-                <Route path="cms" element={<Suspense fallback={<div className="flex items-center justify-center h-screen"><div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#00575A]"></div></div>}><CMS /></Suspense>} />
-                <Route path="partners" element={<Suspense fallback={<div className="flex items-center justify-center h-screen"><div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#00575A]"></div></div>}><Partners /></Suspense>} />
-                <Route path="finance" element={<Suspense fallback={<div className="flex items-center justify-center h-screen"><div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#00575A]"></div></div>}><Finance /></Suspense>} />
-                <Route path="policy-engine" element={<Suspense fallback={<div className="flex items-center justify-center h-screen"><div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#00575A]"></div></div>}><PolicyEngine /></Suspense>} />
-                <Route path="orders" element={<Suspense fallback={<div className="flex items-center justify-center h-screen"><div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#00575A]"></div></div>}><OrderManagement /></Suspense>} />
-                <Route path="products" element={<Suspense fallback={<div className="flex items-center justify-center h-screen"><div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#00575A]"></div></div>}><AdminProducts /></Suspense>} />
-              </Route>
+            {/* Marketplace & Products */}
+            <Route path="marketplace" element={<Marketplace />} />
+            <Route path="product/:id" element={<ProductDetail />} />
 
-              {/* ============================================================ */}
-              {/* PROTECTED ROUTES: Dashboard with AppLayout wrapper */}
-              {/* If authenticated -> Show AppLayout. If not -> Redirect to Landing */}
-              {/* ============================================================ */}
-              <Route
-                path="/dashboard"
-                element={isAuthenticated ? <AppLayout /> : <Navigate to="/" replace />}
-              >
-                {/* Dashboard Home */}
-                <Route index element={<Dashboard />} />
+            {/* Commission Wallet */}
+            <Route
+              path="wallet"
+              element={
+                <div className="space-y-6">
+                  <h2 className="text-2xl md:text-3xl font-bold text-[#1F2937]">Commission Wallet</h2>
+                  <CommissionWallet />
+                </div>
+              }
+            />
 
-                {/* Marketplace & Products */}
-                <Route path="marketplace" element={<Marketplace />} />
-                <Route path="product/:id" element={<ProductDetail />} />
+            {/* Phase 2: Growth Features */}
+            <Route path="copilot" element={<CopilotPage />} />
+            <Route path="team" element={<LeaderDashboard />} />
+            <Route path="referral" element={<ReferralPage />} />
+            <Route path="health-coach" element={<HealthCoach />} />
+            <Route path="health-check" element={<HealthCheck />} />
+            <Route path="leaderboard" element={<Leaderboard />} />
+            <Route path="marketing-tools" element={<MarketingTools />} />
+            <Route path="agents" element={<AgentDashboard />} />
+          </Route>
 
-                {/* Commission Wallet */}
-                <Route
-                  path="wallet"
-                  element={
-                    <div className="space-y-6">
-                      <h2 className="text-2xl md:text-3xl font-bold text-[#1F2937]">Commission Wallet</h2>
-                      <CommissionWallet />
-                    </div>
-                  }
-                />
+          {/* ============================================================ */}
+          {/* LEGACY REDIRECTS: Old paths redirect to new structure */}
+          {/* ============================================================ */}
+          <Route path="/marketplace" element={<Navigate to="/dashboard/marketplace" replace />} />
+          <Route path="/wallet" element={<Navigate to="/dashboard/wallet" replace />} />
+          <Route path="/product/:id" element={<Navigate to="/dashboard/product/:id" replace />} />
 
-                {/* Phase 2: Growth Features */}
-                <Route path="copilot" element={<CopilotPage />} />
-                <Route path="team" element={<LeaderDashboard />} />
-                <Route path="referral" element={<ReferralPage />} />
-                <Route path="health-coach" element={<HealthCoach />} />
-                <Route path="health-check" element={<HealthCheck />} />
-                <Route path="leaderboard" element={<Leaderboard />} />
-                <Route path="marketing-tools" element={<MarketingTools />} />
-                <Route path="agents" element={<AgentDashboard />} />
-              </Route>
+          {/* ============================================================ */}
+          {/* DIAGNOSTIC ROUTES */}
+          {/* ============================================================ */}
+          <Route path="/test" element={<TestPage />} />
+          <Route path="/debugger" element={<DebuggerPage />} />
 
-              {/* ============================================================ */}
-              {/* LEGACY REDIRECTS: Old paths redirect to new structure */}
-              {/* ============================================================ */}
-              <Route path="/marketplace" element={<Navigate to="/dashboard/marketplace" replace />} />
-              <Route path="/wallet" element={<Navigate to="/dashboard/wallet" replace />} />
-              <Route path="/product/:id" element={<Navigate to="/dashboard/product/:id" replace />} />
-
-              {/* ============================================================ */}
-              {/* DIAGNOSTIC ROUTES */}
-              {/* ============================================================ */}
-              <Route path="/test" element={<TestPage />} />
-              <Route path="/debugger" element={<DebuggerPage />} />
-
-              {/* ============================================================ */}
-              {/* CATCH-ALL: Unknown routes redirect to home */}
-              {/* ============================================================ */}
-              <Route path="*" element={<Navigate to="/" replace />} />
-            </Routes>
-          </motion.div>
-        </AnimatePresence>
+          {/* ============================================================ */}
+          {/* CATCH-ALL: Unknown routes redirect to home */}
+          {/* ============================================================ */}
+          <Route path="*" element={<Navigate to="/" replace />} />
+        </Routes>
       </ToastProvider>
     </ThemeProvider>
   );
