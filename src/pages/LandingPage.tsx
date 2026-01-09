@@ -298,9 +298,9 @@ export default function LandingPage() {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: 0.1 }}
             >
-              The Operating System <br />
+              {CONTENT.hero.headline} <br />
               <span className="text-transparent bg-clip-text bg-gradient-to-r from-white to-white/50">
-                For Your Health Wealth.
+                {CONTENT.hero.headlineAccent}
               </span>
             </motion.h1>
 
@@ -310,8 +310,7 @@ export default function LandingPage() {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: 0.2 }}
             >
-              WellNexus combines AI-driven health coaching with a powerful community commerce engine.
-              Build your empire on the foundation of well-being.
+              {CONTENT.hero.subheadline}
             </motion.p>
 
             <motion.div
@@ -321,10 +320,10 @@ export default function LandingPage() {
               transition={{ duration: 0.5, delay: 0.3 }}
             >
               <button onClick={handleJoin} className="btn-aura">
-                Start Building
+                {CONTENT.hero.primaryCta}
               </button>
               <button className="btn-aura-outline">
-                View Roadmap
+                {CONTENT.hero.secondaryCta}
               </button>
             </motion.div>
           </div>
@@ -336,8 +335,8 @@ export default function LandingPage() {
                 <div className="w-12 h-12 rounded-full bg-cyan-500/10 flex items-center justify-center mb-4 border border-cyan-500/20">
                   <Sparkles className="w-6 h-6 text-cyan-400" />
                 </div>
-                <h3 className="text-2xl font-bold text-white mb-2">AI Health Coach</h3>
-                <p className="text-zinc-400">Personalized guidance powered by Gemini 1.5 Pro. Your 24/7 wellness companion.</p>
+                <h3 className="text-2xl font-bold text-white mb-2">Huấn Luyện Viên AI</h3>
+                <p className="text-zinc-400">Hướng dẫn cá nhân hóa bởi Gemini 1.5 Pro. Đồng hành sức khỏe 24/7.</p>
               </div>
               <div className="mt-8 w-full h-32 bg-gradient-to-r from-cyan-500/10 to-transparent rounded-xl border border-white/5 relative overflow-hidden">
                 <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-20"></div>
@@ -348,26 +347,26 @@ export default function LandingPage() {
               <div className="w-12 h-12 rounded-full bg-violet-500/10 flex items-center justify-center mb-4 border border-violet-500/20">
                 <TrendingUp className="w-6 h-6 text-violet-400" />
               </div>
-              <h3 className="text-2xl font-bold text-white mb-2">Passive Income</h3>
-              <p className="text-zinc-400 mb-8">Automated commission tracking and multi-tier rewards.</p>
+              <h3 className="text-2xl font-bold text-white mb-2">Thu Nhập Thụ Động</h3>
+              <p className="text-zinc-400 mb-8">Theo dõi hoa hồng tự động và phần thưởng đa cấp.</p>
               <div className="text-4xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-violet-400 to-pink-400">
                 $12,450
               </div>
-              <div className="text-sm text-zinc-500 mt-1">Avg. Partner Earnings</div>
+              <div className="text-sm text-zinc-500 mt-1">Thu nhập TB Partner</div>
             </BentoCard>
 
             <BentoCard colSpan={1} className="p-8 min-h-[300px] bg-zinc-900/40">
               <div className="w-12 h-12 rounded-full bg-pink-500/10 flex items-center justify-center mb-4 border border-pink-500/20">
                 <Users className="w-6 h-6 text-pink-400" />
               </div>
-              <h3 className="text-2xl font-bold text-white mb-2">Community</h3>
-              <p className="text-zinc-400">Join 1,000+ founders building the future of wellness.</p>
+              <h3 className="text-2xl font-bold text-white mb-2">Cộng Đồng</h3>
+              <p className="text-zinc-400">Tham gia cùng 1,000+ founders xây dựng tương lai sức khỏe.</p>
             </BentoCard>
 
             <BentoCard colSpan={2} className="p-8 min-h-[300px] bg-zinc-900/40 flex items-center justify-between">
               <div className="max-w-md">
-                <h3 className="text-2xl font-bold text-white mb-2">Global Expansion</h3>
-                <p className="text-zinc-400">Ready for SEA market domination. Multi-currency, multi-language support built-in.</p>
+                <h3 className="text-2xl font-bold text-white mb-2">Mở Rộng Toàn Cầu</h3>
+                <p className="text-zinc-400">Sẵn sàng chinh phục thị trường SEA. Hỗ trợ đa tiền tệ, đa ngôn ngữ.</p>
               </div>
               <Globe className="w-32 h-32 text-zinc-800" />
             </BentoCard>
