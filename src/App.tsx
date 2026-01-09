@@ -75,7 +75,15 @@ const App: React.FC = () => {
           {/* ============================================================ */}
           <Route
             path="/dashboard"
-            element={isAuthenticated ? <AppLayout /> : <Navigate to="/" replace />}
+            element={
+              isAuthenticated ? (
+                <Suspense fallback={<div className="flex items-center justify-center h-screen bg-gradient-to-br from-gray-50 to-white dark:from-slate-900 dark:to-slate-800"><div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#00575A]"></div></div>}>
+                  <AppLayout />
+                </Suspense>
+              ) : (
+                <Navigate to="/" replace />
+              )
+            }
           >
             {/* Dashboard Home */}
             <Route index element={<Dashboard />} />
