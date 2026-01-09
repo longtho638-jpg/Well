@@ -78,7 +78,7 @@ const contentTemplates: ContentTemplate[] = [
 ];
 
 export default function MarketingTools() {
-  const t = useTranslation();
+  const { t } = useTranslation();
   const { user, landingPageTemplates, userLandingPages, createLandingPage, publishLandingPage } = useStore();
   const [giftCards, setGiftCards] = useState<GiftCard[]>([
     {

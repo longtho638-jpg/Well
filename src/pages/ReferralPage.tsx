@@ -30,7 +30,7 @@ import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContai
 import { useTranslation } from '@/hooks';
 
 export default function ReferralPage() {
-  const t = useTranslation();
+  const { t } = useTranslation();
   const { user } = useStore();
   const [copiedLink, setCopiedLink] = useState(false);
   const [selectedTab, setSelectedTab] = useState<'overview' | 'network'>('overview');

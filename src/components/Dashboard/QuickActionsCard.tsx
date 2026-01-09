@@ -7,7 +7,7 @@ import { formatVND } from '@/utils/format';
 import { useToast } from '@/components/ui/Toast';
 
 export const QuickActionsCard: React.FC = () => {
-  const t = useTranslation();
+  const { t } = useTranslation();
   const { user } = useStore();
 
   const { showToast } = useToast();

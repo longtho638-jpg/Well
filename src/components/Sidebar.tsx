@@ -13,7 +13,7 @@ interface SidebarProps {
 }
 
 export const Sidebar: React.FC<SidebarProps> = ({ onMobileClose }) => {
-  const t = useTranslation();
+  const { t } = useTranslation();
   const { user, quests, logout } = useStore();
   const navigate = useNavigate();
   const location = useLocation();

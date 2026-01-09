@@ -12,7 +12,7 @@ interface Props {
 }
 
 export const StatsGrid: React.FC<Props> = ({ user }) => {
-  const t = useTranslation();
+  const { t } = useTranslation();
 
   // Pre-calculate tax for the estimated bonus to show transparently
   const estimatedBonus = user.estimatedBonus || 0;

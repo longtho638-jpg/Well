@@ -34,7 +34,7 @@ interface CartItem {
 }
 
 export const Marketplace: React.FC = () => {
-  const t = useTranslation();
+  const { t } = useTranslation();
   const { products, user, redemptionItems, redeemItem } = useStore();
   const [searchTerm, setSearchTerm] = useState('');
   const [aiSuggestion, setAiSuggestion] = useState<{ text: string; productIds: string[] } | null>(null);

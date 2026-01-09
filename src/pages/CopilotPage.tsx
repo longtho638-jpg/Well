@@ -16,7 +16,7 @@ interface ChatSession {
 }
 
 export default function CopilotPage() {
-  const t = useTranslation();
+  const { t } = useTranslation();
   const { user } = useStore();
 
   // Chat history state

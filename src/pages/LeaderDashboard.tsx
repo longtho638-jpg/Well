@@ -33,7 +33,7 @@ import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContaine
 import { useTranslation } from '@/hooks';
 
 export default function LeaderDashboard() {
-  const t = useTranslation();
+  const { t } = useTranslation();
   const { user, teamInsights, teamMembers, teamMetrics, sendReminder, sendGift, fetchTeamData } = useStore();
   const [searchTerm, setSearchTerm] = useState('');
   const [filterRank, setFilterRank] = useState<UserRank | 'all'>('all');

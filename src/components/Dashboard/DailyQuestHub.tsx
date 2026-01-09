@@ -95,7 +95,7 @@ const TokenFlyAnimation: React.FC<TokenFlyAnimationProps> = ({ startX, startY, o
 };
 
 export const DailyQuestHub: React.FC = () => {
-  const t = useTranslation();
+  const { t } = useTranslation();
   const navigate = useNavigate();
   const [quests, setQuests] = useState<DailyQuest[]>(() => getDailyQuestsData(t));
   const [flyingTokens, setFlyingTokens] = useState<Array<{ id: string; x: number; y: number }>>([]);

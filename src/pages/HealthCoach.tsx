@@ -86,7 +86,7 @@ const MOCK_PATIENT: PatientProfile = {
 };
 
 export default function HealthCoach() {
-  const t = useTranslation();
+  const { t } = useTranslation();
   const { user, simulateOrder } = useStore();
   const { executeAgent } = useAgentOS();
 

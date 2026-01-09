@@ -119,7 +119,7 @@ const MedalIcon = ({ rank }: { rank: number }) => {
 };
 
 export default function Leaderboard() {
-  const t = useTranslation();
+  const { t } = useTranslation();
   const { user } = useStore();
   const [showConfetti, setShowConfetti] = useState(true);
   const [leaderboardData, setLeaderboardData] = useState<LeaderboardEntry[]>([]);

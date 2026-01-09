@@ -123,7 +123,7 @@ const getQuizQuestions = (t: (key: string) => string): Question[] => [
 ];
 
 export default function HealthCheck() {
-  const t = useTranslation();
+  const { t } = useTranslation();
   const { simulateOrder } = useStore();
   const [currentStep, setCurrentStep] = useState(0);
   const [answers, setAnswers] = useState<Record<string, string>>({});

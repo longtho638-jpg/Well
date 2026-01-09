@@ -1,13 +1,15 @@
 import { vi, type TranslationKeys } from '@/locales/vi';
+import { en } from '@/locales/en';
+import { useLanguage } from '@/context/LanguageContext';
 
 /**
- * Simple i18n hook for WellNexus
- * Provides translation function with nested key support and variable interpolation
+ * Multi-language i18n hook for WellNexus
+ * Supports Vietnamese (vi) and English (en) with localStorage persistence
  *
  * @example
- * const t = useTranslation();
- * t('dashboard.welcome', { name: 'John' }) // "Chào mừng trở lại, John!"
- * t('common.loading') // "Đang tải..."
+ * const { t, lang, setLang } = useTranslation();
+ * t('dashboard.welcome', { name: 'John' })
+ * setLang('en') // Switch to English
  */
 
 type NestedKeyOf<ObjectType extends object> = {
@@ -20,9 +22,10 @@ type TranslationKey = NestedKeyOf<TranslationKeys>;
 
 type Variables = Record<string, string | number>;
 
+const locales = { vi, en };
+
 /**
  * Get nested value from object using dot notation
- * @example getNestedValue(vi, 'dashboard.welcome') // Returns the translation string
  */
 function getNestedValue(obj: Record<string, unknown>, path: string): string {
   const keys = path.split('.');
@@ -42,8 +45,6 @@ function getNestedValue(obj: Record<string, unknown>, path: string): string {
 
 /**
  * Replace variables in translation string
- * Supports {variableName} syntax
- * @example interpolate("Hello, {name}!", { name: "John" }) // "Hello, John!"
  */
 function interpolate(text: string, variables?: Variables): string {
   if (!variables) return text;
@@ -55,25 +56,23 @@ function interpolate(text: string, variables?: Variables): string {
 }
 
 /**
- * Translation hook
- * @returns Translation function
+ * Translation hook with language switching
  */
 export function useTranslation() {
-  /**
-   * Translate function
-   * @param key - Translation key using dot notation (e.g., 'dashboard.welcome')
-   * @param variables - Optional variables for interpolation
-   * @returns Translated string with variables replaced
-   */
+  const { lang, setLang } = useLanguage();
+  const translations = locales[lang];
+
   const t = (key: TranslationKey, variables?: Variables): string => {
-    const translation = getNestedValue(vi, key);
+    const translation = getNestedValue(translations, key);
     return interpolate(translation, variables);
   };
 
-  return t;
+  return { t, lang, setLang };
 }
 
-// Export standalone function for use outside React components
+/**
+ * Standalone translate function (uses default vi)
+ */
 export function translate(key: TranslationKey, variables?: Variables): string {
   const translation = getNestedValue(vi, key);
   return interpolate(translation, variables);
@@ -81,6 +80,6 @@ export function translate(key: TranslationKey, variables?: Variables): string {
 
 /**
  * Type-safe translation object for direct access
- * Use this when you need the entire translation object
  */
 export const translations = vi;
+

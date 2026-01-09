@@ -25,7 +25,7 @@ import { useTranslation } from '@/hooks';
 // ============================================================
 
 const Admin: React.FC = () => {
-  const t = useTranslation();
+  const { t } = useTranslation();
   const navigate = useNavigate();
   const location = useLocation();
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);

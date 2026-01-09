@@ -11,7 +11,7 @@ interface Props {
 }
 
 export const HeroCard: React.FC<Props> = ({ user }) => {
-  const t = useTranslation();
+  const { t } = useTranslation();
   const [copied, setCopied] = useState(false);
 
   // Gamification Logic: Founder Club Quest

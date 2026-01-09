@@ -44,7 +44,7 @@ const AnimatedCounter: React.FC<{ value: number; decimals?: number }> = ({
 };
 
 export const Wallet: React.FC = () => {
-  const t = useTranslation();
+  const { t } = useTranslation();
   const { user, transactions } = useStore();
   const [copiedHash, setCopiedHash] = useState<string | null>(null);
   const [filter, setFilter] = useState<'all' | 'SHOP' | 'GROW'>('all');

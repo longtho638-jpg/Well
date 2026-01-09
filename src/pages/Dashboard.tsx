@@ -149,7 +149,7 @@ const generateRandomActivity = (t: (key: string, vars?: any) => string): LiveAct
 
 // Live Activities Ticker Component
 const LiveActivitiesTicker: React.FC = () => {
-  const t = useTranslation();
+  const { t } = useTranslation();
   const [activities, setActivities] = useState<LiveActivity[]>([]);
 
   useEffect(() => {
@@ -315,7 +315,7 @@ const LiveActivitiesTicker: React.FC = () => {
 };
 
 export const Dashboard: React.FC = () => {
-  const t = useTranslation();
+  const { t } = useTranslation();
   const { user, revenueData, products, transactions } = useStore();
 
   // Prepare Wallet Data for Stats
