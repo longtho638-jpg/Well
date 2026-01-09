@@ -86,32 +86,34 @@ const App: React.FC = () => {
             }
           >
             {/* Dashboard Home */}
-            <Route index element={<Dashboard />} />
+            <Route index element={<Suspense fallback={<div className="flex items-center justify-center h-96"><div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#00575A]"></div></div>}><Dashboard /></Suspense>} />
 
             {/* Marketplace & Products */}
-            <Route path="marketplace" element={<Marketplace />} />
-            <Route path="product/:id" element={<ProductDetail />} />
+            <Route path="marketplace" element={<Suspense fallback={<div className="flex items-center justify-center h-96"><div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#00575A]"></div></div>}><Marketplace /></Suspense>} />
+            <Route path="product/:id" element={<Suspense fallback={<div className="flex items-center justify-center h-96"><div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#00575A]"></div></div>}><ProductDetail /></Suspense>} />
 
             {/* Commission Wallet */}
             <Route
               path="wallet"
               element={
-                <div className="space-y-6">
-                  <h2 className="text-2xl md:text-3xl font-bold text-[#1F2937]">Commission Wallet</h2>
-                  <CommissionWallet />
-                </div>
+                <Suspense fallback={<div className="flex items-center justify-center h-96"><div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#00575A]"></div></div>}>
+                  <div className="space-y-6">
+                    <h2 className="text-2xl md:text-3xl font-bold text-[#1F2937]">Commission Wallet</h2>
+                    <CommissionWallet />
+                  </div>
+                </Suspense>
               }
             />
 
             {/* Phase 2: Growth Features */}
-            <Route path="copilot" element={<CopilotPage />} />
-            <Route path="team" element={<LeaderDashboard />} />
-            <Route path="referral" element={<ReferralPage />} />
-            <Route path="health-coach" element={<HealthCoach />} />
-            <Route path="health-check" element={<HealthCheck />} />
-            <Route path="leaderboard" element={<Leaderboard />} />
-            <Route path="marketing-tools" element={<MarketingTools />} />
-            <Route path="agents" element={<AgentDashboard />} />
+            <Route path="copilot" element={<Suspense fallback={<div className="flex items-center justify-center h-96"><div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#00575A]"></div></div>}><CopilotPage /></Suspense>} />
+            <Route path="team" element={<Suspense fallback={<div className="flex items-center justify-center h-96"><div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#00575A]"></div></div>}><LeaderDashboard /></Suspense>} />
+            <Route path="referral" element={<Suspense fallback={<div className="flex items-center justify-center h-96"><div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#00575A]"></div></div>}><ReferralPage /></Suspense>} />
+            <Route path="health-coach" element={<Suspense fallback={<div className="flex items-center justify-center h-96"><div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#00575A]"></div></div>}><HealthCoach /></Suspense>} />
+            <Route path="health-check" element={<Suspense fallback={<div className="flex items-center justify-center h-96"><div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#00575A]"></div></div>}><HealthCheck /></Suspense>} />
+            <Route path="leaderboard" element={<Suspense fallback={<div className="flex items-center justify-center h-96"><div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#00575A]"></div></div>}><Leaderboard /></Suspense>} />
+            <Route path="marketing-tools" element={<Suspense fallback={<div className="flex items-center justify-center h-96"><div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#00575A]"></div></div>}><MarketingTools /></Suspense>} />
+            <Route path="agents" element={<Suspense fallback={<div className="flex items-center justify-center h-96"><div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#00575A]"></div></div>}><AgentDashboard /></Suspense>} />
           </Route>
 
           {/* ============================================================ */}
