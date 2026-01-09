@@ -1,26 +1,29 @@
 import React, { lazy, Suspense } from 'react';
 import { Routes, Route, Navigate, useLocation } from 'react-router-dom';
 import { AppLayout } from './components/AppLayout';
-import { Dashboard } from './pages/Dashboard';
-import { Marketplace } from './pages/Marketplace';
-import { ProductDetail } from './pages/ProductDetail';
-import CommissionWallet from './components/CommissionWallet';
 import LandingPage from './pages/LandingPage';
-import VenturePage from './pages/VenturePage';
-import CopilotPage from './pages/CopilotPage';
-import LeaderDashboard from './pages/LeaderDashboard';
-import ReferralPage from './pages/ReferralPage';
-import HealthCoach from './pages/HealthCoach';
-import HealthCheck from './pages/HealthCheck';
-import Leaderboard from './pages/Leaderboard';
-import MarketingTools from './pages/MarketingTools';
-import Admin from './pages/Admin';
 import Login from './pages/Login';
 import Signup from './pages/Signup';
-import TestPage from './pages/TestPage';
-import DebuggerPage from './pages/DebuggerPage';
 import { AdminRoute } from './components/AdminRoute';
 
+// Code splitting: Lazy load pages for better performance
+// Named exports need special handling
+const Dashboard = lazy(() => import('./pages/Dashboard').then(m => ({ default: m.Dashboard })));
+const Marketplace = lazy(() => import('./pages/Marketplace').then(m => ({ default: m.Marketplace })));
+const ProductDetail = lazy(() => import('./pages/ProductDetail').then(m => ({ default: m.ProductDetail })));
+const CommissionWallet = lazy(() => import('./components/CommissionWallet'));
+const VenturePage = lazy(() => import('./pages/VenturePage'));
+const CopilotPage = lazy(() => import('./pages/CopilotPage'));
+const LeaderDashboard = lazy(() => import('./pages/LeaderDashboard'));
+const ReferralPage = lazy(() => import('./pages/ReferralPage'));
+const HealthCoach = lazy(() => import('./pages/HealthCoach'));
+const HealthCheck = lazy(() => import('./pages/HealthCheck'));
+const Leaderboard = lazy(() => import('./pages/Leaderboard'));
+const MarketingTools = lazy(() => import('./pages/MarketingTools'));
+const Admin = lazy(() => import('./pages/Admin'));
+const TestPage = lazy(() => import('./pages/TestPage'));
+const DebuggerPage = lazy(() => import('./pages/DebuggerPage'));
+const AgentDashboard = lazy(() => import('./pages/AgentDashboard'));
 // Code splitting: Lazy load Admin pages for better performance
 const Overview = lazy(() => import('./pages/Admin/Overview'));
 const CMS = lazy(() => import('./pages/Admin/CMS'));
@@ -30,7 +33,6 @@ const PolicyEngine = lazy(() => import('./pages/Admin/PolicyEngine'));
 const OrderManagement = lazy(() => import('./pages/Admin/OrderManagement'));
 const AdminProducts = lazy(() => import('./pages/Admin/Products'));
 
-import AgentDashboard from './pages/AgentDashboard';
 import { useStore } from './store';
 import { ThemeProvider } from './context/ThemeContext';
 import { ToastProvider } from './components/ui/Toast';
