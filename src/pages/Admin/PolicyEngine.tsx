@@ -147,7 +147,8 @@ const PolicyEngine: React.FC = () => {
 
       setLastSaved(new Date().toLocaleTimeString('vi-VN'));
       alert('✅ Policy Configuration Saved Successfully! Changes are now live.');
-    } catch (error: any) {
+    } catch (err) {
+      const error = err as Error;
       console.error('Error saving policy config:', error);
       alert(`❌ Failed to save configuration: ${error.message}`);
     } finally {

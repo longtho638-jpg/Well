@@ -88,7 +88,8 @@ const AddMemberModal: React.FC<{
             showToast(`Added ${formData.name} to the team!`, 'success');
             onSuccess();
             onClose();
-        } catch (error: any) {
+        } catch (err) {
+            const error = err as Error;
             console.error('Error adding member:', error);
             showToast(error.message || 'Failed to add member', 'error');
         } finally {
