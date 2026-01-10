@@ -38,7 +38,8 @@ export function useAgent(): AgentState & AgentActions {
       );
 
       setAdvice(coachAdvice);
-    } catch (err: any) {
+    } catch (e) {
+      const err = e as Error;
       console.error('Error getting coach advice:', err);
       setError(err.message || 'Failed to get advice');
       setAdvice('Keep pushing forward! You\'re on the right track. 🚀');
@@ -80,7 +81,8 @@ export function useAgent(): AgentState & AgentActions {
       // Call AI for deeper analysis
       const isCompliant = await checkCompliance(content);
       return isCompliant;
-    } catch (err: any) {
+    } catch (e) {
+      const err = e as Error;
       console.error('Error checking compliance:', err);
       setError(err.message || 'Failed to check compliance');
       // Default to compliant on error

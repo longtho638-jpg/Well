@@ -43,7 +43,8 @@ export default function Signup() {
             // For now, assuming auto-login or redirect to dashboard
             setTimeout(() => navigate('/dashboard'), 500);
 
-        } catch (err: any) {
+        } catch (e) {
+            const err = e as Error;
             console.error('Signup failed:', err);
             setError(err.message || 'Đăng ký thất bại. Vui lòng thử lại.');
         } finally {

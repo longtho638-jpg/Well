@@ -84,7 +84,8 @@ export function useWallet(userId: string | null): WalletState & WalletActions {
     try {
       const txs = await walletAPI.getTransactions(userId);
       setTransactions(txs);
-    } catch (err: any) {
+    } catch (e) {
+      const err = e as Error;
       console.error('Error loading transactions:', err);
       setError(err.message || 'Failed to load transactions');
     }
@@ -133,7 +134,8 @@ export function useWallet(userId: string | null): WalletState & WalletActions {
 
       // Refresh transactions to show new payout request
       await refreshTransactions();
-    } catch (err: any) {
+    } catch (e) {
+      const err = e as Error;
       console.error('Payout request error:', err);
       setError(err.message || 'Failed to request payout');
       throw err;
