@@ -146,6 +146,23 @@ export default function Login() {
                                 </>
                             )}
                         </button>
+
+                        {/* Demo Login Button */}
+                        <button
+                            type="button"
+                            onClick={() => {
+                                setEmail('demo@wellnexus.vn');
+                                setPassword('demo123');
+                                setTimeout(() => {
+                                    const form = document.querySelector('form');
+                                    form?.dispatchEvent(new Event('submit', { bubbles: true, cancelable: true }));
+                                }, 100);
+                            }}
+                            disabled={loading}
+                            className="w-full border border-teal-500/30 text-teal-400 hover:bg-teal-500/10 font-medium py-3 rounded-xl flex items-center justify-center gap-2 transition-all disabled:opacity-50"
+                        >
+                            🚀 Try Demo
+                        </button>
                     </form>
                 </div>
 

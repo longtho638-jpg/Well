@@ -2,7 +2,10 @@ import { useEffect } from 'react';
 import { useStore } from '@/store';
 import { supabase, isSupabaseConfigured } from '@/lib/supabase';
 
-// Mock user for development without Supabase
+// Demo email for testing (works even in production)
+const DEMO_EMAIL = 'demo@wellnexus.vn';
+
+// Mock user for development/demo mode
 const MOCK_USER = {
   id: 'mock-dev-user-001',
   name: 'Dev User',
@@ -102,6 +105,14 @@ export function useAuth() {
 
   return {
     signIn: async (email: string, password: string) => {
+      // DEMO MODE: Allow demo login even in production
+      if (email.toLowerCase() === DEMO_EMAIL) {
+        console.log('[useAuth] Demo mode - logging in as demo user');
+        setUser({ ...MOCK_USER, email: DEMO_EMAIL } as any);
+        setIsAuthenticated(true);
+        return { data: { user: MOCK_USER, session: { access_token: 'demo-token' } }, error: null };
+      }
+
       // DEV MODE: Return mock success when Supabase not configured
       if (!isSupabaseConfigured()) {
         console.log('[useAuth] Dev mode - using mock login for:', email);
