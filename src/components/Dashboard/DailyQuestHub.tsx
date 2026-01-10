@@ -12,8 +12,8 @@ import {
   Target,
   TrendingUp
 } from 'lucide-react';
-import { formatNumber } from '../../utils/format';
-import { useTranslation } from '../../hooks';
+import { formatNumber } from '@/utils/format';
+import { useTranslation } from '@/hooks';
 
 // Daily Quest Interface with navigation
 export interface DailyQuest {

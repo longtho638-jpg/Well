@@ -15,16 +15,6 @@ export const AppLayout: React.FC = () => {
   const { user } = useStore();
   const location = useLocation();
 
-  // DEBUG: Log route changes to trace routing issues
-  useEffect(() => {
-    console.log('[AppLayout] ROUTE DEBUG:', {
-      pathname: location.pathname,
-      search: location.search,
-      key: location.key,
-      timestamp: new Date().toISOString()
-    });
-  }, [location]);
-
   // Close mobile menu on escape key
   useEffect(() => {
     const handleEscape = (e: KeyboardEvent) => {
