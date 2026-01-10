@@ -35,7 +35,7 @@ export const LiveConsole: React.FC = () => {
                 timestamp: new Date().toLocaleTimeString('en-US', { hour12: false, hour: '2-digit', minute: '2-digit', second: '2-digit' }) + '.' + Math.floor(Math.random() * 999),
                 agent: randomActivity.agent,
                 action: randomActivity.action,
-                status: randomActivity.status as any,
+                status: randomActivity.status as LogEntry['status'],
                 message: randomActivity.message
             };
 
@@ -115,7 +115,7 @@ export const LiveConsole: React.FC = () => {
                                 </span>
                                 <span className="text-teal-300/70 mr-2">::{log.action}</span>
                                 <span className={`${log.status === 'error' ? 'text-red-400' :
-                                        log.status === 'warning' ? 'text-yellow-400' : 'text-teal-100'
+                                    log.status === 'warning' ? 'text-yellow-400' : 'text-teal-100'
                                     }`}>
                                     {log.message}
                                 </span>

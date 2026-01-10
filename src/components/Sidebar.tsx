@@ -11,6 +11,13 @@ import { useTheme } from '../context/ThemeContext';
 // Admin emails - must match AdminRoute.tsx
 const ADMIN_EMAILS = ['longtho638@gmail.com', 'doanhnhancaotuan@gmail.com'];
 
+interface MenuItem {
+  path: string;
+  label: string;
+  icon: React.ComponentType<{ className?: string }>;
+  matches?: string[];
+  badge?: string;
+}
 
 interface SidebarProps {
   onMobileClose?: () => void;
@@ -28,7 +35,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ onMobileClose }) => {
   // Check if current user is admin
   const isAdmin = ADMIN_EMAILS.includes(user?.email || '') || user?.role === 'admin' || user?.isAdmin === true;
 
-  const menuItems = [
+  const menuItems: MenuItem[] = [
     { path: '/dashboard', label: t('nav.dashboard'), icon: LayoutDashboard },
     { path: '/dashboard/marketplace', label: t('nav.marketplace'), icon: ShoppingBag, matches: ['/dashboard/product'] },
     { path: '/dashboard/wallet', label: t('nav.wallet'), icon: Wallet },
@@ -110,10 +117,10 @@ export const Sidebar: React.FC<SidebarProps> = ({ onMobileClose }) => {
             >
               <Icon className={`w-5 h-5 transition-colors ${isActive ? 'text-emerald-400' : 'text-zinc-400 group-hover:text-zinc-300'}`} aria-hidden="true" />
               <span className="flex-1 text-left">{item.label}</span>
-              {(item as any).badge && (
+              {item.badge && (
                 <span className={`text-xs px-2 py-0.5 rounded-full font-bold ${isActive ? 'bg-emerald-500/20 text-emerald-300' : 'bg-zinc-800 text-zinc-400'
                   }`}>
-                  {(item as any).badge}
+                  {item.badge}
                 </span>
               )}
             </button>
