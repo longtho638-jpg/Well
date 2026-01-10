@@ -15,6 +15,37 @@ import { supabase } from '@/lib/supabase';
  * - 🆕 Database-backed configuration (no manual redeployment needed)
  */
 
+interface PolicyConfig {
+  commissions?: {
+    retailComm?: number;
+    agencyBonus?: number;
+    elitePool?: number;
+  };
+  rules?: {
+    activationThreshold?: number;
+    whiteLabelGMV?: number;
+    whiteLabelPartners?: number;
+  };
+  beeAgentPolicy?: {
+    ctvCommission?: number;
+    startupCommission?: number;
+    sponsorBonus?: number;
+    rankUpThreshold?: number;
+  };
+  rankUpgrades?: RankUpgrade[];
+}
+
+interface RankUpgrade {
+  fromRank: number;
+  toRank: number;
+  name: string;
+  conditions: {
+    salesRequired?: number;
+    teamVolumeRequired?: number;
+    directDownlinesRequired?: number;
+    minDownlineRank?: number;
+  };
+}
 
 const PolicyEngine: React.FC = () => {
   // Loading state
@@ -44,17 +75,6 @@ const PolicyEngine: React.FC = () => {
   const [rankUpThreshold, setRankUpThreshold] = useState(9900000); // 9.9M VND to upgrade
 
   // 🆕 5. Admin 3.1: Dynamic Rank Upgrades
-  interface RankUpgrade {
-    fromRank: number;
-    toRank: number;
-    name: string;
-    conditions: {
-      salesRequired?: number;
-      teamVolumeRequired?: number;
-      directDownlinesRequired?: number;
-      minDownlineRank?: number;
-    };
-  }
   const [rankUpgrades, setRankUpgrades] = useState<RankUpgrade[]>([]);
 
   // 🆕 Fetch policy from database on mount
@@ -73,7 +93,7 @@ const PolicyEngine: React.FC = () => {
       if (error) throw error;
 
       if (data && data.value) {
-        const config = data.value as any;
+        const config = data.value as PolicyConfig;
         // Load commission settings
         if (config.commissions) {
           setRetailComm(config.commissions.retailComm || 25);

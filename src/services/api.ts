@@ -59,7 +59,7 @@ export const userAPI = {
   // Update user profile
   async updateUser(userId: string, updates: Partial<User>): Promise<void> {
     try {
-      await updateDoc(doc(db, 'users', userId), updates as any);
+      await updateDoc(doc(db, 'users', userId), updates as Record<string, unknown>);
     } catch (error) {
       console.error('Error updating user:', error);
       throw error;
