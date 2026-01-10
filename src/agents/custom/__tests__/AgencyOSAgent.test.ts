@@ -30,7 +30,7 @@ describe('AgencyOSAgent', () => {
 
     describe('execute - listCommands', () => {
         it('should list all commands', async () => {
-            const result = await agent.execute({ action: 'listCommands' });
+            const result = await agent.execute({ action: 'listCommands' }) as { total: number; categories: Record<string, unknown> };
 
             expect(result.total).toBeGreaterThan(0);
             expect(result.categories).toHaveProperty('marketing');
@@ -42,7 +42,7 @@ describe('AgencyOSAgent', () => {
             const result = await agent.execute({
                 action: 'listCommands',
                 category: 'marketing',
-            });
+            }) as { total: number; categories: Record<string, unknown[]> };
 
             expect(result.total).toBe(5); // 5 marketing commands
             expect(Object.keys(result.categories)).toHaveLength(1);
@@ -55,18 +55,18 @@ describe('AgencyOSAgent', () => {
             const result = await agent.execute({
                 action: 'searchCommands',
                 command: 'marketing',
-            });
+            }) as { command: string; description: string }[];
 
             expect(Array.isArray(result)).toBe(true);
             expect(result.length).toBeGreaterThan(0);
-            expect(result.some((cmd: any) => cmd.command.includes('marketing'))).toBe(true);
+            expect(result.some((cmd) => cmd.command.includes('marketing'))).toBe(true);
         });
 
         it('should return empty array for no matches', async () => {
             const result = await agent.execute({
                 action: 'searchCommands',
                 command: 'nonexistent-xyz-123',
-            });
+            }) as unknown[];
 
             expect(Array.isArray(result)).toBe(true);
             expect(result.length).toBe(0);
@@ -78,7 +78,7 @@ describe('AgencyOSAgent', () => {
             const result = await agent.execute({
                 action: 'getCommandHelp',
                 command: '/marketing-plan',
-            });
+            }) as { command: string; description: string; category: string };
 
             expect(result).toBeDefined();
             expect(result.command).toBe('/marketing-plan');
@@ -101,7 +101,7 @@ describe('AgencyOSAgent', () => {
             const result = await agent.execute({
                 action: 'executeCommand',
                 command: '/marketing-plan',
-            });
+            }) as { success: boolean; command: string; message: string; output: string };
 
             expect(result.success).toBe(true);
             expect(result.command).toBe('/marketing-plan');
@@ -113,7 +113,7 @@ describe('AgencyOSAgent', () => {
             const result = await agent.execute({
                 action: 'executeCommand',
                 command: '/invalid-command',
-            });
+            }) as { success: boolean; error: string };
 
             expect(result.success).toBe(false);
             expect(result.error).toContain('Unknown command');
@@ -159,7 +159,7 @@ describe('AgencyOSAgent', () => {
         it('should handle unknown actions', async () => {
             const result = await agent.execute({
                 action: 'unknownAction',
-            });
+            }) as { error: string };
 
             expect(result.error).toContain('Unknown action');
         });

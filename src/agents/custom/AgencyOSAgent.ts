@@ -56,8 +56,28 @@ export const AGENCYOS_COMMANDS = {
 export type AgencyOSCategory = keyof typeof AGENCYOS_COMMANDS;
 export type AgencyOSCommand = typeof AGENCYOS_COMMANDS[AgencyOSCategory][number];
 
+// Command execution result type
+interface CommandExecutionResult {
+    success: boolean;
+    command: string;
+    description?: string;
+    category?: string;
+    executedAt?: string;
+    message?: string;
+    output?: string;
+    error?: string;
+    suggestion?: AgencyOSCommand[];
+}
+
+// Command history entry type
+interface CommandHistoryEntry {
+    command: string;
+    timestamp: string;
+    result: CommandExecutionResult | null;
+}
+
 export class AgencyOSAgent extends BaseAgent {
-    private commandHistory: Array<{ command: string; timestamp: string; result: any }> = [];
+    private commandHistory: CommandHistoryEntry[] = [];
 
     constructor() {
         const definition: AgentDefinition = {
@@ -124,14 +144,14 @@ export class AgencyOSAgent extends BaseAgent {
     async execute(input: {
         action: string;
         command?: string;
-        context?: Record<string, any>;
+        context?: Record<string, unknown>;
         category?: AgencyOSCategory;
-    }): Promise<any> {
+    }): Promise<unknown> {
         const { action, command, context, category } = input;
 
         const canProceed = await this.checkPolicies(action, input);
         if (!canProceed) {
-            return { error: 'Action blocked by policy' };
+            return { success: false, command: '', error: 'Action blocked by policy' };
         }
 
         try {
@@ -171,7 +191,7 @@ export class AgencyOSAgent extends BaseAgent {
 
             return output;
         } catch (error) {
-            const errorOutput = { error: error instanceof Error ? error.message : 'Unknown error' };
+            const errorOutput: CommandExecutionResult = { success: false, command: command || '', error: error instanceof Error ? error.message : 'Unknown error' };
             this.log(action, input, errorOutput);
             return errorOutput;
         }
@@ -182,8 +202,8 @@ export class AgencyOSAgent extends BaseAgent {
      */
     private async executeAgencyOSCommand(
         command: string,
-        context?: Record<string, any>
-    ): Promise<any> {
+        context?: Record<string, unknown>
+    ): Promise<CommandExecutionResult> {
         const normalizedCommand = command.startsWith('/') ? command : `/${command}`;
 
         // Find command info
@@ -191,6 +211,7 @@ export class AgencyOSAgent extends BaseAgent {
         if (!commandInfo) {
             return {
                 success: false,
+                command: normalizedCommand,
                 error: `Unknown command: ${normalizedCommand}`,
                 suggestion: this.searchCommands(normalizedCommand.replace('/', '')),
             };
@@ -200,7 +221,7 @@ export class AgencyOSAgent extends BaseAgent {
         const execution = {
             command: normalizedCommand,
             timestamp: new Date().toISOString(),
-            result: null as any,
+            result: null as CommandExecutionResult | null,
         };
 
         // Simulate command execution (in production, this would call actual AgencyOS backend)
@@ -223,7 +244,7 @@ export class AgencyOSAgent extends BaseAgent {
     /**
      * Generate simulated output for a command
      */
-    private generateCommandOutput(command: string, context?: Record<string, any>): string {
+    private generateCommandOutput(command: string, _context?: Record<string, unknown>): string {
         const outputs: Record<string, string> = {
             '/marketing-plan': '📊 Marketing Plan generated with 4 channels, 12 campaigns, 90-day timeline.',
             '/proposal': '📄 Professional proposal created with pricing table and terms.',
@@ -304,7 +325,7 @@ export class AgencyOSAgent extends BaseAgent {
     /**
      * Get command execution history
      */
-    getCommandHistory(): Array<{ command: string; timestamp: string; result: any }> {
+    getCommandHistory(): CommandHistoryEntry[] {
         return [...this.commandHistory];
     }
 }
