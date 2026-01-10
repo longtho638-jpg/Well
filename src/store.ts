@@ -1,6 +1,6 @@
 
 import { create } from 'zustand';
-import { User, Product, Transaction, Quest, ChartDataPoint, TeamMember, TeamMetrics, Referral, ReferralStats, LandingPageTemplate, UserLandingPage, TeamInsights, RedemptionItem, RedemptionOrder } from './types';
+import { User, Product, Transaction, Quest, ChartDataPoint, TeamMember, TeamMetrics, Referral, ReferralStats, LandingPageTemplate, LandingPageTemplateType, UserLandingPage, TeamInsights, RedemptionItem, RedemptionOrder } from './types';
 import {
   CURRENT_USER,
   PRODUCTS,
@@ -494,7 +494,7 @@ export const useStore = create<AppState>((set, get) => ({
     const newPage: UserLandingPage = {
       id: `LP-${Date.now().toString().slice(-6)}`,
       userId: state.user.id,
-      template: template as any,
+      template: template as LandingPageTemplateType,
       portraitUrl,
       aiGeneratedBio,
       publishedUrl: `wellnexus.vn/lp/${state.user.id}`,

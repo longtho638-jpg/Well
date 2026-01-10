@@ -1,18 +1,19 @@
 import { useEffect } from 'react';
 import { useStore } from '@/store';
 import { supabase, isSupabaseConfigured } from '@/lib/supabase';
+import { User, UserRank } from '@/types';
 
 // Demo email for testing (works even in production)
 const DEMO_EMAIL = 'demo@wellnexus.vn';
 
-// Mock user for development/demo mode
-const MOCK_USER = {
+// Mock user for development/demo mode - matches User type exactly
+const MOCK_USER: User = {
   id: 'mock-dev-user-001',
   name: 'Dev User',
   email: 'dev@wellnexus.vn',
-  rank: 'Diamond',
+  rank: UserRank.DAI_SU_DIAMOND,
   roleId: 2,
-  sponsorId: null,
+  sponsorId: undefined,
   totalSales: 150000000,
   teamVolume: 500000000,
   shopBalance: 5000000,
@@ -26,6 +27,14 @@ const MOCK_USER = {
   referralLink: 'wellnexus.vn/ref/mock-dev-user',
   role: 'admin',
   isAdmin: true,
+  monthlyProfit: 30000000,
+  businessValuation: 1800000000,
+  projectedAnnualProfit: 360000000,
+  equityValue: 125000000,
+  cashflowValue: 5000000,
+  assetGrowthRate: 15,
+  accumulatedBonusRevenue: 75000000,
+  estimatedBonus: 0,
 };
 
 export function useAuth() {
@@ -72,27 +81,27 @@ export function useAuth() {
 
       if (data) {
         // Map Supabase user to app User type
-        const user = {
+        const user: User = {
           id: data.id,
           name: data.name,
           email: data.email,
-          rank: (data.role_id as any) || 'Cộng Tác Viên', // Fallback or map correctly if using enum
+          rank: (data.role_id as UserRank) || UserRank.CTV,
           roleId: data.role_id || 8,
           sponsorId: data.sponsor_id,
-          totalSales: data.total_sales,
-          teamVolume: data.team_volume,
-          shopBalance: data.shop_balance,
+          totalSales: data.total_sales || 0,
+          teamVolume: data.team_volume || 0,
+          shopBalance: data.shop_balance || 0,
           growBalance: data.pending_cashback || 0,
           pendingCashback: data.pending_cashback || 0,
           pointBalance: data.point_balance || 0,
-          stakedGrowBalance: data.staked_grow_balance,
-          avatarUrl: data.avatar_url,
-          joinedAt: data.created_at,
-          kycStatus: true, // Default
+          stakedGrowBalance: data.staked_grow_balance || 0,
+          avatarUrl: data.avatar_url || '',
+          joinedAt: data.created_at || '',
+          kycStatus: true,
           referralLink: `wellnexus.vn/ref/${data.id}`,
         };
 
-        setUser(user as any);
+        setUser(user);
         setIsAuthenticated(true);
 
         // Load real data from Supabase after login
@@ -108,7 +117,7 @@ export function useAuth() {
       // DEMO MODE: Allow demo login even in production
       if (email.toLowerCase() === DEMO_EMAIL) {
         console.log('[useAuth] Demo mode - logging in as demo user');
-        setUser({ ...MOCK_USER, email: DEMO_EMAIL } as any);
+        setUser({ ...MOCK_USER, email: DEMO_EMAIL });
         setIsAuthenticated(true);
         return { data: { user: MOCK_USER, session: { access_token: 'demo-token' } }, error: null };
       }
@@ -116,7 +125,7 @@ export function useAuth() {
       // DEV MODE: Return mock success when Supabase not configured
       if (!isSupabaseConfigured()) {
         console.log('[useAuth] Dev mode - using mock login for:', email);
-        setUser({ ...MOCK_USER, email } as any);
+        setUser({ ...MOCK_USER, email });
         setIsAuthenticated(true);
         return { data: { user: MOCK_USER, session: { access_token: 'mock-token' } }, error: null };
       }
