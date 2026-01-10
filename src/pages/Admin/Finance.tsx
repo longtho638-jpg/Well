@@ -173,11 +173,10 @@ const TransactionCard: React.FC<{
     <motion.div
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
-      className={`bg-white rounded-lg p-6 transition-all ${
-        isHighRisk
+      className={`bg-white rounded-lg p-6 transition-all ${isHighRisk
           ? 'border-2 border-red-300 shadow-lg shadow-red-100'
           : 'border border-slate-200 hover:border-[#00575A]'
-      }`}
+        }`}
     >
       <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
         {/* Left: Transaction Info */}
@@ -240,15 +239,14 @@ const TransactionCard: React.FC<{
         {/* Right: Actions */}
         <div className="flex flex-col gap-2 min-w-[140px]">
           <div className="flex items-center justify-between mb-2">
-            <span className={`px-3 py-1 rounded-full text-xs font-medium ${
-              transaction.status === 'Approved'
+            <span className={`px-3 py-1 rounded-full text-xs font-medium ${transaction.status === 'Approved'
                 ? 'bg-green-100 text-green-700'
                 : transaction.status === 'Rejected'
-                ? 'bg-red-100 text-red-700'
-                : transaction.status === 'Completed'
-                ? 'bg-blue-100 text-blue-700'
-                : 'bg-amber-100 text-amber-700'
-            }`}>
+                  ? 'bg-red-100 text-red-700'
+                  : transaction.status === 'Completed'
+                    ? 'bg-blue-100 text-blue-700'
+                    : 'bg-amber-100 text-amber-700'
+              }`}>
               {transaction.status}
             </span>
           </div>
@@ -379,22 +377,20 @@ const Finance: React.FC = () => {
           <div className="flex gap-2">
             <button
               onClick={() => setActiveTab('revenue')}
-              className={`px-4 py-2 rounded-lg font-medium transition-colors ${
-                activeTab === 'revenue'
+              className={`px-4 py-2 rounded-lg font-medium transition-colors ${activeTab === 'revenue'
                   ? 'bg-green-100 text-green-700'
                   : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
-              }`}
+                }`}
             >
               <TrendingUp className="w-4 h-4 inline mr-2" />
               Revenue In
             </button>
             <button
               onClick={() => setActiveTab('payout')}
-              className={`px-4 py-2 rounded-lg font-medium transition-colors ${
-                activeTab === 'payout'
+              className={`px-4 py-2 rounded-lg font-medium transition-colors ${activeTab === 'payout'
                   ? 'bg-red-100 text-red-700'
                   : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
-              }`}
+                }`}
             >
               <TrendingDown className="w-4 h-4 inline mr-2" />
               Payout Out
@@ -406,7 +402,7 @@ const Finance: React.FC = () => {
             <Filter className="w-5 h-5 text-slate-400" />
             <select
               value={filterRisk}
-              onChange={(e) => setFilterRisk(e.target.value as any)}
+              onChange={(e) => setFilterRisk(e.target.value as typeof filterRisk)}
               className="px-3 py-2 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#00575A]"
             >
               <option value="all">All Transactions</option>

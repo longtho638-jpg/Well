@@ -250,7 +250,7 @@ export const Marketplace: React.FC = () => {
                           ].map((cat) => (
                             <button
                               key={cat.value}
-                              onClick={() => setSelectedProductCategory(cat.value as any)}
+                              onClick={() => setSelectedProductCategory(cat.value as typeof selectedProductCategory)}
                               className={`w-full px-4 py-3 rounded-xl text-sm font-medium transition-all duration-300 flex items-center gap-3 ${selectedProductCategory === cat.value
                                 ? 'btn-primary text-white shadow-lg'
                                 : 'glass-dark bg-zinc-100 dark:bg-white/5 text-zinc-600 dark:text-white/70 hover:bg-zinc-200 dark:hover:bg-white/10'
@@ -275,7 +275,7 @@ export const Marketplace: React.FC = () => {
                           ].map((price) => (
                             <button
                               key={price.value}
-                              onClick={() => setSelectedPriceRange(price.value as any)}
+                              onClick={() => setSelectedPriceRange(price.value as typeof selectedPriceRange)}
                               className={`w-full px-4 py-3 rounded-xl text-sm font-medium transition-all duration-300 text-left ${selectedPriceRange === price.value
                                 ? 'bg-gradient-to-r from-amber-500 to-orange-500 text-white shadow-lg'
                                 : 'glass-dark bg-zinc-100 dark:bg-white/5 text-zinc-600 dark:text-white/70 hover:bg-zinc-200 dark:hover:bg-white/10'
