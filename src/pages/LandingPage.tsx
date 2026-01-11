@@ -57,6 +57,13 @@ import {
   MorphingBlob,
   Marquee,
 } from '../components/UltimateEffects';
+import {
+  ZenDivider,
+  AwardsBar,
+  ScrollProgress,
+  StaggeredText,
+  EA_AWARDS,
+} from '../components/EastAsiaBrand';
 
 // ============================================================================
 // CONTENT ARCHITECTURE - Growth Journey Map
@@ -260,6 +267,9 @@ export default function LandingPage() {
 
   return (
     <div className="min-h-screen bg-zinc-950 overflow-x-hidden selection:bg-emerald-900 selection:text-emerald-100">
+      {/* East Asia 2026: Scroll Progress Indicator */}
+      <ScrollProgress />
+
       {/* ================================================================== */}
       {/* STICKY HEADER */}
       {/* ================================================================== */}
@@ -422,6 +432,12 @@ export default function LandingPage() {
 
       {/* WOW Enhancement: Trust Badges */}
       <TrustBadges badges={TRUST_BADGES} />
+
+      {/* East Asia 2026: Awards & Certifications */}
+      <AwardsBar awards={EA_AWARDS} />
+
+      {/* East Asia 2026: Zen Divider */}
+      <ZenDivider />
 
       {/* ================================================================== */}
       {/* THE ROADMAP SECTION - 4 Stages */}
