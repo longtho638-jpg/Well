@@ -67,6 +67,8 @@ interface NavigatorWithConnection extends Navigator {
         downlink?: number;
         rtt?: number;
         saveData?: boolean;
+        addEventListener?: (event: string, handler: () => void) => void;
+        removeEventListener?: (event: string, handler: () => void) => void;
     };
 }
 
