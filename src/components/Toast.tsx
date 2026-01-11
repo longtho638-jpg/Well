@@ -84,31 +84,27 @@ export const toast = {
     info: (title: string, message?: string) =>
         useToastStore.getState().add({ type: 'info', title, message }),
 
-    promise: async<T>(
+    promise: async <T,>(
         promise: Promise<T>,
-        messages: {
-        loading: string;
-        success: string;
-        error: string;
-    }
+        messages: { loading: string; success: string; error: string }
     ): Promise<T> => {
-    const id = useToastStore.getState().add({
-        type: 'info',
-        title: messages.loading,
-        duration: 0,
-    });
+        const id = useToastStore.getState().add({
+            type: 'info',
+            title: messages.loading,
+            duration: 0,
+        });
 
-    try {
-        const result = await promise;
-        useToastStore.getState().remove(id);
-        toast.success(messages.success);
-        return result;
-    } catch (error) {
-        useToastStore.getState().remove(id);
-        toast.error(messages.error, error instanceof Error ? error.message : undefined);
-        throw error;
-    }
-},
+        try {
+            const result = await promise;
+            useToastStore.getState().remove(id);
+            toast.success(messages.success);
+            return result;
+        } catch (error) {
+            useToastStore.getState().remove(id);
+            toast.error(messages.error, error instanceof Error ? error.message : undefined);
+            throw error;
+        }
+    },
 };
 
 // ============================================================================

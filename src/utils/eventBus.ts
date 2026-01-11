@@ -11,6 +11,7 @@ type Unsubscribe = () => void;
 // ============================================================================
 
 export interface AppEvents {
+    [key: string]: unknown;
     'user:login': { userId: string; email: string };
     'user:logout': { userId: string };
     'user:update': { userId: string; changes: Record<string, unknown> };
