@@ -28,6 +28,16 @@ import {
 import { useNavigate } from 'react-router-dom';
 import { useStore } from '../store';
 import { BentoGrid, BentoCard, AuraBadge, GridPattern } from '../components/ui/Aura';
+import {
+  HeroStats,
+  SocialProofTicker,
+  TestimonialsCarousel,
+  TrustBadges,
+  HERO_STATS,
+  SOCIAL_PROOF_ITEMS,
+  TESTIMONIALS,
+  TRUST_BADGES,
+} from '../components/HeroEnhancements';
 
 // ============================================================================
 // CONTENT ARCHITECTURE - Growth Journey Map
@@ -372,8 +382,14 @@ export default function LandingPage() {
             </BentoCard>
           </BentoGrid>
 
+          {/* WOW Enhancement: Hero Stats */}
+          <HeroStats stats={HERO_STATS} />
+
         </div>
       </section>
+
+      {/* WOW Enhancement: Trust Badges */}
+      <TrustBadges badges={TRUST_BADGES} />
 
       {/* ================================================================== */}
       {/* THE ROADMAP SECTION - 4 Stages */}
@@ -590,6 +606,39 @@ export default function LandingPage() {
           </motion.div>
         </div>
       </section>
+
+      {/* ================================================================== */}
+      {/* TESTIMONIALS SECTION - WOW Enhancement */}
+      {/* ================================================================== */}
+      <section className="relative py-32 bg-zinc-950">
+        <div className="max-w-7xl mx-auto px-6 lg:px-12">
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+            className="text-center mb-16"
+          >
+            <div className="inline-flex items-center gap-2 bg-pink-500/10 border border-pink-500/20 rounded-full px-5 py-2 mb-6">
+              <Star className="w-4 h-4 text-pink-400" />
+              <span className="text-sm font-bold text-pink-400 uppercase tracking-wider">
+                Câu Chuyện Thành Công
+              </span>
+            </div>
+            <h2 className="text-4xl md:text-5xl lg:text-6xl font-black text-zinc-100 mb-6">
+              Partner Nói Gì Về WellNexus?
+            </h2>
+            <p className="text-xl text-zinc-400 max-w-3xl mx-auto">
+              Hàng ngàn partner đã thay đổi cuộc sống cùng WellNexus
+            </p>
+          </motion.div>
+
+          <TestimonialsCarousel testimonials={TESTIMONIALS} />
+        </div>
+      </section>
+
+      {/* Live Social Proof Ticker - Fixed Position */}
+      <SocialProofTicker items={SOCIAL_PROOF_ITEMS} />
 
       {/* ================================================================== */}
       {/* FOOTER */}
