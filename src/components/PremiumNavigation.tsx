@@ -1,55 +1,70 @@
 /**
- * Premium Navigation Components - Phase 22
- * 2026 East Asian Enterprise Brand Design
+ * Premium Navigation Components - Phase 23
+ * FUNCTIONAL Navigation with Real Routing
  * 
  * Features:
- * - Glass morphism header
- * - Mega menu dropdown
- * - Premium footer with sitemap
- * - Social links with hover effects
- * - Newsletter with validation
+ * - React Router Link integration
+ * - Auth state integration
+ * - Real working routes
+ * - Newsletter with toast feedback
  */
 
 import React, { useState, useEffect } from 'react';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
     Menu, X, ChevronDown, ChevronRight,
     Facebook, Instagram, Linkedin, Youtube, Twitter,
     Mail, Phone, MapPin, Send, ArrowUpRight,
-    Sparkles, Users, TrendingUp, Award, Globe
+    Sparkles, Users, Award, Globe, ShoppingBag,
+    LogIn, LogOut, User, LayoutDashboard
 } from 'lucide-react';
+import { useStore } from '../store';
 
 // ============================================================================
-// PREMIUM HEADER - 2026 EAST ASIA STYLE
+// NAVIGATION ITEMS - Real Routes
 // ============================================================================
+
+interface NavChild {
+    label: string;
+    href: string;
+    icon: React.ReactNode;
+    description: string;
+}
 
 interface NavItem {
     label: string;
     href?: string;
-    children?: { label: string; href: string; icon?: React.ReactNode; description?: string }[];
+    children?: NavChild[];
 }
 
 const NAV_ITEMS: NavItem[] = [
     {
-        label: 'Về Chúng Tôi',
+        label: 'Sản Phẩm',
         children: [
-            { label: 'Câu Chuyện', href: '/about', icon: <Sparkles className="w-4 h-4" />, description: 'Hành trình phát triển' },
-            { label: 'Đội Ngũ', href: '/team', icon: <Users className="w-4 h-4" />, description: 'Những con người tuyệt vời' },
-            { label: 'Tầm Nhìn 2028', href: '/vision', icon: <Globe className="w-4 h-4" />, description: 'Chiến lược mở rộng SEA' },
+            { label: 'Marketplace', href: '/marketplace', icon: <ShoppingBag className="w-4 h-4" />, description: 'Mua sắm sản phẩm wellness' },
+            { label: 'AI Coach', href: '/ai-coach', icon: <Sparkles className="w-4 h-4" />, description: 'Huấn luyện viên AI cá nhân' },
         ]
     },
     {
-        label: 'Sản Phẩm',
+        label: 'Partner',
         children: [
-            { label: 'Wellness Products', href: '/products', icon: <Award className="w-4 h-4" />, description: 'Sản phẩm cao cấp' },
-            { label: 'AI Coach', href: '/ai-coach', icon: <Sparkles className="w-4 h-4" />, description: 'Huấn luyện viên AI' },
+            { label: 'Trở Thành Partner', href: '/partner', icon: <Users className="w-4 h-4" />, description: 'Gia nhập đội ngũ partner' },
+            { label: 'Leader Dashboard', href: '/leader', icon: <Award className="w-4 h-4" />, description: 'Quản lý đội nhóm' },
         ]
     },
-    { label: 'Partner', href: '/partner' },
-    { label: 'Blog', href: '/blog' },
+    { label: 'Marketplace', href: '/marketplace' },
 ];
 
+// ============================================================================
+// PREMIUM HEADER - Functional with Auth
+// ============================================================================
+
 export function PremiumHeader() {
+    const navigate = useNavigate();
+    const location = useLocation();
+    const { user, logout } = useStore();
+
     const [scrolled, setScrolled] = useState(false);
     const [mobileOpen, setMobileOpen] = useState(false);
     const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
@@ -59,6 +74,16 @@ export function PremiumHeader() {
         window.addEventListener('scroll', handleScroll);
         return () => window.removeEventListener('scroll', handleScroll);
     }, []);
+
+    // Close mobile menu on route change
+    useEffect(() => {
+        setMobileOpen(false);
+    }, [location.pathname]);
+
+    const handleLogout = () => {
+        logout();
+        navigate('/');
+    };
 
     return (
         <>
@@ -77,8 +102,8 @@ export function PremiumHeader() {
             >
                 <div className="max-w-7xl mx-auto px-6 lg:px-12">
                     <div className="flex items-center justify-between h-20">
-                        {/* Logo */}
-                        <a href="/" className="flex items-center gap-3 group">
+                        {/* Logo - React Router Link */}
+                        <Link to="/" className="flex items-center gap-3 group">
                             <div className="w-10 h-10 bg-gradient-to-br from-emerald-500 to-cyan-500 rounded-xl flex items-center justify-center text-black font-bold text-xl shadow-lg shadow-emerald-500/20 group-hover:shadow-emerald-500/40 transition-shadow">
                                 W
                             </div>
@@ -86,7 +111,7 @@ export function PremiumHeader() {
                                 <div className="font-bold text-xl text-white tracking-tight">WellNexus</div>
                                 <div className="text-xs text-zinc-500 font-medium">Social Commerce 2.0</div>
                             </div>
-                        </a>
+                        </Link>
 
                         {/* Desktop Nav */}
                         <nav className="hidden lg:flex items-center gap-1">
@@ -97,19 +122,34 @@ export function PremiumHeader() {
                                     onMouseEnter={() => item.children && setActiveDropdown(item.label)}
                                     onMouseLeave={() => setActiveDropdown(null)}
                                 >
-                                    <a
-                                        href={item.href || '#'}
-                                        className={`
-                      flex items-center gap-1 px-4 py-2 text-sm font-medium rounded-xl
-                      transition-colors duration-200
-                      ${activeDropdown === item.label ? 'text-white bg-zinc-800' : 'text-zinc-400 hover:text-white'}
-                    `}
-                                    >
-                                        {item.label}
-                                        {item.children && <ChevronDown className="w-4 h-4" />}
-                                    </a>
+                                    {item.href ? (
+                                        <Link
+                                            to={item.href}
+                                            className={`
+                        flex items-center gap-1 px-4 py-2 text-sm font-medium rounded-xl
+                        transition-colors duration-200
+                        ${location.pathname === item.href
+                                                    ? 'text-emerald-400 bg-emerald-500/10'
+                                                    : 'text-zinc-400 hover:text-white'
+                                                }
+                      `}
+                                        >
+                                            {item.label}
+                                        </Link>
+                                    ) : (
+                                        <button
+                                            className={`
+                        flex items-center gap-1 px-4 py-2 text-sm font-medium rounded-xl
+                        transition-colors duration-200
+                        ${activeDropdown === item.label ? 'text-white bg-zinc-800' : 'text-zinc-400 hover:text-white'}
+                      `}
+                                        >
+                                            {item.label}
+                                            {item.children && <ChevronDown className="w-4 h-4" />}
+                                        </button>
+                                    )}
 
-                                    {/* Dropdown */}
+                                    {/* Dropdown with React Router Links */}
                                     <AnimatePresence>
                                         {item.children && activeDropdown === item.label && (
                                             <motion.div
@@ -121,23 +161,36 @@ export function PremiumHeader() {
                                             >
                                                 <div className="bg-zinc-900/95 backdrop-blur-xl border border-zinc-800 rounded-2xl p-2 shadow-2xl">
                                                     {item.children.map((child) => (
-                                                        <a
+                                                        <Link
                                                             key={child.label}
-                                                            href={child.href}
-                                                            className="flex items-start gap-3 p-3 rounded-xl hover:bg-zinc-800 transition-colors group"
+                                                            to={child.href}
+                                                            className={`
+                                flex items-start gap-3 p-3 rounded-xl transition-colors group
+                                ${location.pathname === child.href
+                                                                    ? 'bg-emerald-500/10 text-emerald-400'
+                                                                    : 'hover:bg-zinc-800'
+                                                                }
+                              `}
                                                         >
-                                                            <div className="w-10 h-10 rounded-lg bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center text-emerald-400 group-hover:bg-emerald-500/20 transition-colors">
+                                                            <div className={`
+                                w-10 h-10 rounded-lg flex items-center justify-center transition-colors
+                                ${location.pathname === child.href
+                                                                    ? 'bg-emerald-500/20 text-emerald-400'
+                                                                    : 'bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 group-hover:bg-emerald-500/20'
+                                                                }
+                              `}>
                                                                 {child.icon}
                                                             </div>
                                                             <div>
-                                                                <div className="text-sm font-medium text-white group-hover:text-emerald-400 transition-colors">
+                                                                <div className={`
+                                  text-sm font-medium transition-colors
+                                  ${location.pathname === child.href ? 'text-emerald-400' : 'text-white group-hover:text-emerald-400'}
+                                `}>
                                                                     {child.label}
                                                                 </div>
-                                                                {child.description && (
-                                                                    <div className="text-xs text-zinc-500 mt-0.5">{child.description}</div>
-                                                                )}
+                                                                <div className="text-xs text-zinc-500 mt-0.5">{child.description}</div>
                                                             </div>
-                                                        </a>
+                                                        </Link>
                                                     ))}
                                                 </div>
                                             </motion.div>
@@ -147,28 +200,65 @@ export function PremiumHeader() {
                             ))}
                         </nav>
 
-                        {/* CTA Buttons */}
+                        {/* Auth Buttons */}
                         <div className="flex items-center gap-3">
-                            <a
-                                href="/login"
-                                className="hidden sm:flex items-center gap-2 px-4 py-2 text-sm font-medium text-zinc-400 hover:text-white transition-colors"
-                            >
-                                Đăng Nhập
-                            </a>
-                            <motion.a
-                                href="/signup"
-                                className="flex items-center gap-2 px-5 py-2.5 bg-gradient-to-r from-emerald-600 to-cyan-600 hover:from-emerald-500 hover:to-cyan-500 text-white text-sm font-bold rounded-xl shadow-lg shadow-emerald-500/20 transition-all"
-                                whileHover={{ scale: 1.02 }}
-                                whileTap={{ scale: 0.98 }}
-                            >
-                                Bắt Đầu Ngay
-                                <ArrowUpRight className="w-4 h-4" />
-                            </motion.a>
+                            {user ? (
+                                <>
+                                    {/* User is logged in */}
+                                    <Link
+                                        to="/dashboard"
+                                        className="hidden sm:flex items-center gap-2 px-4 py-2 text-sm font-medium text-zinc-400 hover:text-white transition-colors"
+                                    >
+                                        <LayoutDashboard className="w-4 h-4" />
+                                        Dashboard
+                                    </Link>
+                                    <div className="flex items-center gap-2">
+                                        <div className="hidden md:flex items-center gap-2 px-3 py-1.5 bg-zinc-800 rounded-lg">
+                                            <div className="w-6 h-6 rounded-full bg-gradient-to-br from-emerald-500 to-cyan-500 flex items-center justify-center text-xs font-bold text-black">
+                                                {user.email?.charAt(0).toUpperCase() || 'U'}
+                                            </div>
+                                            <span className="text-sm text-zinc-300 max-w-[120px] truncate">
+                                                {user.email?.split('@')[0] || 'User'}
+                                            </span>
+                                        </div>
+                                        <motion.button
+                                            onClick={handleLogout}
+                                            className="flex items-center gap-2 px-4 py-2 text-sm font-medium text-zinc-400 hover:text-red-400 transition-colors"
+                                            whileHover={{ scale: 1.02 }}
+                                            whileTap={{ scale: 0.98 }}
+                                        >
+                                            <LogOut className="w-4 h-4" />
+                                            <span className="hidden sm:inline">Đăng Xuất</span>
+                                        </motion.button>
+                                    </div>
+                                </>
+                            ) : (
+                                <>
+                                    {/* User is not logged in */}
+                                    <Link
+                                        to="/login"
+                                        className="hidden sm:flex items-center gap-2 px-4 py-2 text-sm font-medium text-zinc-400 hover:text-white transition-colors"
+                                    >
+                                        <LogIn className="w-4 h-4" />
+                                        Đăng Nhập
+                                    </Link>
+                                    <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}>
+                                        <Link
+                                            to="/login"
+                                            className="flex items-center gap-2 px-5 py-2.5 bg-gradient-to-r from-emerald-600 to-cyan-600 hover:from-emerald-500 hover:to-cyan-500 text-white text-sm font-bold rounded-xl shadow-lg shadow-emerald-500/20 transition-all"
+                                        >
+                                            Bắt Đầu Ngay
+                                            <ArrowUpRight className="w-4 h-4" />
+                                        </Link>
+                                    </motion.div>
+                                </>
+                            )}
 
                             {/* Mobile Menu Toggle */}
                             <button
                                 onClick={() => setMobileOpen(!mobileOpen)}
                                 className="lg:hidden p-2 text-zinc-400 hover:text-white"
+                                aria-label="Toggle menu"
                             >
                                 {mobileOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
                             </button>
@@ -190,15 +280,76 @@ export function PremiumHeader() {
                         <div className="absolute inset-0 bg-zinc-950/95 backdrop-blur-xl pt-24 px-6">
                             <nav className="flex flex-col gap-2">
                                 {NAV_ITEMS.map((item) => (
-                                    <a
-                                        key={item.label}
-                                        href={item.href || '#'}
-                                        className="flex items-center justify-between px-4 py-4 text-lg font-medium text-white border-b border-zinc-800"
-                                    >
-                                        {item.label}
-                                        {item.children && <ChevronRight className="w-5 h-5 text-zinc-500" />}
-                                    </a>
+                                    <div key={item.label}>
+                                        {item.href ? (
+                                            <Link
+                                                to={item.href}
+                                                className={`
+                          flex items-center justify-between px-4 py-4 text-lg font-medium border-b border-zinc-800
+                          ${location.pathname === item.href ? 'text-emerald-400' : 'text-white'}
+                        `}
+                                            >
+                                                {item.label}
+                                            </Link>
+                                        ) : (
+                                            <div className="border-b border-zinc-800">
+                                                <div className="px-4 py-4 text-lg font-medium text-white flex items-center justify-between">
+                                                    {item.label}
+                                                    <ChevronDown className="w-5 h-5 text-zinc-500" />
+                                                </div>
+                                                {item.children && (
+                                                    <div className="pl-4 pb-2">
+                                                        {item.children.map((child) => (
+                                                            <Link
+                                                                key={child.label}
+                                                                to={child.href}
+                                                                className={`
+                                  flex items-center gap-3 px-4 py-3 text-base
+                                  ${location.pathname === child.href ? 'text-emerald-400' : 'text-zinc-400'}
+                                `}
+                                                            >
+                                                                {child.icon}
+                                                                {child.label}
+                                                            </Link>
+                                                        ))}
+                                                    </div>
+                                                )}
+                                            </div>
+                                        )}
+                                    </div>
                                 ))}
+
+                                {/* Mobile Auth */}
+                                <div className="mt-6 pt-6 border-t border-zinc-800">
+                                    {user ? (
+                                        <>
+                                            <Link
+                                                to="/dashboard"
+                                                className="flex items-center gap-3 px-4 py-4 text-lg font-medium text-white"
+                                            >
+                                                <LayoutDashboard className="w-5 h-5" />
+                                                Dashboard
+                                            </Link>
+                                            <button
+                                                onClick={handleLogout}
+                                                className="flex items-center gap-3 px-4 py-4 text-lg font-medium text-red-400 w-full"
+                                            >
+                                                <LogOut className="w-5 h-5" />
+                                                Đăng Xuất
+                                            </button>
+                                        </>
+                                    ) : (
+                                        <>
+                                            <Link
+                                                to="/login"
+                                                className="flex items-center gap-3 px-4 py-4 text-lg font-medium text-white"
+                                            >
+                                                <LogIn className="w-5 h-5" />
+                                                Đăng Nhập
+                                            </Link>
+                                        </>
+                                    )}
+                                </div>
                             </nav>
                         </div>
                     </motion.div>
@@ -209,44 +360,30 @@ export function PremiumHeader() {
 }
 
 // ============================================================================
-// PREMIUM FOOTER - 2026 EAST ASIA STYLE
+// PREMIUM FOOTER - Functional with React Router
 // ============================================================================
 
 const FOOTER_LINKS = [
     {
         title: 'Sản Phẩm',
         links: [
-            { label: 'Wellness Products', href: '/products' },
-            { label: 'AI Coach', href: '/ai-coach' },
             { label: 'Marketplace', href: '/marketplace' },
-            { label: 'Mobile App', href: '/app' },
+            { label: 'AI Coach', href: '/ai-coach' },
         ]
     },
     {
         title: 'Partner',
         links: [
             { label: 'Trở Thành Partner', href: '/partner' },
-            { label: 'Founders Club', href: '/founders' },
-            { label: 'Bảng Hoa Hồng', href: '/commission' },
-            { label: 'Đào Tạo', href: '/training' },
+            { label: 'Leader Dashboard', href: '/leader' },
+            { label: 'Đăng Nhập', href: '/login' },
         ]
     },
     {
-        title: 'Công Ty',
+        title: 'Hỗ Trợ',
         links: [
-            { label: 'Về Chúng Tôi', href: '/about' },
-            { label: 'Tuyển Dụng', href: '/careers' },
-            { label: 'Blog', href: '/blog' },
-            { label: 'Liên Hệ', href: '/contact' },
-        ]
-    },
-    {
-        title: 'Pháp Lý',
-        links: [
-            { label: 'Điều Khoản', href: '/terms' },
-            { label: 'Bảo Mật', href: '/privacy' },
-            { label: 'Cookie', href: '/cookies' },
-            { label: 'DMCA', href: '/dmca' },
+            { label: 'Liên Hệ', href: 'mailto:hello@wellnexus.vn', external: true },
+            { label: 'Hotline', href: 'tel:+84901234567', external: true },
         ]
     }
 ];
@@ -261,12 +398,16 @@ const SOCIAL_LINKS = [
 
 export function PremiumFooter() {
     const [email, setEmail] = useState('');
+    const [subscribed, setSubscribed] = useState(false);
 
     const handleSubscribe = (e: React.FormEvent) => {
         e.preventDefault();
-        // Handle newsletter subscription
-        console.log('Subscribe:', email);
-        setEmail('');
+        if (email) {
+            // Simulate newsletter subscription
+            setSubscribed(true);
+            setEmail('');
+            setTimeout(() => setSubscribed(false), 3000);
+        }
     };
 
     return (
@@ -280,7 +421,7 @@ export function PremiumFooter() {
                                 Nhận Thông Tin Mới Nhất
                             </h3>
                             <p className="text-zinc-400">
-                                Đăng ký để nhận tin tức, ưu đãi đặc biệt và insights từ WellNexus
+                                Đăng ký để nhận tin tức và ưu đãi đặc biệt từ WellNexus
                             </p>
                         </div>
                         <form onSubmit={handleSubscribe} className="flex gap-3 w-full max-w-md">
@@ -294,12 +435,21 @@ export function PremiumFooter() {
                             />
                             <motion.button
                                 type="submit"
-                                className="px-6 py-3 bg-gradient-to-r from-emerald-600 to-cyan-600 text-white font-bold rounded-xl shadow-lg flex items-center gap-2"
+                                className={`px-6 py-3 font-bold rounded-xl shadow-lg flex items-center gap-2 transition-all ${subscribed
+                                    ? 'bg-emerald-500 text-white'
+                                    : 'bg-gradient-to-r from-emerald-600 to-cyan-600 text-white'
+                                    }`}
                                 whileHover={{ scale: 1.02 }}
                                 whileTap={{ scale: 0.98 }}
                             >
-                                <Send className="w-4 h-4" />
-                                <span className="hidden sm:inline">Đăng Ký</span>
+                                {subscribed ? (
+                                    <>✓ Đã Đăng Ký</>
+                                ) : (
+                                    <>
+                                        <Send className="w-4 h-4" />
+                                        <span className="hidden sm:inline">Đăng Ký</span>
+                                    </>
+                                )}
                             </motion.button>
                         </form>
                     </div>
@@ -308,20 +458,20 @@ export function PremiumFooter() {
 
             {/* Main Footer */}
             <div className="max-w-7xl mx-auto px-6 lg:px-12 py-16">
-                <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-8 lg:gap-12">
+                <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-8 lg:gap-12">
                     {/* Brand Column */}
                     <div className="col-span-2">
-                        <div className="flex items-center gap-3 mb-6">
-                            <div className="w-12 h-12 bg-gradient-to-br from-emerald-500 to-cyan-500 rounded-xl flex items-center justify-center text-black font-bold text-2xl shadow-lg">
+                        <Link to="/" className="flex items-center gap-3 mb-6 group">
+                            <div className="w-12 h-12 bg-gradient-to-br from-emerald-500 to-cyan-500 rounded-xl flex items-center justify-center text-black font-bold text-2xl shadow-lg group-hover:shadow-emerald-500/30 transition-shadow">
                                 W
                             </div>
                             <div>
                                 <div className="font-bold text-xl text-white">WellNexus</div>
                                 <div className="text-xs text-zinc-500">Social Commerce 2.0</div>
                             </div>
-                        </div>
+                        </Link>
                         <p className="text-zinc-400 text-sm leading-relaxed mb-6 max-w-xs">
-                            Hệ sinh thái Social Commerce tiên phong tại Đông Nam Á với AI-driven technology và equity ownership.
+                            Hệ sinh thái Social Commerce tiên phong tại Đông Nam Á với AI-driven technology.
                         </p>
 
                         {/* Contact Info */}
@@ -336,24 +486,33 @@ export function PremiumFooter() {
                             </a>
                             <div className="flex items-start gap-2">
                                 <MapPin className="w-4 h-4 mt-0.5 flex-shrink-0" />
-                                <span>123 Innovation St, Q1, TP.HCM, Vietnam</span>
+                                <span>Q1, TP.HCM, Vietnam</span>
                             </div>
                         </div>
                     </div>
 
-                    {/* Link Columns */}
+                    {/* Link Columns - Using React Router Link for internal */}
                     {FOOTER_LINKS.map((section) => (
                         <div key={section.title}>
                             <h4 className="font-bold text-white mb-4">{section.title}</h4>
                             <ul className="space-y-3">
                                 {section.links.map((link) => (
                                     <li key={link.label}>
-                                        <a
-                                            href={link.href}
-                                            className="text-sm text-zinc-400 hover:text-emerald-400 transition-colors"
-                                        >
-                                            {link.label}
-                                        </a>
+                                        {'external' in link && link.external ? (
+                                            <a
+                                                href={link.href}
+                                                className="text-sm text-zinc-400 hover:text-emerald-400 transition-colors"
+                                            >
+                                                {link.label}
+                                            </a>
+                                        ) : (
+                                            <Link
+                                                to={link.href}
+                                                className="text-sm text-zinc-400 hover:text-emerald-400 transition-colors"
+                                            >
+                                                {link.label}
+                                            </Link>
+                                        )}
                                     </li>
                                 ))}
                             </ul>
@@ -394,9 +553,9 @@ export function PremiumFooter() {
 
                         {/* Certifications */}
                         <div className="flex items-center gap-4 text-xs text-zinc-500">
-                            <span>🔒 SSL Secured</span>
+                            <span>🔒 SSL</span>
                             <span>📜 ISO 27001</span>
-                            <span>🏆 Forbes 30</span>
+                            <span>🏆 Top 10</span>
                         </div>
                     </div>
                 </div>
