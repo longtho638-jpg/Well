@@ -73,9 +73,9 @@ export class ScoutExternalAgent extends BaseAgent {
         action: 'searchWeb' | 'findDocs' | 'gatherExamples' | 'compareSolutions';
         query: string;
         sources?: string[];
-    }): Promise<any> {
+    }): Promise<{ success: boolean;[key: string]: unknown }> {
         try {
-            let result: any;
+            let result: Record<string, unknown>;
 
             switch (action.action) {
                 case 'searchWeb':
@@ -101,7 +101,7 @@ export class ScoutExternalAgent extends BaseAgent {
             }
 
             if (result.resources) {
-                this.resourcesFound += result.resources.length;
+                this.resourcesFound += (result.resources as Array<unknown>).length;
                 this.updateKPI('Resources Found', this.resourcesFound);
             }
 
@@ -114,7 +114,7 @@ export class ScoutExternalAgent extends BaseAgent {
         }
     }
 
-    private async performWebSearch(query: string, sources?: string[]): Promise<any> {
+    private async performWebSearch(query: string, sources?: string[]): Promise<Record<string, unknown>> {
         // Simulate web search
         const resources = [
             {
@@ -141,7 +141,7 @@ export class ScoutExternalAgent extends BaseAgent {
         };
     }
 
-    private async findDocumentation(query: string): Promise<any> {
+    private async findDocumentation(query: string): Promise<Record<string, unknown>> {
         return {
             officialDocs: ['https://docs.example.com'],
             tutorials: ['https://tutorial.example.com'],
@@ -149,7 +149,7 @@ export class ScoutExternalAgent extends BaseAgent {
         };
     }
 
-    private async collectCodeExamples(query: string): Promise<any> {
+    private async collectCodeExamples(query: string): Promise<Record<string, unknown>> {
         return {
             examples: [
                 {
@@ -163,7 +163,7 @@ export class ScoutExternalAgent extends BaseAgent {
         };
     }
 
-    private async compareSolutions(query: string): Promise<any> {
+    private async compareSolutions(query: string): Promise<Record<string, unknown>> {
         return {
             comparison: {
                 optionA: { pros: ['Fast', 'Popular'], cons: ['Complex'] },

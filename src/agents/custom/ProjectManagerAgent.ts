@@ -74,9 +74,9 @@ export class ProjectManagerAgent extends BaseAgent {
         reportType?: string;
         agents?: string[];
         scope?: string;
-    }): Promise<any> {
+    }): Promise<{ success: boolean;[key: string]: unknown }> {
         try {
-            let result: any;
+            let result: Record<string, unknown>;
 
             switch (action.action) {
                 case 'generateReport':
@@ -110,7 +110,7 @@ export class ProjectManagerAgent extends BaseAgent {
         }
     }
 
-    private async createStatusReport(reportType?: string): Promise<any> {
+    private async createStatusReport(reportType?: string): Promise<Record<string, unknown>> {
         return {
             reportType: reportType || 'weekly-status',
             generatedAt: new Date().toISOString(),
@@ -134,7 +134,7 @@ export class ProjectManagerAgent extends BaseAgent {
         };
     }
 
-    private async orchestrateWorkflow(agents?: string[]): Promise<any> {
+    private async orchestrateWorkflow(agents?: string[]): Promise<Record<string, unknown>> {
         return {
             workflow: 'feature-implementation',
             agents: agents || ['scout', 'planner', 'developer', 'tester'],
@@ -148,7 +148,7 @@ export class ProjectManagerAgent extends BaseAgent {
         };
     }
 
-    private async monitorProgress(scope?: string): Promise<any> {
+    private async monitorProgress(scope?: string): Promise<Record<string, unknown>> {
         return {
             scope: scope || 'current-sprint',
             velocity: 42,
@@ -159,7 +159,7 @@ export class ProjectManagerAgent extends BaseAgent {
         };
     }
 
-    private async findBlockers(): Promise<any> {
+    private async findBlockers(): Promise<Record<string, unknown>> {
         return {
             blockers: [
                 {

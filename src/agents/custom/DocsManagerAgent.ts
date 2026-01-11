@@ -1,5 +1,10 @@
 import { BaseAgent } from '../core/BaseAgent';
 
+/** Options for docs generation */
+interface DocsOptions {
+    sections?: string[];
+}
+
 /**
  * DocsManagerAgent - Automated documentation generation and maintenance
  * 
@@ -72,10 +77,10 @@ export class DocsManagerAgent extends BaseAgent {
     async execute(action: {
         action: 'generateReadme' | 'documentAPI' | 'createArchitectureDocs' | 'syncDocs';
         scope?: string;
-        options?: any;
-    }): Promise<any> {
+        options?: DocsOptions;
+    }): Promise<{ success: boolean;[key: string]: unknown }> {
         try {
-            let result: any;
+            let result: Record<string, unknown>;
 
             switch (action.action) {
                 case 'generateReadme':
@@ -116,7 +121,7 @@ export class DocsManagerAgent extends BaseAgent {
     /**
      * Generate comprehensive README file
      */
-    private async createReadme(options?: any): Promise<any> {
+    private async createReadme(options?: DocsOptions): Promise<Record<string, unknown>> {
         const sections = options?.sections || [
             'overview',
             'installation',
@@ -139,7 +144,7 @@ export class DocsManagerAgent extends BaseAgent {
     /**
      * Generate API documentation
      */
-    private async generateAPIDocs(scope?: string): Promise<any> {
+    private async generateAPIDocs(scope?: string): Promise<Record<string, unknown>> {
         // Simulate API documentation generation
         const endpoints = [
             {
@@ -174,7 +179,7 @@ export class DocsManagerAgent extends BaseAgent {
     /**
      * Generate architecture documentation
      */
-    private async documentArchitecture(scope?: string): Promise<any> {
+    private async documentArchitecture(scope?: string): Promise<Record<string, unknown>> {
         const diagrams = [
             {
                 type: 'component',
@@ -199,7 +204,7 @@ export class DocsManagerAgent extends BaseAgent {
     /**
      * Synchronize documentation with code
      */
-    private async synchronizeDocs(): Promise<any> {
+    private async synchronizeDocs(): Promise<Record<string, unknown>> {
         return {
             updates: [
                 { file: 'README.md', status: 'up-to-date' },

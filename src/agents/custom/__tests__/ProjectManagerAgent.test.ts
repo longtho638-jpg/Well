@@ -1,6 +1,9 @@
 import { describe, it, expect, beforeEach } from 'vitest';
 import { ProjectManagerAgent } from '@/agents/custom/ProjectManagerAgent';
 
+/** Type for execute result */
+type ExecuteResult = { success: boolean;[key: string]: unknown };
+
 /**
  * Project Manager Agent Tests
  * Testing multi-agent coordination and project tracking per PM Agent methodology
@@ -68,11 +71,12 @@ describe('Project Manager Agent', () => {
         it('should include summary metrics in report', async () => {
             const result = await agent.execute({
                 action: 'generateReport',
-            });
+            }) as ExecuteResult;
 
-            expect(result.summary.totalAgents).toBeGreaterThan(0);
-            expect(result.summary.activeAgents).toBeDefined();
-            expect(result.summary.tasksCompleted).toBeDefined();
+            const summary = result.summary as Record<string, number>;
+            expect(summary.totalAgents).toBeGreaterThan(0);
+            expect(summary.activeAgents).toBeDefined();
+            expect(summary.tasksCompleted).toBeDefined();
         });
 
         it('should include highlights and next priorities', async () => {
@@ -174,10 +178,11 @@ describe('Project Manager Agent', () => {
         it('should include blocker details', async () => {
             const result = await agent.execute({
                 action: 'identifyBlockers',
-            });
+            }) as ExecuteResult;
 
-            if (result.blockers.length > 0) {
-                const blocker = result.blockers[0];
+            const blockers = result.blockers as Array<Record<string, unknown>>;
+            if (blockers.length > 0) {
+                const blocker = blockers[0];
                 expect(blocker).toHaveProperty('id');
                 expect(blocker).toHaveProperty('description');
                 expect(blocker).toHaveProperty('impact');

@@ -97,9 +97,9 @@ export class ScoutAgent extends BaseAgent {
         query: string;
         scope?: string;
         maxResults?: number;
-    }): Promise<any> {
+    }): Promise<{ success: boolean;[key: string]: unknown }> {
         try {
-            let result: any;
+            let result: Record<string, unknown> | DependencyMap;
 
             switch (action.action) {
                 case 'explore':
@@ -110,7 +110,7 @@ export class ScoutAgent extends BaseAgent {
 
                 case 'findPatterns':
                     result = await this.discoverPatterns(action.query, action.scope);
-                    this.patternsFound += result.patterns?.length || 0;
+                    this.patternsFound += (result.patterns as PatternMatch[])?.length || 0;
                     this.updateKPI('Patterns Found', this.patternsFound);
                     break;
 
@@ -138,7 +138,7 @@ export class ScoutAgent extends BaseAgent {
     /**
      * Explore codebase to find relevant files
      */
-    private async exploreCodebase(query: string, scope?: string): Promise<any> {
+    private async exploreCodebase(query: string, scope?: string): Promise<Record<string, unknown>> {
         // Simulate codebase exploration
         const findings: CodeFinding[] = [];
 
@@ -193,7 +193,7 @@ export class ScoutAgent extends BaseAgent {
     /**
      * Discover implementation patterns
      */
-    private async discoverPatterns(query: string, scope?: string): Promise<any> {
+    private async discoverPatterns(query: string, scope?: string): Promise<Record<string, unknown>> {
         const patterns: PatternMatch[] = [];
 
         // Simulate pattern discovery
@@ -245,10 +245,10 @@ export class ScoutAgent extends BaseAgent {
     /**
      * Gather context from codebase
      */
-    private async collectContext(query: string, scope?: string): Promise<any> {
+    private async collectContext(query: string, scope?: string): Promise<Record<string, unknown>> {
         const exploration = await this.exploreCodebase(query, scope);
         const patterns = await this.discoverPatterns(query, scope);
-        const relatedFiles = exploration.findings.slice(0, 3).map((f: CodeFinding) => f.file);
+        const relatedFiles = (exploration.findings as CodeFinding[]).slice(0, 3).map((f: CodeFinding) => f.file);
 
         return {
             query,
