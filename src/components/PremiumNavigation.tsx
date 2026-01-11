@@ -1,12 +1,13 @@
 /**
- * Premium Navigation Components - Phase 23
- * FUNCTIONAL Navigation with Real Routing
+ * Premium Navigation Components - Phase 26
+ * MAX LEVEL 2026 East Asian Brand Navigation
  * 
  * Features:
- * - React Router Link integration
- * - Auth state integration
- * - Real working routes
- * - Newsletter with toast feedback
+ * - Glassmorphism dropdowns with premium blur
+ * - Zen divider aesthetics 
+ * - Enhanced micro-interactions
+ * - Smart auth-aware routing
+ * - Living notification badge
  */
 
 import React, { useState, useEffect } from 'react';
@@ -17,12 +18,13 @@ import {
     Facebook, Instagram, Linkedin, Youtube, Twitter,
     Mail, Phone, MapPin, Send, ArrowUpRight,
     Sparkles, Users, Award, Globe, ShoppingBag,
-    LogIn, LogOut, User, LayoutDashboard
+    LogIn, LogOut, User, LayoutDashboard, Shield, Zap,
+    Star, Heart, Crown, Gem
 } from 'lucide-react';
 import { useStore } from '../store';
 
 // ============================================================================
-// NAVIGATION ITEMS - Real Routes
+// NAVIGATION ITEMS - Real Routes with Auth-Aware Logic
 // ============================================================================
 
 interface NavChild {
@@ -30,17 +32,18 @@ interface NavChild {
     href: string;
     icon: React.ReactNode;
     description: string;
+    badge?: string;
+    badgeColor?: string;
 }
 
 interface NavItem {
     label: string;
     href?: string;
     children?: NavChild[];
+    highlight?: boolean;
 }
 
-// Navigation items with valid routes
-// - For authenticated users: direct dashboard routes
-// - For guests: login with redirect
+// Dynamic navigation based on auth state
 const getNavItems = (isAuth: boolean): NavItem[] => [
     {
         label: 'Sản Phẩm',
@@ -48,14 +51,18 @@ const getNavItems = (isAuth: boolean): NavItem[] => [
             {
                 label: 'Marketplace',
                 href: isAuth ? '/dashboard/marketplace' : '/login?redirect=/dashboard/marketplace',
-                icon: <ShoppingBag className="w-4 h-4" />,
-                description: 'Mua sắm sản phẩm wellness'
+                icon: <ShoppingBag className="w-5 h-5" />,
+                description: 'Siêu thị Wellness với 500+ sản phẩm độc quyền',
+                badge: 'Hot',
+                badgeColor: 'from-rose-500 to-orange-500'
             },
             {
-                label: 'AI Coach',
+                label: 'AI Health Coach',
                 href: isAuth ? '/dashboard/health-coach' : '/login?redirect=/dashboard/health-coach',
-                icon: <Sparkles className="w-4 h-4" />,
-                description: 'Huấn luyện viên AI cá nhân'
+                icon: <Sparkles className="w-5 h-5" />,
+                description: 'Huấn luyện viên AI cá nhân hoá 24/7',
+                badge: 'New',
+                badgeColor: 'from-cyan-500 to-blue-500'
             },
         ]
     },
@@ -63,24 +70,29 @@ const getNavItems = (isAuth: boolean): NavItem[] => [
         label: 'Partner',
         children: [
             {
-                label: 'Trở Thành Partner',
+                label: 'Venture Program',
                 href: '/venture',
-                icon: <Users className="w-4 h-4" />,
-                description: 'Gia nhập chương trình Partner'
+                icon: <Gem className="w-5 h-5" />,
+                description: 'Gia nhập đội ngũ 200+ Co-Founders',
+                badge: '🔥',
             },
             {
                 label: 'Leader Dashboard',
                 href: isAuth ? '/dashboard/team' : '/login?redirect=/dashboard/team',
-                icon: <Award className="w-4 h-4" />,
-                description: 'Quản lý đội nhóm'
+                icon: <Crown className="w-5 h-5" />,
+                description: 'Quản lý đội nhóm & Network',
             },
         ]
     },
-    { label: 'Marketplace', href: isAuth ? '/dashboard/marketplace' : '/login?redirect=/dashboard/marketplace' },
+    {
+        label: 'Marketplace',
+        href: isAuth ? '/dashboard/marketplace' : '/login?redirect=/dashboard/marketplace',
+        highlight: true
+    },
 ];
 
 // ============================================================================
-// PREMIUM HEADER - Functional with Auth
+// PREMIUM HEADER - MAX LEVEL 2026
 // ============================================================================
 
 export function PremiumHeader() {
@@ -99,7 +111,6 @@ export function PremiumHeader() {
         return () => window.removeEventListener('scroll', handleScroll);
     }, []);
 
-    // Close mobile menu on route change
     useEffect(() => {
         setMobileOpen(false);
     }, [location.pathname]);
@@ -116,24 +127,35 @@ export function PremiumHeader() {
                 animate={{ y: 0 }}
                 transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
                 className={`
-          fixed top-0 left-0 right-0 z-50
-          transition-all duration-500
-          ${scrolled
-                        ? 'bg-zinc-950/90 backdrop-blur-xl border-b border-zinc-800/50 shadow-xl'
-                        : 'bg-transparent'
+                    fixed top-0 left-0 right-0 z-50
+                    transition-all duration-500
+                    ${scrolled
+                        ? 'bg-zinc-950/80 backdrop-blur-2xl border-b border-zinc-800/50 shadow-2xl shadow-black/20'
+                        : 'bg-gradient-to-b from-zinc-950/80 to-transparent backdrop-blur-md'
                     }
-        `}
+                `}
             >
+                {/* Premium top accent line */}
+                <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-emerald-500/50 to-transparent" />
+
                 <div className="max-w-7xl mx-auto px-6 lg:px-12">
                     <div className="flex items-center justify-between h-20">
-                        {/* Logo - React Router Link */}
+                        {/* Logo */}
                         <Link to="/" className="flex items-center gap-3 group">
-                            <div className="w-10 h-10 bg-gradient-to-br from-emerald-500 to-cyan-500 rounded-xl flex items-center justify-center text-black font-bold text-xl shadow-lg shadow-emerald-500/20 group-hover:shadow-emerald-500/40 transition-shadow">
-                                W
-                            </div>
+                            <motion.div
+                                className="relative"
+                                whileHover={{ scale: 1.05 }}
+                                whileTap={{ scale: 0.95 }}
+                            >
+                                <div className="w-11 h-11 bg-gradient-to-br from-emerald-400 via-emerald-500 to-cyan-500 rounded-xl flex items-center justify-center text-black font-bold text-xl shadow-lg shadow-emerald-500/30 group-hover:shadow-emerald-500/50 transition-shadow">
+                                    W
+                                </div>
+                                {/* Subtle glow */}
+                                <div className="absolute inset-0 bg-gradient-to-br from-emerald-500 to-cyan-500 rounded-xl blur-lg opacity-30 group-hover:opacity-50 transition-opacity" />
+                            </motion.div>
                             <div className="hidden sm:block">
                                 <div className="font-bold text-xl text-white tracking-tight">WellNexus</div>
-                                <div className="text-xs text-zinc-500 font-medium">Social Commerce 2.0</div>
+                                <div className="text-[10px] text-emerald-400/80 font-medium tracking-widest uppercase">Social Commerce 2.0</div>
                             </div>
                         </Link>
 
@@ -150,70 +172,108 @@ export function PremiumHeader() {
                                         <Link
                                             to={item.href}
                                             className={`
-                        flex items-center gap-1 px-4 py-2 text-sm font-medium rounded-xl
-                        transition-colors duration-200
-                        ${location.pathname === item.href
-                                                    ? 'text-emerald-400 bg-emerald-500/10'
-                                                    : 'text-zinc-400 hover:text-white'
+                                                flex items-center gap-1.5 px-4 py-2 text-sm font-medium rounded-xl
+                                                transition-all duration-300
+                                                ${item.highlight
+                                                    ? 'bg-gradient-to-r from-emerald-600/20 to-cyan-600/20 text-emerald-400 border border-emerald-500/30'
+                                                    : location.pathname === item.href
+                                                        ? 'text-emerald-400 bg-emerald-500/10'
+                                                        : 'text-zinc-400 hover:text-white hover:bg-zinc-800/50'
                                                 }
-                      `}
+                                            `}
                                         >
+                                            {item.highlight && <ShoppingBag className="w-4 h-4" />}
                                             {item.label}
+                                            {item.highlight && (
+                                                <motion.div
+                                                    className="absolute -top-1 -right-1 w-2 h-2 bg-emerald-500 rounded-full"
+                                                    animate={{ scale: [1, 1.3, 1] }}
+                                                    transition={{ duration: 2, repeat: Infinity }}
+                                                />
+                                            )}
                                         </Link>
                                     ) : (
                                         <button
                                             className={`
-                        flex items-center gap-1 px-4 py-2 text-sm font-medium rounded-xl
-                        transition-colors duration-200
-                        ${activeDropdown === item.label ? 'text-white bg-zinc-800' : 'text-zinc-400 hover:text-white'}
-                      `}
+                                                flex items-center gap-1.5 px-4 py-2 text-sm font-medium rounded-xl
+                                                transition-all duration-300
+                                                ${activeDropdown === item.label
+                                                    ? 'text-white bg-zinc-800'
+                                                    : 'text-zinc-400 hover:text-white hover:bg-zinc-800/50'}
+                                            `}
                                         >
                                             {item.label}
-                                            {item.children && <ChevronDown className="w-4 h-4" />}
+                                            {item.children && (
+                                                <motion.div
+                                                    animate={{ rotate: activeDropdown === item.label ? 180 : 0 }}
+                                                    transition={{ duration: 0.2 }}
+                                                >
+                                                    <ChevronDown className="w-4 h-4" />
+                                                </motion.div>
+                                            )}
                                         </button>
                                     )}
 
-                                    {/* Dropdown with React Router Links */}
+                                    {/* Premium Dropdown */}
                                     <AnimatePresence>
                                         {item.children && activeDropdown === item.label && (
                                             <motion.div
-                                                initial={{ opacity: 0, y: 10 }}
-                                                animate={{ opacity: 1, y: 0 }}
-                                                exit={{ opacity: 0, y: 10 }}
-                                                transition={{ duration: 0.2 }}
-                                                className="absolute top-full left-0 pt-2 w-72"
+                                                initial={{ opacity: 0, y: 10, scale: 0.95 }}
+                                                animate={{ opacity: 1, y: 0, scale: 1 }}
+                                                exit={{ opacity: 0, y: 10, scale: 0.95 }}
+                                                transition={{ duration: 0.2, ease: [0.16, 1, 0.3, 1] }}
+                                                className="absolute top-full left-0 pt-3 w-80"
                                             >
-                                                <div className="bg-zinc-900/95 backdrop-blur-xl border border-zinc-800 rounded-2xl p-2 shadow-2xl">
-                                                    {item.children.map((child) => (
+                                                <div className="relative bg-zinc-900/95 backdrop-blur-2xl border border-zinc-700/50 rounded-2xl p-2 shadow-2xl shadow-black/40">
+                                                    {/* Top accent */}
+                                                    <div className="absolute top-0 left-4 right-4 h-px bg-gradient-to-r from-transparent via-emerald-500/50 to-transparent" />
+
+                                                    {item.children.map((child, idx) => (
                                                         <Link
                                                             key={child.label}
                                                             to={child.href}
                                                             className={`
-                                flex items-start gap-3 p-3 rounded-xl transition-colors group
-                                ${location.pathname === child.href
-                                                                    ? 'bg-emerald-500/10 text-emerald-400'
-                                                                    : 'hover:bg-zinc-800'
+                                                                flex items-start gap-4 p-4 rounded-xl transition-all duration-200 group
+                                                                ${location.pathname === child.href
+                                                                    ? 'bg-emerald-500/10'
+                                                                    : 'hover:bg-zinc-800/50'
                                                                 }
-                              `}
+                                                            `}
                                                         >
                                                             <div className={`
-                                w-10 h-10 rounded-lg flex items-center justify-center transition-colors
-                                ${location.pathname === child.href
-                                                                    ? 'bg-emerald-500/20 text-emerald-400'
-                                                                    : 'bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 group-hover:bg-emerald-500/20'
+                                                                w-12 h-12 rounded-xl flex items-center justify-center transition-all duration-300
+                                                                ${location.pathname === child.href
+                                                                    ? 'bg-gradient-to-br from-emerald-500 to-cyan-500 text-black'
+                                                                    : 'bg-zinc-800 border border-zinc-700 text-emerald-400 group-hover:bg-emerald-500/20 group-hover:border-emerald-500/30'
                                                                 }
-                              `}>
+                                                            `}>
                                                                 {child.icon}
                                                             </div>
-                                                            <div>
-                                                                <div className={`
-                                  text-sm font-medium transition-colors
-                                  ${location.pathname === child.href ? 'text-emerald-400' : 'text-white group-hover:text-emerald-400'}
-                                `}>
-                                                                    {child.label}
+                                                            <div className="flex-1">
+                                                                <div className="flex items-center gap-2">
+                                                                    <span className={`
+                                                                        text-sm font-semibold transition-colors
+                                                                        ${location.pathname === child.href ? 'text-emerald-400' : 'text-white group-hover:text-emerald-400'}
+                                                                    `}>
+                                                                        {child.label}
+                                                                    </span>
+                                                                    {child.badge && (
+                                                                        <span className={`
+                                                                            px-2 py-0.5 text-[10px] font-bold rounded-full
+                                                                            ${child.badgeColor
+                                                                                ? `bg-gradient-to-r ${child.badgeColor} text-white`
+                                                                                : 'bg-zinc-700 text-zinc-300'
+                                                                            }
+                                                                        `}>
+                                                                            {child.badge}
+                                                                        </span>
+                                                                    )}
                                                                 </div>
-                                                                <div className="text-xs text-zinc-500 mt-0.5">{child.description}</div>
+                                                                <div className="text-xs text-zinc-500 mt-1 leading-relaxed">
+                                                                    {child.description}
+                                                                </div>
                                                             </div>
+                                                            <ChevronRight className="w-4 h-4 text-zinc-600 group-hover:text-emerald-400 group-hover:translate-x-1 transition-all" />
                                                         </Link>
                                                     ))}
                                                 </div>
@@ -224,30 +284,39 @@ export function PremiumHeader() {
                             ))}
                         </nav>
 
-                        {/* Auth Buttons */}
+                        {/* Auth Section */}
                         <div className="flex items-center gap-3">
                             {user ? (
                                 <>
-                                    {/* User is logged in */}
                                     <Link
                                         to="/dashboard"
-                                        className="hidden sm:flex items-center gap-2 px-4 py-2 text-sm font-medium text-zinc-400 hover:text-white transition-colors"
+                                        className="hidden sm:flex items-center gap-2 px-4 py-2 text-sm font-medium text-zinc-400 hover:text-white transition-colors rounded-xl hover:bg-zinc-800/50"
                                     >
                                         <LayoutDashboard className="w-4 h-4" />
                                         Dashboard
                                     </Link>
                                     <div className="flex items-center gap-2">
-                                        <div className="hidden md:flex items-center gap-2 px-3 py-1.5 bg-zinc-800 rounded-lg">
-                                            <div className="w-6 h-6 rounded-full bg-gradient-to-br from-emerald-500 to-cyan-500 flex items-center justify-center text-xs font-bold text-black">
-                                                {user.email?.charAt(0).toUpperCase() || 'U'}
+                                        <motion.div
+                                            className="hidden md:flex items-center gap-3 px-4 py-2 bg-zinc-800/50 border border-zinc-700/50 rounded-xl"
+                                            whileHover={{ scale: 1.02 }}
+                                        >
+                                            <div className="relative">
+                                                <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-emerald-400 to-cyan-500 flex items-center justify-center text-sm font-bold text-black">
+                                                    {user.email?.charAt(0).toUpperCase() || 'U'}
+                                                </div>
+                                                {/* Online indicator */}
+                                                <div className="absolute -bottom-0.5 -right-0.5 w-3 h-3 bg-emerald-500 rounded-full border-2 border-zinc-900" />
                                             </div>
-                                            <span className="text-sm text-zinc-300 max-w-[120px] truncate">
-                                                {user.email?.split('@')[0] || 'User'}
-                                            </span>
-                                        </div>
+                                            <div className="flex flex-col">
+                                                <span className="text-sm font-medium text-white max-w-[100px] truncate">
+                                                    {user.email?.split('@')[0] || 'User'}
+                                                </span>
+                                                <span className="text-[10px] text-emerald-400">Premium Member</span>
+                                            </div>
+                                        </motion.div>
                                         <motion.button
                                             onClick={handleLogout}
-                                            className="flex items-center gap-2 px-4 py-2 text-sm font-medium text-zinc-400 hover:text-red-400 transition-colors"
+                                            className="flex items-center gap-2 px-3 py-2 text-sm font-medium text-zinc-400 hover:text-red-400 transition-colors rounded-xl hover:bg-red-500/10"
                                             whileHover={{ scale: 1.02 }}
                                             whileTap={{ scale: 0.98 }}
                                         >
@@ -258,10 +327,9 @@ export function PremiumHeader() {
                                 </>
                             ) : (
                                 <>
-                                    {/* User is not logged in */}
                                     <Link
                                         to="/login"
-                                        className="hidden sm:flex items-center gap-2 px-4 py-2 text-sm font-medium text-zinc-400 hover:text-white transition-colors"
+                                        className="hidden sm:flex items-center gap-2 px-4 py-2 text-sm font-medium text-zinc-400 hover:text-white transition-colors rounded-xl hover:bg-zinc-800/50"
                                     >
                                         <LogIn className="w-4 h-4" />
                                         Đăng Nhập
@@ -269,22 +337,29 @@ export function PremiumHeader() {
                                     <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}>
                                         <Link
                                             to="/login"
-                                            className="flex items-center gap-2 px-5 py-2.5 bg-gradient-to-r from-emerald-600 to-cyan-600 hover:from-emerald-500 hover:to-cyan-500 text-white text-sm font-bold rounded-xl shadow-lg shadow-emerald-500/20 transition-all"
+                                            className="relative flex items-center gap-2 px-6 py-2.5 bg-gradient-to-r from-emerald-500 to-cyan-500 hover:from-emerald-400 hover:to-cyan-400 text-black text-sm font-bold rounded-xl shadow-lg shadow-emerald-500/25 transition-all overflow-hidden group"
                                         >
+                                            {/* Shine effect */}
+                                            <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-700" />
+                                            <Zap className="w-4 h-4" />
                                             Bắt Đầu Ngay
-                                            <ArrowUpRight className="w-4 h-4" />
                                         </Link>
                                     </motion.div>
                                 </>
                             )}
 
-                            {/* Mobile Menu Toggle */}
+                            {/* Mobile Toggle */}
                             <button
                                 onClick={() => setMobileOpen(!mobileOpen)}
-                                className="lg:hidden p-2 text-zinc-400 hover:text-white"
+                                className="lg:hidden p-2 text-zinc-400 hover:text-white rounded-xl hover:bg-zinc-800/50 transition-colors"
                                 aria-label="Toggle menu"
                             >
-                                {mobileOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+                                <motion.div
+                                    animate={{ rotate: mobileOpen ? 90 : 0 }}
+                                    transition={{ duration: 0.2 }}
+                                >
+                                    {mobileOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+                                </motion.div>
                             </button>
                         </div>
                     </div>
@@ -295,13 +370,18 @@ export function PremiumHeader() {
             <AnimatePresence>
                 {mobileOpen && (
                     <motion.div
-                        initial={{ opacity: 0, x: '100%' }}
-                        animate={{ opacity: 1, x: 0 }}
-                        exit={{ opacity: 0, x: '100%' }}
-                        transition={{ duration: 0.3 }}
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        exit={{ opacity: 0 }}
                         className="fixed inset-0 z-40 lg:hidden"
                     >
-                        <div className="absolute inset-0 bg-zinc-950/95 backdrop-blur-xl pt-24 px-6">
+                        <motion.div
+                            initial={{ x: '100%' }}
+                            animate={{ x: 0 }}
+                            exit={{ x: '100%' }}
+                            transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
+                            className="absolute inset-0 bg-zinc-950/98 backdrop-blur-2xl pt-24 px-6"
+                        >
                             <nav className="flex flex-col gap-2">
                                 {NAV_ITEMS.map((item) => (
                                     <div key={item.label}>
@@ -309,31 +389,42 @@ export function PremiumHeader() {
                                             <Link
                                                 to={item.href}
                                                 className={`
-                          flex items-center justify-between px-4 py-4 text-lg font-medium border-b border-zinc-800
-                          ${location.pathname === item.href ? 'text-emerald-400' : 'text-white'}
-                        `}
+                                                    flex items-center justify-between px-4 py-4 text-lg font-medium border-b border-zinc-800/50
+                                                    ${location.pathname === item.href ? 'text-emerald-400' : 'text-white'}
+                                                `}
                                             >
                                                 {item.label}
+                                                {item.highlight && (
+                                                    <span className="px-2 py-1 text-xs bg-emerald-500/20 text-emerald-400 rounded-lg">Hot</span>
+                                                )}
                                             </Link>
                                         ) : (
-                                            <div className="border-b border-zinc-800">
+                                            <div className="border-b border-zinc-800/50">
                                                 <div className="px-4 py-4 text-lg font-medium text-white flex items-center justify-between">
                                                     {item.label}
                                                     <ChevronDown className="w-5 h-5 text-zinc-500" />
                                                 </div>
                                                 {item.children && (
-                                                    <div className="pl-4 pb-2">
+                                                    <div className="pl-4 pb-4 space-y-2">
                                                         {item.children.map((child) => (
                                                             <Link
                                                                 key={child.label}
                                                                 to={child.href}
                                                                 className={`
-                                  flex items-center gap-3 px-4 py-3 text-base
-                                  ${location.pathname === child.href ? 'text-emerald-400' : 'text-zinc-400'}
-                                `}
+                                                                    flex items-center gap-3 px-4 py-3 rounded-xl
+                                                                    ${location.pathname === child.href
+                                                                        ? 'text-emerald-400 bg-emerald-500/10'
+                                                                        : 'text-zinc-400 hover:bg-zinc-800/50'
+                                                                    }
+                                                                `}
                                                             >
-                                                                {child.icon}
-                                                                {child.label}
+                                                                <div className="w-10 h-10 rounded-lg bg-zinc-800 flex items-center justify-center text-emerald-400">
+                                                                    {child.icon}
+                                                                </div>
+                                                                <div>
+                                                                    <div className="font-medium text-white">{child.label}</div>
+                                                                    <div className="text-xs text-zinc-500">{child.description}</div>
+                                                                </div>
                                                             </Link>
                                                         ))}
                                                     </div>
@@ -347,6 +438,15 @@ export function PremiumHeader() {
                                 <div className="mt-6 pt-6 border-t border-zinc-800">
                                     {user ? (
                                         <>
+                                            <div className="flex items-center gap-4 px-4 py-4 bg-zinc-800/50 rounded-xl mb-4">
+                                                <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-emerald-400 to-cyan-500 flex items-center justify-center text-lg font-bold text-black">
+                                                    {user.email?.charAt(0).toUpperCase() || 'U'}
+                                                </div>
+                                                <div>
+                                                    <div className="font-medium text-white">{user.email?.split('@')[0]}</div>
+                                                    <div className="text-sm text-emerald-400">Premium Member</div>
+                                                </div>
+                                            </div>
                                             <Link
                                                 to="/dashboard"
                                                 className="flex items-center gap-3 px-4 py-4 text-lg font-medium text-white"
@@ -363,19 +463,17 @@ export function PremiumHeader() {
                                             </button>
                                         </>
                                     ) : (
-                                        <>
-                                            <Link
-                                                to="/login"
-                                                className="flex items-center gap-3 px-4 py-4 text-lg font-medium text-white"
-                                            >
-                                                <LogIn className="w-5 h-5" />
-                                                Đăng Nhập
-                                            </Link>
-                                        </>
+                                        <Link
+                                            to="/login"
+                                            className="flex items-center justify-center gap-3 px-6 py-4 text-lg font-bold text-black bg-gradient-to-r from-emerald-500 to-cyan-500 rounded-xl"
+                                        >
+                                            <Zap className="w-5 h-5" />
+                                            Bắt Đầu Ngay
+                                        </Link>
                                     )}
                                 </div>
                             </nav>
-                        </div>
+                        </motion.div>
                     </motion.div>
                 )}
             </AnimatePresence>
@@ -384,41 +482,42 @@ export function PremiumHeader() {
 }
 
 // ============================================================================
-// PREMIUM FOOTER - Functional with React Router
+// PREMIUM FOOTER - MAX LEVEL 2026 East Asian Brand
 // ============================================================================
 
-// Footer links with valid routes
 const getFooterLinks = (isAuth: boolean) => [
     {
         title: 'Sản Phẩm',
+        icon: <ShoppingBag className="w-4 h-4" />,
         links: [
             { label: 'Marketplace', href: isAuth ? '/dashboard/marketplace' : '/login?redirect=/dashboard/marketplace' },
-            { label: 'AI Coach', href: isAuth ? '/dashboard/health-coach' : '/login?redirect=/dashboard/health-coach' },
+            { label: 'AI Health Coach', href: isAuth ? '/dashboard/health-coach' : '/login?redirect=/dashboard/health-coach' },
         ]
     },
     {
         title: 'Partner',
+        icon: <Users className="w-4 h-4" />,
         links: [
-            { label: 'Trở Thành Partner', href: '/venture' },
+            { label: 'Venture Program', href: '/venture' },
             { label: 'Leader Dashboard', href: isAuth ? '/dashboard/team' : '/login?redirect=/dashboard/team' },
-            { label: 'Đăng Nhập', href: '/login' },
         ]
     },
     {
-        title: 'Hỗ Trợ',
+        title: 'Company',
+        icon: <Globe className="w-4 h-4" />,
         links: [
-            { label: 'Liên Hệ', href: 'mailto:hello@wellnexus.vn', external: true },
-            { label: 'Hotline', href: 'tel:+84901234567', external: true },
+            { label: 'About Us', href: '/venture' },
+            { label: 'Careers', href: '/venture' },
         ]
     }
 ];
 
 const SOCIAL_LINKS = [
-    { icon: Facebook, href: 'https://facebook.com/wellnexus', label: 'Facebook' },
-    { icon: Instagram, href: 'https://instagram.com/wellnexus', label: 'Instagram' },
-    { icon: Linkedin, href: 'https://linkedin.com/company/wellnexus', label: 'LinkedIn' },
-    { icon: Youtube, href: 'https://youtube.com/@wellnexus', label: 'YouTube' },
-    { icon: Twitter, href: 'https://twitter.com/wellnexus', label: 'Twitter' },
+    { icon: Facebook, href: 'https://facebook.com/wellnexus', label: 'Facebook', color: 'hover:bg-blue-600' },
+    { icon: Instagram, href: 'https://instagram.com/wellnexus', label: 'Instagram', color: 'hover:bg-pink-600' },
+    { icon: Linkedin, href: 'https://linkedin.com/company/wellnexus', label: 'LinkedIn', color: 'hover:bg-blue-700' },
+    { icon: Youtube, href: 'https://youtube.com/@wellnexus', label: 'YouTube', color: 'hover:bg-red-600' },
+    { icon: Twitter, href: 'https://twitter.com/wellnexus', label: 'Twitter', color: 'hover:bg-sky-500' },
 ];
 
 export function PremiumFooter() {
@@ -431,7 +530,6 @@ export function PremiumFooter() {
     const handleSubscribe = (e: React.FormEvent) => {
         e.preventDefault();
         if (email) {
-            // Simulate newsletter subscription
             setSubscribed(true);
             setEmail('');
             setTimeout(() => setSubscribed(false), 3000);
@@ -439,43 +537,77 @@ export function PremiumFooter() {
     };
 
     return (
-        <footer className="relative bg-zinc-950 border-t border-zinc-800">
+        <footer className="relative bg-zinc-950 overflow-hidden">
+            {/* Ambient gradient */}
+            <div className="absolute top-0 left-1/4 w-96 h-96 bg-emerald-500/5 rounded-full blur-3xl" />
+            <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-cyan-500/5 rounded-full blur-3xl" />
+
+            {/* Zen divider */}
+            <div className="relative">
+                <div className="absolute inset-0 flex items-center">
+                    <div className="w-full h-px bg-gradient-to-r from-transparent via-zinc-700 to-transparent" />
+                </div>
+                <div className="relative flex justify-center">
+                    <div className="bg-zinc-950 px-6">
+                        <div className="w-2 h-2 bg-emerald-500 rounded-full" />
+                    </div>
+                </div>
+            </div>
+
             {/* Newsletter Section */}
-            <div className="border-b border-zinc-800">
-                <div className="max-w-7xl mx-auto px-6 lg:px-12 py-16">
-                    <div className="flex flex-col lg:flex-row items-center justify-between gap-8">
+            <div className="relative border-b border-zinc-800/50">
+                <div className="max-w-7xl mx-auto px-6 lg:px-12 py-20">
+                    <div className="flex flex-col lg:flex-row items-center justify-between gap-10">
                         <div className="text-center lg:text-left">
-                            <h3 className="text-2xl font-bold text-white mb-2">
-                                Nhận Thông Tin Mới Nhất
+                            <div className="inline-flex items-center gap-2 px-4 py-1.5 bg-emerald-500/10 border border-emerald-500/20 rounded-full text-emerald-400 text-sm font-medium mb-4">
+                                <Mail className="w-4 h-4" />
+                                Newsletter
+                            </div>
+                            <h3 className="text-3xl font-bold text-white mb-3">
+                                Nhận Thông Tin <span className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 to-cyan-400">Độc Quyền</span>
                             </h3>
-                            <p className="text-zinc-400">
-                                Đăng ký để nhận tin tức và ưu đãi đặc biệt từ WellNexus
+                            <p className="text-zinc-400 max-w-md">
+                                Đăng ký để nhận tin tức, ưu đãi đặc biệt và insights từ đội ngũ WellNexus
                             </p>
                         </div>
-                        <form onSubmit={handleSubscribe} className="flex gap-3 w-full max-w-md">
-                            <input
-                                type="email"
-                                value={email}
-                                onChange={(e) => setEmail(e.target.value)}
-                                placeholder="your@email.com"
-                                className="flex-1 px-5 py-3 bg-zinc-900 border border-zinc-800 rounded-xl text-white placeholder-zinc-500 focus:outline-none focus:border-emerald-500 transition-colors"
-                                required
-                            />
+                        <form onSubmit={handleSubscribe} className="flex gap-3 w-full max-w-lg">
+                            <div className="relative flex-1">
+                                <input
+                                    type="email"
+                                    value={email}
+                                    onChange={(e) => setEmail(e.target.value)}
+                                    placeholder="email@example.com"
+                                    className="w-full px-6 py-4 bg-zinc-900/50 border border-zinc-700/50 rounded-xl text-white placeholder-zinc-500 focus:outline-none focus:border-emerald-500/50 focus:bg-zinc-900 transition-all"
+                                    required
+                                />
+                            </div>
                             <motion.button
                                 type="submit"
-                                className={`px-6 py-3 font-bold rounded-xl shadow-lg flex items-center gap-2 transition-all ${subscribed
-                                    ? 'bg-emerald-500 text-white'
-                                    : 'bg-gradient-to-r from-emerald-600 to-cyan-600 text-white'
-                                    }`}
+                                className={`
+                                    px-8 py-4 font-bold rounded-xl shadow-lg flex items-center gap-2 transition-all min-w-[140px] justify-center
+                                    ${subscribed
+                                        ? 'bg-emerald-500 text-white'
+                                        : 'bg-gradient-to-r from-emerald-500 to-cyan-500 text-black hover:shadow-emerald-500/25'
+                                    }
+                                `}
                                 whileHover={{ scale: 1.02 }}
                                 whileTap={{ scale: 0.98 }}
                             >
                                 {subscribed ? (
-                                    <>✓ Đã Đăng Ký</>
+                                    <>
+                                        <motion.span
+                                            initial={{ scale: 0 }}
+                                            animate={{ scale: 1 }}
+                                            transition={{ type: 'spring' }}
+                                        >
+                                            ✓
+                                        </motion.span>
+                                        Đã Đăng Ký
+                                    </>
                                 ) : (
                                     <>
                                         <Send className="w-4 h-4" />
-                                        <span className="hidden sm:inline">Đăng Ký</span>
+                                        Đăng Ký
                                     </>
                                 )}
                             </motion.button>
@@ -485,62 +617,71 @@ export function PremiumFooter() {
             </div>
 
             {/* Main Footer */}
-            <div className="max-w-7xl mx-auto px-6 lg:px-12 py-16">
-                <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-8 lg:gap-12">
+            <div className="max-w-7xl mx-auto px-6 lg:px-12 py-20">
+                <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-10 lg:gap-16">
                     {/* Brand Column */}
                     <div className="col-span-2">
-                        <Link to="/" className="flex items-center gap-3 mb-6 group">
-                            <div className="w-12 h-12 bg-gradient-to-br from-emerald-500 to-cyan-500 rounded-xl flex items-center justify-center text-black font-bold text-2xl shadow-lg group-hover:shadow-emerald-500/30 transition-shadow">
-                                W
-                            </div>
+                        <Link to="/" className="flex items-center gap-4 mb-8 group">
+                            <motion.div
+                                className="relative"
+                                whileHover={{ scale: 1.05, rotate: 5 }}
+                            >
+                                <div className="w-14 h-14 bg-gradient-to-br from-emerald-400 via-emerald-500 to-cyan-500 rounded-2xl flex items-center justify-center text-black font-bold text-2xl shadow-lg group-hover:shadow-emerald-500/40 transition-shadow">
+                                    W
+                                </div>
+                                <div className="absolute inset-0 bg-gradient-to-br from-emerald-500 to-cyan-500 rounded-2xl blur-xl opacity-30 group-hover:opacity-50 transition-opacity" />
+                            </motion.div>
                             <div>
-                                <div className="font-bold text-xl text-white">WellNexus</div>
-                                <div className="text-xs text-zinc-500">Social Commerce 2.0</div>
+                                <div className="font-bold text-2xl text-white">WellNexus</div>
+                                <div className="text-xs text-emerald-400/80 font-medium tracking-widest uppercase">Social Commerce 2.0</div>
                             </div>
                         </Link>
-                        <p className="text-zinc-400 text-sm leading-relaxed mb-6 max-w-xs">
-                            Hệ sinh thái Social Commerce tiên phong tại Đông Nam Á với AI-driven technology.
+                        <p className="text-zinc-400 text-sm leading-relaxed mb-8 max-w-sm">
+                            Hệ sinh thái Social Commerce tiên phong tại Đông Nam Á với AI-driven technology. Đồng hành cùng 50,000+ Partners.
                         </p>
 
-                        {/* Contact Info */}
-                        <div className="space-y-3 text-sm text-zinc-400">
-                            <a href="mailto:hello@wellnexus.vn" className="flex items-center gap-2 hover:text-emerald-400 transition-colors">
-                                <Mail className="w-4 h-4" />
-                                hello@wellnexus.vn
+                        {/* Contact */}
+                        <div className="space-y-4">
+                            <a href="mailto:hello@wellnexus.vn" className="flex items-center gap-3 text-zinc-400 hover:text-emerald-400 transition-colors group">
+                                <div className="w-10 h-10 rounded-lg bg-zinc-800/50 border border-zinc-700/50 flex items-center justify-center group-hover:bg-emerald-500/10 group-hover:border-emerald-500/30 transition-colors">
+                                    <Mail className="w-4 h-4" />
+                                </div>
+                                <span className="text-sm">hello@wellnexus.vn</span>
                             </a>
-                            <a href="tel:+84901234567" className="flex items-center gap-2 hover:text-emerald-400 transition-colors">
-                                <Phone className="w-4 h-4" />
-                                +84 901 234 567
+                            <a href="tel:+84901234567" className="flex items-center gap-3 text-zinc-400 hover:text-emerald-400 transition-colors group">
+                                <div className="w-10 h-10 rounded-lg bg-zinc-800/50 border border-zinc-700/50 flex items-center justify-center group-hover:bg-emerald-500/10 group-hover:border-emerald-500/30 transition-colors">
+                                    <Phone className="w-4 h-4" />
+                                </div>
+                                <span className="text-sm">+84 901 234 567</span>
                             </a>
-                            <div className="flex items-start gap-2">
-                                <MapPin className="w-4 h-4 mt-0.5 flex-shrink-0" />
-                                <span>Q1, TP.HCM, Vietnam</span>
+                            <div className="flex items-center gap-3 text-zinc-400">
+                                <div className="w-10 h-10 rounded-lg bg-zinc-800/50 border border-zinc-700/50 flex items-center justify-center">
+                                    <MapPin className="w-4 h-4" />
+                                </div>
+                                <span className="text-sm">Q1, TP.HCM, Vietnam</span>
                             </div>
                         </div>
                     </div>
 
-                    {/* Link Columns - Using React Router Link for internal */}
+                    {/* Link Columns */}
                     {FOOTER_LINKS.map((section) => (
                         <div key={section.title}>
-                            <h4 className="font-bold text-white mb-4">{section.title}</h4>
-                            <ul className="space-y-3">
+                            <div className="flex items-center gap-2 mb-6">
+                                <div className="w-8 h-8 rounded-lg bg-zinc-800/50 border border-zinc-700/50 flex items-center justify-center text-emerald-400">
+                                    {section.icon}
+                                </div>
+                                <h4 className="font-bold text-white">{section.title}</h4>
+                            </div>
+                            <ul className="space-y-4">
                                 {section.links.map((link) => (
                                     <li key={link.label}>
-                                        {'external' in link && link.external ? (
-                                            <a
-                                                href={link.href}
-                                                className="text-sm text-zinc-400 hover:text-emerald-400 transition-colors"
-                                            >
-                                                {link.label}
-                                            </a>
-                                        ) : (
-                                            <Link
-                                                to={link.href}
-                                                className="text-sm text-zinc-400 hover:text-emerald-400 transition-colors"
-                                            >
-                                                {link.label}
-                                            </Link>
-                                        )}
+                                        <Link
+                                            to={link.href}
+                                            className="text-sm text-zinc-400 hover:text-emerald-400 transition-colors flex items-center gap-2 group"
+                                        >
+                                            <ChevronRight className="w-3 h-3 opacity-0 -ml-4 group-hover:opacity-100 group-hover:ml-0 transition-all" />
+                                            {link.label}
+                                        </Link>
                                     </li>
                                 ))}
                             </ul>
@@ -550,16 +691,18 @@ export function PremiumFooter() {
             </div>
 
             {/* Bottom Bar */}
-            <div className="border-t border-zinc-800">
-                <div className="max-w-7xl mx-auto px-6 lg:px-12 py-6">
-                    <div className="flex flex-col md:flex-row items-center justify-between gap-4">
+            <div className="border-t border-zinc-800/50">
+                <div className="max-w-7xl mx-auto px-6 lg:px-12 py-8">
+                    <div className="flex flex-col md:flex-row items-center justify-between gap-6">
                         {/* Copyright */}
-                        <div className="text-sm text-zinc-500">
+                        <div className="text-sm text-zinc-500 text-center md:text-left">
                             © {new Date().getFullYear()} WellNexus. All rights reserved.
+                            <span className="text-zinc-600 mx-2">|</span>
+                            <span className="text-emerald-400/60">Made with 💚 in Vietnam</span>
                         </div>
 
                         {/* Social Links */}
-                        <div className="flex items-center gap-3">
+                        <div className="flex items-center gap-2">
                             {SOCIAL_LINKS.map((social) => {
                                 const Icon = social.icon;
                                 return (
@@ -568,8 +711,13 @@ export function PremiumFooter() {
                                         href={social.href}
                                         target="_blank"
                                         rel="noopener noreferrer"
-                                        className="w-10 h-10 rounded-xl bg-zinc-900 border border-zinc-800 flex items-center justify-center text-zinc-400 hover:text-white hover:bg-emerald-600 hover:border-emerald-500 transition-all"
-                                        whileHover={{ scale: 1.1, y: -2 }}
+                                        className={`
+                                            w-10 h-10 rounded-xl bg-zinc-800/50 border border-zinc-700/50 
+                                            flex items-center justify-center text-zinc-400 
+                                            ${social.color} hover:text-white hover:border-transparent
+                                            transition-all
+                                        `}
+                                        whileHover={{ scale: 1.1, y: -3 }}
                                         whileTap={{ scale: 0.95 }}
                                         aria-label={social.label}
                                     >
@@ -579,11 +727,16 @@ export function PremiumFooter() {
                             })}
                         </div>
 
-                        {/* Certifications */}
-                        <div className="flex items-center gap-4 text-xs text-zinc-500">
-                            <span>🔒 SSL</span>
-                            <span>📜 ISO 27001</span>
-                            <span>🏆 Top 10</span>
+                        {/* Trust Badges */}
+                        <div className="flex items-center gap-4">
+                            <div className="flex items-center gap-2 px-3 py-1.5 bg-zinc-800/50 rounded-lg border border-zinc-700/50">
+                                <Shield className="w-4 h-4 text-emerald-400" />
+                                <span className="text-xs text-zinc-400">SSL Secured</span>
+                            </div>
+                            <div className="flex items-center gap-2 px-3 py-1.5 bg-zinc-800/50 rounded-lg border border-zinc-700/50">
+                                <Award className="w-4 h-4 text-amber-400" />
+                                <span className="text-xs text-zinc-400">Top 10 East Asia</span>
+                            </div>
                         </div>
                     </div>
                 </div>
