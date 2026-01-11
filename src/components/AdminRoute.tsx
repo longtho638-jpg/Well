@@ -28,7 +28,8 @@ export function AdminRoute({ children }: AdminRouteProps) {
     // SECURITY FIX: Use whitelist instead of email.includes('admin')
     const ADMIN_EMAILS = [
         'longtho638@gmail.com',
-        'doanhnhancaotuan@gmail.com'
+        'doanhnhancaotuan@gmail.com',
+        'demo@wellnexus.vn' // Demo mode admin access
     ];
 
     const isAdmin = ADMIN_EMAILS.includes(user?.email || '') ||
