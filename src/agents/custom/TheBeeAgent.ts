@@ -2,6 +2,23 @@ import { BaseAgent } from '../core/BaseAgent';
 import { AgentDefinition } from '@/types/agentic';
 import { UserRank } from '@/types';
 
+/** Transaction input for TheBeeAgent */
+interface BeeTransactionInput {
+  amount: number;
+  type: string;
+}
+
+/** Result from TheBeeAgent execution */
+interface BeeRewardResult {
+  success?: boolean;
+  error?: string;
+  originalAmount?: number;
+  appliedRate?: number;
+  rewardAmount?: number;
+  currency?: string;
+  message?: string;
+}
+
 /**
  * The Bee - Reward Engine Agent.
  * Handles point calculations, distribution, and gamification triggers.
@@ -70,7 +87,7 @@ export class TheBeeAgent extends BaseAgent {
   /**
    * Execute reward logic.
    */
-  async execute(input: { action: string; transaction?: any; userRank?: UserRank | string }): Promise<any> {
+  async execute(input: { action: string; transaction?: BeeTransactionInput; userRank?: UserRank | string }): Promise<BeeRewardResult> {
     const { action, transaction, userRank } = input;
 
     const canProceed = await this.checkPolicies(action, input);

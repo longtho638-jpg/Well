@@ -42,8 +42,8 @@ export abstract class BaseAgent {
       agentName: this.definition.agent_name,
       action,
       timestamp: new Date().toISOString(),
-      inputs,
-      outputs,
+      inputs: (typeof inputs === 'object' && inputs !== null ? inputs : { value: inputs }) as Record<string, unknown>,
+      outputs: (typeof outputs === 'object' && outputs !== null ? outputs : { value: outputs }) as Record<string, unknown>,
       humanApproved: approved,
     };
     this.logs.push(logEntry);

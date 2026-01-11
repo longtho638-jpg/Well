@@ -30,7 +30,7 @@ export type AgentFunction =
 export interface AgentInput {
   source: string;
   dataType: 'CRM' | 'logs' | 'events' | 'email' | 'API' | 'user_input';
-  schema?: any;
+  schema?: Record<string, unknown>;
 }
 
 export interface AgentKPI {
@@ -57,8 +57,8 @@ export interface AgentLog {
   agentName: string;
   action: string;
   timestamp: string;
-  inputs: any;
-  outputs: any;
+  inputs: Record<string, unknown>;
+  outputs: Record<string, unknown>;
   humanApproved?: boolean;
   policyViolations?: string[];
 }

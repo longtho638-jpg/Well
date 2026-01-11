@@ -109,9 +109,9 @@ export class CodeReviewerAgent extends BaseAgent {
             checkStyle?: boolean;
             strictMode?: boolean;
         };
-    }): Promise<any> {
+    }): Promise<{ success: boolean;[key: string]: unknown }> {
         try {
-            let result: any;
+            let result: ReviewResult | { vulnerabilities: unknown[] } | { patterns: string[]; issues: string[]; suggestions: string[] } | { fixes: unknown[] };
 
             switch (action.action) {
                 case 'reviewPR':
@@ -155,7 +155,12 @@ export class CodeReviewerAgent extends BaseAgent {
     private async reviewPullRequest(
         prNumber: string,
         files: string[],
-        options?: any
+        options?: {
+            checkSecurity?: boolean;
+            checkTests?: boolean;
+            checkStyle?: boolean;
+            strictMode?: boolean;
+        }
     ): Promise<ReviewResult> {
         const issues: ReviewIssue[] = [];
 
@@ -356,7 +361,7 @@ export class CodeReviewerAgent extends BaseAgent {
         };
     }
 
-    private determineRecommendation(summary: any): 'approve' | 'request-changes' | 'comment' {
+    private determineRecommendation(summary: { critical: number; high: number; medium: number; low: number }): 'approve' | 'request-changes' | 'comment' {
         if (summary.critical > 0) return 'request-changes';
         if (summary.high > 2) return 'request-changes';
         if (summary.medium > 5) return 'comment';

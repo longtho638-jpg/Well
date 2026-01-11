@@ -42,7 +42,7 @@ export class ClaudeKitAdapter extends BaseAgent {
    * Execute method for ClaudeKit adapter.
    * In a real implementation, this would call the ClaudeKit CLI.
    */
-  async execute(input: any): Promise<any> {
+  async execute(input: Record<string, unknown>): Promise<Record<string, unknown>> {
     // Policy check
     const canProceed = await this.checkPolicies('analyze', input);
     if (!canProceed) {

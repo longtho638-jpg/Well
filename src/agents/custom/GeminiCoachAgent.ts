@@ -1,7 +1,16 @@
 import { BaseAgent } from '../core/BaseAgent';
 import { AgentDefinition } from '@/types/agentic';
 import { User } from '@/types';
-import { GoogleGenerativeAI } from '@google/generative-ai';
+import { GoogleGenerativeAI, GenerativeModel } from '@google/generative-ai';
+
+/** Transaction input for compliance check */
+interface ComplianceTransaction {
+  amount: number;
+  type: string;
+}
+
+/** Coach execution result */
+type CoachResult = string | { error: string; fallback: string; action?: string };
 
 /**
  * AI Business Coach Agent powered by Google Gemini.
@@ -9,7 +18,7 @@ import { GoogleGenerativeAI } from '@google/generative-ai';
  */
 export class GeminiCoachAgent extends BaseAgent {
   private genAI: GoogleGenerativeAI;
-  private model: any;
+  private model: GenerativeModel;
 
   constructor() {
     const definition: AgentDefinition = {
@@ -96,17 +105,17 @@ export class GeminiCoachAgent extends BaseAgent {
   /**
    * Main execution method - routes to specific actions.
    */
-  async execute(input: { action: string; user?: User; context?: string; transaction?: any }): Promise<any> {
+  async execute(input: { action: string; user?: User; context?: string; transaction?: ComplianceTransaction }): Promise<CoachResult> {
     const { action, user, context, transaction } = input;
 
     // Policy check
     const canProceed = await this.checkPolicies(action, input);
     if (!canProceed) {
-      return { error: 'Action blocked by policy', action };
+      return { error: 'Action blocked by policy', fallback: this.getFallbackResponse(action), action };
     }
 
     try {
-      let output;
+      let output: string;
 
       switch (action) {
         case 'getCoachAdvice':
@@ -171,7 +180,7 @@ export class GeminiCoachAgent extends BaseAgent {
   /**
    * Check tax compliance for a transaction.
    */
-  private async checkCompliance(transaction: any): Promise<string> {
+  private async checkCompliance(transaction: ComplianceTransaction): Promise<string> {
     const apiKey = import.meta.env.VITE_GEMINI_API_KEY;
 
     if (!apiKey) {

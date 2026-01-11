@@ -106,12 +106,12 @@ export class DebuggerAgent extends BaseAgent {
     async execute(action: {
         action: 'diagnose' | 'applyFix' | 'profile' | 'suggest';
         issue?: string;
-        context?: any;
-    }): Promise<any> {
+        context?: Record<string, unknown>;
+    }): Promise<{ success: boolean;[key: string]: unknown }> {
         const startTime = Date.now();
         // Log action (BaseAgent.log signature may differ)
 
-        let result: any;
+        let result: DiagnosisResult | PerformanceProfile | FixSuggestion[] | Record<string, unknown>;
 
         try {
             switch (action.action) {
@@ -158,7 +158,7 @@ export class DebuggerAgent extends BaseAgent {
     /**
      * Diagnose a production issue
      */
-    private async diagnoseIssue(issue: string, context?: any): Promise<DiagnosisResult> {
+    private async diagnoseIssue(issue: string, context?: Record<string, unknown>): Promise<DiagnosisResult> {
         // Simulate AI-powered diagnosis
         // In production, this would call Gemini API with logs/traces
 
@@ -179,13 +179,15 @@ export class DebuggerAgent extends BaseAgent {
     /**
      * Apply an approved fix
      */
-    private async applyFix(fixContext: FixSuggestion): Promise<any> {
+    private async applyFix(fixContext: FixSuggestion | Record<string, unknown>): Promise<Record<string, unknown>> {
         // Simulate fix application
         // In production, this would make actual code/config changes
+        const affectedFiles = 'affectedFiles' in fixContext ? fixContext.affectedFiles : [];
+        const code = 'code' in fixContext ? fixContext.code : undefined;
 
         return {
-            filesModified: fixContext.affectedFiles,
-            changesApplied: fixContext.code ? [fixContext.code] : [],
+            filesModified: affectedFiles,
+            changesApplied: code ? [code] : [],
             validationSteps: [
                 'Run automated tests',
                 'Check application logs',
@@ -202,12 +204,12 @@ export class DebuggerAgent extends BaseAgent {
     /**
      * Profile performance issues
      */
-    private async profilePerformance(context: any): Promise<PerformanceProfile> {
+    private async profilePerformance(context: Record<string, unknown>): Promise<PerformanceProfile> {
         // Simulate performance profiling
         // In production, would analyze real metrics
 
         return {
-            endpoint: context?.endpoint || '/api/products',
+            endpoint: (context?.endpoint as string) || '/api/products',
             avgLatency: 250,
             p95Latency: 850,
             slowQueries: [
@@ -226,7 +228,7 @@ export class DebuggerAgent extends BaseAgent {
     /**
      * Suggest fixes for an issue
      */
-    private async suggestFixes(issue: string, context?: any): Promise<FixSuggestion[]> {
+    private async suggestFixes(issue: string, context?: Record<string, unknown>): Promise<FixSuggestion[]> {
         const issueType = this.detectIssueType(issue);
         return this.generateFixSuggestions(issueType);
     }
@@ -252,7 +254,7 @@ export class DebuggerAgent extends BaseAgent {
         return 'unknown';
     }
 
-    private identifyRootCause(issue: string, type: string, context?: any): string {
+    private identifyRootCause(issue: string, type: string, _context?: Record<string, unknown>): string {
         const causes: Record<string, string> = {
             api_error: 'Missing null check on req.user object causing unhandled exception',
             database: 'Connection pool exhausted - 47/20 connections active, likely leaked transactions',

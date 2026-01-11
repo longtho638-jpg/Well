@@ -7,9 +7,7 @@ import {
 } from 'lucide-react';
 import { supabase } from '@/lib/supabase';
 import { useStore } from '@/store';
-import { useNavigate } from 'react-router-dom';
 import { useToast } from '@/components/ui/Toast';
-import { UserRank } from '@/types';
 
 interface PendingOrder {
     id: string;
@@ -30,16 +28,8 @@ const OrderManagement: React.FC = () => {
     const [processingId, setProcessingId] = useState<string | null>(null);
     const [selectedImage, setSelectedImage] = useState<string | null>(null);
     const { user } = useStore();
-    const navigate = useNavigate();
     const { showToast } = useToast();
-
-    // Security: Redirect if not founder
-    useEffect(() => {
-        if (user && user.rank !== UserRank.DAI_SU) {
-            showToast('Access denied. Founders only.', 'error');
-            navigate('/dashboard');
-        }
-    }, [user, navigate]);
+    // NOTE: Security check removed - AdminRoute.tsx already protects this route
 
     // Fetch pending orders
     const fetchPendingOrders = async () => {
@@ -145,10 +135,6 @@ const OrderManagement: React.FC = () => {
             minute: '2-digit'
         });
     };
-
-    if (user?.rank !== UserRank.DAI_SU) {
-        return null; // Will redirect via useEffect
-    }
 
     return (
         <div className="p-6 max-w-7xl mx-auto">
