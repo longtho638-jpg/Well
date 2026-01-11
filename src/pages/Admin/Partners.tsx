@@ -31,6 +31,20 @@ import { useToast } from '@/components/ui/Toast';
 // TYPES
 // ============================================================
 
+// Supabase database user record type
+interface SupabaseUserRecord {
+  id: string;
+  name?: string;
+  email?: string;
+  role_id?: number;
+  total_sales?: number;
+  pending_cashback?: number;
+  point_balance?: number;
+  created_at: string;
+  updated_at?: string;
+  avatar_url?: string;
+}
+
 interface Partner {
   id: string;
   name: string;
@@ -277,7 +291,7 @@ const Partners: React.FC = () => {
 
       if (error) throw error;
 
-      const formattedPartners: Partner[] = (data || []).map((user: any) => ({
+      const formattedPartners: Partner[] = (data || []).map((user: SupabaseUserRecord) => ({
         id: user.id,
         name: user.name || 'Unknown',
         email: user.email || '',
@@ -429,8 +443,8 @@ const Partners: React.FC = () => {
                     <td className="px-6 py-4 text-sm text-slate-900">{partner.pointBalance.toLocaleString()}</td>
                     <td className="px-6 py-4">
                       <span className={`px-3 py-1 rounded-full text-xs font-medium ${partner.status === 'Active'
-                          ? 'bg-green-100 text-green-700'
-                          : 'bg-red-100 text-red-700'
+                        ? 'bg-green-100 text-green-700'
+                        : 'bg-red-100 text-red-700'
                         }`}>
                         {partner.status}
                       </span>

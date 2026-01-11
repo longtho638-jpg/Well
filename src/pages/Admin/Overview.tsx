@@ -24,6 +24,15 @@ import { useToast } from '@/components/ui/Toast';
 // TYPES & MOCK DATA
 // ============================================================
 
+// Type for AI action data payloads
+interface AIActionData {
+  partnerId?: string;
+  partnerName?: string;
+  transactionCount?: number;
+  ip?: string;
+  amount?: number;
+}
+
 interface AIAction {
   id: string;
   type: 'kyc' | 'withdrawal' | 'fraud' | 'policy';
@@ -32,7 +41,7 @@ interface AIAction {
   priority: 'high' | 'medium' | 'low';
   aiConfidence: number;
   timestamp: string;
-  data?: any;
+  data?: AIActionData;
 }
 
 interface LiveEvent {
