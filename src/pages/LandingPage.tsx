@@ -64,6 +64,10 @@ import {
   StaggeredText,
   EA_AWARDS,
 } from '../components/EastAsiaBrand';
+import {
+  PremiumHeader,
+  PremiumFooter,
+} from '../components/PremiumNavigation';
 
 // ============================================================================
 // CONTENT ARCHITECTURE - Growth Journey Map
@@ -270,42 +274,11 @@ export default function LandingPage() {
       {/* East Asia 2026: Scroll Progress Indicator */}
       <ScrollProgress />
 
-      {/* ================================================================== */}
-      {/* STICKY HEADER */}
-      {/* ================================================================== */}
-      <motion.nav
-        initial={{ y: -100 }}
-        animate={{ y: 0 }}
-        transition={{ duration: 0.6 }}
-        className="fixed top-0 w-full z-50 backdrop-blur-xl bg-zinc-950/80 border-b border-zinc-800 shadow-sm"
-      >
-        <div className="max-w-7xl mx-auto px-6 lg:px-12 h-20 flex items-center justify-between">
-          {/* Logo */}
-          <div className="flex items-center gap-3">
-            <div className="w-10 h-10 bg-gradient-to-br from-emerald-500 to-cyan-500 rounded-xl flex items-center justify-center text-black font-bold text-xl shadow-lg shadow-emerald-500/20">
-              W
-            </div>
-            <div>
-              <div className="font-bold text-xl text-zinc-100 tracking-tight">
-                {CONTENT.footer.logo}
-              </div>
-              <div className="text-xs text-zinc-500 font-medium">
-                Evolution Map
-              </div>
-            </div>
-          </div>
 
-          {/* Action Button */}
-          <motion.button
-            onClick={handleJoin}
-            className="bg-zinc-100 hover:bg-white text-zinc-900 px-6 py-2.5 rounded-xl font-bold text-sm shadow-lg shadow-white/10 transition-all"
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-          >
-            Bắt Đầu Ngay
-          </motion.button>
-        </div>
-      </motion.nav>
+      {/* ================================================================== */}
+      {/* PREMIUM HEADER - Phase 22 East Asia 2026 */}
+      {/* ================================================================== */}
+      <PremiumHeader />
 
       {/* ================================================================== */}
       {/* HERO SECTION */}
@@ -688,81 +661,11 @@ export default function LandingPage() {
       {/* Live Social Proof Ticker - Fixed Position */}
       <SocialProofTicker items={SOCIAL_PROOF_ITEMS} />
 
+
       {/* ================================================================== */}
-      {/* FOOTER */}
+      {/* PREMIUM FOOTER - Phase 22 East Asia 2026 */}
       {/* ================================================================== */}
-      <footer className="relative bg-zinc-950 text-white pt-20 pb-12 border-t border-zinc-800">
-        <div className="max-w-7xl mx-auto px-6 lg:px-12">
-          {/* Main Footer Content */}
-          <div className="grid md:grid-cols-2 gap-12 mb-16">
-            {/* Brand */}
-            <div>
-              <div className="flex items-center gap-3 mb-4">
-                <div className="w-12 h-12 bg-gradient-to-br from-emerald-500 to-cyan-500 rounded-xl flex items-center justify-center text-black font-bold text-2xl shadow-lg">
-                  W
-                </div>
-                <div>
-                  <div className="font-bold text-xl">{CONTENT.footer.logo}</div>
-                  <div className="text-xs text-slate-400">Evolution Map</div>
-                </div>
-              </div>
-              <p className="text-slate-400 leading-relaxed mb-6 max-w-md">
-                {CONTENT.footer.tagline}
-              </p>
-
-              {/* Social Links */}
-              <div className="flex items-center gap-3">
-                {[
-                  { icon: Facebook, href: CONTENT.footer.social.facebook },
-                  { icon: Instagram, href: CONTENT.footer.social.instagram },
-                  { icon: Linkedin, href: CONTENT.footer.social.linkedin }
-                ].map((social, idx) => {
-                  const SocialIcon = social.icon;
-                  return (
-                    <motion.a
-                      key={idx}
-                      href={social.href}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="w-12 h-12 rounded-xl bg-slate-800 hover:bg-teal-600 border border-slate-700 hover:border-teal-500 flex items-center justify-center transition-all"
-                      whileHover={{ scale: 1.1, y: -2 }}
-                      whileTap={{ scale: 0.95 }}
-                    >
-                      <SocialIcon className="w-5 h-5" />
-                    </motion.a>
-                  );
-                })}
-              </div>
-            </div>
-
-            {/* Newsletter */}
-            <div>
-              <h3 className="font-bold text-xl mb-4">
-                {CONTENT.footer.newsletter.title}
-              </h3>
-              <div className="flex gap-3">
-                <input
-                  type="email"
-                  placeholder={CONTENT.footer.newsletter.placeholder}
-                  className="flex-1 px-5 py-3 rounded-xl bg-zinc-900 border border-zinc-800 text-white placeholder-zinc-500 focus:outline-none focus:border-emerald-500 transition-colors"
-                />
-                <motion.button
-                  className="px-6 py-3 rounded-xl bg-teal-600 hover:bg-teal-700 text-white font-bold shadow-lg"
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
-                >
-                  <Mail className="w-5 h-5" />
-                </motion.button>
-              </div>
-            </div>
-          </div>
-
-          {/* Copyright */}
-          <div className="text-center text-slate-500 text-sm pt-8 border-t border-slate-800">
-            {CONTENT.footer.copyright}
-          </div>
-        </div>
-      </footer>
+      <PremiumFooter />
     </div>
   );
 }
