@@ -14,11 +14,11 @@ export function useAgentOS() {
   const listAllAgents = useStore((state) => state.listAllAgents);
 
   // Simple in-memory cache for agent executions
-  // Key: agentName + stringified input, Value: { data: any, timestamp: number }
-  const cache = useRef<Map<string, { data: any; timestamp: number }>>(new Map());
+  // Key: agentName + stringified input, Value: { data: Record<string, unknown>, timestamp: number }
+  const cache = useRef<Map<string, { data: Record<string, unknown>; timestamp: number }>>(new Map());
   const CACHE_DURATION = 60 * 1000; // 1 minute cache
 
-  const executeAgent = useCallback(async (agentName: string, input: any, useCache = false) => {
+  const executeAgent = useCallback(async (agentName: string, input: Record<string, unknown>, useCache = false) => {
     if (useCache) {
       const cacheKey = `${agentName}-${JSON.stringify(input)}`;
       const cachedEntry = cache.current.get(cacheKey);

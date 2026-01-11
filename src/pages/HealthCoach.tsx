@@ -137,10 +137,16 @@ export default function HealthCoach() {
       });
 
       // Format AI response
+      const responseContent = typeof aiResponseText === 'string'
+        ? aiResponseText
+        : (aiResponseText as { message?: string; error?: string })?.message
+        || (aiResponseText as { message?: string; error?: string })?.error
+        || 'Xin lỗi, đã có lỗi xảy ra.';
+
       const aiResponse: Message = {
         id: Date.now().toString(),
         role: 'assistant',
-        content: typeof aiResponseText === 'string' ? aiResponseText : aiResponseText.error || 'Xin lỗi, đã có lỗi xảy ra.',
+        content: responseContent,
         timestamp: new Date()
       };
 

@@ -119,7 +119,7 @@ interface AppState {
   agentState: AgentState;
 
   // Agent Actions
-  executeAgent: (agentName: string, input: any) => Promise<any>;
+  executeAgent: (agentName: string, input: Record<string, unknown>) => Promise<Record<string, unknown>>;
   getAgentLogs: (agentName?: string) => AgentLog[];
   getAgentKPIs: (agentName: string) => AgentKPI[];
   listAllAgents: () => any[];
@@ -613,7 +613,7 @@ export const useStore = create<AppState>((set, get) => ({
         },
       }));
 
-      return output;
+      return output as Record<string, unknown>;
     } catch (error) {
       console.error(`[AgentOS] Error executing ${agentName}:`, error);
       throw error;

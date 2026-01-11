@@ -133,10 +133,10 @@ export default function TheCopilot({ productContext, userName = "Bạn" }: TheCo
       const assistantMessage: CopilotMessage = {
         id: (Date.now() + 1).toString(),
         role: 'assistant',
-        content: response,
+        content: (response as { message?: string })?.message || String(response) || 'Response received',
         timestamp: new Date().toISOString(),
-        objectionType: objectionType as ObjectionType,
-        suggestion: response
+        objectionType: (objectionType as { type?: ObjectionType })?.type as ObjectionType,
+        suggestion: (response as { message?: string })?.message || String(response)
       };
 
       setMessages(prev => [...prev, assistantMessage]);
