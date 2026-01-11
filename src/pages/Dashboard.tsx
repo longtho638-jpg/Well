@@ -62,7 +62,7 @@ const vietnameseNames = [
 ];
 
 // Generate random live activity
-const generateRandomActivity = (t: (key: string, vars?: any) => string): LiveActivity => {
+const generateRandomActivity = (t: (key: string, vars?: Record<string, unknown>) => string): LiveActivity => {
   const randomName = vietnameseNames[Math.floor(Math.random() * vietnameseNames.length)];
   const activityTypes: Array<LiveActivity['type']> = ['reward', 'order', 'rank_up', 'withdrawal', 'referral'];
   const randomType = activityTypes[Math.floor(Math.random() * activityTypes.length)];

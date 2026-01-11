@@ -25,8 +25,8 @@ const CATEGORY_ICONS: Record<AgencyOSCategory, string> = {
 export function AgencyOSDemo() {
     const [isPaletteOpen, setIsPaletteOpen] = useState(false);
     const [selectedCategory, setSelectedCategory] = useState<AgencyOSCategory | null>(null);
-    const [executionLog, setExecutionLog] = useState<any[]>([]);
-    const [agentKPIs, setAgentKPIs] = useState<any>(null);
+    const [executionLog, setExecutionLog] = useState<Array<{ command: string; result: { success: boolean; message?: string; output?: string; error?: string }; timestamp: string }>>([]);
+    const [agentKPIs, setAgentKPIs] = useState<import('@/types/agentic').AgentKPI[] | null>(null);
 
     // Load agent KPIs
     useEffect(() => {
@@ -47,7 +47,7 @@ export function AgencyOSDemo() {
         });
 
         setExecutionLog(prev => [
-            { command, result, timestamp: new Date().toISOString() },
+            { command, result: result as { success: boolean; message?: string; output?: string; error?: string }, timestamp: new Date().toISOString() },
             ...prev.slice(0, 9), // Keep last 10
         ]);
 
@@ -98,8 +98,8 @@ export function AgencyOSDemo() {
                                     key={cat}
                                     onClick={() => setSelectedCategory(selectedCategory === cat ? null : cat)}
                                     className={`w-full p-4 rounded-lg text-left transition-all ${selectedCategory === cat
-                                            ? `bg-gradient-to-r ${CATEGORY_COLORS[cat]} text-white`
-                                            : 'bg-gray-700/50 hover:bg-gray-700 text-gray-300'
+                                        ? `bg-gradient-to-r ${CATEGORY_COLORS[cat]} text-white`
+                                        : 'bg-gray-700/50 hover:bg-gray-700 text-gray-300'
                                         }`}
                                 >
                                     <div className="flex items-center justify-between">
@@ -126,7 +126,7 @@ export function AgencyOSDemo() {
                             <div className="mt-6 pt-6 border-t border-gray-700">
                                 <h3 className="text-sm font-semibold mb-3 text-gray-400">Agent KPIs</h3>
                                 <div className="space-y-2">
-                                    {agentKPIs.map((kpi: any, idx: number) => (
+                                    {agentKPIs.map((kpi, idx: number) => (
                                         <div key={idx} className="bg-gray-700/30 rounded p-2">
                                             <div className="flex items-center justify-between text-sm">
                                                 <span className="text-gray-400">{kpi.name}</span>

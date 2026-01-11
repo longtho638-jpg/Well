@@ -170,13 +170,13 @@ const CommissionWallet: React.FC = () => {
                         <div className="flex items-center gap-1 ml-4 group relative">
                           <TrendingUp className="w-3 h-3 text-teal-600 dark:text-teal-400" />
                           <span className="text-[10px] text-teal-600 dark:text-teal-400 font-medium">
-                            {formatVND(t.metadata.calculation_base)} × {(t.metadata.applied_rate * 100).toFixed(0)}%
+                            {formatVND(Number(t.metadata.calculation_base))} × {(Number(t.metadata.applied_rate) * 100).toFixed(0)}%
                           </span>
                           {/* Tooltip */}
                           <div className="absolute left-0 top-full mt-1 hidden group-hover:block z-50 bg-slate-900 dark:bg-slate-700 text-white text-[10px] px-2 py-1.5 rounded shadow-lg whitespace-nowrap">
                             <div className="font-bold mb-0.5">Commission Calculation</div>
-                            <div>Bonus Revenue: {formatVND(t.metadata.calculation_base)}</div>
-                            <div>Rate ({t.metadata.user_rank_snapshot || 'Member'}): {(t.metadata.applied_rate * 100).toFixed(0)}%</div>
+                            <div>Bonus Revenue: {formatVND(Number(t.metadata.calculation_base))}</div>
+                            <div>Rate ({t.metadata.user_rank_snapshot || 'Member'}): {(Number(t.metadata.applied_rate) * 100).toFixed(0)}%</div>
                             <div className="border-t border-slate-600 dark:border-slate-500 mt-1 pt-1">= {formatVND(t.amount)}</div>
                           </div>
                         </div>

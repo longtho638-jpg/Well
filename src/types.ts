@@ -93,7 +93,7 @@ export interface Transaction {
     trigger_agent?: string;
     reward_rate?: string;
     timestamp?: string;
-    [key: string]: any;
+    [key: string]: string | number | boolean | undefined;
   };
 }
 
