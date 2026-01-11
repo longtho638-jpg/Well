@@ -59,7 +59,7 @@ const App: React.FC = () => {
           {/* ============================================================ */}
           {/* ADMIN ROUTES: Mission Control with Nested Routes (Protected) */}
           {/* ============================================================ */}
-          <Route path="/admin" element={<AdminRoute><Admin /></AdminRoute>}>
+          <Route path="/admin" element={<AdminRoute><Suspense fallback={<div className="flex items-center justify-center h-screen bg-zinc-950"><div className="animate-spin rounded-full h-12 w-12 border-b-2 border-emerald-500"></div></div>}><Admin /></Suspense></AdminRoute>}>
             <Route index element={<Suspense fallback={<div className="flex items-center justify-center h-screen"><div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#00575A]"></div></div>}><Overview /></Suspense>} />
             <Route path="cms" element={<Suspense fallback={<div className="flex items-center justify-center h-screen"><div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#00575A]"></div></div>}><CMS /></Suspense>} />
             <Route path="partners" element={<Suspense fallback={<div className="flex items-center justify-center h-screen"><div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#00575A]"></div></div>}><Partners /></Suspense>} />
