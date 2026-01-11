@@ -38,6 +38,16 @@ import {
   TESTIMONIALS,
   TRUST_BADGES,
 } from '../components/HeroEnhancements';
+import {
+  AnimatedGradientBg,
+  FloatingElement,
+  GlassCard,
+  CursorGlow,
+  ShimmerText,
+  SparkleEffect,
+  Reveal,
+  PulseRing,
+} from '../components/PremiumEffects';
 
 // ============================================================================
 // CONTENT ARCHITECTURE - Growth Journey Map
@@ -281,13 +291,18 @@ export default function LandingPage() {
       {/* ================================================================== */}
       {/* HERO SECTION */}
       {/* ================================================================== */}
-      {/* MASTER LEVEL AURA HERO */}
+      {/* MAX LEVEL AURA HERO */}
       <section className="relative min-h-screen flex flex-col items-center justify-center overflow-hidden bg-zinc-950 pt-20 pb-20">
         <GridPattern />
 
-        {/* Ambient Glow */}
-        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[1000px] h-[500px] bg-violet-900/20 blur-[120px] rounded-full pointer-events-none" />
-        <div className="absolute bottom-0 right-0 w-[800px] h-[600px] bg-cyan-900/10 blur-[100px] rounded-full pointer-events-none" />
+        {/* MAX LEVEL: Animated Gradient Background */}
+        <AnimatedGradientBg />
+
+        {/* MAX LEVEL: Sparkle Effect */}
+        <SparkleEffect count={30} />
+
+        {/* Cursor Glow Effect */}
+        <CursorGlow />
 
         <div className="relative z-10 max-w-7xl mx-auto px-6 w-full">
 
