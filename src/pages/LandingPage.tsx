@@ -48,6 +48,15 @@ import {
   Reveal,
   PulseRing,
 } from '../components/PremiumEffects';
+import {
+  TiltCard,
+  Typewriter,
+  GradientText,
+  SpotlightCard,
+  AnimatedBorder,
+  MorphingBlob,
+  Marquee,
+} from '../components/UltimateEffects';
 
 // ============================================================================
 // CONTENT ARCHITECTURE - Growth Journey Map
@@ -306,6 +315,10 @@ export default function LandingPage() {
 
         <div className="relative z-10 max-w-7xl mx-auto px-6 w-full">
 
+          {/* ULTIMATE: Morphing Blob Background */}
+          <MorphingBlob className="w-[600px] h-[600px] bg-gradient-to-r from-emerald-500 to-cyan-500 -top-20 -left-40" />
+          <MorphingBlob className="w-[400px] h-[400px] bg-gradient-to-r from-violet-500 to-pink-500 top-40 -right-20" />
+
           {/* Header Content */}
           <div className="text-center mb-20">
             <motion.div
@@ -314,7 +327,11 @@ export default function LandingPage() {
               transition={{ duration: 0.5 }}
               className="inline-flex items-center justify-center mb-6"
             >
-              <AuraBadge color="cyan">MASTER LEVEL WELLNESS</AuraBadge>
+              <AnimatedBorder>
+                <span className="px-6 py-2 text-sm font-bold text-emerald-400 uppercase tracking-wider">
+                  🚀 ULTIMATE LEVEL WELLNESS
+                </span>
+              </AnimatedBorder>
             </motion.div>
 
             <motion.h1
@@ -324,9 +341,9 @@ export default function LandingPage() {
               transition={{ duration: 0.5, delay: 0.1 }}
             >
               {CONTENT.hero.headline} <br />
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-white to-white/50">
+              <GradientText className="font-black">
                 {CONTENT.hero.headlineAccent}
-              </span>
+              </GradientText>
             </motion.h1>
 
             <motion.p
