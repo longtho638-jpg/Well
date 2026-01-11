@@ -54,7 +54,7 @@ const App: React.FC = () => {
           <Route path="/" element={<LandingPage />} />
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<Signup />} />
-          <Route path="/venture" element={<VenturePage />} />
+          <Route path="/venture" element={<Suspense fallback={<div className="flex items-center justify-center h-screen bg-zinc-950"><div className="animate-spin rounded-full h-12 w-12 border-b-2 border-emerald-500"></div></div>}><VenturePage /></Suspense>} />
 
           {/* ============================================================ */}
           {/* ADMIN ROUTES: Mission Control with Nested Routes (Protected) */}

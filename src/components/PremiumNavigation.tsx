@@ -38,22 +38,45 @@ interface NavItem {
     children?: NavChild[];
 }
 
-const NAV_ITEMS: NavItem[] = [
+// Navigation items with valid routes
+// - For authenticated users: direct dashboard routes
+// - For guests: login with redirect
+const getNavItems = (isAuth: boolean): NavItem[] => [
     {
         label: 'Sản Phẩm',
         children: [
-            { label: 'Marketplace', href: '/marketplace', icon: <ShoppingBag className="w-4 h-4" />, description: 'Mua sắm sản phẩm wellness' },
-            { label: 'AI Coach', href: '/ai-coach', icon: <Sparkles className="w-4 h-4" />, description: 'Huấn luyện viên AI cá nhân' },
+            {
+                label: 'Marketplace',
+                href: isAuth ? '/dashboard/marketplace' : '/login?redirect=/dashboard/marketplace',
+                icon: <ShoppingBag className="w-4 h-4" />,
+                description: 'Mua sắm sản phẩm wellness'
+            },
+            {
+                label: 'AI Coach',
+                href: isAuth ? '/dashboard/health-coach' : '/login?redirect=/dashboard/health-coach',
+                icon: <Sparkles className="w-4 h-4" />,
+                description: 'Huấn luyện viên AI cá nhân'
+            },
         ]
     },
     {
         label: 'Partner',
         children: [
-            { label: 'Trở Thành Partner', href: '/partner', icon: <Users className="w-4 h-4" />, description: 'Gia nhập đội ngũ partner' },
-            { label: 'Leader Dashboard', href: '/leader', icon: <Award className="w-4 h-4" />, description: 'Quản lý đội nhóm' },
+            {
+                label: 'Trở Thành Partner',
+                href: '/venture',
+                icon: <Users className="w-4 h-4" />,
+                description: 'Gia nhập chương trình Partner'
+            },
+            {
+                label: 'Leader Dashboard',
+                href: isAuth ? '/dashboard/team' : '/login?redirect=/dashboard/team',
+                icon: <Award className="w-4 h-4" />,
+                description: 'Quản lý đội nhóm'
+            },
         ]
     },
-    { label: 'Marketplace', href: '/marketplace' },
+    { label: 'Marketplace', href: isAuth ? '/dashboard/marketplace' : '/login?redirect=/dashboard/marketplace' },
 ];
 
 // ============================================================================
@@ -63,7 +86,8 @@ const NAV_ITEMS: NavItem[] = [
 export function PremiumHeader() {
     const navigate = useNavigate();
     const location = useLocation();
-    const { user, logout } = useStore();
+    const { user, logout, isAuthenticated } = useStore();
+    const NAV_ITEMS = getNavItems(isAuthenticated);
 
     const [scrolled, setScrolled] = useState(false);
     const [mobileOpen, setMobileOpen] = useState(false);
@@ -363,19 +387,20 @@ export function PremiumHeader() {
 // PREMIUM FOOTER - Functional with React Router
 // ============================================================================
 
-const FOOTER_LINKS = [
+// Footer links with valid routes
+const getFooterLinks = (isAuth: boolean) => [
     {
         title: 'Sản Phẩm',
         links: [
-            { label: 'Marketplace', href: '/marketplace' },
-            { label: 'AI Coach', href: '/ai-coach' },
+            { label: 'Marketplace', href: isAuth ? '/dashboard/marketplace' : '/login?redirect=/dashboard/marketplace' },
+            { label: 'AI Coach', href: isAuth ? '/dashboard/health-coach' : '/login?redirect=/dashboard/health-coach' },
         ]
     },
     {
         title: 'Partner',
         links: [
-            { label: 'Trở Thành Partner', href: '/partner' },
-            { label: 'Leader Dashboard', href: '/leader' },
+            { label: 'Trở Thành Partner', href: '/venture' },
+            { label: 'Leader Dashboard', href: isAuth ? '/dashboard/team' : '/login?redirect=/dashboard/team' },
             { label: 'Đăng Nhập', href: '/login' },
         ]
     },
@@ -397,6 +422,9 @@ const SOCIAL_LINKS = [
 ];
 
 export function PremiumFooter() {
+    const { isAuthenticated } = useStore();
+    const FOOTER_LINKS = getFooterLinks(isAuthenticated);
+
     const [email, setEmail] = useState('');
     const [subscribed, setSubscribed] = useState(false);
 
