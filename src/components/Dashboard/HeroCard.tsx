@@ -1,3 +1,4 @@
+import { uiLogger } from '@/utils/logger';
 
 import React, { useState } from 'react';
 import { User } from '@/types';
@@ -28,7 +29,7 @@ export const HeroCard: React.FC<Props> = ({ user }) => {
       setCopied(true);
       setTimeout(() => setCopied(false), 2000);
     } catch (err) {
-      console.error('Failed to copy:', err);
+      uiLogger.error('Failed to copy', err);
       alert(`Copy this link: ${referralLink}`);
     }
   };

@@ -1,3 +1,4 @@
+import { uiLogger } from '@/utils/logger';
 import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
@@ -141,7 +142,7 @@ export default function TheCopilot({ productContext, userName = "Bạn" }: TheCo
 
       setMessages(prev => [...prev, assistantMessage]);
     } catch (error) {
-      console.error('Copilot error:', error);
+      uiLogger.error('Copilot error', error);
       const errorMessage: CopilotMessage = {
         id: (Date.now() + 1).toString(),
         role: 'assistant',

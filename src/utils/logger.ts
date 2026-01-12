@@ -87,6 +87,8 @@ export const agentLogger = createLogger('AgentOS');
 export const analyticsLogger = createLogger('Analytics');
 export const storeLogger = createLogger('Store');
 export const adminLogger = createLogger('Admin');
+export const uiLogger = createLogger('UI');
 
 export { Logger };
+
 

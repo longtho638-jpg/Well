@@ -1,3 +1,4 @@
+import { authLogger } from '@/utils/logger';
 import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
@@ -45,7 +46,7 @@ export default function Signup() {
 
         } catch (e) {
             const err = e as Error;
-            console.error('Signup failed:', err);
+            authLogger.error('Signup failed', err);
             setError(err.message || 'Đăng ký thất bại. Vui lòng thử lại.');
         } finally {
             setLoading(false);

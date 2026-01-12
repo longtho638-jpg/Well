@@ -1,3 +1,4 @@
+import { uiLogger } from '@/utils/logger';
 import { useState } from 'react';
 import { motion } from 'framer-motion';
 import {
@@ -177,7 +178,7 @@ export default function MarketingTools() {
       const newPage = await createLandingPage(selectedTemplate, portraitUrl || undefined);
       setGeneratedLandingPage(newPage);
     } catch (error) {
-      console.error('Failed to generate landing page:', error);
+      uiLogger.error('Failed to generate landing page', error);
     } finally {
       setIsGeneratingBio(false);
     }

@@ -1,3 +1,4 @@
+import { uiLogger } from '@/utils/logger';
 
 import React, { useState } from 'react';
 import { Product } from '../types';
@@ -38,7 +39,7 @@ const ProductCard: React.FC<Props> = ({ product }) => {
       alert('Link copied to clipboard!');
     } catch (err) {
       // Fallback for older browsers
-      console.error('Failed to copy:', err);
+      uiLogger.error('Failed to copy', err);
       alert(`Share this link: ${shareUrl}`);
     }
   };

@@ -1,3 +1,4 @@
+import { uiLogger } from '@/utils/logger';
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
@@ -90,7 +91,7 @@ const AddMemberModal: React.FC<{
             onClose();
         } catch (err) {
             const error = err as Error;
-            console.error('Error adding member:', error);
+            uiLogger.error('Error adding member', error);
             showToast(error.message || 'Failed to add member', 'error');
         } finally {
             setLoading(false);
@@ -333,7 +334,7 @@ const NetworkTree: React.FC = () => {
 
             setTreeData(rootNode);
         } catch (error) {
-            console.error('Error loading tree:', error);
+            uiLogger.error('Error loading tree', error);
         } finally {
             setLoading(false);
         }

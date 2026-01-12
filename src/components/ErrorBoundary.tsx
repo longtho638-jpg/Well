@@ -1,3 +1,4 @@
+import { uiLogger } from '@/utils/logger';
 import React, { Component, ReactNode, ErrorInfo } from 'react';
 import analytics from '@/lib/analytics';
 
@@ -26,7 +27,7 @@ export class ErrorBoundary extends Component<Props, State> {
     }
 
     componentDidCatch(error: Error, errorInfo: ErrorInfo) {
-        console.error('Error Boundary caught error:', error, errorInfo);
+        uiLogger.error('ErrorBoundary caught error', { error, errorInfo });
 
         // Track error with analytics
         analytics.trackError(error, {

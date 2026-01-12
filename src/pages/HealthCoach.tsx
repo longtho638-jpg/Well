@@ -1,3 +1,4 @@
+import { agentLogger } from '@/utils/logger';
 import { useState, useRef, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
@@ -152,7 +153,7 @@ export default function HealthCoach() {
 
       setMessages(prev => [...prev, aiResponse]);
     } catch (error) {
-      console.error('[HealthCoach] Agent execution error:', error);
+      agentLogger.error('HealthCoach Agent execution error', error);
 
       const errorMessage: Message = {
         id: Date.now().toString(),
