@@ -13,6 +13,17 @@ if (import.meta.env.PROD) {
   script.defer = true;
   script.src = '/_vercel/insights/script.js';
   document.head.appendChild(script);
+
+  // Register Service Worker
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('/sw.js')
+      .then(() => {
+        // SW registered successfully
+      })
+      .catch(() => {
+        // SW registration failed
+      });
+  }
 }
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
