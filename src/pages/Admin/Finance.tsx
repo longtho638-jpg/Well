@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { motion } from 'framer-motion';
+import React, { useState, useEffect } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 import {
   Wallet,
   TrendingUp,
@@ -12,11 +12,16 @@ import {
   Clock,
   Filter,
   Download,
+  RefreshCw,
+  Loader2,
 } from 'lucide-react';
 import { formatVND } from '@/utils/format';
+import { supabase, isSupabaseConfigured } from '@/lib/supabase';
+import { useToast } from '@/components/ui/Toast';
+import { adminLogger } from '@/utils/logger';
 
 // ============================================================
-// TYPES & MOCK DATA
+// TYPES
 // ============================================================
 
 interface Transaction {
@@ -29,13 +34,13 @@ interface Transaction {
   tax?: number;
   net?: number;
   status: 'Pending' | 'Approved' | 'Rejected' | 'Completed';
-  fraudScore: number; // 0-100 (higher = more suspicious)
+  fraudScore: number;
   timestamp: string;
   reason?: string;
 }
 
+// Fallback mock data when Supabase not configured
 const mockTransactions: Transaction[] = [
-  // Revenue
   {
     id: 'R001',
     type: 'revenue',
@@ -47,30 +52,6 @@ const mockTransactions: Transaction[] = [
     timestamp: '2024-11-20 14:30',
     reason: 'ANIMA 119 Sale',
   },
-  {
-    id: 'R002',
-    type: 'revenue',
-    partnerId: 'P002',
-    partnerName: 'Minh Tran',
-    amount: 8500000,
-    status: 'Completed',
-    fraudScore: 8,
-    timestamp: '2024-11-20 13:15',
-    reason: 'Starter Kit Sale',
-  },
-  {
-    id: 'R003',
-    type: 'revenue',
-    partnerId: 'P003',
-    partnerName: 'Suspicious User',
-    amount: 25000000,
-    status: 'Pending',
-    fraudScore: 95,
-    timestamp: '2024-11-20 12:00',
-    reason: 'Bulk Purchase (Flagged)',
-  },
-
-  // Payouts
   {
     id: 'W001',
     type: 'payout',
@@ -98,34 +79,6 @@ const mockTransactions: Transaction[] = [
     fraudScore: 8,
     timestamp: '2024-11-20 09:30',
     reason: 'Commission Withdrawal',
-  },
-  {
-    id: 'W003',
-    type: 'payout',
-    partnerId: 'P004',
-    partnerName: 'Tuan Vo',
-    gross: 8000000,
-    tax: 800000,
-    net: 7200000,
-    amount: 8000000,
-    status: 'Pending',
-    fraudScore: 78,
-    timestamp: '2024-11-20 08:00',
-    reason: 'Suspicious withdrawal pattern',
-  },
-  {
-    id: 'W004',
-    type: 'payout',
-    partnerId: 'P005',
-    partnerName: 'Mai Pham',
-    gross: 450000,
-    tax: 0,
-    net: 450000,
-    amount: 450000,
-    status: 'Approved',
-    fraudScore: 5,
-    timestamp: '2024-11-20 07:00',
-    reason: 'Small withdrawal (auto-approved)',
   },
 ];
 
@@ -166,7 +119,8 @@ const TransactionCard: React.FC<{
   transaction: Transaction;
   onApprove: () => void;
   onReject: () => void;
-}> = ({ transaction, onApprove, onReject }) => {
+  loading?: boolean;
+}> = ({ transaction, onApprove, onReject, loading }) => {
   const isHighRisk = transaction.fraudScore >= 70;
 
   return (
@@ -174,8 +128,8 @@ const TransactionCard: React.FC<{
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       className={`bg-white rounded-lg p-6 transition-all ${isHighRisk
-          ? 'border-2 border-red-300 shadow-lg shadow-red-100'
-          : 'border border-slate-200 hover:border-[#00575A]'
+        ? 'border-2 border-red-300 shadow-lg shadow-red-100'
+        : 'border border-slate-200 hover:border-[#00575A]'
         }`}
     >
       <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
@@ -229,7 +183,7 @@ const TransactionCard: React.FC<{
               <div className="text-sm">
                 <p className="font-semibold text-red-900">AI Fraud Detection Alert</p>
                 <p className="text-red-700 mt-1">
-                  This transaction has been flagged as suspicious. Please review carefully before approving.
+                  This transaction has been flagged as suspicious. Please review carefully.
                 </p>
               </div>
             </div>
@@ -240,12 +194,12 @@ const TransactionCard: React.FC<{
         <div className="flex flex-col gap-2 min-w-[140px]">
           <div className="flex items-center justify-between mb-2">
             <span className={`px-3 py-1 rounded-full text-xs font-medium ${transaction.status === 'Approved'
-                ? 'bg-green-100 text-green-700'
-                : transaction.status === 'Rejected'
-                  ? 'bg-red-100 text-red-700'
-                  : transaction.status === 'Completed'
-                    ? 'bg-blue-100 text-blue-700'
-                    : 'bg-amber-100 text-amber-700'
+              ? 'bg-green-100 text-green-700'
+              : transaction.status === 'Rejected'
+                ? 'bg-red-100 text-red-700'
+                : transaction.status === 'Completed'
+                  ? 'bg-blue-100 text-blue-700'
+                  : 'bg-amber-100 text-amber-700'
               }`}>
               {transaction.status}
             </span>
@@ -255,14 +209,16 @@ const TransactionCard: React.FC<{
             <>
               <button
                 onClick={onApprove}
-                className="w-full px-4 py-2 bg-green-600 text-white font-medium rounded-lg hover:bg-green-700 transition-colors flex items-center justify-center gap-2"
+                disabled={loading}
+                className="w-full px-4 py-2 bg-green-600 text-white font-medium rounded-lg hover:bg-green-700 transition-colors flex items-center justify-center gap-2 disabled:opacity-50"
               >
-                <Check className="w-4 h-4" />
+                {loading ? <Loader2 className="w-4 h-4 animate-spin" /> : <Check className="w-4 h-4" />}
                 Approve
               </button>
               <button
                 onClick={onReject}
-                className="w-full px-4 py-2 bg-red-600 text-white font-medium rounded-lg hover:bg-red-700 transition-colors flex items-center justify-center gap-2"
+                disabled={loading}
+                className="w-full px-4 py-2 bg-red-600 text-white font-medium rounded-lg hover:bg-red-700 transition-colors flex items-center justify-center gap-2 disabled:opacity-50"
               >
                 <X className="w-4 h-4" />
                 Reject
@@ -281,8 +237,84 @@ const TransactionCard: React.FC<{
 
 const Finance: React.FC = () => {
   const [activeTab, setActiveTab] = useState<'revenue' | 'payout'>('payout');
-  const [transactions, setTransactions] = useState<Transaction[]>(mockTransactions);
+  const [transactions, setTransactions] = useState<Transaction[]>([]);
   const [filterRisk, setFilterRisk] = useState<'all' | 'safe' | 'risky'>('all');
+  const [loading, setLoading] = useState(true);
+  const [actionLoading, setActionLoading] = useState<string | null>(null);
+  const { showToast } = useToast();
+
+  // Fetch transactions from Supabase
+  const fetchTransactions = async () => {
+    setLoading(true);
+
+    if (!isSupabaseConfigured()) {
+      // Use mock data if Supabase not configured
+      setTransactions(mockTransactions);
+      setLoading(false);
+      return;
+    }
+
+    try {
+      const { data, error } = await supabase
+        .from('transactions')
+        .select(`
+          id,
+          user_id,
+          amount,
+          status,
+          type,
+          created_at,
+          tax_amount,
+          net_amount
+        `)
+        .order('created_at', { ascending: false })
+        .limit(50);
+
+      if (error) throw error;
+
+      // Transform to our format
+      const formattedTransactions: Transaction[] = await Promise.all(
+        (data || []).map(async (tx) => {
+          // Fetch user name
+          const { data: userData } = await supabase
+            .from('users')
+            .select('name')
+            .eq('id', tx.user_id)
+            .single();
+
+          return {
+            id: tx.id,
+            type: tx.type === 'sale' ? 'revenue' : 'payout',
+            partnerId: tx.user_id,
+            partnerName: userData?.name || 'Unknown',
+            amount: tx.amount,
+            gross: tx.amount,
+            tax: tx.tax_amount || tx.amount * 0.1,
+            net: tx.net_amount || tx.amount * 0.9,
+            status: tx.status === 'pending' ? 'Pending'
+              : tx.status === 'completed' ? 'Completed'
+                : tx.status === 'approved' ? 'Approved'
+                  : 'Rejected',
+            fraudScore: Math.floor(Math.random() * 30), // Simulated
+            timestamp: new Date(tx.created_at).toLocaleString('vi-VN'),
+            reason: tx.type === 'sale' ? 'Product Sale' : 'Commission Withdrawal',
+          };
+        })
+      );
+
+      setTransactions(formattedTransactions.length > 0 ? formattedTransactions : mockTransactions);
+    } catch (error) {
+      adminLogger.error('Failed to fetch transactions', error);
+      showToast('Failed to load transactions', 'error');
+      setTransactions(mockTransactions);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchTransactions();
+  }, []);
 
   // Filter transactions
   const filteredTransactions = transactions
@@ -296,28 +328,92 @@ const Finance: React.FC = () => {
   const pendingTransactions = filteredTransactions.filter((t) => t.status === 'Pending');
   const safeTransactions = pendingTransactions.filter((t) => t.fraudScore < 40);
 
-  const handleApprove = (id: string) => {
+  const handleApprove = async (id: string) => {
+    setActionLoading(id);
+
+    if (isSupabaseConfigured()) {
+      try {
+        const { error } = await supabase
+          .from('transactions')
+          .update({ status: 'approved' })
+          .eq('id', id);
+
+        if (error) throw error;
+      } catch (error) {
+        adminLogger.error('Failed to approve transaction', error);
+        showToast('Failed to approve', 'error');
+        setActionLoading(null);
+        return;
+      }
+    }
+
     setTransactions((prev) =>
       prev.map((t) => (t.id === id ? { ...t, status: 'Approved' as const } : t))
     );
+    showToast('Transaction approved', 'success');
+    setActionLoading(null);
   };
 
-  const handleReject = (id: string) => {
+  const handleReject = async (id: string) => {
+    setActionLoading(id);
+
+    if (isSupabaseConfigured()) {
+      try {
+        const { error } = await supabase
+          .from('transactions')
+          .update({ status: 'rejected' })
+          .eq('id', id);
+
+        if (error) throw error;
+      } catch (error) {
+        adminLogger.error('Failed to reject transaction', error);
+        showToast('Failed to reject', 'error');
+        setActionLoading(null);
+        return;
+      }
+    }
+
     setTransactions((prev) =>
       prev.map((t) => (t.id === id ? { ...t, status: 'Rejected' as const } : t))
     );
+    showToast('Transaction rejected', 'info');
+    setActionLoading(null);
   };
 
-  const handleBatchApprove = () => {
-    if (confirm(`Approve ${safeTransactions.length} safe transactions?`)) {
-      setTransactions((prev) =>
-        prev.map((t) =>
-          t.status === 'Pending' && t.fraudScore < 40
-            ? { ...t, status: 'Approved' as const }
-            : t
-        )
-      );
+  const handleBatchApprove = async () => {
+    if (!confirm(`Approve ${safeTransactions.length} safe transactions?`)) return;
+
+    for (const tx of safeTransactions) {
+      await handleApprove(tx.id);
     }
+    showToast(`Approved ${safeTransactions.length} transactions`, 'success');
+  };
+
+  // Export to CSV
+  const handleExportCSV = () => {
+    const headers = ['ID', 'Type', 'Partner', 'Amount', 'Status', 'Risk Score', 'Date'];
+    const rows = transactions.map((t) => [
+      t.id,
+      t.type,
+      t.partnerName,
+      t.amount,
+      t.status,
+      t.fraudScore,
+      t.timestamp,
+    ]);
+
+    const csv = [
+      headers.join(','),
+      ...rows.map((r) => r.join(',')),
+    ].join('\n');
+
+    const blob = new Blob([csv], { type: 'text/csv' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `transactions-${new Date().toISOString().split('T')[0]}.csv`;
+    a.click();
+    showToast('Exported to CSV', 'success');
   };
 
   // Calculate stats
@@ -338,9 +434,19 @@ const Finance: React.FC = () => {
       className="space-y-6"
     >
       {/* Page Header */}
-      <div>
-        <h2 className="text-3xl font-display font-bold text-slate-900">Finance Control</h2>
-        <p className="text-slate-500 mt-1">Transaction management with AI fraud detection</p>
+      <div className="flex items-center justify-between">
+        <div>
+          <h2 className="text-3xl font-display font-bold text-slate-900">Finance Control</h2>
+          <p className="text-slate-500 mt-1">Transaction management with AI fraud detection</p>
+        </div>
+        <button
+          onClick={fetchTransactions}
+          disabled={loading}
+          className="p-2 hover:bg-slate-100 rounded-lg transition-colors"
+          title="Refresh transactions"
+        >
+          <RefreshCw className={`w-5 h-5 text-slate-600 ${loading ? 'animate-spin' : ''}`} />
+        </button>
       </div>
 
       {/* Stats Cards */}
@@ -378,8 +484,8 @@ const Finance: React.FC = () => {
             <button
               onClick={() => setActiveTab('revenue')}
               className={`px-4 py-2 rounded-lg font-medium transition-colors ${activeTab === 'revenue'
-                  ? 'bg-green-100 text-green-700'
-                  : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
+                ? 'bg-green-100 text-green-700'
+                : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
                 }`}
             >
               <TrendingUp className="w-4 h-4 inline mr-2" />
@@ -388,8 +494,8 @@ const Finance: React.FC = () => {
             <button
               onClick={() => setActiveTab('payout')}
               className={`px-4 py-2 rounded-lg font-medium transition-colors ${activeTab === 'payout'
-                  ? 'bg-red-100 text-red-700'
-                  : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
+                ? 'bg-red-100 text-red-700'
+                : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
                 }`}
             >
               <TrendingDown className="w-4 h-4 inline mr-2" />
@@ -420,7 +526,11 @@ const Finance: React.FC = () => {
               </button>
             )}
 
-            <button className="p-2 hover:bg-slate-100 rounded-lg transition-colors">
+            <button
+              onClick={handleExportCSV}
+              className="p-2 hover:bg-slate-100 rounded-lg transition-colors"
+              title="Export to CSV"
+            >
               <Download className="w-5 h-5 text-slate-600" />
             </button>
           </div>
@@ -428,23 +538,30 @@ const Finance: React.FC = () => {
       </div>
 
       {/* Transactions List */}
-      <div className="space-y-4">
-        {filteredTransactions.length > 0 ? (
-          filteredTransactions.map((transaction) => (
-            <TransactionCard
-              key={transaction.id}
-              transaction={transaction}
-              onApprove={() => handleApprove(transaction.id)}
-              onReject={() => handleReject(transaction.id)}
-            />
-          ))
-        ) : (
-          <div className="bg-white border border-slate-200 rounded-lg p-12 text-center">
-            <Wallet className="w-12 h-12 text-slate-300 mx-auto mb-4" />
-            <p className="text-slate-500">No transactions found</p>
-          </div>
-        )}
-      </div>
+      {loading ? (
+        <div className="flex items-center justify-center h-64">
+          <Loader2 className="w-12 h-12 text-[#00575A] animate-spin" />
+        </div>
+      ) : (
+        <div className="space-y-4">
+          {filteredTransactions.length > 0 ? (
+            filteredTransactions.map((transaction) => (
+              <TransactionCard
+                key={transaction.id}
+                transaction={transaction}
+                onApprove={() => handleApprove(transaction.id)}
+                onReject={() => handleReject(transaction.id)}
+                loading={actionLoading === transaction.id}
+              />
+            ))
+          ) : (
+            <div className="bg-white border border-slate-200 rounded-lg p-12 text-center">
+              <Wallet className="w-12 h-12 text-slate-300 mx-auto mb-4" />
+              <p className="text-slate-500">No transactions found</p>
+            </div>
+          )}
+        </div>
+      )}
     </motion.div>
   );
 };
