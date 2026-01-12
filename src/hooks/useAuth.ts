@@ -2,6 +2,7 @@ import { useEffect } from 'react';
 import { useStore } from '@/store';
 import { supabase, isSupabaseConfigured } from '@/lib/supabase';
 import { User, UserRank } from '@/types';
+import { authLogger } from '@/utils/logger';
 
 // Demo email for testing (works even in production)
 const DEMO_EMAIL = 'demo@wellnexus.vn';
@@ -43,7 +44,7 @@ export function useAuth() {
   useEffect(() => {
     // Skip Supabase auth if not configured (dev mode)
     if (!isSupabaseConfigured()) {
-      console.log('[useAuth] Dev mode - Supabase not configured, skipping auth listener');
+      authLogger.debug('Dev mode - Supabase not configured, skipping auth listener');
       return;
     }
 
@@ -116,7 +117,7 @@ export function useAuth() {
     signIn: async (email: string, password: string) => {
       // DEMO MODE: Allow demo login even in production
       if (email.toLowerCase() === DEMO_EMAIL) {
-        console.log('[useAuth] Demo mode - logging in as demo user');
+        authLogger.info('Demo mode - logging in as demo user');
         setUser({ ...MOCK_USER, email: DEMO_EMAIL });
         setIsAuthenticated(true);
         return { data: { user: MOCK_USER, session: { access_token: 'demo-token' } }, error: null };
@@ -124,7 +125,7 @@ export function useAuth() {
 
       // DEV MODE: Return mock success when Supabase not configured
       if (!isSupabaseConfigured()) {
-        console.log('[useAuth] Dev mode - using mock login for:', email);
+        authLogger.debug('Dev mode - using mock login for:', email);
         setUser({ ...MOCK_USER, email });
         setIsAuthenticated(true);
         return { data: { user: MOCK_USER, session: { access_token: 'mock-token' } }, error: null };

@@ -6,6 +6,7 @@
 import { StateCreator } from 'zustand';
 import { TeamMember, TeamMetrics, TeamInsights, UserRank, RANK_NAMES } from '../../types';
 import { supabase } from '../../lib/supabase';
+import { teamLogger } from '../../utils/logger';
 
 // ============================================================================
 // TREE NODE TYPE
@@ -79,7 +80,7 @@ export const createTeamSlice: StateCreator<
 
     fetchTeamData: async () => {
         // Placeholder - implement actual Supabase fetch
-        console.log('[TeamSlice] Fetching team data...');
+        teamLogger.debug('Fetching team data...');
     },
 
     fetchDownlineTree: async (userId: string): Promise<TreeNode[]> => {
@@ -119,11 +120,11 @@ export const createTeamSlice: StateCreator<
 
     sendReminder: async (memberId: string) => {
         await new Promise(resolve => setTimeout(resolve, 1000));
-        console.log(`[TeamSlice] Reminder sent to member ${memberId}`);
+        teamLogger.info(`Reminder sent to member ${memberId}`);
     },
 
     sendGift: async (memberId: string, voucherAmount: number) => {
         await new Promise(resolve => setTimeout(resolve, 1000));
-        console.log(`[TeamSlice] Gift voucher of ${voucherAmount} VND sent to member ${memberId}`);
+        teamLogger.info(`Gift voucher of ${voucherAmount} VND sent to member ${memberId}`);
     },
 });
