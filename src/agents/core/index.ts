@@ -4,4 +4,4 @@
  */
 
 export { BaseAgent } from './BaseAgent';
-export { agentRegistry, type AgentHealth, type AgentRegistryEntry } from './AgentRegistry';
+// Note: Use agentRegistry from '../registry' for agent registration

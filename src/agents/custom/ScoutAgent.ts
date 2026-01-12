@@ -281,11 +281,4 @@ export class ScoutAgent extends BaseAgent {
 
         return categories;
     }
-
-    private updateKPI(name: string, value: number): void {
-        const kpi = this.definition.success_kpis.find(k => k.name === name);
-        if (kpi) {
-            kpi.current = value;
-        }
-    }
 }

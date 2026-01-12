@@ -269,11 +269,4 @@ export class DocsManagerAgent extends BaseAgent {
     B --> C[Data Processing]
     C --> D[Response]`;
     }
-
-    private updateKPI(name: string, value: number): void {
-        const kpi = this.definition.success_kpis.find(k => k.name === name);
-        if (kpi) {
-            kpi.current = value;
-        }
-    }
 }

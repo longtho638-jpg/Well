@@ -1,8 +1,14 @@
 import { AgentDefinition, AgentLog, AgentKPI, AgentPolicy } from '@/types/agentic';
+import { agentLogger } from '@/utils/logger';
 
 /**
  * Abstract base class for all agents in the Agentic OS.
  * Provides common functionality for policy checking, logging, and KPI tracking.
+ * 
+ * Phase 10: Unified agent interface with:
+ * - Structured logging via agentLogger
+ * - Shared updateKPI method
+ * - Consistent execute pattern
  */
 export abstract class BaseAgent {
   public definition: AgentDefinition;
@@ -47,6 +53,18 @@ export abstract class BaseAgent {
       humanApproved: approved,
     };
     this.logs.push(logEntry);
+  }
+
+  /**
+   * Update a KPI value by name.
+   * Shared method for all agents - removes need for duplicate implementations.
+   */
+  protected updateKPI(name: string, value: number): void {
+    const kpi = this.definition.success_kpis.find(k => k.name === name);
+    if (kpi) {
+      kpi.current = value;
+      agentLogger.debug(`[${this.definition.agent_name}] KPI: ${name} = ${value}`);
+    }
   }
 
   /**

@@ -210,7 +210,7 @@ export class CodeReviewerAgent extends BaseAgent {
     /**
      * Perform security vulnerability scan
      */
-    private async performSecurityScan(files: string[]): Promise<any> {
+    private async performSecurityScan(files: string[]): Promise<{ vulnerabilities: Array<{ type: string; severity: string; file: string }> }> {
         // Simulate security scanning
         const vulnerabilities = [];
 
@@ -238,7 +238,7 @@ export class CodeReviewerAgent extends BaseAgent {
     /**
      * Analyze code architecture
      */
-    private async analyzeCodeArchitecture(files: string[]): Promise<any> {
+    private async analyzeCodeArchitecture(files: string[]): Promise<{ patterns: string[]; issues: string[]; suggestions: string[] }> {
         return {
             patterns: ['Repository Pattern', 'Service Layer'],
             issues: [
@@ -256,7 +256,7 @@ export class CodeReviewerAgent extends BaseAgent {
     /**
      * Generate fix suggestions
      */
-    private async generateFixSuggestions(files: string[]): Promise<any> {
+    private async generateFixSuggestions(files: string[]): Promise<{ fixes: Array<{ file: string; issue: string; suggestion: string; code: string }> }> {
         return {
             fixes: [
                 {
@@ -371,12 +371,5 @@ export class CodeReviewerAgent extends BaseAgent {
     private calculateTestCoverage(files: string[]): number {
         // Simulate test coverage calculation
         return 85.5;
-    }
-
-    private updateKPI(name: string, value: number): void {
-        const kpi = this.definition.success_kpis.find(k => k.name === name);
-        if (kpi) {
-            kpi.current = value;
-        }
     }
 }

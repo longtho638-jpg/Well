@@ -344,11 +344,4 @@ export class DebuggerAgent extends BaseAgent {
 
         return steps[type] || ['Manual verification required'];
     }
-
-    private updateKPI(name: string, value: number): void {
-        const kpi = this.definition.success_kpis.find((k) => k.name === name);
-        if (kpi) {
-            kpi.current = value;
-        }
-    }
 }
