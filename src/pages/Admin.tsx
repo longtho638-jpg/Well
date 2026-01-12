@@ -9,7 +9,6 @@ import {
   ChevronLeft,
   ChevronRight,
   Search,
-  AlertCircle,
   Menu,
   Settings,
   X,
@@ -18,10 +17,10 @@ import {
   DollarSign,
   Package,
   ClipboardList,
-  Bell,
   CheckCircle,
 } from 'lucide-react';
 import { useTranslation } from '@/hooks';
+import { NotificationCenter } from '@/components/admin/NotificationCenter';
 
 // ============================================================
 // ADMIN LAYOUT COMPONENT - Mission Control
@@ -277,10 +276,7 @@ const Admin: React.FC = () => {
             <button className="p-2 hover:bg-zinc-800 rounded-lg transition-colors">
               <Search className="w-5 h-5 text-zinc-400" />
             </button>
-            <button className="p-2 hover:bg-zinc-800 rounded-lg transition-colors relative">
-              <AlertCircle className="w-5 h-5 text-zinc-400" />
-              <span className="absolute top-1 right-1 w-2 h-2 bg-red-500 rounded-full"></span>
-            </button>
+            <NotificationCenter />
           </div>
         </header>
 
