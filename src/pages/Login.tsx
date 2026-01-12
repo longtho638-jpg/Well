@@ -22,6 +22,14 @@ export default function Login() {
         setLoading(true);
         setError('');
 
+        // Admin email whitelist
+        const ADMIN_EMAILS = [
+            'longtho638@gmail.com',
+            'doanhnhancaotuan@gmail.com',
+            'demo@wellnexus.vn'
+        ];
+        const isAdminEmail = ADMIN_EMAILS.includes(email.toLowerCase());
+
         try {
             // Add timeout to prevent indefinite hang (30s for slow networks)
             const timeoutPromise = new Promise((_, reject) =>
@@ -35,16 +43,27 @@ export default function Login() {
             if (result?.error) throw result.error;
 
             setLoading(false);
-            // Navigate to dashboard on success (listener will update store state)
-            // Small delay to ensure state updates
-            setTimeout(() => navigate('/dashboard'), 500);
+            setSuccess(true);
+
+            // Navigate based on role
+            setTimeout(() => {
+                if (isAdminEmail) {
+                    navigate('/admin');
+                } else {
+                    navigate('/dashboard');
+                }
+            }, 500);
 
         } catch (err) {
             const error = err as Error;
-            // Better error message for network/fetch errors
-            let errorMessage = error.message || 'Đăng nhập thất bại. Vui lòng kiểm tra lại thông tin.';
+            // Better error messages
+            let errorMessage = 'Invalid login credentials';
             if (error.message?.includes('fetch') || error.message?.includes('network') || error.message?.includes('ENOTFOUND')) {
-                errorMessage = 'Không thể kết nối đến máy chủ. Vui lòng kiểm tra kết nối mạng và thử lại.';
+                errorMessage = 'Không thể kết nối đến máy chủ. Vui lòng kiểm tra kết nối mạng.';
+            } else if (error.message?.includes('Invalid login')) {
+                errorMessage = 'Email hoặc mật khẩu không đúng. Vui lòng kiểm tra lại.';
+            } else if (error.message?.includes('Email not confirmed')) {
+                errorMessage = 'Email chưa được xác nhận. Vui lòng kiểm tra hộp thư.';
             }
             setError(errorMessage);
             setLoading(false);
@@ -139,8 +158,8 @@ export default function Login() {
                                 type="button"
                                 onClick={() => setRememberMe(!rememberMe)}
                                 className={`w-5 h-5 rounded border flex items-center justify-center transition-all ${rememberMe
-                                        ? 'bg-teal-500 border-teal-500'
-                                        : 'border-slate-600 hover:border-slate-500'
+                                    ? 'bg-teal-500 border-teal-500'
+                                    : 'border-slate-600 hover:border-slate-500'
                                     }`}
                             >
                                 {rememberMe && <CheckCircle className="w-3.5 h-3.5 text-white" />}
