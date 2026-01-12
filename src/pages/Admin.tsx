@@ -17,6 +17,9 @@ import {
   Sparkles,
   DollarSign,
   Package,
+  ClipboardList,
+  Bell,
+  CheckCircle,
 } from 'lucide-react';
 import { useTranslation } from '@/hooks';
 
@@ -83,6 +86,12 @@ const Admin: React.FC = () => {
       label: 'Strategy',
       icon: <Settings className="w-5 h-5" />,
       path: '/admin/policy-engine'
+    },
+    {
+      id: 'audit',
+      label: 'Audit Log',
+      icon: <ClipboardList className="w-5 h-5" />,
+      path: '/admin/audit-log'
     },
   ];
 

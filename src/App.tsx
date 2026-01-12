@@ -32,6 +32,7 @@ const Finance = lazy(() => import('./pages/Admin/Finance'));
 const PolicyEngine = lazy(() => import('./pages/Admin/PolicyEngine'));
 const OrderManagement = lazy(() => import('./pages/Admin/OrderManagement'));
 const AdminProducts = lazy(() => import('./pages/Admin/Products'));
+const AuditLog = lazy(() => import('./pages/Admin/AuditLog'));
 
 import { useStore } from './store';
 import { ThemeProvider } from './context/ThemeContext';
@@ -67,6 +68,7 @@ const App: React.FC = () => {
             <Route path="policy-engine" element={<Suspense fallback={<div className="flex items-center justify-center h-screen"><div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#00575A]"></div></div>}><PolicyEngine /></Suspense>} />
             <Route path="orders" element={<Suspense fallback={<div className="flex items-center justify-center h-screen"><div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#00575A]"></div></div>}><OrderManagement /></Suspense>} />
             <Route path="products" element={<Suspense fallback={<div className="flex items-center justify-center h-screen"><div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#00575A]"></div></div>}><AdminProducts /></Suspense>} />
+            <Route path="audit-log" element={<Suspense fallback={<div className="flex items-center justify-center h-screen"><div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#00575A]"></div></div>}><AuditLog /></Suspense>} />
           </Route>
 
           {/* ============================================================ */}
