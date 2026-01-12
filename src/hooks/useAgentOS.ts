@@ -1,3 +1,4 @@
+import { agentLogger } from '@/utils/logger';
 import { useStore } from '@/store';
 import { agentRegistry } from '@/agents';
 import { AgentFunction, AgentLog, AgentKPI } from '@/types/agentic';
@@ -39,7 +40,7 @@ export function useAgentOS() {
 
       return result;
     } catch (error) {
-      console.error(`[AgentOS] Execution failed for ${agentName}`, error);
+      agentLogger.error(`Execution failed for ${agentName}`, error);
       // Rethrow to allow caller to handle it, but log it standardized here
       throw error;
     }

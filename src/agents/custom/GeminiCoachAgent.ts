@@ -2,6 +2,7 @@ import { BaseAgent } from '../core/BaseAgent';
 import { AgentDefinition } from '@/types/agentic';
 import { User } from '@/types';
 import { GoogleGenerativeAI, GenerativeModel } from '@google/generative-ai';
+import { agentLogger } from '@/utils/logger';
 
 /** Transaction input for compliance check */
 interface ComplianceTransaction {
@@ -96,7 +97,7 @@ export class GeminiCoachAgent extends BaseAgent {
     const apiKey = import.meta.env.VITE_GEMINI_API_KEY;
     // Only warn in development - production uses fallback by design
     if (!apiKey && import.meta.env.DEV) {
-      console.debug('[GeminiCoachAgent] No API key - using fallback responses');
+      agentLogger.debug('GeminiCoachAgent - No API key, using fallback responses');
     }
     this.genAI = new GoogleGenerativeAI(apiKey || 'dummy-key');
     this.model = this.genAI.getGenerativeModel({ model: 'gemini-2.0-flash-exp' });
@@ -172,7 +173,7 @@ export class GeminiCoachAgent extends BaseAgent {
 
       return advice;
     } catch (error) {
-      console.error('[GeminiCoachAgent] API Error:', error);
+      agentLogger.error('GeminiCoachAgent API Error', error);
       return this.getFallbackCoachingAdvice(user);
     }
   }
@@ -197,7 +198,7 @@ Check if this transaction complies with Vietnam tax law. Be concise (2-3 sentenc
       const result = await this.model.generateContent(prompt);
       return result.response.text();
     } catch (error) {
-      console.error('[GeminiCoachAgent] Compliance Check Error:', error);
+      agentLogger.error('GeminiCoachAgent Compliance Check Error', error);
       return 'Unable to verify compliance at this time.';
     }
   }

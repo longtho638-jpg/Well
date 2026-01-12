@@ -15,6 +15,9 @@ import {
 } from 'firebase/firestore';
 import { db } from './firebase';
 import { User, Product, Transaction, Quest } from '../types';
+import { createLogger } from '../utils/logger';
+
+const apiLogger = createLogger('API');
 
 /**
  * User Operations
@@ -29,7 +32,7 @@ export const userAPI = {
       }
       return null;
     } catch (error) {
-      console.error('Error fetching user:', error);
+      apiLogger.error('Error fetching user:', error);
       throw error;
     }
   },
@@ -51,7 +54,7 @@ export const userAPI = {
         taxWithheldTotal: 0,
       });
     } catch (error) {
-      console.error('Error creating user:', error);
+      apiLogger.error('Error creating user:', error);
       throw error;
     }
   },
@@ -61,7 +64,7 @@ export const userAPI = {
     try {
       await updateDoc(doc(db, 'users', userId), updates as Record<string, unknown>);
     } catch (error) {
-      console.error('Error updating user:', error);
+      apiLogger.error('Error updating user:', error);
       throw error;
     }
   },
@@ -80,7 +83,7 @@ export const walletAPI = {
       }
       return null;
     } catch (error) {
-      console.error('Error fetching wallet:', error);
+      apiLogger.error('Error fetching wallet:', error);
       throw error;
     }
   },
@@ -101,7 +104,7 @@ export const walletAPI = {
         ...doc.data(),
       })) as Transaction[];
     } catch (error) {
-      console.error('Error fetching transactions:', error);
+      apiLogger.error('Error fetching transactions:', error);
       throw error;
     }
   },
@@ -120,7 +123,7 @@ export const productAPI = {
         ...doc.data(),
       })) as Product[];
     } catch (error) {
-      console.error('Error fetching products:', error);
+      apiLogger.error('Error fetching products:', error);
       throw error;
     }
   },
@@ -134,7 +137,7 @@ export const productAPI = {
       }
       return null;
     } catch (error) {
-      console.error('Error fetching product:', error);
+      apiLogger.error('Error fetching product:', error);
       throw error;
     }
   },
@@ -153,7 +156,7 @@ export const questAPI = {
         ...doc.data(),
       })) as Quest[];
     } catch (error) {
-      console.error('Error fetching quests:', error);
+      apiLogger.error('Error fetching quests:', error);
       throw error;
     }
   },
@@ -166,7 +169,7 @@ export const questAPI = {
       );
       return progressDoc.exists() ? progressDoc.data() : null;
     } catch (error) {
-      console.error('Error fetching quest progress:', error);
+      apiLogger.error('Error fetching quest progress:', error);
       throw error;
     }
   },
@@ -188,7 +191,7 @@ export const questAPI = {
         { merge: true }
       );
     } catch (error) {
-      console.error('Error updating quest progress:', error);
+      apiLogger.error('Error updating quest progress:', error);
       throw error;
     }
   },
@@ -211,7 +214,7 @@ export const orderAPI = {
 
       return orderRef.id;
     } catch (error) {
-      console.error('Error creating order:', error);
+      apiLogger.error('Error creating order:', error);
       throw error;
     }
   },
@@ -232,7 +235,7 @@ export const orderAPI = {
         ...doc.data(),
       }));
     } catch (error) {
-      console.error('Error fetching orders:', error);
+      apiLogger.error('Error fetching orders:', error);
       throw error;
     }
   },
@@ -270,7 +273,7 @@ export const analyticsAPI = {
         value,
       }));
     } catch (error) {
-      console.error('Error fetching revenue data:', error);
+      apiLogger.error('Error fetching revenue data:', error);
       throw error;
     }
   },

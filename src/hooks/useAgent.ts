@@ -1,3 +1,4 @@
+import { agentLogger } from '@/utils/logger';
 import { useState } from 'react';
 import { getCoachAdvice, checkCompliance } from '../services/geminiService';
 import { User } from '../types';
@@ -40,7 +41,7 @@ export function useAgent(): AgentState & AgentActions {
       setAdvice(coachAdvice);
     } catch (e) {
       const err = e as Error;
-      console.error('Error getting coach advice:', err);
+      agentLogger.error('Error getting coach advice', err);
       setError(err.message || 'Failed to get advice');
       setAdvice('Keep pushing forward! You\'re on the right track. 🚀');
     } finally {
@@ -83,7 +84,7 @@ export function useAgent(): AgentState & AgentActions {
       return isCompliant;
     } catch (e) {
       const err = e as Error;
-      console.error('Error checking compliance:', err);
+      agentLogger.error('Error checking compliance', err);
       setError(err.message || 'Failed to check compliance');
       // Default to compliant on error
       return true;
