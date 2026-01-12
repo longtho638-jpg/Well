@@ -28,6 +28,9 @@ import {
   Smartphone,
   Mail,
   MessageSquare,
+  Search,
+  RefreshCw,
+  X,
 } from 'lucide-react';
 import { useToast } from '@/components/ui/Toast';
 
@@ -147,8 +150,8 @@ const TabButton: React.FC<{
   <button
     onClick={onClick}
     className={`flex items-center gap-2 px-4 py-2 rounded-lg font-medium transition-all ${active
-        ? 'bg-emerald-500/10 text-emerald-400 border border-emerald-500/20'
-        : 'text-zinc-400 hover:text-zinc-100 hover:bg-zinc-800'
+      ? 'bg-emerald-500/10 text-emerald-400 border border-emerald-500/20'
+      : 'text-zinc-400 hover:text-zinc-100 hover:bg-zinc-800'
       }`}
   >
     {icon}
@@ -187,6 +190,8 @@ const CMS: React.FC = () => {
   const [announcements, setAnnouncements] = useState<Announcement[]>(MOCK_ANNOUNCEMENTS);
   const [templates, setTemplates] = useState<NotificationTemplate[]>(MOCK_TEMPLATES);
   const [editingBanner, setEditingBanner] = useState<Banner | null>(null);
+  const [searchQuery, setSearchQuery] = useState('');
+  const [editingAnnouncement, setEditingAnnouncement] = useState<Announcement | null>(null);
 
   const handleSaveBanner = (banner: Banner) => {
     if (editingBanner) {
@@ -213,6 +218,62 @@ const CMS: React.FC = () => {
     showToast('Announcement status updated', 'success');
   };
 
+  const handleAddAnnouncement = () => {
+    setEditingAnnouncement({
+      id: '',
+      title: '',
+      message: '',
+      type: 'info',
+      target: 'all',
+      status: 'draft',
+      createdAt: new Date().toISOString(),
+    });
+  };
+
+  const handleSaveAnnouncement = (announcement: Announcement) => {
+    if (editingAnnouncement?.id) {
+      setAnnouncements(prev => prev.map(a => a.id === announcement.id ? announcement : a));
+    } else {
+      setAnnouncements(prev => [...prev, { ...announcement, id: `A${Date.now()}` }]);
+    }
+    setEditingAnnouncement(null);
+    showToast('Announcement saved!', 'success');
+  };
+
+  const handleDeleteAnnouncement = (id: string) => {
+    if (!confirm('Delete this announcement?')) return;
+    setAnnouncements(prev => prev.filter(a => a.id !== id));
+    showToast('Announcement deleted', 'info');
+  };
+
+  // Filter based on search
+  const filteredBanners = banners.filter(b =>
+    b.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+    b.subtitle.toLowerCase().includes(searchQuery.toLowerCase())
+  );
+
+  const filteredAnnouncements = announcements.filter(a =>
+    a.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+    a.message.toLowerCase().includes(searchQuery.toLowerCase())
+  );
+
+  const filteredTemplates = templates.filter(t =>
+    t.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+    t.subject.toLowerCase().includes(searchQuery.toLowerCase())
+  );
+
+  // Stats
+  const activeBanners = banners.filter(b => b.status === 'active').length;
+  const activeAnnouncements = announcements.filter(a => a.status === 'active').length;
+
+  const handleRefresh = () => {
+    // Reset to mock data (simulate refresh)
+    setBanners(MOCK_BANNERS);
+    setAnnouncements(MOCK_ANNOUNCEMENTS);
+    setTemplates(MOCK_TEMPLATES);
+    showToast('Content refreshed', 'success');
+  };
+
   return (
     <motion.div
       initial={{ opacity: 0 }}
@@ -227,26 +288,89 @@ const CMS: React.FC = () => {
             Manage banners, announcements, and notification templates
           </p>
         </div>
-        <button
-          onClick={() => {
-            if (activeTab === 'banners') {
-              setEditingBanner({
-                id: '',
-                title: '',
-                subtitle: '',
-                ctaText: '',
-                ctaLink: '',
-                imageUrl: '',
-                location: 'promotion',
-                status: 'draft',
-              });
-            }
-          }}
-          className="flex items-center gap-2 px-4 py-2 bg-emerald-500 hover:bg-emerald-600 text-white rounded-lg transition-colors"
-        >
-          <Plus className="w-4 h-4" />
-          Add {activeTab === 'banners' ? 'Banner' : activeTab === 'announcements' ? 'Announcement' : 'Template'}
-        </button>
+        <div className="flex items-center gap-2">
+          <button
+            onClick={handleRefresh}
+            className="p-2 text-zinc-400 hover:text-zinc-100 hover:bg-zinc-800 rounded-lg transition-colors"
+            title="Refresh content"
+          >
+            <RefreshCw className="w-5 h-5" />
+          </button>
+          <button
+            onClick={() => {
+              if (activeTab === 'banners') {
+                setEditingBanner({
+                  id: '',
+                  title: '',
+                  subtitle: '',
+                  ctaText: '',
+                  ctaLink: '',
+                  imageUrl: '',
+                  location: 'promotion',
+                  status: 'draft',
+                });
+              } else if (activeTab === 'announcements') {
+                handleAddAnnouncement();
+              }
+            }}
+            className="flex items-center gap-2 px-4 py-2 bg-emerald-500 hover:bg-emerald-600 text-white rounded-lg transition-colors"
+          >
+            <Plus className="w-4 h-4" />
+            Add {activeTab === 'banners' ? 'Banner' : activeTab === 'announcements' ? 'Announcement' : 'Template'}
+          </button>
+        </div>
+      </div>
+
+      {/* Stats Cards */}
+      <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+        <div className="p-4 bg-zinc-900/50 border border-zinc-800 rounded-xl">
+          <div className="flex items-center gap-3">
+            <Image className="w-5 h-5 text-blue-400" />
+            <div>
+              <p className="text-xs text-zinc-500">Total Banners</p>
+              <p className="text-xl font-bold text-zinc-100">{banners.length}</p>
+            </div>
+          </div>
+        </div>
+        <div className="p-4 bg-zinc-900/50 border border-zinc-800 rounded-xl">
+          <div className="flex items-center gap-3">
+            <CheckCircle className="w-5 h-5 text-emerald-400" />
+            <div>
+              <p className="text-xs text-zinc-500">Active Banners</p>
+              <p className="text-xl font-bold text-emerald-400">{activeBanners}</p>
+            </div>
+          </div>
+        </div>
+        <div className="p-4 bg-zinc-900/50 border border-zinc-800 rounded-xl">
+          <div className="flex items-center gap-3">
+            <Megaphone className="w-5 h-5 text-amber-400" />
+            <div>
+              <p className="text-xs text-zinc-500">Announcements</p>
+              <p className="text-xl font-bold text-zinc-100">{announcements.length}</p>
+            </div>
+          </div>
+        </div>
+        <div className="p-4 bg-zinc-900/50 border border-zinc-800 rounded-xl">
+          <div className="flex items-center gap-3">
+            <Mail className="w-5 h-5 text-purple-400" />
+            <div>
+              <p className="text-xs text-zinc-500">Templates</p>
+              <p className="text-xl font-bold text-zinc-100">{templates.length}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Search */}
+      <div className="relative">
+        <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-zinc-500" />
+        <input
+          type="text"
+          placeholder="Search content..."
+          value={searchQuery}
+          onChange={(e) => setSearchQuery(e.target.value)}
+          className="w-full pl-10 pr-4 py-3 bg-zinc-900 border border-zinc-800 rounded-lg text-zinc-100 placeholder:text-zinc-500 focus:outline-none focus:ring-2 focus:ring-emerald-500/50"
+        />
       </div>
 
       {/* Tabs */}
@@ -284,7 +408,12 @@ const CMS: React.FC = () => {
             exit={{ opacity: 0, x: 20 }}
             className="space-y-4"
           >
-            {banners.map((banner) => (
+            {filteredBanners.length === 0 ? (
+              <div className="p-8 text-center text-zinc-500">
+                <Image className="w-12 h-12 mx-auto mb-4 opacity-50" />
+                <p>No banners found</p>
+              </div>
+            ) : filteredBanners.map((banner) => (
               <div
                 key={banner.id}
                 className="p-4 bg-zinc-900/50 border border-zinc-800 rounded-xl hover:border-zinc-700 transition-colors"
@@ -332,7 +461,12 @@ const CMS: React.FC = () => {
             exit={{ opacity: 0, x: 20 }}
             className="space-y-4"
           >
-            {announcements.map((announcement) => (
+            {filteredAnnouncements.length === 0 ? (
+              <div className="p-8 text-center text-zinc-500">
+                <Megaphone className="w-12 h-12 mx-auto mb-4 opacity-50" />
+                <p>No announcements found</p>
+              </div>
+            ) : filteredAnnouncements.map((announcement) => (
               <div
                 key={announcement.id}
                 className="p-4 bg-zinc-900/50 border border-zinc-800 rounded-xl hover:border-zinc-700 transition-colors"
@@ -341,8 +475,8 @@ const CMS: React.FC = () => {
                   <div className="flex-1">
                     <div className="flex items-center gap-3 mb-2">
                       <Bell className={`w-5 h-5 ${announcement.type === 'warning' ? 'text-amber-400' :
-                          announcement.type === 'promo' ? 'text-emerald-400' :
-                            announcement.type === 'success' ? 'text-blue-400' : 'text-zinc-400'
+                        announcement.type === 'promo' ? 'text-emerald-400' :
+                          announcement.type === 'success' ? 'text-blue-400' : 'text-zinc-400'
                         }`} />
                       <h3 className="text-lg font-bold text-zinc-100">{announcement.title}</h3>
                       <StatusBadge status={announcement.status} />
@@ -359,15 +493,29 @@ const CMS: React.FC = () => {
                       </span>
                     </div>
                   </div>
-                  <button
-                    onClick={() => handleToggleAnnouncementStatus(announcement.id)}
-                    className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${announcement.status === 'active'
+                  <div className="flex items-center gap-2">
+                    <button
+                      onClick={() => setEditingAnnouncement(announcement)}
+                      className="p-2 text-zinc-400 hover:text-zinc-100 hover:bg-zinc-800 rounded-lg transition-colors"
+                    >
+                      <Edit2 className="w-4 h-4" />
+                    </button>
+                    <button
+                      onClick={() => handleToggleAnnouncementStatus(announcement.id)}
+                      className={`px-3 py-1.5 rounded-lg text-sm font-medium transition-colors ${announcement.status === 'active'
                         ? 'bg-zinc-800 text-zinc-400 hover:bg-zinc-700'
                         : 'bg-emerald-500/10 text-emerald-400 hover:bg-emerald-500/20'
-                      }`}
-                  >
-                    {announcement.status === 'active' ? 'Deactivate' : 'Activate'}
-                  </button>
+                        }`}
+                    >
+                      {announcement.status === 'active' ? 'Deactivate' : 'Activate'}
+                    </button>
+                    <button
+                      onClick={() => handleDeleteAnnouncement(announcement.id)}
+                      className="p-2 text-zinc-400 hover:text-red-400 hover:bg-red-500/10 rounded-lg transition-colors"
+                    >
+                      <Trash2 className="w-4 h-4" />
+                    </button>
+                  </div>
                 </div>
               </div>
             ))}
@@ -382,7 +530,12 @@ const CMS: React.FC = () => {
             exit={{ opacity: 0, x: 20 }}
             className="space-y-4"
           >
-            {templates.map((template) => (
+            {filteredTemplates.length === 0 ? (
+              <div className="p-8 text-center text-zinc-500">
+                <Mail className="w-12 h-12 mx-auto mb-4 opacity-50" />
+                <p>No templates found</p>
+              </div>
+            ) : filteredTemplates.map((template) => (
               <div
                 key={template.id}
                 className="p-4 bg-zinc-900/50 border border-zinc-800 rounded-xl hover:border-zinc-700 transition-colors"
