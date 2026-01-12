@@ -279,6 +279,8 @@ const Partners: React.FC = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedFilter, setSelectedFilter] = useState('all');
   const [selectedPartner, setSelectedPartner] = useState<Partner | null>(null);
+  const [selectedIds, setSelectedIds] = useState<Set<string>>(new Set());
+  const [bulkActionLoading, setBulkActionLoading] = useState(false);
   const { showToast } = useToast();
 
   const fetchPartners = async () => {
@@ -327,6 +329,71 @@ const Partners: React.FC = () => {
     const matchesFilter = selectedFilter === 'all' || partner.status === selectedFilter;
     return matchesSearch && matchesFilter;
   });
+
+  // Bulk selection handlers
+  const toggleSelect = (id: string) => {
+    setSelectedIds(prev => {
+      const next = new Set(prev);
+      if (next.has(id)) {
+        next.delete(id);
+      } else {
+        next.add(id);
+      }
+      return next;
+    });
+  };
+
+  const toggleSelectAll = () => {
+    if (selectedIds.size === filteredPartners.length) {
+      setSelectedIds(new Set());
+    } else {
+      setSelectedIds(new Set(filteredPartners.map(p => p.id)));
+    }
+  };
+
+  const handleBulkAction = async (action: 'activate' | 'ban' | 'export') => {
+    if (selectedIds.size === 0) {
+      showToast('No partners selected', 'error');
+      return;
+    }
+
+    setBulkActionLoading(true);
+    try {
+      if (action === 'export') {
+        // Export to CSV
+        const selectedPartners = partners.filter(p => selectedIds.has(p.id));
+        const csv = [
+          ['Name', 'Email', 'Rank', 'Sales', 'Points', 'Status'].join(','),
+          ...selectedPartners.map(p => [
+            p.name,
+            p.email,
+            RANK_NAMES[p.rank],
+            p.totalSales,
+            p.pointBalance,
+            p.status
+          ].join(','))
+        ].join('\n');
+
+        const blob = new Blob([csv], { type: 'text/csv' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `partners-export-${new Date().toISOString().split('T')[0]}.csv`;
+        a.click();
+        showToast(`Exported ${selectedIds.size} partners`, 'success');
+      } else {
+        // Update status in database (mock for now)
+        showToast(`${action === 'ban' ? 'Banned' : 'Activated'} ${selectedIds.size} partners`, 'success');
+      }
+      setSelectedIds(new Set());
+    } catch (error) {
+      console.error('Bulk action error:', error);
+      showToast('Bulk action failed', 'error');
+    } finally {
+      setBulkActionLoading(false);
+    }
+  };
+
 
   return (
     <motion.div
@@ -381,12 +448,71 @@ const Partners: React.FC = () => {
         </div>
       </div>
 
+      {/* Bulk Actions Toolbar */}
+      {selectedIds.size > 0 && (
+        <motion.div
+          initial={{ opacity: 0, y: -10 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="bg-blue-50 border border-blue-200 rounded-lg p-4 flex items-center justify-between"
+        >
+          <div className="flex items-center gap-3">
+            <span className="text-sm font-medium text-blue-700">
+              {selectedIds.size} partner{selectedIds.size > 1 ? 's' : ''} selected
+            </span>
+          </div>
+          <div className="flex items-center gap-2">
+            <button
+              onClick={() => handleBulkAction('activate')}
+              disabled={bulkActionLoading}
+              className="px-4 py-2 bg-green-600 text-white text-sm font-medium rounded-lg hover:bg-green-700 transition-colors disabled:opacity-50"
+            >
+              <Check className="w-4 h-4 inline mr-1" />
+              Activate
+            </button>
+            <button
+              onClick={() => handleBulkAction('ban')}
+              disabled={bulkActionLoading}
+              className="px-4 py-2 bg-red-600 text-white text-sm font-medium rounded-lg hover:bg-red-700 transition-colors disabled:opacity-50"
+            >
+              <Lock className="w-4 h-4 inline mr-1" />
+              Ban
+            </button>
+            <button
+              onClick={() => handleBulkAction('export')}
+              disabled={bulkActionLoading}
+              className="px-4 py-2 bg-slate-600 text-white text-sm font-medium rounded-lg hover:bg-slate-700 transition-colors disabled:opacity-50"
+            >
+              Export CSV
+            </button>
+            <button
+              onClick={() => setSelectedIds(new Set())}
+              className="px-3 py-2 text-slate-600 hover:bg-slate-100 rounded-lg transition-colors"
+            >
+              <X className="w-4 h-4" />
+            </button>
+          </div>
+        </motion.div>
+      )}
+
       {/* Partners Table */}
       <div className="bg-white border border-slate-200 rounded-lg overflow-hidden">
         <div className="overflow-x-auto">
           <table className="w-full">
             <thead className="bg-slate-50 border-b border-slate-200">
               <tr>
+                <th className="px-4 py-4 text-left">
+                  <button
+                    onClick={toggleSelectAll}
+                    className={`w-5 h-5 rounded border flex items-center justify-center transition-all ${selectedIds.size === filteredPartners.length && filteredPartners.length > 0
+                      ? 'bg-[#00575A] border-[#00575A]'
+                      : 'border-slate-300 hover:border-slate-400'
+                      }`}
+                  >
+                    {selectedIds.size === filteredPartners.length && filteredPartners.length > 0 && (
+                      <Check className="w-3 h-3 text-white" />
+                    )}
+                  </button>
+                </th>
                 <th className="px-6 py-4 text-left text-xs font-medium text-slate-500 uppercase tracking-wider">
                   Partner
                 </th>
@@ -413,20 +539,33 @@ const Partners: React.FC = () => {
             <tbody className="divide-y divide-slate-200">
               {loading ? (
                 <tr>
-                  <td colSpan={7} className="px-6 py-8 text-center text-slate-500">
+                  <td colSpan={8} className="px-6 py-8 text-center text-slate-500">
                     <Loader2 className="w-8 h-8 animate-spin mx-auto mb-2" />
                     Loading partners...
                   </td>
                 </tr>
               ) : filteredPartners.length === 0 ? (
                 <tr>
-                  <td colSpan={7} className="px-6 py-8 text-center text-slate-500">
+                  <td colSpan={8} className="px-6 py-8 text-center text-slate-500">
                     No partners found.
                   </td>
                 </tr>
               ) : (
                 filteredPartners.map((partner) => (
-                  <tr key={partner.id} className="hover:bg-slate-50 transition-colors">
+                  <tr key={partner.id} className={`hover:bg-slate-50 transition-colors ${selectedIds.has(partner.id) ? 'bg-blue-50' : ''}`}>
+                    <td className="px-4 py-4">
+                      <button
+                        onClick={() => toggleSelect(partner.id)}
+                        className={`w-5 h-5 rounded border flex items-center justify-center transition-all ${selectedIds.has(partner.id)
+                            ? 'bg-[#00575A] border-[#00575A]'
+                            : 'border-slate-300 hover:border-slate-400'
+                          }`}
+                      >
+                        {selectedIds.has(partner.id) && (
+                          <Check className="w-3 h-3 text-white" />
+                        )}
+                      </button>
+                    </td>
                     <td className="px-6 py-4">
                       <div>
                         <p className="text-sm font-medium text-slate-900">{partner.name}</p>

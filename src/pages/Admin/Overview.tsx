@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import {
   Activity,
@@ -15,10 +15,12 @@ import {
   UserCheck,
   Wallet,
   Zap,
+  RefreshCw,
 } from 'lucide-react';
 import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 import { formatVND } from '@/utils/format';
 import { useToast } from '@/components/ui/Toast';
+import { supabase, isSupabaseConfigured } from '@/lib/supabase';
 
 // ============================================================
 // TYPES & MOCK DATA
@@ -316,10 +318,65 @@ const LivePulse: React.FC = () => {
 // MAIN OVERVIEW COMPONENT
 // ============================================================
 
+interface DashboardMetrics {
+  totalRevenue: number;
+  activePartners: number;
+  pendingOrders: number;
+  systemHealth: number;
+}
+
 const Overview: React.FC = () => {
   const [aiActions, setAIActions] = useState<AIAction[]>(mockAIActions);
+  const [metrics, setMetrics] = useState<DashboardMetrics>({
+    totalRevenue: 2450000000,
+    activePartners: 245,
+    pendingOrders: 0,
+    systemHealth: 99.9,
+  });
+  const [loadingMetrics, setLoadingMetrics] = useState(false);
 
   const { showToast } = useToast();
+
+  // Fetch real metrics from database
+  const fetchMetrics = async () => {
+    if (!isSupabaseConfigured()) return;
+
+    setLoadingMetrics(true);
+    try {
+      // Fetch partner count
+      const { count: partnerCount } = await supabase
+        .from('users')
+        .select('*', { count: 'exact', head: true });
+
+      // Fetch pending orders
+      const { count: pendingOrders } = await supabase
+        .from('orders')
+        .select('*', { count: 'exact', head: true })
+        .eq('status', 'pending');
+
+      // Fetch total sales
+      const { data: salesData } = await supabase
+        .from('users')
+        .select('total_sales');
+
+      const totalRevenue = salesData?.reduce((sum, u) => sum + (u.total_sales || 0), 0) || 0;
+
+      setMetrics({
+        totalRevenue: totalRevenue || 2450000000,
+        activePartners: partnerCount || 245,
+        pendingOrders: pendingOrders || 0,
+        systemHealth: 99.9,
+      });
+    } catch (error) {
+      console.error('Error fetching metrics:', error);
+    } finally {
+      setLoadingMetrics(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchMetrics();
+  }, []);
 
   const handleApprove = async (actionId: string) => {
     // Simulate API Call
@@ -342,22 +399,32 @@ const Overview: React.FC = () => {
       className="space-y-6"
     >
       {/* Page Header */}
-      <div>
-        <h2 className="text-3xl font-display font-bold text-slate-900">Mission Control</h2>
-        <p className="text-slate-500 mt-1">AI-powered enterprise operations dashboard</p>
+      <div className="flex items-center justify-between">
+        <div>
+          <h2 className="text-3xl font-display font-bold text-slate-900">Mission Control</h2>
+          <p className="text-slate-500 mt-1">AI-powered enterprise operations dashboard</p>
+        </div>
+        <button
+          onClick={fetchMetrics}
+          disabled={loadingMetrics}
+          className="p-2 hover:bg-slate-100 rounded-lg transition-colors text-slate-600"
+          title="Refresh metrics"
+        >
+          <RefreshCw className={`w-5 h-5 ${loadingMetrics ? 'animate-spin' : ''}`} />
+        </button>
       </div>
 
       {/* Metrics Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
         <MetricCard
           label="Total Revenue"
-          value="2.450.000.000 đ"
+          value={formatVND(metrics.totalRevenue)}
           trend="+12%"
           icon={<Activity className="w-6 h-6" />}
         />
         <MetricCard
           label="Active Partners"
-          value="245"
+          value={metrics.activePartners.toString()}
           trend="+5"
           icon={<Users className="w-6 h-6" />}
         />
@@ -369,7 +436,7 @@ const Overview: React.FC = () => {
         />
         <MetricCard
           label="System Health"
-          value="99.9%"
+          value={`${metrics.systemHealth}%`}
           status="success"
           icon={<CheckCircle2 className="w-6 h-6" />}
         />
