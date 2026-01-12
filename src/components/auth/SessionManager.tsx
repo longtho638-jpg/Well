@@ -22,6 +22,7 @@ import {
     Loader2,
     MapPin,
 } from 'lucide-react';
+import { authLogger } from '@/utils/logger';
 
 export interface Session {
     id: string;
@@ -100,7 +101,7 @@ export function SessionManager({
             setSuccess(`Session revoked successfully`);
             setTimeout(() => setSuccess(null), 3000);
         } catch (error) {
-            console.error('Failed to revoke session:', error);
+            authLogger.error('Failed to revoke session', error);
         } finally {
             setRevoking(null);
         }
@@ -117,7 +118,7 @@ export function SessionManager({
             setSuccess('All other sessions revoked');
             setTimeout(() => setSuccess(null), 3000);
         } catch (error) {
-            console.error('Failed to revoke sessions:', error);
+            authLogger.error('Failed to revoke sessions', error);
         } finally {
             setRevokingAll(false);
         }
@@ -181,8 +182,8 @@ export function SessionManager({
                         animate={{ opacity: 1, y: 0 }}
                         exit={{ opacity: 0, y: -10 }}
                         className={`p-4 rounded-xl border transition-colors ${session.isCurrent
-                                ? 'bg-emerald-500/5 border-emerald-500/20'
-                                : 'bg-zinc-900/50 border-zinc-800 hover:border-zinc-700'
+                            ? 'bg-emerald-500/5 border-emerald-500/20'
+                            : 'bg-zinc-900/50 border-zinc-800 hover:border-zinc-700'
                             }`}
                     >
                         <div className="flex items-start justify-between gap-4">
@@ -190,8 +191,8 @@ export function SessionManager({
                                 {/* Device Icon */}
                                 <div
                                     className={`w-10 h-10 rounded-lg flex items-center justify-center ${session.isCurrent
-                                            ? 'bg-emerald-500/20 text-emerald-400'
-                                            : 'bg-zinc-800 text-zinc-400'
+                                        ? 'bg-emerald-500/20 text-emerald-400'
+                                        : 'bg-zinc-800 text-zinc-400'
                                         }`}
                                 >
                                     <DeviceIcon device={session.device} />

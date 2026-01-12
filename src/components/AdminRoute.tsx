@@ -1,6 +1,7 @@
 import { Navigate } from 'react-router-dom';
 import { useStore } from '@/store';
 import { ReactNode } from 'react';
+import { authLogger } from '@/utils/logger';
 
 interface AdminRouteProps {
     children: ReactNode;
@@ -20,7 +21,7 @@ export function AdminRoute({ children }: AdminRouteProps) {
 
     // Check 1: Must be authenticated
     if (!isAuthenticated) {
-        console.warn('[AdminRoute] Access denied: User not authenticated');
+        authLogger.warn('Access denied: User not authenticated');
         return <Navigate to="/" replace />;
     }
 
@@ -38,7 +39,7 @@ export function AdminRoute({ children }: AdminRouteProps) {
         user?.isAdmin === true;
 
     if (!isAdmin) {
-        console.warn('[AdminRoute] Access denied: User is not admin', {
+        authLogger.warn('Access denied: User is not admin', {
             email: user?.email,
             role: user?.role
         });
@@ -49,3 +50,4 @@ export function AdminRoute({ children }: AdminRouteProps) {
 }
 
 export default AdminRoute;
+
