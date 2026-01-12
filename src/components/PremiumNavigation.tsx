@@ -286,7 +286,7 @@ export function PremiumHeader() {
 
                         {/* Auth Section */}
                         <div className="flex items-center gap-3">
-                            {user ? (
+                            {isAuthenticated && user ? (
                                 <>
                                     <Link
                                         to="/dashboard"
@@ -436,7 +436,7 @@ export function PremiumHeader() {
 
                                 {/* Mobile Auth */}
                                 <div className="mt-6 pt-6 border-t border-zinc-800">
-                                    {user ? (
+                                    {isAuthenticated && user ? (
                                         <>
                                             <div className="flex items-center gap-4 px-4 py-4 bg-zinc-800/50 rounded-xl mb-4">
                                                 <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-emerald-400 to-cyan-500 flex items-center justify-center text-lg font-bold text-black">

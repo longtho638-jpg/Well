@@ -118,7 +118,17 @@ export const createAuthSlice: StateCreator<
     login: () => set({ isAuthenticated: true }),
 
     logout: async () => {
-        await supabase.auth.signOut();
+        try {
+            // Use Promise.race with timeout to prevent hanging on network errors
+            const signOutPromise = supabase.auth.signOut();
+            const timeoutPromise = new Promise((_, reject) =>
+                setTimeout(() => reject(new Error('Logout timeout')), 3000)
+            );
+            await Promise.race([signOutPromise, timeoutPromise]);
+        } catch {
+            // Ignore errors - we always want to reset local state
+        }
+        // Always reset local state regardless of Supabase response
         set({ isAuthenticated: false, user: createEmptyUser() });
     },
 
