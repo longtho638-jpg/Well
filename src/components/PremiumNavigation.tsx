@@ -115,8 +115,8 @@ export function PremiumHeader() {
         setMobileOpen(false);
     }, [location.pathname]);
 
-    const handleLogout = () => {
-        logout();
+    const handleLogout = async () => {
+        await logout();
         navigate('/');
     };
 
