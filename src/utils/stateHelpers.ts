@@ -5,6 +5,7 @@
 
 import { create, StateCreator } from 'zustand';
 import { persist, devtools } from 'zustand/middleware';
+import { storeLogger } from './logger';
 
 // ============================================================================
 // SLICE PATTERN HELPER
@@ -143,11 +144,9 @@ export function debugMiddleware<T extends object>(
 ): StateCreator<T> {
     return (set, get, api) => {
         const wrappedSet: typeof set = (...args) => {
-            console.group('[Store Update]');
-            console.log('Previous:', get());
+            storeLogger.debug('Update - Previous:', get());
             (set as (...a: unknown[]) => void)(...args);
-            console.log('Next:', get());
-            console.groupEnd();
+            storeLogger.debug('Update - Next:', get());
         };
         return config(wrappedSet, get, api);
     };

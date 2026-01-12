@@ -88,6 +88,9 @@ export const analyticsLogger = createLogger('Analytics');
 export const storeLogger = createLogger('Store');
 export const adminLogger = createLogger('Admin');
 export const uiLogger = createLogger('UI');
+export const walletLogger = createLogger('Wallet');
+export const aiLogger = createLogger('AI');
+export const perfLogger = createLogger('Perf');
 
 export { Logger };
 

@@ -91,7 +91,7 @@ export const createTeamSlice: StateCreator<
                 .eq('sponsor_id', userId);
 
             if (error) {
-                console.error('fetchDownlineTree error:', error);
+                teamLogger.error('fetchDownlineTree query failed', error);
                 return [];
             }
 
@@ -113,7 +113,7 @@ export const createTeamSlice: StateCreator<
 
             return nodes;
         } catch (error) {
-            console.error('fetchDownlineTree exception:', error);
+            teamLogger.error('fetchDownlineTree exception', error);
             return [];
         }
     },

@@ -23,6 +23,7 @@ import { AgentState, AgentLog, AgentKPI } from './types/agentic';
 import { agentRegistry } from './agents';
 import { supabase } from './lib/supabase';
 import { UserRank, RANK_NAMES } from './types';
+import { storeLogger, agentLogger, teamLogger } from './utils/logger';
 
 // ============================================================================
 // WEALTH OS CALCULATION ENGINE
@@ -182,7 +183,7 @@ export const useStore = create<AppState>((set, get) => ({
         .eq('sponsor_id', userId);
 
       if (error) {
-        console.error('fetchDownlineTree error:', error);
+        teamLogger.error('fetchDownlineTree query failed', error);
         return [];
       }
 
@@ -205,7 +206,7 @@ export const useStore = create<AppState>((set, get) => ({
 
       return nodes;
     } catch (error) {
-      console.error('fetchDownlineTree exception:', error);
+      teamLogger.error('fetchDownlineTree exception', error);
       return [];
     }
   },
@@ -382,7 +383,7 @@ export const useStore = create<AppState>((set, get) => ({
           }));
         }
       } catch (e) {
-        console.error("The Bee failed to distribute reward:", e);
+        agentLogger.error('The Bee failed to distribute reward', e);
       }
     }
   },
@@ -615,7 +616,7 @@ export const useStore = create<AppState>((set, get) => ({
 
       return output as Record<string, unknown>;
     } catch (error) {
-      console.error(`[AgentOS] Error executing ${agentName}:`, error);
+      agentLogger.error(`Error executing ${agentName}`, error);
       throw error;
     }
   },
@@ -809,12 +810,12 @@ export const useStore = create<AppState>((set, get) => ({
         results.forEach((result, index) => {
           if (result.status === 'rejected') {
             const names = ['fetchProducts', 'fetchTransactions', 'fetchTeamData'];
-            console.error(`[Store] ${names[index]} failed:`, result.reason);
+            storeLogger.error(`${names[index]} failed`, result.reason);
           }
         });
       });
     } catch (error) {
-      console.error('[Store] fetchRealData failed:', error);
+      storeLogger.error('fetchRealData failed', error);
     }
   },
 

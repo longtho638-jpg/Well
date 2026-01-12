@@ -1,6 +1,7 @@
 import { vi, type TranslationKeys } from '@/locales/vi';
 import { en } from '@/locales/en';
 import { useLanguage } from '@/context/LanguageContext';
+import { uiLogger } from '@/utils/logger';
 
 /**
  * Multi-language i18n hook for WellNexus
@@ -35,7 +36,7 @@ function getNestedValue(obj: Record<string, unknown>, path: string): string {
     if (result && typeof result === 'object' && key in result) {
       result = (result as Record<string, unknown>)[key];
     } else {
-      console.warn(`Translation key not found: ${path}`);
+      uiLogger.warn(`Translation key not found: ${path}`);
       return path; // Return key as fallback
     }
   }

@@ -1,8 +1,9 @@
 import { useEffect } from 'react';
+import { analyticsLogger } from '@/utils/logger';
 
 declare global {
     interface Window {
-        va?: (...args: any[]) => void;
+        va?: (...args: unknown[]) => void;
     }
 }
 
@@ -29,7 +30,7 @@ export const analytics = {
 
         // Also log to console in development
         if (import.meta.env.DEV) {
-            console.log('[Analytics Event]', name, data);
+            analyticsLogger.debug('Event tracked', { name, data });
         }
     },
 
@@ -66,7 +67,7 @@ export const analytics = {
         });
 
         // In production, you might want to send to a service like Sentry
-        console.error('[Error Tracked]', error, context);
+        analyticsLogger.error('Error tracked', { error: error.message, context });
     },
 
     /**

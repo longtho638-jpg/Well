@@ -3,6 +3,8 @@
  * Phase 9: Events and Notifications
  */
 
+import { storeLogger } from './logger';
+
 // ============================================================================
 // LOCAL STORAGE WRAPPER
 // ============================================================================
@@ -44,7 +46,7 @@ class Storage {
         try {
             localStorage.setItem(this.getKey(key), this.serializer.stringify(value));
         } catch (error) {
-            console.error('Storage set error:', error);
+            storeLogger.error('Storage set error', error);
         }
     }
 
@@ -97,7 +99,7 @@ class SessionStorage extends Storage {
         try {
             sessionStorage.setItem(`wellnexus_session_${key}`, JSON.stringify(value));
         } catch (error) {
-            console.error('Session storage set error:', error);
+            storeLogger.error('Session storage set error', error);
         }
     }
 

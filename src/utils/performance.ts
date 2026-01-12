@@ -4,6 +4,7 @@
  */
 
 import { PerformanceMetrics, PerformanceReport, ErrorLevel } from '@/types/monitoring';
+import { perfLogger } from './logger';
 
 /**
  * Collect Core Web Vitals metrics
@@ -108,7 +109,7 @@ export function createPerformanceReport(): PerformanceReport {
 export function captureException(error: Error, context?: Record<string, unknown>): string {
     const eventId = `ERR-${Date.now().toString(36)}`;
 
-    console.error('[ErrorTracking]', eventId, error.message, context);
+    perfLogger.error(`[ErrorTracking] ${eventId}`, error.message, context);
 
     // In production, this would send to Sentry/monitoring service
     return eventId;
@@ -120,13 +121,13 @@ export function captureException(error: Error, context?: Record<string, unknown>
 export function captureMessage(message: string, level: ErrorLevel = 'info'): string {
     const eventId = `MSG-${Date.now().toString(36)}`;
 
-    const logFn = level === 'error' || level === 'fatal'
-        ? console.error
-        : level === 'warning'
-            ? console.warn
-            : console.log;
-
-    logFn('[Monitoring]', `[${level.toUpperCase()}]`, message);
+    if (level === 'error' || level === 'fatal') {
+        perfLogger.error(`[${level.toUpperCase()}] ${message}`);
+    } else if (level === 'warning') {
+        perfLogger.warn(`[${level.toUpperCase()}] ${message}`);
+    } else {
+        perfLogger.info(`[${level.toUpperCase()}] ${message}`);
+    }
 
     return eventId;
 }

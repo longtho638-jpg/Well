@@ -3,6 +3,7 @@ import { doc, onSnapshot } from 'firebase/firestore';
 import { db } from '../services/firebase';
 import { walletAPI } from '../services/api';
 import { Transaction } from '../types';
+import { walletLogger } from '../utils/logger';
 
 interface WalletData {
   balance: number;
@@ -56,7 +57,7 @@ export function useWallet(userId: string | null): WalletState & WalletActions {
         setLoading(false);
       },
       (err) => {
-        console.error('Wallet subscription error:', err);
+        walletLogger.error('Subscription error', err);
         setError(err.message);
         setLoading(false);
       }
@@ -86,7 +87,7 @@ export function useWallet(userId: string | null): WalletState & WalletActions {
       setTransactions(txs);
     } catch (e) {
       const err = e as Error;
-      console.error('Error loading transactions:', err);
+      walletLogger.error('Loading transactions failed', err);
       setError(err.message || 'Failed to load transactions');
     }
   };
@@ -136,7 +137,7 @@ export function useWallet(userId: string | null): WalletState & WalletActions {
       await refreshTransactions();
     } catch (e) {
       const err = e as Error;
-      console.error('Payout request error:', err);
+      walletLogger.error('Payout request failed', err);
       setError(err.message || 'Failed to request payout');
       throw err;
     } finally {

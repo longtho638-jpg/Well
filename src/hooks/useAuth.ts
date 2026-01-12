@@ -109,7 +109,7 @@ export function useAuth() {
         fetchRealData();
       }
     } catch (error) {
-      console.error('[useAuth] Error fetching user:', error);
+      authLogger.error('Error fetching user', error);
     }
   };
 

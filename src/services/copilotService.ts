@@ -1,5 +1,6 @@
 import { GoogleGenerativeAI } from "@google/generative-ai";
 import { ObjectionType, ObjectionTemplate } from "@/types";
+import { aiLogger } from "@/utils/logger";
 
 const genAI = new GoogleGenerativeAI(import.meta.env.VITE_GEMINI_API_KEY || 'demo-key');
 
@@ -144,7 +145,7 @@ Generate a natural, persuasive response:
       suggestion
     };
   } catch (error) {
-    console.warn("Copilot AI Error:", error);
+    aiLogger.warn('Copilot AI Error', error);
 
     // Fallback to template-based response
     const objectionType = detectObjection(userMessage);
@@ -187,7 +188,7 @@ Keep it conversational, natural, and persuasive. Use Vietnamese primarily.
     const response = await result.response;
     return response.text() || "Script đang được cập nhật...";
   } catch (error) {
-    console.warn("Script Generation Error:", error);
+    aiLogger.warn('Script Generation Error', error);
     return `
 🎯 **Kịch Bản Bán Hàng - ${productName}**
 
@@ -234,7 +235,7 @@ Keep it brief, actionable, and encouraging. Use Vietnamese.
     const response = await result.response;
     return response.text() || "Phân tích đang được cập nhật...";
   } catch (error) {
-    console.warn("Coaching Error:", error);
+    aiLogger.warn('Coaching Error', error);
     return "✅ Tốt: Bạn đã lắng nghe khách hàng\n⚠️ Cải thiện: Hỏi thêm câu hỏi mở\n🎯 Tiếp theo: Đưa ra case study cụ thể";
   }
 }

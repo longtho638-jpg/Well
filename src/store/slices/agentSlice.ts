@@ -6,6 +6,7 @@
 import { StateCreator } from 'zustand';
 import { AgentState, AgentLog, AgentKPI } from '../../types/agentic';
 import { agentRegistry } from '../../agents';
+import { agentLogger } from '../../utils/logger';
 
 // ============================================================================
 // SLICE TYPES
@@ -60,7 +61,7 @@ export const createAgentSlice: StateCreator<
 
             return output as Record<string, unknown>;
         } catch (error) {
-            console.error(`[AgentOS] Error executing ${agentName}:`, error);
+            agentLogger.error(`Error executing ${agentName}`, error);
             throw error;
         }
     },

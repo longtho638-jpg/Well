@@ -3,6 +3,8 @@
  * Phase 9: Events and Notifications
  */
 
+import { uiLogger } from './logger';
+
 type EventCallback<T = unknown> = (data: T) => void;
 type Unsubscribe = () => void;
 
@@ -70,7 +72,7 @@ class EventBus<Events extends Record<string, unknown>> {
             try {
                 callback(data);
             } catch (error) {
-                console.error(`Error in event listener for ${String(event)}:`, error);
+                uiLogger.error(`Error in event listener for ${String(event)}`, error);
             }
         });
 
@@ -81,7 +83,7 @@ class EventBus<Events extends Record<string, unknown>> {
                 try {
                     callback(data);
                 } catch (error) {
-                    console.error(`Error in once listener for ${String(event)}:`, error);
+                    uiLogger.error(`Error in once listener for ${String(event)}`, error);
                 }
             });
             this.onceListeners.delete(event);

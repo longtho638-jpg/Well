@@ -3,6 +3,8 @@
  * Phase 5: Production Hardening
  */
 
+import { analyticsLogger } from './logger';
+
 // ============================================================================
 // EVENT TYPES
 // ============================================================================
@@ -48,7 +50,7 @@ class AnalyticsService {
         this.user = user;
 
         if (!this.enabled) {
-            console.log('[Analytics] Identify:', user);
+            analyticsLogger.debug('Identify:', user);
             return;
         }
 
@@ -58,7 +60,7 @@ class AnalyticsService {
 
     track(event: AnalyticsEvent): void {
         if (!this.enabled) {
-            console.log('[Analytics] Track:', event.name, event.properties);
+            analyticsLogger.debug('Track:', event.name, event.properties);
             return;
         }
 
