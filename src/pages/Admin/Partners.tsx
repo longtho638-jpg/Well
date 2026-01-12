@@ -26,6 +26,7 @@ import { formatVND } from '@/utils/format';
 import { supabase } from '@/lib/supabase';
 import { UserRank, RANK_NAMES } from '@/types';
 import { useToast } from '@/components/ui/Toast';
+import { adminLogger } from '@/utils/logger';
 
 // ============================================================
 // TYPES
@@ -112,7 +113,7 @@ const PartnerDetailModal: React.FC<{
       onUpdate(); // Refresh list
       setIsEditing(false);
     } catch (error) {
-      console.error('Error updating partner:', error);
+      adminLogger.error('Error updating partner', error);
       showToast('Failed to update partner', 'error');
     } finally {
       setLoading(false);
@@ -310,7 +311,7 @@ const Partners: React.FC = () => {
 
       setPartners(formattedPartners);
     } catch (error) {
-      console.error('Error fetching partners:', error);
+      adminLogger.error('Error fetching partners', error);
       showToast('Failed to load partners', 'error');
     } finally {
       setLoading(false);
@@ -387,7 +388,7 @@ const Partners: React.FC = () => {
       }
       setSelectedIds(new Set());
     } catch (error) {
-      console.error('Bulk action error:', error);
+      adminLogger.error('Bulk action error', error);
       showToast('Bulk action failed', 'error');
     } finally {
       setBulkActionLoading(false);
@@ -557,8 +558,8 @@ const Partners: React.FC = () => {
                       <button
                         onClick={() => toggleSelect(partner.id)}
                         className={`w-5 h-5 rounded border flex items-center justify-center transition-all ${selectedIds.has(partner.id)
-                            ? 'bg-[#00575A] border-[#00575A]'
-                            : 'border-slate-300 hover:border-slate-400'
+                          ? 'bg-[#00575A] border-[#00575A]'
+                          : 'border-slate-300 hover:border-slate-400'
                           }`}
                       >
                         {selectedIds.has(partner.id) && (

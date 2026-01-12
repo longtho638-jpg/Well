@@ -21,6 +21,7 @@ import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContai
 import { formatVND } from '@/utils/format';
 import { useToast } from '@/components/ui/Toast';
 import { supabase, isSupabaseConfigured } from '@/lib/supabase';
+import { adminLogger } from '@/utils/logger';
 
 // ============================================================
 // TYPES & MOCK DATA
@@ -368,7 +369,7 @@ const Overview: React.FC = () => {
         systemHealth: 99.9,
       });
     } catch (error) {
-      console.error('Error fetching metrics:', error);
+      adminLogger.error('Error fetching metrics', error);
     } finally {
       setLoadingMetrics(false);
     }

@@ -8,6 +8,7 @@ import {
 import { supabase } from '@/lib/supabase';
 import { useStore } from '@/store';
 import { useToast } from '@/components/ui/Toast';
+import { adminLogger } from '@/utils/logger';
 
 interface PendingOrder {
     id: string;
@@ -62,7 +63,7 @@ const OrderManagement: React.FC = () => {
 
             setOrders(ordersWithUsers);
         } catch (error) {
-            console.error('[OrderManagement] Error:', error);
+            adminLogger.error('Error loading orders', error);
             showToast('Failed to load orders', 'error');
         } finally {
             setLoading(false);
@@ -88,7 +89,7 @@ const OrderManagement: React.FC = () => {
             // Remove from list
             setOrders(prev => prev.filter(o => o.id !== orderId));
         } catch (error) {
-            console.error('[OrderManagement] Approve error:', error);
+            adminLogger.error('Approve error', error);
             showToast('Failed to approve order', 'error');
         } finally {
             setProcessingId(null);
@@ -112,7 +113,7 @@ const OrderManagement: React.FC = () => {
             // Remove from list
             setOrders(prev => prev.filter(o => o.id !== orderId));
         } catch (error) {
-            console.error('[OrderManagement] Reject error:', error);
+            adminLogger.error('Reject error', error);
             showToast('Failed to reject order', 'error');
         } finally {
             setProcessingId(null);

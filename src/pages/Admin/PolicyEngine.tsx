@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { AlertTriangle, Save, DollarSign, Users, TrendingUp, Zap, Target, CheckCircle2 } from 'lucide-react';
 import { supabase } from '@/lib/supabase';
+import { adminLogger } from '@/utils/logger';
 
 /**
  * POLICY ENGINE v3.0 (BEE 3.0 CORE)
@@ -119,7 +120,7 @@ const PolicyEngine: React.FC = () => {
         }
       }
     } catch (error) {
-      console.error('Error fetching policy config:', error);
+      adminLogger.error('Error fetching policy config', error);
     } finally {
       setLoading(false);
     }
@@ -169,7 +170,7 @@ const PolicyEngine: React.FC = () => {
       alert('✅ Policy Configuration Saved Successfully! Changes are now live.');
     } catch (err) {
       const error = err as Error;
-      console.error('Error saving policy config:', error);
+      adminLogger.error('Error saving policy config', error);
       alert(`❌ Failed to save configuration: ${error.message}`);
     } finally {
       setSaving(false);

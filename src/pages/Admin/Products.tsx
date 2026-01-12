@@ -3,6 +3,7 @@ import { motion } from 'framer-motion';
 import { Package, Edit2, Save, X, TrendingUp, DollarSign, Info } from 'lucide-react';
 import { supabase } from '@/lib/supabase';
 import { formatVND, formatNumber } from '@/utils/format';
+import { adminLogger } from '@/utils/logger';
 
 interface Product {
     id: string;
@@ -34,7 +35,7 @@ const AdminProducts: React.FC = () => {
             .order('sales_count', { ascending: false });
 
         if (error) {
-            console.error('Failed to load products', error);
+            adminLogger.error('Failed to load products', error);
         } else {
             setProducts(data || []);
         }
@@ -61,7 +62,7 @@ const AdminProducts: React.FC = () => {
             .eq('id', editingId);
 
         if (error) {
-            console.error('Failed to update product', error);
+            adminLogger.error('Failed to update product', error);
         } else {
             setEditingId(null);
             fetchProducts();
