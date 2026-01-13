@@ -42,16 +42,23 @@ Use `/validate-and-fix` command:
 - Resolve TypeScript errors
 - Clean up imports
 
-### 6. Quality Agents
+### 6. Performance Optimization
+- Optimize React renders (memo, useMemo, useCallback)
+- Verify Database query efficiency (indexes, policies)
+
+### 7. Quality Agents
 - `@code-review-expert` for comprehensive review
 - `@vitest-testing-expert` for test coverage
 - `@typescript-expert` for type hardening
+- `@react-performance-expert` for render optimization
+- `@database-postgres-expert` for schema/query checks
 
 ## Exit Criteria
 - [ ] Feature implemented
 - [ ] Tests passing (230+)
 - [ ] No TypeScript errors
 - [ ] Code review approved
+- [ ] Performance check passed
 - [ ] Ready for `/ship` phase
 
 ## Related Commands

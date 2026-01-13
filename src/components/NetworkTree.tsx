@@ -1,16 +1,9 @@
 import { uiLogger } from '@/utils/logger';
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback, memo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
-    Users,
-    Plus,
-    Search,
-    ChevronRight,
-    ChevronDown,
     UserPlus,
-    MoreVertical,
     Award,
-    TrendingUp,
     Shield,
     Zap,
     Loader2,
@@ -39,6 +32,17 @@ interface TreeNode {
 }
 
 // ============================================================
+// UTILS
+// ============================================================
+
+// Rank Colors - Moved outside to avoid recreation
+const getRankColor = (rankId: number) => {
+    if (rankId <= 2) return 'border-purple-500 shadow-purple-500/20'; // High rank
+    if (rankId <= 5) return 'border-blue-500 shadow-blue-500/20'; // Mid rank
+    return 'border-zinc-700 shadow-zinc-500/10'; // Low rank
+};
+
+// ============================================================
 // ADD MEMBER MODAL
 // ============================================================
 
@@ -54,7 +58,7 @@ const AddMemberModal: React.FC<{
         name: '',
         email: '',
         phone: '',
-        password: '', // Force manual entry
+        password: '', 
         role_id: 8 // Default to CTV
     });
 
@@ -63,11 +67,6 @@ const AddMemberModal: React.FC<{
         setLoading(true);
 
         try {
-            // 1. Create Auth User (or just DB entry if not using Auth for this MVP flow)
-            // For this "Enter Tree" feature, we'll assume we are creating a real user account.
-            // However, creating an Auth user requires admin rights or the signUp API.
-            // We'll use the signUp API.
-
             const { data: authData, error: authError } = await supabase.auth.signUp({
                 email: formData.email,
                 password: formData.password,
@@ -81,10 +80,6 @@ const AddMemberModal: React.FC<{
             });
 
             if (authError) throw authError;
-
-            // If signUp doesn't automatically create the user record (due to triggers), we might need to.
-            // But our triggers should handle it. 
-            // Wait a moment for triggers to fire if needed.
 
             showToast(`Added ${formData.name} to the team!`, 'success');
             onSuccess();
@@ -201,23 +196,16 @@ const AddMemberModal: React.FC<{
 };
 
 // ============================================================
-// TREE NODE COMPONENT
+// TREE NODE COMPONENT (MEMOIZED)
 // ============================================================
 
 const TreeNodeComponent: React.FC<{
     node: TreeNode;
     level: number;
     onAddMember: (nodeId: string, nodeName: string) => void;
-}> = ({ node, level, onAddMember }) => {
+}> = memo(({ node, level, onAddMember }) => {
     const [expanded, setExpanded] = useState(true);
     const hasChildren = node.children && node.children.length > 0;
-
-    // Rank Colors
-    const getRankColor = (rankId: number) => {
-        if (rankId <= 2) return 'border-purple-500 shadow-purple-500/20'; // High rank
-        if (rankId <= 5) return 'border-blue-500 shadow-blue-500/20'; // Mid rank
-        return 'border-zinc-700 shadow-zinc-500/10'; // Low rank
-    };
 
     return (
         <div className="flex flex-col items-center">
@@ -309,14 +297,17 @@ const TreeNodeComponent: React.FC<{
             </AnimatePresence>
         </div>
     );
-};
+});
 
 // ============================================================
 // MAIN NETWORK TREE COMPONENT
 // ============================================================
 
 const NetworkTree: React.FC = () => {
-    const { user, fetchDownlineTree } = useStore();
+    // Optimization: Select only needed state
+    const user = useStore(state => state.user);
+    const fetchDownlineTree = useStore(state => state.fetchDownlineTree);
+    
     const [treeData, setTreeData] = useState<TreeNode | null>(null);
     const [loading, setLoading] = useState(true);
     const [addMemberModal, setAddMemberModal] = useState<{ open: boolean; sponsorId: string; sponsorName: string }>({
@@ -325,7 +316,7 @@ const NetworkTree: React.FC = () => {
         sponsorName: ''
     });
 
-    const loadTree = async () => {
+    const loadTree = useCallback(async () => {
         if (!user?.id) return;
         setLoading(true);
         try {
@@ -350,11 +341,16 @@ const NetworkTree: React.FC = () => {
         } finally {
             setLoading(false);
         }
-    };
+    }, [user?.id, user?.name, user?.roleId, user?.totalSales, user?.teamVolume, user?.avatarUrl, user?.joinedAt, fetchDownlineTree]);
 
     useEffect(() => {
         loadTree();
-    }, [user?.id]);
+    }, [loadTree]);
+
+    // Optimization: Stable callback handler
+    const handleAddMember = useCallback((id: string, name: string) => {
+        setAddMemberModal({ open: true, sponsorId: id, sponsorName: name });
+    }, []);
 
     return (
         <div className="relative min-h-[600px] overflow-x-auto bg-zinc-950 rounded-3xl border border-zinc-800 p-8">
@@ -389,7 +385,7 @@ const NetworkTree: React.FC = () => {
                     <TreeNodeComponent
                         node={treeData}
                         level={0}
-                        onAddMember={(id, name) => setAddMemberModal({ open: true, sponsorId: id, sponsorName: name })}
+                        onAddMember={handleAddMember}
                     />
                 ) : (
                     <div className="text-center text-zinc-500">No data available</div>

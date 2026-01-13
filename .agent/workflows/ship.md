@@ -1,66 +1,48 @@
 ---
-description: Ship phase - Build, deploy, and verify production
+description: Ship phase - Deployment, documentation, and final polish
 ---
 
 # /ship Workflow
 
 ## Overview
-This workflow phase focuses on building for production, deploying, and verifying the live environment.
-
-// turbo-all
+The final phase before production. Ensures code is secure, performant, and documented.
 
 ## Steps
 
-### 1. Pre-flight Cleanup
+### 1. Context Refresh
+// turbo
 ```bash
-# Clean up dev artifacts
-npm run dev:cleanup 2>/dev/null || true
+# Update AI mental model
+npx claudekit-hooks run codebase-map
 ```
 
-### 2. Build Production
+### 2. Production Build
+// turbo
 ```bash
 # Build for production
 npm run build
 ```
 
-### 3. Verify Build
-```bash
-# Check bundle size (target: <500KB)
-du -sh dist/assets/*.js | head -5
-```
+### 3. Security Audit
+- Invoke `@security-expert` to scan for secrets and vulnerabilities.
+- Check Supabase RLS policies.
 
-### 4. Run Final Tests
-```bash
-# Ensure all tests pass
-npm run test:run
-```
+### 4. Performance Check (Lighthouse)
+- Verify bundle size < 500KB (initial chunk).
+- Check Core Web Vitals readiness.
 
-### 5. Git Commit
+### 5. Deployment
+// turbo
 ```bash
-# Stage and commit
-git add .
-git status
+# Deploy to hosting
+firebase deploy --only hosting
 ```
-
-### 6. Deploy to Vercel
-```bash
-# Deploy with auto-confirm
-vercel --prod --yes
-```
-
-### 7. Verify Production
-- Check https://wellnexus.vn loads correctly
-- Verify demo login flow works
-- Test critical user journeys
 
 ## Exit Criteria
-- [ ] Build successful (<205KB bundle)
-- [ ] All 230 tests passing
-- [ ] Deployed to production
-- [ ] Live verification complete
-- [ ] ĐẤT stage maintained
+- [ ] Build successful (Exit Code 0)
+- [ ] No high-severity security issues
+- [ ] Codebase map updated
+- [ ] Deployed to Production URL
 
 ## Related Commands
-- `.claude/commands/git/*.md`
-- `.claude/commands/dev/cleanup.md`
-- `.claude/agents/devops/devops-expert.md`
+- `.claude/commands/validate-and-fix.md`

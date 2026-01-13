@@ -1,0 +1,14 @@
+{
+  "sentinel": {
+    "max_file_lines": 500,
+    "max_function_complexity": 15,
+    "banned_keywords": ["TODO", "FIXME", "console.log", "debugger", "any"],
+    "required_tests": true,
+    "enforce_strict_mode": true
+  },
+  "monitoring": {
+    "watch_paths": ["src/**/*"],
+    "ignore_paths": ["**/*.test.ts", "**/mockData.ts"],
+    "alert_level": "strict"
+  }
+}

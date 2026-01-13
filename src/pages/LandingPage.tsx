@@ -1,4 +1,5 @@
 import React from 'react';
+import { useTranslation } from '../hooks';
 import { motion } from 'framer-motion';
 import { ParticleBackground } from '@/components/ParticleBackground';
 import {
@@ -72,164 +73,167 @@ import {
 // ============================================================================
 // CONTENT ARCHITECTURE - Growth Journey Map
 // ============================================================================
-const CONTENT = {
-  hero: {
-    badge: 'Hành Trình Thịnh Vượng',
-    headline: 'Khởi Đầu Hành Trình Thịnh Vượng',
-    headlineAccent: 'Cùng WellNexus',
-    subheadline: 'Hệ sinh thái Social Commerce tiên phong tại Đông Nam Á. Từ Hạt Giống đến Đế Chế.',
-    primaryCta: 'Gia Nhập Founders Club',
-    secondaryCta: 'Tìm Hiểu Thêm',
-    currentStage: 'Hiện đang ở Giai đoạn Hạt Giống'
-  },
-
-  roadmap: {
-    sectionBadge: 'Lộ Trình Phát Triển',
-    sectionTitle: 'The Evolution Map',
-    subheadline: 'Hành trình từ Partner đến Empire Builder',
-    stages: [
-      {
-        id: 'seed',
-        name: 'HẠT GIỐNG',
-        icon: Sprout,
-        status: 'active',
-        statusLabel: 'Đang diễn ra',
-        color: 'teal',
-        gradient: 'from-teal-500 to-teal-600',
-        bgGlow: 'bg-teal-500/20',
-        textColor: 'text-teal-400',
-        borderColor: 'border-teal-500/50',
-        description: 'Tuyển 200 Founders Club, Xây dựng niềm tin',
-        mission: 'Bán lẻ & Xây dựng cộng đồng',
-        benefits: [
-          'Thu nhập chủ động từ bán hàng',
-          'Hoa hồng Founder Club',
-          'Công cụ AI cơ bản',
-          'Đào tạo & hỗ trợ 1-1'
-        ],
-        unlockCondition: null
-      },
-      {
-        id: 'tree',
-        name: 'CÂY',
-        icon: TreeDeciduous,
-        status: 'coming',
-        statusLabel: 'Sắp mở khóa',
-        color: 'green',
-        gradient: 'from-green-500 to-green-600',
-        bgGlow: 'bg-green-500/20',
-        textColor: 'text-green-400',
-        borderColor: 'border-green-500/50',
-        description: 'Tự động hóa Sales với AI',
-        mission: 'Scale team & Automation',
-        benefits: [
-          'AI Copilot nâng cao',
-          'Tự động hóa marketing',
-          'Leader Dashboard',
-          'Thu nhập thụ động từ team'
-        ],
-        unlockCondition: '1,000 Partner'
-      },
-      {
-        id: 'forest',
-        name: 'RỪNG',
-        icon: Trees,
-        status: 'locked',
-        statusLabel: 'Tương lai',
-        color: 'emerald',
-        gradient: 'from-emerald-500 to-emerald-600',
-        bgGlow: 'bg-emerald-500/20',
-        textColor: 'text-emerald-400',
-        borderColor: 'border-emerald-500/50',
-        description: 'Marketplace & Hệ sinh thái',
-        mission: 'Build ecosystem products',
-        benefits: [
-          'Health Coach Platform',
-          'Marketplace ownership',
-          'Data monetization',
-          'Equity participation'
-        ],
-        unlockCondition: '10,000 Partner'
-      },
-      {
-        id: 'empire',
-        name: 'ĐẤT',
-        icon: Building2,
-        status: 'vision',
-        statusLabel: 'Tầm nhìn 2028',
-        color: 'amber',
-        gradient: 'from-amber-500 to-yellow-500',
-        bgGlow: 'bg-amber-500/20',
-        textColor: 'text-amber-400',
-        borderColor: 'border-amber-500/50',
-        description: 'Venture Builder & IPO',
-        mission: 'Build the empire',
-        benefits: [
-          'Venture Builder platform',
-          'IPO preparation',
-          'Holdings structure',
-          'SEA expansion'
-        ],
-        unlockCondition: '100,000 Partner',
-        hasVisionLink: true
-      }
-    ]
-  },
-
-  whyNow: {
-    sectionBadge: 'Lợi Thế Tiên Phong',
-    sectionTitle: 'Tại Sao Phải Tham Gia Ngay?',
-    subheadline: 'Quyền lợi đặc biệt dành cho những người đi đầu trong giai đoạn Hạt Giống',
-    benefits: [
-      {
-        icon: Award,
-        title: 'Founders Club Bonus',
-        description: 'Hoa hồng đặc biệt và equity allocation cho 200 Partner đầu tiên',
-        highlight: 'Chỉ còn 157 slot'
-      },
-      {
-        icon: TrendingUp,
-        title: 'Tăng Trưởng Sớm',
-        description: 'Xây dựng team từ đầu, hưởng lợi từ network effect khi hệ thống scale',
-        highlight: '+320% YoY'
-      },
-      {
-        icon: Zap,
-        title: 'Công Nghệ AI Độc Quyền',
-        description: 'Truy cập sớm vào Agentic OS và AI tools chỉ dành cho Founders',
-        highlight: 'Early Access'
-      },
-      {
-        icon: Globe,
-        title: 'SEA Market First-Mover',
-        description: 'Đi đầu trong thị trường $12B, mở rộng sang 4 quốc gia SEA',
-        highlight: 'First-Mover'
-      }
-    ]
-  },
-
-  footer: {
-    logo: 'WellNexus',
-    tagline: 'Hệ sinh thái Social Commerce tiên phong tại Đông Nam Á với AI-driven technology, equity ownership, và lộ trình rõ ràng từ Hạt Giống đến Đế Chế.',
-    newsletter: {
-      title: 'Nhận Thông Tin Cập Nhật',
-      placeholder: 'Email của bạn'
-    },
-    social: {
-      facebook: 'https://facebook.com/wellnexus',
-      instagram: 'https://instagram.com/wellnexus',
-      linkedin: 'https://linkedin.com/company/wellnexus'
-    },
-    copyright: '© 2025 WellNexus. All rights reserved.'
-  }
-};
+// CONTENT object moved inside component for i18n
 
 // ============================================================================
 // MAIN COMPONENT
 // ============================================================================
 export default function LandingPage() {
+  const { t } = useTranslation();
   const navigate = useNavigate();
   const { login } = useStore();
+
+  const CONTENT = {
+    hero: {
+      badge: 'Hành Trình Thịnh Vượng',
+      headline: t('landing.hero.title'),
+      headlineAccent: 'Cùng WellNexus',
+      subheadline: t('landing.hero.subtitle'),
+      primaryCta: t('landing.hero.cta'), // Using cta.button key logically
+      secondaryCta: t('landing.hero.learnMore'),
+      currentStage: t('landing.roadmap.stages.seed.status')
+    },
+
+    roadmap: {
+      sectionBadge: t('landing.roadmap.sectionBadge'),
+      sectionTitle: t('landing.roadmap.sectionTitle'),
+      subheadline: t('landing.roadmap.subheadline'),
+      stages: [
+        {
+          id: 'seed',
+          name: t('landing.roadmap.stages.seed.name'),
+          icon: Sprout,
+          status: 'active',
+          statusLabel: t('landing.roadmap.stages.seed.status'),
+          color: 'teal',
+          gradient: 'from-teal-500 to-teal-600',
+          bgGlow: 'bg-teal-500/20',
+          textColor: 'text-teal-400',
+          borderColor: 'border-teal-500/50',
+          description: t('landing.roadmap.stages.seed.description'),
+          mission: t('landing.roadmap.stages.seed.mission'),
+          benefits: [
+            'Thu nhập chủ động từ bán hàng',
+            'Hoa hồng Founder Club',
+            'Công cụ AI cơ bản',
+            'Đào tạo & hỗ trợ 1-1'
+          ],
+          unlockCondition: null
+        },
+        {
+          id: 'tree',
+          name: t('landing.roadmap.stages.tree.name'),
+          icon: TreeDeciduous,
+          status: 'coming',
+          statusLabel: t('landing.roadmap.stages.tree.status'),
+          color: 'green',
+          gradient: 'from-green-500 to-green-600',
+          bgGlow: 'bg-green-500/20',
+          textColor: 'text-green-400',
+          borderColor: 'border-green-500/50',
+          description: t('landing.roadmap.stages.tree.description'),
+          mission: t('landing.roadmap.stages.tree.mission'),
+          benefits: [
+            'AI Copilot nâng cao',
+            'Tự động hóa marketing',
+            'Leader Dashboard',
+            'Thu nhập thụ động từ team'
+          ],
+          unlockCondition: '1,000 Partner'
+        },
+        {
+          id: 'forest',
+          name: t('landing.roadmap.stages.forest.name'),
+          icon: Trees,
+          status: 'locked',
+          statusLabel: t('landing.roadmap.stages.forest.status'),
+          color: 'emerald',
+          gradient: 'from-emerald-500 to-emerald-600',
+          bgGlow: 'bg-emerald-500/20',
+          textColor: 'text-emerald-400',
+          borderColor: 'border-emerald-500/50',
+          description: t('landing.roadmap.stages.forest.description'),
+          mission: t('landing.roadmap.stages.forest.mission'),
+          benefits: [
+            'Health Coach Platform',
+            'Marketplace ownership',
+            'Data monetization',
+            'Equity participation'
+          ],
+          unlockCondition: '10,000 Partner'
+        },
+        {
+          id: 'empire',
+          name: t('landing.roadmap.stages.empire.name'),
+          icon: Building2,
+          status: 'vision',
+          statusLabel: t('landing.roadmap.stages.empire.status'),
+          color: 'amber',
+          gradient: 'from-amber-500 to-yellow-500',
+          bgGlow: 'bg-amber-500/20',
+          textColor: 'text-amber-400',
+          borderColor: 'border-amber-500/50',
+          description: t('landing.roadmap.stages.empire.description'),
+          mission: t('landing.roadmap.stages.empire.mission'),
+          benefits: [
+            'Venture Builder platform',
+            'IPO preparation',
+            'Holdings structure',
+            'SEA expansion'
+          ],
+          unlockCondition: '100,000 Partner',
+          hasVisionLink: true
+        }
+      ]
+    },
+
+    whyNow: {
+      sectionBadge: t('landing.whyNow.sectionBadge'),
+      sectionTitle: t('landing.whyNow.sectionTitle'),
+      subheadline: t('landing.whyNow.subheadline'),
+      benefits: [
+        {
+          icon: Award,
+          title: t('landing.whyNow.benefits.founders.title'),
+          description: t('landing.whyNow.benefits.founders.description'),
+          highlight: 'Chỉ còn 157 slot'
+        },
+        {
+          icon: TrendingUp,
+          title: t('landing.whyNow.benefits.growth.title'),
+          description: t('landing.whyNow.benefits.growth.description'),
+          highlight: '+320% YoY'
+        },
+        {
+          icon: Zap,
+          title: t('landing.whyNow.benefits.tech.title'),
+          description: t('landing.whyNow.benefits.tech.description'),
+          highlight: 'Early Access'
+        },
+        {
+          icon: Globe,
+          title: t('landing.whyNow.benefits.market.title'),
+          description: t('landing.whyNow.benefits.market.description'),
+          highlight: 'First-Mover'
+        }
+      ]
+    },
+
+    footer: {
+      logo: 'WellNexus',
+      tagline: 'Hệ sinh thái Social Commerce tiên phong tại Đông Nam Á với AI-driven technology, equity ownership, và lộ trình rõ ràng từ Hạt Giống đến Đế Chế.',
+      newsletter: {
+        title: 'Nhận Thông Tin Cập Nhật',
+        placeholder: 'Email của bạn'
+      },
+      social: {
+        facebook: 'https://facebook.com/wellnexus',
+        instagram: 'https://instagram.com/wellnexus',
+        linkedin: 'https://linkedin.com/company/wellnexus'
+      },
+      copyright: '© 2025 WellNexus. All rights reserved.'
+    }
+  };
 
   const handleJoin = () => {
     navigate('/signup');

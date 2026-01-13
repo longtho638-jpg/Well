@@ -1,4 +1,5 @@
-import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
+import React, { createContext, useContext, useEffect, ReactNode } from 'react';
+import { useTranslation } from '@/hooks';
 
 type Language = 'vi' | 'en';
 
@@ -9,32 +10,23 @@ interface LanguageContextType {
 
 const LanguageContext = createContext<LanguageContextType | undefined>(undefined);
 
-const STORAGE_KEY = 'wellnexus_language';
-
 export function LanguageProvider({ children }: { children: ReactNode }) {
-    const [lang, setLangState] = useState<Language>(() => {
-        // Get from localStorage or default to 'vi'
-        if (typeof window !== 'undefined') {
-            const stored = localStorage.getItem(STORAGE_KEY);
-            if (stored === 'en' || stored === 'vi') {
-                return stored;
-            }
-        }
-        return 'vi';
-    });
+    const { i18n } = useTranslation();
 
     const setLang = (newLang: Language) => {
-        setLangState(newLang);
-        localStorage.setItem(STORAGE_KEY, newLang);
+        i18n.changeLanguage(newLang);
     };
+
+    // Ensure lang is strictly 'vi' or 'en'
+    const currentLang = (i18n.language === 'en' || i18n.language?.startsWith('en')) ? 'en' : 'vi';
 
     useEffect(() => {
         // Update document lang attribute
-        document.documentElement.lang = lang;
-    }, [lang]);
+        document.documentElement.lang = currentLang;
+    }, [currentLang]);
 
     return (
-        <LanguageContext.Provider value={{ lang, setLang }}>
+        <LanguageContext.Provider value={{ lang: currentLang, setLang }}>
             {children}
         </LanguageContext.Provider>
     );

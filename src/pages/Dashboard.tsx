@@ -3,7 +3,7 @@
  * Enterprise-grade state visualization with high-fidelity telemetry and Wealth OS components.
  */
 
-import React from 'react';
+import React, { useMemo } from 'react';
 import { motion } from 'framer-motion';
 import { Zap } from 'lucide-react';
 
@@ -42,6 +42,16 @@ export const Dashboard: React.FC = () => {
     achievements,
     t
   } = useDashboard();
+
+  // Optimization: Memoize stats array to prevent re-creation
+  const kpiStats = useMemo(() => [
+    { label: 'Total Node Yield', val: walletStats.total, icon: Wallet, color: 'cyan' as AuraBadgeColor, growth: '+12.5%' },
+    { label: 'Liquid Capital', val: walletStats.available, icon: DollarSign, color: 'violet' as AuraBadgeColor, growth: '+8.2%' },
+    { label: 'Ecosystem Volume', val: walletStats.teamVolume, icon: Users, color: 'pink' as AuraBadgeColor, growth: '+22.1%' }
+  ], [walletStats]);
+
+  // Optimization: Memoize server time string
+  const serverTime = useMemo(() => new Date().toLocaleTimeString('vi-VN', { hour: '2-digit', minute: '2-digit' }), []);
 
   return (
     <div className="min-h-screen bg-zinc-950 relative overflow-hidden transition-colors duration-500 pb-20">
@@ -83,7 +93,7 @@ export const Dashboard: React.FC = () => {
                 {t('dashboard.serverTime')}
               </p>
               <p className="text-xl font-black text-zinc-300 font-mono tracking-tighter">
-                {new Date().toLocaleTimeString('vi-VN', { hour: '2-digit', minute: '2-digit' })}
+                {serverTime}
               </p>
             </div>
           </div>
@@ -105,11 +115,7 @@ export const Dashboard: React.FC = () => {
 
         {/* Strategic KPI Matrix */}
         <BentoGrid>
-          {[
-            { label: 'Total Node Yield', val: walletStats.total, icon: Wallet, color: 'cyan' as AuraBadgeColor, growth: '+12.5%' },
-            { label: 'Liquid Capital', val: walletStats.available, icon: DollarSign, color: 'violet' as AuraBadgeColor, growth: '+8.2%' },
-            { label: 'Ecosystem Volume', val: walletStats.teamVolume, icon: Users, color: 'pink' as AuraBadgeColor, growth: '+22.1%' }
-          ].map((stat, idx) => (
+          {kpiStats.map((stat, idx) => (
             <BentoCard key={idx} colSpan={1} className="p-8 bg-zinc-900 shadow-2xl group">
               <div className="flex items-start justify-between mb-6">
                 <div className={`w-12 h-12 rounded-2xl bg-${stat.color}-500/10 flex items-center justify-center border border-${stat.color}-500/20 shadow-xl group-hover:scale-110 transition-transform`}>

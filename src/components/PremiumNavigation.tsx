@@ -95,11 +95,61 @@ const getNavItems = (isAuth: boolean): NavItem[] => [
 // PREMIUM HEADER - MAX LEVEL 2026
 // ============================================================================
 
+import { useTranslation } from '../hooks';
+
 export function PremiumHeader() {
+    const { t } = useTranslation();
     const navigate = useNavigate();
     const location = useLocation();
     const { user, logout, isAuthenticated } = useStore();
-    const NAV_ITEMS = getNavItems(isAuthenticated);
+    
+    // Dynamic navigation based on auth state
+    const NAV_ITEMS: NavItem[] = [
+        {
+            label: t('nav.products'),
+            children: [
+                {
+                    label: t('nav.marketplace'),
+                    href: isAuthenticated ? '/dashboard/marketplace' : '/login?redirect=/dashboard/marketplace',
+                    icon: <ShoppingBag className="w-5 h-5" />,
+                    description: t('marketplace.subtitle'),
+                    badge: 'Hot',
+                    badgeColor: 'from-rose-500 to-orange-500'
+                },
+                {
+                    label: t('nav.healthCoach'),
+                    href: isAuthenticated ? '/dashboard/health-coach' : '/login?redirect=/dashboard/health-coach',
+                    icon: <Sparkles className="w-5 h-5" />,
+                    description: t('healthCoach.subtitle'),
+                    badge: 'New',
+                    badgeColor: 'from-cyan-500 to-blue-500'
+                },
+            ]
+        },
+        {
+            label: t('nav.partner'),
+            children: [
+                {
+                    label: 'Venture Program', // Keep as is or add translation
+                    href: '/venture',
+                    icon: <Gem className="w-5 h-5" />,
+                    description: 'Gia nhập đội ngũ 200+ Co-Founders', // Can translate later
+                    badge: '🔥',
+                },
+                {
+                    label: t('team.leaderDashboard'),
+                    href: isAuthenticated ? '/dashboard/team' : '/login?redirect=/dashboard/team',
+                    icon: <Crown className="w-5 h-5" />,
+                    description: t('team.subtitle'),
+                },
+            ]
+        },
+        {
+            label: t('nav.marketplace'),
+            href: isAuthenticated ? '/dashboard/marketplace' : '/login?redirect=/dashboard/marketplace',
+            highlight: true
+        },
+    ];
 
     const [scrolled, setScrolled] = useState(false);
     const [mobileOpen, setMobileOpen] = useState(false);
@@ -293,7 +343,7 @@ export function PremiumHeader() {
                                         className="hidden sm:flex items-center gap-2 px-4 py-2 text-sm font-medium text-zinc-400 hover:text-white transition-colors rounded-xl hover:bg-zinc-800/50"
                                     >
                                         <LayoutDashboard className="w-4 h-4" />
-                                        Dashboard
+                                        {t('nav.dashboard')}
                                     </Link>
                                     <div className="flex items-center gap-2">
                                         <motion.div
@@ -321,7 +371,7 @@ export function PremiumHeader() {
                                             whileTap={{ scale: 0.98 }}
                                         >
                                             <LogOut className="w-4 h-4" />
-                                            <span className="hidden sm:inline">Đăng Xuất</span>
+                                            <span className="hidden sm:inline">{t('nav.logout')}</span>
                                         </motion.button>
                                     </div>
                                 </>
@@ -332,7 +382,7 @@ export function PremiumHeader() {
                                         className="hidden sm:flex items-center gap-2 px-4 py-2 text-sm font-medium text-zinc-400 hover:text-white transition-colors rounded-xl hover:bg-zinc-800/50"
                                     >
                                         <LogIn className="w-4 h-4" />
-                                        Đăng Nhập
+                                        {t('auth.login.loginButton')}
                                     </Link>
                                     <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}>
                                         <Link
@@ -342,7 +392,7 @@ export function PremiumHeader() {
                                             {/* Shine effect */}
                                             <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-700" />
                                             <Zap className="w-4 h-4" />
-                                            Bắt Đầu Ngay
+                                            {t('landing.hero.cta')}
                                         </Link>
                                     </motion.div>
                                 </>

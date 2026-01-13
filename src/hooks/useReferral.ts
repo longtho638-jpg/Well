@@ -1,14 +1,9 @@
-/**
- * WellNexus Referral Engine Hook
- * Orchestrates social sharing, network telemetry, and recursive growth state.
- * Refactored to use real Supabase data.
- */
-
-import { useState, useCallback, useMemo, useEffect } from 'react';
+import { useState, useMemo, useEffect } from 'react';
 import { useStore } from '@/store';
 import { Referral, ReferralStats } from '@/types';
 import { supabase } from '@/lib/supabase';
 import { uiLogger } from '@/utils/logger';
+import { useSocialShare } from './useSocialShare';
 
 export const useReferral = () => {
     const { user } = useStore();
@@ -23,19 +18,55 @@ export const useReferral = () => {
         [user.referralLink, user.id]
     );
 
-    const qrCodeUrl = useMemo(() =>
-        `https://api.qrserver.com/v1/create-qr-code/?size=400x400&data=${encodeURIComponent(referralUrl)}&margin=20&qzone=2&color=00575A`,
-        [referralUrl]
-    );
+    // Use extracted hook
+    const { 
+        copyToClipboard, 
+        shareViaZalo, 
+        shareViaFacebook, 
+        shareViaTelegram, 
+        shareViaEmail, 
+        generateQRCodeUrl 
+    } = useSocialShare(referralUrl);
 
-    // Fetch Real Referrals from Supabase
+    const qrCodeUrl = useMemo(() => generateQRCodeUrl(), [referralUrl]);
+
+    // Fetch Real Referrals from Supabase (Optimized F1-F7 Tree)
     useEffect(() => {
         if (!user.id) return;
 
         const fetchReferrals = async () => {
             setLoading(true);
             try {
-                // Fetch F1s (Direct Referrals)
+                // Try fetching full tree via Recursive RPC (F1-F7)
+                const { data: treeData, error: rpcError } = await supabase
+                    .rpc('get_downline_tree', { root_user_id: user.id });
+
+                if (!rpcError && treeData) {
+                    // Map RPC data
+                    const mappedReferrals: Referral[] = treeData.map((u: any) => ({
+                        id: u.id,
+                        referrerId: u.sponsor_id || user.id, // Best guess if RPC doesn't return parent
+                        referredUserId: u.id,
+                        referredName: u.name,
+                        referredEmail: u.email,
+                        rank: u.rank || 'Member',
+                        createdAt: u.created_at,
+                        status: 'active', // Default for now, or fetch from RPC if added
+                        avatar: u.avatar_url,
+                        level: u.level, // Real level from RPC
+                        totalRevenue: u.total_sales || 0,
+                        referralBonus: 0,
+                    } as unknown as Referral));
+
+                    setReferrals(mappedReferrals);
+                    return; // Success, exit
+                }
+
+                // Fallback: Fetch only F1s (Direct Referrals) if RPC fails/missing
+                if (rpcError) {
+                    uiLogger.warn('RPC get_downline_tree failed, falling back to simple F1 fetch', rpcError);
+                }
+
                 const { data: f1Data, error } = await supabase
                     .from('users')
                     .select('*')
@@ -95,44 +126,25 @@ export const useReferral = () => {
         };
     }, [referrals, user.referralLink]);
 
-    const copyReferralLink = useCallback(() => {
-        navigator.clipboard.writeText(referralUrl);
+    // Wrappers for actions to maintain API compatibility
+    const handleCopy = () => {
+        copyToClipboard();
         setCopiedLink(true);
         setTimeout(() => setCopiedLink(false), 2000);
-    }, [referralUrl]);
+    };
 
-    const shareViaZalo = useCallback(() => {
-        const text = encodeURIComponent(
-            `🌟 Tham gia WellNexus cùng tôi! Nền tảng chăm sóc sức khỏe và kinh doanh thông minh.\n\n👉 ${referralUrl}\n\nĐăng ký ngay để nhận ưu đãi đặc biệt!`
-        );
-        window.open(`https://zalo.me/share?url=${encodeURIComponent(referralUrl)}&text=${text}`, '_blank');
-    }, [referralUrl]);
+    const handleShareZalo = () => shareViaZalo(`🌟 Tham gia WellNexus cùng tôi!`);
+    const handleShareTelegram = () => shareViaTelegram(`Tham gia WellNexus cùng tôi!`);
+    const handleShareEmail = () => shareViaEmail('Join WellNexus', 'I thought you would love this!');
 
-    const shareViaFacebook = useCallback(() => {
-        window.open(`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(referralUrl)}`, '_blank');
-    }, [referralUrl]);
-
-    const shareViaTelegram = useCallback(() => {
-        const text = encodeURIComponent(`Tham gia WellNexus cùng tôi! ${referralUrl}`);
-        window.open(`https://t.me/share/url?url=${encodeURIComponent(referralUrl)}&text=${text}`, '_blank');
-    }, [referralUrl]);
-
-    const shareViaEmail = useCallback(() => {
-        const subject = encodeURIComponent('Join WellNexus - Transform Your Health & Income!');
-        const body = encodeURIComponent(
-            `Hi! I've been using WellNexus and thought you'd love it too.\n\nJoin me here: ${referralUrl}\n\nLet's grow together!`
-        );
-        window.location.href = `mailto:?subject=${subject}&body=${body}`;
-    }, [referralUrl]);
-
-    const downloadQRCode = useCallback(() => {
+    const downloadQRCode = () => {
         const link = document.createElement('a');
         link.href = qrCodeUrl;
         link.download = 'wellnexus-referral-qr.png';
         document.body.appendChild(link);
         link.click();
         document.body.removeChild(link);
-    }, [qrCodeUrl]);
+    };
 
     // Derived Lists
     const f1Referrals = useMemo(() => referrals.filter(r => r.level === 1), [referrals]);
@@ -155,11 +167,11 @@ export const useReferral = () => {
         loading,
 
         // Actions
-        copyReferralLink,
-        shareViaZalo,
+        copyReferralLink: handleCopy,
+        shareViaZalo: handleShareZalo,
         shareViaFacebook,
-        shareViaTelegram,
-        shareViaEmail,
+        shareViaTelegram: handleShareTelegram,
+        shareViaEmail: handleShareEmail,
         downloadQRCode
     };
 };

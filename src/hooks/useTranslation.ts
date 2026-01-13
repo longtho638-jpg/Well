@@ -1,18 +1,10 @@
+import { useTranslation as useI18nTranslation } from 'react-i18next';
 import { vi, type TranslationKeys } from '@/locales/vi';
-import { en } from '@/locales/en';
-import { useLanguage } from '@/context/LanguageContext';
-import { uiLogger } from '@/utils/logger';
+import i18next from 'i18next';
 
 /**
- * Multi-language i18n hook for WellNexus
- * Supports Vietnamese (vi) and English (en) with localStorage persistence
- *
- * @example
- * const { t, lang, setLang } = useTranslation();
- * t('dashboard.welcome', { name: 'John' })
- * setLang('en') // Switch to English
+ * Multi-language i18n types for WellNexus
  */
-
 type NestedKeyOf<ObjectType extends object> = {
   [Key in keyof ObjectType & (string | number)]: ObjectType[Key] extends object
   ? `${Key}` | `${Key}.${NestedKeyOf<ObjectType[Key]>}`
@@ -21,66 +13,36 @@ type NestedKeyOf<ObjectType extends object> = {
 
 export type TranslationKey = NestedKeyOf<TranslationKeys>;
 
-type Variables = Record<string, string | number>;
-
-const locales = { vi, en };
-
 /**
- * Get nested value from object using dot notation
- */
-function getNestedValue(obj: Record<string, unknown>, path: string): string {
-  const keys = path.split('.');
-  let result: unknown = obj;
-
-  for (const key of keys) {
-    if (result && typeof result === 'object' && key in result) {
-      result = (result as Record<string, unknown>)[key];
-    } else {
-      uiLogger.warn(`Translation key not found: ${path}`);
-      return path; // Return key as fallback
-    }
-  }
-
-  return typeof result === 'string' ? result : path;
-}
-
-/**
- * Replace variables in translation string
- */
-function interpolate(text: string, variables?: Variables): string {
-  if (!variables) return text;
-
-  return text.replace(/\{(\w+)\}/g, (match, key) => {
-    const value = variables[key];
-    return value !== undefined ? String(value) : match;
-  });
-}
-
-/**
- * Translation hook with language switching
+ * Enterprise Translation Hook (i18next Wrapper)
+ * Provides a standard interface for translations across the platform.
  */
 export function useTranslation() {
-  const { lang, setLang } = useLanguage();
-  const translations = locales[lang];
+  const { t, i18n } = useI18nTranslation();
 
-  const t = (key: TranslationKey, variables?: Variables): string => {
-    const translation = getNestedValue(translations, key);
-    return interpolate(translation, variables);
+  // Normalize language code
+  const lang = (i18n.language === 'en' || i18n.language?.startsWith('en')) ? 'en' : 'vi';
+
+  const setLang = (newLang: string) => {
+    i18n.changeLanguage(newLang);
   };
 
-  return { t, lang, setLang };
+  // Explicitly cast t to a simple function signature to bypass strict i18next type checks
+  const simpleT = (key: string, options?: any): string => {
+    return t(key, options) as string;
+  };
+
+  return { t: simpleT, lang, setLang, i18n };
 }
 
 /**
- * Standalone translate function (uses default vi)
+ * Legacy standalone translate function
  */
-export function translate(key: TranslationKey, variables?: Variables): string {
-  const translation = getNestedValue(vi, key);
-  return interpolate(translation, variables);
+export function translate(key: string, variables?: Record<string, any>): string {
+  return i18next.t(key, variables) as string;
 }
 
 /**
- * Type-safe translation object for direct access
+ * Legacy translations object access
  */
 export const translations = vi;
-

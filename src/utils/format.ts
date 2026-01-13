@@ -1,16 +1,23 @@
+// Reusable formatters (Singleton pattern for performance)
+const vndFormatter = new Intl.NumberFormat('vi-VN', {
+  style: 'currency',
+  currency: 'VND',
+  maximumFractionDigits: 0,
+});
+
+const compactFormatter = new Intl.NumberFormat('en-US', {
+  notation: "compact",
+  maximumFractionDigits: 1
+});
+
+const numberFormatter = new Intl.NumberFormat('vi-VN');
+
 export const formatVND = (amount: number): string => {
-  return new Intl.NumberFormat('vi-VN', {
-    style: 'currency',
-    currency: 'VND',
-    maximumFractionDigits: 0,
-  }).format(amount).replace('₫', 'đ');
+  return vndFormatter.format(amount).replace('₫', 'đ');
 };
 
 export const formatCompact = (amount: number): string => {
-  return new Intl.NumberFormat('en-US', {
-    notation: "compact",
-    maximumFractionDigits: 1
-  }).format(amount);
+  return compactFormatter.format(amount);
 };
 
 export const formatPercent = (value: number): string => {
@@ -19,5 +26,5 @@ export const formatPercent = (value: number): string => {
 };
 
 export const formatNumber = (num: number): string => {
-  return new Intl.NumberFormat('vi-VN').format(num);
+  return numberFormatter.format(num);
 };

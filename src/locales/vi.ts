@@ -33,6 +33,8 @@ export const vi = {
   // Navigation
   nav: {
     dashboard: 'Trang chủ',
+    products: 'Sản Phẩm',
+    partner: 'Partner',
     marketplace: 'Cửa hàng',
     wallet: 'Ví tiền',
     team: 'Đội nhóm',
@@ -1092,6 +1094,60 @@ export const vi = {
       title: 'Sẵn sàng bắt đầu?',
       subtitle: 'Tham gia WellNexus hôm nay và xây dựng thu nhập thụ động',
       button: 'Đăng ký miễn phí',
+    },
+    roadmap: {
+      sectionBadge: 'Lộ Trình Phát Triển',
+      sectionTitle: 'The Evolution Map',
+      subheadline: 'Hành trình từ Partner đến Empire Builder',
+      stages: {
+        seed: {
+          name: 'HẠT GIỐNG',
+          description: 'Tuyển 200 Founders Club, Xây dựng niềm tin',
+          mission: 'Bán lẻ & Xây dựng cộng đồng',
+          status: 'Đang diễn ra'
+        },
+        tree: {
+          name: 'CÂY',
+          description: 'Tự động hóa Sales với AI',
+          mission: 'Scale team & Automation',
+          status: 'Sắp mở khóa'
+        },
+        forest: {
+          name: 'RỪNG',
+          description: 'Marketplace & Hệ sinh thái',
+          mission: 'Build ecosystem products',
+          status: 'Tương lai'
+        },
+        empire: {
+          name: 'ĐẤT',
+          description: 'Venture Builder & IPO',
+          mission: 'Build the empire',
+          status: 'Tầm nhìn 2028'
+        }
+      }
+    },
+    whyNow: {
+      sectionBadge: 'Lợi Thế Tiên Phong',
+      sectionTitle: 'Tại Sao Phải Tham Gia Ngay?',
+      subheadline: 'Quyền lợi đặc biệt dành cho những người đi đầu trong giai đoạn Hạt Giống',
+      benefits: {
+        founders: {
+          title: 'Founders Club Bonus',
+          description: 'Hoa hồng đặc biệt và equity allocation cho 200 Partner đầu tiên'
+        },
+        growth: {
+          title: 'Tăng Trưởng Sớm',
+          description: 'Xây dựng team từ đầu, hưởng lợi từ network effect khi hệ thống scale'
+        },
+        tech: {
+          title: 'Công Nghệ AI Độc Quyền',
+          description: 'Truy cập sớm vào Agentic OS và AI tools chỉ dành cho Founders'
+        },
+        market: {
+          title: 'SEA Market First-Mover',
+          description: 'Đi đầu trong thị trường $12B, mở rộng sang 4 quốc gia SEA'
+        }
+      }
     }
   },
 

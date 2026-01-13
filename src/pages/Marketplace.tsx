@@ -70,7 +70,7 @@ export const Marketplace: React.FC = () => {
               }`}
           >
             <ShoppingCart size={20} />
-            Marketplace
+            {t('nav.marketplace')}
           </button>
 
           <button
@@ -81,7 +81,7 @@ export const Marketplace: React.FC = () => {
               }`}
           >
             <Award size={20} />
-            GROW Rewards
+            {t('wallet.staking.rewards')}
           </button>
         </div>
       </div>
@@ -142,7 +142,7 @@ export const Marketplace: React.FC = () => {
 
                 {products.length === 0 && (
                   <div className="py-40 text-center">
-                    <h3 className="text-3xl font-black text-zinc-300 dark:text-zinc-800 uppercase tracking-[0.5em]">No results found</h3>
+                    <h3 className="text-3xl font-black text-zinc-300 dark:text-zinc-800 uppercase tracking-[0.5em]">{t('marketplace.noProductsFound')}</h3>
                   </div>
                 )}
               </div>
@@ -160,7 +160,7 @@ export const Marketplace: React.FC = () => {
                 onRedeem={async (id) => {
                   try {
                     await redeemItem(id);
-                    alert('Đổi thưởng thành công!');
+                    alert(t('success.purchaseSuccess'));
                   } catch (e) {
                     const err = e as Error;
                     alert(err.message);

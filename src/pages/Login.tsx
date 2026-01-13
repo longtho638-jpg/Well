@@ -13,8 +13,10 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { Mail, Lock, ArrowRight, Loader2, AlertCircle, Eye, EyeOff, CheckCircle } from 'lucide-react';
 import { GridPattern } from '../components/ui/Aura';
 import { useLogin } from '../hooks/useLogin';
+import { useTranslation } from '../hooks';
 
 export default function Login() {
+    const { t } = useTranslation();
     const {
         email,
         setEmail,
@@ -55,8 +57,8 @@ export default function Login() {
                             W
                         </motion.div>
                     </Link>
-                    <h1 className="text-3xl font-display font-bold text-white mb-2 tracking-tight">Chào mừng trở lại</h1>
-                    <p className="text-slate-400">Hệ điều hành thịnh vượng (Founder OS 3.0)</p>
+                    <h1 className="text-3xl font-display font-bold text-white mb-2 tracking-tight">{t('auth.login.title')}</h1>
+                    <p className="text-slate-400">{t('auth.login.subtitle')}</p>
                 </div>
 
                 <div className="bg-slate-900/40 backdrop-blur-2xl border border-slate-800/60 rounded-3xl p-8 shadow-2xl relative overflow-hidden">
@@ -76,8 +78,8 @@ export default function Login() {
                                 >
                                     <CheckCircle className="w-8 h-8 text-white" />
                                 </motion.div>
-                                <p className="text-xl font-bold">Xác thực thành công!</p>
-                                <p className="text-slate-400 text-sm mt-1">Đang chuyển hướng...</p>
+                                <p className="text-xl font-bold">{t('common.success')}</p>
+                                <p className="text-slate-400 text-sm mt-1">{t('common.loading')}</p>
                             </motion.div>
                         )}
                     </AnimatePresence>
@@ -96,7 +98,7 @@ export default function Login() {
                     <form onSubmit={handleSubmit} className="space-y-6">
                         <div className="space-y-2">
                             <label className="text-sm font-semibold text-slate-300 ml-1">
-                                Email
+                                {t('auth.login.email')}
                             </label>
                             <div className="relative group">
                                 <Mail className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-500 group-focus-within:text-teal-400 transition-colors" />
@@ -114,10 +116,10 @@ export default function Login() {
                         <div className="space-y-2">
                             <div className="flex items-center justify-between ml-1">
                                 <label className="text-sm font-semibold text-slate-300">
-                                    Mật khẩu
+                                    {t('auth.login.password')}
                                 </label>
                                 <Link to="/forgot-password" title="Chưa hỗ trợ" className="text-xs text-teal-400 hover:text-teal-300 transition-colors">
-                                    Quên mật khẩu?
+                                    {t('auth.login.forgotPassword')}
                                 </Link>
                             </div>
                             <div className="relative group">
@@ -151,7 +153,7 @@ export default function Login() {
                             >
                                 {rememberMe && <CheckCircle className="w-3.5 h-3.5 text-white" />}
                             </button>
-                            <span className="text-xs text-slate-400">Ghi nhớ đăng nhập trên thiết bị này</span>
+                            <span className="text-xs text-slate-400">{t('auth.login.rememberMe')}</span>
                         </div>
 
                         <div className="space-y-3 pt-2">
@@ -163,11 +165,11 @@ export default function Login() {
                                 {loading ? (
                                     <>
                                         <Loader2 className="w-5 h-5 animate-spin" />
-                                        Đang xác thực...
+                                        {t('common.loading')}
                                     </>
                                 ) : (
                                     <>
-                                        Đăng Nhập
+                                        {t('auth.login.loginButton')}
                                         <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
                                     </>
                                 )}
@@ -179,16 +181,16 @@ export default function Login() {
                                 disabled={loading || success}
                                 className="w-full bg-slate-900/40 hover:bg-slate-800/60 border border-teal-500/20 text-teal-400 font-semibold py-3.5 rounded-2xl flex items-center justify-center gap-2 transition-all disabled:opacity-50"
                             >
-                                🚀 Trải nghiệm Demo
+                                🚀 Demo
                             </button>
                         </div>
                     </form>
                 </div>
 
                 <p className="mt-8 text-center text-slate-500 text-sm">
-                    Người mới?{' '}
+                    {t('auth.login.noAccount')}{' '}
                     <Link to="/signup" className="text-teal-400 font-bold hover:text-teal-300 transition-colors">
-                        Đăng ký Founders Club
+                        {t('auth.login.signUp')}
                     </Link>
                 </p>
             </motion.div>

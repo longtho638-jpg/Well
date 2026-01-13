@@ -33,6 +33,8 @@ export const en = {
     // Navigation
     nav: {
         dashboard: 'Dashboard',
+        products: 'Products',
+        partner: 'Partner',
         marketplace: 'Marketplace',
         wallet: 'Wallet',
         team: 'Team',
@@ -1012,6 +1014,60 @@ export const en = {
             title: 'Ready to Start?',
             subtitle: 'Join WellNexus today and build passive income',
             button: 'Sign Up Free',
+        },
+        roadmap: {
+            sectionBadge: 'Development Roadmap',
+            sectionTitle: 'The Evolution Map',
+            subheadline: 'Journey from Partner to Empire Builder',
+            stages: {
+                seed: {
+                    name: 'SEED',
+                    description: 'Recruiting 200 Founders Club, Building Trust',
+                    mission: 'Retail & Community Building',
+                    status: 'Active'
+                },
+                tree: {
+                    name: 'TREE',
+                    description: 'Sales Automation with AI',
+                    mission: 'Scale team & Automation',
+                    status: 'Unlock Soon'
+                },
+                forest: {
+                    name: 'FOREST',
+                    description: 'Marketplace & Ecosystem',
+                    mission: 'Build ecosystem products',
+                    status: 'Future'
+                },
+                empire: {
+                    name: 'LAND',
+                    description: 'Venture Builder & IPO',
+                    mission: 'Build the empire',
+                    status: 'Vision 2028'
+                }
+            }
+        },
+        whyNow: {
+            sectionBadge: 'First Mover Advantage',
+            sectionTitle: 'Why Join Now?',
+            subheadline: 'Special benefits for early adopters in the Seed stage',
+            benefits: {
+                founders: {
+                    title: 'Founders Club Bonus',
+                    description: 'Special commission and equity allocation for first 200 Partners'
+                },
+                growth: {
+                    title: 'Early Growth',
+                    description: 'Build team from scratch, benefit from network effect when system scales'
+                },
+                tech: {
+                    title: 'Exclusive AI Tech',
+                    description: 'Early access to Agentic OS and AI tools only for Founders'
+                },
+                market: {
+                    title: 'SEA Market First-Mover',
+                    description: 'Lead the $12B market, expanding to 4 SEA countries'
+                }
+            }
         }
     },
 

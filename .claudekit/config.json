@@ -5,8 +5,8 @@
     },
     "codebase-map": {
       "format": "dsl",
-      "include": ["cli/**"],
-      "exclude": ["**/*.test.ts", "**/*.test.js", "**/node_modules", "**/__mocks__/**", "cli/examples/**", "cli/lib/**", "cli/utils/**"]
+      "include": ["src/**", "functions/**", "supabase/**"],
+      "exclude": ["**/*.test.ts", "**/*.test.js", "**/node_modules", "**/__mocks__/**", "**/dist/**", "**/build/**", "**/coverage/**"]
     }
   }
 }

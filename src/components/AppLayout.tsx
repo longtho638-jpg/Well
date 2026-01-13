@@ -5,12 +5,14 @@ import { Sidebar } from './Sidebar';
 import { ThemeToggle } from './ui/ThemeToggle';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useStore } from '../store';
+import { useTranslation } from '../hooks';
 
 /**
  * AppLayout - Master wrapper for all Dashboard/Protected pages
  * Updated with Premium UI/UX, Animations, and Responsive Design (Phase 6)
  */
 export const AppLayout: React.FC = () => {
+  const { t } = useTranslation();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const { user } = useStore();
   const location = useLocation();
@@ -85,7 +87,7 @@ export const AppLayout: React.FC = () => {
               <Search className="absolute left-3 w-4 h-4 text-gray-400 group-focus-within:text-primary transition-colors" />
               <input
                 type="text"
-                placeholder="Tìm kiếm nhanh..."
+                placeholder={t('common.search')}
                 className="pl-10 pr-4 py-2 bg-gray-100 dark:bg-slate-700 border-transparent focus:bg-white dark:focus:bg-slate-600 focus:ring-2 focus:ring-primary/20 focus:border-primary rounded-xl text-sm transition-all w-64"
               />
             </div>

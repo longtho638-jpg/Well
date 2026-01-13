@@ -3,11 +3,14 @@ import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { Sparkles } from 'lucide-react';
 import { GridPattern } from '../components/ui/Aura';
+import { useTranslation } from '../hooks';
 
 // Components
 import { SignupForm } from '@/components/auth/SignupForm';
 
 export default function Signup() {
+    const { t } = useTranslation();
+
     return (
         <div className="min-h-screen bg-slate-950 flex items-center justify-center p-6 relative overflow-hidden">
             <GridPattern className="opacity-20" />
@@ -38,16 +41,16 @@ export default function Signup() {
                         <span className="text-[10px] font-black text-teal-300 uppercase tracking-[0.2em]">Early Access 2.0</span>
                     </motion.div>
 
-                    <h1 className="text-4xl font-black text-white mb-3 tracking-tighter uppercase italic">Gia Nhập Founders Club</h1>
-                    <p className="text-slate-400 font-medium italic">Trở thành một trong những người tiên phong xây dựng đế chế</p>
+                    <h1 className="text-4xl font-black text-white mb-3 tracking-tighter uppercase italic">{t('auth.register.title')}</h1>
+                    <p className="text-slate-400 font-medium italic">{t('auth.register.subtitle')}</p>
                 </div>
 
                 <SignupForm />
 
                 <p className="mt-10 text-center text-slate-400 font-medium">
-                    Đã có tài khoản?{' '}
+                    {t('auth.register.haveAccount')}{' '}
                     <Link to="/login" className="text-teal-400 font-black hover:text-teal-300 transition-all underline underline-offset-8 decoration-teal-500/30 hover:decoration-teal-500 uppercase italic text-xs tracking-widest">
-                        Đăng nhập hệ thống
+                        {t('auth.register.login')}
                     </Link>
                 </p>
             </motion.div>
