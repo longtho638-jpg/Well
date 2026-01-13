@@ -181,12 +181,13 @@ export function getContrastColor(hex: string): string {
 
 // ============================================================================
 // WELLNEXUS BRAND COLORS
+// ALIGNED WITH: tailwind.config.js (source of truth)
 // ============================================================================
 
 export const brandColors = {
-    primary: '#10B981', // Emerald
+    primary: '#00575A', // Deep Teal (matches tailwind brand.primary)
+    accent: '#FFBF00',  // Marigold (matches tailwind brand.accent)
     secondary: '#6366F1', // Indigo
-    accent: '#F59E0B', // Amber
     success: '#22C55E',
     warning: '#EAB308',
     error: '#EF4444',

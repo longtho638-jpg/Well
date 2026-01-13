@@ -12,39 +12,44 @@
 
 :root {
   /* 
-   * MAX LEVEL WOW - ZINC/EMERALD PALETTE 
-   * Base: Zinc 950 (#09090b)
-   * Panel: Zinc 900 (#18181b)
-   * Border: Zinc 800 (#27272a)
-   * Accents: Emerald 500 (#10b981) -> Cyan 500 (#06b6d4)
+   * UNIFIED DESIGN TOKENS
+   * Source of Truth: tailwind.config.js
+   * Base: Dark background (#0F172A)
+   * Accents: Deep Teal (#00575A) + Marigold (#FFBF00)
    */
 
-  /* Backgrounds */
-  --bg-void: #09090b;
-  /* Zinc 950 - Deepest */
-  --bg-panel: #18181b;
-  /* Zinc 900 - Panels */
-  --bg-surface: #27272a;
-  /* Zinc 800 - Cards/Hover */
-  --bg-elevated: #3f3f46;
-  /* Zinc 700 - Popovers */
+  /* Backgrounds - ALIGNED WITH TAILWIND */
+  --bg-void: #0F172A;
+  /* Dark bg from tailwind.config.js */
+  --bg-panel: #1E293B;
+  /* Dark surface from tailwind.config.js */
+  --bg-surface: #334155;
+  /* Dark border from tailwind.config.js */
+  --bg-elevated: #475569;
+  /* Slate 600 */
 
-  /* Text */
-  --text-primary: #f4f4f5;
-  /* Zinc 100 */
-  --text-secondary: #a1a1aa;
-  /* Zinc 400 */
-  --text-muted: #71717a;
-  /* Zinc 500 */
+  /* Text - ALIGNED WITH TAILWIND */
+  --text-primary: #F1F5F9;
+  /* Dark text.primary from tailwind.config.js */
+  --text-secondary: #CBD5E1;
+  /* Dark text.secondary from tailwind.config.js */
+  --text-muted: #94A3B8;
+  /* Dark text.muted from tailwind.config.js */
 
   /* Borders */
   --border-subtle: rgba(255, 255, 255, 0.08);
-  --border-muted: #27272a;
-  /* Zinc 800 */
-  --border-highlight: #3f3f46;
-  /* Zinc 700 */
+  --border-muted: #334155;
+  /* Slate 700 from tailwind */
+  --border-highlight: #475569;
+  /* Slate 600 from tailwind */
 
-  /* Electric Accents */
+  /* Primary Brand Colors - ALIGNED WITH TAILWIND */
+  --accent-primary: #00575A;
+  /* Brand primary (Deep Teal) */
+  --accent-accent: #FFBF00;
+  /* Brand accent (Marigold) */
+
+  /* Secondary Accents for variety */
   --accent-cyan: #06b6d4;
   /* Cyan 500 */
   --accent-emerald: #10b981;
@@ -56,15 +61,16 @@
   --accent-amber: #f59e0b;
   /* Amber 500 (Warning) */
 
-  /* Glows */
-  --glow-emerald: 0 0 20px rgba(16, 185, 129, 0.3);
+  /* Glows - Updated for primary colors */
+  --glow-primary: 0 0 20px rgba(0, 87, 90, 0.3);
+  --glow-accent: 0 0 20px rgba(255, 191, 0, 0.3);
   --glow-cyan: 0 0 20px rgba(6, 182, 212, 0.3);
 
-  /* Gradients */
-  --gradient-aura: linear-gradient(135deg, #09090b 0%, #18181b 100%);
-  --gradient-glow: radial-gradient(circle at center, rgba(16, 185, 129, 0.15) 0%, transparent 70%);
-  --gradient-text-aura: linear-gradient(to right, #10b981, #06b6d4);
-  --gradient-border-aura: linear-gradient(to bottom right, rgba(16, 185, 129, 0.5), rgba(6, 182, 212, 0.5));
+  /* Gradients - UNIFIED */
+  --gradient-aura: linear-gradient(135deg, #0F172A 0%, #1E293B 100%);
+  --gradient-glow: radial-gradient(circle at center, rgba(0, 87, 90, 0.15) 0%, transparent 70%);
+  --gradient-text-aura: linear-gradient(to right, #00575A, #FFBF00);
+  --gradient-border-aura: linear-gradient(to bottom right, rgba(0, 87, 90, 0.5), rgba(255, 191, 0, 0.3));
 
   /* ===== SPACING & RADIUS ===== */
   --radius-sm: 8px;

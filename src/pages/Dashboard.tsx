@@ -56,7 +56,7 @@ export const Dashboard: React.FC = () => {
   const serverTime = useMemo(() => new Date().toLocaleTimeString('vi-VN', { hour: '2-digit', minute: '2-digit' }), []);
 
   return (
-    <div className="min-h-screen bg-zinc-950 relative overflow-hidden transition-colors duration-500 pb-20">
+    <div className="min-h-screen bg-dark-bg relative overflow-hidden transition-colors duration-500 pb-20">
       <GridPattern />
       <ParticleBackground />
       <CursorGlow />

@@ -54,7 +54,7 @@ const Admin: React.FC = () => {
   ];
 
   return (
-    <div className="min-h-screen bg-[#050505] flex text-zinc-400 font-sans selection:bg-teal-500/30 selection:text-teal-200">
+    <div className="min-h-screen bg-dark-bg flex text-dark-text-secondary font-sans selection:bg-brand-primary/30 selection:text-brand-accent">
       {/* SIDEBAR - Desktop Aura Elite */}
       <motion.aside
         initial={false}
