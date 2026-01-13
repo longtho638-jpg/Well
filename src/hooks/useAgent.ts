@@ -1,5 +1,5 @@
 import { agentLogger } from '@/utils/logger';
-import { useState } from 'react';
+import { useState, useCallback } from 'react';
 import { getCoachAdvice, checkCompliance } from '../services/geminiService';
 import { User } from '../types';
 
@@ -27,7 +27,7 @@ export function useAgent(): AgentState & AgentActions {
   /**
    * Get coaching advice from AI agent
    */
-  const getAdvice = async (user: User, pendingQuests: string[]): Promise<void> => {
+  const getAdvice = useCallback(async (user: User, pendingQuests: string[]): Promise<void> => {
     try {
       setLoading(true);
       setError(null);
@@ -43,22 +43,23 @@ export function useAgent(): AgentState & AgentActions {
       const err = e as Error;
       agentLogger.error('Error getting coach advice', err);
       setError(err.message || 'Failed to get advice');
-      setAdvice('Keep pushing forward! You\'re on the right track. 🚀');
+      setAdvice('Tiếp tục nỗ lực! Bạn đang đi đúng hướng. 🚀');
     } finally {
       setLoading(false);
     }
-  };
+  }, []);
 
   /**
    * Check content for compliance with Vietnam regulations
    * Detects prohibited claims (medical, income guarantees, etc.)
    */
-  const checkContentCompliance = async (content: string): Promise<boolean> => {
+  const checkContentCompliance = useCallback(async (content: string): Promise<boolean> => {
     try {
       setLoading(true);
       setError(null);
 
       // Prohibited keywords (Vietnam Decree 40/2018)
+      // Note: In production, this list should be fetched from a remote config service
       const prohibitedKeywords = [
         'cure cancer',
         'guaranteed income',
@@ -72,10 +73,11 @@ export function useAgent(): AgentState & AgentActions {
 
       // Simple keyword check
       const hasProhibitedContent = prohibitedKeywords.some((keyword) =>
-        content.toLowerCase().includes(keyword)
+        content.toLowerCase().includes(keyword.toLowerCase())
       );
 
       if (hasProhibitedContent) {
+        agentLogger.warn('Compliance violation detected in content');
         return false;
       }
 
@@ -86,20 +88,20 @@ export function useAgent(): AgentState & AgentActions {
       const err = e as Error;
       agentLogger.error('Error checking compliance', err);
       setError(err.message || 'Failed to check compliance');
-      // Default to compliant on error
-      return true;
+      // Safety: Default to non-compliant on system error to protect the user
+      return false;
     } finally {
       setLoading(false);
     }
-  };
+  }, []);
 
   /**
    * Clear advice
    */
-  const clearAdvice = (): void => {
+  const clearAdvice = useCallback((): void => {
     setAdvice(null);
     setError(null);
-  };
+  }, []);
 
   return {
     advice,

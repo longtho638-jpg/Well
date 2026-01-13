@@ -31,7 +31,7 @@ const supabase = createClient(supabaseUrl, supabaseKey);
 
 async function testAuth() {
     const email = 'doanhnhancaotuan@gmail.com';
-    const password = 'WellAdmin2024!';
+    const password = process.env.TEST_USER_PASSWORD || 'password123';
 
     console.log('\n🔐 Testing login for:', email);
 

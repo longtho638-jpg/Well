@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Command, Zap, CheckCircle, Clock, TrendingUp } from 'lucide-react';
 import { agentRegistry } from '@/agents';
-import { AGENCYOS_COMMANDS, AgencyOSCategory } from '@/agents/custom/AgencyOSAgent';
+import { AGENCYOS_COMMANDS, AgencyOSCategory, AgencyOSCommand } from '@/agents/custom/AgencyOSAgent';
 import CommandPalette from '@/components/ui/CommandPalette';
 
 const CATEGORY_COLORS: Record<AgencyOSCategory, string> = {
@@ -160,7 +160,7 @@ export function AgencyOSDemo() {
                                 : '🚀 All Commands'}
                         </h2>
                         <div className="grid grid-cols-1 gap-3">
-                            {Object.entries(commandsByCategory).map(([cat, commands]) =>
+                            {(Object.entries(commandsByCategory) as unknown as [AgencyOSCategory, ReadonlyArray<AgencyOSCommand>][]).map(([cat, commands]) =>
                                 commands.map((cmd) => (
                                     <button
                                         key={cmd.command}

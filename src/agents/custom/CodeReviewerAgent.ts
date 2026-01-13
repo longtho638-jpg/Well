@@ -1,41 +1,28 @@
-import { BaseAgent } from '../core/BaseAgent';
-
-interface ReviewIssue {
-    severity: 'critical' | 'high' | 'medium' | 'low';
-    file: string;
-    line?: number;
-    message: string;
-    suggestion?: string;
-    category: 'security' | 'type-safety' | 'performance' | 'style' | 'architecture';
-}
-
-interface ReviewResult {
-    prNumber?: string;
-    filesReviewed: string[];
-    issues: ReviewIssue[];
-    summary: {
-        critical: number;
-        high: number;
-        medium: number;
-        low: number;
-    };
-    recommendation: 'approve' | 'request-changes' | 'comment';
-    testCoverage?: number;
-}
-
 /**
- * CodeReviewerAgent - Automated code review and quality assurance
+ * Code Reviewer Agent (Refactored)
+ * Automated code review and quality assurance coordinator.
  * 
- * Capabilities:
- * - PR analysis and review
- * - Security vulnerability detection
- * - Type safety validation
- * - Performance bottleneck identification
+ * Logic delegated to reviewEngine.ts for analysis.
  */
+
+import { BaseAgent } from '../core/BaseAgent';
+import { reviewEngine, ReviewResult, ReviewIssue } from '@/services/reviewEngine';
+import {
+    SecurityScanResult,
+    ArchitectureAnalysis,
+    FixSuggestionsResult,
+    ReviewOptions,
+    CodeReviewerAction,
+} from '@/types/codeReviewer';
+
+// Re-export types for external use
+export type { SecurityScanResult, ArchitectureAnalysis, FixSuggestionsResult, ReviewOptions, CodeReviewerAction };
+
+type ReviewExecutionResult = ReviewResult | SecurityScanResult | ArchitectureAnalysis | FixSuggestionsResult;
+
 export class CodeReviewerAgent extends BaseAgent {
-    private prsReviewed: number = 0;
-    private issuesFound: number = 0;
-    private totalIssues: number = 0;
+    private readonly prsReviewed: { count: number } = { count: 0 };
+    private readonly issuesFound: { count: number } = { count: 0 };
 
     constructor() {
         super({
@@ -56,7 +43,7 @@ export class CodeReviewerAgent extends BaseAgent {
                 'TypeScript Compiler',
                 'ESLint',
                 'Security Scanner',
-                'Code Analysis Engine',
+                'Review Engine (Internal)',
             ],
             core_actions: [
                 'reviewPR',
@@ -87,61 +74,50 @@ export class CodeReviewerAgent extends BaseAgent {
                 {
                     rule: 'All critical issues must block merge',
                     enforcement: 'hard',
-                    notes: 'Prevents security vulnerabilities in production',
                 },
                 {
                     rule: 'Test coverage must be >= 80%',
                     enforcement: 'soft',
-                    notes: 'Can be overridden with justification',
                 },
             ],
             visibility: 'all',
         });
     }
 
-    async execute(action: {
-        action: 'reviewPR' | 'checkSecurity' | 'analyzeArchitecture' | 'suggestFixes';
-        prNumber?: string;
-        files?: string[];
-        options?: {
-            checkSecurity?: boolean;
-            checkTests?: boolean;
-            checkStyle?: boolean;
-            strictMode?: boolean;
-        };
-    }): Promise<{ success: boolean;[key: string]: unknown }> {
+    async execute(action: CodeReviewerAction): Promise<{ success: boolean; data?: ReviewExecutionResult; error?: string }> {
         try {
-            let result: ReviewResult | { vulnerabilities: unknown[] } | { patterns: string[]; issues: string[]; suggestions: string[] } | { fixes: unknown[] };
+            let result: ReviewExecutionResult;
 
             switch (action.action) {
                 case 'reviewPR':
                     result = await this.reviewPullRequest(
-                        action.prNumber!,
+                        action.prNumber || '0',
                         action.files || [],
                         action.options
                     );
-                    this.prsReviewed++;
-                    this.updateKPI('PRs Reviewed', this.prsReviewed);
+                    this.prsReviewed.count++;
+                    this.updateKPI('PRs Reviewed', this.prsReviewed.count);
                     break;
 
                 case 'checkSecurity':
-                    result = await this.performSecurityScan(action.files!);
+                    result = await this.performSecurityScan(action.files || []);
                     break;
 
                 case 'analyzeArchitecture':
-                    result = await this.analyzeCodeArchitecture(action.files!);
+                    result = await this.analyzeCodeArchitecture(action.files || []);
                     break;
 
                 case 'suggestFixes':
-                    result = await this.generateFixSuggestions(action.files!);
+                    result = await this.generateFixSuggestions(action.files || []);
                     break;
 
                 default:
-                    throw new Error(`Unknown action: ${action.action}`);
+                    const exhaustiveCheck: never = action;
+                    throw new Error(`Unknown action: ${(action as { action: string }).action}`);
             }
 
-            return { success: true, ...result };
-        } catch (error) {
+            return { success: true, data: result };
+        } catch (error: unknown) {
             return {
                 success: false,
                 error: error instanceof Error ? error.message : 'Unknown error',
@@ -150,226 +126,77 @@ export class CodeReviewerAgent extends BaseAgent {
     }
 
     /**
-     * Review a pull request
+     * Review a pull request (Coordination Logic)
      */
     private async reviewPullRequest(
         prNumber: string,
         files: string[],
-        options?: {
-            checkSecurity?: boolean;
-            checkTests?: boolean;
-            checkStyle?: boolean;
-            strictMode?: boolean;
-        }
+        options?: ReviewOptions
     ): Promise<ReviewResult> {
         const issues: ReviewIssue[] = [];
 
-        // Security checks
+        // Security
         if (options?.checkSecurity !== false) {
-            const securityIssues = await this.performSecurityScan(files);
-            issues.push(...securityIssues.vulnerabilities.map(v => ({
-                severity: this.mapSeverity(v.severity),
-                file: v.file,
-                message: `Security: ${v.type}`,
-                suggestion: this.getSecurityFix(v.type),
-                category: 'security' as const,
-            })));
+            const securityResults = await this.performSecurityScan(files);
+            issues.push(...reviewEngine.mapSecurityIssues(securityResults.vulnerabilities));
         }
 
-        // Type safety checks
-        const typeIssues = this.checkTypeSafety(files);
-        issues.push(...typeIssues);
+        // Analysis Hooks
+        issues.push(...reviewEngine.checkTypeSafety(files));
+        issues.push(...reviewEngine.checkPerformance(files));
 
-        // Performance checks
-        const perfIssues = this.checkPerformance(files);
-        issues.push(...perfIssues);
-
-        // Style checks
+        // Style
         if (options?.checkStyle !== false) {
-            const styleIssues = this.checkCodeStyle(files);
-            issues.push(...styleIssues);
+            issues.push(...reviewEngine.checkCodeStyle(files));
         }
 
-        // Update KPIs
-        this.issuesFound += issues.length;
-        this.totalIssues += issues.length;
-        this.updateKPI('Issues Found', this.issuesFound);
+        // KPI Management
+        this.issuesFound.count += issues.length;
+        this.updateKPI('Issues Found', this.issuesFound.count);
 
-        const summary = this.summarizeIssues(issues);
+        const summary = reviewEngine.summarizeIssues(issues);
 
         return {
             prNumber,
             filesReviewed: files,
             issues,
             summary,
-            recommendation: this.determineRecommendation(summary),
-            testCoverage: this.calculateTestCoverage(files),
+            recommendation: reviewEngine.determineRecommendation(summary),
+            testCoverage: 85.5, // Mocked for SEED demo
         };
     }
 
-    /**
-     * Perform security vulnerability scan
-     */
-    private async performSecurityScan(files: string[]): Promise<{ vulnerabilities: Array<{ type: string; severity: string; file: string }> }> {
-        // Simulate security scanning
-        const vulnerabilities = [];
-
+    private async performSecurityScan(files: string[]): Promise<SecurityScanResult> {
+        const vulnerabilities: SecurityScanResult['vulnerabilities'] = [];
         for (const file of files) {
-            // Check for common vulnerabilities
             if (file.includes('auth')) {
-                vulnerabilities.push({
-                    type: 'SQL Injection Risk',
-                    severity: 'critical',
-                    file,
-                });
+                vulnerabilities.push({ type: 'SQL Injection Risk', severity: 'critical', file });
             }
             if (file.includes('api')) {
-                vulnerabilities.push({
-                    type: 'Missing Input Validation',
-                    severity: 'high',
-                    file,
-                });
+                vulnerabilities.push({ type: 'Missing Input Validation', severity: 'high', file });
             }
         }
-
         return { vulnerabilities };
     }
 
-    /**
-     * Analyze code architecture
-     */
-    private async analyzeCodeArchitecture(files: string[]): Promise<{ patterns: string[]; issues: string[]; suggestions: string[] }> {
+    private async analyzeCodeArchitecture(files: string[]): Promise<ArchitectureAnalysis> {
         return {
             patterns: ['Repository Pattern', 'Service Layer'],
-            issues: [
-                'High coupling between components detected',
-                'Missing abstraction layers',
-            ],
-            suggestions: [
-                'Extract interfaces for better testability',
-                'Implement dependency injection',
-                'Separate concerns into distinct modules',
-            ],
+            issues: ['High coupling between components detected', 'Missing abstraction layers'],
+            suggestions: ['Extract interfaces for better testability', 'Implement dependency injection'],
         };
     }
 
-    /**
-     * Generate fix suggestions
-     */
-    private async generateFixSuggestions(files: string[]): Promise<{ fixes: Array<{ file: string; issue: string; suggestion: string; code: string }> }> {
+    private async generateFixSuggestions(files: string[]): Promise<FixSuggestionsResult> {
         return {
             fixes: [
                 {
-                    file: files[0],
+                    file: files[0] || 'Unknown',
                     issue: 'Missing error handling',
                     suggestion: 'Wrap in try-catch block',
                     code: 'try { /* existing code */ } catch (error) { handleError(error); }',
-                },
-                {
-                    file: files[1],
-                    issue: 'Type safety violation',
-                    suggestion: 'Replace any with specific type',
-                    code: 'interface UserData { id: string; name: string; }',
-                },
+                }
             ],
         };
-    }
-
-    // Helper methods
-
-    private checkTypeSafety(files: string[]): ReviewIssue[] {
-        const issues: ReviewIssue[] = [];
-
-        files.forEach(file => {
-            // Simulate type checking
-            if (file.includes('.ts')) {
-                issues.push({
-                    severity: 'medium',
-                    file,
-                    line: 42,
-                    message: 'Use of `any` type detected',
-                    suggestion: 'Replace with specific type definition',
-                    category: 'type-safety',
-                });
-            }
-        });
-
-        return issues;
-    }
-
-    private checkPerformance(files: string[]): ReviewIssue[] {
-        const issues: ReviewIssue[] = [];
-
-        files.forEach(file => {
-            if (file.includes('api') || file.includes('db')) {
-                issues.push({
-                    severity: 'high',
-                    file,
-                    line: 55,
-                    message: 'Potential N+1 query problem',
-                    suggestion: 'Use JOIN or batch loading',
-                    category: 'performance',
-                });
-            }
-        });
-
-        return issues;
-    }
-
-    private checkCodeStyle(files: string[]): ReviewIssue[] {
-        const issues: ReviewIssue[] = [];
-
-        files.forEach(file => {
-            issues.push({
-                severity: 'low',
-                file,
-                line: 10,
-                message: 'Missing JSDoc comment',
-                suggestion: 'Add function documentation',
-                category: 'style',
-            });
-        });
-
-        return issues;
-    }
-
-    private mapSeverity(severity: string): 'critical' | 'high' | 'medium' | 'low' {
-        const map: Record<string, 'critical' | 'high' | 'medium' | 'low'> = {
-            critical: 'critical',
-            high: 'high',
-            medium: 'medium',
-            low: 'low',
-        };
-        return map[severity] || 'medium';
-    }
-
-    private getSecurityFix(type: string): string {
-        const fixes: Record<string, string> = {
-            'SQL Injection Risk': 'Use parameterized queries or ORM',
-            'Missing Input Validation': 'Add input validation using Zod or similar',
-            'XSS Vulnerability': 'Sanitize user input before rendering',
-        };
-        return fixes[type] || 'Review security best practices';
-    }
-
-    private summarizeIssues(issues: ReviewIssue[]) {
-        return {
-            critical: issues.filter(i => i.severity === 'critical').length,
-            high: issues.filter(i => i.severity === 'high').length,
-            medium: issues.filter(i => i.severity === 'medium').length,
-            low: issues.filter(i => i.severity === 'low').length,
-        };
-    }
-
-    private determineRecommendation(summary: { critical: number; high: number; medium: number; low: number }): 'approve' | 'request-changes' | 'comment' {
-        if (summary.critical > 0) return 'request-changes';
-        if (summary.high > 2) return 'request-changes';
-        if (summary.medium > 5) return 'comment';
-        return 'approve';
-    }
-
-    private calculateTestCoverage(files: string[]): number {
-        // Simulate test coverage calculation
-        return 85.5;
     }
 }

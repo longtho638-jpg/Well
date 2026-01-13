@@ -120,40 +120,63 @@
             const card = document.createElement('div');
             card.className = 'card p-5 bg-white rounded-xl shadow-md border border-gray-100 animate-fade-in';
             card.style.animationDelay = `${idx * 50}ms`;
-            card.innerHTML = `
-                <div class="space-y-3">
-                    <div class="flex items-center justify-between">
-                        <h3 class="font-bold text-lg text-gray-800">${agent.name}</h3>
-                        <span class="relative flex h-3 w-3">
-                            <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
-                            <span class="relative inline-flex rounded-full h-3 w-3 bg-green-500"></span>
-                        </span>
-                    </div>
-                    <div class="inline-block">
-                        <span class="px-3 py-1 bg-gradient-to-r from-blue-100 to-purple-100 text-blue-700 rounded-full text-xs font-medium">
-                            ${agent.function}
-                        </span>
-                    </div>
-                    <div class="space-y-2 pt-2">
-                        <p class="text-xs font-semibold text-gray-700 uppercase tracking-wide">Performance</p>
-                        <div class="space-y-1">
-                            <div class="flex justify-between text-xs">
-                                <span class="text-gray-600">${agent.kpis[0].name}</span>
-                                <span class="font-mono font-semibold text-gray-800">
-                                    ${agent.kpis[0].current}/${agent.kpis[0].target} ${agent.kpis[0].unit}
-                                </span>
-                            </div>
-                            <div class="w-full bg-gray-200 rounded-full h-2 overflow-hidden">
-                                <div class="bg-gradient-to-r from-blue-500 to-purple-500 h-2 rounded-full transition-all duration-500 ease-out" style="width: ${progress}%"></div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="pt-3 border-t border-gray-100 flex items-center justify-between">
-                        <p class="text-xs text-gray-500">${agent.actions} actions</p>
-                        <span class="text-purple-500">⚡</span>
-                    </div>
-                </div>
-            `;
+
+            // Helper to create elements with classes and text
+            const el = (tag, classes, text) => {
+                const e = document.createElement(tag);
+                if (classes) e.className = classes;
+                if (text) e.textContent = text;
+                return e;
+            };
+
+            // Header Row
+            const header = el('div', 'space-y-3');
+            const titleRow = el('div', 'flex items-center justify-between');
+            const nameEl = el('h3', 'font-bold text-lg text-gray-800', agent.name);
+            
+            const statusSpan = el('span', 'relative flex h-3 w-3');
+            const ping = el('span', 'animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75');
+            const dot = el('span', 'relative inline-flex rounded-full h-3 w-3 bg-green-500');
+            statusSpan.appendChild(ping);
+            statusSpan.appendChild(dot);
+            
+            titleRow.appendChild(nameEl);
+            titleRow.appendChild(statusSpan);
+            header.appendChild(titleRow);
+
+            // Function Tag
+            const funcContainer = el('div', 'inline-block');
+            const funcTag = el('span', 'px-3 py-1 bg-gradient-to-r from-blue-100 to-purple-100 text-blue-700 rounded-full text-xs font-medium', agent.function);
+            funcContainer.appendChild(funcTag);
+            header.appendChild(funcContainer);
+
+            // KPI Section
+            const kpiSection = el('div', 'space-y-2 pt-2');
+            kpiSection.appendChild(el('p', 'text-xs font-semibold text-gray-700 uppercase tracking-wide', 'Performance'));
+            
+            const kpiRow = el('div', 'space-y-1');
+            const kpiTextRow = el('div', 'flex justify-between text-xs');
+            kpiTextRow.appendChild(el('span', 'text-gray-600', agent.kpis[0].name));
+            kpiTextRow.appendChild(el('span', 'font-mono font-semibold text-gray-800', `${agent.kpis[0].current}/${agent.kpis[0].target} ${agent.kpis[0].unit}`));
+            
+            const progressBg = el('div', 'w-full bg-gray-200 rounded-full h-2 overflow-hidden');
+            const progressBar = document.createElement('div');
+            progressBar.className = 'bg-gradient-to-r from-blue-500 to-purple-500 h-2 rounded-full transition-all duration-500 ease-out';
+            progressBar.style.width = `${progress}%`;
+            progressBg.appendChild(progressBar);
+            
+            kpiRow.appendChild(kpiTextRow);
+            kpiRow.appendChild(progressBg);
+            kpiSection.appendChild(kpiRow);
+            header.appendChild(kpiSection);
+
+            // Footer
+            const footer = el('div', 'pt-3 border-t border-gray-100 flex items-center justify-between');
+            footer.appendChild(el('p', 'text-xs text-gray-500', `${agent.actions} actions`));
+            footer.appendChild(el('span', 'text-purple-500', '⚡'));
+            header.appendChild(footer);
+
+            card.appendChild(header);
             grid.appendChild(card);
         });
     </script>

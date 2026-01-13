@@ -20,7 +20,7 @@ export interface TreeNode {
     sales: number;
     teamVolume: number;
     avatarUrl?: string;
-    joinDate?: string;
+    joinDate: string;
     children: TreeNode[];
 }
 

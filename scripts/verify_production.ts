@@ -1,9 +1,20 @@
 
 import { createClient } from '@supabase/supabase-js';
+import * as dotenv from 'dotenv';
+import { fileURLToPath } from 'url';
+import { dirname, resolve } from 'path';
 
-// CẤU HÌNH PRODUCTION (Lấy từ chat history)
-const SUPABASE_URL = 'https://zumgrvmwmpstsigefuau.supabase.co';
-const SERVICE_ROLE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inp1bWdydm13bXBzdHNpZ2VmdWF1Iiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc2MzAzMTIwOCwiZXhwIjoyMDc4NjA3MjA4fQ.tWjDTqi_ZUg2tbqJ3j9Ns2WKQgHZnh3k3CVKUf7Xzto';
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
+dotenv.config({ path: resolve(__dirname, '../.env') });
+
+const SUPABASE_URL = process.env.VITE_SUPABASE_URL || '';
+const SERVICE_ROLE_KEY = process.env.SERVICE_ROLE_KEY || '';
+
+if (!SUPABASE_URL || !SERVICE_ROLE_KEY) {
+    console.error("❌ Missing Supabase credentials in .env (VITE_SUPABASE_URL, SERVICE_ROLE_KEY)");
+    process.exit(1);
+}
 
 const supabase = createClient(SUPABASE_URL, SERVICE_ROLE_KEY);
 
@@ -15,7 +26,7 @@ async function main() {
     console.log(`\n1️⃣  Tạo User Test: ${email}`);
     const { data: { user }, error: userError } = await supabase.auth.admin.createUser({
         email,
-        password: 'password123',
+        password: process.env.TEST_USER_PASSWORD || 'password123',
         email_confirm: true
     });
 

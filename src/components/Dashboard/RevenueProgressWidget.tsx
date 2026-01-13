@@ -1,6 +1,11 @@
+/**
+ * Revenue Progress Widget (Refactored - Aura Founder)
+ * Specialized dashboard component for tracking ecosystem GMV against $1M ARR benchmarks.
+ */
+
 import React from 'react';
 import { motion } from 'framer-motion';
-import { TrendingUp, Target, DollarSign, Users, ArrowUpRight } from 'lucide-react';
+import { TrendingUp, Target, DollarSign, Users, ArrowUpRight, Sparkles, Globe } from 'lucide-react';
 import { formatVND } from '@/utils/format';
 
 interface RevenueProgressProps {
@@ -10,122 +15,125 @@ interface RevenueProgressProps {
     activeDistributors: number;
 }
 
-/**
- * RevenueProgressWidget - Founder-facing $1M revenue tracker
- * Displays GMV progress toward annual revenue goal
- */
 export const RevenueProgressWidget: React.FC<RevenueProgressProps> = ({
     currentGMV,
     targetGMV,
     currentOrders,
     activeDistributors,
 }) => {
-    // Calculate metrics
+    // Calculate metrics with precision
     const progressPercent = Math.min((currentGMV / targetGMV) * 100, 100);
     const avgOrderValue = currentOrders > 0 ? currentGMV / currentOrders : 0;
     const monthlyRunRate = currentGMV * 12; // Annualized
-    const ordersPerDay = currentOrders / 30; // Assuming 30-day period
+    const ordersPerDay = currentOrders / 30;
 
-    // $1M target calculation
-    const TARGET_1M = 1000000 * 25000; // $1M in VND
+    // $1M target calculation benchmark
+    const TARGET_1M = 1000000 * 25000; // $1M in VND (benchmark)
     const progress1M = Math.min((monthlyRunRate / TARGET_1M) * 100, 100);
 
     return (
         <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            className="bg-white dark:bg-zinc-900 rounded-2xl p-6 shadow-xl border border-zinc-200 dark:border-zinc-800"
+            initial={{ opacity: 0, scale: 0.98 }}
+            animate={{ opacity: 1, scale: 1 }}
+            className="bg-zinc-950/40 backdrop-blur-3xl rounded-[2.5rem] p-10 shadow-[0_32px_64px_-16px_rgba(0,0,0,0.5)] border border-white/5 relative overflow-hidden group"
         >
-            {/* Header */}
-            <div className="flex items-center justify-between mb-6">
-                <div className="flex items-center gap-3">
-                    <div className="w-12 h-12 bg-gradient-to-br from-emerald-500 to-teal-600 rounded-xl flex items-center justify-center shadow-lg">
-                        <Target className="w-6 h-6 text-white" />
+            {/* Background Strategic Overlay */}
+            <div className="absolute top-0 right-0 p-12 opacity-[0.03] group-hover:rotate-12 transition-transform duration-1000 blur-sm">
+                <Globe size={240} className="text-white" />
+            </div>
+
+            {/* Header Stage */}
+            <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between mb-10 gap-6">
+                <div className="flex items-center gap-5">
+                    <div className="w-16 h-16 bg-gradient-to-tr from-[#00575A] to-emerald-500 rounded-[1.5rem] flex items-center justify-center shadow-[0_20px_40px_-10px_rgba(0,87,90,0.4)] border border-white/10">
+                        <Target className="w-8 h-8 text-white" />
                     </div>
                     <div>
-                        <h3 className="text-lg font-bold text-zinc-900 dark:text-zinc-100">
-                            Revenue Progress
+                        <h3 className="text-2xl font-black text-white tracking-tighter uppercase italic leading-none">
+                            Revenue Milestone
                         </h3>
-                        <p className="text-xs text-zinc-500 dark:text-zinc-400">
-                            Path to $1M ARR
+                        <p className="text-[10px] font-black text-zinc-500 uppercase tracking-[0.3em] mt-2">
+                            Global Ecosystem Velocity
                         </p>
                     </div>
                 </div>
-                <div className="flex items-center gap-1 text-emerald-600 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-500/10 px-3 py-1 rounded-full">
-                    <ArrowUpRight className="w-4 h-4" />
-                    <span className="text-xs font-bold">{progress1M.toFixed(1)}%</span>
+                <div className="flex items-center gap-3 bg-emerald-500/10 border border-emerald-500/20 px-6 py-3 rounded-2xl shadow-xl">
+                    <Sparkles className="w-4 h-4 text-emerald-400" />
+                    <span className="text-sm font-black text-emerald-400 italic">BENCHMARK: {progress1M.toFixed(1)}%</span>
                 </div>
             </div>
 
-            {/* Main Progress Bar */}
-            <div className="mb-6">
-                <div className="flex justify-between text-sm mb-2">
-                    <span className="text-zinc-600 dark:text-zinc-400">Monthly GMV</span>
-                    <span className="font-bold text-zinc-900 dark:text-zinc-100">
-                        {formatVND(currentGMV)}
-                    </span>
+            {/* Main GMV Progress Lab */}
+            <div className="space-y-6 mb-12">
+                <div className="flex justify-between items-end px-1">
+                    <p className="text-[10px] font-black text-zinc-500 uppercase tracking-[0.3em]">Monthly Liquidity Flow</p>
+                    <div className="text-right">
+                        <p className="font-black text-white text-3xl tracking-tighter italic">{formatVND(currentGMV)}</p>
+                    </div>
                 </div>
-                <div className="h-4 bg-zinc-100 dark:bg-zinc-800 rounded-full overflow-hidden">
+
+                <div className="h-6 bg-zinc-900/80 rounded-2xl w-full overflow-hidden border border-white/5 p-1 shadow-inner">
                     <motion.div
                         initial={{ width: 0 }}
                         animate={{ width: `${progressPercent}%` }}
-                        transition={{ duration: 1.5, ease: "easeOut" }}
-                        className="h-full bg-gradient-to-r from-emerald-500 to-teal-500 rounded-full relative"
+                        transition={{ duration: 2, ease: [0.22, 1, 0.36, 1] }}
+                        className="h-full bg-gradient-to-r from-emerald-600 via-teal-500 to-amber-500 rounded-xl relative"
                     >
-                        <div className="absolute inset-0 bg-white/20 animate-pulse" />
+                        <motion.div
+                            animate={{ opacity: [0.3, 0.6, 0.3] }}
+                            transition={{ duration: 2, repeat: Infinity }}
+                            className="absolute inset-0 bg-white/20"
+                        />
                     </motion.div>
                 </div>
-                <div className="flex justify-between text-xs mt-1 text-zinc-500 dark:text-zinc-400">
-                    <span>0đ</span>
-                    <span>Target: {formatVND(targetGMV)}</span>
+
+                <div className="flex justify-between text-[10px] font-black text-zinc-600 uppercase tracking-widest px-1 pt-1">
+                    <span>Baseline: 0đ</span>
+                    <span className="text-zinc-400">Target: {formatVND(targetGMV)}</span>
                 </div>
             </div>
 
-            {/* KPI Cards */}
-            <div className="grid grid-cols-3 gap-3">
-                <div className="bg-zinc-50 dark:bg-zinc-800/50 rounded-xl p-3 text-center">
-                    <DollarSign className="w-5 h-5 text-amber-500 mx-auto mb-1" />
-                    <p className="text-lg font-bold text-zinc-900 dark:text-zinc-100">
-                        {formatVND(avgOrderValue)}
-                    </p>
-                    <p className="text-[10px] text-zinc-500 dark:text-zinc-400 uppercase">
-                        Avg Order
-                    </p>
-                </div>
-                <div className="bg-zinc-50 dark:bg-zinc-800/50 rounded-xl p-3 text-center">
-                    <TrendingUp className="w-5 h-5 text-emerald-500 mx-auto mb-1" />
-                    <p className="text-lg font-bold text-zinc-900 dark:text-zinc-100">
-                        {ordersPerDay.toFixed(1)}
-                    </p>
-                    <p className="text-[10px] text-zinc-500 dark:text-zinc-400 uppercase">
-                        Orders/Day
-                    </p>
-                </div>
-                <div className="bg-zinc-50 dark:bg-zinc-800/50 rounded-xl p-3 text-center">
-                    <Users className="w-5 h-5 text-blue-500 mx-auto mb-1" />
-                    <p className="text-lg font-bold text-zinc-900 dark:text-zinc-100">
-                        {activeDistributors}
-                    </p>
-                    <p className="text-[10px] text-zinc-500 dark:text-zinc-400 uppercase">
-                        Distributors
-                    </p>
-                </div>
+            {/* Micro KPI Matrix */}
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                {[
+                    { icon: DollarSign, value: formatVND(avgOrderValue), label: 'Avg Unit Order', color: 'text-amber-500' },
+                    { icon: TrendingUp, value: ordersPerDay.toFixed(1), label: 'Daily Momentum', color: 'text-emerald-500' },
+                    { icon: Users, value: activeDistributors, label: 'Verified Partners', color: 'text-blue-500' },
+                ].map((kpi, idx) => (
+                    <motion.div
+                        key={idx}
+                        whileHover={{ y: -5 }}
+                        className="bg-white/5 border border-white/5 rounded-3xl p-6 text-center backdrop-blur-md shadow-xl transition-colors hover:border-white/10"
+                    >
+                        <kpi.icon className={`w-6 h-6 ${kpi.color} mx-auto mb-3`} />
+                        <p className="text-xl font-black text-white tracking-tighter italic">
+                            {kpi.value}
+                        </p>
+                        <p className="text-[9px] font-black text-zinc-500 uppercase tracking-[0.2em] mt-2">
+                            {kpi.label}
+                        </p>
+                    </motion.div>
+                ))}
             </div>
 
-            {/* $1M Projection */}
-            <div className="mt-4 p-3 bg-gradient-to-r from-emerald-500/10 to-teal-500/10 dark:from-emerald-500/5 dark:to-teal-500/5 rounded-xl border border-emerald-500/20">
-                <div className="flex justify-between items-center">
-                    <span className="text-sm text-zinc-600 dark:text-zinc-400">
-                        Annualized Run Rate
-                    </span>
-                    <span className="font-bold text-emerald-600 dark:text-emerald-400">
-                        {formatVND(monthlyRunRate)}
-                    </span>
+            {/* ARR Projections Stage */}
+            <div className="mt-10 p-8 bg-zinc-900/60 rounded-[2rem] border border-white/5 relative overflow-hidden">
+                <div className="absolute top-0 right-0 p-4 opacity-[0.05]">
+                    <TrendingUp className="text-emerald-500 w-24 h-24" />
                 </div>
-                <p className="text-xs text-zinc-500 dark:text-zinc-400 mt-1">
-                    {progress1M >= 100 ? '🎉 $1M target achieved!' :
-                        `${((TARGET_1M - monthlyRunRate) / currentGMV * 30).toFixed(0)} days to $1M at current pace`}
-                </p>
+
+                <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 relative z-10">
+                    <div className="space-y-1">
+                        <span className="text-[10px] font-black text-zinc-500 uppercase tracking-[0.3em]">Annualized Run Rate (ARR)</span>
+                        <p className="text-3xl font-black text-emerald-500 tracking-tighter italic">{formatVND(monthlyRunRate)}</p>
+                    </div>
+                    <div className="bg-[#00575A]/20 px-6 py-3 rounded-2xl border border-teal-500/20 backdrop-blur-xl">
+                        <p className="text-[10px] font-black text-teal-400 uppercase tracking-[0.2em]">
+                            {progress1M >= 100 ? '🎉 BENCHMARK ACHIEVED' :
+                                `${((TARGET_1M - monthlyRunRate) / currentGMV * 30).toFixed(0)} DAYS TO $1M BENCHMARK`}
+                        </p>
+                    </div>
+                </div>
             </div>
         </motion.div>
     );

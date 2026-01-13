@@ -1,7 +1,5 @@
-import { BaseAgent } from '../core/BaseAgent';
-
 /**
- * ScoutExternalAgent - Web research and external resource discovery
+ * ScoutExternalAgent - Web research and external resource discovery (Refactored)
  * 
  * Capabilities:
  * - Search web for documentation and tutorials
@@ -9,9 +7,23 @@ import { BaseAgent } from '../core/BaseAgent';
  * - Discover external resources
  * - Compare tools and frameworks
  */
+
+import { BaseAgent } from '../core/BaseAgent';
+import {
+    SearchResults,
+    DocumentationResult,
+    CodeExamplesResult,
+    ComparisonResult,
+    ScoutExternalAction,
+    ScoutExternalResult,
+} from '@/types/scoutExternal';
+
+// Re-export types for external use
+export type { SearchResults, DocumentationResult, CodeExamplesResult, ComparisonResult, ScoutExternalAction };
+
 export class ScoutExternalAgent extends BaseAgent {
-    private searchesPerformed: number = 0;
-    private resourcesFound: number = 0;
+    private readonly searchesPerformed: { count: number } = { count: 0 };
+    private readonly resourcesFound: { count: number } = { count: 0 };
 
     constructor() {
         super({
@@ -69,19 +81,19 @@ export class ScoutExternalAgent extends BaseAgent {
         });
     }
 
-    async execute(action: {
-        action: 'searchWeb' | 'findDocs' | 'gatherExamples' | 'compareSolutions';
-        query: string;
-        sources?: string[];
-    }): Promise<{ success: boolean;[key: string]: unknown }> {
+    async execute(action: ScoutExternalAction): Promise<{ success: boolean; data?: ScoutExternalResult; error?: string }> {
         try {
-            let result: Record<string, unknown>;
+            let result: ScoutExternalResult;
 
             switch (action.action) {
                 case 'searchWeb':
                     result = await this.performWebSearch(action.query, action.sources);
-                    this.searchesPerformed++;
-                    this.updateKPI('Searches Performed', this.searchesPerformed);
+                    this.searchesPerformed.count++;
+                    this.updateKPI('Searches Performed', this.searchesPerformed.count);
+                    if (result.resources) {
+                        this.resourcesFound.count += result.resources.length;
+                        this.updateKPI('Resources Found', this.resourcesFound.count);
+                    }
                     break;
 
                 case 'findDocs':
@@ -97,16 +109,12 @@ export class ScoutExternalAgent extends BaseAgent {
                     break;
 
                 default:
-                    throw new Error(`Unknown action: ${action.action}`);
+                    const exhaustiveCheck: never = action;
+                    throw new Error(`Unknown action: ${(action as { action: string }).action}`);
             }
 
-            if (result.resources) {
-                this.resourcesFound += (result.resources as Array<unknown>).length;
-                this.updateKPI('Resources Found', this.resourcesFound);
-            }
-
-            return { success: true, ...result };
-        } catch (error) {
+            return { success: true, data: result };
+        } catch (error: unknown) {
             return {
                 success: false,
                 error: error instanceof Error ? error.message : 'Unknown error',
@@ -114,8 +122,7 @@ export class ScoutExternalAgent extends BaseAgent {
         }
     }
 
-    private async performWebSearch(query: string, sources?: string[]): Promise<Record<string, unknown>> {
-        // Simulate web search
+    private async performWebSearch(query: string, sources?: string[]): Promise<SearchResults> {
         const resources = [
             {
                 title: `Official ${query} Documentation`,
@@ -141,7 +148,7 @@ export class ScoutExternalAgent extends BaseAgent {
         };
     }
 
-    private async findDocumentation(query: string): Promise<Record<string, unknown>> {
+    private async findDocumentation(query: string): Promise<DocumentationResult> {
         return {
             officialDocs: ['https://docs.example.com'],
             tutorials: ['https://tutorial.example.com'],
@@ -149,7 +156,7 @@ export class ScoutExternalAgent extends BaseAgent {
         };
     }
 
-    private async collectCodeExamples(query: string): Promise<Record<string, unknown>> {
+    private async collectCodeExamples(query: string): Promise<CodeExamplesResult> {
         return {
             examples: [
                 {
@@ -163,7 +170,7 @@ export class ScoutExternalAgent extends BaseAgent {
         };
     }
 
-    private async compareSolutions(query: string): Promise<Record<string, unknown>> {
+    private async compareSolutions(query: string): Promise<ComparisonResult> {
         return {
             comparison: {
                 optionA: { pros: ['Fast', 'Popular'], cons: ['Complex'] },

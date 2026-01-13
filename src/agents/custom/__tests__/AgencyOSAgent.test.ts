@@ -1,5 +1,6 @@
 import { describe, it, expect, beforeEach } from 'vitest';
-import { AgencyOSAgent, AGENCYOS_COMMANDS } from '../AgencyOSAgent';
+import { AgencyOSAgent } from '../AgencyOSAgent';
+import { AGENCYOS_COMMANDS } from '../commandDefinitions';
 
 describe('AgencyOSAgent', () => {
     let agent: AgencyOSAgent;
@@ -55,21 +56,23 @@ describe('AgencyOSAgent', () => {
             const result = await agent.execute({
                 action: 'searchCommands',
                 command: 'marketing',
-            }) as { command: string; description: string }[];
+            }) as { success: boolean; suggestion: { command: string }[] };
 
-            expect(Array.isArray(result)).toBe(true);
-            expect(result.length).toBeGreaterThan(0);
-            expect(result.some((cmd) => cmd.command.includes('marketing'))).toBe(true);
+            expect(result.success).toBe(true);
+            expect(Array.isArray(result.suggestion)).toBe(true);
+            expect(result.suggestion.length).toBeGreaterThan(0);
+            expect(result.suggestion.some((cmd) => cmd.command.includes('marketing'))).toBe(true);
         });
 
         it('should return empty array for no matches', async () => {
             const result = await agent.execute({
                 action: 'searchCommands',
                 command: 'nonexistent-xyz-123',
-            }) as unknown[];
+            }) as { success: boolean; suggestion: unknown[] };
 
-            expect(Array.isArray(result)).toBe(true);
-            expect(result.length).toBe(0);
+            expect(result.success).toBe(true);
+            expect(Array.isArray(result.suggestion)).toBe(true);
+            expect(result.suggestion.length).toBe(0);
         });
     });
 
@@ -78,21 +81,22 @@ describe('AgencyOSAgent', () => {
             const result = await agent.execute({
                 action: 'getCommandHelp',
                 command: '/marketing-plan',
-            }) as { command: string; description: string; category: string };
+            }) as { success: boolean; command: string; description: string; category: string };
 
-            expect(result).toBeDefined();
+            expect(result.success).toBe(true);
             expect(result.command).toBe('/marketing-plan');
             expect(result.description).toBeDefined();
             expect(result.category).toBe('marketing');
         });
 
-        it('should return null for invalid command', async () => {
+        it('should throw error for invalid command', async () => {
             const result = await agent.execute({
                 action: 'getCommandHelp',
                 command: '/invalid-command',
-            });
+            }) as { success: boolean; error: string };
 
-            expect(result).toBeNull();
+            expect(result.success).toBe(false);
+            expect(result.error).toContain('Command not found');
         });
     });
 
@@ -158,7 +162,7 @@ describe('AgencyOSAgent', () => {
     describe('error handling', () => {
         it('should handle unknown actions', async () => {
             const result = await agent.execute({
-                action: 'unknownAction',
+                action: 'unknownAction' as any,
             }) as { error: string };
 
             expect(result.error).toContain('Unknown action');

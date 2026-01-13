@@ -1,690 +1,274 @@
-import React, { useState, useEffect } from 'react';
+/**
+ * Admin Products Management (Refactored)
+ * Global product catalog and financial parameter (DTTT) control.
+ */
+
+import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
-    Package, Edit2, Save, X, TrendingUp, DollarSign, Info,
-    Plus, Trash2, Search, RefreshCw, AlertTriangle, Eye,
-    Image as ImageIcon, Check, Loader2
+    Package,
+    Edit2,
+    Save,
+    X,
+    DollarSign,
+    Plus,
+    Trash2,
+    Search,
+    RefreshCw,
+    AlertTriangle,
+    Image as ImageIcon,
+    Check,
+    Loader2,
+    TrendingUp,
+    ShieldCheck,
+    Info
 } from 'lucide-react';
-import { supabase } from '@/lib/supabase';
-import { formatVND, formatNumber } from '@/utils/format';
-import { adminLogger } from '@/utils/logger';
-import { useToast } from '@/components/ui/Toast';
+
+// Hooks & Services
+import { useProducts } from '@/hooks/useProducts';
+import { Product, NewProductDto } from '@/services/productService';
+import { formatVND } from '@/utils/format';
 
 // ============================================================
-// TYPES
+// SUB-COMPONENTS
 // ============================================================
 
-interface Product {
-    id: string;
-    name: string;
-    description: string;
-    price: number;
-    bonus_revenue: number;
-    commission_rate: number;
-    image_url: string;
-    sales_count: number;
-    stock: number;
-    category?: string;
-    is_active?: boolean;
-}
-
-interface NewProduct {
-    name: string;
-    description: string;
-    price: number;
-    bonus_revenue: number;
-    stock: number;
-    image_url: string;
-    category: string;
-}
-
-const defaultNewProduct: NewProduct = {
-    name: '',
-    description: '',
-    price: 0,
-    bonus_revenue: 0,
-    stock: 0,
-    image_url: '',
-    category: 'supplement'
-};
-
-// ============================================================
-// ADD PRODUCT MODAL
-// ============================================================
-
-const AddProductModal: React.FC<{
-    onClose: () => void;
-    onAdd: (product: NewProduct) => void;
-    loading: boolean;
-}> = ({ onClose, onAdd, loading }) => {
-    const [form, setForm] = useState<NewProduct>(defaultNewProduct);
-    const [imagePreview, setImagePreview] = useState('');
-
-    const handleSubmit = (e: React.FormEvent) => {
-        e.preventDefault();
-        onAdd(form);
-    };
-
-    const handleImageUrlChange = (url: string) => {
-        setForm({ ...form, image_url: url });
-        setImagePreview(url);
-    };
-
-    return (
-        <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4"
-            onClick={onClose}
-        >
-            <motion.div
-                initial={{ scale: 0.95, opacity: 0 }}
-                animate={{ scale: 1, opacity: 1 }}
-                exit={{ scale: 0.95, opacity: 0 }}
-                className="bg-white rounded-xl max-w-2xl w-full max-h-[90vh] overflow-y-auto"
-                onClick={(e) => e.stopPropagation()}
-            >
-                {/* Header */}
-                <div className="p-6 border-b border-slate-200 flex justify-between items-center">
-                    <div>
-                        <h2 className="text-2xl font-display font-bold text-slate-900 flex items-center gap-2">
-                            <Plus className="w-6 h-6 text-[#00575A]" />
-                            Add New Product
-                        </h2>
-                        <p className="text-sm text-slate-500 mt-1">Create a new product in the catalog</p>
-                    </div>
-                    <button onClick={onClose} className="p-2 hover:bg-slate-100 rounded-lg transition-colors">
-                        <X className="w-6 h-6" />
-                    </button>
-                </div>
-
-                {/* Form */}
-                <form onSubmit={handleSubmit} className="p-6 space-y-6">
-                    {/* Image Preview */}
-                    <div className="bg-slate-50 border border-slate-200 rounded-lg p-4">
-                        <label className="block text-sm font-medium text-slate-700 mb-2">
-                            <ImageIcon className="w-4 h-4 inline mr-2" />
-                            Product Image
-                        </label>
-                        <div className="flex gap-4">
-                            <div className="w-24 h-24 rounded-lg border-2 border-dashed border-slate-300 flex items-center justify-center overflow-hidden bg-white">
-                                {imagePreview ? (
-                                    <img src={imagePreview} alt="Preview" className="w-full h-full object-cover" />
-                                ) : (
-                                    <ImageIcon className="w-8 h-8 text-slate-300" />
-                                )}
-                            </div>
-                            <div className="flex-1">
-                                <input
-                                    type="url"
-                                    placeholder="https://example.com/image.jpg"
-                                    value={form.image_url}
-                                    onChange={(e) => handleImageUrlChange(e.target.value)}
-                                    className="w-full px-3 py-2 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#00575A]"
-                                />
-                                <p className="text-xs text-slate-500 mt-1">Enter image URL for preview</p>
-                            </div>
-                        </div>
-                    </div>
-
-                    {/* Name */}
-                    <div>
-                        <label className="block text-sm font-medium text-slate-700 mb-1">Product Name *</label>
-                        <input
-                            type="text"
-                            required
-                            value={form.name}
-                            onChange={(e) => setForm({ ...form, name: e.target.value })}
-                            placeholder="e.g., ANIMA Premium 119"
-                            className="w-full px-4 py-3 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#00575A]"
-                        />
-                    </div>
-
-                    {/* Description */}
-                    <div>
-                        <label className="block text-sm font-medium text-slate-700 mb-1">Description</label>
-                        <textarea
-                            value={form.description}
-                            onChange={(e) => setForm({ ...form, description: e.target.value })}
-                            placeholder="Product description..."
-                            rows={3}
-                            className="w-full px-4 py-3 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#00575A]"
-                        />
-                    </div>
-
-                    {/* Price Grid */}
-                    <div className="grid grid-cols-2 gap-4">
-                        <div>
-                            <label className="block text-sm font-medium text-slate-700 mb-1">Retail Price (VND) *</label>
-                            <input
-                                type="number"
-                                required
-                                min={0}
-                                value={form.price}
-                                onChange={(e) => setForm({ ...form, price: parseInt(e.target.value) || 0 })}
-                                className="w-full px-4 py-3 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#00575A]"
-                            />
-                        </div>
-                        <div>
-                            <label className="block text-sm font-medium text-[#00575A] mb-1">
-                                💎 Bonus Revenue (DTTT) *
-                            </label>
-                            <input
-                                type="number"
-                                required
-                                min={0}
-                                value={form.bonus_revenue}
-                                onChange={(e) => setForm({ ...form, bonus_revenue: parseInt(e.target.value) || 0 })}
-                                className="w-full px-4 py-3 border border-[#00575A] rounded-lg focus:outline-none focus:ring-2 focus:ring-[#00575A]"
-                            />
-                        </div>
-                    </div>
-
-                    {/* Stock & Category */}
-                    <div className="grid grid-cols-2 gap-4">
-                        <div>
-                            <label className="block text-sm font-medium text-slate-700 mb-1">Initial Stock</label>
-                            <input
-                                type="number"
-                                min={0}
-                                value={form.stock}
-                                onChange={(e) => setForm({ ...form, stock: parseInt(e.target.value) || 0 })}
-                                className="w-full px-4 py-3 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#00575A]"
-                            />
-                        </div>
-                        <div>
-                            <label className="block text-sm font-medium text-slate-700 mb-1">Category</label>
-                            <select
-                                value={form.category}
-                                onChange={(e) => setForm({ ...form, category: e.target.value })}
-                                className="w-full px-4 py-3 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#00575A]"
-                            >
-                                <option value="supplement">Supplement</option>
-                                <option value="skincare">Skincare</option>
-                                <option value="kit">Starter Kit</option>
-                                <option value="bundle">Bundle</option>
-                            </select>
-                        </div>
-                    </div>
-
-                    {/* Commission Preview */}
-                    <div className="bg-green-50 border border-green-200 rounded-lg p-4">
-                        <h4 className="text-sm font-medium text-green-800 mb-2">Commission Preview</h4>
-                        <div className="flex gap-6 text-sm">
-                            <div>
-                                <span className="text-green-600">Member (21%):</span>{' '}
-                                <span className="font-bold text-green-800">{formatVND(form.bonus_revenue * 0.21)}</span>
-                            </div>
-                            <div>
-                                <span className="text-green-600">Startup (25%):</span>{' '}
-                                <span className="font-bold text-green-800">{formatVND(form.bonus_revenue * 0.25)}</span>
-                            </div>
-                        </div>
-                    </div>
-
-                    {/* Actions */}
-                    <div className="flex gap-3 pt-4">
-                        <button
-                            type="button"
-                            onClick={onClose}
-                            className="flex-1 px-4 py-3 bg-slate-100 text-slate-700 font-medium rounded-lg hover:bg-slate-200 transition-colors"
-                        >
-                            Cancel
-                        </button>
-                        <button
-                            type="submit"
-                            disabled={loading || !form.name || form.price <= 0}
-                            className="flex-1 px-4 py-3 bg-[#00575A] text-white font-medium rounded-lg hover:bg-[#004447] transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
-                        >
-                            {loading ? (
-                                <>
-                                    <Loader2 className="w-4 h-4 animate-spin" />
-                                    Creating...
-                                </>
-                            ) : (
-                                <>
-                                    <Check className="w-4 h-4" />
-                                    Create Product
-                                </>
-                            )}
-                        </button>
-                    </div>
-                </form>
-            </motion.div>
-        </motion.div>
-    );
-};
-
-// ============================================================
-// STOCK BADGE COMPONENT
-// ============================================================
+const StatCard: React.FC<{ label: string; value: number; icon: React.ElementType; color: string }> = ({ label, value, icon: Icon, color }) => (
+    <div className="bg-white dark:bg-zinc-900 border border-zinc-100 dark:border-white/5 p-6 rounded-3xl shadow-sm">
+        <div className="flex items-center gap-3 mb-4">
+            <div className={`p-2.5 rounded-xl border ${color}`}>
+                <Icon size={18} />
+            </div>
+            <p className="text-[10px] font-black uppercase tracking-[0.2em] text-zinc-500">{label}</p>
+        </div>
+        <p className="text-3xl font-black text-zinc-900 dark:text-white tracking-tighter">{value}</p>
+    </div>
+);
 
 const StockBadge: React.FC<{ stock: number }> = ({ stock }) => {
-    if (stock === 0) {
-        return (
-            <span className="px-2 py-1 bg-red-100 text-red-700 rounded-full text-xs font-medium flex items-center gap-1">
-                <AlertTriangle className="w-3 h-3" />
-                Out of Stock
-            </span>
-        );
-    }
-    if (stock < 10) {
-        return (
-            <span className="px-2 py-1 bg-amber-100 text-amber-700 rounded-full text-xs font-medium flex items-center gap-1">
-                <AlertTriangle className="w-3 h-3" />
-                Low Stock ({stock})
-            </span>
-        );
-    }
+    if (stock === 0) return (
+        <span className="px-3 py-1 bg-rose-500/10 text-rose-500 border border-rose-500/20 rounded-lg text-[9px] font-black uppercase tracking-widest">Out of Stock</span>
+    );
+    if (stock < 10) return (
+        <span className="px-3 py-1 bg-amber-500/10 text-amber-500 border border-amber-500/20 rounded-lg text-[9px] font-black uppercase tracking-widest">Low Stock ({stock})</span>
+    );
     return (
-        <span className="px-2 py-1 bg-green-100 text-green-700 rounded-full text-xs font-medium">
-            In Stock ({stock})
-        </span>
+        <span className="px-3 py-1 bg-emerald-500/10 text-emerald-500 border border-emerald-500/20 rounded-lg text-[9px] font-black uppercase tracking-widest">In Stock ({stock})</span>
     );
 };
 
 // ============================================================
-// MAIN COMPONENT
+// MAIN PAGE
 // ============================================================
 
 const AdminProducts: React.FC = () => {
-    const [products, setProducts] = useState<Product[]>([]);
+    const {
+        loading,
+        actionLoading,
+        searchQuery,
+        setSearchQuery,
+        filteredProducts,
+        stats,
+        refresh,
+        handleUpdate,
+        handleCreate,
+        handleDelete
+    } = useProducts();
+
     const [editingId, setEditingId] = useState<string | null>(null);
     const [editForm, setEditForm] = useState<Partial<Product>>({});
-    const [loading, setLoading] = useState(true);
-    const [addLoading, setAddLoading] = useState(false);
     const [showAddModal, setShowAddModal] = useState(false);
-    const [searchQuery, setSearchQuery] = useState('');
-    const [deletingId, setDeletingId] = useState<string | null>(null);
-    const { showToast } = useToast();
 
-    useEffect(() => {
-        fetchProducts();
-    }, []);
-
-    const fetchProducts = async () => {
-        setLoading(true);
-        const { data, error } = await supabase
-            .from('products')
-            .select('*')
-            .order('sales_count', { ascending: false });
-
-        if (error) {
-            adminLogger.error('Failed to load products', error);
-            showToast('Failed to load products', 'error');
-        } else {
-            setProducts(data || []);
-        }
-        setLoading(false);
+    const onEdit = (p: Product) => {
+        setEditingId(p.id);
+        setEditForm(p);
     };
 
-    const handleEdit = (product: Product) => {
-        setEditingId(product.id);
-        setEditForm(product);
+    const onSave = async () => {
+        if (!editingId) return;
+        const success = await handleUpdate(editingId, editForm);
+        if (success) setEditingId(null);
     };
-
-    const handleSave = async () => {
-        if (!editingId || !editForm) return;
-
-        const { error } = await supabase
-            .from('products')
-            .update({
-                name: editForm.name,
-                description: editForm.description,
-                price: editForm.price,
-                bonus_revenue: editForm.bonus_revenue,
-                stock: editForm.stock,
-            })
-            .eq('id', editingId);
-
-        if (error) {
-            adminLogger.error('Failed to update product', error);
-            showToast('Failed to update product', 'error');
-        } else {
-            showToast('Product updated successfully', 'success');
-            setEditingId(null);
-            fetchProducts();
-        }
-    };
-
-    const handleCancel = () => {
-        setEditingId(null);
-        setEditForm({});
-    };
-
-    const handleAddProduct = async (newProduct: NewProduct) => {
-        setAddLoading(true);
-        const { error } = await supabase
-            .from('products')
-            .insert({
-                name: newProduct.name,
-                description: newProduct.description,
-                price: newProduct.price,
-                bonus_revenue: newProduct.bonus_revenue,
-                stock: newProduct.stock,
-                image_url: newProduct.image_url || 'https://via.placeholder.com/150',
-                sales_count: 0,
-                commission_rate: 0.21,
-                is_active: true
-            });
-
-        if (error) {
-            adminLogger.error('Failed to add product', error);
-            showToast('Failed to add product', 'error');
-        } else {
-            showToast('Product created successfully!', 'success');
-            setShowAddModal(false);
-            fetchProducts();
-        }
-        setAddLoading(false);
-    };
-
-    const handleDeleteProduct = async (id: string, name: string) => {
-        if (!confirm(`Delete "${name}"? This action cannot be undone.`)) return;
-
-        setDeletingId(id);
-        const { error } = await supabase
-            .from('products')
-            .delete()
-            .eq('id', id);
-
-        if (error) {
-            adminLogger.error('Failed to delete product', error);
-            showToast('Failed to delete product', 'error');
-        } else {
-            showToast('Product deleted', 'info');
-            fetchProducts();
-        }
-        setDeletingId(null);
-    };
-
-    const calculateCommission = (bonusRevenue: number, rate: number = 0.21) => {
-        return bonusRevenue * rate;
-    };
-
-    // Filter products by search
-    const filteredProducts = products.filter((p) =>
-        p.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        p.description?.toLowerCase().includes(searchQuery.toLowerCase())
-    );
-
-    // Stats
-    const totalProducts = products.length;
-    const lowStockCount = products.filter((p) => p.stock < 10).length;
-    const outOfStockCount = products.filter((p) => p.stock === 0).length;
-
-    if (loading) {
-        return (
-            <div className="flex items-center justify-center h-64">
-                <Loader2 className="w-12 h-12 text-[#00575A] animate-spin" />
-            </div>
-        );
-    }
 
     return (
         <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            className="space-y-6"
+            className="space-y-10 max-w-7xl mx-auto pb-24"
         >
-            {/* Page Header */}
-            <div className="flex items-center justify-between">
-                <div>
-                    <h2 className="text-3xl font-display font-bold text-slate-900 flex items-center gap-3">
-                        <Package className="w-8 h-8 text-[#00575A]" />
-                        Product Management
+            {/* Header */}
+            <div className="flex flex-col md:flex-row justify-between items-start md:items-end gap-6">
+                <div className="space-y-2">
+                    <h2 className="text-4xl font-black text-zinc-900 dark:text-white tracking-tighter uppercase italic flex items-center gap-3">
+                        <Package className="text-[#00575A] w-10 h-10" />
+                        Global Catalog
                     </h2>
-                    <p className="text-slate-500 mt-1">
-                        Manage product pricing and bonus revenue (DTTT)
-                    </p>
+                    <p className="text-zinc-500 font-medium text-lg">Inventory management & DTTT strategy control.</p>
                 </div>
-                <div className="flex items-center gap-2">
-                    <button
-                        onClick={fetchProducts}
-                        className="p-2 hover:bg-slate-100 rounded-lg transition-colors"
-                        title="Refresh products"
-                    >
-                        <RefreshCw className="w-5 h-5 text-slate-600" />
+                <div className="flex items-center gap-3">
+                    <button onClick={refresh} className="p-4 bg-white dark:bg-zinc-900 border border-zinc-100 dark:border-white/5 rounded-2xl shadow-sm text-zinc-500">
+                        <RefreshCw size={20} className={loading ? 'animate-spin' : ''} />
                     </button>
                     <button
                         onClick={() => setShowAddModal(true)}
-                        className="px-4 py-2 bg-[#00575A] text-white font-medium rounded-lg hover:bg-[#004447] transition-colors flex items-center gap-2"
+                        className="flex items-center gap-3 bg-[#00575A] text-white px-8 py-4 rounded-2xl font-black uppercase tracking-widest hover:bg-[#004447] transition-all shadow-xl shadow-teal-500/20"
                     >
-                        <Plus className="w-4 h-4" />
+                        <Plus size={20} />
                         Add Product
                     </button>
                 </div>
             </div>
 
-            {/* Stats Cards */}
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                <div className="bg-white border border-slate-200 rounded-lg p-4">
-                    <div className="flex items-center gap-3">
-                        <Package className="w-5 h-5 text-[#00575A]" />
-                        <div>
-                            <p className="text-sm text-slate-500">Total Products</p>
-                            <p className="text-2xl font-bold text-slate-900">{totalProducts}</p>
-                        </div>
-                    </div>
+            {/* Stats */}
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <StatCard label="Total Inventory" value={stats.total} icon={Package} color="bg-blue-500/10 text-blue-500 border-blue-500/20" />
+                <StatCard label="Low Stock Alert" value={stats.lowStock} icon={AlertTriangle} color="bg-amber-500/10 text-amber-500 border-amber-500/20" />
+                <StatCard label="Depleted Units" value={stats.outOfStock} icon={TrendingUp} color="bg-rose-500/10 text-rose-500 border-rose-500/20" />
+            </div>
+
+            {/* DTTT Info Card */}
+            <div className="bg-[#00575A]/5 border border-[#00575A]/20 p-6 rounded-[2rem] flex items-start gap-4">
+                <div className="p-2 bg-[#00575A] text-white rounded-xl shadow-lg">
+                    <ShieldCheck size={20} />
                 </div>
-                <div className="bg-white border border-slate-200 rounded-lg p-4">
-                    <div className="flex items-center gap-3">
-                        <AlertTriangle className="w-5 h-5 text-amber-500" />
-                        <div>
-                            <p className="text-sm text-slate-500">Low Stock</p>
-                            <p className="text-2xl font-bold text-amber-600">{lowStockCount}</p>
-                        </div>
-                    </div>
-                </div>
-                <div className="bg-white border border-slate-200 rounded-lg p-4">
-                    <div className="flex items-center gap-3">
-                        <AlertTriangle className="w-5 h-5 text-red-500" />
-                        <div>
-                            <p className="text-sm text-slate-500">Out of Stock</p>
-                            <p className="text-2xl font-bold text-red-600">{outOfStockCount}</p>
-                        </div>
-                    </div>
+                <div>
+                    <h4 className="text-[10px] font-black uppercase tracking-widest text-[#00575A] mb-1">DTTT Commission Logic</h4>
+                    <p className="text-sm text-zinc-600 dark:text-zinc-400 font-medium">
+                        Bonus Revenue (DTTT) represents the real financial basis for commission calculation.
+                        <span className="text-[#00575A] font-black ml-2 uppercase tracking-tighter">Member: 21% | Startup: 25%</span>
+                    </p>
                 </div>
             </div>
 
-            {/* Search Bar */}
-            <div className="relative">
-                <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-400" />
+            {/* Filter bar */}
+            <div className="relative group max-w-2xl">
+                <Search className="absolute left-5 top-1/2 -translate-y-1/2 w-5 h-5 text-zinc-400 group-focus-within:text-[#00575A] transition-colors" />
                 <input
                     type="text"
-                    placeholder="Search products by name or description..."
+                    placeholder="Search catalog by name or SKU..."
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
-                    className="w-full pl-10 pr-4 py-3 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#00575A] focus:border-transparent"
+                    className="w-full pl-14 pr-6 py-4 bg-white dark:bg-zinc-900 border border-zinc-100 dark:border-white/5 rounded-[2rem] text-zinc-900 dark:text-white placeholder:text-zinc-500 font-bold focus:ring-4 focus:ring-[#00575A]/10 outline-none transition-all shadow-sm"
                 />
             </div>
 
-            {/* Info Card */}
-            <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 flex items-start gap-3">
-                <Info className="w-5 h-5 text-blue-600 mt-0.5 shrink-0" />
-                <div className="text-sm text-blue-900">
-                    <strong>Bonus Revenue (DTTT)</strong> is the amount used to calculate commissions.
-                    <br />
-                    • Member: 21% of DTTT | Startup/Partner: 25% of DTTT
-                </div>
-            </div>
-
-            {/* Products Grid */}
-            <div className="grid grid-cols-1 gap-6">
-                {filteredProducts.length === 0 ? (
-                    <div className="bg-white border border-slate-200 rounded-lg p-12 text-center">
-                        <Package className="w-12 h-12 text-slate-300 mx-auto mb-4" />
-                        <p className="text-slate-500">No products found</p>
-                    </div>
-                ) : (
-                    filteredProducts.map((product) => {
-                        const isEditing = editingId === product.id;
-                        const displayProduct = isEditing ? editForm : product;
-                        const bonusRevenue = displayProduct.bonus_revenue || 0;
-                        const memberCommission = calculateCommission(bonusRevenue, 0.21);
-                        const startupCommission = calculateCommission(bonusRevenue, 0.25);
+            {/* Products List */}
+            <div className="space-y-6">
+                <AnimatePresence mode="popLayout">
+                    {filteredProducts.map((p) => {
+                        const isEditing = editingId === p.id;
+                        const data = isEditing ? editForm as Product : p;
+                        const memberComm = (data.bonus_revenue || 0) * 0.21;
+                        const partnerComm = (data.bonus_revenue || 0) * 0.25;
 
                         return (
                             <motion.div
-                                key={product.id}
-                                initial={{ opacity: 0, y: 20 }}
+                                key={p.id}
+                                layout
+                                initial={{ opacity: 0, y: 10 }}
                                 animate={{ opacity: 1, y: 0 }}
-                                className="bg-white border border-slate-200 rounded-lg overflow-hidden hover:shadow-lg transition-shadow"
+                                className={`bg-white dark:bg-zinc-900/50 border rounded-[2.5rem] p-8 transition-all hover:shadow-2xl hover:shadow-zinc-500/5 ${isEditing ? 'border-[#00575A] ring-4 ring-[#00575A]/5' : 'border-zinc-100 dark:border-white/5'
+                                    }`}
                             >
-                                <div className="grid grid-cols-1 md:grid-cols-4 gap-6 p-6">
-                                    {/* Product Image & Info */}
-                                    <div className="flex items-start gap-4">
-                                        <img
-                                            src={product.image_url || 'https://via.placeholder.com/150'}
-                                            alt={product.name}
-                                            className="w-24 h-24 rounded-lg object-cover shrink-0"
-                                            onError={(e) => {
-                                                const target = e.target as HTMLImageElement;
-                                                target.src = 'https://via.placeholder.com/150';
-                                            }}
-                                        />
-                                        <div className="flex-1">
+                                <div className="grid grid-cols-1 xl:grid-cols-4 gap-10">
+                                    {/* Info */}
+                                    <div className="flex gap-6 col-span-1 xl:col-span-2">
+                                        <div className="w-32 h-32 bg-zinc-100 dark:bg-zinc-800 rounded-3xl overflow-hidden border border-zinc-200 dark:border-white/5 shrink-0 shadow-inner">
+                                            {p.image_url ? <img src={p.image_url} alt={p.name} className="w-full h-full object-cover" /> : <ImageIcon size={32} className="text-zinc-400 m-12" />}
+                                        </div>
+                                        <div className="space-y-4">
+                                            <div>
+                                                {isEditing ? (
+                                                    <input
+                                                        type="text"
+                                                        value={editForm.name}
+                                                        onChange={(e) => setEditForm({ ...editForm, name: e.target.value })}
+                                                        className="bg-zinc-50 dark:bg-zinc-800 px-4 py-2 rounded-xl text-xl font-black w-full outline-none border border-[#00575A]/20"
+                                                    />
+                                                ) : (
+                                                    <h3 className="text-2xl font-black text-zinc-900 dark:text-white tracking-tight">{p.name}</h3>
+                                                )}
+                                                <div className="flex items-center gap-3 mt-2">
+                                                    <StockBadge stock={p.stock} />
+                                                    <span className="text-[10px] font-black uppercase tracking-widest text-zinc-400">SKU: {p.id.slice(0, 8)}</span>
+                                                </div>
+                                            </div>
                                             {isEditing ? (
-                                                <input
-                                                    type="text"
-                                                    value={displayProduct.name || ''}
-                                                    onChange={(e) => setEditForm({ ...editForm, name: e.target.value })}
-                                                    className="w-full px-3 py-2 border border-slate-200 rounded-lg font-bold text-lg mb-2"
+                                                <textarea
+                                                    value={editForm.description}
+                                                    onChange={(e) => setEditForm({ ...editForm, description: e.target.value })}
+                                                    className="bg-zinc-50 dark:bg-zinc-800 px-4 py-2 rounded-xl text-sm w-full outline-none border border-white/5"
+                                                    rows={2}
                                                 />
                                             ) : (
-                                                <h3 className="font-bold text-lg text-slate-900">{product.name}</h3>
+                                                <p className="text-sm text-zinc-500 font-medium line-clamp-2 italic">"{p.description}"</p>
                                             )}
-                                            <p className="text-xs text-slate-500 mb-2">ID: {product.id}</p>
-                                            <StockBadge stock={product.stock} />
                                         </div>
                                     </div>
 
-                                    {/* Pricing */}
-                                    <div className="space-y-3">
-                                        <div>
-                                            <label className="text-xs text-slate-500 uppercase tracking-wide block mb-1">
-                                                Retail Price
-                                            </label>
+                                    {/* Pricing & DTTT */}
+                                    <div className="space-y-6">
+                                        <div className="space-y-2">
+                                            <label className="text-[10px] font-black text-zinc-400 uppercase tracking-widest">Retail MSRP</label>
                                             {isEditing ? (
                                                 <input
                                                     type="number"
-                                                    value={displayProduct.price || 0}
-                                                    onChange={(e) => setEditForm({ ...editForm, price: parseInt(e.target.value) })}
-                                                    className="w-full px-3 py-2 border border-slate-200 rounded-lg"
+                                                    value={editForm.price}
+                                                    onChange={(e) => setEditForm({ ...editForm, price: Number(e.target.value) })}
+                                                    className="bg-zinc-50 dark:bg-zinc-800 px-4 py-2 rounded-xl text-lg font-black w-full outline-none"
                                                 />
                                             ) : (
-                                                <div className="text-xl font-bold text-slate-900">
-                                                    {formatVND(product.price)}
-                                                </div>
+                                                <p className="text-2xl font-black text-zinc-900 dark:text-white tracking-widest">{formatVND(p.price)}</p>
                                             )}
                                         </div>
-
-                                        <div>
-                                            <label className="text-xs text-[#00575A] uppercase tracking-wide block mb-1 font-medium">
-                                                💎 Bonus Revenue (DTTT)
-                                            </label>
+                                        <div className="space-y-2">
+                                            <label className="text-[10px] font-black text-[#00575A] uppercase tracking-widest">DTTT Basis</label>
                                             {isEditing ? (
                                                 <input
                                                     type="number"
-                                                    value={displayProduct.bonus_revenue || 0}
-                                                    onChange={(e) => setEditForm({ ...editForm, bonus_revenue: parseInt(e.target.value) })}
-                                                    className="w-full px-3 py-2 border border-[#00575A] rounded-lg focus:ring-2 focus:ring-[#00575A]"
+                                                    value={editForm.bonus_revenue}
+                                                    onChange={(e) => setEditForm({ ...editForm, bonus_revenue: Number(e.target.value) })}
+                                                    className="bg-emerald-500/5 dark:bg-emerald-500/10 px-4 py-2 rounded-xl text-lg font-black w-full outline-none text-[#00575A] border border-[#00575A]/20"
                                                 />
                                             ) : (
-                                                <div className="text-xl font-bold text-[#00575A]">
-                                                    {formatVND(bonusRevenue)}
-                                                </div>
+                                                <p className="text-2xl font-black text-[#00575A] tracking-widest">{formatVND(p.bonus_revenue)}</p>
                                             )}
                                         </div>
                                     </div>
 
-                                    {/* Commission Preview */}
-                                    <div className="space-y-3">
-                                        <div className="bg-slate-50 rounded-lg p-4">
-                                            <div className="text-xs text-slate-500 uppercase tracking-wide mb-2">
-                                                Commission Preview
+                                    {/* Commission Preview & Actions */}
+                                    <div className="flex flex-col justify-between">
+                                        <div className="bg-zinc-50 dark:bg-zinc-950/40 p-4 rounded-3xl border border-zinc-100 dark:border-white/5 space-y-2">
+                                            <div className="flex justify-between items-center text-[10px] font-black uppercase text-zinc-400">
+                                                <span>Member Comm</span>
+                                                <span className="text-zinc-700 dark:text-zinc-200">{formatVND(memberComm)}</span>
                                             </div>
-                                            <div className="space-y-2">
-                                                <div className="flex items-center justify-between">
-                                                    <span className="text-sm text-slate-600">Member (21%):</span>
-                                                    <span className="font-bold text-slate-900">
-                                                        {formatVND(memberCommission)}
-                                                    </span>
-                                                </div>
-                                                <div className="flex items-center justify-between">
-                                                    <span className="text-sm text-slate-600">Startup (25%):</span>
-                                                    <span className="font-bold text-[#00575A]">
-                                                        {formatVND(startupCommission)}
-                                                    </span>
-                                                </div>
+                                            <div className="flex justify-between items-center text-[10px] font-black uppercase text-[#00575A]">
+                                                <span>Partner Comm</span>
+                                                <span className="font-black">{formatVND(partnerComm)}</span>
                                             </div>
                                         </div>
-                                        <div className="text-xs text-slate-500">
-                                            Sales: {product.sales_count.toLocaleString()}
-                                        </div>
-                                    </div>
 
-                                    {/* Actions */}
-                                    <div className="flex flex-col gap-2 justify-center">
-                                        {isEditing ? (
-                                            <>
-                                                <button
-                                                    onClick={handleSave}
-                                                    className="px-4 py-2 bg-[#00575A] text-white rounded-lg hover:bg-[#004447] transition-colors flex items-center justify-center gap-2"
-                                                >
-                                                    <Save className="w-4 h-4" />
-                                                    Save
-                                                </button>
-                                                <button
-                                                    onClick={handleCancel}
-                                                    className="px-4 py-2 bg-slate-200 text-slate-700 rounded-lg hover:bg-slate-300 transition-colors flex items-center justify-center gap-2"
-                                                >
-                                                    <X className="w-4 h-4" />
-                                                    Cancel
-                                                </button>
-                                            </>
-                                        ) : (
-                                            <>
-                                                <button
-                                                    onClick={() => handleEdit(product)}
-                                                    className="px-4 py-2 bg-slate-100 text-slate-700 rounded-lg hover:bg-slate-200 transition-colors flex items-center justify-center gap-2"
-                                                >
-                                                    <Edit2 className="w-4 h-4" />
-                                                    Edit
-                                                </button>
-                                                <button
-                                                    onClick={() => handleDeleteProduct(product.id, product.name)}
-                                                    disabled={deletingId === product.id}
-                                                    className="px-4 py-2 bg-red-50 text-red-600 rounded-lg hover:bg-red-100 transition-colors flex items-center justify-center gap-2 disabled:opacity-50"
-                                                >
-                                                    {deletingId === product.id ? (
-                                                        <Loader2 className="w-4 h-4 animate-spin" />
-                                                    ) : (
-                                                        <Trash2 className="w-4 h-4" />
-                                                    )}
-                                                    Delete
-                                                </button>
-                                            </>
-                                        )}
+                                        <div className="flex gap-2 mt-6">
+                                            {isEditing ? (
+                                                <>
+                                                    <button onClick={onSave} className="flex-1 bg-[#00575A] text-white py-3 rounded-2xl font-black uppercase tracking-widest text-[10px] shadow-lg shadow-teal-500/20">Commit</button>
+                                                    <button onClick={() => setEditingId(null)} className="px-4 bg-zinc-100 dark:bg-zinc-800 text-zinc-500 py-3 rounded-2xl font-black uppercase tracking-widest text-[10px]">ESC</button>
+                                                </>
+                                            ) : (
+                                                <>
+                                                    <button onClick={() => onEdit(p)} className="flex-1 bg-zinc-100 dark:bg-zinc-800 text-zinc-900 dark:text-white py-3 rounded-2xl font-black uppercase tracking-widest text-[10px] border border-zinc-200 dark:border-white/5 hover:bg-zinc-200 transition-all">Edit Config</button>
+                                                    <button onClick={() => handleDelete(p.id, p.name)} className="p-3 bg-rose-500/5 text-rose-500 hover:bg-rose-500/10 rounded-2xl transition-all border border-rose-500/10"><Trash2 size={16} /></button>
+                                                </>
+                                            )}
+                                        </div>
                                     </div>
                                 </div>
                             </motion.div>
                         );
-                    })
-                )}
+                    })}
+                </AnimatePresence>
             </div>
-
-            {/* Add Product Modal */}
-            <AnimatePresence>
-                {showAddModal && (
-                    <AddProductModal
-                        onClose={() => setShowAddModal(false)}
-                        onAdd={handleAddProduct}
-                        loading={addLoading}
-                    />
-                )}
-            </AnimatePresence>
         </motion.div>
     );
 };

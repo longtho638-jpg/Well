@@ -1,62 +1,24 @@
-import { BaseAgent } from '../core/BaseAgent';
-import { AgentDefinition } from '@/types/agentic';
-
 /**
- * AgencyOS Command Agent
+ * AgencyOS Command Agent (Refactored)
  * Integrates 85+ AgencyOS slash commands into WellNexus Agent-OS.
- * Supports Marketing, Sales, Finance, Operations, Strategy, and AI Agents categories.
+ * 
+ * Logic and definitions moved to commandDefinitions.ts for better maintainability.
  */
 
-// AgencyOS Command Categories
-export const AGENCYOS_COMMANDS = {
-    marketing: [
-        { command: '/marketing-plan', description: 'Tạo kế hoạch marketing toàn diện' },
-        { command: '/content-calendar', description: 'Lịch nội dung theo tuần/tháng' },
-        { command: '/social-post', description: 'Tạo bài đăng mạng xã hội' },
-        { command: '/email-campaign', description: 'Thiết kế chiến dịch email marketing' },
-        { command: '/seo-audit', description: 'Kiểm tra và tối ưu SEO' },
-    ],
-    sales: [
-        { command: '/proposal', description: 'Tạo proposal chuyên nghiệp' },
-        { command: '/pitch-deck', description: 'Slide thuyết trình cho khách hàng' },
-        { command: '/crm-sync', description: 'Đồng bộ dữ liệu CRM' },
-        { command: '/follow-up', description: 'Email follow-up tự động' },
-        { command: '/quote', description: 'Báo giá nhanh cho khách hàng' },
-    ],
-    finance: [
-        { command: '/invoice', description: 'Tạo hóa đơn chuyên nghiệp' },
-        { command: '/runway-calc', description: 'Tính runway và burn rate' },
-        { command: '/expense-report', description: 'Báo cáo chi phí chi tiết' },
-        { command: '/budget', description: 'Lập ngân sách dự án/tháng' },
-        { command: '/pnl', description: 'Báo cáo P&L (Lãi/Lỗ)' },
-    ],
-    operations: [
-        { command: '/sop-gen', description: 'Tạo SOP (Quy trình chuẩn)' },
-        { command: '/workflow', description: 'Thiết kế workflow tự động' },
-        { command: '/meeting-notes', description: 'Ghi chú và tóm tắt cuộc họp' },
-        { command: '/task-assign', description: 'Phân công công việc nhóm' },
-        { command: '/checklist', description: 'Tạo checklist công việc' },
-    ],
-    strategy: [
-        { command: '/binh-phap', description: 'Chiến lược Binh Pháp Tôn Tử' },
-        { command: '/swot', description: 'Phân tích SWOT' },
-        { command: '/competitor-analysis', description: 'Phân tích đối thủ cạnh tranh' },
-        { command: '/market-research', description: 'Nghiên cứu thị trường' },
-        { command: '/okr', description: 'Thiết lập OKRs' },
-    ],
-    agents: [
-        { command: '/researcher', description: 'AI Agent nghiên cứu thông tin' },
-        { command: '/writer', description: 'AI Agent viết nội dung' },
-        { command: '/analyst', description: 'AI Agent phân tích dữ liệu' },
-        { command: '/designer', description: 'AI Agent thiết kế UI/UX' },
-        { command: '/developer', description: 'AI Agent lập trình' },
-    ],
-} as const;
+import { BaseAgent } from '../core/BaseAgent';
+import { AgentDefinition } from '@/types/agentic';
+import {
+    AGENCYOS_COMMANDS,
+    AgencyOSCategory,
+    AgencyOSCommand,
+    commandStore,
+    generateCommandOutput
+} from './commandDefinitions';
 
-export type AgencyOSCategory = keyof typeof AGENCYOS_COMMANDS;
-export type AgencyOSCommand = typeof AGENCYOS_COMMANDS[AgencyOSCategory][number];
+export type { AgencyOSCategory, AgencyOSCommand };
+export { AGENCYOS_COMMANDS, commandStore, generateCommandOutput };
 
-// Command execution result type
+// Types for internal tracking
 interface CommandExecutionResult {
     success: boolean;
     command: string;
@@ -69,7 +31,6 @@ interface CommandExecutionResult {
     suggestion?: AgencyOSCommand[];
 }
 
-// Command history entry type
 interface CommandHistoryEntry {
     command: string;
     timestamp: string;
@@ -82,7 +43,7 @@ export class AgencyOSAgent extends BaseAgent {
     constructor() {
         const definition: AgentDefinition = {
             agent_name: 'AgencyOS',
-            business_function: 'Operations & Logistics', // Primary function
+            business_function: 'Operations & Logistics',
             primary_objectives: [
                 'Execute 85+ AgencyOS automation commands',
                 'Streamline marketing, sales, finance, operations, and strategy workflows',
@@ -139,66 +100,94 @@ export class AgencyOSAgent extends BaseAgent {
     }
 
     /**
-     * Execute an AgencyOS command
+     * Main execution entry point
      */
     async execute(input: {
-        action: string;
+        action: 'executeCommand' | 'listCommands' | 'getCommandHelp' | 'searchCommands';
         command?: string;
         context?: Record<string, unknown>;
         category?: AgencyOSCategory;
-    }): Promise<unknown> {
+    }): Promise<CommandExecutionResult | { success: boolean; total: number; categories: Record<string, any> }> {
         const { action, command, context, category } = input;
 
         const canProceed = await this.checkPolicies(action, input);
         if (!canProceed) {
-            return { success: false, command: '', error: 'Action blocked by policy' };
+            return {
+                success: false,
+                command: command || '',
+                error: 'Action blocked by policy: High-value operations require human review.'
+            };
         }
 
         try {
-            let output;
-
             switch (action) {
-                case 'executeCommand':
-                    if (!command) throw new Error('Command is required');
-                    output = await this.executeAgencyOSCommand(command, context);
-                    break;
+                case 'executeCommand': {
+                    if (!command) throw new Error('Command identifier is required');
+                    const output = await this.executeAgencyOSCommand(command, context);
+                    this.log(action, input, output);
 
-                case 'listCommands':
-                    output = this.listCommands(category);
-                    break;
+                    if (output.success) {
+                        const current = this.definition.success_kpis.find(k => k.name === 'Commands Executed')?.current || 0;
+                        this.updateKPI('Commands Executed', current + 1);
+                    }
+                    return output;
+                }
 
-                case 'getCommandHelp':
-                    if (!command) throw new Error('Command is required');
-                    output = this.getCommandHelp(command);
-                    break;
+                case 'listCommands': {
+                    const output = this.listCommands(category);
+                    this.log(action, input, output);
+                    return { success: true, ...output };
+                }
 
-                case 'searchCommands':
-                    if (!command) throw new Error('Search query is required');
-                    output = this.searchCommands(command);
-                    break;
+                case 'getCommandHelp': {
+                    if (!command) throw new Error('Command query is required for help documentation');
+                    const result = commandStore.find(command);
+                    if (!result) throw new Error(`Command not found: ${command}`);
 
-                default:
-                    throw new Error(`Unknown action: ${action}`);
+                    const output: CommandExecutionResult = {
+                        success: true,
+                        command,
+                        description: result.description,
+                        category: result.category,
+                        message: `Help info for ${command}`
+                    };
+                    this.log(action, input, output);
+                    return output;
+                }
+
+                case 'searchCommands': {
+                    if (!command) throw new Error('Search string is required');
+                    const results = commandStore.search(command);
+
+                    const output: CommandExecutionResult = {
+                        success: true,
+                        command: 'search',
+                        message: `Found ${results.length} matching commands`,
+                        suggestion: results
+                    };
+                    this.log(action, input, output);
+                    return output;
+                }
+
+                default: {
+                    const _exhaustiveCheck: never = action;
+                    throw new Error(`Execution error: Unknown action type ${_exhaustiveCheck}`);
+                }
             }
-
-            this.log(action, input, output);
-
-            // Update KPI
-            const execKpi = this.definition.success_kpis.find(k => k.name === 'Commands Executed');
-            if (execKpi && action === 'executeCommand') {
-                execKpi.current = (execKpi.current || 0) + 1;
-            }
-
-            return output;
-        } catch (error) {
-            const errorOutput: CommandExecutionResult = { success: false, command: command || '', error: error instanceof Error ? error.message : 'Unknown error' };
+        } catch (error: unknown) {
+            const errorMsg = error instanceof Error ? error.message : 'Unknown execution error';
+            const errorOutput: CommandExecutionResult = {
+                success: false,
+                command: command || '',
+                error: errorMsg
+            };
             this.log(action, input, errorOutput);
             return errorOutput;
         }
     }
 
     /**
-     * Execute a specific AgencyOS command
+     * Execute a specific AgencyOS command (Simulation)
      */
     private async executeAgencyOSCommand(
         command: string,
@@ -206,55 +195,34 @@ export class AgencyOSAgent extends BaseAgent {
     ): Promise<CommandExecutionResult> {
         const normalizedCommand = command.startsWith('/') ? command : `/${command}`;
 
-        // Find command info
-        const commandInfo = this.findCommand(normalizedCommand);
+        const commandInfo = commandStore.find(normalizedCommand);
         if (!commandInfo) {
             return {
                 success: false,
                 command: normalizedCommand,
                 error: `Unknown command: ${normalizedCommand}`,
-                suggestion: this.searchCommands(normalizedCommand.replace('/', '')),
+                suggestion: commandStore.search(normalizedCommand.replace('/', '')),
             };
         }
 
-        // Record execution
-        const execution = {
-            command: normalizedCommand,
-            timestamp: new Date().toISOString(),
-            result: null as CommandExecutionResult | null,
-        };
-
-        // Simulate command execution (in production, this would call actual AgencyOS backend)
-        const result = {
+        const executionTimestamp = new Date().toISOString();
+        const result: CommandExecutionResult = {
             success: true,
             command: normalizedCommand,
             description: commandInfo.description,
             category: commandInfo.category,
-            executedAt: execution.timestamp,
+            executedAt: executionTimestamp,
             message: `✅ Command ${normalizedCommand} executed successfully.`,
-            output: this.generateCommandOutput(normalizedCommand, context),
+            output: generateCommandOutput(normalizedCommand, context),
         };
 
-        execution.result = result;
-        this.commandHistory.push(execution);
+        this.commandHistory.push({
+            command: normalizedCommand,
+            timestamp: executionTimestamp,
+            result,
+        });
 
         return result;
-    }
-
-    /**
-     * Generate simulated output for a command
-     */
-    private generateCommandOutput(command: string, _context?: Record<string, unknown>): string {
-        const outputs: Record<string, string> = {
-            '/marketing-plan': '📊 Marketing Plan generated with 4 channels, 12 campaigns, 90-day timeline.',
-            '/proposal': '📄 Professional proposal created with pricing table and terms.',
-            '/invoice': '🧾 Invoice #INV-2024-001 created and ready to send.',
-            '/binh-phap': '🏯 Binh Pháp strategy analysis: 6 tactical recommendations identified.',
-            '/swot': '📈 SWOT Analysis complete: 4 Strengths, 3 Weaknesses, 5 Opportunities, 2 Threats.',
-            '/sop-gen': '📋 SOP document generated with 8 steps and compliance checklist.',
-        };
-
-        return outputs[command] || `📦 Command ${command} completed. Ready for next action.`;
     }
 
     /**
@@ -275,51 +243,6 @@ export class AgencyOSAgent extends BaseAgent {
             total: Object.values(AGENCYOS_COMMANDS).flat().length,
             categories: AGENCYOS_COMMANDS,
         };
-    }
-
-    /**
-     * Get help for a specific command
-     */
-    private getCommandHelp(command: string): { command: string; description: string; category: string } | null {
-        return this.findCommand(command);
-    }
-
-    /**
-     * Search commands by keyword
-     */
-    private searchCommands(query: string): AgencyOSCommand[] {
-        const lowerQuery = query.toLowerCase();
-        const results: AgencyOSCommand[] = [];
-
-        for (const commands of Object.values(AGENCYOS_COMMANDS)) {
-            for (const cmd of commands) {
-                if (
-                    cmd.command.toLowerCase().includes(lowerQuery) ||
-                    cmd.description.toLowerCase().includes(lowerQuery)
-                ) {
-                    results.push(cmd);
-                }
-            }
-        }
-
-        return results;
-    }
-
-    /**
-     * Find a command by name
-     */
-    private findCommand(command: string): { command: string; description: string; category: string } | null {
-        const normalizedCommand = command.startsWith('/') ? command : `/${command}`;
-
-        for (const [category, commands] of Object.entries(AGENCYOS_COMMANDS)) {
-            for (const cmd of commands) {
-                if (cmd.command === normalizedCommand) {
-                    return { ...cmd, category };
-                }
-            }
-        }
-
-        return null;
     }
 
     /**

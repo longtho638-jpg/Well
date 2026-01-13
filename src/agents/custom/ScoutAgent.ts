@@ -99,31 +99,41 @@ export class ScoutAgent extends BaseAgent {
         maxResults?: number;
     }): Promise<{ success: boolean;[key: string]: unknown }> {
         try {
-            let result: Record<string, unknown> | DependencyMap;
+            let result: Record<string, unknown>;
 
             switch (action.action) {
-                case 'explore':
-                    result = await this.exploreCodebase(action.query, action.scope);
+                case 'explore': {
+                    const findings = await this.exploreCodebase(action.query, action.scope);
+                    result = findings;
                     this.codebasesExplored++;
                     this.updateKPI('Codebases Explored', this.codebasesExplored);
                     break;
+                }
 
-                case 'findPatterns':
-                    result = await this.discoverPatterns(action.query, action.scope);
-                    this.patternsFound += (result.patterns as PatternMatch[])?.length || 0;
+                case 'findPatterns': {
+                    const patterns = await this.discoverPatterns(action.query, action.scope);
+                    result = patterns;
+                    this.patternsFound += (patterns.patterns as PatternMatch[])?.length || 0;
                     this.updateKPI('Patterns Found', this.patternsFound);
                     break;
+                }
 
-                case 'mapDependencies':
-                    result = await this.analyzeDependencies(action.query);
+                case 'mapDependencies': {
+                    const deps = await this.analyzeDependencies(action.query);
+                    result = deps as unknown as Record<string, unknown>;
                     break;
+                }
 
-                case 'gatherContext':
-                    result = await this.collectContext(action.query, action.scope);
+                case 'gatherContext': {
+                    const context = await this.collectContext(action.query, action.scope);
+                    result = context;
                     break;
+                }
 
-                default:
-                    throw new Error(`Unknown action: ${action.action}`);
+                default: {
+                    const _exhaustiveCheck: never = action.action;
+                    throw new Error(`Unknown action: ${_exhaustiveCheck}`);
+                }
             }
 
             return { success: true, ...result };
@@ -138,7 +148,13 @@ export class ScoutAgent extends BaseAgent {
     /**
      * Explore codebase to find relevant files
      */
-    private async exploreCodebase(query: string, scope?: string): Promise<Record<string, unknown>> {
+    private async exploreCodebase(query: string, scope?: string): Promise<{
+        query: string;
+        scope: string;
+        findings: CodeFinding[];
+        totalFiles: number;
+        categories: Record<string, string[]>;
+    }> {
         // Simulate codebase exploration
         const findings: CodeFinding[] = [];
 

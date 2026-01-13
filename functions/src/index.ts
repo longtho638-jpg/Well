@@ -47,40 +47,44 @@ export const processOrder = functions.firestore
       const taxAmount = calculateTax(commission);
       const netCommission = commission - taxAmount;
 
-      // Get user wallet
-      const walletRef = db.collection('wallets').doc(order.userId);
-      const walletDoc = await walletRef.get();
+      // START TRANSACTION for Wallet Update
+      await db.runTransaction(async (transaction) => {
+        const walletRef = db.collection('wallets').doc(order.userId);
+        const walletDoc = await transaction.get(walletRef);
 
-      if (!walletDoc.exists) {
-        throw new Error('Wallet not found');
-      }
+        if (!walletDoc.exists) {
+          throw new Error('Wallet not found');
+        }
 
-      // Create transaction record
-      const transaction = {
-        userId: order.userId,
-        type: 'commission',
-        amount: netCommission,
-        grossAmount: commission,
-        taxDeducted: taxAmount,
-        relatedOrderId: orderId,
-        status: 'completed',
-        createdAt: admin.firestore.FieldValue.serverTimestamp(),
-      };
+        // Create transaction record within the same transaction or outside (idempotency key needed if outside)
+        // For simplicity and safety, we read wallet inside transaction, calculate new balance, and update.
+        // We can write the transaction log outside or inside. Inside is better for consistency.
+        
+        const currentBalance = walletDoc.data()!.balance || 0;
+        const currentEarnings = walletDoc.data()!.totalEarnings || 0;
+        const currentTax = walletDoc.data()!.taxWithheldTotal || 0;
 
-      await db.collection('transactions').add(transaction);
+        transaction.update(walletRef, {
+          balance: currentBalance + netCommission,
+          totalEarnings: currentEarnings + commission,
+          taxWithheldTotal: currentTax + taxAmount,
+        });
 
-      // Update wallet
-      const currentBalance = walletDoc.data()!.balance || 0;
-      const currentEarnings = walletDoc.data()!.totalEarnings || 0;
-      const currentTax = walletDoc.data()!.taxWithheldTotal || 0;
-
-      await walletRef.update({
-        balance: currentBalance + netCommission,
-        totalEarnings: currentEarnings + commission,
-        taxWithheldTotal: currentTax + taxAmount,
+        // We can also create the ledger entry here to be atomic
+        const transactionRef = db.collection('transactions').doc();
+        transaction.set(transactionRef, {
+          userId: order.userId,
+          type: 'commission',
+          amount: netCommission,
+          grossAmount: commission,
+          taxDeducted: taxAmount,
+          relatedOrderId: orderId,
+          status: 'completed',
+          createdAt: admin.firestore.FieldValue.serverTimestamp(),
+        });
       });
 
-      // Update order status
+      // Update order status (can be outside transaction as it triggers this)
       await snap.ref.update({
         status: 'completed',
         processedAt: admin.firestore.FieldValue.serverTimestamp(),
@@ -160,37 +164,39 @@ export const requestPayout = functions.https.onCall(async (data, context) => {
   }
 
   try {
-    const walletRef = db.collection('wallets').doc(userId);
-    const walletDoc = await walletRef.get();
+    // Use transaction to prevent race conditions (Double Spending)
+    await db.runTransaction(async (transaction) => {
+      const walletRef = db.collection('wallets').doc(userId);
+      const walletDoc = await transaction.get(walletRef);
 
-    if (!walletDoc.exists) {
-      throw new functions.https.HttpsError('not-found', 'Wallet not found');
-    }
+      if (!walletDoc.exists) {
+        throw new functions.https.HttpsError('not-found', 'Wallet not found');
+      }
 
-    const currentBalance = walletDoc.data()!.balance || 0;
+      const currentBalance = walletDoc.data()!.balance || 0;
 
-    if (amount > currentBalance) {
-      throw new functions.https.HttpsError(
-        'failed-precondition',
-        'Insufficient balance'
-      );
-    }
+      if (amount > currentBalance) {
+        throw new functions.https.HttpsError(
+          'failed-precondition',
+          'Insufficient balance'
+        );
+      }
 
-    // Create payout transaction
-    const transaction = {
-      userId,
-      type: 'payout',
-      amount: -amount,
-      status: 'pending',
-      createdAt: admin.firestore.FieldValue.serverTimestamp(),
-    };
+      // Create transaction record
+      const transactionRef = db.collection('transactions').doc();
+      transaction.set(transactionRef, {
+        userId,
+        type: 'payout',
+        amount: -amount,
+        status: 'pending',
+        createdAt: admin.firestore.FieldValue.serverTimestamp(),
+      });
 
-    await db.collection('transactions').add(transaction);
-
-    // Update wallet
-    await walletRef.update({
-      balance: currentBalance - amount,
-      pendingPayout: admin.firestore.FieldValue.increment(amount),
+      // Update wallet
+      transaction.update(walletRef, {
+        balance: currentBalance - amount,
+        pendingPayout: admin.firestore.FieldValue.increment(amount),
+      });
     });
 
     functions.logger.info(`Payout requested for user ${userId}`, { amount });

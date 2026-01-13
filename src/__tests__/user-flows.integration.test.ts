@@ -22,9 +22,10 @@ describe('User Flow Integration Tests', () => {
             const searchResults = await agent!.execute({
                 action: 'searchCommands',
                 command: 'marketing',
-            });
+            }) as { success: boolean; suggestion: any[] };
 
-            expect(searchResults.length).toBeGreaterThan(0);
+            expect(searchResults.success).toBe(true);
+            expect(searchResults.suggestion.length).toBeGreaterThan(0);
 
             // 2. User gets help for a specific command
             const helpResult = await agent!.execute({
@@ -90,7 +91,7 @@ describe('User Flow Integration Tests', () => {
             );
 
             // All should succeed
-            results.forEach(result => {
+            results.forEach((result: any) => {
                 expect(result.success).toBe(true);
             });
 
@@ -214,7 +215,7 @@ describe('User Flow Integration Tests', () => {
 
             // 4. Verify KPIs updated
             const kpis = agent!.getKPIs();
-            const commandsExecuted = kpis.find(k => k.name === 'Commands Executed');
+            const commandsExecuted = kpis.find((k: any) => k.name === 'Commands Executed');
             expect(commandsExecuted?.current).toBeGreaterThan(0);
         });
     });
@@ -271,8 +272,9 @@ describe('User Flow Integration Tests', () => {
             const searchResults = await agent!.execute({
                 action: 'searchCommands',
                 command: 'proposal',
-            });
-            expect(searchResults.length).toBeGreaterThan(0);
+            }) as { success: boolean; suggestion: any[] };
+            expect(searchResults.success).toBe(true);
+            expect(searchResults.suggestion.length).toBeGreaterThan(0);
 
             // Get help
             await agent!.execute({
@@ -296,7 +298,7 @@ describe('User Flow Integration Tests', () => {
             expect(history.length).toBeGreaterThanOrEqual(3);
 
             const kpis = agent!.getKPIs();
-            const executed = kpis.find(k => k.name === 'Commands Executed')?.current || 0;
+            const executed = kpis.find((k: any) => k.name === 'Commands Executed')?.current || 0;
             expect(executed).toBeGreaterThanOrEqual(3);
         });
     });

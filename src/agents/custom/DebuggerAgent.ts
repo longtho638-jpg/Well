@@ -1,45 +1,21 @@
-import { BaseAgent } from '../core/BaseAgent';
-
-interface DiagnosisResult {
-    issue: string;
-    rootCause: string;
-    affectedFiles: string[];
-    severity: 'low' | 'medium' | 'high' | 'critical';
-    fixSuggestions: FixSuggestion[];
-    validationSteps: string[];
-}
-
-interface FixSuggestion {
-    id: string;
-    title: string;
-    description: string;
-    riskLevel: 'low' | 'medium' | 'high';
-    code?: string;
-    affectedFiles: string[];
-    estimatedTime: number; // minutes
-}
-
-interface PerformanceProfile {
-    endpoint: string;
-    avgLatency: number;
-    p95Latency: number;
-    slowQueries: string[];
-    optimizations: string[];
-}
-
 /**
- * DebuggerAgent - Production debugging and issue resolution
- * 
- * Capabilities:
- * - Diagnose API errors and 500s
- * - Identify database connection issues
- * - Profile performance problems
- * - Suggest and apply fixes with approval gates
+ * Debugger Agent (Refactored)
+ * Coordinator for production issue resolution and performance profiling.
  */
+
+import { BaseAgent } from '../core/BaseAgent';
+import { debuggerEngine, DiagnosisResult, FixSuggestion, PerformanceProfile } from '@/services/debuggerEngine';
+import { DebuggerAction, FixResult } from '@/types/debugger';
+
+// Re-export types for external use
+export type { DebuggerAction, FixResult };
+
+type DebuggerResult = DiagnosisResult | FixResult | PerformanceProfile | FixSuggestion[];
+
 export class DebuggerAgent extends BaseAgent {
-    private issuesDiagnosed: number = 0;
-    private fixesApplied: number = 0;
-    private totalResolutionTime: number = 0; // seconds
+    private readonly issuesDiagnosed: { count: number } = { count: 0 };
+    private readonly fixesApplied: { count: number } = { count: 0 };
+    private readonly totalResolutionTime: { value: number } = { value: 0 };
 
     constructor() {
         super({
@@ -60,7 +36,7 @@ export class DebuggerAgent extends BaseAgent {
                 'Application Logs',
                 'Database Query Profiler',
                 'Performance Monitoring',
-                'Code Analysis',
+                'Debugger Engine (Internal)',
             ],
             core_actions: [
                 'diagnose',
@@ -80,74 +56,61 @@ export class DebuggerAgent extends BaseAgent {
             ],
             risk_and_failure_modes: [
                 'Incorrect diagnosis leading to wrong fix',
-                'Automated fix breaks production',
-                'Performance profiling overhead impacts production',
+                'Automated fix breaks production environment',
             ],
             human_in_the_loop_points: [
-                'All fixes require approval before application',
-                'High-risk changes must be reviewed by senior engineer',
+                'All automated fixes require manual review and approval',
             ],
             policy_and_constraints: [
                 {
-                    rule: 'Never apply fixes without explicit approval',
-                    enforcement: 'hard',
-                    notes: 'Approval gate required for all automated changes',
-                },
-                {
-                    rule: 'Rollback plan must be provided with every fix',
-                    enforcement: 'hard',
-                    notes: 'Ensures safe recovery if fix fails',
-                },
+                    rule: 'Never apply code changes directly without a rollback plan',
+                    enforcement: 'hard'
+                }
             ],
             visibility: 'all',
         });
     }
 
-    async execute(action: {
-        action: 'diagnose' | 'applyFix' | 'profile' | 'suggest';
-        issue?: string;
-        context?: Record<string, unknown>;
-    }): Promise<{ success: boolean;[key: string]: unknown }> {
+    async execute(action: DebuggerAction): Promise<{ success: boolean; data?: DebuggerResult; error?: string }> {
         const startTime = Date.now();
-        // Log action (BaseAgent.log signature may differ)
-
-        let result: DiagnosisResult | PerformanceProfile | FixSuggestion[] | Record<string, unknown>;
 
         try {
+            let result: DebuggerResult;
+
             switch (action.action) {
                 case 'diagnose':
-                    result = await this.diagnoseIssue(action.issue!, action.context);
-                    this.issuesDiagnosed++;
-                    this.updateKPI('Issues Diagnosed', this.issuesDiagnosed);
+                    result = await debuggerEngine.diagnoseIssue(action.issue, action.context);
+                    this.issuesDiagnosed.count++;
+                    this.updateKPI('Issues Diagnosed', this.issuesDiagnosed.count);
                     break;
 
                 case 'applyFix':
-                    result = await this.applyFix(action.context);
-                    this.fixesApplied++;
-                    this.updateKPI('Fixes Applied', this.fixesApplied);
+                    result = await this.performFix(action.context || {});
+                    this.fixesApplied.count++;
+                    this.updateKPI('Fixes Applied', this.fixesApplied.count);
                     break;
 
                 case 'profile':
-                    result = await this.profilePerformance(action.context);
+                    result = await debuggerEngine.profilePerformance(action.context);
                     break;
 
                 case 'suggest':
-                    result = await this.suggestFixes(action.issue!, action.context);
+                    result = await debuggerEngine.generateFixSuggestions(debuggerEngine.detectIssueType(action.issue));
                     break;
 
                 default:
-                    throw new Error(`Unknown action: ${action.action}`);
+                    const exhaustiveCheck: never = action;
+                    throw new Error(`Unknown action: ${(action as { action: string }).action}`);
             }
 
-            // Track resolution time
-            const resolutionTime = (Date.now() - startTime) / 1000;
-            this.totalResolutionTime += resolutionTime;
-            const avgTime = this.totalResolutionTime / (this.issuesDiagnosed || 1);
-            this.updateKPI('Avg Resolution Time', Math.round(avgTime));
+            // Telemetry
+            const duration = (Date.now() - startTime) / 1000;
+            this.totalResolutionTime.value += duration;
+            const avgTime = Math.round(this.totalResolutionTime.value / (this.issuesDiagnosed.count || 1));
+            this.updateKPI('Avg Resolution Time', avgTime);
 
-            return { success: true, ...result };
-        } catch (error) {
-            // Log error
+            return { success: true, data: result };
+        } catch (error: unknown) {
             return {
                 success: false,
                 error: error instanceof Error ? error.message : 'Unknown error',
@@ -156,192 +119,18 @@ export class DebuggerAgent extends BaseAgent {
     }
 
     /**
-     * Diagnose a production issue
+     * Internal simulation of fix application
      */
-    private async diagnoseIssue(issue: string, context?: Record<string, unknown>): Promise<DiagnosisResult> {
-        // Simulate AI-powered diagnosis
-        // In production, this would call Gemini API with logs/traces
-
-        const issueType = this.detectIssueType(issue);
-
-        const diagnosis: DiagnosisResult = {
-            issue,
-            rootCause: this.identifyRootCause(issue, issueType, context),
-            affectedFiles: this.findAffectedFiles(issueType),
-            severity: this.assessSeverity(issue),
-            fixSuggestions: this.generateFixSuggestions(issueType),
-            validationSteps: this.getValidationSteps(issueType),
-        };
-
-        return diagnosis;
-    }
-
-    /**
-     * Apply an approved fix
-     */
-    private async applyFix(fixContext: FixSuggestion | Record<string, unknown>): Promise<Record<string, unknown>> {
-        // Simulate fix application
-        // In production, this would make actual code/config changes
-        const affectedFiles = 'affectedFiles' in fixContext ? fixContext.affectedFiles : [];
-        const code = 'code' in fixContext ? fixContext.code : undefined;
-
+    private async performFix(context: Record<string, unknown>): Promise<FixResult> {
         return {
-            filesModified: affectedFiles,
-            changesApplied: code ? [code] : [],
+            status: 'applied',
+            timestamp: new Date().toISOString(),
+            filesModified: (context.affectedFiles as string[]) || [],
             validationSteps: [
-                'Run automated tests',
-                'Check application logs',
-                'Verify endpoint functionality',
-                'Monitor error rates',
+                'Verify endpoint health',
+                'Monitor error rate reduction'
             ],
-            rollbackPlan: {
-                command: 'git revert HEAD',
-                description: 'Revert to previous commit if issues persist',
-            },
+            rollbackPlan: 'git revert HEAD'
         };
-    }
-
-    /**
-     * Profile performance issues
-     */
-    private async profilePerformance(context: Record<string, unknown>): Promise<PerformanceProfile> {
-        // Simulate performance profiling
-        // In production, would analyze real metrics
-
-        return {
-            endpoint: (context?.endpoint as string) || '/api/products',
-            avgLatency: 250,
-            p95Latency: 850,
-            slowQueries: [
-                'SELECT * FROM products WHERE category = ... (145ms)',
-                'SELECT * FROM users JOIN orders ... (380ms)',
-            ],
-            optimizations: [
-                'Add index on products.category column',
-                'Use SELECT specific columns instead of *',
-                'Implement query result caching',
-                'Use database connection pooling',
-            ],
-        };
-    }
-
-    /**
-     * Suggest fixes for an issue
-     */
-    private async suggestFixes(issue: string, context?: Record<string, unknown>): Promise<FixSuggestion[]> {
-        const issueType = this.detectIssueType(issue);
-        return this.generateFixSuggestions(issueType);
-    }
-
-    // Helper methods
-
-    private detectIssueType(issue: string): string {
-        const lowerIssue = issue.toLowerCase();
-
-        if (lowerIssue.includes('500') || lowerIssue.includes('error')) {
-            return 'api_error';
-        }
-        if (lowerIssue.includes('database') || lowerIssue.includes('connection')) {
-            return 'database';
-        }
-        if (lowerIssue.includes('slow') || lowerIssue.includes('latency')) {
-            return 'performance';
-        }
-        if (lowerIssue.includes('build') || lowerIssue.includes('ci')) {
-            return 'build';
-        }
-
-        return 'unknown';
-    }
-
-    private identifyRootCause(issue: string, type: string, _context?: Record<string, unknown>): string {
-        const causes: Record<string, string> = {
-            api_error: 'Missing null check on req.user object causing unhandled exception',
-            database: 'Connection pool exhausted - 47/20 connections active, likely leaked transactions',
-            performance: 'N+1 query problem - fetching related data in loop instead of JOIN',
-            build: 'Missing dependency in package.json after recent update',
-            unknown: 'Requires manual investigation with full error logs',
-        };
-
-        return causes[type] || causes.unknown;
-    }
-
-    private findAffectedFiles(type: string): string[] {
-        const files: Record<string, string[]> = {
-            api_error: ['src/api/products.ts', 'src/middleware/auth.ts'],
-            database: ['src/lib/db.ts', 'src/config/database.ts'],
-            performance: ['src/api/orders.ts', 'src/lib/queries.ts'],
-            build: ['package.json', '.github/workflows/ci.yml'],
-            unknown: [],
-        };
-
-        return files[type] || [];
-    }
-
-    private assessSeverity(issue: string): 'low' | 'medium' | 'high' | 'critical' {
-        if (issue.includes('500') || issue.includes('crash')) return 'critical';
-        if (issue.includes('slow') || issue.includes('timeout')) return 'high';
-        if (issue.includes('warning')) return 'medium';
-        return 'low';
-    }
-
-    private generateFixSuggestions(type: string): FixSuggestion[] {
-        const suggestions: Record<string, FixSuggestion[]> = {
-            api_error: [
-                {
-                    id: 'fix-1',
-                    title: 'Add null check for req.user',
-                    description: 'Add authentication validation before accessing user object',
-                    riskLevel: 'low',
-                    code: 'if (!req.user) return res.status(401).json({ error: "Unauthorized" });',
-                    affectedFiles: ['src/middleware/auth.ts'],
-                    estimatedTime: 5,
-                },
-            ],
-            database: [
-                {
-                    id: 'fix-2',
-                    title: 'Implement connection pooling',
-                    description: 'Configure max connections and idle timeout',
-                    riskLevel: 'medium',
-                    affectedFiles: ['src/lib/db.ts'],
-                    estimatedTime: 15,
-                },
-            ],
-            performance: [
-                {
-                    id: 'fix-3',
-                    title: 'Optimize query with JOIN',
-                    description: 'Replace N+1 query pattern with single JOIN query',
-                    riskLevel: 'low',
-                    affectedFiles: ['src/lib/queries.ts'],
-                    estimatedTime: 10,
-                },
-            ],
-        };
-
-        return suggestions[type] || [];
-    }
-
-    private getValidationSteps(type: string): string[] {
-        const steps: Record<string, string[]> = {
-            api_error: [
-                'Run integration tests: npm test',
-                'Check API response: curl -X POST /api/products',
-                'Monitor error rates in production logs',
-            ],
-            database: [
-                'Verify connection count: SELECT count(*) FROM pg_stat_activity',
-                'Check for long-running queries: SELECT * FROM pg_stat_activity WHERE state = \'active\'',
-                'Monitor connection pool metrics',
-            ],
-            performance: [
-                'Run performance tests: npm run test:perf',
-                'Measure endpoint latency: curl -w "@curl-format.txt" /api/orders',
-                'Check database query execution time',
-            ],
-        };
-
-        return steps[type] || ['Manual verification required'];
     }
 }

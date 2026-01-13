@@ -1,19 +1,12 @@
 /**
- * Admin Audit Log Page
- * Phase 3: Admin Pages Enhancement
- * 
- * Enterprise-grade audit trail for VC/IPO compliance:
- * - Admin action history (who did what, when)
- * - Filterable by action type, admin, date range
- * - Exportable to CSV for compliance
- * - GDPR-ready data structure
+ * Admin Audit Log (Refactored)
+ * Enterprise-grade transparency layer for compliance & security orchestration.
  */
 
-import React, { useState, useEffect } from 'react';
-import { motion } from 'framer-motion';
+import React, { useState } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 import {
     FileText,
-    Filter,
     Download,
     Search,
     Calendar,
@@ -28,495 +21,312 @@ import {
     DollarSign,
     Shield,
     Eye,
-    ChevronDown,
     RefreshCw,
+    ShieldAlert,
+    Activity,
+    Fingerprint
 } from 'lucide-react';
 
-// ============================================================
-// TYPES
-// ============================================================
-
-export type AuditActionType =
-    | 'partner_approved'
-    | 'partner_rejected'
-    | 'partner_banned'
-    | 'order_approved'
-    | 'order_rejected'
-    | 'payout_processed'
-    | 'policy_updated'
-    | 'product_created'
-    | 'product_updated'
-    | 'product_deleted'
-    | 'config_changed'
-    | 'admin_login'
-    | 'admin_logout';
-
-export interface AuditLogEntry {
-    id: string;
-    timestamp: string;
-    adminId: string;
-    adminName: string;
-    adminEmail: string;
-    action: AuditActionType;
-    resource: string;
-    resourceId: string;
-    details: Record<string, unknown>;
-    ipAddress: string;
-    userAgent: string;
-}
-
-interface FilterState {
-    actionType: string;
-    adminEmail: string;
-    dateFrom: string;
-    dateTo: string;
-    search: string;
-}
+// Hooks & Types
+import { useAuditLog, AuditActionType, AuditLogEntry } from '@/hooks/useAuditLog';
 
 // ============================================================
-// MOCK DATA
-// ============================================================
-
-const MOCK_AUDIT_LOGS: AuditLogEntry[] = [
-    {
-        id: 'AL001',
-        timestamp: new Date().toISOString(),
-        adminId: 'admin-001',
-        adminName: 'Minh Tran',
-        adminEmail: 'admin@wellnexus.vn',
-        action: 'order_approved',
-        resource: 'orders',
-        resourceId: 'ORD-2024-001',
-        details: { amount: 15000000, partnerId: 'P001', partnerName: 'Nguyen Van A' },
-        ipAddress: '113.xxx.xxx.xxx',
-        userAgent: 'Chrome/120 on macOS',
-    },
-    {
-        id: 'AL002',
-        timestamp: new Date(Date.now() - 30 * 60 * 1000).toISOString(),
-        adminId: 'admin-001',
-        adminName: 'Minh Tran',
-        adminEmail: 'admin@wellnexus.vn',
-        action: 'partner_approved',
-        resource: 'partners',
-        resourceId: 'P002',
-        details: { partnerName: 'Le Thi B', kycVerified: true },
-        ipAddress: '113.xxx.xxx.xxx',
-        userAgent: 'Chrome/120 on macOS',
-    },
-    {
-        id: 'AL003',
-        timestamp: new Date(Date.now() - 2 * 60 * 60 * 1000).toISOString(),
-        adminId: 'admin-002',
-        adminName: 'Lan Nguyen',
-        adminEmail: 'lan@wellnexus.vn',
-        action: 'policy_updated',
-        resource: 'policy_engine',
-        resourceId: 'commission_rates',
-        details: { field: 'retailComm', oldValue: 15, newValue: 18 },
-        ipAddress: '14.xxx.xxx.xxx',
-        userAgent: 'Safari/17 on iOS',
-    },
-    {
-        id: 'AL004',
-        timestamp: new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString(),
-        adminId: 'admin-001',
-        adminName: 'Minh Tran',
-        adminEmail: 'admin@wellnexus.vn',
-        action: 'payout_processed',
-        resource: 'finance',
-        resourceId: 'PAY-2024-001',
-        details: { amount: 50000000, recipientCount: 12 },
-        ipAddress: '113.xxx.xxx.xxx',
-        userAgent: 'Chrome/120 on macOS',
-    },
-    {
-        id: 'AL005',
-        timestamp: new Date(Date.now() - 48 * 60 * 60 * 1000).toISOString(),
-        adminId: 'admin-002',
-        adminName: 'Lan Nguyen',
-        adminEmail: 'lan@wellnexus.vn',
-        action: 'partner_banned',
-        resource: 'partners',
-        resourceId: 'P999',
-        details: { partnerName: 'Spam Account', reason: 'Fraudulent activity' },
-        ipAddress: '14.xxx.xxx.xxx',
-        userAgent: 'Safari/17 on iOS',
-    },
-];
-
-// ============================================================
-// HELPER COMPONENTS
+// CONFIGURATION
 // ============================================================
 
 const ACTION_CONFIG: Record<AuditActionType, { icon: React.ElementType; color: string; label: string }> = {
-    partner_approved: { icon: UserPlus, color: 'text-emerald-400', label: 'Partner Approved' },
-    partner_rejected: { icon: XCircle, color: 'text-red-400', label: 'Partner Rejected' },
-    partner_banned: { icon: Shield, color: 'text-red-400', label: 'Partner Banned' },
-    order_approved: { icon: CheckCircle, color: 'text-emerald-400', label: 'Order Approved' },
-    order_rejected: { icon: XCircle, color: 'text-red-400', label: 'Order Rejected' },
-    payout_processed: { icon: DollarSign, color: 'text-blue-400', label: 'Payout Processed' },
-    policy_updated: { icon: Settings, color: 'text-amber-400', label: 'Policy Updated' },
-    product_created: { icon: FileText, color: 'text-emerald-400', label: 'Product Created' },
-    product_updated: { icon: Edit, color: 'text-blue-400', label: 'Product Updated' },
-    product_deleted: { icon: Trash2, color: 'text-red-400', label: 'Product Deleted' },
-    config_changed: { icon: Settings, color: 'text-amber-400', label: 'Config Changed' },
-    admin_login: { icon: User, color: 'text-blue-400', label: 'Admin Login' },
-    admin_logout: { icon: User, color: 'text-zinc-400', label: 'Admin Logout' },
+    partner_approved: { icon: UserPlus, color: 'text-emerald-500', label: 'Partner Approved' },
+    partner_rejected: { icon: XCircle, color: 'text-rose-500', label: 'Partner Rejected' },
+    partner_banned: { icon: ShieldAlert, color: 'text-rose-600', label: 'Security Ban' },
+    order_approved: { icon: CheckCircle, color: 'text-emerald-500', label: 'Order Approved' },
+    order_rejected: { icon: XCircle, color: 'text-rose-500', label: 'Order Rejected' },
+    payout_processed: { icon: DollarSign, color: 'text-indigo-500', label: 'Payout Processed' },
+    policy_updated: { icon: Activity, color: 'text-amber-500', label: 'Strategic Update' },
+    product_created: { icon: FileText, color: 'text-emerald-500', label: 'SKU Created' },
+    product_updated: { icon: Edit, color: 'text-blue-500', label: 'SKU Updated' },
+    product_deleted: { icon: Trash2, color: 'text-rose-500', label: 'SKU Deleted' },
+    config_changed: { icon: Settings, color: 'text-amber-500', label: 'Config Mutation' },
+    admin_login: { icon: Fingerprint, color: 'text-blue-500', label: 'Auth Access' },
+    admin_logout: { icon: Fingerprint, color: 'text-zinc-500', label: 'Auth Terminated' },
 };
+
+// ============================================================
+// SUB-COMPONENTS
+// ============================================================
 
 const ActionBadge: React.FC<{ action: AuditActionType }> = ({ action }) => {
     const config = ACTION_CONFIG[action];
     const Icon = config.icon;
 
     return (
-        <span className={`inline-flex items-center gap-1.5 px-2.5 py-1 text-xs font-medium rounded-full bg-zinc-800/50 ${config.color}`}>
-            <Icon className="w-3.5 h-3.5" />
+        <span className={`inline-flex items-center gap-1.5 px-3 py-1 text-[10px] font-black uppercase tracking-widest rounded-lg bg-zinc-100 dark:bg-zinc-800 border border-zinc-200 dark:border-white/5 ${config.color}`}>
+            <Icon size={12} />
             {config.label}
         </span>
     );
 };
 
-const formatTimestamp = (isoString: string): string => {
-    const date = new Date(isoString);
-    return date.toLocaleString('vi-VN', {
-        day: '2-digit',
-        month: '2-digit',
-        year: 'numeric',
-        hour: '2-digit',
-        minute: '2-digit',
-        second: '2-digit',
-    });
-};
-
-const formatRelativeTime = (isoString: string): string => {
-    const date = new Date(isoString);
-    const now = new Date();
-    const diffMs = now.getTime() - date.getTime();
-    const diffMinutes = Math.floor(diffMs / (1000 * 60));
-    const diffHours = Math.floor(diffMinutes / 60);
-    const diffDays = Math.floor(diffHours / 24);
-
-    if (diffMinutes < 1) return 'Just now';
-    if (diffMinutes < 60) return `${diffMinutes}m ago`;
-    if (diffHours < 24) return `${diffHours}h ago`;
-    if (diffDays < 7) return `${diffDays}d ago`;
-    return formatTimestamp(isoString);
-};
-
 // ============================================================
-// MAIN COMPONENT
+// MAIN PAGE
 // ============================================================
 
 export function AuditLog() {
-    const [logs, setLogs] = useState<AuditLogEntry[]>(MOCK_AUDIT_LOGS);
-    const [loading, setLoading] = useState(false);
-    const [filters, setFilters] = useState<FilterState>({
-        actionType: 'all',
-        adminEmail: 'all',
-        dateFrom: '',
-        dateTo: '',
-        search: '',
-    });
-    const [showFilters, setShowFilters] = useState(false);
+    const {
+        loading,
+        searchQuery,
+        setSearchQuery,
+        actionFilter,
+        setActionFilter,
+        adminFilter,
+        setAdminFilter,
+        filteredLogs,
+        uniqueAdmins,
+        stats,
+        refresh
+    } = useAuditLog();
+
     const [selectedLog, setSelectedLog] = useState<AuditLogEntry | null>(null);
 
-    // Get unique admins for filter dropdown
-    const uniqueAdmins = Array.from(new Set(logs.map(l => l.adminEmail)));
-
-    // Apply filters
-    const filteredLogs = logs.filter((log) => {
-        if (filters.actionType !== 'all' && log.action !== filters.actionType) return false;
-        if (filters.adminEmail !== 'all' && log.adminEmail !== filters.adminEmail) return false;
-        if (filters.search) {
-            const searchLower = filters.search.toLowerCase();
-            const matchesSearch =
-                log.adminName.toLowerCase().includes(searchLower) ||
-                log.resourceId.toLowerCase().includes(searchLower) ||
-                JSON.stringify(log.details).toLowerCase().includes(searchLower);
-            if (!matchesSearch) return false;
-        }
-        return true;
-    });
-
     const handleExportCSV = () => {
-        const headers = ['Timestamp', 'Admin', 'Action', 'Resource ID', 'Details', 'IP Address'];
-        const rows = filteredLogs.map((log) => [
-            formatTimestamp(log.timestamp),
-            log.adminName,
-            ACTION_CONFIG[log.action].label,
-            log.resourceId,
-            JSON.stringify(log.details),
-            log.ipAddress,
-        ]);
+        const headers = ['Timestamp', 'Admin', 'Action', 'Resource', 'Details'];
+        const csv = [
+            headers.join(','),
+            ...filteredLogs.map(l => [
+                new Date(l.timestamp).toLocaleString('vi-VN'),
+                l.adminName,
+                ACTION_CONFIG[l.action].label,
+                l.resourceId,
+                JSON.stringify(l.details).replace(/,/g, ';')
+            ].join(','))
+        ].join('\n');
 
-        const csvContent = [headers.join(','), ...rows.map(r => r.join(','))].join('\n');
-        const blob = new Blob([csvContent], { type: 'text/csv' });
+        const blob = new Blob([csv], { type: 'text/csv' });
         const url = URL.createObjectURL(blob);
         const a = document.createElement('a');
         a.href = url;
-        a.download = `audit-log-${new Date().toISOString().split('T')[0]}.csv`;
+        a.download = `WellNexus_AuditLog_${new Date().toISOString().split('T')[0]}.csv`;
         a.click();
     };
 
-    const handleRefresh = async () => {
-        setLoading(true);
-        // Simulate API call
-        await new Promise(resolve => setTimeout(resolve, 500));
-        setLoading(false);
-    };
-
     return (
-        <div className="space-y-6">
+        <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            className="space-y-10 max-w-7xl mx-auto pb-24"
+        >
             {/* Header */}
-            <div className="flex items-center justify-between">
-                <div>
-                    <h1 className="text-2xl font-bold text-zinc-100">Audit Log</h1>
-                    <p className="text-sm text-zinc-500 mt-1">
-                        Complete history of admin actions for compliance and security
-                    </p>
+            <div className="flex flex-col md:flex-row justify-between items-start md:items-end gap-6">
+                <div className="space-y-2">
+                    <h2 className="text-4xl font-black text-zinc-900 dark:text-white tracking-tighter uppercase italic flex items-center gap-3">
+                        <Shield className="text-[#00575A] w-10 h-10" />
+                        Audit Trail
+                    </h2>
+                    <p className="text-zinc-500 font-medium text-lg">Immutable ledger of administrative operations & security events.</p>
                 </div>
-
                 <div className="flex items-center gap-3">
-                    <button
-                        onClick={handleRefresh}
-                        disabled={loading}
-                        className="p-2 text-zinc-400 hover:text-zinc-100 hover:bg-zinc-800 rounded-lg transition-colors disabled:opacity-50"
-                    >
-                        <RefreshCw className={`w-5 h-5 ${loading ? 'animate-spin' : ''}`} />
+                    <button onClick={refresh} className="p-4 bg-white dark:bg-zinc-900 border border-zinc-100 dark:border-white/5 rounded-2xl shadow-sm text-zinc-500">
+                        <RefreshCw size={20} className={loading ? 'animate-spin' : ''} />
                     </button>
-
                     <button
                         onClick={handleExportCSV}
-                        className="flex items-center gap-2 px-4 py-2 bg-zinc-800 hover:bg-zinc-700 text-zinc-100 rounded-lg transition-colors"
+                        className="flex items-center gap-3 bg-zinc-900 dark:bg-white text-white dark:text-zinc-900 px-8 py-4 rounded-2xl font-black uppercase tracking-widest hover:bg-zinc-800 transition-all shadow-xl"
                     >
-                        <Download className="w-4 h-4" />
-                        Export CSV
+                        <Download size={20} />
+                        Export Dataset
                     </button>
                 </div>
             </div>
 
-            {/* Stats */}
-            <div className="grid grid-cols-4 gap-4">
+            {/* Stats Dashboard */}
+            <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
                 {[
-                    { label: 'Total Actions', value: logs.length, icon: FileText },
-                    { label: 'Today', value: logs.filter(l => new Date(l.timestamp).toDateString() === new Date().toDateString()).length, icon: Calendar },
-                    { label: 'Unique Admins', value: uniqueAdmins.length, icon: User },
-                    { label: 'Policy Changes', value: logs.filter(l => l.action === 'policy_updated').length, icon: Settings },
-                ].map((stat) => (
-                    <motion.div
-                        key={stat.label}
-                        whileHover={{ scale: 1.02 }}
-                        className="p-4 bg-zinc-900/50 border border-zinc-800 rounded-xl"
-                    >
-                        <div className="flex items-center gap-3">
-                            <div className="w-10 h-10 rounded-lg bg-zinc-800 flex items-center justify-center">
-                                <stat.icon className="w-5 h-5 text-zinc-400" />
-                            </div>
-                            <div>
-                                <p className="text-2xl font-bold text-zinc-100">{stat.value}</p>
-                                <p className="text-xs text-zinc-500">{stat.label}</p>
-                            </div>
+                    { label: 'Event Total', value: stats.total, icon: Activity, color: 'text-blue-500' },
+                    { label: 'Today (UT)', value: stats.today, icon: Clock, color: 'text-emerald-500' },
+                    { label: 'Unique Auth', value: uniqueAdmins.length, icon: User, color: 'text-indigo-500' },
+                    { label: 'Policy Mods', value: stats.policyChanges, icon: Settings, color: 'text-amber-500' },
+                ].map((stat, idx) => (
+                    <div key={idx} className="bg-white dark:bg-zinc-900 border border-zinc-100 dark:border-white/5 p-6 rounded-3xl shadow-sm">
+                        <div className="flex items-center gap-3 mb-4 text-zinc-500 font-black text-[10px] uppercase tracking-widest">
+                            <stat.icon size={16} className={stat.color} />
+                            {stat.label}
                         </div>
-                    </motion.div>
+                        <p className="text-3xl font-black text-zinc-900 dark:text-white tracking-tighter">{stat.value}</p>
+                    </div>
                 ))}
             </div>
 
-            {/* Filters */}
-            <div className="bg-zinc-900/50 border border-zinc-800 rounded-xl p-4">
-                <div className="flex items-center gap-4">
-                    {/* Search */}
-                    <div className="flex-1 relative">
-                        <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-zinc-500" />
+            {/* Filter Suite */}
+            <div className="bg-white dark:bg-zinc-900 border border-zinc-100 dark:border-white/5 p-6 rounded-[2.5rem] shadow-sm space-y-6">
+                <div className="flex flex-col xl:flex-row xl:items-center justify-between gap-6">
+                    <div className="relative flex-1 max-w-xl group">
+                        <Search className="absolute left-5 top-1/2 -translate-y-1/2 w-5 h-5 text-zinc-400 group-focus-within:text-[#00575A] transition-colors" />
                         <input
                             type="text"
-                            placeholder="Search by admin, resource ID, or details..."
-                            value={filters.search}
-                            onChange={(e) => setFilters({ ...filters, search: e.target.value })}
-                            className="w-full bg-zinc-800 border border-zinc-700 text-zinc-100 rounded-lg py-2 pl-10 pr-4 focus:outline-none focus:ring-2 focus:ring-emerald-500/50 placeholder:text-zinc-600"
+                            placeholder="Search by admin name or resource ID..."
+                            value={searchQuery}
+                            onChange={(e) => setSearchQuery(e.target.value)}
+                            className="w-full pl-14 pr-6 py-4 bg-zinc-100 dark:bg-zinc-800 border-none rounded-[2rem] text-sm font-bold placeholder:text-zinc-500 focus:ring-4 focus:ring-[#00575A]/10 outline-none transition-all"
                         />
                     </div>
 
-                    {/* Action Type Filter */}
-                    <select
-                        value={filters.actionType}
-                        onChange={(e) => setFilters({ ...filters, actionType: e.target.value })}
-                        className="bg-zinc-800 border border-zinc-700 text-zinc-100 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-emerald-500/50"
-                    >
-                        <option value="all">All Actions</option>
-                        {Object.entries(ACTION_CONFIG).map(([key, config]) => (
-                            <option key={key} value={key}>{config.label}</option>
-                        ))}
-                    </select>
+                    <div className="flex flex-wrap gap-4">
+                        <select
+                            value={actionFilter}
+                            onChange={(e) => setActionFilter(e.target.value)}
+                            className="bg-zinc-100 dark:bg-zinc-800 px-6 py-4 rounded-2xl text-[10px] font-black uppercase tracking-widest outline-none border-none focus:ring-4 focus:ring-[#00575A]/10 appearance-none min-w-[180px]"
+                        >
+                            <option value="all">Analyze All Actions</option>
+                            {Object.entries(ACTION_CONFIG).map(([k, v]) => (
+                                <option key={k} value={k}>{v.label}</option>
+                            ))}
+                        </select>
 
-                    {/* Admin Filter */}
-                    <select
-                        value={filters.adminEmail}
-                        onChange={(e) => setFilters({ ...filters, adminEmail: e.target.value })}
-                        className="bg-zinc-800 border border-zinc-700 text-zinc-100 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-emerald-500/50"
-                    >
-                        <option value="all">All Admins</option>
-                        {uniqueAdmins.map((email) => (
-                            <option key={email} value={email}>{email}</option>
-                        ))}
-                    </select>
+                        <select
+                            value={adminFilter}
+                            onChange={(e) => setAdminFilter(e.target.value)}
+                            className="bg-zinc-100 dark:bg-zinc-800 px-6 py-4 rounded-2xl text-[10px] font-black uppercase tracking-widest outline-none border-none focus:ring-4 focus:ring-[#00575A]/10 appearance-none min-w-[180px]"
+                        >
+                            <option value="all">All Administrators</option>
+                            {uniqueAdmins.map(email => (
+                                <option key={email} value={email}>{email}</option>
+                            ))}
+                        </select>
+                    </div>
                 </div>
             </div>
 
-            {/* Log Table */}
-            <div className="border border-zinc-800 rounded-xl overflow-hidden">
-                <table className="w-full">
-                    <thead className="bg-zinc-900/50 border-b border-zinc-800">
-                        <tr>
-                            <th className="px-4 py-3 text-left text-xs font-medium text-zinc-500 uppercase tracking-wider">
-                                Timestamp
-                            </th>
-                            <th className="px-4 py-3 text-left text-xs font-medium text-zinc-500 uppercase tracking-wider">
-                                Admin
-                            </th>
-                            <th className="px-4 py-3 text-left text-xs font-medium text-zinc-500 uppercase tracking-wider">
-                                Action
-                            </th>
-                            <th className="px-4 py-3 text-left text-xs font-medium text-zinc-500 uppercase tracking-wider">
-                                Resource
-                            </th>
-                            <th className="px-4 py-3 text-left text-xs font-medium text-zinc-500 uppercase tracking-wider">
-                                Details
-                            </th>
-                            <th className="px-4 py-3 text-right text-xs font-medium text-zinc-500 uppercase tracking-wider">
-                                View
-                            </th>
+            {/* Ledger Table */}
+            <div className="bg-white dark:bg-zinc-900 border border-zinc-100 dark:border-white/5 rounded-[3rem] overflow-hidden shadow-2xl shadow-zinc-500/5">
+                <table className="w-full text-left border-collapse">
+                    <thead>
+                        <tr className="bg-zinc-50/50 dark:bg-zinc-800/30 border-b border-zinc-100 dark:border-white/5">
+                            <th className="px-8 py-6 text-[10px] font-black uppercase tracking-[0.2em] text-zinc-500">Timeline</th>
+                            <th className="px-8 py-6 text-[10px] font-black uppercase tracking-[0.2em] text-zinc-500">Operator</th>
+                            <th className="px-8 py-6 text-[10px] font-black uppercase tracking-[0.2em] text-zinc-500">Classification</th>
+                            <th className="px-8 py-6 text-[10px] font-black uppercase tracking-[0.2em] text-zinc-500">Resource node</th>
+                            <th className="px-8 py-6 text-[10px] font-black uppercase tracking-[0.2em] text-zinc-500 text-right">Tracing</th>
                         </tr>
                     </thead>
-                    <tbody className="divide-y divide-zinc-800">
-                        {filteredLogs.map((log, index) => (
-                            <motion.tr
-                                key={log.id}
-                                initial={{ opacity: 0 }}
-                                animate={{ opacity: 1 }}
-                                transition={{ delay: index * 0.03 }}
-                                className="hover:bg-zinc-900/50 transition-colors"
-                            >
-                                <td className="px-4 py-4">
+                    <tbody className="divide-y divide-zinc-100 dark:divide-white/5 font-bold">
+                        {filteredLogs.map((log) => (
+                            <motion.tr key={log.id} layout className="group hover:bg-zinc-50/50 dark:hover:bg-white/5 transition-all">
+                                <td className="px-8 py-6">
                                     <div className="flex flex-col">
-                                        <span className="text-sm text-zinc-300">{formatRelativeTime(log.timestamp)}</span>
-                                        <span className="text-xs text-zinc-600">{formatTimestamp(log.timestamp)}</span>
+                                        <span className="text-zinc-900 dark:text-zinc-100 uppercase tracking-tighter">
+                                            {new Date(log.timestamp).toLocaleTimeString('vi-VN', { hour: '2-digit', minute: '2-digit' })}
+                                        </span>
+                                        <span className="text-[10px] text-zinc-400 font-medium">
+                                            {new Date(log.timestamp).toLocaleDateString('vi-VN')}
+                                        </span>
                                     </div>
                                 </td>
-                                <td className="px-4 py-4">
-                                    <div className="flex items-center gap-2">
-                                        <div className="w-8 h-8 rounded-full bg-zinc-800 flex items-center justify-center text-zinc-400 text-sm font-medium">
+                                <td className="px-8 py-6">
+                                    <div className="flex items-center gap-3">
+                                        <div className="w-9 h-9 bg-zinc-100 dark:bg-zinc-800 rounded-xl flex items-center justify-center text-zinc-500 text-[11px] font-black border border-zinc-200 dark:border-white/5">
                                             {log.adminName.charAt(0)}
                                         </div>
-                                        <div>
-                                            <p className="text-sm text-zinc-100">{log.adminName}</p>
-                                            <p className="text-xs text-zinc-500">{log.adminEmail}</p>
+                                        <div className="flex flex-col">
+                                            <span className="text-sm text-zinc-900 dark:text-zinc-100">{log.adminName}</span>
+                                            <span className="text-[10px] text-zinc-400 font-medium">{log.adminEmail}</span>
                                         </div>
                                     </div>
                                 </td>
-                                <td className="px-4 py-4">
+                                <td className="px-8 py-6">
                                     <ActionBadge action={log.action} />
                                 </td>
-                                <td className="px-4 py-4">
-                                    <span className="text-sm text-zinc-300 font-mono">{log.resourceId}</span>
+                                <td className="px-8 py-6">
+                                    <span className="font-mono text-[11px] text-zinc-500 group-hover:text-zinc-900 dark:group-hover:text-white transition-colors">
+                                        {log.resourceId}
+                                    </span>
                                 </td>
-                                <td className="px-4 py-4 max-w-48">
-                                    <p className="text-sm text-zinc-400 truncate">
-                                        {Object.entries(log.details)
-                                            .slice(0, 2)
-                                            .map(([k, v]) => `${k}: ${v}`)
-                                            .join(', ')}
-                                    </p>
-                                </td>
-                                <td className="px-4 py-4 text-right">
-                                    <button
-                                        onClick={() => setSelectedLog(log)}
-                                        className="p-2 text-zinc-400 hover:text-zinc-100 hover:bg-zinc-800 rounded-lg transition-colors"
-                                    >
-                                        <Eye className="w-4 h-4" />
+                                <td className="px-8 py-6 text-right">
+                                    <button onClick={() => setSelectedLog(log)} className="p-3 bg-zinc-100 dark:bg-zinc-800 rounded-xl text-zinc-400 hover:text-zinc-900 dark:hover:text-white transition-all">
+                                        <Eye size={16} />
                                     </button>
                                 </td>
                             </motion.tr>
                         ))}
                     </tbody>
                 </table>
-
                 {filteredLogs.length === 0 && (
-                    <div className="px-4 py-12 text-center text-zinc-500">
-                        No audit logs found matching your criteria
+                    <div className="py-24 text-center">
+                        <ShieldAlert className="w-12 h-12 text-zinc-200 dark:text-zinc-800 mx-auto mb-4" />
+                        <p className="text-zinc-400 font-black uppercase tracking-widest text-[10px]">No telemetry signals detected</p>
                     </div>
                 )}
             </div>
 
-            {/* Detail Modal */}
-            {selectedLog && (
-                <motion.div
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    className="fixed inset-0 bg-black/50 flex items-center justify-center z-50"
-                    onClick={() => setSelectedLog(null)}
-                >
+            {/* Detailed Inspection Drawer */}
+            <AnimatePresence>
+                {selectedLog && (
                     <motion.div
-                        initial={{ scale: 0.95 }}
-                        animate={{ scale: 1 }}
-                        className="bg-zinc-900 border border-zinc-800 rounded-2xl p-6 max-w-lg w-full mx-4"
-                        onClick={(e) => e.stopPropagation()}
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        exit={{ opacity: 0 }}
+                        className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-[100] px-4"
+                        onClick={() => setSelectedLog(null)}
                     >
-                        <h3 className="text-lg font-bold text-zinc-100 mb-4">Audit Log Details</h3>
-
-                        <div className="space-y-4">
-                            <div>
-                                <p className="text-xs text-zinc-500 uppercase">Timestamp</p>
-                                <p className="text-sm text-zinc-100">{formatTimestamp(selectedLog.timestamp)}</p>
+                        <motion.div
+                            initial={{ scale: 0.95, y: 20 }}
+                            animate={{ scale: 1, y: 0 }}
+                            exit={{ scale: 0.95, y: 20 }}
+                            className="bg-zinc-900 border border-white/5 rounded-[2.5rem] p-10 max-w-2xl w-full shadow-2xl relative overflow-hidden"
+                            onClick={e => e.stopPropagation()}
+                        >
+                            <div className="absolute top-0 right-0 p-10 opacity-5">
+                                <Shield size={120} className="text-white" />
                             </div>
 
-                            <div>
-                                <p className="text-xs text-zinc-500 uppercase">Admin</p>
-                                <p className="text-sm text-zinc-100">{selectedLog.adminName} ({selectedLog.adminEmail})</p>
+                            <div className="flex justify-between items-start mb-10 relative z-10">
+                                <div>
+                                    <h3 className="text-3xl font-black text-white tracking-tighter italic uppercase">Event Inspection</h3>
+                                    <p className="text-zinc-500 font-medium mt-1">Detailed forensics for trace {selectedLog.id}</p>
+                                </div>
+                                <button onClick={() => setSelectedLog(null)} className="p-4 bg-white/5 rounded-2xl text-zinc-400 hover:text-white transition-all">
+                                    <X size={24} />
+                                </button>
                             </div>
 
-                            <div>
-                                <p className="text-xs text-zinc-500 uppercase">Action</p>
-                                <div className="mt-1">
-                                    <ActionBadge action={selectedLog.action} />
+                            <div className="grid grid-cols-2 gap-8 relative z-10 mb-10">
+                                <div className="space-y-4 bg-white/5 p-6 rounded-3xl border border-white/5">
+                                    <p className="text-[10px] font-black text-zinc-500 uppercase tracking-widest">Temporal Signature</p>
+                                    <div className="space-y-1">
+                                        <p className="text-sm text-zinc-100 font-bold">{new Date(selectedLog.timestamp).toLocaleString('vi-VN')}</p>
+                                        <p className="text-xs text-zinc-500 uppercase tracking-tighter">UTC Synchronization Active</p>
+                                    </div>
+                                </div>
+                                <div className="space-y-4 bg-white/5 p-6 rounded-3xl border border-white/5">
+                                    <p className="text-[10px] font-black text-zinc-500 uppercase tracking-widest">Network Origin</p>
+                                    <div className="space-y-1" title={selectedLog.userAgent}>
+                                        <p className="text-sm text-zinc-100 font-mono font-bold">{selectedLog.ipAddress}</p>
+                                        <p className="text-xs text-zinc-500 uppercase tracking-tighter truncate max-w-[180px]">Browser/API Gateway Node</p>
+                                    </div>
                                 </div>
                             </div>
 
-                            <div>
-                                <p className="text-xs text-zinc-500 uppercase">Resource ID</p>
-                                <p className="text-sm text-zinc-100 font-mono">{selectedLog.resourceId}</p>
-                            </div>
-
-                            <div>
-                                <p className="text-xs text-zinc-500 uppercase">Details</p>
-                                <pre className="text-sm text-zinc-400 bg-zinc-800 rounded-lg p-3 mt-1 overflow-x-auto">
-                                    {JSON.stringify(selectedLog.details, null, 2)}
+                            <div className="space-y-4 relative z-10 mb-10">
+                                <p className="text-[10px] font-black text-zinc-500 uppercase tracking-widest px-1">Payload Metadata</p>
+                                <pre className="bg-zinc-950/80 rounded-[2rem] p-8 border border-white/5 text-emerald-500 font-mono text-xs overflow-x-auto shadow-inner">
+                                    {JSON.stringify(selectedLog.details, null, 4)}
                                 </pre>
                             </div>
 
-                            <div className="flex gap-4">
-                                <div className="flex-1">
-                                    <p className="text-xs text-zinc-500 uppercase">IP Address</p>
-                                    <p className="text-sm text-zinc-100 font-mono">{selectedLog.ipAddress}</p>
-                                </div>
-                                <div className="flex-1">
-                                    <p className="text-xs text-zinc-500 uppercase">User Agent</p>
-                                    <p className="text-sm text-zinc-100">{selectedLog.userAgent}</p>
-                                </div>
-                            </div>
-                        </div>
-
-                        <button
-                            onClick={() => setSelectedLog(null)}
-                            className="w-full mt-6 px-4 py-2 bg-zinc-800 hover:bg-zinc-700 text-zinc-100 rounded-lg transition-colors"
-                        >
-                            Close
-                        </button>
+                            <button
+                                onClick={() => setSelectedLog(null)}
+                                className="w-full bg-[#00575A] text-white py-5 rounded-[1.5rem] font-black uppercase tracking-widest shadow-xl shadow-teal-500/10 hover:bg-[#004447] transition-all"
+                            >
+                                Close Inspection
+                            </button>
+                        </motion.div>
                     </motion.div>
-                </motion.div>
-            )}
-        </div>
+                )}
+            </AnimatePresence>
+        </motion.div>
     );
 }
+
+const X: React.FC<{ className?: string; size?: number }> = ({ className, size }) => (
+    <svg xmlns="http://www.w3.org/2000/svg" width={size || 24} height={size || 24} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" className={className}><path d="M18 6 6 18" /><path d="m6 6 12 12" /></svg>
+);
 
 export default AuditLog;

@@ -77,6 +77,15 @@ async function fetchPolicyConfig(supabase: any) {
 
 serve(async (req) => {
     try {
+        // SECURITY: Verify Webhook Secret
+        const secret = req.headers.get("x-webhook-secret");
+        const expectedSecret = Deno.env.get("WEBHOOK_SECRET");
+        
+        if (expectedSecret && secret !== expectedSecret) {
+            console.error("[Security] Invalid Webhook Secret");
+            return new Response("Unauthorized", { status: 401 });
+        }
+
         // 1. Khởi tạo Supabase Admin Client (Bypass RLS)
         const supabase = createClient(
             Deno.env.get("SUPABASE_URL") ?? "",

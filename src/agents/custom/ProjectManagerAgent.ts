@@ -1,7 +1,5 @@
-import { BaseAgent } from '../core/BaseAgent';
-
 /**
- * ProjectManagerAgent - Multi-agent coordination and project tracking
+ * ProjectManagerAgent - Multi-agent coordination and project tracking (Refactored)
  * 
  * Capabilities:
  * - Coordinate multiple agents
@@ -9,8 +7,23 @@ import { BaseAgent } from '../core/BaseAgent';
  * - Generate status reports
  * - Identify blockers
  */
+
+import { BaseAgent } from '../core/BaseAgent';
+import {
+    ProjectReport,
+    WorkflowPlan,
+    ProgressMetrics,
+    BlockerList,
+    ProjectManagerAction,
+} from '@/types/projectManager';
+
+// Re-export types for external use
+export type { ProjectReport, WorkflowPlan, ProgressMetrics, BlockerList, ProjectManagerAction };
+
+type ExecutionResult = ProjectReport | WorkflowPlan | ProgressMetrics | BlockerList;
+
 export class ProjectManagerAgent extends BaseAgent {
-    private reportsGenerated: number = 0;
+    private readonly reportsGenerated: { count: number } = { count: 0 };
 
     constructor() {
         super({
@@ -69,20 +82,15 @@ export class ProjectManagerAgent extends BaseAgent {
         });
     }
 
-    async execute(action: {
-        action: 'generateReport' | 'coordinateAgents' | 'trackProgress' | 'identifyBlockers';
-        reportType?: string;
-        agents?: string[];
-        scope?: string;
-    }): Promise<{ success: boolean;[key: string]: unknown }> {
+    async execute(action: ProjectManagerAction): Promise<{ success: boolean; data?: ExecutionResult; error?: string }> {
         try {
-            let result: Record<string, unknown>;
+            let result: ExecutionResult;
 
             switch (action.action) {
                 case 'generateReport':
                     result = await this.createStatusReport(action.reportType);
-                    this.reportsGenerated++;
-                    this.updateKPI('Reports Generated', this.reportsGenerated);
+                    this.reportsGenerated.count++;
+                    this.updateKPI('Reports Generated', this.reportsGenerated.count);
                     break;
 
                 case 'coordinateAgents':
@@ -98,11 +106,12 @@ export class ProjectManagerAgent extends BaseAgent {
                     break;
 
                 default:
-                    throw new Error(`Unknown action: ${action.action}`);
+                    const exhaustiveCheck: never = action;
+                    throw new Error(`Unknown action: ${(action as { action: string }).action}`);
             }
 
-            return { success: true, ...result };
-        } catch (error) {
+            return { success: true, data: result };
+        } catch (error: unknown) {
             return {
                 success: false,
                 error: error instanceof Error ? error.message : 'Unknown error',
@@ -110,7 +119,7 @@ export class ProjectManagerAgent extends BaseAgent {
         }
     }
 
-    private async createStatusReport(reportType?: string): Promise<Record<string, unknown>> {
+    private async createStatusReport(reportType?: string): Promise<ProjectReport> {
         return {
             reportType: reportType || 'weekly-status',
             generatedAt: new Date().toISOString(),
@@ -134,7 +143,7 @@ export class ProjectManagerAgent extends BaseAgent {
         };
     }
 
-    private async orchestrateWorkflow(agents?: string[]): Promise<Record<string, unknown>> {
+    private async orchestrateWorkflow(agents?: string[]): Promise<WorkflowPlan> {
         return {
             workflow: 'feature-implementation',
             agents: agents || ['scout', 'planner', 'developer', 'tester'],
@@ -148,7 +157,7 @@ export class ProjectManagerAgent extends BaseAgent {
         };
     }
 
-    private async monitorProgress(scope?: string): Promise<Record<string, unknown>> {
+    private async monitorProgress(scope?: string): Promise<ProgressMetrics> {
         return {
             scope: scope || 'current-sprint',
             velocity: 42,
@@ -159,7 +168,7 @@ export class ProjectManagerAgent extends BaseAgent {
         };
     }
 
-    private async findBlockers(): Promise<Record<string, unknown>> {
+    private async findBlockers(): Promise<BlockerList> {
         return {
             blockers: [
                 {

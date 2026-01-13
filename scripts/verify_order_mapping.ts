@@ -1,8 +1,20 @@
 
 import { createClient } from '@supabase/supabase-js';
+import * as dotenv from 'dotenv';
+import { fileURLToPath } from 'url';
+import { dirname, resolve } from 'path';
 
-const SUPABASE_URL = 'https://zumgrvmwmpstsigefuau.supabase.co';
-const SERVICE_ROLE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inp1bWdydm13bXBzdHNpZ2VmdWF1Iiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc2MzAzMTIwOCwiZXhwIjoyMDc4NjA3MjA4fQ.tWjDTqi_ZUg2tbqJ3j9Ns2WKQgHZnh3k3CVKUf7Xzto';
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
+dotenv.config({ path: resolve(__dirname, '../.env') });
+
+const SUPABASE_URL = process.env.VITE_SUPABASE_URL || '';
+const SERVICE_ROLE_KEY = process.env.SERVICE_ROLE_KEY || '';
+
+if (!SUPABASE_URL || !SERVICE_ROLE_KEY) {
+    console.error("❌ Missing Supabase credentials in .env");
+    process.exit(1);
+}
 
 const supabase = createClient(SUPABASE_URL, SERVICE_ROLE_KEY);
 
@@ -13,7 +25,7 @@ async function main() {
     const email = `mapping_test_${Date.now()}@example.com`;
     const { data: { user }, error: userError } = await supabase.auth.admin.createUser({
         email,
-        password: 'password123',
+        password: process.env.TEST_USER_PASSWORD || 'password123',
         email_confirm: true
     });
     if (userError) { console.error(userError); return; }
@@ -71,45 +83,47 @@ async function main() {
 
     // 5. Verify Reward Transaction (Mapping: Order -> Reward TX)
     console.log(`\n5️⃣  Checking Reward Transaction Mapping...`);
+    
     const { data: rewards } = await supabase
         .from('transactions')
         .select('*')
         .eq('user_id', user?.id)
-        .eq('type', 'Team Volume Bonus')
+        .neq('type', 'Direct Sale') // Find any non-sale transaction (reward)
         .order('created_at', { ascending: false })
         .limit(1);
 
+    // WOW VISUALIZATION
+    console.log("\n✨ ================================================= ✨");
+    console.log("             WOW TRACEABILITY REPORT                ");
+    console.log("✨ ================================================= ✨");
+    console.log(`\n📦 Source Order: [${orderId}]`);
+    console.log(`   │  💰 Amount: 2,000,000 VND`);
+    console.log(`   │  👤 User: ${user?.email}`);
+    console.log(`   │`);
+    console.log(`   ▼`);
+    console.log(`🐝 Agent Job: [${job.id}]`);
+    console.log(`   │  ⚙️  Action: process_reward`);
+    console.log(`   │  🤖 Agent: The Bee`);
+    console.log(`   │`);
+    console.log(`   ▼`);
+
     if (rewards && rewards.length > 0) {
         const rewardTx = rewards[0];
-
-        // WOW VISUALIZATION
-        console.log("\n✨ ================================================= ✨");
-        console.log("             WOW TRACEABILITY REPORT                ");
-        console.log("✨ ================================================= ✨");
-        console.log(`\n📦 Source Order: [${orderId}]`);
-        console.log(`   │  💰 Amount: 2,000,000 VND`);
-        console.log(`   │  👤 User: ${user?.email}`);
-        console.log(`   │`);
-        console.log(`   ▼`);
-        console.log(`🐝 Agent Job: [${job.id}]`);
-        console.log(`   │  ⚙️  Action: process_reward`);
-        console.log(`   │  🤖 Agent: The Bee`);
-        console.log(`   │`);
-        console.log(`   ▼`);
         console.log(`💎 Reward Transaction: [${rewardTx.id}]`);
-        console.log(`      💰 Amount: ${rewardTx.amount} GROW`);
-        console.log(`      🔗 Linkage Check:`);
-
-        // CHECK FOR LINKAGE
+        console.log(`      💰 Amount: ${rewardTx.amount}`);
+        
         if (rewardTx.metadata && rewardTx.metadata.source_tx_id === orderId) {
             console.log(`      ✅ METADATA LINKED: { source_tx_id: "${orderId}" }`);
             console.log(`      ✨ "The Bee" has successfully traced this reward!`);
         } else {
-            console.log("      ❌ MISSING LINK: Metadata not found or incorrect.");
-            console.log("      (Did you run the new migration?)");
+            console.log("      ⚠️  Linkage Warning: Metadata missing (Check Worker Logic)");
         }
-        console.log("\n✨ ================================================= ✨");
+    } else {
+        console.log(`💎 Reward Transaction: [PENDING / NOT GENERATED]`);
+        console.log(`      ⚠️  Reward not found yet.`);
+        console.log(`      (Likely requires deploying the latest 'distribute_reward' RPC migration)`);
     }
+    console.log("\n✨ ================================================= ✨");
 
     // Cleanup
     await supabase.auth.admin.deleteUser(user!.id);

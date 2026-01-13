@@ -1,0 +1,61 @@
+import { useState, useCallback, useMemo } from 'react';
+import { User } from '@/types';
+import { uiLogger } from '@/utils/logger';
+
+export function useHeroCard(user: User) {
+    const [copied, setCopied] = useState(false);
+
+    // Gamification Logic: Founder Club Quest
+    const TARGET_VOLUME = 100000000; // 100M VND
+
+    const progressPercent = useMemo(() => {
+        const raw = (user.teamVolume / TARGET_VOLUME) * 100;
+        return Math.min(raw, 100);
+    }, [user.teamVolume]);
+
+    const remaining = useMemo(() => {
+        return Math.max(TARGET_VOLUME - user.teamVolume, 0);
+    }, [user.teamVolume]);
+
+    const referralLink = useMemo(() => {
+        return user.referralLink || `wellnexus.vn/ref/${user.id}`;
+    }, [user.referralLink, user.id]);
+
+    const handleCopyLink = useCallback(async () => {
+        try {
+            await navigator.clipboard.writeText(referralLink);
+            setCopied(true);
+            setTimeout(() => setCopied(false), 2000);
+        } catch (err) {
+            uiLogger.error('Failed to copy', err);
+            // Fallback for non-secure contexts if needed
+        }
+    }, [referralLink]);
+
+    const handleShare = useCallback(async () => {
+        if (navigator.share) {
+            try {
+                await navigator.share({
+                    title: 'Join WellNexus',
+                    text: 'Join me on WellNexus and start earning!',
+                    url: referralLink,
+                });
+            } catch (err) {
+                if ((err as Error).name !== 'AbortError') {
+                    handleCopyLink();
+                }
+            }
+        } else {
+            handleCopyLink();
+        }
+    }, [referralLink, handleCopyLink]);
+
+    return {
+        progressPercent,
+        remaining,
+        referralLink,
+        copied,
+        handleCopyLink,
+        handleShare
+    };
+}

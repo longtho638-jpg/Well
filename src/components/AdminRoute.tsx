@@ -26,11 +26,11 @@ export function AdminRoute({ children }: AdminRouteProps) {
     }
 
     // Check 2: Must have admin role
-    // SECURITY FIX: Use whitelist instead of email.includes('admin')
+    // SECURITY: Production admin whitelist - NO demo accounts
     const ADMIN_EMAILS = [
         'longtho638@gmail.com',
-        'doanhnhancaotuan@gmail.com',
-        'demo@wellnexus.vn' // Demo mode admin access
+        'doanhnhancaotuan@gmail.com'
+        // NOTE: demo@wellnexus.vn REMOVED - real users are making purchases
     ];
 
     const isAdmin = ADMIN_EMAILS.includes(user?.email || '') ||

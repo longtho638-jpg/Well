@@ -115,8 +115,8 @@ export function useAuth() {
 
   return {
     signIn: async (email: string, password: string) => {
-      // DEMO MODE: Allow demo login even in production
-      if (email.toLowerCase() === DEMO_EMAIL) {
+      // DEMO MODE: Allow demo login ONLY in development
+      if (import.meta.env.DEV && email.toLowerCase() === DEMO_EMAIL) {
         authLogger.info('Demo mode - logging in as demo user');
         setUser({ ...MOCK_USER, email: DEMO_EMAIL });
         setIsAuthenticated(true);

@@ -1,16 +1,9 @@
-import { useState, useEffect } from 'react';
-import { doc, onSnapshot } from 'firebase/firestore';
-import { db } from '../services/firebase';
-import { walletAPI } from '../services/api';
+import { useState, useEffect, useCallback, useMemo } from 'react';
+import { walletService, WalletData } from '../services/walletService';
 import { Transaction } from '../types';
-import { walletLogger } from '../utils/logger';
+import { createLogger } from '../utils/logger';
 
-interface WalletData {
-  balance: number;
-  totalEarnings: number;
-  pendingPayout: number;
-  taxWithheldTotal: number;
-}
+const logger = createLogger('useWalletHook');
 
 interface WalletState {
   wallet: WalletData | null;
@@ -25,8 +18,8 @@ interface WalletActions {
 }
 
 /**
- * Custom hook for wallet operations
- * Provides real-time wallet data and transaction management
+ * useWallet - Central Orchestrator for Financial Telemetry
+ * Deployed to stabilize ledger interactions and real-time balance synchronization.
  */
 export function useWallet(userId: string | null): WalletState & WalletActions {
   const [wallet, setWallet] = useState<WalletData | null>(null);
@@ -34,7 +27,26 @@ export function useWallet(userId: string | null): WalletState & WalletActions {
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
 
-  // Subscribe to real-time wallet updates
+  const loadTransactions = useCallback(async (uid: string) => {
+    try {
+      const txs = await walletService.getTransactions(uid);
+      setTransactions(txs);
+    } catch (e) {
+      const err = e as Error;
+      logger.error('Loading transactions failed', err);
+      setError(err.message || 'Failed to sync ledger');
+    }
+  }, []);
+
+  const refreshTransactions = useCallback(async () => {
+    if (userId) {
+      setLoading(true);
+      await loadTransactions(userId);
+      setLoading(false);
+    }
+  }, [userId, loadTransactions]);
+
+  // Financial Orchestration: Sync & Subscribe
   useEffect(() => {
     if (!userId) {
       setWallet(null);
@@ -44,113 +56,51 @@ export function useWallet(userId: string | null): WalletState & WalletActions {
     }
 
     setLoading(true);
+    loadTransactions(userId);
 
-    // Listen to wallet changes
-    const unsubscribe = onSnapshot(
-      doc(db, 'wallets', userId),
-      (doc) => {
-        if (doc.exists()) {
-          setWallet(doc.data() as WalletData);
-        } else {
-          setWallet(null);
-        }
+    // Real-time telemetry subscription
+    const unsubscribe = walletService.subscribeToWallet(
+      userId,
+      (data) => {
+        setWallet(data);
         setLoading(false);
       },
       (err) => {
-        walletLogger.error('Subscription error', err);
+        logger.error('Financial heartbeat failed', err);
         setError(err.message);
         setLoading(false);
       }
     );
 
     return () => unsubscribe();
-  }, [userId]);
+  }, [userId, loadTransactions]);
 
-  // Load transactions
-  useEffect(() => {
-    if (!userId) {
-      setTransactions([]);
-      return;
-    }
-
-    loadTransactions();
-  }, [userId]);
-
-  /**
-   * Load user transactions
-   */
-  const loadTransactions = async () => {
-    if (!userId) return;
-
-    try {
-      const txs = await walletAPI.getTransactions(userId);
-      setTransactions(txs);
-    } catch (e) {
-      const err = e as Error;
-      walletLogger.error('Loading transactions failed', err);
-      setError(err.message || 'Failed to load transactions');
-    }
-  };
-
-  /**
-   * Refresh transactions
-   */
-  const refreshTransactions = async (): Promise<void> => {
-    await loadTransactions();
-  };
-
-  /**
-   * Request payout
-   */
-  const requestPayout = async (amount: number): Promise<void> => {
-    if (!userId) {
-      throw new Error('User not authenticated');
-    }
-
-    if (!wallet) {
-      throw new Error('Wallet not loaded');
-    }
-
-    if (amount > wallet.balance) {
-      throw new Error('Insufficient balance');
-    }
-
-    if (amount <= 0) {
-      throw new Error('Invalid amount');
-    }
+  const requestPayout = useCallback(async (amount: number) => {
+    if (!userId || !wallet) throw new Error('Financial node not provisioned');
+    if (amount <= 0) throw new Error('Invalid payout requested');
+    if (amount > wallet.balance) throw new Error('Insufficient node Liquidity');
 
     try {
       setLoading(true);
-      setError(null);
-
-      // Call Firebase function to process payout
-      // In a real app, you would import and use the Firebase Functions SDK
-      // For now, we'll create a local transaction
-      // const functions = getFunctions();
-      // const requestPayoutFn = httpsCallable(functions, 'requestPayout');
-      // await requestPayoutFn({ amount });
-
-      // Simulate API call
-      await new Promise((resolve) => setTimeout(resolve, 1000));
-
-      // Refresh transactions to show new payout request
+      await walletService.requestPayout(userId, amount);
       await refreshTransactions();
     } catch (e) {
       const err = e as Error;
-      walletLogger.error('Payout request failed', err);
-      setError(err.message || 'Failed to request payout');
+      setError(err.message || 'Payout operation failed');
       throw err;
     } finally {
       setLoading(false);
     }
-  };
+  }, [userId, wallet, refreshTransactions]);
 
-  return {
+  const derivedState = useMemo(() => ({
     wallet,
     transactions,
     loading,
     error,
     refreshTransactions,
-    requestPayout,
-  };
+    requestPayout
+  }), [wallet, transactions, loading, error, refreshTransactions, requestPayout]);
+
+  return derivedState;
 }

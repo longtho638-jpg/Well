@@ -8,13 +8,13 @@ vi.mock('framer-motion', async () => {
   const actualReact = await import('react');
   return {
     motion: {
-      div: actualReact.forwardRef(({ children, onClick, className, ...props }: any, ref: any) => (
+      div: actualReact.forwardRef(({ children, onClick, className, ...props }: React.HTMLAttributes<HTMLDivElement>, ref: React.ForwardedRef<HTMLDivElement>) => (
         <div ref={ref} className={className} onClick={onClick} {...props}>
           {children}
         </div>
       )),
     },
-    AnimatePresence: ({ children }: any) => <>{children}</>,
+    AnimatePresence: ({ children }: { children: React.ReactNode }) => <>{children}</>,
   };
 });
 

@@ -13,7 +13,7 @@ service firebase.storage {
     }
 
     function isValidImageType() {
-      return request.resource.contentType.matches('image/.*');
+      return request.resource.contentType.matches('image/(jpeg|png|webp|gif)');
     }
 
     function isValidFileSize(maxSize) {

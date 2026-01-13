@@ -54,7 +54,7 @@ const AddMemberModal: React.FC<{
         name: '',
         email: '',
         phone: '',
-        password: 'Password123!', // Default password for manual entry
+        password: '', // Force manual entry
         role_id: 8 // Default to CTV
     });
 
@@ -156,6 +156,18 @@ const AddMemberModal: React.FC<{
                             onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
                             className="w-full bg-zinc-800 border border-zinc-700 rounded-lg px-4 py-2 text-white focus:outline-none focus:border-emerald-500"
                             placeholder="0912345678"
+                        />
+                    </div>
+
+                    <div>
+                        <label className="block text-xs font-medium text-zinc-400 mb-1">Password</label>
+                        <input
+                            type="password"
+                            required
+                            value={formData.password}
+                            onChange={(e) => setFormData({ ...formData, password: e.target.value })}
+                            className="w-full bg-zinc-800 border border-zinc-700 rounded-lg px-4 py-2 text-white focus:outline-none focus:border-emerald-500"
+                            placeholder="••••••••"
                         />
                     </div>
 

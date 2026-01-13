@@ -19,7 +19,7 @@ type NestedKeyOf<ObjectType extends object> = {
   : `${Key}`;
 }[keyof ObjectType & (string | number)];
 
-type TranslationKey = NestedKeyOf<TranslationKeys>;
+export type TranslationKey = NestedKeyOf<TranslationKeys>;
 
 type Variables = Record<string, string | number>;
 

@@ -1,53 +1,12 @@
 /**
  * Auth Slice - Authentication State & Actions
- * Part of Store Decomposition (Phase 2 Refactoring)
+ * Part of Store Decomposition (Phase 17 Refactoring)
  */
 
 import { StateCreator } from 'zustand';
 import { User, UserRank } from '../../types';
 import { supabase } from '../../lib/supabase';
-
-// ============================================================================
-// WEALTH OS CALCULATION ENGINE
-// ============================================================================
-
-export function calculateBusinessValuation(user: User): number {
-    const monthlyProfit = user.totalSales * 0.20;
-    const annualizedProfit = monthlyProfit * 12;
-    const PE_RATIO = 5;
-    return annualizedProfit * PE_RATIO;
-}
-
-export function calculateEquityValue(growBalance: number): number {
-    const GROW_TO_VND_RATE = 10000;
-    return growBalance * GROW_TO_VND_RATE;
-}
-
-export function calculateAssetGrowthRate(user: User): number {
-    if (user.teamVolume > 100_000_000) return 15;
-    if (user.teamVolume > 50_000_000) return 10;
-    if (user.teamVolume > 20_000_000) return 7;
-    return 5;
-}
-
-export function enrichUserWithWealthMetrics(user: User): User {
-    const monthlyProfit = user.totalSales * 0.20;
-    const businessValuation = calculateBusinessValuation(user);
-    const equityValue = calculateEquityValue(user.growBalance + user.stakedGrowBalance);
-    const cashflowValue = user.shopBalance;
-    const assetGrowthRate = calculateAssetGrowthRate(user);
-    const projectedAnnualProfit = monthlyProfit * 12;
-
-    return {
-        ...user,
-        monthlyProfit,
-        businessValuation,
-        projectedAnnualProfit,
-        equityValue,
-        cashflowValue,
-        assetGrowthRate,
-    };
-}
+import { enrichUserWithWealthMetrics } from '@/utils/business/wealthEngine';
 
 // ============================================================================
 // SLICE TYPES

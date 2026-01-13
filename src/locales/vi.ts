@@ -874,6 +874,30 @@ export const vi = {
     restartQuiz: 'Làm lại bài đánh giá →',
   },
 
+  // Agent Dashboard
+  agentDashboard: {
+    title: 'Hệ Điều Hành Agent',
+    subtitle: 'Quản lý và vận hành đội ngũ nhân sự AI',
+    stats: {
+      totalAgents: 'Tổng số Agent',
+      activeFunctions: 'Phân hệ nghiệp vụ',
+      customAgents: 'Expert Agents',
+    },
+    grid: {
+      neuralSync: 'Đang đồng bộ Neural Link...',
+      statusActive: 'Hoạt động',
+      statusTraining: 'Đang huấn luyện',
+      statusStandby: 'Chế độ chờ',
+    },
+    details: {
+      efficiency: 'Hiệu suất xử lý',
+      accuracy: 'Độ chính xác',
+      latency: 'Độ trễ phản hồi',
+      capabilities: 'Khả năng nghiệp vụ',
+      trainingHistory: 'Lịch sử huấn luyện',
+    }
+  },
+
   // Admin Panel
   admin: {
     title: 'Quản trị hệ thống',

@@ -1,762 +1,180 @@
+/**
+ * WellNexus Venture Hub (Aura Elite Edition)
+ * Modular architecture for ecosystem venture builder positioning.
+ */
+
 import React from 'react';
-import { motion } from 'framer-motion';
-import {
-  ArrowRight,
-  Globe,
-  Network,
-  Rocket,
-  Lock,
-  ChevronRight,
-  Building2,
-  Award,
-  MapPin,
-  CheckCircle2,
-  TrendingUp,
-  Zap,
-  Mail,
-  Facebook,
-  Instagram,
-  Linkedin
-} from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
-import { useStore } from '../store';
 import { ParticleBackground } from '@/components/ParticleBackground';
 import { CursorGlow } from '@/components/CursorGlow';
+import { Building2, Zap, Award } from 'lucide-react';
+
+// Modular Components
+import { VentureNavigation } from '@/components/Venture/VentureNavigation';
+import { VentureHero } from '@/components/Venture/VentureHero';
+import { VentureDealSection } from '@/components/Venture/VentureDealSection';
+import { VenturePortfolio } from '@/components/Venture/VenturePortfolio';
+import { VentureMarketMap } from '@/components/Venture/VentureMarketMap';
+import { VentureFooter } from '@/components/Venture/VentureFooter';
 
 // ============================================================================
-// SMOOTH SCROLL UTILITY
-// ============================================================================
-const smoothScrollTo = (elementId: string) => {
-  const element = document.getElementById(elementId);
-  if (element) {
-    element.scrollIntoView({ behavior: 'smooth', block: 'start' });
-  }
-};
-
-// ============================================================================
-// CONTENT ARCHITECTURE - Venture Builder Positioning
+// CONTENT ARCHITECTURE
 // ============================================================================
 const CONTENT = {
   hero: {
-    badge: 'Venture Builder · SEA Health Market',
-    headline: 'WellNexus Venture Builder:',
-    headlineAccent: 'Nơi Khởi Nguồn Của Những Kỳ Lân Sức Khỏe Tiếp Theo Tại SEA',
-    subheadline: 'Chúng tôi không tìm người bán hàng. Chúng tôi tìm kiếm 200 Co-Founders để cùng sở hữu và vận hành chuỗi cung ứng sức khỏe phi tập trung (DeFi Health).',
-    primaryCta: 'Nộp Hồ Sơ Đối Tác Chiến Lược',
-    secondaryCta: 'Xem Portfolio',
+    badge: 'Co-Founder Recruitment Protocol v4.0',
+    headline: 'Venture Builder:',
+    headlineAccent: 'Next-Gen Health Tech Ecosystem',
+    subheadline: 'Architecting the decentralized health supply chain across SEA. We don\'t recruit employees; we build equity-backed Co-Founder nodes.',
+    primaryCta: 'Init Recruitment Protocol',
+    secondaryCta: 'Audit Portfolio',
     stats: [
-      { value: '$2.5M', label: 'Total Portfolio Valuation' },
-      { value: '200', label: 'Co-Founder Slots' },
-      { value: 'SEA', label: 'Market Coverage' }
+      { value: '$2.5M', label: 'Accumulated Valuation' },
+      { value: '200', label: 'Nodes Targeted' },
+      { value: 'SEA', label: 'Primary Market' }
     ]
   },
-
   deal: {
-    sectionBadge: 'The Term Sheet',
-    sectionTitle: 'Cơ Cấu Đầu Tư & Quyền Lợi',
-    subheadline: 'Mô hình đầu tư dành cho Co-Founders với equity ownership thực sự',
+    sectionBadge: 'The Protocol Deck',
+    sectionTitle: 'Equity & Infrastructure',
+    subheadline: 'Hyper-scalable investment structure for high-performance Co-Founders with local autonomy.',
     terms: [
       {
-        category: 'Vốn (Capital)',
+        category: 'Capital Node',
         items: [
-          'Hỗ trợ hàng hóa (Inventory) không cần vốn ban đầu',
-          'Working capital từ hệ sinh thái WellNexus',
-          'Credit line mở rộng theo performance'
+          'Inventory sync with zero initial liquidity',
+          'Network-backed working capital pools',
+          'Performance-indexed credit extensions'
         ],
         icon: Building2,
         gradient: 'from-emerald-500/20 to-teal-500/20'
       },
       {
-        category: 'Công nghệ (Technology Stack)',
+        category: 'Tech Stack 2.0',
         items: [
-          'Agentic OS - Hệ điều hành AI độc quyền',
-          'Real-time Analytics & Valuation Dashboard',
-          'Automated Tax Compliance (Vietnam Law)',
-          'Smart Contract Integration (Blockchain-ready)'
+          'Agentic OS - Native AI coordination',
+          'Real-time valuation & yield telemetry',
+          'Dynamic tax compliance abstraction',
+          'Distributed ledger integration'
         ],
         icon: Zap,
         gradient: 'from-violet-500/20 to-purple-500/20'
       },
       {
-        category: 'Cổ phần (Equity)',
+        category: 'Ownership Matrix',
         items: [
-          'ESOP Program - Employee Stock Ownership Plan',
-          'GROW Token Allocation (Equity-backed)',
-          'Vesting schedule: 4 năm với 1 năm cliff',
-          'Lộ trình IPO rõ ràng với milestone định giá'
+          'ESOP - Direct equity ownership tracks',
+          'GROW Delta - Incentive-aligned yield',
+          'Linear 4-year vesting // 1-year cliff',
+          'IPO-indexed valuation milestones'
         ],
         icon: Award,
         gradient: 'from-amber-500/20 to-yellow-500/20'
       }
     ]
   },
-
   portfolio: {
-    sectionBadge: 'Portfolio Companies',
-    sectionTitle: 'Những Founder Đã Đạt Định Giá',
-    subheadline: 'Học hỏi từ những Co-Founders thành công trong hệ sinh thái WellNexus',
+    sectionBadge: 'Active Founder Nodes',
+    sectionTitle: 'Proven Yield Generations',
+    subheadline: 'Ecosystem telemetry from active high-performance nodes.',
     companies: [
       {
-        founderName: 'Nguyễn Minh An',
+        founderName: 'Minh An',
         companyName: 'AnHealth Distribution',
-        role: 'Co-Founder & CEO',
+        role: 'Co-Founder // CEO',
         valuation: '$500K',
-        growth: '+320% YoY',
+        growth: '+320% VEL',
         metric: '₫180M ARR',
         image: 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=400&h=400&fit=crop&q=80',
-        region: 'Hà Nội'
+        region: 'Hanoi'
       },
       {
-        founderName: 'Trần Thị Bích',
-        companyName: 'Wellness Network VN',
-        role: 'Co-Founder & CMO',
+        founderName: 'Bich Tran',
+        companyName: 'Wellness Network',
+        role: 'Co-Founder // CMO',
         valuation: '$350K',
-        growth: '+280% YoY',
+        growth: '+280% VEL',
         metric: '₫125M ARR',
         image: 'https://images.unsplash.com/photo-1580489944761-15a19d654956?w=400&h=400&fit=crop&q=80',
-        region: 'TP.HCM'
+        region: 'HCMC'
       },
       {
-        founderName: 'Lê Hoàng Long',
+        founderName: 'Hoang Long',
         companyName: 'HealthTech Ventures',
-        role: 'Co-Founder & CTO',
+        role: 'Co-Founder // CTO',
         valuation: '$420K',
-        growth: '+295% YoY',
+        growth: '+295% VEL',
         metric: '₫155M ARR',
         image: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=400&h=400&fit=crop&q=80',
-        region: 'Đà Nẵng'
+        region: 'Da Nang'
       }
     ]
   },
-
   market: {
-    sectionBadge: 'SEA Expansion',
-    sectionTitle: 'Biên Giới Của Bạn Không Phải Là Việt Nam',
-    subheadline: 'Là cả Đông Nam Á - Market opportunity $12B',
+    sectionBadge: 'Ecosystem Expansion',
+    sectionTitle: 'SEA Regional Dominance',
+    subheadline: 'Multi-lateral expansion protocol into $12B addressable market.',
     regions: [
       { name: 'Vietnam', market: '$3.5B', growth: '+28%', status: 'Active' },
       { name: 'Thailand', market: '$2.8B', growth: '+22%', status: 'Expanding' },
-      { name: 'Indonesia', market: '$4.2B', growth: '+32%', status: 'Planning' },
-      { name: 'Philippines', market: '$1.5B', growth: '+25%', status: 'Planning' }
+      { name: 'Indonesia', market: '$4.2B', growth: '+32%', status: 'Protocol Init' },
+      { name: 'Philippines', market: '$1.5B', growth: '+25%', status: 'Pending' }
     ]
   },
-
   footer: {
     logo: 'WellNexus',
-    tagline: 'Venture Builder powering the next generation of health entrepreneurs across Southeast Asia with AI-driven technology, equity ownership, and clear path to unicorn status.',
+    tagline: 'Venture Builder powering high-fidelity administrative surfaces and decentralized health commerce across Southeast Asia.',
     newsletter: {
-      title: 'Co-Founder Updates',
-      placeholder: 'Your email'
+      title: 'Transmission Sync',
+      placeholder: 'comm_channel@secure.vn'
     },
     social: {
       facebook: 'https://facebook.com/wellnexus',
       instagram: 'https://instagram.com/wellnexus',
       linkedin: 'https://linkedin.com/company/wellnexus'
     },
-    copyright: '© 2025 WellNexus Venture Builder. All rights reserved.'
+    copyright: '© 2026 WellNexus Venture Builder // Absolute Zero Debt'
   }
 };
 
-// ============================================================================
-// MAIN COMPONENT
-// ============================================================================
-export default function VenturePage() {
+const VenturePage: React.FC = () => {
   const navigate = useNavigate();
 
-  const handleJoin = () => {
-    navigate('/signup');
-  };
-
-  // Animation Variants - Cinematic Style
-  const cinematicFadeIn = {
-    hidden: { opacity: 0, y: 60, scale: 0.95 },
-    visible: {
-      opacity: 1,
-      y: 0,
-      scale: 1,
-      transition: {
-        duration: 1,
-        ease: [0.16, 1, 0.3, 1] // Custom easing for cinematic feel
-      }
-    }
-  };
-
-  const staggerContainer = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        staggerChildren: 0.2,
-        delayChildren: 0.3
-      }
-    }
+  const handleJoin = () => navigate('/signup');
+  const smoothScrollTo = (id: string) => {
+    const element = document.getElementById(id);
+    if (element) element.scrollIntoView({ behavior: 'smooth', block: 'start' });
   };
 
   return (
-    <>
-      <style>{`
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Space+Grotesk:wght@400;500;600;700&display=swap');
-        .font-display { font-family: 'Space Grotesk', sans-serif; }
-      `}</style>
+    <div className="min-h-screen bg-zinc-950 text-white overflow-x-hidden relative selection:bg-teal-500/30">
+      <ParticleBackground />
+      <CursorGlow />
 
-      <div className="min-h-screen bg-dark-ultra text-white overflow-x-hidden relative">
-        <ParticleBackground />
-        <CursorGlow />
+      <VentureNavigation
+        logo={CONTENT.footer.logo}
+        onScroll={smoothScrollTo}
+        onJoin={handleJoin}
+      />
 
-        {/* ================================================================== */}
-        {/* STICKY HEADER - Premium Dark */}
-        {/* ================================================================== */}
-        <motion.nav
-          initial={{ y: -100 }}
-          animate={{ y: 0 }}
-          transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-          className="fixed top-0 w-full z-50 backdrop-blur-2xl bg-black/50 border-b border-white/10"
-        >
-          <div className="max-w-7xl mx-auto px-6 lg:px-12 h-20 flex items-center justify-between">
-            {/* Logo */}
-            <motion.div
-              className="flex items-center gap-3 cursor-pointer"
-              whileHover={{ scale: 1.02 }}
-              onClick={() => smoothScrollTo('hero')}
-            >
-              <div className="w-10 h-10 bg-gradient-to-br from-[#FFBF00] to-[#FF9500] rounded-lg flex items-center justify-center text-slate-950 font-display font-black text-xl shadow-2xl shadow-[#FFBF00]/20">
-                W
-              </div>
-              <span className="font-display font-bold text-xl text-white tracking-tight">
-                {CONTENT.footer.logo}
-              </span>
-              <span className="text-xs font-medium text-slate-500 uppercase tracking-wider">
-                Venture Builder
-              </span>
-            </motion.div>
+      <VentureHero
+        content={CONTENT.hero}
+        onJoin={handleJoin}
+        onPortfolio={() => smoothScrollTo('portfolio')}
+      />
 
-            {/* Navigation Menu */}
-            <div className="hidden md:flex items-center gap-8">
-              {[
-                { label: 'Portfolio', id: 'portfolio' },
-                { label: 'The Deal', id: 'deal' },
-                { label: 'SEA Market', id: 'market' }
-              ].map((item, idx) => (
-                <button
-                  key={idx}
-                  onClick={() => smoothScrollTo(item.id)}
-                  className="text-sm font-medium text-slate-400 hover:text-[#FFBF00] transition-colors"
-                >
-                  {item.label}
-                </button>
-              ))}
-            </div>
+      <VenturePortfolio content={CONTENT.portfolio} />
 
-            {/* Action Button */}
-            <motion.button
-              onClick={handleJoin}
-              className="text-sm font-bold bg-[#FFBF00] hover:bg-[#FF9500] text-slate-950 px-6 py-2.5 rounded-lg transition-all shadow-lg shadow-[#FFBF00]/20"
-              whileHover={{ scale: 1.05, boxShadow: '0 20px 40px rgba(255, 191, 0, 0.3)' }}
-              whileTap={{ scale: 0.95 }}
-            >
-              Apply Now
-            </motion.button>
-          </div>
-        </motion.nav>
+      <VentureDealSection content={CONTENT.deal} />
 
-        {/* ================================================================== */}
-        {/* HERO SECTION - The Pitch (Dark Premium) */}
-        {/* ================================================================== */}
-        <section id="hero" className="relative min-h-screen pt-32 pb-20 overflow-hidden flex items-center">
-          {/* Glowing Orbs */}
-          <div className="absolute top-20 right-20 w-[500px] h-[500px] bg-[#FFBF00]/20 rounded-full blur-[150px] animate-float" />
-          <div className="absolute bottom-20 left-20 w-[400px] h-[400px] bg-[#00575A]/30 rounded-full blur-[120px]" style={{ animationDelay: '1s' }} />
+      <VentureMarketMap
+        content={CONTENT.market}
+        onJoin={handleJoin}
+      />
 
-          <div className="relative z-10 max-w-7xl mx-auto px-6 lg:px-12 w-full">
-            <motion.div
-              variants={staggerContainer}
-              initial="hidden"
-              animate="visible"
-              className="text-center max-w-5xl mx-auto"
-            >
-              {/* Badge */}
-              <motion.div variants={cinematicFadeIn} className="mb-8 inline-flex">
-                <div className="inline-flex items-center gap-3 bg-white/5 backdrop-blur-xl border border-white/10 rounded-full px-5 py-2.5">
-                  <span className="relative flex h-2 w-2">
-                    <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#FFBF00] opacity-75" />
-                    <span className="relative inline-flex rounded-full h-2 w-2 bg-[#FFBF00]" />
-                  </span>
-                  <Globe className="w-4 h-4 text-[#FFBF00]" />
-                  <span className="text-xs font-bold text-slate-300 uppercase tracking-wider">
-                    {CONTENT.hero.badge}
-                  </span>
-                </div>
-              </motion.div>
-
-              {/* Headline */}
-              <motion.h1
-                variants={cinematicFadeIn}
-                className="font-display font-black text-6xl md:text-7xl lg:text-8xl mb-8 leading-[0.9] tracking-tight"
-              >
-                <span className="text-slate-100">
-                  {CONTENT.hero.headline}
-                </span>
-                <br />
-                <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#FFBF00] via-[#FFD700] to-[#FFBF00] glow-text">
-                  {CONTENT.hero.headlineAccent}
-                </span>
-              </motion.h1>
-
-              {/* Subheadline */}
-              <motion.p
-                variants={cinematicFadeIn}
-                className="text-xl md:text-2xl text-slate-400 mb-12 leading-relaxed max-w-4xl mx-auto"
-              >
-                {CONTENT.hero.subheadline}
-              </motion.p>
-
-              {/* CTA Buttons */}
-              <motion.div
-                variants={cinematicFadeIn}
-                className="flex flex-col sm:flex-row gap-4 justify-center mb-16"
-              >
-                <motion.button
-                  onClick={handleJoin}
-                  className="group bg-[#FFBF00] text-slate-950 px-10 py-5 rounded-xl font-bold text-lg flex items-center justify-center gap-3 shadow-2xl shadow-[#FFBF00]/30"
-                  whileHover={{
-                    scale: 1.05,
-                    boxShadow: '0 30px 60px rgba(255, 191, 0, 0.4)'
-                  }}
-                  whileTap={{ scale: 0.98 }}
-                >
-                  <Rocket className="w-5 h-5" />
-                  {CONTENT.hero.primaryCta}
-                  <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
-                </motion.button>
-
-                <motion.button
-                  onClick={() => smoothScrollTo('portfolio')}
-                  className="px-10 py-5 rounded-xl font-bold text-lg text-slate-300 border-2 border-white/10 hover:border-[#FFBF00] bg-white/5 backdrop-blur-xl hover:bg-white/10 transition-all"
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
-                >
-                  {CONTENT.hero.secondaryCta}
-                </motion.button>
-              </motion.div>
-
-              {/* Stats - Venture Style */}
-              <motion.div
-                variants={cinematicFadeIn}
-                className="grid grid-cols-3 gap-8 max-w-3xl mx-auto"
-              >
-                {CONTENT.hero.stats.map((stat, idx) => (
-                  <div key={idx} className="relative group">
-                    <div className="absolute inset-0 bg-gradient-to-br from-[#FFBF00]/10 to-transparent rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity blur-xl" />
-                    <div className="glass-ultra relative rounded-2xl p-6 hover:border-[#FFBF00]/50 transition-all">
-                      <div className="text-4xl lg:text-5xl font-black text-[#FFBF00] font-display mb-2">
-                        {stat.value}
-                      </div>
-                      <div className="text-sm text-slate-400 font-medium">
-                        {stat.label}
-                      </div>
-                    </div>
-                  </div>
-                ))}
-              </motion.div>
-            </motion.div>
-          </div>
-        </section>
-
-        {/* ================================================================== */}
-        {/* THE DEAL SECTION - Term Sheet Style */}
-        {/* ================================================================== */}
-        <section id="deal" className="relative py-32 bg-dark-ultra">
-          <div className="relative z-10 max-w-7xl mx-auto px-6 lg:px-12">
-            {/* Section Header */}
-            <motion.div
-              initial={{ opacity: 0, y: 40 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.8 }}
-              className="text-center mb-20"
-            >
-              <div className="inline-flex items-center gap-2 bg-white/5 backdrop-blur-xl border border-white/10 rounded-full px-5 py-2 mb-6">
-                <Lock className="w-4 h-4 text-[#FFBF00]" />
-                <span className="text-sm font-bold text-slate-300 uppercase tracking-wider">
-                  {CONTENT.deal.sectionBadge}
-                </span>
-              </div>
-              <h2 className="text-5xl md:text-6xl lg:text-7xl font-black text-white mb-6 font-display">
-                {CONTENT.deal.sectionTitle}
-              </h2>
-              <p className="text-xl text-slate-400 max-w-3xl mx-auto">
-                {CONTENT.deal.subheadline}
-              </p>
-            </motion.div>
-
-            {/* Term Cards Grid */}
-            <div className="grid md:grid-cols-3 gap-8">
-              {CONTENT.deal.terms.map((term, idx) => {
-                const Icon = term.icon;
-                return (
-                  <motion.div
-                    key={idx}
-                    initial={{ opacity: 0, y: 60 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true }}
-                    transition={{ delay: idx * 0.2, duration: 0.8 }}
-                    className="group relative"
-                  >
-                    {/* Glow effect */}
-                    <div className="absolute -inset-0.5 bg-gradient-to-br from-[#FFBF00]/20 to-[#00575A]/20 rounded-3xl opacity-0 group-hover:opacity-100 transition-opacity blur-xl" />
-
-                    {/* Card */}
-                    <div className="glass-ultra relative rounded-3xl p-8 h-full hover:border-[#FFBF00]/30 transition-all">
-                      {/* Icon */}
-                      <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-[#FFBF00]/20 to-transparent border border-[#FFBF00]/20 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
-                        <Icon className="w-8 h-8 text-[#FFBF00]" />
-                      </div>
-
-                      {/* Category */}
-                      <h3 className="text-2xl font-bold text-white mb-6 font-display">
-                        {term.category}
-                      </h3>
-
-                      {/* Items */}
-                      <ul className="space-y-4">
-                        {term.items.map((item, itemIdx) => (
-                          <li key={itemIdx} className="flex items-start gap-3">
-                            <CheckCircle2 className="w-5 h-5 text-[#FFBF00] flex-shrink-0 mt-0.5" />
-                            <span className="text-slate-300 text-sm leading-relaxed">
-                              {item}
-                            </span>
-                          </li>
-                        ))}
-                      </ul>
-                    </div>
-                  </motion.div>
-                );
-              })}
-            </div>
-          </div>
-        </section>
-
-        {/* ================================================================== */}
-        {/* PORTFOLIO SECTION - Portfolio Companies */}
-        {/* ================================================================== */}
-        <section id="portfolio" className="relative py-32 bg-black/40">
-          <div className="relative z-10 max-w-7xl mx-auto px-6 lg:px-12">
-            {/* Section Header */}
-            <motion.div
-              initial={{ opacity: 0, y: 40 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.8 }}
-              className="text-center mb-20"
-            >
-              <div className="inline-flex items-center gap-2 bg-white/5 backdrop-blur-xl border border-white/10 rounded-full px-5 py-2 mb-6">
-                <Award className="w-4 h-4 text-[#FFBF00]" />
-                <span className="text-sm font-bold text-slate-300 uppercase tracking-wider">
-                  {CONTENT.portfolio.sectionBadge}
-                </span>
-              </div>
-              <h2 className="text-5xl md:text-6xl lg:text-7xl font-black text-white mb-6 font-display">
-                {CONTENT.portfolio.sectionTitle}
-              </h2>
-              <p className="text-xl text-slate-400 max-w-3xl mx-auto">
-                {CONTENT.portfolio.subheadline}
-              </p>
-            </motion.div>
-
-            {/* Portfolio Grid */}
-            <div className="grid md:grid-cols-3 gap-8">
-              {CONTENT.portfolio.companies.map((company, idx) => (
-                <motion.div
-                  key={idx}
-                  initial={{ opacity: 0, scale: 0.9 }}
-                  whileInView={{ opacity: 1, scale: 1 }}
-                  viewport={{ once: true }}
-                  transition={{ delay: idx * 0.15, duration: 0.8 }}
-                  className="group relative"
-                >
-                  {/* Glow */}
-                  <div className="absolute -inset-0.5 bg-gradient-to-br from-[#FFBF00]/30 to-transparent rounded-3xl opacity-0 group-hover:opacity-100 transition-opacity blur-2xl" />
-
-                  {/* Card */}
-                  <div className="glass-ultra relative rounded-3xl overflow-hidden hover:border-[#FFBF00]/30 transition-all">
-                    {/* Profile Image */}
-                    <div className="relative h-64 overflow-hidden">
-                      <img
-                        src={company.image}
-                        alt={company.founderName}
-                        className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
-                      />
-                      <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/50 to-transparent" />
-
-                      {/* Valuation Badge */}
-                      <div className="absolute top-4 right-4">
-                        <div className="bg-[#FFBF00]/20 backdrop-blur-xl border border-[#FFBF00]/30 rounded-full px-4 py-2">
-                          <span className="text-[#FFBF00] font-bold text-sm">
-                            {company.valuation}
-                          </span>
-                        </div>
-                      </div>
-
-                      {/* Region */}
-                      <div className="absolute bottom-4 left-4">
-                        <div className="flex items-center gap-2 bg-black/50 backdrop-blur-xl border border-white/10 rounded-full px-3 py-1.5">
-                          <MapPin className="w-3 h-3 text-slate-400" />
-                          <span className="text-slate-300 font-medium text-xs">
-                            {company.region}
-                          </span>
-                        </div>
-                      </div>
-                    </div>
-
-                    {/* Content */}
-                    <div className="p-6">
-                      <h3 className="text-2xl font-bold text-white mb-1 font-display">
-                        {company.founderName}
-                      </h3>
-                      <p className="text-slate-400 text-sm mb-1">
-                        {company.role}
-                      </p>
-                      <p className="text-[#FFBF00] text-sm font-bold mb-4">
-                        {company.companyName}
-                      </p>
-
-                      {/* Metrics */}
-                      <div className="flex items-center justify-between pt-4 border-t border-white/10">
-                        <div>
-                          <div className="text-sm text-slate-500">Growth</div>
-                          <div className="text-lg font-bold text-emerald-400">
-                            {company.growth}
-                          </div>
-                        </div>
-                        <div className="text-right">
-                          <div className="text-sm text-slate-500">ARR</div>
-                          <div className="text-lg font-bold text-white">
-                            {company.metric}
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </motion.div>
-              ))}
-            </div>
-          </div>
-        </section>
-
-        {/* ================================================================== */}
-        {/* THE MARKET SECTION - SEA Vision */}
-        {/* ================================================================== */}
-        <section id="market" className="relative py-32 bg-dark-ultra">
-          <div className="relative z-10 max-w-7xl mx-auto px-6 lg:px-12">
-            {/* Section Header */}
-            <motion.div
-              initial={{ opacity: 0, y: 40 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.8 }}
-              className="text-center mb-20"
-            >
-              <div className="inline-flex items-center gap-2 bg-white/5 backdrop-blur-xl border border-white/10 rounded-full px-5 py-2 mb-6">
-                <Network className="w-4 h-4 text-[#FFBF00]" />
-                <span className="text-sm font-bold text-slate-300 uppercase tracking-wider">
-                  {CONTENT.market.sectionBadge}
-                </span>
-              </div>
-              <h2 className="text-5xl md:text-6xl lg:text-7xl font-black text-white mb-6 font-display leading-tight">
-                {CONTENT.market.sectionTitle}
-              </h2>
-              <p className="text-xl text-slate-400 max-w-3xl mx-auto">
-                {CONTENT.market.subheadline}
-              </p>
-            </motion.div>
-
-            {/* Market Map Visual */}
-            <motion.div
-              initial={{ opacity: 0, scale: 0.95 }}
-              whileInView={{ opacity: 1, scale: 1 }}
-              viewport={{ once: true }}
-              transition={{ duration: 1 }}
-              className="glass-ultra relative rounded-3xl p-12 mb-12"
-            >
-              {/* Visual Map Representation */}
-              <div className="relative h-[400px] mb-8">
-                <img
-                  src="https://images.unsplash.com/photo-1526778548025-fa2f459cd5c1?w=1600&h=900&fit=crop&q=80"
-                  alt="SEA Map"
-                  className="w-full h-full object-cover rounded-2xl opacity-30"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-slate-900 via-transparent to-transparent rounded-2xl" />
-
-                {/* Network Nodes Overlay */}
-                <div className="absolute inset-0 flex items-center justify-center">
-                  <div className="relative w-full max-w-3xl">
-                    {/* Connecting Lines */}
-                    <svg className="absolute inset-0 w-full h-full opacity-30">
-                      <line x1="25%" y1="30%" x2="50%" y2="50%" stroke="#FFBF00" strokeWidth="2" strokeDasharray="5,5" />
-                      <line x1="50%" y1="50%" x2="75%" y2="40%" stroke="#FFBF00" strokeWidth="2" strokeDasharray="5,5" />
-                      <line x1="50%" y1="50%" x2="60%" y2="70%" stroke="#FFBF00" strokeWidth="2" strokeDasharray="5,5" />
-                    </svg>
-
-                    {/* Node Points */}
-                    <div className="absolute top-[30%] left-[25%] w-4 h-4 bg-[#FFBF00] rounded-full animate-pulse shadow-lg shadow-[#FFBF00]/50" />
-                    <div className="absolute top-[50%] left-[50%] w-6 h-6 bg-[#FFBF00] rounded-full animate-pulse shadow-2xl shadow-[#FFBF00]/70" />
-                    <div className="absolute top-[40%] left-[75%] w-4 h-4 bg-slate-500 rounded-full animate-pulse" />
-                    <div className="absolute top-[70%] left-[60%] w-4 h-4 bg-slate-500 rounded-full animate-pulse" />
-                  </div>
-                </div>
-              </div>
-
-              {/* Region Grid */}
-              <div className="grid md:grid-cols-4 gap-6">
-                {CONTENT.market.regions.map((region, idx) => (
-                  <motion.div
-                    key={idx}
-                    initial={{ opacity: 0, y: 30 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true }}
-                    transition={{ delay: idx * 0.1, duration: 0.6 }}
-                    className="relative group"
-                  >
-                    <div className="glass-ultra rounded-2xl p-6 hover:border-[#FFBF00]/30 transition-all">
-                      {/* Status Badge */}
-                      <div className="flex items-center justify-between mb-4">
-                        <span className="text-lg font-bold text-white font-display">
-                          {region.name}
-                        </span>
-                        <span className={`text-xs font-bold px-2 py-1 rounded-full ${region.status === 'Active' ? 'bg-emerald-500/20 text-emerald-400' :
-                            region.status === 'Expanding' ? 'bg-[#FFBF00]/20 text-[#FFBF00]' :
-                              'bg-slate-700/20 text-slate-400'
-                          }`}>
-                          {region.status}
-                        </span>
-                      </div>
-
-                      {/* Market Size */}
-                      <div className="mb-2">
-                        <div className="text-3xl font-black text-[#FFBF00] font-display">
-                          {region.market}
-                        </div>
-                        <div className="text-sm text-slate-500">Market Size</div>
-                      </div>
-
-                      {/* Growth */}
-                      <div className="flex items-center gap-2">
-                        <TrendingUp className="w-4 h-4 text-emerald-400" />
-                        <span className="text-emerald-400 font-bold">
-                          {region.growth}
-                        </span>
-                        <span className="text-slate-500 text-sm">YoY</span>
-                      </div>
-                    </div>
-                  </motion.div>
-                ))}
-              </div>
-            </motion.div>
-
-            {/* CTA */}
-            <motion.div
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              className="text-center"
-            >
-              <motion.button
-                onClick={handleJoin}
-                className="group bg-[#FFBF00] text-slate-950 px-12 py-6 rounded-xl font-bold text-xl flex items-center justify-center gap-3 mx-auto shadow-2xl shadow-[#FFBF00]/30"
-                whileHover={{
-                  scale: 1.05,
-                  boxShadow: '0 30px 60px rgba(255, 191, 0, 0.4)'
-                }}
-                whileTap={{ scale: 0.98 }}
-              >
-                <Globe className="w-6 h-6" />
-                Mở Rộng Sang SEA Với Chúng Tôi
-                <ChevronRight className="w-6 h-6 group-hover:translate-x-1 transition-transform" />
-              </motion.button>
-            </motion.div>
-          </div>
-        </section>
-
-        {/* ================================================================== */}
-        {/* FOOTER - Premium Dark */}
-        {/* ================================================================== */}
-        <footer className="relative bg-black text-white pt-20 pb-12 border-t border-white/10">
-          <div className="relative z-10 max-w-7xl mx-auto px-6 lg:px-12">
-            {/* Main Footer Content */}
-            <div className="grid md:grid-cols-2 gap-12 mb-16">
-              {/* Brand */}
-              <div>
-                <div className="flex items-center gap-3 mb-4">
-                  <div className="w-12 h-12 bg-gradient-to-br from-[#FFBF00] to-[#FF9500] rounded-lg flex items-center justify-center text-slate-950 font-display font-black text-2xl shadow-2xl shadow-[#FFBF00]/20">
-                    W
-                  </div>
-                  <div>
-                    <div className="font-display font-bold text-xl">
-                      {CONTENT.footer.logo}
-                    </div>
-                    <div className="text-xs text-slate-500 uppercase tracking-wider">
-                      Venture Builder
-                    </div>
-                  </div>
-                </div>
-                <p className="text-slate-400 leading-relaxed mb-6 max-w-md">
-                  {CONTENT.footer.tagline}
-                </p>
-
-                {/* Social Links */}
-                <div className="flex items-center gap-3">
-                  {[
-                    { icon: Facebook, href: CONTENT.footer.social.facebook },
-                    { icon: Instagram, href: CONTENT.footer.social.instagram },
-                    { icon: Linkedin, href: CONTENT.footer.social.linkedin }
-                  ].map((social, idx) => {
-                    const SocialIcon = social.icon;
-                    return (
-                      <motion.a
-                        key={idx}
-                        href={social.href}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="w-12 h-12 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 hover:border-[#FFBF00]/30 flex items-center justify-center transition-all"
-                        whileHover={{ scale: 1.1, y: -2 }}
-                        whileTap={{ scale: 0.95 }}
-                      >
-                        <SocialIcon className="w-5 h-5" />
-                      </motion.a>
-                    );
-                  })}
-                </div>
-              </div>
-
-              {/* Newsletter */}
-              <div>
-                <h3 className="font-display font-bold text-xl mb-4">
-                  {CONTENT.footer.newsletter.title}
-                </h3>
-                <div className="flex gap-3">
-                  <input
-                    type="email"
-                    placeholder={CONTENT.footer.newsletter.placeholder}
-                    className="flex-1 px-5 py-3 rounded-xl bg-white/5 border border-white/10 text-white placeholder-slate-500 focus:outline-none focus:border-[#FFBF00]/50 transition-colors backdrop-blur-xl"
-                  />
-                  <motion.button
-                    className="px-6 py-3 rounded-xl bg-[#FFBF00] text-slate-950 font-bold shadow-lg shadow-[#FFBF00]/20"
-                    whileHover={{ scale: 1.05 }}
-                    whileTap={{ scale: 0.95 }}
-                  >
-                    <Mail className="w-5 h-5" />
-                  </motion.button>
-                </div>
-              </div>
-            </div>
-
-            {/* Copyright */}
-            <div className="text-center text-slate-500 text-sm pt-8 border-t border-white/10">
-              {CONTENT.footer.copyright}
-            </div>
-          </div>
-        </footer>
-      </div>
-    </>
+      <VentureFooter content={CONTENT.footer} />
+    </div>
   );
-}
+};
+
+export default VenturePage;

@@ -1,14 +1,9 @@
 /**
- * Admin Notification Center
- * Phase 4: WOW Features
- * 
- * Bell icon with dropdown notification list:
- * - Unread count badge
- * - Mark as read
- * - Filter by type
+ * Admin Notification Center (Refactored)
+ * Standardized components for high-performance admin alerts.
  */
 
-import React, { useState } from 'react';
+import React from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
     Bell,
@@ -22,56 +17,8 @@ import {
     CheckCheck,
 } from 'lucide-react';
 
-interface Notification {
-    id: string;
-    type: 'success' | 'warning' | 'info' | 'error';
-    title: string;
-    message: string;
-    timestamp: string;
-    read: boolean;
-    action?: {
-        label: string;
-        href: string;
-    };
-}
-
-// Demo notifications
-const DEMO_NOTIFICATIONS: Notification[] = [
-    {
-        id: 'n1',
-        type: 'success',
-        title: 'New Partner Joined',
-        message: 'Nguyễn Văn A has joined your network',
-        timestamp: '5 phút trước',
-        read: false,
-    },
-    {
-        id: 'n2',
-        type: 'warning',
-        title: 'Low Stock Alert',
-        message: 'ANIMA 119 only has 5 units remaining',
-        timestamp: '15 phút trước',
-        read: false,
-        action: { label: 'View Products', href: '/admin/products' },
-    },
-    {
-        id: 'n3',
-        type: 'info',
-        title: 'Pending Order',
-        message: '3 orders waiting for approval',
-        timestamp: '1 giờ trước',
-        read: true,
-        action: { label: 'Review Orders', href: '/admin/orders' },
-    },
-    {
-        id: 'n4',
-        type: 'error',
-        title: 'Payment Failed',
-        message: 'Withdrawal request W-001 was rejected by bank',
-        timestamp: '2 giờ trước',
-        read: true,
-    },
-];
+// Hooks
+import { useNotificationCenter, Notification } from '../../hooks/useNotificationCenter';
 
 const NotificationIcon: React.FC<{ type: Notification['type'] }> = ({ type }) => {
     const config = {
@@ -85,179 +32,188 @@ const NotificationIcon: React.FC<{ type: Notification['type'] }> = ({ type }) =>
     return <Icon className={`w-5 h-5 ${className}`} />;
 };
 
+const NotificationItem: React.FC<{
+    notification: Notification;
+    onRead: (id: string) => void;
+    onDelete: (id: string) => void;
+}> = ({ notification, onRead, onDelete }) => (
+    <motion.div
+        layout
+        initial={{ opacity: 0, x: 20 }}
+        animate={{ opacity: 1, x: 0 }}
+        exit={{ opacity: 0, scale: 0.95 }}
+        className={`p-4 border-b border-zinc-800 hover:bg-zinc-800/50 transition-colors group ${!notification.read ? 'bg-zinc-800/30' : ''
+            }`}
+    >
+        <div className="flex items-start gap-4">
+            <div className="mt-1">
+                <NotificationIcon type={notification.type} />
+            </div>
+
+            <div className="flex-1 min-w-0">
+                <div className="flex items-center gap-2 mb-1">
+                    <h4 className="font-bold text-zinc-100 text-sm truncate">
+                        {notification.title}
+                    </h4>
+                    {!notification.read && (
+                        <span className="w-1.5 h-1.5 bg-blue-500 rounded-full shadow-[0_0_8px_rgba(59,130,246,0.5)]" />
+                    )}
+                </div>
+
+                <p className="text-sm text-zinc-400 line-clamp-2 leading-relaxed font-medium">
+                    {notification.message}
+                </p>
+
+                <div className="flex items-center justify-between mt-3">
+                    <span className="text-[10px] font-black text-zinc-600 uppercase tracking-widest">
+                        {notification.timestamp}
+                    </span>
+                    {notification.action && (
+                        <a
+                            href={notification.action.href}
+                            className="text-[10px] font-black text-emerald-400 hover:text-emerald-300 transition-colors uppercase tracking-widest flex items-center gap-1 group/link"
+                        >
+                            {notification.action.label}
+                            <span className="group-hover/link:translate-x-1 transition-transform">→</span>
+                        </a>
+                    )}
+                </div>
+            </div>
+
+            <div className="flex flex-col gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
+                {!notification.read && (
+                    <button
+                        onClick={() => onRead(notification.id)}
+                        className="p-1.5 text-zinc-600 hover:text-zinc-100 bg-zinc-800/50 rounded-lg transition-all"
+                        title="Mark as read"
+                    >
+                        <Eye className="w-3.5 h-3.5" />
+                    </button>
+                )}
+                <button
+                    onClick={() => onDelete(notification.id)}
+                    className="p-1.5 text-zinc-600 hover:text-red-400 bg-zinc-800/50 rounded-lg transition-all"
+                    title="Delete"
+                >
+                    <Trash2 className="w-3.5 h-3.5" />
+                </button>
+            </div>
+        </div>
+    </motion.div>
+);
+
 export function NotificationCenter() {
-    const [isOpen, setIsOpen] = useState(false);
-    const [notifications, setNotifications] = useState<Notification[]>(DEMO_NOTIFICATIONS);
-
-    const unreadCount = notifications.filter(n => !n.read).length;
-
-    const markAsRead = (id: string) => {
-        setNotifications(prev =>
-            prev.map(n => (n.id === id ? { ...n, read: true } : n))
-        );
-    };
-
-    const markAllAsRead = () => {
-        setNotifications(prev => prev.map(n => ({ ...n, read: true })));
-    };
-
-    const deleteNotification = (id: string) => {
-        setNotifications(prev => prev.filter(n => n.id !== id));
-    };
-
-    const clearAll = () => {
-        setNotifications([]);
-        setIsOpen(false);
-    };
+    const {
+        isOpen,
+        notifications,
+        unreadCount,
+        toggleOpen,
+        close,
+        markAsRead,
+        markAllAsRead,
+        deleteNotification,
+        clearAll
+    } = useNotificationCenter();
 
     return (
         <div className="relative">
             {/* Bell Button */}
             <button
-                onClick={() => setIsOpen(!isOpen)}
-                className="relative p-2 rounded-lg hover:bg-zinc-800 transition-colors"
+                onClick={toggleOpen}
+                className={`relative p-2.5 rounded-xl transition-all duration-300 ${isOpen ? 'bg-zinc-800 text-white' : 'text-zinc-400 hover:bg-zinc-800/50 hover:text-zinc-200'
+                    }`}
             >
-                <Bell className="w-5 h-5 text-zinc-400" />
+                <Bell className={`w-5 h-5 transition-transform duration-500 ${isOpen ? 'scale-110 rotate-12' : ''}`} />
                 {unreadCount > 0 && (
                     <motion.span
                         initial={{ scale: 0 }}
                         animate={{ scale: 1 }}
-                        className="absolute -top-1 -right-1 w-5 h-5 bg-red-500 text-white text-xs font-bold rounded-full flex items-center justify-center"
+                        className="absolute top-1.5 right-1.5 w-4.5 h-4.5 bg-red-500 text-white text-[10px] font-black rounded-lg flex items-center justify-center border-2 border-zinc-950 shadow-lg"
                     >
                         {unreadCount}
                     </motion.span>
                 )}
             </button>
 
-            {/* Dropdown */}
+            {/* Dropdown Content */}
             <AnimatePresence>
                 {isOpen && (
                     <>
-                        {/* Backdrop */}
-                        <div
-                            className="fixed inset-0 z-40"
-                            onClick={() => setIsOpen(false)}
-                        />
+                        <div className="fixed inset-0 z-40" onClick={close} />
 
-                        {/* Panel */}
                         <motion.div
-                            initial={{ opacity: 0, y: -10, scale: 0.95 }}
+                            initial={{ opacity: 0, y: 12, scale: 0.95 }}
                             animate={{ opacity: 1, y: 0, scale: 1 }}
-                            exit={{ opacity: 0, y: -10, scale: 0.95 }}
-                            className="absolute right-0 mt-2 w-80 sm:w-96 bg-zinc-900 border border-zinc-800 rounded-xl shadow-2xl z-50 overflow-hidden"
+                            exit={{ opacity: 0, y: 8, scale: 0.95 }}
+                            transition={{ duration: 0.2, ease: "easeOut" }}
+                            className="absolute right-0 mt-4 w-96 bg-zinc-900 border border-white/5 rounded-3xl shadow-[0_32px_64px_-16px_rgba(0,0,0,0.6)] z-50 overflow-hidden backdrop-blur-3xl"
                         >
-                            {/* Header */}
-                            <div className="p-4 border-b border-zinc-800 flex items-center justify-between">
+                            {/* Panel Header */}
+                            <div className="p-6 border-b border-white/5 flex items-center justify-between">
                                 <div>
-                                    <h3 className="font-bold text-zinc-100">Notifications</h3>
-                                    <p className="text-xs text-zinc-500">
-                                        {unreadCount} unread
+                                    <h3 className="text-lg font-black text-white tracking-tight">Notifications</h3>
+                                    <p className="text-[10px] font-black text-zinc-500 uppercase tracking-widest mt-1">
+                                        {unreadCount} Actions Required
                                     </p>
                                 </div>
-                                <div className="flex items-center gap-1">
+                                <div className="flex items-center gap-2">
                                     {unreadCount > 0 && (
                                         <button
                                             onClick={markAllAsRead}
-                                            className="p-1.5 text-zinc-400 hover:text-zinc-100 hover:bg-zinc-800 rounded-lg transition-colors"
+                                            className="p-2 text-zinc-500 hover:text-emerald-400 hover:bg-emerald-500/10 rounded-xl transition-all"
                                             title="Mark all as read"
                                         >
-                                            <CheckCheck className="w-4 h-4" />
+                                            <CheckCheck className="w-5 h-5" />
                                         </button>
                                     )}
                                     <button
-                                        onClick={() => setIsOpen(false)}
-                                        className="p-1.5 text-zinc-400 hover:text-zinc-100 hover:bg-zinc-800 rounded-lg transition-colors"
+                                        onClick={close}
+                                        className="p-2 text-zinc-500 hover:text-white hover:bg-zinc-800 rounded-xl transition-all"
                                     >
-                                        <X className="w-4 h-4" />
+                                        <X className="w-5 h-5" />
                                     </button>
                                 </div>
                             </div>
 
-                            {/* Notifications List */}
-                            <div className="max-h-96 overflow-y-auto">
+                            {/* Notifications Scroll Area */}
+                            <div className="max-h-[28rem] overflow-y-auto no-scrollbar">
                                 {notifications.length === 0 ? (
-                                    <div className="p-8 text-center">
-                                        <Bell className="w-12 h-12 text-zinc-700 mx-auto mb-4" />
-                                        <p className="text-zinc-500">No notifications</p>
+                                    <div className="px-12 py-20 text-center">
+                                        <div className="w-16 h-16 bg-zinc-800/50 rounded-2xl flex items-center justify-center mx-auto mb-6">
+                                            <Bell className="w-8 h-8 text-zinc-600" />
+                                        </div>
+                                        <p className="text-zinc-500 font-bold">No new activity</p>
+                                        <p className="text-zinc-600 text-xs mt-2 font-medium">We'll notify you when something happens.</p>
                                     </div>
                                 ) : (
-                                    notifications.map((notification) => (
-                                        <motion.div
-                                            key={notification.id}
-                                            layout
-                                            initial={{ opacity: 0 }}
-                                            animate={{ opacity: 1 }}
-                                            exit={{ opacity: 0, height: 0 }}
-                                            className={`p-4 border-b border-zinc-800 hover:bg-zinc-800/50 transition-colors ${!notification.read ? 'bg-zinc-800/30' : ''
-                                                }`}
-                                        >
-                                            <div className="flex items-start gap-3">
-                                                <NotificationIcon type={notification.type} />
-                                                <div className="flex-1 min-w-0">
-                                                    <div className="flex items-center gap-2">
-                                                        <h4 className="font-medium text-zinc-100 text-sm">
-                                                            {notification.title}
-                                                        </h4>
-                                                        {!notification.read && (
-                                                            <span className="w-2 h-2 bg-blue-500 rounded-full" />
-                                                        )}
-                                                    </div>
-                                                    <p className="text-sm text-zinc-400 mt-0.5">
-                                                        {notification.message}
-                                                    </p>
-                                                    <div className="flex items-center justify-between mt-2">
-                                                        <span className="text-xs text-zinc-500">
-                                                            {notification.timestamp}
-                                                        </span>
-                                                        {notification.action && (
-                                                            <a
-                                                                href={notification.action.href}
-                                                                className="text-xs text-emerald-400 hover:underline"
-                                                            >
-                                                                {notification.action.label}
-                                                            </a>
-                                                        )}
-                                                    </div>
-                                                </div>
-                                                <div className="flex items-center gap-1">
-                                                    {!notification.read && (
-                                                        <button
-                                                            onClick={() => markAsRead(notification.id)}
-                                                            className="p-1 text-zinc-500 hover:text-zinc-100 rounded transition-colors"
-                                                            title="Mark as read"
-                                                        >
-                                                            <Eye className="w-3.5 h-3.5" />
-                                                        </button>
-                                                    )}
-                                                    <button
-                                                        onClick={() => deleteNotification(notification.id)}
-                                                        className="p-1 text-zinc-500 hover:text-red-400 rounded transition-colors"
-                                                        title="Delete"
-                                                    >
-                                                        <Trash2 className="w-3.5 h-3.5" />
-                                                    </button>
-                                                </div>
-                                            </div>
-                                        </motion.div>
-                                    ))
+                                    <div className="flex flex-col">
+                                        {notifications.map((notification) => (
+                                            <NotificationItem
+                                                key={notification.id}
+                                                notification={notification}
+                                                onRead={markAsRead}
+                                                onDelete={deleteNotification}
+                                            />
+                                        ))}
+                                    </div>
                                 )}
                             </div>
 
-                            {/* Footer */}
+                            {/* Panel Footer */}
                             {notifications.length > 0 && (
-                                <div className="p-3 border-t border-zinc-800 flex items-center justify-between">
+                                <div className="p-4 bg-zinc-950/30 border-t border-white/5 flex items-center justify-between">
                                     <button
                                         onClick={clearAll}
-                                        className="text-xs text-zinc-500 hover:text-zinc-100 transition-colors"
+                                        className="text-[10px] font-black text-zinc-600 hover:text-red-400 transition-colors uppercase tracking-[0.2em] px-2"
                                     >
-                                        Clear all
+                                        Clear History
                                     </button>
                                     <a
                                         href="/admin/audit-log"
-                                        className="text-xs text-emerald-400 hover:underline flex items-center gap-1"
+                                        className="bg-zinc-800 hover:bg-zinc-700 text-zinc-300 text-[10px] font-black uppercase tracking-widest px-4 py-2.5 rounded-xl transition-all flex items-center gap-2"
                                     >
                                         <Settings className="w-3 h-3" />
-                                        View all activity
+                                        Audit Center
                                     </a>
                                 </div>
                             )}

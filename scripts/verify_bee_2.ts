@@ -23,7 +23,7 @@ async function verifyBee2Logic() {
     const email = `bee2_test_${Date.now()}@example.com`;
     const { data: user, error: userError } = await supabase.auth.signUp({
         email,
-        password: 'password123',
+        password: process.env.TEST_USER_PASSWORD || 'password123',
         options: {
             data: {
                 name: 'Bee Tester',

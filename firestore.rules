@@ -82,8 +82,8 @@ service cloud.firestore {
       // Users can read their own progress
       allow read: if isOwner(userId);
 
-      // Users can update their progress
-      allow create, update: if isOwner(userId);
+      // Only admins can update progress (system updates via backend)
+      allow create, update: if isAdmin();
 
       allow delete: if isAdmin();
     }

@@ -30,7 +30,6 @@ if (import.meta.env.DEV && import.meta.env.VITE_USE_FIREBASE_EMULATORS === 'true
   connectFirestoreEmulator(db, 'localhost', 8080);
   connectStorageEmulator(storage, 'localhost', 9199);
   connectFunctionsEmulator(functions, 'localhost', 5001);
-  // console.log('🔧 Connected to Firebase Emulators');
 }
 
 export default app;

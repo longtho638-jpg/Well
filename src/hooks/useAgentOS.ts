@@ -25,7 +25,6 @@ export function useAgentOS() {
       const cachedEntry = cache.current.get(cacheKey);
 
       if (cachedEntry && (Date.now() - cachedEntry.timestamp < CACHE_DURATION)) {
-        // console.log(`[AgentOS] Cache hit for ${agentName}`);
         return cachedEntry.data;
       }
     }

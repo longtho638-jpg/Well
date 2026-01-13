@@ -81,6 +81,12 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql;
 
+-- SECURITY: Revoke public access to critical financial functions
+REVOKE EXECUTE ON FUNCTION increment_pending_balance(UUID, BIGINT) FROM public;
+REVOKE EXECUTE ON FUNCTION increment_point_balance(UUID, BIGINT) FROM public;
+GRANT EXECUTE ON FUNCTION increment_pending_balance(UUID, BIGINT) TO service_role;
+GRANT EXECUTE ON FUNCTION increment_point_balance(UUID, BIGINT) TO service_role;
+
 -- PART 4: CREATE ORDERS TABLE (If not exists)
 -- ----------------------------------------------------------------------------
 CREATE TABLE IF NOT EXISTS orders (
@@ -113,8 +119,20 @@ GRANT ALL ON profiles TO authenticated;
 GRANT ALL ON profiles TO service_role;
 GRANT ALL ON wallets TO authenticated;
 GRANT ALL ON wallets TO service_role;
-GRANT ALL ON orders TO authenticated;
+
+-- ORDERS SECURITY:
+-- Allow users to read orders
+GRANT SELECT ON orders TO authenticated;
 GRANT ALL ON orders TO service_role;
+-- Users can create orders but cannot set status to 'completed' directly (enforced by RLS typically, but restricted GRANT is safer)
+-- We grant INSERT but NOT UPDATE/DELETE for authenticated users on orders
+GRANT INSERT ON orders TO authenticated;
+
+-- TRANSACTIONS SECURITY:
+-- Users should NEVER insert transactions directly (only via system/RPC)
+REVOKE INSERT, UPDATE, DELETE ON transactions FROM authenticated;
+GRANT SELECT ON transactions TO authenticated;
+GRANT ALL ON transactions TO service_role;
 
 -- PART 6: DEPRECATE OLD FUNCTIONS
 -- ----------------------------------------------------------------------------

@@ -1,21 +1,28 @@
-import { BaseAgent } from '../core/BaseAgent';
-
-/** Options for docs generation */
-interface DocsOptions {
-    sections?: string[];
-}
-
 /**
- * DocsManagerAgent - Automated documentation generation and maintenance
+ * Docs Manager Agent (Refactored)
+ * Coordinator for project documentation maintenance.
  * 
- * Capabilities:
- * - Generate README files
- * - Create API documentation
- * - Generate architecture docs
- * - Keep docs synchronized with code
+ * Logic delegated to docsEngine.ts for content generation.
  */
+
+import { BaseAgent } from '../core/BaseAgent';
+import { docsEngine } from '@/services/docsEngine';
+import {
+    ReadmeResult,
+    APIDocsResult,
+    ArchitectureDocsResult,
+    SyncDocsResult,
+    DocsManagerAction,
+    DocsOptions,
+} from '@/types/docsManager';
+
+// Re-export types for external use
+export type { ReadmeResult, APIDocsResult, ArchitectureDocsResult, SyncDocsResult, DocsManagerAction, DocsOptions };
+
+type DocsExecutionResult = ReadmeResult | APIDocsResult | ArchitectureDocsResult | SyncDocsResult;
+
 export class DocsManagerAgent extends BaseAgent {
-    private docsGenerated: number = 0;
+    private readonly docsGenerated: { count: number } = { count: 0 };
 
     constructor() {
         super({
@@ -36,7 +43,7 @@ export class DocsManagerAgent extends BaseAgent {
                 'File System',
                 'Markdown Generator',
                 'Mermaid Diagram Generator',
-                'API Schema Parser',
+                'Docs Engine (Internal)',
             ],
             core_actions: [
                 'generateReadme',
@@ -74,31 +81,27 @@ export class DocsManagerAgent extends BaseAgent {
         });
     }
 
-    async execute(action: {
-        action: 'generateReadme' | 'documentAPI' | 'createArchitectureDocs' | 'syncDocs';
-        scope?: string;
-        options?: DocsOptions;
-    }): Promise<{ success: boolean;[key: string]: unknown }> {
+    async execute(action: DocsManagerAction): Promise<{ success: boolean; data?: DocsExecutionResult; error?: string }> {
         try {
-            let result: Record<string, unknown>;
+            let result: DocsExecutionResult;
 
             switch (action.action) {
                 case 'generateReadme':
                     result = await this.createReadme(action.options);
-                    this.docsGenerated++;
-                    this.updateKPI('Docs Generated', this.docsGenerated);
+                    this.docsGenerated.count++;
+                    this.updateKPI('Docs Generated', this.docsGenerated.count);
                     break;
 
                 case 'documentAPI':
-                    result = await this.generateAPIDocs(action.scope);
-                    this.docsGenerated++;
-                    this.updateKPI('Docs Generated', this.docsGenerated);
+                    result = await this.generateAPIDocs();
+                    this.docsGenerated.count++;
+                    this.updateKPI('Docs Generated', this.docsGenerated.count);
                     break;
 
                 case 'createArchitectureDocs':
-                    result = await this.documentArchitecture(action.scope);
-                    this.docsGenerated++;
-                    this.updateKPI('Docs Generated', this.docsGenerated);
+                    result = await this.documentArchitecture();
+                    this.docsGenerated.count++;
+                    this.updateKPI('Docs Generated', this.docsGenerated.count);
                     break;
 
                 case 'syncDocs':
@@ -106,11 +109,12 @@ export class DocsManagerAgent extends BaseAgent {
                     break;
 
                 default:
-                    throw new Error(`Unknown action: ${action.action}`);
+                    const exhaustiveCheck: never = action;
+                    throw new Error(`Unknown action: ${(action as { action: string }).action}`);
             }
 
-            return { success: true, ...result };
-        } catch (error) {
+            return { success: true, data: result };
+        } catch (error: unknown) {
             return {
                 success: false,
                 error: error instanceof Error ? error.message : 'Unknown error',
@@ -121,7 +125,7 @@ export class DocsManagerAgent extends BaseAgent {
     /**
      * Generate comprehensive README file
      */
-    private async createReadme(options?: DocsOptions): Promise<Record<string, unknown>> {
+    private async createReadme(options?: DocsOptions): Promise<ReadmeResult> {
         const sections = options?.sections || [
             'overview',
             'installation',
@@ -131,42 +135,21 @@ export class DocsManagerAgent extends BaseAgent {
             'license',
         ];
 
-        const content = this.buildReadmeContent(sections);
+        const content = docsEngine.buildReadmeContent(sections);
 
         return {
             file: 'README.md',
             content,
             sections,
-            wordCount: content.split(' ').length,
+            wordCount: content.split(/\s+/).length,
         };
     }
 
     /**
      * Generate API documentation
      */
-    private async generateAPIDocs(scope?: string): Promise<Record<string, unknown>> {
-        // Simulate API documentation generation
-        const endpoints = [
-            {
-                path: '/api/users',
-                method: 'GET',
-                description: 'Retrieve all users',
-                parameters: [{ name: 'page', type: 'number', required: false }],
-                responses: {
-                    200: { description: 'Success', schema: 'User[]' },
-                    401: { description: 'Unauthorized' },
-                },
-                example: 'curl -X GET https://api.example.com/api/users?page=1',
-            },
-            {
-                path: '/api/agents',
-                method: 'GET',
-                description: 'List all agents',
-                responses: {
-                    200: { description: 'Success', schema: 'Agent[]' },
-                },
-            },
-        ];
+    private async generateAPIDocs(): Promise<APIDocsResult> {
+        const endpoints = docsEngine.getMockEndpoints();
 
         return {
             file: 'API_REFERENCE.md',
@@ -179,17 +162,17 @@ export class DocsManagerAgent extends BaseAgent {
     /**
      * Generate architecture documentation
      */
-    private async documentArchitecture(scope?: string): Promise<Record<string, unknown>> {
+    private async documentArchitecture(): Promise<ArchitectureDocsResult> {
         const diagrams = [
             {
                 type: 'component',
                 file: 'architecture/components.mmd',
-                content: this.generateComponentDiagram(),
+                content: docsEngine.generateComponentDiagram(),
             },
             {
                 type: 'data-flow',
                 file: 'architecture/data-flow.mmd',
-                content: this.generateDataFlowDiagram(),
+                content: docsEngine.generateDataFlowDiagram(),
             },
         ];
 
@@ -204,7 +187,7 @@ export class DocsManagerAgent extends BaseAgent {
     /**
      * Synchronize documentation with code
      */
-    private async synchronizeDocs(): Promise<Record<string, unknown>> {
+    private async synchronizeDocs(): Promise<SyncDocsResult> {
         return {
             updates: [
                 { file: 'README.md', status: 'up-to-date' },
@@ -214,59 +197,5 @@ export class DocsManagerAgent extends BaseAgent {
             outdated: 1,
             upToDate: 2,
         };
-    }
-
-    // Helper methods
-
-    private buildReadmeContent(sections: string[]): string {
-        let content = '# WellNexus HealthFi OS\n\n';
-
-        if (sections.includes('overview')) {
-            content += '## Overview\n\n';
-            content += 'WellNexus is a comprehensive HealthFi platform with 28 integrated agents.\n\n';
-        }
-
-        if (sections.includes('installation')) {
-            content += '## Installation\n\n';
-            content += '```bash\nnpm install\n```\n\n';
-        }
-
-        if (sections.includes('usage')) {
-            content += '## Usage\n\n';
-            content += '```bash\nnpm run dev\n```\n\n';
-        }
-
-        if (sections.includes('architecture')) {
-            content += '## Architecture\n\n';
-            content += 'See [ARCHITECTURE.md](./ARCHITECTURE.md) for details.\n\n';
-        }
-
-        if (sections.includes('contributing')) {
-            content += '## Contributing\n\n';
-            content += 'See [CONTRIBUTING.md](./CONTRIBUTING.md) for guidelines.\n\n';
-        }
-
-        if (sections.includes('license')) {
-            content += '## License\n\n';
-            content += 'MIT License\n';
-        }
-
-        return content;
-    }
-
-    private generateComponentDiagram(): string {
-        return `graph TB
-    A[User Interface] --> B[Agent Registry]
-    B --> C[Custom Agents]
-    B --> D[ClaudeKit Agents]
-    C --> E[BaseAgent]
-    D --> E`;
-    }
-
-    private generateDataFlowDiagram(): string {
-        return `graph LR
-    A[User Request] --> B[Agent Execution]
-    B --> C[Data Processing]
-    C --> D[Response]`;
     }
 }

@@ -184,13 +184,6 @@ describe('Commission Algorithm Deep Audit', () => {
                 }
             }
 
-            console.log('\n📊 1000 Transaction Simulation Results:');
-            console.log(`   Total SHOP Paid: ${stats.totalShopPaid.toLocaleString()} VND`);
-            console.log(`   Total GROW Paid: ${stats.totalGrowPaid.toLocaleString()} tokens`);
-            console.log(`   Max Payout Ratio: ${(stats.maxPayoutRatio * 100).toFixed(2)}%`);
-            console.log(`   Min Payout Ratio: ${(stats.minPayoutRatio * 100).toFixed(2)}%`);
-            console.log(`   Violations: ${violations.length}`);
-
             expect(violations).toHaveLength(0);
         });
     });
@@ -220,8 +213,6 @@ describe('Commission Algorithm Deep Audit', () => {
             const grow = calculateGrowReward(-1_000_000, UserRank.CTV);
 
             // These SHOULD be 0 but current code doesn't check
-            // Marking as expected behavior but flagging for fix
-            console.warn('⚠️ BUG: Negative amount protection missing!');
             expect(shop).toBeLessThan(0); // Current behavior (bug)
             expect(grow).toBeLessThan(0); // Current behavior (bug)
         });
