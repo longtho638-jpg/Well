@@ -562,3 +562,21 @@ IDE: Ready to push to main?
 - `DESIGN_UNIFIED.md` - Technical documentation
 - `DESIGN_FIX_SUMMARY.md` - Executive summary
 
+---
+
+## 🚀 ANTIGRAVITY /SHIP COMMAND (NEW)
+
+**Quick Deploy Workflow - Under 2000 words**
+
+**8-Step Deployment Pipeline:**
+1. Pre-flight check (30s)
+2. Build verification (60s)
+3. Type checking (30s)
+4. Compose commit message (60s)
+5. Stage & commit (60s)
+6. Push to main (30s)
+7. Vercel auto-deploy (instant)
+8. Deployment confirmation (120s)
+
+**Reference:** `ANTIGRAVITY_SHIP_PROMPT.md`
+
