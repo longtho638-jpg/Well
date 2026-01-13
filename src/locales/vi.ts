@@ -1363,5 +1363,721 @@ export const vi = {
     top_10_east_asia: 'Top 10 East Asia',
   },
 
+  // ======================================
+  // AUTO-GENERATED SECTIONS (Batch Fix v2)
+  // 115 sections, 736 keys
+  // ======================================
+
+  // achievementgrid
+  achievementgrid: {
+    ecosystem_standing: 'Ecosystem Standing',
+  },
+
+  // adminsecuritysettings
+  adminsecuritysettings: {
+    '100': '100',
+    '15_ph_t': '15 phút',
+    '1_gi': '1 giờ',
+    '2_gi': '2 giờ',
+    '30_ph_t': '30 phút',
+    b_o_m_t_t_i_kho_n: 'Bảo mật tài khoản',
+    b_t_2fa_t_ng_i_m: 'Bật 2FA tăng điểm',
+    c_nh_b_o_ng_nh_p: 'Cảnh báo đăng nhập',
+    h_y: 'Hủy',
+    ho_t_ng: 'Hoạt động',
+    i_l_n_cu_i: 'đã lần cuối',
+    i_m_b_o_m_t: 'Điểm bảo mật',
+    i_m_t_kh_u: 'Đổi mật khẩu',
+    l_ch_s_ng_nh_p: 'Lịch sử đăng nhập',
+    m_t_kh_u: 'Mật khẩu',
+    nh_n_th_ng_b_o_khi_c_ng_nh: 'Nhận thông báo khi có đăng nhập',
+    ph_t: 'phút',
+    qu_n_l_c_i_t_b_o_m_t_c_a_b: 'Quản lý cài đặt bảo mật của bạn',
+    qu_t_m_qr_v_i_ng_d_ng_x_c_th: 'Quét mã QR với ứng dụng xác thực',
+    t_ng_ng_xu_t_sau: 'Tự động đăng xuất sau',
+    th_i_gian_phi_n: 'Thời gian phiên',
+    thi_t_l_p_2fa: 'Thiết lập 2FA',
+    x_c_nh_n: 'Xác nhận',
+    x_c_th_c_2_y_u_t: 'Xác thực 2 yếu tố',
+  },
+
+  // agencyosdemo
+  agencyosdemo: {
+    '85_ai_powered_automation_comm': '85% AI Powered Automation',
+    agencyos_integration: 'AgencyOS Integration',
+    agent_kpis: 'Agent KPIs',
+    command_categories: 'Command Categories',
+    commands: 'Commands',
+    execution_history: 'Execution History',
+    no_commands_executed_yet_clic: 'No commands executed yet. Click to run.',
+    open_command_palette_k: 'Open Command Palette (⌘K)',
+  },
+
+  // agentdetailsmodal
+  agentdetailsmodal: {
+    enforcement: 'Enforcement',
+    intelligence_node_context: 'Intelligence Node Context',
+  },
+
+  // agentgridcard
+  agentgridcard: {
+    '0x': '0x',
+    neural_training: 'Neural Training',
+    node_id: 'Node ID',
+    telemetry_stream_active: 'Telemetry Stream Active',
+  },
+
+  // airecommendation
+  airecommendation: {
+    '240': '240',
+    users_helped: 'Users Helped',
+  },
+
+  // app
+  app: {
+    commission_wallet: 'Commission Wallet',
+  },
+
+  // auditlog
+  auditlog: {
+    all_administrators: 'All Administrators',
+    analyze_all_actions: 'Analyze All Actions',
+    audit_trail: 'Audit Trail',
+    browser_api_gateway_node: 'Browser API Gateway Node',
+    classification: 'Classification',
+    close_inspection: 'Close Inspection',
+    detailed_forensics_for_trace: 'Detailed Forensics For Trace',
+    event_inspection: 'Event Inspection',
+    export_dataset: 'Export Dataset',
+    immutable_ledger_of_administra: 'Immutable Ledger of Administration',
+    network_origin: 'Network Origin',
+    no_telemetry_signals_detected: 'No Telemetry Signals Detected',
+    operator: 'Operator',
+    payload_metadata: 'Payload Metadata',
+    resource_node: 'Resource Node',
+    temporal_signature: 'Temporal Signature',
+    timeline: 'Timeline',
+    tracing: 'Tracing',
+    utc_synchronization_active: 'UTC Synchronization Active',
+  },
+
+  // beeautomationsection
+  beeautomationsection: {
+    auto_upgrade_threshold: 'Auto Upgrade Threshold',
+    bee_engine_automation: 'BEE Engine Automation',
+    ctv_commission_r_8: 'CTV Commission R=8%',
+    sponsor_bonus_amb: 'Sponsor Bonus (AMB)',
+    vnd_sales_ctv_startup: 'VND Sales CTV Startup',
+  },
+
+  // bulkactionsbar
+  bulkactionsbar: {
+    activate: 'Activate',
+    ban: 'Ban',
+    export_csv: 'Export CSV',
+    partner: 'Partner',
+    selected: 'Selected',
+  },
+
+  // cartdrawer
+  cartdrawer: {
+    items_confirmed: 'Items Confirmed',
+    proceed_to_checkout: 'Proceed to Checkout',
+    start_adding_premium_products: 'Start Adding Premium Products',
+    subtotal: 'Subtotal',
+    total: 'Total',
+    your_cart: 'Your Cart',
+    your_cart_is_empty: 'Your Cart Is Empty',
+  },
+
+  // chatmessage
+  chatmessage: {
+    verified_advice: 'Verified Advice',
+  },
+
+  // chatsidebar
+  chatsidebar: {
+    c_c_cu_c_h_i_tho_i: 'Các cuộc hội thoại',
+    l_ch_s: 'Lịch sử',
+    t_o_cu_c_h_i_tho_i_m_i: 'Tạo cuộc hội thoại mới',
+  },
+
+  // cms
+  cms: {
+    action: 'Action',
+    content_orchestrator: 'Content Orchestrator',
+    create: 'Create',
+    cross_platform_content_deliver: 'Cross Platform Content Delivery',
+    link: 'Link',
+    loc: 'LOC',
+    target: 'Target',
+  },
+
+  // commandpalette
+  commandpalette: {
+    agencyos_85_commands: 'AgencyOS: 85 Commands',
+    all: 'All',
+    error: 'Error',
+    executing_command: 'Executing Command',
+    no_commands_found: 'No Commands Found',
+    to_open: 'to open',
+  },
+
+  // commissionsection
+  commissionsection: {
+    commission_architecture: 'Commission Architecture',
+    max_risk_operational_margin_c: 'Max Risk Operational Margin Cap',
+    total_system_payout_threshold: 'Total System Payout Threshold',
+  },
+
+  // commissionwallet
+  commissionwallet: {
+    '10_pit': '10% PIT',
+    bonus_revenue: 'Bonus Revenue',
+    commission_calculation: 'Commission Calculation',
+    date_ref: 'Date/Ref',
+    earnings_history: 'Earnings History',
+    export_statement: 'Export Statement',
+    for_income_exceeding_2_000_000: 'For Income Exceeding 2,000,000',
+    gross_amount: 'Gross Amount',
+    net_received: 'Net Received',
+    pit_10: 'PIT 10%',
+    rate: 'Rate',
+    request_withdrawal: 'Request Withdrawal',
+    source: 'Source',
+    status: 'Status',
+    tax_compliance_mode: 'Tax Compliance Mode',
+    the_bee: 'The BEE',
+    total_earnings_gross: 'Total Earnings (Gross)',
+    type: 'Type',
+    wellnexus_automatically_deduct: 'WellNexus Automatically Deducts',
+    withdrawable_balance: 'Withdrawable Balance',
+    withheld_tax_pit_10: 'Withheld Tax (PIT 10%)',
+  },
+
+  // contextsidebar
+  contextsidebar: {
+    '15': '15',
+    c_i_thi_n_s_c_kh_e: 'Cải thiện sức khỏe',
+    h_s_kh_ch_h_ng: 'Hồ sơ khách hàng',
+    i_m_s_c_kh_e: 'Điểm sức khỏe',
+    i_m_s_t_t_ti_p_t_c_duy_tr: 'Điểm số tốt, tiếp tục duy trì',
+    l_ch_s_mua_h_ng: 'Lịch sử mua hàng',
+    l_n_t_v_n_g_n_nh_t: 'Lần tư vấn gần nhất',
+    t_v_n_ho_n_th_nh: 'Tư vấn hoàn thành',
+    th_ng_tin_t_v_n: 'Thông tin tư vấn',
+    tu_i: 'tuổi',
+    tu_i_1: 'tuổi',
+    v_n_ch_nh: 'Vấn đề chính',
+  },
+
+  // copilotcoaching
+  copilotcoaching: {
+    coaching_tips: 'Coaching Tips',
+    ng: 'Đúng',
+  },
+
+  // copilotheader
+  copilotheader: {
+    ai_sales_assistant_powered_b: 'AI Sales Assistant powered by Gemini',
+    coach: 'Coach',
+    script: 'Script',
+    the_copilot: 'The Copilot',
+  },
+
+  // copilotmessageitem
+  copilotmessageitem: {
+    g_i_nhanh: 'Gửi nhanh',
+  },
+
+  // copilotsuggestions
+  copilotsuggestions: {
+    g_i: 'Gửi',
+    g_i_c_u_h_i: 'Gửi câu hỏi',
+  },
+
+  // dailyquesthub
+  dailyquesthub: {
+    accumulated_today: 'Accumulated Today',
+    claim_reward: 'Claim Reward',
+    completed: 'Completed',
+    completed_1: 'Completed',
+    grow: 'GROW',
+    grow_1: 'GROW',
+    mastered: 'Mastered',
+    start_quest: 'Start Quest',
+    yield: 'Lợi nhuận',
+  },
+
+  // debuggerpage
+  debuggerpage: {
+    empty: 'Empty',
+    environment_window: 'Environment Window',
+    local_storage_keys: 'Local Storage Keys',
+  },
+
+  // finance
+  finance: {
+    action: 'Action',
+    approve: 'Approve',
+    approve_1: 'Approve',
+    approved: 'Approved',
+    capital_flow: 'Capital Flow',
+    capital_flow_management: 'Capital Flow Management',
+    export: 'Export',
+    filter: 'Filter',
+    gross: 'Gross',
+    member: 'Member',
+    net: 'Net',
+    pending_1: 'Pending',
+    reject: 'Reject',
+    requested: 'Requested',
+    status: 'Status',
+    tax: 'Tax',
+    total_revenue: 'Total Revenue',
+    withdrawal_queue: 'Withdrawal Queue',
+  },
+
+  // founderrevenuegoal
+  founderrevenuegoal: {
+    '1m_founder_journey': '$1M Founder Journey',
+    current_stage: 'Current Stage',
+    projected_yoy_growth: 'Projected YoY Growth',
+    revenue_milestone: 'Revenue Milestone',
+  },
+
+  // herocard
+  herocard: {
+    commission: 'Commission',
+    h_ng_n_m: 'Hàng năm',
+    live_commission: 'Live Commission',
+    partner_id: 'Partner ID',
+    t_ng_tr_ng: 'Tăng trưởng',
+    th_ng: 'Tháng',
+    total_yield: 'Total Yield',
+    welcome: 'Welcome',
+  },
+
+  // heroenhancements
+  heroenhancements: {
+    c_tin_t_ng_b_i: 'Được tin tưởng bởi',
+  },
+
+  // inviteflowmodal
+  inviteflowmodal: {
+    g_i: 'Gửi',
+    g_i_l_i_m_i: 'Gửi lời mời',
+    ho_n_t_t: 'Hoàn tất',
+    l_i_m_i_c_a_b_n: 'Lời mời của bạn',
+    m_i_th_m_th_nh_vi_n: 'Mời thêm thành viên',
+    nh_p_email_ng_nghi_p: 'Nhập email đồng nghiệp',
+    x_c_nh_n_l_i_m_i: 'Xác nhận lời mời',
+  },
+
+  // leaderdashboard
+  leaderdashboard: {
+    export_report: 'Export Report',
+    leader_dashboard: 'Leader Dashboard',
+    network_overview: 'Network Overview',
+    portfolio_management: 'Portfolio Management',
+  },
+
+  // leadershipladder
+  leadershipladder: {
+    leadership_ladder: 'Leadership Ladder',
+    strategic_rank_progression_map: 'Strategic Rank Progression Map',
+  },
+
+  // liveconsole
+  liveconsole: {
+    autonomous_agents_real_time_l: 'Autonomous Agents Real-time Log',
+    intelligence_console: 'Intelligence Console',
+    live: 'LIVE',
+  },
+
+  // notification
+  notification: {
+    dismiss: 'Dismiss',
+  },
+
+  // ordermanagement
+  ordermanagement: {
+    actions: 'Actions',
+    all: 'All',
+    all_synced: 'All Synced',
+    customer: 'Customer',
+    date: 'Date',
+    filters: 'Filters',
+    fraud_check: 'Fraud Check',
+    order: 'Order',
+    order_id: 'Order ID',
+    order_orchestrator: 'Order Orchestrator',
+    orders: 'Orders',
+    real_time_order_pipeline_manag: 'Real-time Order Pipeline Management',
+    status: 'Status',
+    sync: 'Sync',
+    total: 'Total',
+  },
+
+  // overview
+  overview: {
+    active_nodes: 'Active Nodes',
+    agent_cluster: 'Agent Cluster',
+    certified: 'Certified',
+    core: 'Core',
+    custom: 'Custom',
+    identity_protocol: 'Identity Protocol',
+    live_sync: 'Live Sync',
+    network_foundation: 'Network Foundation',
+    operational: 'Operational',
+    partners_active: 'Partners Active',
+    pending_operations: 'Pending Operations',
+    platform_metrics: 'Platform Metrics',
+    revenue_ytd: 'Revenue YTD',
+    system_status: 'System Status',
+    total_yield: 'Total Yield',
+  },
+
+  // partnercrm
+  partnercrm: {
+    partner_crm: 'Partner CRM',
+    search: 'Search',
+    search_partner_id_name_email: 'Search Partner ID, Name, Email',
+  },
+
+  // partnermanagement
+  partnermanagement: {
+    action: 'Action',
+    active: 'Active',
+    kyc: 'KYC',
+    name: 'Name',
+    partner_network: 'Partner Network',
+    pending: 'Pending',
+    rank: 'Rank',
+    real_time_identity_node_manage: 'Real-time Identity Node Management',
+    revenue: 'Revenue',
+    search_id_name_email: 'Search ID, Name, Email',
+    status: 'Status',
+    verified: 'Verified',
+  },
+
+  // partnerprofilemodal
+  partnerprofilemodal: {
+    close: 'Close',
+    email: 'Email',
+    joined: 'Joined',
+    kyc_status: 'KYC Status',
+    monthly_performance: 'Monthly Performance',
+    partner_details: 'Partner Details',
+    pending: 'Pending',
+    phone: 'Phone',
+    rank: 'Rank',
+    total_revenue: 'Total Revenue',
+    verified: 'Verified',
+  },
+
+  // partnerrow
+  partnerrow: {
+    member: 'Member',
+    partner: 'Partner',
+  },
+
+  // partners
+  partners: {
+    all_partners: 'All Partners',
+    kyc: 'KYC',
+    new: 'New',
+    partner_network: 'Partner Network',
+    real_time_identity_node_manage: 'Real-time Identity Node Management',
+    search_id_name_email: 'Search ID, Name, Email',
+    status: 'Status',
+    verified: 'Verified',
+    view_profile: 'View Profile',
+  },
+
+  // productcard
+  productcard: {
+    add_to_cart: 'Add to Cart',
+    ai_pick: 'AI Pick',
+    commission: 'Commission',
+    price: 'Price',
+    view_details: 'View Details',
+  },
+
+  // productdetail
+  productdetail: {
+    back_to_command_registry: 'Back to Command Registry',
+    identity_missing: 'Identity Missing',
+    premium_tier: 'Premium Tier',
+    revert_to_marketplace: 'Revert to Marketplace',
+    the_requested_product_node_is: 'The Requested Product Node Is Not Available',
+    verified_node: 'Verified Node',
+  },
+
+  // productgrid
+  productgrid: {
+    add_to_cart: 'Add to Cart',
+    ai_recommended: 'AI Recommended',
+    commission: 'Commission',
+    price: 'Price',
+  },
+
+  // producthero
+  producthero: {
+    logistics_depleted: 'Logistics Depleted',
+  },
+
+  // productinfo
+  productinfo: {
+    '4_9_core_rating': '4.9 Core Rating',
+    available_capacity: 'Available Capacity',
+    bio_optic_optimization: 'Bio Optic Optimization',
+    units: 'Units',
+  },
+
+  // productpricing
+  productpricing: {
+    market_valuation: 'Market Valuation',
+    node_yield_profit: 'Node Yield (Profit)',
+  },
+
+  // products
+  products: {
+    add_product: 'Add Product',
+    bonus_revenue_dttt_represent: 'Bonus Revenue DTTT Represents',
+    commit: 'Commit',
+    dttt_basis: 'DTTT Basis',
+    dttt_commission_logic: 'DTTT Commission Logic',
+    edit_config: 'Edit Config',
+    esc: 'ESC',
+    global_catalog: 'Global Catalog',
+    in_stock: 'In Stock',
+    inventory_management_dttt_st: 'Inventory Management DTTT Stock',
+    low_stock: 'Low Stock',
+    member_21_startup_25: 'Member 21% / Startup 25%',
+    member_comm: 'Member Comm',
+    out_of_stock: 'Out of Stock',
+    partner_comm: 'Partner Comm',
+    retail_msrp: 'Retail (MSRP)',
+    sku: 'SKU',
+  },
+
+  // producttabs
+  producttabs: {
+    standard_engagement_protocol: 'Standard Engagement Protocol',
+  },
+
+  // quickactionscard
+  quickactionscard: {
+    c_ng_c_h_tr_kinh_doanh: 'Công cụ hỗ trợ kinh doanh',
+    tip_s_d_ng_c_c_c_ng_c_n: 'Tip: Sử dụng các công cụ này',
+  },
+
+  // rankladdersection
+  rankladdersection: {
+    downlines: 'Downlines',
+    rank_migration_ladder: 'Rank Migration Ladder',
+    sales_req_vnd: 'Sales Req (VND)',
+    target_rank: 'Target Rank',
+    team_volume: 'Team Volume',
+  },
+
+  // recentactivitylist
+  recentactivitylist: {
+    view_digital_audit_trace: 'View Digital Audit Trace',
+  },
+
+  // redemptionzone
+  redemptionzone: {
+    grow_rewards: 'GROW Rewards',
+    grow_tokens: 'GROW Tokens',
+    s_d_hi_n_t_i: 'Số dư hiện tại',
+    s_d_ng_grow_token_t_ch_l_y_t: 'Sử dụng GROW Token tích lũy từ',
+  },
+
+  // referralhero
+  referralhero: {
+    accumulated_revenue: 'Accumulated Revenue',
+    this_month: 'This Month',
+  },
+
+  // referralnetworkview
+  referralnetworkview: {
+    f1_sentinel_nodes: 'F1 Sentinel Nodes',
+    f2_secondary_propagation: 'F2 Secondary Propagation',
+    network_architecture: 'Network Architecture',
+    node_val: 'Node Value',
+    nodes: 'Nodes',
+    nodes_1: 'Nodes',
+    tier_1_tier_2_visualization: 'Tier 1 & Tier 2 Visualization',
+    yield: 'Lợi nhuận',
+  },
+
+  // referralrewardslist
+  referralrewardslist: {
+    incentive_algorithm: 'Incentive Algorithm',
+    yield_mechanics: 'Yield Mechanics',
+  },
+
+  // revenuebreakdown
+  revenuebreakdown: {
+    '100': '100%',
+    total_yield: 'Total Yield',
+  },
+
+  // revenuechart
+  revenuechart: {
+    last_30_days: 'Last 30 Days',
+    last_7_days: 'Last 7 Days',
+    last_7_days_performance: 'Last 7 Days Performance',
+    revenue_growth: 'Revenue Growth',
+  },
+
+  // revenueprogresswidget
+  revenueprogresswidget: {
+    annualized_run_rate_arr: 'Annualized Run Rate (ARR)',
+    baseline_0: 'Baseline 0',
+    benchmark: 'Benchmark',
+    global_ecosystem_velocity: 'Global Ecosystem Velocity',
+    monthly_liquidity_flow: 'Monthly Liquidity Flow',
+    revenue_milestone: 'Revenue Milestone',
+    target: 'Target',
+  },
+
+  // sessionmanager
+  sessionmanager: {
+    active_now: 'Active Now',
+    active_sessions: 'Active Sessions',
+    connected: 'Connected',
+    device: 'Device',
+    if_you_don_t_recognize_a_sessi: "If you don't recognize a session, revoke it immediately.",
+    last_active: 'Last Active',
+    security_note: 'Security Note',
+    this_device: 'This Device',
+  },
+
+  // sharebuttons
+  sharebuttons: {
+    email: 'Email',
+    facebook: 'Facebook',
+    telegram: 'Telegram',
+    zalo: 'Zalo',
+  },
+
+  // signupform
+  signupform: {
+    email_business: 'Email doanh nghiệp',
+    h_v_t_n: 'Họ và tên',
+    m_t_kh_u: 'Mật khẩu',
+    ng_k_ngay: 'Đăng ký ngay',
+    processing_account: 'Đang xử lý tài khoản',
+    x_c_nh_n: 'Xác nhận',
+  },
+
+  // simulationpanel
+  simulationpanel: {
+    active_distribution_node: 'Active Distribution Node',
+    margin: 'Margin',
+    monthly_fixed: 'Monthly Fixed',
+    nodes: 'Nodes',
+    projected_ebitda: 'Projected EBITDA',
+    projected_gmv: 'Projected GMV',
+    system_payout: 'System Payout',
+    target_aov: 'Target AOV',
+    vc_simulation_engine: 'VC Simulation Engine',
+  },
+
+  // statsgrid
+  statsgrid: {
+    '10_pit': '10% PIT',
+    next_cycle: 'Next Cycle',
+    reserved_tier_gt_2m: 'Reserved Tier >2M',
+  },
+
+  // successanimation
+  successanimation: {
+    success: 'Success',
+  },
+
+  // teamcharts
+  teamcharts: {
+    network_health: 'Network Health',
+  },
+
+  // teammemberstable
+  teammemberstable: {
+    member: 'Member',
+    partner: 'Partner',
+  },
+
+  // testpage
+  testpage: {
+    active: 'Active',
+    client_status: 'Client Status',
+    connectivity_check: 'Connectivity Check',
+    well_test_page: 'Well Test Page',
+  },
+
+  // top3podium
+  top3podium: {
+    doanh_s: 'Doanh số',
+    doanh_s_cao_nh_t_th_ng_n_y: 'Doanh số cao nhất tháng này',
+    top_3_t_ng_t_i: 'Top 3 tổng tài',
+  },
+
+  // topproducts
+  topproducts: {
+    based_on_units_sold: 'Based on Units Sold',
+    earn: 'Earn',
+    sold: 'Sold',
+    top_products: 'Top Products',
+  },
+
+  // transactioncard
+  transactioncard: {
+    commit_approval: 'Commit Approval',
+    flagged_for_behavioral_anomaly: 'Flagged for Behavioral Anomaly',
+    gross: 'Gross',
+    internal_ledger_net: 'Internal Ledger (Net)',
+    latency: 'Latency',
+    optimal: 'Optimal',
+    retention: 'Retention',
+    security_engine_quarantine: 'Security Engine Quarantine',
+    system_yield_injected: 'System Yield Injected',
+    uid: 'UID',
+  },
+
+  // valuationcard
+  valuationcard: {
+    '12_5_pe_ratio': '12.5 PE Ratio',
+    mom_growth: 'MoM Growth',
+  },
+
+  // venturefooter
+  venturefooter: {
+    strategic_ecosystem_builder: 'Strategic Ecosystem Builder',
+    subscribe_for_exclusive_intake: 'Subscribe for Exclusive Intake',
+  },
+
+  // venturemarketmap
+  venturemarketmap: {
+    init_sea_expansion_protocol: 'Init SEA Expansion Protocol',
+    total_addressable_market: 'Total Addressable Market',
+    velocity: 'Velocity',
+  },
+
+  // venturenavigation
+  venturenavigation: {
+    apply_recruitment: 'Apply / Recruitment',
+    venture_builder: 'Venture Builder',
+  },
+
+  // ventureportfolio
+  ventureportfolio: {
+    arr_node: 'ARR Node',
+    growth: 'Growth',
+    val: 'Val',
+  },
+
 
 };
