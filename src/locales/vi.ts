@@ -1335,5 +1335,33 @@ export const vi = {
     loading: 'Đang tải...',
   },
 
+  // Premium Navigation - AST Migration Keys
+  premiumnavigation: {
+    wellnexus: 'WellNexus',
+    social_commerce_2_0: 'Social Commerce 2.0',
+    premium_member: 'Premium Member',
+    hot: 'HOT',
+    premium_member_1: 'Premium Member',
+    dashboard: 'Dashboard',
+    ng_xu_t: 'Đăng xuất',
+    b_t_u_ngay: 'Bắt đầu ngay',
+    newsletter: 'Newsletter',
+    nh_n_th_ng_tin: 'Nhận thông tin ',
+    c_quy_n: 'độc quyền',
+    ng_k_nh_n_tin_t_c_u: 'Đăng ký nhận tin tức và ưu đãi độc quyền',
+    ng_k: 'Đăng ký',
+    ng_k_1: 'Đăng ký',
+    wellnexus_1: 'WellNexus',
+    social_commerce_2_0_1: 'Social Commerce 2.0',
+    h_sinh_th_i_social_commerce_t: 'Hệ sinh thái Social Commerce tiên tiến nhất Việt Nam',
+    hello_wellnexus_vn: 'hello@wellnexus.vn',
+    '84_901_234_567': '+84 901 234 567',
+    q1_tp_hcm_vietnam: 'Q1, TP. HCM, Vietnam',
+    wellnexus_all_rights_reserved: 'WellNexus. All rights reserved.',
+    made_with_in_vietnam: 'Made with ❤️ in Vietnam',
+    ssl_secured: 'SSL Secured',
+    top_10_east_asia: 'Top 10 East Asia',
+  },
+
 
 };
