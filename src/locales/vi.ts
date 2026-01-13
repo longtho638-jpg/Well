@@ -258,7 +258,9 @@ export const vi = {
       totalTransactions: 'Tổng giao dịch',
       activeProducts: 'Sản phẩm đang bán',
       currentRank: 'Cấp bậc hiện tại',
-    }
+    },
+    // Merged keys
+    system_online: 'Hệ thống Online',
   },
 
   // Wallet Page (WEALTH OS: Asset Management)
@@ -346,7 +348,20 @@ export const vi = {
       processingTime: 'Thời gian xử lý: 1-3 ngày làm việc',
       withdrawNow: 'Rút ngay',
       withdrawSuccess: 'Yêu cầu rút tiền thành công!',
-    }
+    },
+    // Merged keys
+    '12': '12%',
+    '90': '90',
+    '12_0': '12.0%',
+    '12_5': '12.5%',
+    apy_staking: 'APY Staking',
+    blockchain_explorer: 'Blockchain Explorer',
+    currency: 'Currency',
+    governance_token: 'Governance Token',
+    t_ng_t_i_s_n: 'Tổng tài sản',
+    th_ng_n_y: 'Tháng này',
+    n_p_shop: 'Nạp SHOP',
+    'vnd_stablecoin_1_1000': 'VND Stablecoin 1:1000',
   },
 
   // Marketplace Page
@@ -896,6 +911,24 @@ export const vi = {
 
     // Restart
     restartQuiz: 'Làm lại bài đánh giá →',
+    // Merged keys
+    add_product: 'Add Product',
+    bonus_revenue_dttt_represent: 'Bonus Revenue DTTT Represents',
+    commit: 'Commit',
+    dttt_basis: 'DTTT Basis',
+    dttt_commission_logic: 'DTTT Commission Logic',
+    edit_config: 'Edit Config',
+    esc: 'ESC',
+    global_catalog: 'Global Catalog',
+    in_stock: 'In Stock',
+    inventory_management_dttt_st: 'Inventory Management DTTT Stock',
+    low_stock: 'Low Stock',
+    'member_21_startup_25': 'Member 21% / Startup 25%',
+    member_comm: 'Member Comm',
+    out_of_stock: 'Out of Stock',
+    partner_comm: 'Partner Comm',
+    retail_msrp: 'Retail (MSRP)',
+    sku: 'SKU',
   },
 
   // Agent Dashboard
@@ -1053,6 +1086,30 @@ export const vi = {
     mission_control: 'Mission Control',
     administration: 'Administration',
     secure_session: 'Secure Session',
+    // Merged keys
+    analyze_all: 'Analyze All',
+    automated_fraud_detection: 'Automated Fraud Detection',
+    export_ledger: 'Export Ledger',
+    ledger_synchronized: 'Ledger Synchronized',
+    no_items_in_the_current_filter: 'No items in the current filter',
+    platform_liquidity_verificatio: 'Platform Liquidity Verification',
+    quarantined_items: 'Quarantined Items',
+    security_batch_commit: 'Security Batch Commit',
+    security_passed: 'Security Passed',
+    treasury_control: 'Treasury Control',
+    verifying_digital_ledgers: 'Verifying Digital Ledgers',
+    // Merged keys
+    action: 'Action',
+    content_orchestrator: 'Content Orchestrator',
+    create: 'Create',
+    cross_platform_content_deliver: 'Cross-Platform Content Delivery',
+    link: 'Link',
+    loc: 'LOC',
+    target: 'Target',
+    // Merged keys
+    partner_recon_crm: 'Partner Recon CRM',
+    precision_orchestration_of_net: 'Precision Orchestration of Network',
+    rank_intelligence: 'Rank Intelligence',
   },
 
   // Auth Pages
@@ -1091,7 +1148,9 @@ export const vi = {
       email: 'Email',
       sendReset: 'Gửi link đặt lại',
       backToLogin: 'Quay lại đăng nhập',
-    }
+    },
+    // Merged keys
+    demo: 'Demo',
   },
 
   // Landing Page
@@ -1229,6 +1288,16 @@ export const vi = {
     nodes: 'Nodes',
     strategic_simulator_offline: 'Strategic Simulator Offline',
     connect_to_the_policy_engine_r: 'Connect to the Policy Engine to run real-time market simulations.',
+    // Missing keys merged
+    action: 'Action',
+    active_now: 'Active Now',
+    agent_ecosystem: 'Agent Ecosystem',
+    intelligent_agents: 'Intelligent Agents',
+    monitoring: 'Monitoring',
+    performance: 'Performance',
+    total_actions: 'Total Actions',
+    total_agents: 'Total Agents',
+    total_kpis: 'Total KPIs',
   },
 
   // Copilot Page - AST Migration Keys
@@ -1614,6 +1683,11 @@ export const vi = {
     empty: 'Empty',
     environment_window: 'Environment Window',
     local_storage_keys: 'Local Storage Keys',
+    // Merged keys
+    system_debugger: 'System Debugger',
+    'v_debug_1_0': 'v.Debug 1.0',
+    window_props: 'Window Props',
+    zustand_store_state: 'Zustand Store State',
   },
 
   // finance
@@ -1644,6 +1718,14 @@ export const vi = {
     current_stage: 'Current Stage',
     projected_yoy_growth: 'Projected YoY Growth',
     revenue_milestone: 'Revenue Milestone',
+    // Merged keys
+    '1_000_000_usd': '$1,000,000 USD',
+    ai_xu_t_h_nh_ng: 'AI đề xuất hành động',
+    c_n_t_ng_t_c: 'Cần tăng tốc',
+    doanh_thu_hi_n_t_i: 'Doanh thu hiện tại',
+    'm_c_ti_u_2026': 'Mục tiêu 2026',
+    of_goal: 'of Goal',
+    v_t_ti_n: 'Vượt tiến độ',
   },
 
   // herocard
@@ -1656,6 +1738,16 @@ export const vi = {
     th_ng: 'Tháng',
     total_yield: 'Total Yield',
     welcome: 'Welcome',
+    // Merged keys
+    '100m_vnd_revenue': '100M VND Revenue',
+    achievement_logic: 'Achievement Logic',
+    ecosystem_scaling: 'Ecosystem Scaling',
+    founders_pathway: 'Founders Pathway',
+    live: 'LIVE',
+    reach: 'Reach',
+    to_hit_next_milestone: 'to hit next milestone',
+    to_unlock: 'to unlock',
+    venture_partner_status: 'Venture Partner Status',
   },
 
   // heroenhancements
@@ -1680,6 +1772,29 @@ export const vi = {
     leader_dashboard: 'Leader Dashboard',
     network_overview: 'Network Overview',
     portfolio_management: 'Portfolio Management',
+    // Merged keys
+    ai_insights: 'AI Insights',
+    ai_ph_t_hi_n_nh_ng_th_nh_vi_n: 'AI phát hiện những thành viên',
+    ai_xu_t: 'AI đề xuất',
+    all_ranks: 'All Ranks',
+    c_n_ch: 'Cần chú ý',
+    doanh_s: 'Doanh số',
+    'doanh_s_1': 'Doanh số',
+    'doanh_s_2': 'Doanh số',
+    doanh_s_cao_nh_t_th_ng_n_y: 'Doanh số cao nhất tháng này',
+    g_i_nh_c_nh: 'Gửi nhắc nhở',
+    l_do_c_n_ch: 'Lý do cần chú ý',
+    member: 'Member',
+    network_health: 'Network Health',
+    partner: 'Partner',
+    qu_n_l_i_nh_m: 'Quản lý đội nhóm',
+    s_h_th_ng: 'Sơ đồ hệ thống',
+    t_l_gi_ch_n: 'Tỷ lệ giữ chân',
+    t_ng_qu_kh_ch_l: 'Tổng quan khách hàng',
+    th_nh_vi_n_c_n_ch: 'Thành viên cần chú ý',
+    th_nh_vi_n_r_i_ro_cao: 'Thành viên rủi ro cao',
+    th_nh_vi_n_r_i_ro_trung_b_nh: 'Thành viên rủi ro trung bình',
+    'top_3_t_ng_t_i': 'Top 3 tổng tài',
   },
 
   // leadershipladder
@@ -1693,6 +1808,15 @@ export const vi = {
     autonomous_agents_real_time_l: 'Autonomous Agents Real-time Log',
     intelligence_console: 'Intelligence Console',
     live: 'LIVE',
+    // Merged keys
+    'bee_agent_core_v4_2_0_stable': 'BEE Agent Core v4.2.0 Stable',
+    bps: 'bps',
+    encrypted: 'Encrypted',
+    'lat_4ms': 'Lat: 4ms',
+    live_operations_node_agent: 'Live Operations Node Agent',
+    sync_active: 'Sync Active',
+    tx: 'Tx',
+    wellnexus_bee: 'WellNexus BEE',
   },
 
   // notification
@@ -1717,6 +1841,17 @@ export const vi = {
     status: 'Status',
     sync: 'Sync',
     total: 'Total',
+    // Merged keys
+    activate_commissions: 'Activate Commissions',
+    all_pending_orders_have_been_p: 'All pending orders have been processed',
+    cashflow_hub: 'Cashflow Hub',
+    never_approve: 'Never Approve',
+    operational_risk_protocol: 'Operational Risk Protocol',
+    queue_synchronized: 'Queue Synchronized',
+    strict_compliance_rule: 'Strict Compliance Rule',
+    syncing_global_ledgers: 'Syncing Global Ledgers',
+    verify_transactions_and: 'Verify Transactions and Activate Commissions',
+    without_verified_bank_clearanc: 'Without verified bank clearance',
   },
 
   // overview
@@ -1818,6 +1953,13 @@ export const vi = {
     commission: 'Commission',
     price: 'Price',
     view_details: 'View Details',
+    // Merged keys
+    added: 'Added',
+    buy_now: 'Buy Now',
+    earn: 'Earn',
+    out_of_stock: 'Out of Stock',
+    share: 'Share',
+    stock: 'Stock',
   },
 
   // productdetail
