@@ -150,7 +150,18 @@ const Admin: React.FC = () => {
           })}
         </nav>
 
-        <div className="p-8 border-t border-white/5 bg-zinc-950/50 backdrop-blur-sm">
+        <div className="p-8 border-t border-white/5 bg-zinc-950/50 backdrop-blur-sm space-y-4">
+          {/* Back to User Dashboard */}
+          <button
+            onClick={() => navigate('/dashboard')}
+            className="w-full flex items-center gap-4 px-6 py-4 bg-zinc-900/50 border border-teal-500/20 rounded-2xl text-teal-400 hover:text-white hover:bg-teal-500/10 transition-all group"
+          >
+            <ChevronLeft size={20} className="group-hover:-translate-x-1 transition-transform" />
+            {!sidebarCollapsed && (
+              <span className="font-black text-[11px] uppercase tracking-[0.2em] italic">Bảng điều khiển</span>
+            )}
+          </button>
+
           <button
             onClick={() => setSidebarCollapsed(!sidebarCollapsed)}
             className="w-full flex items-center justify-center py-4 bg-zinc-900 border border-white/5 rounded-2xl text-zinc-500 hover:text-white transition-all shadow-xl group"
@@ -158,7 +169,7 @@ const Admin: React.FC = () => {
             {sidebarCollapsed ? <ChevronRight size={20} className="group-hover:translate-x-1 transition-transform" /> : <ChevronLeft size={20} className="group-hover:-translate-x-1 transition-transform" />}
           </button>
           {!sidebarCollapsed && (
-            <div className="flex items-center gap-4 mt-8 px-2 group cursor-pointer">
+            <div className="flex items-center gap-4 mt-4 px-2 group cursor-pointer">
               <div className="w-12 h-12 bg-zinc-900 rounded-2xl flex items-center justify-center text-teal-400 font-black border border-white/5 shadow-2xl group-hover:border-teal-500/30 transition-all">
                 A
               </div>

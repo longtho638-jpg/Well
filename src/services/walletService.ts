@@ -1,5 +1,4 @@
-import { collection, doc, getDoc, getDocs, query, where, orderBy, limit, onSnapshot, DocumentData } from 'firebase/firestore';
-import { db } from './firebase';
+import { supabase } from '@/lib/supabase';
 import { Transaction } from '../types';
 import { createLogger } from '../utils/logger';
 
@@ -14,7 +13,7 @@ export interface WalletData {
 
 /**
  * WellNexus Wallet Service (Production Grade)
- * Hardened Firestore interactions for financial integrity.
+ * Hardened Supabase interactions for financial integrity.
  */
 export const walletService = {
     /**
@@ -22,9 +21,22 @@ export const walletService = {
      */
     async getWallet(userId: string): Promise<WalletData | null> {
         try {
-            const walletDoc = await getDoc(doc(db, 'wallets', userId));
-            if (walletDoc.exists()) {
-                return walletDoc.data() as WalletData;
+            // Fetch wallet data from users table (embedded fields)
+            const { data, error } = await supabase
+                .from('users')
+                .select('shop_balance, pending_cashback')
+                .eq('id', userId)
+                .single();
+
+            if (error) throw error;
+
+            if (data) {
+                return {
+                    balance: data.shop_balance || 0,
+                    totalEarnings: 0, // Calculated field, might need separate query if not stored
+                    pendingPayout: 0,
+                    taxWithheldTotal: 0
+                } as WalletData;
             }
             return null;
         } catch (error) {
@@ -38,29 +50,27 @@ export const walletService = {
      */
     async getTransactions(userId: string, limitCount = 50): Promise<Transaction[]> {
         try {
-            const q = query(
-                collection(db, 'transactions'),
-                where('userId', '==', userId),
-                orderBy('date', 'desc'),
-                limit(limitCount)
-            );
+            const { data, error } = await supabase
+                .from('transactions')
+                .select('*')
+                .eq('user_id', userId)
+                .order('created_at', { ascending: false })
+                .limit(limitCount);
 
-            const querySnapshot = await getDocs(q);
-            return querySnapshot.docs.map(snap => {
-                const data = snap.data() as DocumentData;
-                return {
-                    id: snap.id,
-                    userId: data.userId,
-                    date: data.date,
-                    amount: data.amount,
-                    type: data.type,
-                    status: data.status,
-                    taxDeducted: data.taxDeducted || 0,
-                    hash: data.hash || '',
-                    currency: data.currency || 'SHOP',
-                    metadata: data.metadata || {}
-                } as Transaction;
-            });
+            if (error) throw error;
+
+            return (data || []).map(t => ({
+                id: t.id,
+                userId: t.user_id,
+                date: t.date || new Date(t.created_at).toISOString().split('T')[0],
+                amount: t.amount,
+                type: t.type,
+                status: t.status,
+                taxDeducted: t.tax_deducted || 0,
+                hash: t.hash || '',
+                currency: t.currency || 'SHOP',
+                metadata: t.metadata || {}
+            }));
         } catch (error) {
             walletLogger.error('Error fetching transactions:', error);
             throw error;
@@ -68,35 +78,62 @@ export const walletService = {
     },
 
     /**
-     * Subscribe to real-time wallet updates
+     * Subscribe to real-time wallet updates (Using Supabase Realtime)
      */
     subscribeToWallet(userId: string, onUpdate: (data: WalletData | null) => void, onError: (err: Error) => void) {
-        return onSnapshot(
-            doc(db, 'wallets', userId),
-            (snapshot) => {
-                if (snapshot.exists()) {
-                    onUpdate(snapshot.data() as WalletData);
-                } else {
-                    onUpdate(null);
+        const channel = supabase
+            .channel(`wallet-updates-${userId}`)
+            .on(
+                'postgres_changes',
+                {
+                    event: 'UPDATE',
+                    schema: 'public',
+                    table: 'users',
+                    filter: `id=eq.${userId}`
+                },
+                (payload) => {
+                    const newData = payload.new as any;
+                    onUpdate({
+                        balance: newData.shop_balance || 0,
+                        totalEarnings: 0,
+                        pendingPayout: 0,
+                        taxWithheldTotal: 0
+                    });
                 }
-            },
-            (error) => {
-                walletLogger.error('Wallet subscription error', error);
-                onError(error);
-            }
-        );
+            )
+            .subscribe((status) => {
+                if (status === 'SUBSCRIBED') {
+                    // console.log('Subscribed to wallet updates');
+                } else if (status === 'CHANNEL_ERROR') {
+                    onError(new Error('Channel subscription failed'));
+                }
+            });
+
+        return () => {
+            supabase.removeChannel(channel);
+        };
     },
 
     /**
-     * Request a payout (Simulated for Max Level Certification)
+     * Request a payout
      */
     async requestPayout(userId: string, amount: number): Promise<void> {
-        walletLogger.info(`Initiating MISSION_CONTROL payout request: ${amount} VND for node ${userId}`);
+        walletLogger.info(`Initiating payout request: ${amount} VND for user ${userId}`);
 
-        // Critical simulation delay for ledger consistency
-        await new Promise(resolve => setTimeout(resolve, 1200));
+        // Insert into payout_requests table
+        const { error } = await supabase
+            .from('transactions')
+            .insert({
+                user_id: userId,
+                amount: amount,
+                type: 'Withdrawal',
+                status: 'pending',
+                currency: 'SHOP'
+            });
 
-        // In production, this would bridge to a secure payment gateway
-        return;
+        if (error) {
+            walletLogger.error('Payout request failed', error);
+            throw error;
+        }
     }
 };

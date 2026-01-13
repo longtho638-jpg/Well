@@ -17,22 +17,6 @@ import {
     WalletActions,
     TeamActions
 } from './slices';
-import {
-    CURRENT_USER,
-    PRODUCTS,
-    TRANSACTIONS,
-    DAILY_QUESTS,
-    REVENUE_DATA,
-    TEAM_MEMBERS,
-    TEAM_METRICS,
-    REFERRALS,
-    REFERRAL_STATS,
-    LANDING_PAGE_TEMPLATES,
-    USER_LANDING_PAGES,
-    TEAM_INSIGHTS,
-    REDEMPTION_ITEMS,
-    REDEMPTION_ORDERS
-} from '../data/mockData';
 import { storeLogger } from '../utils/logger';
 import { supabase } from '../lib/supabase';
 import { User, Product, Transaction, UserRank } from '../types';
@@ -54,20 +38,38 @@ export const useStore = create<AppState>((set, get, ...a) => ({
     ...createAgentSlice(set, get, ...a),
     ...createUISlice(set, get, ...a),
 
-    // Initial State Overrides
+    // Initial State Overrides - CLEAN SLATE for Production
     isAuthenticated: false,
-    products: PRODUCTS,
-    transactions: TRANSACTIONS,
-    quests: DAILY_QUESTS,
-    teamMembers: TEAM_MEMBERS,
-    teamMetrics: TEAM_METRICS,
-    teamInsights: TEAM_INSIGHTS,
-    referrals: REFERRALS,
-    referralStats: REFERRAL_STATS,
-    landingPageTemplates: LANDING_PAGE_TEMPLATES,
-    userLandingPages: USER_LANDING_PAGES,
-    redemptionItems: REDEMPTION_ITEMS,
-    redemptionOrders: REDEMPTION_ORDERS,
+    products: [],
+    transactions: [],
+    quests: [], // Will be fetched via fetchRealData -> fetchQuests (if implemented) or default empty
+    teamMembers: [],
+    teamMetrics: {
+        totalMembers: 0,
+        activeMembers: 0,
+        totalTeamVolume: 0, // Corrected property name
+        monthlyGrowth: 0,
+        averageSalesPerMember: 0,
+        topPerformers: []
+    },
+    teamInsights: {
+        atRiskMembers: [],
+        totalAtRisk: 0,
+        highRiskCount: 0,
+        mediumRiskCount: 0,
+        retentionRate: 0
+    },
+    referrals: [],
+    referralStats: {
+        totalReferrals: 0,
+        activeReferrals: 0,
+        totalCommission: 0,
+        conversionRate: 0
+    },
+    landingPageTemplates: [],
+    userLandingPages: [],
+    redemptionItems: [],
+    redemptionOrders: [],
 
     /**
      * Fetch products from Supabase
