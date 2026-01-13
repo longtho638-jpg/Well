@@ -51,6 +51,28 @@ export const vi = {
     lightMode: 'Giao diện sáng',
   },
 
+  // Landing Page - AST Migration Keys
+  landingpage: {
+    ultimate_level_wellness: 'ULTIMATE LEVEL WELLNESS',
+    hu_n_luy_n_vi_n_ai: 'Huấn luyện viên AI',
+    h_ng_d_n_c_nh_n_h_a_b_i_gemi: 'Hướng dẫn cá nhân hóa bởi Gemini',
+    thu_nh_p_th_ng: 'Thu nhập thụ động',
+    theo_d_i_hoa_h_ng_t_ng_v_p: 'Theo dõi hoa hồng tăng vọt theo thời gian thực',
+    '12_450': '12.450.000đ',
+    thu_nh_p_tb_partner: 'Thu nhập TB/Partner',
+    c_ng_ng: 'Cộng đồng',
+    tham_gia_c_ng_1_000_founders: 'Tham gia cùng 1.000+ Founders thành công',
+    m_r_ng_to_n_c_u: 'Mở rộng toàn cầu',
+    s_n_s_ng_chinh_ph_c_th_tr_ng: 'Sẵn sàng chinh phục thị trường Đông Nam Á',
+    m_kh_a_khi_t: 'Mở khóa khi đạt ',
+    xem_t_m_nh_n: 'Xem tầm nhìn',
+    giai_o_n_hi_n_t_i: 'Giai đoạn hiện tại',
+    tham_gia_ngay_ch_c_n_157_sl: 'Tham gia ngay - Chỉ còn 157 slot',
+    c_u_chuy_n_th_nh_c_ng: 'Câu chuyện thành công',
+    partner_n_i_g_v_wellnexus: 'Partner nói gì về WellNexus',
+    h_ng_ng_n_partner_thay_i: 'Hàng ngàn Partner đã thay đổi cuộc sống với WellNexus',
+  },
+
   // Dashboard Page
   dashboard: {
     title: 'Trang chủ',
@@ -1184,5 +1206,5 @@ export const vi = {
     unstakingSuccess: 'Rút tiết kiệm thành công!',
   }
 
-  
+
 };

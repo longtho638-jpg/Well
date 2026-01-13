@@ -51,6 +51,28 @@ export const en = {
         lightMode: 'Light Mode',
     },
 
+    // Landing Page - AST Migration Keys
+    landingpage: {
+        ultimate_level_wellness: 'ULTIMATE LEVEL WELLNESS',
+        hu_n_luy_n_vi_n_ai: 'AI Coach',
+        h_ng_d_n_c_nh_n_h_a_b_i_gemi: 'Personalized guidance by Gemini',
+        thu_nh_p_th_ng: 'Passive Income',
+        theo_d_i_hoa_h_ng_t_ng_v_p: 'Track commissions in real-time',
+        '12_450': '12,450,000₫',
+        thu_nh_p_tb_partner: 'Avg. Income/Partner',
+        c_ng_ng: 'Community',
+        tham_gia_c_ng_1_000_founders: 'Join 1,000+ successful Founders',
+        m_r_ng_to_n_c_u: 'Global Expansion',
+        s_n_s_ng_chinh_ph_c_th_tr_ng: 'Ready to conquer Southeast Asia market',
+        m_kh_a_khi_t: 'Unlock at ',
+        xem_t_m_nh_n: 'See Vision',
+        giai_o_n_hi_n_t_i: 'Current Stage',
+        tham_gia_ngay_ch_c_n_157_sl: 'Join Now - Only 157 slots left',
+        c_u_chuy_n_th_nh_c_ng: 'Success Stories',
+        partner_n_i_g_v_wellnexus: 'What Partners Say About WellNexus',
+        h_ng_ng_n_partner_thay_i: 'Thousands of Partners have transformed their lives with WellNexus',
+    },
+
     // Dashboard Page
     dashboard: {
         title: 'Dashboard',
@@ -1104,5 +1126,5 @@ export const en = {
         unstakingSuccess: 'Unstaking successful!',
     }
 
-  
+
 };
