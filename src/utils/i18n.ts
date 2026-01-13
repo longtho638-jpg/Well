@@ -73,6 +73,18 @@ export function formatRelativeTime(date: Date | string, locale: Locale = 'vi'): 
     return i18nService.formatRelativeTime(d, locale);
 }
 
+export function formatTime(date: Date | string, locale: Locale = 'vi'): string {
+    const d = typeof date === 'string' ? new Date(date) : date;
+    const localeStr = locale === 'vi' ? 'vi-VN' : 'en-US';
+    return d.toLocaleTimeString(localeStr, { hour: '2-digit', minute: '2-digit' });
+}
+
+export function formatShortDate(date: Date | string, locale: Locale = 'vi'): string {
+    const d = typeof date === 'string' ? new Date(date) : date;
+    const localeStr = locale === 'vi' ? 'vi-VN' : 'en-US';
+    return d.toLocaleDateString(localeStr, { month: 'short', day: 'numeric' });
+}
+
 // ============================================================================
 // PLURALIZATION
 // ============================================================================
