@@ -2591,5 +2591,66 @@ export const vi = {
     vnd_stablecoin_1_1000: 'VND Stablecoin 1:1000',
   },
 
+  // marketingtools - CORRECT section (40 keys from MarketingTools.tsx)
+  marketingtools: {
+    '4_9': '4.9',
+    ai_ang_vi_t_c_u_chuy_n: 'AI đang viết câu chuyện',
+    ai_landing_builder: 'AI Landing Builder',
+    ai_s_t_o_landing_page_chuy_n: 'AI sẽ tạo Landing Page chuyên nghiệp',
+    ai_vi_t_c_u_chuy_n_c_a_t_i: 'AI viết câu chuyện của tôi',
+    ch_n_template: 'Chọn Template',
+    ch_n_template_v_click_ai_vi: 'Chọn Template và Click AI viết',
+    chuy_n_i: 'Chuyển đổi',
+    click_t_i_nh_l_n: 'Click tải ảnh lên',
+    click_thay_i: 'Click thay đổi',
+    conversions: 'Conversions',
+    jpg_png_t_i_a_5mb: 'JPG, PNG tối đa 5MB',
+    l_t_xem: 'Lượt xem',
+    landing_page_xu_t_b_n: 'Landing Page xuất bản',
+    landing_pages_t_o: 'Landing Pages đã tạo',
+    link_landing_page: 'Link Landing Page',
+    link_s_n_s_ng_chia_s: 'Link sẵn sàng chia sẻ',
+    live: 'LIVE',
+    new: 'New',
+    nh_t_i_l_n: 'Nhấn tải lên',
+    preview_landing_page: 'Preview Landing Page',
+    t_l: 'Tỷ lệ',
+    t_o_trang_tuy_n_d_ng_chuy_n_ng: 'Tạo trang tuyển dụng chuyên nghiệp',
+    upload_nh_ch_n_dung: 'Upload ảnh chân dung',
+    views: 'Views',
+    xu_t_b_n_ngay: 'Xuất bản ngay',
+  },
+
+  // notificationcenter - CORRECT section (6 keys)
+  notificationcenter: {
+    actions_required: 'Actions Required',
+    audit_center: 'Audit Center',
+    clear_history: 'Clear History',
+    no_new_activity: 'No New Activity',
+    notifications: 'Notifications',
+    we_ll_notify_you_when_somethin: "We'll notify you when something happens",
+  },
+
+  // policyengine - CORRECT section (8 keys)
+  policyengine: {
+    policy_changes_are_cryptograph: 'Policy changes are cryptographically signed',
+    policy_engine: 'Policy Engine',
+    projection_simulator: 'Projection Simulator',
+    real_time: 'Real-time',
+    strategic_integrity_confirmed: 'Strategic Integrity Confirmed',
+    sync: 'Sync',
+    synchronizing_policy_core: 'Synchronizing Policy Core',
+    v3_1: 'v3.1',
+  },
+
+  // healthcheck - CORRECT section (6 keys)
+  healthcheck: {
+    '100': '100%',
+    i_m_s_t_ng_kh_a_c_nh_s_c_kh: 'Điểm số từng khía cạnh sức khỏe',
+    l_i_ch_kh_c: 'Lợi ích khác',
+    ph_n_t_ch_chi_ti_t: 'Phân tích chi tiết',
+    s_n_ph_m_c_ai_xu_t_d_nh: 'Sản phẩm được AI đề xuất dành cho bạn',
+    u_ti_n: 'Ưu tiên',
+  },
 
 };
