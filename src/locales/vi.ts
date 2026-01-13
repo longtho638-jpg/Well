@@ -1736,6 +1736,22 @@ export const vi = {
     revenue_ytd: 'Revenue YTD',
     system_status: 'System Status',
     total_yield: 'Total Yield',
+    // Admin Overview page keys
+    mission_control: 'Mission Control',
+    autonomous_ecosystem_orchestra: 'Autonomous Ecosystem Orchestra',
+    ecosystem_online: 'Ecosystem Online',
+    ai_action_center: 'AI Action Center',
+    autonomous_recommendations: 'Autonomous Recommendations',
+    queue_exhausted: 'Queue Exhausted',
+    ai_agent_has_autonomously_reso: 'AI Agent has autonomously resolved all pending actions.',
+    live_pulse: 'Live Pulse',
+    growth_trajectory: 'Growth Trajectory',
+    ecosystem_scale: 'Ecosystem Scale',
+    risk: 'Risk',
+    ai: 'AI: ',
+    confident: '% Confident',
+    resolve: 'Resolve',
+    reject: 'Reject',
   },
 
   // partnercrm
