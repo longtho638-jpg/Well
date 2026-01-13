@@ -69,8 +69,7 @@ export const RecentActivityList: React.FC<RecentActivityListProps> = ({ activiti
                 whileTap={{ scale: 0.98 }}
                 className="w-full mt-6 py-4 bg-zinc-900 text-zinc-500 font-black text-[10px] uppercase tracking-[0.2em] rounded-2xl border border-white/5 hover:text-white hover:border-white/10 transition-all italic"
             >
-                View Digital Audit Trace
-            </motion.button>
+                {t('recentactivitylist.view_digital_audit_trace')}</motion.button>
         </motion.div>
     );
 };

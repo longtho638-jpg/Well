@@ -18,8 +18,10 @@ import { ProductInfo } from '../components/product/ProductInfo';
 import { ProductPricing } from '../components/product/ProductPricing';
 import { ProductActions } from '../components/product/ProductActions';
 import { ProductTabs } from '../components/product/ProductTabs';
+import { useTranslation } from '@/hooks';
 
 export const ProductDetail: React.FC = () => {
+    const { t } = useTranslation();
     const {
         product,
         activeTab,
@@ -43,14 +45,13 @@ export const ProductDetail: React.FC = () => {
                 >
                     <Package className="w-10 h-10 text-zinc-600" />
                 </motion.div>
-                <h2 className="text-5xl font-black text-white mb-6 tracking-tighter italic uppercase">Identity Missing</h2>
-                <p className="text-zinc-500 mb-12 max-w-sm text-sm font-bold uppercase tracking-widest">The requested product node is currently unavailable in the central registry.</p>
+                <h2 className="text-5xl font-black text-white mb-6 tracking-tighter italic uppercase">{t('productdetail.identity_missing')}</h2>
+                <p className="text-zinc-500 mb-12 max-w-sm text-sm font-bold uppercase tracking-widest">{t('productdetail.the_requested_product_node_is')}</p>
                 <button
                     onClick={() => navigate('/marketplace')}
                     className="bg-white text-zinc-950 px-12 py-6 rounded-2xl font-black uppercase text-xs tracking-[0.2em] hover:scale-105 active:scale-95 transition-all shadow-[0_0_30px_rgba(255,255,255,0.1)] italic"
                 >
-                    Revert to Marketplace
-                </button>
+                    {t('productdetail.revert_to_marketplace')}</button>
             </div>
         );
     }
@@ -67,11 +68,10 @@ export const ProductDetail: React.FC = () => {
                     className="flex items-center gap-4 text-zinc-500 hover:text-white transition-all font-black text-[10px] uppercase tracking-[0.3em] group italic"
                 >
                     <ArrowLeft className="w-4 h-4 group-hover:-translate-x-2 transition-transform" />
-                    Back to Command Registry
-                </button>
+                    {t('productdetail.back_to_command_registry')}</button>
                 <div className="flex gap-3">
-                    <AuraBadge color="emerald">VERIFIED NODE</AuraBadge>
-                    <AuraBadge color="violet">PREMIUM TIER</AuraBadge>
+                    <AuraBadge color="emerald">{t('productdetail.verified_node')}</AuraBadge>
+                    <AuraBadge color="violet">{t('productdetail.premium_tier')}</AuraBadge>
                 </div>
             </div>
 

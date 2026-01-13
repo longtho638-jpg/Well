@@ -31,6 +31,7 @@ export function ShareButtons({
     showQRCode,
     t
 }: ShareButtonsProps) {
+    
     return (
         <motion.div
             initial={{ opacity: 0, x: -20 }}
@@ -84,7 +85,7 @@ export function ShareButtons({
                     <div className="w-10 h-10 bg-blue-500 rounded-lg flex items-center justify-center group-hover:scale-110 transition-transform">
                         <MessageCircle className="w-5 h-5 text-white" />
                     </div>
-                    <span className="font-semibold text-gray-900 dark:text-slate-100">Zalo</span>
+                    <span className="font-semibold text-gray-900 dark:text-slate-100">{t('sharebuttons.zalo')}</span>
                 </motion.button>
 
                 <motion.button
@@ -96,7 +97,7 @@ export function ShareButtons({
                     <div className="w-10 h-10 bg-blue-600 rounded-lg flex items-center justify-center group-hover:scale-110 transition-transform">
                         <span className="text-white font-bold text-lg">f</span>
                     </div>
-                    <span className="font-semibold text-gray-900 dark:text-slate-100">Facebook</span>
+                    <span className="font-semibold text-gray-900 dark:text-slate-100">{t('sharebuttons.facebook')}</span>
                 </motion.button>
 
                 <motion.button
@@ -108,7 +109,7 @@ export function ShareButtons({
                     <div className="w-10 h-10 bg-sky-500 rounded-lg flex items-center justify-center group-hover:scale-110 transition-transform">
                         <MessageCircle className="w-5 h-5 text-white" />
                     </div>
-                    <span className="font-semibold text-gray-900 dark:text-slate-100">Telegram</span>
+                    <span className="font-semibold text-gray-900 dark:text-slate-100">{t('sharebuttons.telegram')}</span>
                 </motion.button>
 
                 <motion.button
@@ -120,7 +121,7 @@ export function ShareButtons({
                     <div className="w-10 h-10 bg-red-500 rounded-lg flex items-center justify-center group-hover:scale-110 transition-transform">
                         <Mail className="w-5 h-5 text-white" />
                     </div>
-                    <span className="font-semibold text-gray-900 dark:text-slate-100">Email</span>
+                    <span className="font-semibold text-gray-900 dark:text-slate-100">{t('sharebuttons.email')}</span>
                 </motion.button>
             </div>
 

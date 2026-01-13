@@ -1,8 +1,10 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { CheckCircle } from 'lucide-react';
+import { useTranslation } from '@/hooks';
 
 export const SuccessAnimation: React.FC<{ message: string }> = ({ message }) => {
+    const { t } = useTranslation();
   return (
     <motion.div
       initial={{ scale: 0, opacity: 0 }}
@@ -22,7 +24,7 @@ export const SuccessAnimation: React.FC<{ message: string }> = ({ message }) => 
         >
           <CheckCircle className="w-20 h-20 text-emerald-500 mx-auto mb-4" />
         </motion.div>
-        <h3 className="text-2xl font-bold gradient-text mb-2">Success!</h3>
+        <h3 className="text-2xl font-bold gradient-text mb-2">{t('successanimation.success')}</h3>
         <p className="text-slate-600">{message}</p>
       </motion.div>
     </motion.div>

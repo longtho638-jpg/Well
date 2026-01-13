@@ -3,6 +3,7 @@ import { Command, Zap, CheckCircle, Clock, TrendingUp } from 'lucide-react';
 import { agentRegistry } from '@/agents';
 import { AGENCYOS_COMMANDS, AgencyOSCategory, AgencyOSCommand } from '@/agents/custom/AgencyOSAgent';
 import CommandPalette from '@/components/ui/CommandPalette';
+import { useTranslation } from '@/hooks';
 
 const CATEGORY_COLORS: Record<AgencyOSCategory, string> = {
     marketing: 'from-pink-500 to-rose-500',
@@ -23,6 +24,7 @@ const CATEGORY_ICONS: Record<AgencyOSCategory, string> = {
 };
 
 export function AgencyOSDemo() {
+    const { t } = useTranslation();
     const [isPaletteOpen, setIsPaletteOpen] = useState(false);
     const [selectedCategory, setSelectedCategory] = useState<AgencyOSCategory | null>(null);
     const [executionLog, setExecutionLog] = useState<Array<{ command: string; result: { success: boolean; message?: string; output?: string; error?: string }; timestamp: string }>>([]);
@@ -68,19 +70,16 @@ export function AgencyOSDemo() {
                         <div className="flex items-center gap-3 mb-2">
                             <Command className="w-10 h-10 text-cyan-400" />
                             <h1 className="text-4xl font-bold bg-gradient-to-r from-cyan-400 to-blue-400 bg-clip-text text-transparent">
-                                AgencyOS Integration
-                            </h1>
+                                {t('agencyosdemo.agencyos_integration')}</h1>
                         </div>
                         <p className="text-gray-400 text-lg">
-                            85+ AI-powered automation commands for WellNexus HealthFi OS
-                        </p>
+                            {t('agencyosdemo.85_ai_powered_automation_comm')}</p>
                     </div>
                     <button
                         onClick={() => setIsPaletteOpen(true)}
                         className="px-6 py-3 bg-gradient-to-r from-cyan-500 to-blue-500 rounded-lg font-medium hover:shadow-lg hover:shadow-cyan-500/50 transition-all"
                     >
-                        Open Command Palette ⌘K
-                    </button>
+                        {t('agencyosdemo.open_command_palette_k')}</button>
                 </div>
             </div>
 
@@ -90,8 +89,7 @@ export function AgencyOSDemo() {
                     <div className="bg-gray-800/50 backdrop-blur-sm rounded-xl p-6 border border-gray-700">
                         <h2 className="text-xl font-bold mb-4 flex items-center gap-2">
                             <Zap className="w-5 h-5 text-yellow-400" />
-                            Command Categories
-                        </h2>
+                            {t('agencyosdemo.command_categories')}</h2>
                         <div className="space-y-2">
                             {(Object.keys(AGENCYOS_COMMANDS) as AgencyOSCategory[]).map((cat) => (
                                 <button
@@ -108,8 +106,7 @@ export function AgencyOSDemo() {
                                             <div>
                                                 <div className="font-medium capitalize">{cat}</div>
                                                 <div className="text-xs opacity-75">
-                                                    {AGENCYOS_COMMANDS[cat].length} commands
-                                                </div>
+                                                    {AGENCYOS_COMMANDS[cat].length} {t('agencyosdemo.commands')}</div>
                                             </div>
                                         </div>
                                         <CheckCircle
@@ -124,7 +121,7 @@ export function AgencyOSDemo() {
                         {/* Agent KPIs */}
                         {agentKPIs && (
                             <div className="mt-6 pt-6 border-t border-gray-700">
-                                <h3 className="text-sm font-semibold mb-3 text-gray-400">Agent KPIs</h3>
+                                <h3 className="text-sm font-semibold mb-3 text-gray-400">{t('agencyosdemo.agent_kpis')}</h3>
                                 <div className="space-y-2">
                                     {agentKPIs.map((kpi, idx: number) => (
                                         <div key={idx} className="bg-gray-700/30 rounded p-2">
@@ -192,12 +189,11 @@ export function AgencyOSDemo() {
                     <div className="bg-gray-800/50 backdrop-blur-sm rounded-xl p-6 border border-gray-700">
                         <h2 className="text-xl font-bold mb-4 flex items-center gap-2">
                             <Clock className="w-5 h-5 text-purple-400" />
-                            Execution History
-                        </h2>
+                            {t('agencyosdemo.execution_history')}</h2>
                         {executionLog.length === 0 ? (
                             <div className="text-center py-8 text-gray-500">
                                 <Command className="w-12 h-12 mx-auto mb-3 opacity-50" />
-                                <p>No commands executed yet. Click a command above to try!</p>
+                                <p>{t('agencyosdemo.no_commands_executed_yet_clic')}</p>
                             </div>
                         ) : (
                             <div className="space-y-3">

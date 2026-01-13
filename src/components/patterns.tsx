@@ -50,11 +50,11 @@ export class ErrorBoundary extends React.Component<ErrorBoundaryProps, ErrorBoun
 }
 
 function DefaultErrorFallback({ error, reset }: { error: Error; reset: () => void }) {
+    const { t } = useTranslation();
     return (
         <div className="p-4 bg-red-50 dark:bg-red-900/20 rounded-lg text-center">
             <h3 className="text-lg font-bold text-red-600 dark:text-red-400 mb-2">
-                Đã xảy ra lỗi
-            </h3>
+                {t('patterns.x_y_ra_l_i')}</h3>
             <p className="text-sm text-red-500 dark:text-red-300 mb-4">
                 {error.message}
             </p>
@@ -62,8 +62,7 @@ function DefaultErrorFallback({ error, reset }: { error: Error; reset: () => voi
                 onClick={reset}
                 className="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700"
             >
-                Thử lại
-            </button>
+                {t('patterns.th_l_i')}</button>
         </div>
     );
 }
@@ -78,6 +77,7 @@ interface LoadingProps {
 }
 
 export function LoadingSpinner({ size = 'md', className = '' }: LoadingProps) {
+    const { t } = useTranslation();
     const sizeClasses = {
         sm: 'w-4 h-4',
         md: 'w-8 h-8',
@@ -92,6 +92,7 @@ export function LoadingSpinner({ size = 'md', className = '' }: LoadingProps) {
 }
 
 export function LoadingSkeleton({ className = '' }: { className?: string }) {
+    const { t } = useTranslation();
     return (
         <div className={`animate-pulse bg-gray-200 dark:bg-gray-700 rounded ${className}`} />
     );
@@ -134,6 +135,7 @@ interface AsyncProps<T> {
 }
 
 export function Async<T>({ promise, loading, error, children }: AsyncProps<T>) {
+    const { t } = useTranslation();
     const [state, setState] = React.useState<{
         status: 'pending' | 'fulfilled' | 'rejected';
         data?: T;
@@ -162,6 +164,7 @@ export function Async<T>({ promise, loading, error, children }: AsyncProps<T>) {
 // ============================================================================
 
 import { createPortal } from 'react-dom';
+import { useTranslation } from '@/hooks';
 
 interface PortalProps {
     children: ReactNode;
@@ -185,6 +188,7 @@ export function withLoading<P extends object>(
     Component: ComponentType<P>,
     LoadingComponent: ComponentType = LoadingSpinner
 ) {
+    const { t } = useTranslation();
     return function WithLoadingComponent(props: P & { isLoading?: boolean }) {
         const { isLoading, ...rest } = props;
         if (isLoading) return <LoadingComponent />;
@@ -199,6 +203,7 @@ export function withErrorBoundary<P extends object>(
     Component: ComponentType<P>,
     fallback?: ErrorBoundaryProps['fallback']
 ) {
+    const { t } = useTranslation();
     return function WithErrorBoundaryComponent(props: P) {
         return (
             <ErrorBoundary fallback={fallback}>

@@ -12,6 +12,7 @@
 
 import React, { useRef, useState, useEffect } from 'react';
 import { motion, useScroll, useTransform, useSpring, useInView } from 'framer-motion';
+import { useTranslation } from '@/hooks';
 
 // ============================================================================
 // EAST ASIAN COLOR PALETTE - 2026 TRENDS
@@ -47,6 +48,7 @@ interface ScrollRevealSectionProps {
 }
 
 export function ScrollRevealSection({ children, className = '' }: ScrollRevealSectionProps) {
+    const { t } = useTranslation();
     const ref = useRef<HTMLDivElement>(null);
     const isInView = useInView(ref, { once: true, margin: '-20%' });
 
@@ -68,6 +70,7 @@ export function ScrollRevealSection({ children, className = '' }: ScrollRevealSe
 // ============================================================================
 
 export function ZenDivider({ className = '' }: { className?: string }) {
+    const { t } = useTranslation();
     return (
         <div className={`flex items-center justify-center gap-6 py-12 ${className}`}>
             <motion.div
@@ -110,6 +113,7 @@ export function MinimalistCard({
     className = '',
     accentColor = 'jade'
 }: MinimalistCardProps) {
+    const { t } = useTranslation();
     const accentColors = {
         jade: 'hover:border-emerald-500/30',
         gold: 'hover:border-amber-500/30',
@@ -152,6 +156,7 @@ interface AwardsBarProps {
 }
 
 export function AwardsBar({ awards, className = '' }: AwardsBarProps) {
+    const { t } = useTranslation();
     return (
         <div className={`border-y border-zinc-800/50 py-8 ${className}`}>
             <div className="max-w-7xl mx-auto px-6">
@@ -185,6 +190,7 @@ export function AwardsBar({ awards, className = '' }: AwardsBarProps) {
 // ============================================================================
 
 export function FloatingNav() {
+    const { t } = useTranslation();
     const [scrolled, setScrolled] = useState(false);
 
     useEffect(() => {
@@ -210,15 +216,14 @@ export function FloatingNav() {
             transition={{ duration: 0.6 }}
         >
             <div className="flex items-center gap-8">
-                <span className="font-bold text-lg text-white">WellNexus</span>
+                <span className="font-bold text-lg text-white">{t('eastasiabrand.wellnexus')}</span>
                 <div className="hidden md:flex items-center gap-6 text-sm text-zinc-400">
-                    <a href="#about" className="hover:text-white transition-colors">Về Chúng Tôi</a>
-                    <a href="#products" className="hover:text-white transition-colors">Sản Phẩm</a>
-                    <a href="#partners" className="hover:text-white transition-colors">Đối Tác</a>
+                    <a href="#about" className="hover:text-white transition-colors">{t('eastasiabrand.v_ch_ng_t_i')}</a>
+                    <a href="#products" className="hover:text-white transition-colors">{t('eastasiabrand.s_n_ph_m')}</a>
+                    <a href="#partners" className="hover:text-white transition-colors">{t('eastasiabrand.i_t_c')}</a>
                 </div>
                 <button className="px-4 py-2 bg-emerald-600 hover:bg-emerald-500 text-white text-sm font-medium rounded-xl transition-colors">
-                    Bắt Đầu
-                </button>
+                    {t('eastasiabrand.b_t_u')}</button>
             </div>
         </motion.nav>
     );
@@ -229,6 +234,7 @@ export function FloatingNav() {
 // ============================================================================
 
 export function ScrollProgress() {
+    const { t } = useTranslation();
     const { scrollYProgress } = useScroll();
     const scaleX = useSpring(scrollYProgress, { stiffness: 100, damping: 30 });
 
@@ -252,6 +258,7 @@ interface ParallaxImageProps {
 }
 
 export function ParallaxImage({ src, alt, className = '', speed = 0.3 }: ParallaxImageProps) {
+    const { t } = useTranslation();
     const ref = useRef<HTMLDivElement>(null);
     const { scrollYProgress } = useScroll({
         target: ref,
@@ -282,6 +289,7 @@ interface StaggeredTextProps {
 }
 
 export function StaggeredText({ text, className = '', tag: Tag = 'h2' }: StaggeredTextProps) {
+    const { t } = useTranslation();
     const words = text.split(' ');
 
     return (

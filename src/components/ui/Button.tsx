@@ -1,5 +1,6 @@
 import React from 'react';
 import { Loader2 } from 'lucide-react';
+import { useTranslation } from '@/hooks';
 
 interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   variant?: 'primary' | 'secondary' | 'outline' | 'ghost' | 'danger';
@@ -19,6 +20,7 @@ export const Button: React.FC<ButtonProps> = ({
   className = '',
   ...props
 }) => {
+    const { t } = useTranslation();
   const baseStyles = 'inline-flex items-center justify-center gap-2 font-bold rounded-xl transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed focus:outline-none focus:ring-2 focus:ring-offset-2';
 
   const variantStyles = {
@@ -44,7 +46,7 @@ export const Button: React.FC<ButtonProps> = ({
       {isLoading ? (
         <>
           <Loader2 className="w-4 h-4 animate-spin" />
-          <span>Loading...</span>
+          <span>{t('button.loading')}</span>
         </>
       ) : (
         <>

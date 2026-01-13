@@ -167,15 +167,13 @@ export default function CopilotPage() {
                   className="w-full bg-gradient-to-r from-teal-600 to-teal-500 text-white px-6 py-4 rounded-xl font-bold text-sm hover:shadow-xl hover:scale-[1.02] transition-all duration-300 flex items-center justify-center gap-2"
                 >
                   <Plus className="w-5 h-5" />
-                  Chat Mới
-                </button>
+                  {t('copilotpage.chat_m_i')}</button>
 
                 {/* Chat History Card */}
                 <div className="glass-ultra rounded-2xl p-6 border border-white/10 shadow-xl sticky top-32 max-h-[calc(100vh-200px)] overflow-y-auto">
                   <h3 className="font-bold text-white text-lg mb-4 flex items-center gap-2">
                     <Clock className="w-5 h-5 text-teal-400" />
-                    Lịch Sử Chat
-                  </h3>
+                    {t('copilotpage.l_ch_s_chat')}</h3>
                   <div className="space-y-2">
                     {chatSessions.map((session, index) => (
                       <motion.button
@@ -220,13 +218,13 @@ export default function CopilotPage() {
                   className="lg:hidden w-full glass-ultra border border-white/10 px-4 py-3 rounded-xl font-medium text-sm hover:bg-white/10 active:bg-white/20 text-white transition-all duration-200 flex items-center justify-center gap-2"
                 >
                   <Clock className="w-5 h-5 text-teal-400" />
-                  Xem Lịch Sử Chat
-                </button>
+                  {t('copilotpage.xem_l_ch_s_chat')}</button>
               )}
 
               {/* Features Grid */}
               <div className="grid md:grid-cols-3 gap-4">
                 {features.map((feature, index) => {
+                    const { t } = useTranslation();
                   const Icon = feature.icon;
                   return (
                     <motion.div
@@ -257,8 +255,7 @@ export default function CopilotPage() {
                 <div className="absolute inset-0 bg-gradient-to-r from-purple-900/20 to-pink-900/20 pointer-events-none" />
                 <h3 className="font-bold text-white mb-4 flex items-center gap-2 relative z-10">
                   <Sparkles className="w-5 h-5 text-purple-400" />
-                  Gợi Ý Prompt - Click để dùng ngay
-                </h3>
+                  {t('copilotpage.g_i_prompt_click_d_ng_n')}</h3>
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3 relative z-10">
                   {promptSuggestions.map((suggestion, index) => (
                     <motion.button
@@ -305,7 +302,7 @@ export default function CopilotPage() {
                     <p className="text-xs text-white/60">{t('copilot.stats.scriptsCreated')}</p>
                   </div>
                   <div className="text-center">
-                    <p className="text-3xl font-bold text-green-400 mb-1">85%</p>
+                    <p className="text-3xl font-bold text-green-400 mb-1">{t('copilotpage.85')}</p>
                     <p className="text-xs text-white/60">{t('copilot.stats.conversionRate')}</p>
                   </div>
                 </div>

@@ -1,12 +1,14 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { DollarSign, AlertCircle, Users, Zap } from 'lucide-react';
+import { useTranslation } from '@/hooks';
 
 interface CopilotSuggestionsProps {
     onSelect: (text: string) => void;
 }
 
 export const CopilotSuggestions: React.FC<CopilotSuggestionsProps> = ({ onSelect }) => {
+    const { t } = useTranslation();
     const suggestionChips = [
         { icon: DollarSign, text: "Giá sản phẩm đắt quá!", color: "from-orange-500 to-red-500" },
         { icon: AlertCircle, text: "Tôi chưa tin tưởng sản phẩm này", color: "from-red-500 to-pink-500" },
@@ -20,9 +22,10 @@ export const CopilotSuggestions: React.FC<CopilotSuggestionsProps> = ({ onSelect
             animate={{ opacity: 1, y: 0 }}
             className="space-y-2 mt-3"
         >
-            <p className="text-zinc-400 text-xs font-medium">💡 Gợi ý câu hỏi:</p>
+            <p className="text-zinc-400 text-xs font-medium">{t('copilotsuggestions.g_i_c_u_h_i')}</p>
             <div className="grid grid-cols-2 gap-2">
                 {suggestionChips.map((chip, index) => {
+                    const { t } = useTranslation();
                     const Icon = chip.icon;
                     return (
                         <motion.button
@@ -39,7 +42,7 @@ export const CopilotSuggestions: React.FC<CopilotSuggestionsProps> = ({ onSelect
                             <div className="flex items-center gap-2 mb-1">
                                 <Icon className="w-4 h-4 text-zinc-400 group-hover:text-emerald-400 transition-colors" />
                                 <span className="text-xs font-bold text-zinc-500 dark:text-zinc-400 group-hover:text-zinc-900 dark:group-hover:text-white transition-colors">
-                                    Gợi ý {index + 1}
+                                    {t('copilotsuggestions.g_i')}{index + 1}
                                 </span>
                             </div>
                             <p className="text-xs text-zinc-400 group-hover:text-zinc-700 dark:group-hover:text-zinc-300 transition-colors line-clamp-2">

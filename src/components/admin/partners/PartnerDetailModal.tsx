@@ -8,6 +8,7 @@ import { adminLogger } from '@/utils/logger';
 import { Partner } from '@/hooks/usePartners';
 import { Button } from '@/components/ui/Button';
 import { Input } from '@/components/ui/Input';
+import { useTranslation } from '@/hooks';
 
 interface PartnerDetailModalProps {
     partner: Partner;
@@ -20,6 +21,7 @@ export const PartnerDetailModal = memo(({
     onClose,
     onUpdate
 }: PartnerDetailModalProps) => {
+    const { t } = useTranslation();
     const { showToast } = useToast();
     const [isEditing, setIsEditing] = useState(false);
     const [loading, setLoading] = useState(false);
@@ -97,7 +99,7 @@ export const PartnerDetailModal = memo(({
 
                 <div className="p-6 space-y-6">
                     <div className="flex justify-between items-center">
-                        <h3 className="font-semibold text-slate-900">Partner Details</h3>
+                        <h3 className="font-semibold text-slate-900">{t('partnerdetailmodal.partner_details')}</h3>
                         {!isEditing ? (
                             <Button
                                 variant="ghost"
@@ -105,28 +107,25 @@ export const PartnerDetailModal = memo(({
                                 onClick={() => setIsEditing(true)}
                                 icon={<Edit2 className="w-4 h-4" />}
                             >
-                                Edit Metrics
-                            </Button>
+                                {t('partnerdetailmodal.edit_metrics')}</Button>
                         ) : (
                             <div className="flex gap-2">
                                 <Button variant="ghost" size="sm" onClick={() => setIsEditing(false)}>
-                                    Cancel
-                                </Button>
+                                    {t('partnerdetailmodal.cancel')}</Button>
                                 <Button
                                     variant="primary"
                                     size="sm"
                                     onClick={handleSave}
                                     isLoading={loading}
                                 >
-                                    Save Changes
-                                </Button>
+                                    {t('partnerdetailmodal.save_changes')}</Button>
                             </div>
                         )}
                     </div>
 
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                         <div>
-                            <label className="block text-xs text-slate-500 mb-1">Rank</label>
+                            <label className="block text-xs text-slate-500 mb-1">{t('partnerdetailmodal.rank')}</label>
                             {isEditing ? (
                                 <select
                                     value={formData.rank}
@@ -177,14 +176,14 @@ export const PartnerDetailModal = memo(({
                     </div>
 
                     <div className="border-t border-slate-200 pt-6">
-                        <h3 className="font-semibold text-slate-900 mb-3">Contact Info</h3>
+                        <h3 className="font-semibold text-slate-900 mb-3">{t('partnerdetailmodal.contact_info')}</h3>
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                             <div>
-                                <p className="text-xs text-slate-500">Email</p>
+                                <p className="text-xs text-slate-500">{t('partnerdetailmodal.email')}</p>
                                 <p className="text-sm text-slate-900">{partner.email}</p>
                             </div>
                             <div>
-                                <p className="text-xs text-slate-500">Joined</p>
+                                <p className="text-xs text-slate-500">{t('partnerdetailmodal.joined')}</p>
                                 <p className="text-sm text-slate-900">{partner.joinDate}</p>
                             </div>
                         </div>

@@ -2,8 +2,10 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import { Mail, Lock, User, ArrowRight, Loader2, AlertCircle } from 'lucide-react';
 import { useSignup } from '@/hooks/useSignup';
+import { useTranslation } from '@/hooks';
 
 export const SignupForm: React.FC = () => {
+    const { t } = useTranslation();
     const {
         formData,
         error,
@@ -28,8 +30,7 @@ export const SignupForm: React.FC = () => {
             <form onSubmit={handleSubmit} className="space-y-6">
                 <div className="space-y-2">
                     <label className="block text-[10px] font-black text-slate-500 uppercase tracking-widest ml-1">
-                        Họ và Tên
-                    </label>
+                        {t('signupform.h_v_t_n')}</label>
                     <div className="relative group">
                         <User className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-600 group-focus-within:text-teal-500 transition-colors" />
                         <input
@@ -46,8 +47,7 @@ export const SignupForm: React.FC = () => {
 
                 <div className="space-y-2">
                     <label className="block text-[10px] font-black text-slate-500 uppercase tracking-widest ml-1">
-                        Email Business
-                    </label>
+                        {t('signupform.email_business')}</label>
                     <div className="relative group">
                         <Mail className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-600 group-focus-within:text-teal-500 transition-colors" />
                         <input
@@ -65,8 +65,7 @@ export const SignupForm: React.FC = () => {
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
                     <div className="space-y-2">
                         <label className="block text-[10px] font-black text-slate-500 uppercase tracking-widest ml-1">
-                            Mật khẩu
-                        </label>
+                            {t('signupform.m_t_kh_u')}</label>
                         <div className="relative group">
                             <Lock className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-600 group-focus-within:text-teal-500 transition-colors" />
                             <input
@@ -83,8 +82,7 @@ export const SignupForm: React.FC = () => {
 
                     <div className="space-y-2">
                         <label className="block text-[10px] font-black text-slate-500 uppercase tracking-widest ml-1">
-                            Xác nhận
-                        </label>
+                            {t('signupform.x_c_nh_n')}</label>
                         <div className="relative group">
                             <Lock className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-600 group-focus-within:text-teal-500 transition-colors" />
                             <input
@@ -109,12 +107,10 @@ export const SignupForm: React.FC = () => {
                         {loading ? (
                             <>
                                 <Loader2 className="w-5 h-5 animate-spin" />
-                                Processing Account...
-                            </>
+                                {t('signupform.processing_account')}</>
                         ) : (
                             <>
-                                Đăng Ký Ngay
-                                <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+                                {t('signupform.ng_k_ngay')}<ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
                             </>
                         )}
                     </button>

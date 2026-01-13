@@ -345,7 +345,7 @@ export default function HealthCheck() {
                     >
                       {healthScore}
                     </motion.p>
-                    <p className="text-white/80 text-xl font-semibold opacity-90">/100</p>
+                    <p className="text-white/80 text-xl font-semibold opacity-90">{t('healthcheck.100')}</p>
                   </div>
                 </motion.div>
               </motion.div>
@@ -381,8 +381,8 @@ export default function HealthCheck() {
                 <TrendingUp className="w-6 h-6 text-white" />
               </div>
               <div>
-                <h2 className="text-2xl font-bold text-white">Phân Tích Chi Tiết</h2>
-                <p className="text-sm text-white/60">Điểm số từng khía cạnh sức khỏe</p>
+                <h2 className="text-2xl font-bold text-white">{t('healthcheck.ph_n_t_ch_chi_ti_t')}</h2>
+                <p className="text-sm text-white/60">{t('healthcheck.i_m_s_t_ng_kh_a_c_nh_s_c_kh')}</p>
               </div>
             </div>
 
@@ -452,13 +452,14 @@ export default function HealthCheck() {
                 <h2 className="text-2xl font-bold text-white">
                   {t('healthCheck.recommendationsTitle')}
                 </h2>
-                <p className="text-sm text-white/60">Sản phẩm được AI đề xuất dành riêng cho bạn</p>
+                <p className="text-sm text-white/60">{t('healthcheck.s_n_ph_m_c_ai_xu_t_d_nh')}</p>
               </div>
             </div>
 
             {/* Bento Grid Layout */}
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
               {recommendations.map((product, index) => {
+                  const { t } = useTranslation();
                 const isLarge = index === 0 && recommendations.length > 2;
 
                 return (
@@ -479,8 +480,7 @@ export default function HealthCheck() {
                       <div className="absolute top-4 right-4 z-10">
                         <div className="bg-gradient-to-r from-red-500 to-pink-500 text-white px-4 py-2 rounded-full text-xs font-bold shadow-lg flex items-center gap-1">
                           <Zap className="w-4 h-4" />
-                          ƯU TIÊN
-                        </div>
+                          {t('healthcheck.u_ti_n')}</div>
                       </div>
                     )}
 
@@ -509,7 +509,7 @@ export default function HealthCheck() {
                           </div>
                         ))}
                         {!isLarge && product.benefits.length > 2 && (
-                          <p className="text-xs text-white/40 italic">+{product.benefits.length - 2} lợi ích khác...</p>
+                          <p className="text-xs text-white/40 italic">+{product.benefits.length - 2} {t('healthcheck.l_i_ch_kh_c')}</p>
                         )}
                       </div>
 

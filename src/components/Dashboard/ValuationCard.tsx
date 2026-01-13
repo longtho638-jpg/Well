@@ -56,14 +56,12 @@ export const ValuationCard: React.FC<ValuationCardProps> = ({ user }) => {
                                 <div className="px-6 py-2.5 bg-white/20 backdrop-blur-md rounded-2xl border border-white/30 flex items-center gap-3 shadow-xl">
                                     <TrendingUp className="w-5 h-5 text-white" />
                                     <span className="text-sm font-black text-white italic">
-                                        +{user.assetGrowthRate || 5}% MoM GROWTH
-                                    </span>
+                                        +{user.assetGrowthRate || 5}{t('valuationcard.mom_growth')}</span>
                                 </div>
                                 <p className="text-white/80 text-[10px] font-black uppercase tracking-widest leading-relaxed">
                                     {t('dashboard.valuation.formula')}
                                     <span className="block text-white/50 lowercase mt-0.5 italic">
-                                        ({formatVND(user.monthlyProfit || 0)} × 12 × 5 PE ratio)
-                                    </span>
+                                        ({formatVND(user.monthlyProfit || 0)} {t('valuationcard.12_5_pe_ratio')}</span>
                                 </p>
                             </div>
                         </div>

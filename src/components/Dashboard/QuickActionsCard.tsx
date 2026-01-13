@@ -112,7 +112,7 @@ export const QuickActionsCard: React.FC = () => {
         </div>
         <div>
           <h3 className="font-bold text-gray-900 dark:text-slate-100">{t('dashboard.quickActions.title')}</h3>
-          <p className="text-xs text-gray-500 dark:text-slate-400">Công cụ hỗ trợ kinh doanh</p>
+          <p className="text-xs text-gray-500 dark:text-slate-400">{t('quickactionscard.c_ng_c_h_tr_kinh_doanh')}</p>
         </div>
       </div>
 
@@ -170,8 +170,7 @@ export const QuickActionsCard: React.FC = () => {
         className="mt-4 pt-4 border-t border-gray-100 dark:border-slate-700"
       >
         <p className="text-xs text-gray-400 dark:text-slate-500 text-center">
-          💡 Tip: Sử dụng các công cụ này để tăng tương tác với khách hàng
-        </p>
+          {t('quickactionscard.tip_s_d_ng_c_c_c_ng_c_n')}</p>
       </motion.div>
     </motion.div>
   );

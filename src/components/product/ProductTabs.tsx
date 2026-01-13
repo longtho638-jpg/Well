@@ -8,6 +8,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { Zap, Leaf, Clock } from 'lucide-react';
 import { ProductDetailTab } from '@/hooks/useProductDetail';
 import { ProductDetails } from '@/data/productDetails';
+import { useTranslation } from '@/hooks';
 
 interface Props {
     activeTab: ProductDetailTab;
@@ -22,10 +23,12 @@ const TABS = [
 ];
 
 export const ProductTabs: React.FC<Props> = ({ activeTab, setActiveTab, details }) => {
+    const { t } = useTranslation();
     return (
         <div className="border-t border-white/5">
             <div className="flex border-b border-white/5">
                 {TABS.map((tab) => {
+                    const { t } = useTranslation();
                     const Icon = tab.icon;
                     const active = activeTab === tab.id;
                     return (
@@ -96,7 +99,7 @@ export const ProductTabs: React.FC<Props> = ({ activeTab, setActiveTab, details 
                                     </div>
                                 </div>
                                 <div className="space-y-6">
-                                    <h4 className="text-[10px] font-black text-zinc-500 uppercase tracking-[0.5em] italic">Standard Engagement Protocol</h4>
+                                    <h4 className="text-[10px] font-black text-zinc-500 uppercase tracking-[0.5em] italic">{t('producttabs.standard_engagement_protocol')}</h4>
                                     <p className="text-3xl text-white font-black leading-tight italic tracking-tighter drop-shadow-lg">
                                         "{details.usage}"
                                     </p>

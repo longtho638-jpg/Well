@@ -67,8 +67,8 @@ export const RevenueBreakdown: React.FC<RevenueBreakdownProps> = ({ data, totalS
                     </PieChart>
                 </ResponsiveContainer>
                 <div className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none">
-                    <span className="text-[10px] font-black text-zinc-500 uppercase tracking-widest">Total Yield</span>
-                    <span className="text-xl font-black text-white italic tracking-tighter">100%</span>
+                    <span className="text-[10px] font-black text-zinc-500 uppercase tracking-widest">{t('revenuebreakdown.total_yield')}</span>
+                    <span className="text-xl font-black text-white italic tracking-tighter">{t('revenuebreakdown.100')}</span>
                 </div>
             </div>
 

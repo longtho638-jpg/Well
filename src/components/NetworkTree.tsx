@@ -14,6 +14,7 @@ import { UserRank, RANK_NAMES } from '@/types';
 import { formatVND } from '@/utils/format';
 import { supabase } from '@/lib/supabase';
 import { useToast } from '@/components/ui/Toast';
+import { useTranslation } from '@/hooks';
 
 // ============================================================
 // TYPES
@@ -52,6 +53,7 @@ const AddMemberModal: React.FC<{
     onClose: () => void;
     onSuccess: () => void;
 }> = ({ sponsorId, sponsorName, onClose, onSuccess }) => {
+    const { t } = useTranslation();
     const { showToast } = useToast();
     const [loading, setLoading] = useState(false);
     const [formData, setFormData] = useState({
@@ -110,8 +112,8 @@ const AddMemberModal: React.FC<{
             >
                 <div className="p-6 border-b border-zinc-800 flex justify-between items-center">
                     <div>
-                        <h3 className="text-xl font-bold text-white">Nhập Cây (Add Member)</h3>
-                        <p className="text-sm text-zinc-400">Sponsor: <span className="text-emerald-400 font-medium">{sponsorName}</span></p>
+                        <h3 className="text-xl font-bold text-white">{t('networktree.nh_p_c_y_add_member')}</h3>
+                        <p className="text-sm text-zinc-400">{t('networktree.sponsor')}<span className="text-emerald-400 font-medium">{sponsorName}</span></p>
                     </div>
                     <button onClick={onClose} className="text-zinc-400 hover:text-white">
                         <X className="w-6 h-6" />
@@ -120,7 +122,7 @@ const AddMemberModal: React.FC<{
 
                 <form onSubmit={handleSubmit} className="p-6 space-y-4">
                     <div>
-                        <label className="block text-xs font-medium text-zinc-400 mb-1">Full Name</label>
+                        <label className="block text-xs font-medium text-zinc-400 mb-1">{t('networktree.full_name')}</label>
                         <input
                             type="text"
                             required
@@ -132,7 +134,7 @@ const AddMemberModal: React.FC<{
                     </div>
 
                     <div>
-                        <label className="block text-xs font-medium text-zinc-400 mb-1">Email</label>
+                        <label className="block text-xs font-medium text-zinc-400 mb-1">{t('networktree.email')}</label>
                         <input
                             type="email"
                             required
@@ -144,7 +146,7 @@ const AddMemberModal: React.FC<{
                     </div>
 
                     <div>
-                        <label className="block text-xs font-medium text-zinc-400 mb-1">Phone</label>
+                        <label className="block text-xs font-medium text-zinc-400 mb-1">{t('networktree.phone')}</label>
                         <input
                             type="tel"
                             value={formData.phone}
@@ -155,7 +157,7 @@ const AddMemberModal: React.FC<{
                     </div>
 
                     <div>
-                        <label className="block text-xs font-medium text-zinc-400 mb-1">Password</label>
+                        <label className="block text-xs font-medium text-zinc-400 mb-1">{t('networktree.password')}</label>
                         <input
                             type="password"
                             required
@@ -167,15 +169,15 @@ const AddMemberModal: React.FC<{
                     </div>
 
                     <div>
-                        <label className="block text-xs font-medium text-zinc-400 mb-1">Rank</label>
+                        <label className="block text-xs font-medium text-zinc-400 mb-1">{t('networktree.rank')}</label>
                         <select
                             value={formData.role_id}
                             onChange={(e) => setFormData({ ...formData, role_id: Number(e.target.value) })}
                             className="w-full bg-zinc-800 border border-zinc-700 rounded-lg px-4 py-2 text-white focus:outline-none focus:border-emerald-500"
                         >
-                            <option value={8}>Cộng Tác Viên (CTV)</option>
-                            <option value={7}>Khởi Nghiệp</option>
-                            <option value={6}>Đại Sứ</option>
+                            <option value={8}>{t('networktree.c_ng_t_c_vi_n_ctv')}</option>
+                            <option value={7}>{t('networktree.kh_i_nghi_p')}</option>
+                            <option value={6}>{t('networktree.i_s')}</option>
                         </select>
                     </div>
 
@@ -186,8 +188,7 @@ const AddMemberModal: React.FC<{
                             className="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-3 rounded-xl transition-all flex items-center justify-center gap-2"
                         >
                             {loading ? <Loader2 className="w-5 h-5 animate-spin" /> : <UserPlus className="w-5 h-5" />}
-                            Add Member
-                        </button>
+                            {t('networktree.add_member')}</button>
                     </div>
                 </form>
             </motion.div>
@@ -204,6 +205,7 @@ const TreeNodeComponent: React.FC<{
     level: number;
     onAddMember: (nodeId: string, nodeName: string) => void;
 }> = memo(({ node, level, onAddMember }) => {
+    const { t } = useTranslation();
     const [expanded, setExpanded] = useState(true);
     const hasChildren = node.children && node.children.length > 0;
 
@@ -249,11 +251,11 @@ const TreeNodeComponent: React.FC<{
 
                     <div className="mt-3 grid grid-cols-2 gap-2 text-xs">
                         <div className="bg-zinc-800/50 rounded-lg p-2">
-                            <p className="text-zinc-500">Sales</p>
+                            <p className="text-zinc-500">{t('networktree.sales')}</p>
                             <p className="text-white font-medium">{formatVND(node.sales)}</p>
                         </div>
                         <div className="bg-zinc-800/50 rounded-lg p-2">
-                            <p className="text-zinc-500">Team</p>
+                            <p className="text-zinc-500">{t('networktree.team')}</p>
                             <p className="text-white font-medium">{formatVND(node.teamVolume)}</p>
                         </div>
                     </div>
@@ -304,6 +306,7 @@ const TreeNodeComponent: React.FC<{
 // ============================================================
 
 const NetworkTree: React.FC = () => {
+    const { t } = useTranslation();
     // Optimization: Select only needed state
     const user = useStore(state => state.user);
     const fetchDownlineTree = useStore(state => state.fetchDownlineTree);
@@ -362,9 +365,8 @@ const NetworkTree: React.FC = () => {
                 <div>
                     <h2 className="text-2xl font-bold text-white flex items-center gap-2">
                         <Zap className="w-6 h-6 text-emerald-400" />
-                        Sơ Đồ Hệ Thống (Network Tree)
-                    </h2>
-                    <p className="text-zinc-400 text-sm">Visual representation of your downline hierarchy.</p>
+                        {t('networktree.s_h_th_ng_network_tree')}</h2>
+                    <p className="text-zinc-400 text-sm">{t('networktree.visual_representation_of_your')}</p>
                 </div>
                 <button
                     onClick={loadTree}
@@ -379,7 +381,7 @@ const NetworkTree: React.FC = () => {
                 {loading ? (
                     <div className="flex flex-col items-center justify-center h-64">
                         <Loader2 className="w-8 h-8 text-emerald-500 animate-spin mb-2" />
-                        <p className="text-zinc-500">Loading network data...</p>
+                        <p className="text-zinc-500">{t('networktree.loading_network_data')}</p>
                     </div>
                 ) : treeData ? (
                     <TreeNodeComponent
@@ -388,7 +390,7 @@ const NetworkTree: React.FC = () => {
                         onAddMember={handleAddMember}
                     />
                 ) : (
-                    <div className="text-center text-zinc-500">No data available</div>
+                    <div className="text-center text-zinc-500">{t('networktree.no_data_available')}</div>
                 )}
             </div>
 

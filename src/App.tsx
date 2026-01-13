@@ -39,8 +39,10 @@ import { ThemeProvider } from './context/ThemeContext';
 import { ToastProvider } from './components/ui/Toast';
 import { CursorGlow } from './components/CursorGlow';
 import { AnimatePresence, motion } from 'framer-motion';
+import { useTranslation } from '@/hooks';
 
 const App: React.FC = () => {
+    const { t } = useTranslation();
   const { isAuthenticated } = useStore();
   const location = useLocation();
 
@@ -100,7 +102,7 @@ const App: React.FC = () => {
               element={
                 <Suspense fallback={<div className="flex items-center justify-center h-96"><div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#00575A]"></div></div>}>
                   <div className="space-y-6">
-                    <h2 className="text-2xl md:text-3xl font-bold text-[#1F2937]">Commission Wallet</h2>
+                    <h2 className="text-2xl md:text-3xl font-bold text-[#1F2937]">{t('app.commission_wallet')}</h2>
                     <CommissionWallet />
                   </div>
                 </Suspense>

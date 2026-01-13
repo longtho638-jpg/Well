@@ -13,7 +13,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { Mail, Lock, ArrowRight, Loader2, AlertCircle, Eye, EyeOff, CheckCircle } from 'lucide-react';
 import { GridPattern } from '../components/ui/Aura';
 import { useLogin } from '../hooks/useLogin';
-import { useTranslation } from '../hooks';
+import { useTranslation } from '@/hooks';
 
 export default function Login() {
     const { t } = useTranslation();
@@ -90,7 +90,7 @@ export default function Login() {
                             animate={{ opacity: 1, height: 'auto' }}
                             className="bg-red-500/10 border border-red-500/20 rounded-2xl p-4 flex items-start gap-3 mb-6"
                         >
-                            <AlertCircle className="w-5 h-5 text-red-500 flex-shrink-0 mt-0.5" />
+                            <AlertCircle className="w-5 h-5 text-red-500 flex-shrink0 mt-0.5" />
                             <p className="text-sm text-red-200">{error}</p>
                         </motion.div>
                     )}
@@ -181,8 +181,7 @@ export default function Login() {
                                 disabled={loading || success}
                                 className="w-full bg-slate-900/40 hover:bg-slate-800/60 border border-teal-500/20 text-teal-400 font-semibold py-3.5 rounded-2xl flex items-center justify-center gap-2 transition-all disabled:opacity-50"
                             >
-                                🚀 Demo
-                            </button>
+                                {t('login.demo')}</button>
                         </div>
                     </form>
                 </div>

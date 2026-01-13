@@ -1,6 +1,7 @@
 import React from 'react';
 import { Target } from 'lucide-react';
 import { RankUpgrade } from '@/services/policyService';
+import { useTranslation } from '@/hooks';
 
 interface RankLadderSectionProps {
     rankUpgrades: RankUpgrade[];
@@ -8,20 +9,20 @@ interface RankLadderSectionProps {
 }
 
 export const RankLadderSection: React.FC<RankLadderSectionProps> = ({ rankUpgrades, updateRankUpgrade }) => {
+    const { t } = useTranslation();
     return (
         <div className="bg-zinc-900/50 border border-white/5 p-8 rounded-[2.5rem] shadow-2xl">
             <h3 className="text-xl font-black text-purple-400 mb-8 flex items-center gap-3 uppercase tracking-tighter italic">
-                <Target size={24} /> Rank Migration Ladder
-            </h3>
+                <Target size={24} /> {t('rankladdersection.rank_migration_ladder')}</h3>
 
             <div className="overflow-x-auto">
                 <table className="w-full text-left">
                     <thead>
                         <tr className="border-b border-white/5">
-                            <th className="pb-4 text-[10px] font-black uppercase tracking-widest text-zinc-500 italic">Target Rank</th>
-                            <th className="pb-4 text-[10px] font-black uppercase tracking-widest text-zinc-500 italic">Sales REQ (VND)</th>
-                            <th className="pb-4 text-[10px] font-black uppercase tracking-widest text-zinc-500 italic">Team Volume</th>
-                            <th className="pb-4 text-[10px] font-black uppercase tracking-widest text-zinc-500 italic">Downlines</th>
+                            <th className="pb-4 text-[10px] font-black uppercase tracking-widest text-zinc-500 italic">{t('rankladdersection.target_rank')}</th>
+                            <th className="pb-4 text-[10px] font-black uppercase tracking-widest text-zinc-500 italic">{t('rankladdersection.sales_req_vnd')}</th>
+                            <th className="pb-4 text-[10px] font-black uppercase tracking-widest text-zinc-500 italic">{t('rankladdersection.team_volume')}</th>
+                            <th className="pb-4 text-[10px] font-black uppercase tracking-widest text-zinc-500 italic">{t('rankladdersection.downlines')}</th>
                         </tr>
                     </thead>
                     <tbody className="divide-y divide-white/5 text-sm font-bold">

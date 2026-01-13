@@ -14,8 +14,10 @@ import { useOrders } from '@/hooks/useOrders';
 import { OrderStats } from '@/components/admin/orders/OrderStats';
 import { OrderTable } from '@/components/admin/orders/OrderTable';
 import { OrderImageModal } from '@/components/admin/orders/OrderImageModal';
+import { useTranslation } from '@/hooks';
 
 const OrderManagement: React.FC = () => {
+    const { t } = useTranslation();
     const {
         orders,
         loading,
@@ -41,9 +43,9 @@ const OrderManagement: React.FC = () => {
                         <div className="w-12 h-12 bg-amber-500 rounded-2xl flex items-center justify-center shadow-[0_0_20px_rgba(245,158,11,0.3)]">
                             <DollarSign className="text-zinc-950" size={28} />
                         </div>
-                        <h2 className="text-4xl font-black text-white tracking-tighter uppercase italic">Cashflow Hub</h2>
+                        <h2 className="text-4xl font-black text-white tracking-tighter uppercase italic">{t('ordermanagement.cashflow_hub')}</h2>
                     </div>
-                    <p className="text-zinc-500 font-medium text-lg">Verify transactions and <span className="text-emerald-400 font-bold uppercase italic">Activate Commissions</span></p>
+                    <p className="text-zinc-500 font-medium text-lg">{t('ordermanagement.verify_transactions_and')}<span className="text-emerald-400 font-bold uppercase italic">{t('ordermanagement.activate_commissions')}</span></p>
                 </div>
 
                 <div className="flex items-center gap-4">
@@ -70,7 +72,7 @@ const OrderManagement: React.FC = () => {
             {loading ? (
                 <div className="py-32 flex flex-col items-center justify-center bg-zinc-900/30 rounded-[3rem] border border-white/5">
                     <Loader2 className="w-12 h-12 text-amber-500 animate-spin mb-6" />
-                    <p className="text-zinc-500 font-black uppercase tracking-[0.3em] animate-pulse text-[10px]">Syncing Global Ledgers...</p>
+                    <p className="text-zinc-500 font-black uppercase tracking-[0.3em] animate-pulse text-[10px]">{t('ordermanagement.syncing_global_ledgers')}</p>
                 </div>
             ) : orders.length === 0 ? (
                 <motion.div
@@ -81,8 +83,8 @@ const OrderManagement: React.FC = () => {
                     <div className="w-20 h-20 bg-emerald-500/10 rounded-full flex items-center justify-center mx-auto mb-6 border border-emerald-500/20">
                         <CheckCircle className="text-emerald-500" size={32} />
                     </div>
-                    <h3 className="text-2xl font-black text-white uppercase tracking-tighter">Queue Synchronized</h3>
-                    <p className="text-zinc-500 font-medium mt-2">All pending orders have been processed. Systems optimal.</p>
+                    <h3 className="text-2xl font-black text-white uppercase tracking-tighter">{t('ordermanagement.queue_synchronized')}</h3>
+                    <p className="text-zinc-500 font-medium mt-2">{t('ordermanagement.all_pending_orders_have_been_p')}</p>
                 </motion.div>
             ) : (
                 <OrderTable
@@ -110,11 +112,9 @@ const OrderManagement: React.FC = () => {
                         <AlertTriangle className="text-amber-500" size={28} />
                     </div>
                     <div>
-                        <h4 className="text-xl font-black text-white mb-3 uppercase tracking-tighter italic">Operational Risk Protocol</h4>
+                        <h4 className="text-xl font-black text-white mb-3 uppercase tracking-tighter italic">{t('ordermanagement.operational_risk_protocol')}</h4>
                         <div className="text-zinc-500 leading-relaxed font-medium max-w-2xl">
-                            Strict Compliance Rule: <strong className="text-amber-500 uppercase italic">NEVER APPROVE</strong> without verified bank clearance.
-                            Evidence images are supplementary; only confirmed cash-in-hand triggers commission release. Integrity is non-negotiable.
-                        </div>
+                            {t('ordermanagement.strict_compliance_rule')}<strong className="text-amber-500 uppercase italic">{t('ordermanagement.never_approve')}</strong> {t('ordermanagement.without_verified_bank_clearanc')}</div>
                     </div>
                 </div>
             </motion.div>

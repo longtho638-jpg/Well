@@ -5,6 +5,7 @@
 
 import { motion } from 'framer-motion';
 import { Award, MapPin } from 'lucide-react';
+import { useTranslation } from '@/hooks';
 
 interface Company {
     founderName: string;
@@ -27,6 +28,7 @@ interface PortfolioSectionProps {
 }
 
 export function PortfolioSection({ content }: PortfolioSectionProps) {
+    const { t } = useTranslation();
     return (
         <section id="portfolio" className="relative py-32 bg-black/40">
             <div className="relative z-10 max-w-7xl mx-auto px-6 lg:px-12">
@@ -110,13 +112,13 @@ export function PortfolioSection({ content }: PortfolioSectionProps) {
                                     {/* Metrics */}
                                     <div className="flex items-center justify-between pt-4 border-t border-white/10">
                                         <div>
-                                            <div className="text-sm text-slate-500">Growth</div>
+                                            <div className="text-sm text-slate-500">{t('portfoliosection.growth')}</div>
                                             <div className="text-lg font-bold text-emerald-400">
                                                 {company.growth}
                                             </div>
                                         </div>
                                         <div className="text-right">
-                                            <div className="text-sm text-slate-500">ARR</div>
+                                            <div className="text-sm text-slate-500">{t('portfoliosection.arr')}</div>
                                             <div className="text-lg font-bold text-white">
                                                 {company.metric}
                                             </div>

@@ -18,6 +18,7 @@ interface Props {
 }
 
 const StatIcon: React.FC<{ icon: string; color: string }> = ({ icon, color }) => {
+    const { t } = useTranslation();
   const icons: Record<string, React.ElementType> = { TrendingUp, Users, CalendarClock };
   const Icon = icons[icon] || TrendingUp;
 
@@ -88,7 +89,7 @@ export const StatsGrid: React.FC<Props> = ({ user }) => {
         <div className="flex justify-between items-start mb-10 relative z-10">
           <StatIcon icon="CalendarClock" color="amber" />
           <div className="text-right space-y-1 bg-zinc-950/40 px-5 py-2.5 rounded-2xl border border-white/5">
-            <p className="text-[9px] font-black text-zinc-500 uppercase tracking-widest leading-none">Next Cycle</p>
+            <p className="text-[9px] font-black text-zinc-500 uppercase tracking-widest leading-none">{t('statsgrid.next_cycle')}</p>
             <p className="font-black text-amber-400 text-sm tracking-tighter uppercase italic">{nextPayoutDate}</p>
           </div>
         </div>
@@ -116,7 +117,7 @@ export const StatsGrid: React.FC<Props> = ({ user }) => {
                 <Info size={16} />
               </div>
               <p className="text-[10px] font-black text-zinc-500 uppercase tracking-[0.2em] leading-relaxed">
-                10% PIT <span className="text-zinc-600">Reserved Tier (&gt; 2M)</span>
+                {t('statsgrid.10_pit')}<span className="text-zinc-600">{t('statsgrid.reserved_tier_gt_2m')}</span>
               </p>
             </motion.div>
           )}

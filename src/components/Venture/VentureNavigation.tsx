@@ -1,5 +1,6 @@
 import React from 'react';
 import { motion } from 'framer-motion';
+import { useTranslation } from '@/hooks';
 
 interface VentureNavigationProps {
     logo: string;
@@ -8,6 +9,7 @@ interface VentureNavigationProps {
 }
 
 export const VentureNavigation: React.FC<VentureNavigationProps> = ({ logo, onScroll, onJoin }) => {
+    const { t } = useTranslation();
     return (
         <motion.nav
             initial={{ y: -100 }}
@@ -21,7 +23,7 @@ export const VentureNavigation: React.FC<VentureNavigationProps> = ({ logo, onSc
                     </div>
                     <div className="flex flex-col">
                         <span className="font-black text-xl text-white tracking-tighter uppercase italic">{logo}</span>
-                        <span className="text-[8px] font-black text-zinc-500 uppercase tracking-widest italic">Venture Builder</span>
+                        <span className="text-[8px] font-black text-zinc-500 uppercase tracking-widest italic">{t('venturenavigation.venture_builder')}</span>
                     </div>
                 </div>
 
@@ -46,8 +48,7 @@ export const VentureNavigation: React.FC<VentureNavigationProps> = ({ logo, onSc
                     className="bg-white text-zinc-950 px-8 py-3.5 rounded-2xl font-black text-[10px] uppercase tracking-widest italic shadow-2xl transition-all hover:scale-105 active:scale-95"
                     whileTap={{ scale: 0.95 }}
                 >
-                    Apply Recruitment
-                </motion.button>
+                    {t('venturenavigation.apply_recruitment')}</motion.button>
             </div>
         </motion.nav>
     );

@@ -199,8 +199,7 @@ export default function LeaderDashboard() {
             }`}
         >
           <Users className="w-5 h-5" />
-          Quản Lý Đội Nhóm
-        </button>
+          {t('leaderdashboard.qu_n_l_i_nh_m')}</button>
         <button
           onClick={() => setActiveTab('insights')}
           className={`flex-1 px-6 py-3.5 rounded-xl font-bold text-sm transition-all duration-300 flex items-center justify-center gap-2 ${activeTab === 'insights'
@@ -209,8 +208,7 @@ export default function LeaderDashboard() {
             }`}
         >
           <Brain className="w-5 h-5" />
-          AI Insights
-          {teamInsights.highRiskCount > 0 && (
+          {t('leaderdashboard.ai_insights')}{teamInsights.highRiskCount > 0 && (
             <span className="bg-white text-red-600 text-xs px-2 py-0.5 rounded-full font-bold">
               {teamInsights.highRiskCount}
             </span>
@@ -224,8 +222,7 @@ export default function LeaderDashboard() {
             }`}
         >
           <Zap className="w-5 h-5" />
-          Sơ Đồ Hệ Thống
-        </button>
+          {t('leaderdashboard.s_h_th_ng')}</button>
       </motion.div>
 
       {activeTab === 'team' && (
@@ -248,9 +245,8 @@ export default function LeaderDashboard() {
                     <div className="p-2 bg-yellow-500/20 rounded-xl">
                       <Award className="w-6 h-6 text-yellow-400" />
                     </div>
-                    Top 3 Tướng Tài
-                  </h2>
-                  <p className="text-zinc-400 text-sm mt-1">Doanh số cao nhất tháng này</p>
+                    {t('leaderdashboard.top_3_t_ng_t_i')}</h2>
+                  <p className="text-zinc-400 text-sm mt-1">{t('leaderdashboard.doanh_s_cao_nh_t_th_ng_n_y')}</p>
                 </div>
               </div>
 
@@ -278,7 +274,7 @@ export default function LeaderDashboard() {
                     <h3 className="text-white font-bold text-lg mb-1">{top3Performers[1].name}</h3>
                     <p className="text-zinc-400 text-sm mb-2">{top3Performers[1].rank}</p>
                     <div className="bg-zinc-100 dark:bg-zinc-800/50 backdrop-blur-sm rounded-xl p-3 border border-zinc-300 dark:border-zinc-700">
-                      <p className="text-zinc-400 text-xs mb-1">Doanh số</p>
+                      <p className="text-zinc-400 text-xs mb-1">{t('leaderdashboard.doanh_s')}</p>
                       <p className="text-white font-bold">{formatVND(top3Performers[1].personalSales)}</p>
                     </div>
                   </motion.div>
@@ -312,7 +308,7 @@ export default function LeaderDashboard() {
                       {top3Performers[0].rank}
                     </p>
                     <div className="bg-yellow-500/10 backdrop-blur-sm rounded-xl p-4 border border-yellow-500/20">
-                      <p className="text-yellow-200 text-xs mb-1">Doanh số</p>
+                      <p className="text-yellow-200 text-xs mb-1">{t('leaderdashboard.doanh_s_1')}</p>
                       <p className="text-white font-bold text-lg">{formatVND(top3Performers[0].personalSales)}</p>
                     </div>
                   </motion.div>
@@ -340,7 +336,7 @@ export default function LeaderDashboard() {
                     <h3 className="text-white font-bold text-lg mb-1">{top3Performers[2].name}</h3>
                     <p className="text-zinc-400 text-sm mb-2">{top3Performers[2].rank}</p>
                     <div className="bg-zinc-100 dark:bg-zinc-800/50 backdrop-blur-sm rounded-xl p-3 border border-zinc-300 dark:border-zinc-700">
-                      <p className="text-zinc-400 text-xs mb-1">Doanh số</p>
+                      <p className="text-zinc-400 text-xs mb-1">{t('leaderdashboard.doanh_s_2')}</p>
                       <p className="text-white font-bold">{formatVND(top3Performers[2].personalSales)}</p>
                     </div>
                   </motion.div>
@@ -437,8 +433,7 @@ export default function LeaderDashboard() {
               <div className="relative bg-zinc-900/50 backdrop-blur-xl rounded-2xl p-6 border border-zinc-800">
                 <h3 className="font-bold text-white text-lg mb-4 flex items-center gap-2">
                   <Activity className="w-5 h-5 text-cyan-400" />
-                  Network Health
-                </h3>
+                  {t('leaderdashboard.network_health')}</h3>
                 <ResponsiveContainer width="100%" height={250}>
                   <PieChart>
                     <Pie
@@ -560,8 +555,8 @@ export default function LeaderDashboard() {
                       className="px-4 py-2.5 bg-zinc-100 dark:bg-zinc-800/50 border border-zinc-300 dark:border-zinc-700 rounded-xl text-sm text-white focus:outline-none focus:ring-2 focus:ring-emerald-500/50 backdrop-blur-sm"
                     >
                       <option value="all" className="bg-zinc-900">{t('team.filters.allRanks')}</option>
-                      <option value="Partner" className="bg-zinc-900">Partner</option>
-                      <option value="Member" className="bg-zinc-900">Member</option>
+                      <option value="Partner" className="bg-zinc-900">{t('leaderdashboard.partner')}</option>
+                      <option value="Member" className="bg-zinc-900">{t('leaderdashboard.member')}</option>
                     </select>
 
                     {/* Sort */}
@@ -681,7 +676,7 @@ export default function LeaderDashboard() {
               <div className="relative bg-gradient-to-br from-red-500 to-red-600 rounded-2xl p-6 text-white">
                 <AlertTriangle className="w-8 h-8 mb-3 opacity-80" />
                 <h3 className="text-4xl font-bold mb-1">{teamInsights.highRiskCount}</h3>
-                <p className="text-sm text-red-100">Thành viên rủi ro cao</p>
+                <p className="text-sm text-red-100">{t('leaderdashboard.th_nh_vi_n_r_i_ro_cao')}</p>
               </div>
             </motion.div>
 
@@ -695,7 +690,7 @@ export default function LeaderDashboard() {
               <div className="relative bg-gradient-to-br from-yellow-500 to-yellow-600 rounded-2xl p-6 text-white">
                 <AlertCircle className="w-8 h-8 mb-3 opacity-80" />
                 <h3 className="text-4xl font-bold mb-1">{teamInsights.mediumRiskCount}</h3>
-                <p className="text-sm text-yellow-100">Thành viên rủi ro trung bình</p>
+                <p className="text-sm text-yellow-100">{t('leaderdashboard.th_nh_vi_n_r_i_ro_trung_b_nh')}</p>
               </div>
             </motion.div>
 
@@ -709,7 +704,7 @@ export default function LeaderDashboard() {
               <div className="relative bg-gradient-to-br from-green-500 to-green-600 rounded-2xl p-6 text-white">
                 <CheckCircle2 className="w-8 h-8 mb-3 opacity-80" />
                 <h3 className="text-4xl font-bold mb-1">{teamInsights.retentionRate.toFixed(1)}%</h3>
-                <p className="text-sm text-green-100">Tỷ lệ giữ chân</p>
+                <p className="text-sm text-green-100">{t('leaderdashboard.t_l_gi_ch_n')}</p>
               </div>
             </motion.div>
 
@@ -723,7 +718,7 @@ export default function LeaderDashboard() {
               <div className="relative bg-gradient-to-br from-blue-500 to-blue-600 rounded-2xl p-6 text-white">
                 <Brain className="w-8 h-8 mb-3 opacity-80" />
                 <h3 className="text-4xl font-bold mb-1">{teamInsights.totalAtRisk}</h3>
-                <p className="text-sm text-blue-100">Cần chú ý</p>
+                <p className="text-sm text-blue-100">{t('leaderdashboard.c_n_ch')}</p>
               </div>
             </motion.div>
           </div>
@@ -740,11 +735,10 @@ export default function LeaderDashboard() {
               <div className="bg-gradient-to-r from-orange-500/20 to-red-500/20 border-b border-white/10 p-6">
                 <h3 className="font-bold text-zinc-900 dark:text-white flex items-center gap-2 text-xl">
                   <AlertTriangle className="w-6 h-6 text-orange-400" />
-                  Thành Viên Cần Chú Ý ({teamInsights.atRiskMembers.length})
+                  {t('leaderdashboard.th_nh_vi_n_c_n_ch')}{teamInsights.atRiskMembers.length})
                 </h3>
                 <p className="text-sm text-zinc-500 dark:text-gray-300 mt-1">
-                  AI phát hiện những thành viên cần hỗ trợ và động viên
-                </p>
+                  {t('leaderdashboard.ai_ph_t_hi_n_nh_ng_th_nh_vi_n')}</p>
               </div>
 
               <div className="p-6 space-y-4">
@@ -784,8 +778,7 @@ export default function LeaderDashboard() {
                         <div className="bg-orange-500/10 border border-orange-500/20 rounded-xl p-3 mb-3">
                           <p className="text-xs font-bold text-orange-300 mb-2 flex items-center gap-1">
                             <AlertTriangle className="w-3 h-3" />
-                            Lý do cần chú ý:
-                          </p>
+                            {t('leaderdashboard.l_do_c_n_ch')}</p>
                           <ul className="text-xs text-orange-200 space-y-1">
                             {atRiskMember.riskReasons.map((reason, idx) => (
                               <li key={idx} className="flex items-center gap-2">
@@ -800,8 +793,7 @@ export default function LeaderDashboard() {
                         <div className="bg-blue-500/10 border border-blue-500/20 rounded-xl p-3 mb-3">
                           <p className="text-xs font-bold text-blue-300 mb-2 flex items-center gap-1">
                             <Brain className="w-3 h-3" />
-                            AI đề xuất:
-                          </p>
+                            {t('leaderdashboard.ai_xu_t')}</p>
                           <ul className="text-xs text-blue-200 space-y-1">
                             {atRiskMember.suggestedActions.map((action, idx) => (
                               <li key={idx} className="flex items-center gap-2">
@@ -824,8 +816,7 @@ export default function LeaderDashboard() {
                             ) : (
                               <Mail className="w-4 h-4" />
                             )}
-                            Gửi nhắc nhở
-                          </button>
+                            {t('leaderdashboard.g_i_nh_c_nh')}</button>
                           <button
                             onClick={() => handleSendGift(atRiskMember.member.id)}
                             disabled={actionLoading === `gift-${atRiskMember.member.id}`}
@@ -836,8 +827,7 @@ export default function LeaderDashboard() {
                             ) : (
                               <GiftIcon className="w-4 h-4" />
                             )}
-                            Tặng quà khích lệ
-                          </button>
+                            {t('leaderdashboard.t_ng_qu_kh_ch_l')}</button>
                         </div>
                       </div>
                     </div>
@@ -851,7 +841,7 @@ export default function LeaderDashboard() {
             value={filterRank}
             onChange={(e) => setFilterRank(e.target.value === 'all' ? 'all' : Number(e.target.value) as UserRank)}
           >
-            <option value="all">All Ranks</option>
+            <option value="all">{t('leaderdashboard.all_ranks')}</option>
             <option value={UserRank.THIEN_LONG}>{RANK_NAMES[UserRank.THIEN_LONG]}</option>
             <option value={UserRank.PHUONG_HOANG}>{RANK_NAMES[UserRank.PHUONG_HOANG]}</option>
             <option value={UserRank.DAI_SU}>{RANK_NAMES[UserRank.DAI_SU]}</option>

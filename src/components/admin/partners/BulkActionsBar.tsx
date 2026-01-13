@@ -2,6 +2,7 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import { Check, Lock, X } from 'lucide-react';
 import { Button } from '@/components/ui/Button';
+import { useTranslation } from '@/hooks';
 
 interface BulkActionsBarProps {
     selectedCount: number;
@@ -16,6 +17,7 @@ export const BulkActionsBar: React.FC<BulkActionsBarProps> = ({
     onAction,
     onClear
 }) => {
+    const { t } = useTranslation();
     if (selectedCount === 0) return null;
 
     return (
@@ -27,8 +29,7 @@ export const BulkActionsBar: React.FC<BulkActionsBarProps> = ({
         >
             <div className="flex items-center gap-3">
                 <span className="text-sm font-semibold text-[#00575A]">
-                    {selectedCount} partner{selectedCount > 1 ? 's' : ''} selected
-                </span>
+                    {selectedCount} {t('bulkactionsbar.partner')}{selectedCount > 1 ? 's' : ''} {t('bulkactionsbar.selected')}</span>
             </div>
             <div className="flex items-center gap-2">
                 <Button
@@ -38,8 +39,7 @@ export const BulkActionsBar: React.FC<BulkActionsBarProps> = ({
                     disabled={loading}
                     icon={<Check className="w-4 h-4" />}
                 >
-                    Activate
-                </Button>
+                    {t('bulkactionsbar.activate')}</Button>
                 <Button
                     variant="danger"
                     size="sm"
@@ -47,16 +47,14 @@ export const BulkActionsBar: React.FC<BulkActionsBarProps> = ({
                     disabled={loading}
                     icon={<Lock className="w-4 h-4" />}
                 >
-                    Ban
-                </Button>
+                    {t('bulkactionsbar.ban')}</Button>
                 <Button
                     variant="outline"
                     size="sm"
                     onClick={() => onAction('export')}
                     disabled={loading}
                 >
-                    Export CSV
-                </Button>
+                    {t('bulkactionsbar.export_csv')}</Button>
                 <Button
                     variant="outline"
                     size="sm"

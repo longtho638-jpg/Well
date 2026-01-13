@@ -2,6 +2,7 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import { Share2, TrendingUp } from 'lucide-react';
 import { formatVND } from '@/utils/format';
+import { useTranslation } from '@/hooks';
 
 interface ReferralHeroProps {
     title: string;
@@ -17,7 +18,10 @@ export const ReferralHero: React.FC<ReferralHeroProps> = ({
     description,
     totalBonus,
     monthlyReferrals
-}) => (
+}) => {
+    const { t } = useTranslation();
+    
+    return (
     <motion.div
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
@@ -51,16 +55,17 @@ export const ReferralHero: React.FC<ReferralHeroProps> = ({
                     animate={{ scale: 1, opacity: 1 }}
                     className="bg-zinc-950/50 backdrop-blur-3xl rounded-[2.5rem] p-10 border border-white/10 shadow-2xl min-w-[320px] text-center"
                 >
-                    <p className="text-zinc-500 text-[10px] font-black uppercase tracking-[0.3em] mb-4 italic">Accumulated Revenue</p>
+                    <p className="text-zinc-500 text-[10px] font-black uppercase tracking-[0.3em] mb-4 italic">{t('referralhero.accumulated_revenue')}</p>
                     <p className="text-5xl font-black text-white italic tracking-tighter mb-4">
                         {formatVND(totalBonus)}
                     </p>
                     <div className="inline-flex items-center gap-3 bg-teal-500/10 border border-teal-500/20 px-4 py-2 rounded-full">
                         <TrendingUp className="w-4 h-4 text-teal-400" />
-                        <span className="text-[10px] font-black text-teal-400 uppercase tracking-widest">+{monthlyReferrals} This Month</span>
+                        <span className="text-[10px] font-black text-teal-400 uppercase tracking-widest">+{monthlyReferrals} {t('referralhero.this_month')}</span>
                     </div>
                 </motion.div>
             </div>
         </div>
     </motion.div>
 );
+};

@@ -25,8 +25,10 @@ import { useToast } from '@/components/ui/Toast';
 // Modular Components
 import { StatBoard } from '@/components/admin/finance/StatBoard';
 import { TransactionCard } from '@/components/admin/finance/TransactionCard';
+import { useTranslation } from '@/hooks';
 
 const Finance: React.FC = () => {
+    const { t } = useTranslation();
   const {
     activeTab,
     setActiveTab,
@@ -80,9 +82,9 @@ const Finance: React.FC = () => {
             <div className="w-12 h-12 bg-[#00575A] rounded-2xl flex items-center justify-center shadow-[0_0_20px_rgba(0,87,90,0.3)]">
               <ShieldCheck className="text-emerald-400" size={28} />
             </div>
-            <h2 className="text-4xl font-black text-white tracking-tighter uppercase italic">Treasury Control</h2>
+            <h2 className="text-4xl font-black text-white tracking-tighter uppercase italic">{t('finance.treasury_control')}</h2>
           </div>
-          <p className="text-zinc-500 font-medium text-lg">Platform liquidity verification and <span className="text-teal-400 font-bold uppercase italic">Automated Fraud Detection</span></p>
+          <p className="text-zinc-500 font-medium text-lg">{t('finance.platform_liquidity_verificatio')}<span className="text-teal-400 font-bold uppercase italic">{t('finance.automated_fraud_detection')}</span></p>
         </div>
 
         <div className="flex items-center gap-4">
@@ -102,8 +104,7 @@ const Finance: React.FC = () => {
             className="flex items-center gap-3 bg-zinc-900 text-zinc-300 px-6 py-4 rounded-2xl font-black text-[10px] uppercase tracking-widest italic border border-white/5 hover:border-teal-500/30 transition-all shadow-xl"
           >
             <Download size={18} />
-            Export Ledger
-          </motion.button>
+            {t('finance.export_ledger')}</motion.button>
         </div>
       </motion.div>
 
@@ -146,9 +147,9 @@ const Finance: React.FC = () => {
                 onChange={(e) => setFilterRisk(e.target.value as 'all' | 'safe' | 'risky')}
                 className="bg-transparent text-[10px] font-black uppercase tracking-[0.2em] focus:outline-none text-zinc-400 italic cursor-pointer"
               >
-                <option value="all">Analyze All</option>
-                <option value="safe">Security Passed</option>
-                <option value="risky">Quarantined Items</option>
+                <option value="all">{t('finance.analyze_all')}</option>
+                <option value="safe">{t('finance.security_passed')}</option>
+                <option value="risky">{t('finance.quarantined_items')}</option>
               </select>
             </div>
 
@@ -164,7 +165,7 @@ const Finance: React.FC = () => {
                   className="px-8 py-4 bg-emerald-500 text-zinc-950 text-[10px] font-black uppercase tracking-[0.2em] rounded-2xl flex items-center gap-3 shadow-2xl shadow-emerald-500/20 italic"
                 >
                   <ShieldCheck className="w-4 h-4" />
-                  Security Batch Commit ({safeTransactions.length})
+                  {t('finance.security_batch_commit')}{safeTransactions.length})
                 </motion.button>
               )}
             </AnimatePresence>
@@ -176,7 +177,7 @@ const Finance: React.FC = () => {
       {loading ? (
         <div className="py-32 flex flex-col items-center justify-center bg-zinc-900/30 rounded-[3rem] border border-white/5">
           <Loader2 className="w-12 h-12 text-[#00575A] animate-spin mb-6" />
-          <p className="text-zinc-500 font-black uppercase tracking-[0.3em] animate-pulse text-[10px]">Verifying Digital Ledgers...</p>
+          <p className="text-zinc-500 font-black uppercase tracking-[0.3em] animate-pulse text-[10px]">{t('finance.verifying_digital_ledgers')}</p>
         </div>
       ) : (
         <div className="space-y-6">
@@ -198,8 +199,8 @@ const Finance: React.FC = () => {
                 className="py-32 text-center bg-zinc-900/30 rounded-[3rem] border-2 border-dashed border-zinc-800/50 backdrop-blur-sm"
               >
                 <Wallet className="w-16 h-16 text-zinc-800 mx-auto mb-6 opacity-20" />
-                <h3 className="text-2xl font-black text-white uppercase tracking-tighter italic">Ledger Synchronized</h3>
-                <p className="text-zinc-500 font-medium mt-2">No items in the current filter require manual intervention.</p>
+                <h3 className="text-2xl font-black text-white uppercase tracking-tighter italic">{t('finance.ledger_synchronized')}</h3>
+                <p className="text-zinc-500 font-medium mt-2">{t('finance.no_items_in_the_current_filter')}</p>
               </motion.div>
             )}
           </AnimatePresence>

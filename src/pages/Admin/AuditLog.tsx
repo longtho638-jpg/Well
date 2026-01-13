@@ -29,6 +29,7 @@ import {
 
 // Hooks & Types
 import { useAuditLog, AuditActionType, AuditLogEntry } from '@/hooks/useAuditLog';
+import { useTranslation } from '@/hooks';
 
 // ============================================================
 // CONFIGURATION
@@ -55,6 +56,7 @@ const ACTION_CONFIG: Record<AuditActionType, { icon: React.ElementType; color: s
 // ============================================================
 
 const ActionBadge: React.FC<{ action: AuditActionType }> = ({ action }) => {
+    const { t } = useTranslation();
     const config = ACTION_CONFIG[action];
     const Icon = config.icon;
 
@@ -71,6 +73,7 @@ const ActionBadge: React.FC<{ action: AuditActionType }> = ({ action }) => {
 // ============================================================
 
 export function AuditLog() {
+    const { t } = useTranslation();
     const {
         loading,
         searchQuery,
@@ -119,9 +122,8 @@ export function AuditLog() {
                 <div className="space-y-2">
                     <h2 className="text-4xl font-black text-zinc-900 dark:text-white tracking-tighter uppercase italic flex items-center gap-3">
                         <Shield className="text-[#00575A] w-10 h-10" />
-                        Audit Trail
-                    </h2>
-                    <p className="text-zinc-500 font-medium text-lg">Immutable ledger of administrative operations & security events.</p>
+                        {t('auditlog.audit_trail')}</h2>
+                    <p className="text-zinc-500 font-medium text-lg">{t('auditlog.immutable_ledger_of_administra')}</p>
                 </div>
                 <div className="flex items-center gap-3">
                     <button onClick={refresh} className="p-4 bg-white dark:bg-zinc-900 border border-zinc-100 dark:border-white/5 rounded-2xl shadow-sm text-zinc-500">
@@ -132,8 +134,7 @@ export function AuditLog() {
                         className="flex items-center gap-3 bg-zinc-900 dark:bg-white text-white dark:text-zinc-900 px-8 py-4 rounded-2xl font-black uppercase tracking-widest hover:bg-zinc-800 transition-all shadow-xl"
                     >
                         <Download size={20} />
-                        Export Dataset
-                    </button>
+                        {t('auditlog.export_dataset')}</button>
                 </div>
             </div>
 
@@ -175,7 +176,7 @@ export function AuditLog() {
                             onChange={(e) => setActionFilter(e.target.value)}
                             className="bg-zinc-100 dark:bg-zinc-800 px-6 py-4 rounded-2xl text-[10px] font-black uppercase tracking-widest outline-none border-none focus:ring-4 focus:ring-[#00575A]/10 appearance-none min-w-[180px]"
                         >
-                            <option value="all">Analyze All Actions</option>
+                            <option value="all">{t('auditlog.analyze_all_actions')}</option>
                             {Object.entries(ACTION_CONFIG).map(([k, v]) => (
                                 <option key={k} value={k}>{v.label}</option>
                             ))}
@@ -186,7 +187,7 @@ export function AuditLog() {
                             onChange={(e) => setAdminFilter(e.target.value)}
                             className="bg-zinc-100 dark:bg-zinc-800 px-6 py-4 rounded-2xl text-[10px] font-black uppercase tracking-widest outline-none border-none focus:ring-4 focus:ring-[#00575A]/10 appearance-none min-w-[180px]"
                         >
-                            <option value="all">All Administrators</option>
+                            <option value="all">{t('auditlog.all_administrators')}</option>
                             {uniqueAdmins.map(email => (
                                 <option key={email} value={email}>{email}</option>
                             ))}
@@ -200,11 +201,11 @@ export function AuditLog() {
                 <table className="w-full text-left border-collapse">
                     <thead>
                         <tr className="bg-zinc-50/50 dark:bg-zinc-800/30 border-b border-zinc-100 dark:border-white/5">
-                            <th className="px-8 py-6 text-[10px] font-black uppercase tracking-[0.2em] text-zinc-500">Timeline</th>
-                            <th className="px-8 py-6 text-[10px] font-black uppercase tracking-[0.2em] text-zinc-500">Operator</th>
-                            <th className="px-8 py-6 text-[10px] font-black uppercase tracking-[0.2em] text-zinc-500">Classification</th>
-                            <th className="px-8 py-6 text-[10px] font-black uppercase tracking-[0.2em] text-zinc-500">Resource node</th>
-                            <th className="px-8 py-6 text-[10px] font-black uppercase tracking-[0.2em] text-zinc-500 text-right">Tracing</th>
+                            <th className="px-8 py-6 text-[10px] font-black uppercase tracking-[0.2em] text-zinc-500">{t('auditlog.timeline')}</th>
+                            <th className="px-8 py-6 text-[10px] font-black uppercase tracking-[0.2em] text-zinc-500">{t('auditlog.operator')}</th>
+                            <th className="px-8 py-6 text-[10px] font-black uppercase tracking-[0.2em] text-zinc-500">{t('auditlog.classification')}</th>
+                            <th className="px-8 py-6 text-[10px] font-black uppercase tracking-[0.2em] text-zinc-500">{t('auditlog.resource_node')}</th>
+                            <th className="px-8 py-6 text-[10px] font-black uppercase tracking-[0.2em] text-zinc-500 text-right">{t('auditlog.tracing')}</th>
                         </tr>
                     </thead>
                     <tbody className="divide-y divide-zinc-100 dark:divide-white/5 font-bold">
@@ -251,7 +252,7 @@ export function AuditLog() {
                 {filteredLogs.length === 0 && (
                     <div className="py-24 text-center">
                         <ShieldAlert className="w-12 h-12 text-zinc-200 dark:text-zinc-800 mx-auto mb-4" />
-                        <p className="text-zinc-400 font-black uppercase tracking-widest text-[10px]">No telemetry signals detected</p>
+                        <p className="text-zinc-400 font-black uppercase tracking-widest text-[10px]">{t('auditlog.no_telemetry_signals_detected')}</p>
                     </div>
                 )}
             </div>
@@ -279,8 +280,8 @@ export function AuditLog() {
 
                             <div className="flex justify-between items-start mb-10 relative z-10">
                                 <div>
-                                    <h3 className="text-3xl font-black text-white tracking-tighter italic uppercase">Event Inspection</h3>
-                                    <p className="text-zinc-500 font-medium mt-1">Detailed forensics for trace {selectedLog.id}</p>
+                                    <h3 className="text-3xl font-black text-white tracking-tighter italic uppercase">{t('auditlog.event_inspection')}</h3>
+                                    <p className="text-zinc-500 font-medium mt-1">{t('auditlog.detailed_forensics_for_trace')}{selectedLog.id}</p>
                                 </div>
                                 <button onClick={() => setSelectedLog(null)} className="p-4 bg-white/5 rounded-2xl text-zinc-400 hover:text-white transition-all">
                                     <X size={24} />
@@ -289,23 +290,23 @@ export function AuditLog() {
 
                             <div className="grid grid-cols-2 gap-8 relative z-10 mb-10">
                                 <div className="space-y-4 bg-white/5 p-6 rounded-3xl border border-white/5">
-                                    <p className="text-[10px] font-black text-zinc-500 uppercase tracking-widest">Temporal Signature</p>
+                                    <p className="text-[10px] font-black text-zinc-500 uppercase tracking-widest">{t('auditlog.temporal_signature')}</p>
                                     <div className="space-y-1">
                                         <p className="text-sm text-zinc-100 font-bold">{new Date(selectedLog.timestamp).toLocaleString('vi-VN')}</p>
-                                        <p className="text-xs text-zinc-500 uppercase tracking-tighter">UTC Synchronization Active</p>
+                                        <p className="text-xs text-zinc-500 uppercase tracking-tighter">{t('auditlog.utc_synchronization_active')}</p>
                                     </div>
                                 </div>
                                 <div className="space-y-4 bg-white/5 p-6 rounded-3xl border border-white/5">
-                                    <p className="text-[10px] font-black text-zinc-500 uppercase tracking-widest">Network Origin</p>
+                                    <p className="text-[10px] font-black text-zinc-500 uppercase tracking-widest">{t('auditlog.network_origin')}</p>
                                     <div className="space-y-1" title={selectedLog.userAgent}>
                                         <p className="text-sm text-zinc-100 font-mono font-bold">{selectedLog.ipAddress}</p>
-                                        <p className="text-xs text-zinc-500 uppercase tracking-tighter truncate max-w-[180px]">Browser/API Gateway Node</p>
+                                        <p className="text-xs text-zinc-500 uppercase tracking-tighter truncate max-w-[180px]">{t('auditlog.browser_api_gateway_node')}</p>
                                     </div>
                                 </div>
                             </div>
 
                             <div className="space-y-4 relative z-10 mb-10">
-                                <p className="text-[10px] font-black text-zinc-500 uppercase tracking-widest px-1">Payload Metadata</p>
+                                <p className="text-[10px] font-black text-zinc-500 uppercase tracking-widest px-1">{t('auditlog.payload_metadata')}</p>
                                 <pre className="bg-zinc-950/80 rounded-[2rem] p-8 border border-white/5 text-emerald-500 font-mono text-xs overflow-x-auto shadow-inner">
                                     {JSON.stringify(selectedLog.details, null, 4)}
                                 </pre>
@@ -315,8 +316,7 @@ export function AuditLog() {
                                 onClick={() => setSelectedLog(null)}
                                 className="w-full bg-[#00575A] text-white py-5 rounded-[1.5rem] font-black uppercase tracking-widest shadow-xl shadow-teal-500/10 hover:bg-[#004447] transition-all"
                             >
-                                Close Inspection
-                            </button>
+                                {t('auditlog.close_inspection')}</button>
                         </motion.div>
                     </motion.div>
                 )}

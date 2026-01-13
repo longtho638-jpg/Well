@@ -2,6 +2,7 @@ import React from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { X, Shield, Target, BookOpen, Activity } from 'lucide-react';
 import { useAgentOS } from '@/hooks/useAgentOS';
+import { useTranslation } from '@/hooks';
 
 interface AgentDetailsModalProps {
     agentName: string;
@@ -10,6 +11,7 @@ interface AgentDetailsModalProps {
 }
 
 export const AgentDetailsModal: React.FC<AgentDetailsModalProps> = ({ agentName, onClose, getKPIs }) => {
+    const { t } = useTranslation();
     const { getAgent } = useAgentOS();
     const agent = getAgent(agentName);
     const kpis = getKPIs(agentName);
@@ -40,7 +42,7 @@ export const AgentDetailsModal: React.FC<AgentDetailsModalProps> = ({ agentName,
                 <div className="mb-12">
                     <div className="flex items-center gap-4 mb-4">
                         <Activity className="text-teal-500 w-5 h-5 animate-pulse" />
-                        <span className="text-[10px] font-black text-teal-400 uppercase tracking-[0.4em] italic">Intelligence Node Context</span>
+                        <span className="text-[10px] font-black text-teal-400 uppercase tracking-[0.4em] italic">{t('agentdetailsmodal.intelligence_node_context')}</span>
                     </div>
                     <h2 className="text-5xl font-black text-white italic tracking-tighter uppercase">{def.agent_name}</h2>
                     <p className="text-zinc-500 font-bold uppercase tracking-widest text-xs mt-2 border-l-2 border-teal-500 pl-4">
@@ -66,8 +68,7 @@ export const AgentDetailsModal: React.FC<AgentDetailsModalProps> = ({ agentName,
                                 {def.policy_and_constraints.map((policy, i) => (
                                     <div key={i} className={`p-5 rounded-2xl border ${policy.enforcement === 'hard' ? 'bg-rose-500/5 border-rose-500/10' : 'bg-amber-500/5 border-amber-500/10'}`}>
                                         <span className={`text-[8px] font-black px-2 py-0.5 rounded uppercase tracking-widest mb-2 inline-block ${policy.enforcement === 'hard' ? 'bg-rose-500/20 text-rose-400' : 'bg-amber-500/20 text-amber-400'}`}>
-                                            {policy.enforcement} enforcement
-                                        </span>
+                                            {policy.enforcement} {t('agentdetailsmodal.enforcement')}</span>
                                         <p className="text-[10px] font-black text-white uppercase tracking-wider italic">{policy.rule}</p>
                                     </div>
                                 ))}

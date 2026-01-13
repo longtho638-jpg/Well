@@ -4,6 +4,7 @@ import { Quest, User } from '../types';
 import { CheckCircle, Circle, Sparkles, Loader2, Bot } from 'lucide-react';
 import { getCoachAdvice } from '../services/geminiService';
 import { motion, AnimatePresence } from 'framer-motion';
+import { useTranslation } from '@/hooks';
 
 interface Props {
   quests: Quest[];
@@ -11,6 +12,7 @@ interface Props {
 }
 
 const OnboardingQuest: React.FC<Props> = ({ quests, user }) => {
+    const { t } = useTranslation();
   const [advice, setAdvice] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
 
@@ -40,13 +42,11 @@ const OnboardingQuest: React.FC<Props> = ({ quests, user }) => {
         <div>
           <h3 className="text-lg font-bold flex items-center gap-2 text-white">
             <Bot className="w-5 h-5 text-marigold" />
-            The Coach
-          </h3>
-          <p className="text-teal-200 text-xs">Powered by Gemini AI</p>
+            {t('onboardingquest.the_coach')}</h3>
+          <p className="text-teal-200 text-xs">{t('onboardingquest.powered_by_gemini_ai')}</p>
         </div>
         <div className="bg-white/10 backdrop-blur-md border border-white/10 px-3 py-1 rounded-full text-xs font-medium text-marigold">
-           Day 3 / 30
-        </div>
+           {t('onboardingquest.day_3_30')}</div>
       </div>
 
       <div className="space-y-3 mb-6 relative z-10">
@@ -69,7 +69,7 @@ const OnboardingQuest: React.FC<Props> = ({ quests, user }) => {
               </p>
               <p className="text-xs text-teal-300 mt-1 leading-snug">{quest.description}</p>
             </div>
-            <span className="text-xs font-bold text-marigold bg-marigold/10 px-2 py-1 rounded">+{quest.xp}XP</span>
+            <span className="text-xs font-bold text-marigold bg-marigold/10 px-2 py-1 rounded">+{quest.xp}{t('onboardingquest.xp')}</span>
           </motion.div>
         ))}
       </div>
@@ -85,7 +85,7 @@ const OnboardingQuest: React.FC<Props> = ({ quests, user }) => {
             >
                 <div className="flex gap-2 mb-2">
                     <Sparkles className="w-4 h-4 text-marigold" />
-                    <p className="text-xs font-bold text-marigold uppercase">AI Strategy</p>
+                    <p className="text-xs font-bold text-marigold uppercase">{t('onboardingquest.ai_strategy')}</p>
                 </div>
                 <p className="text-sm italic text-white/90 leading-relaxed">"{advice}"</p>
             </motion.div>
@@ -96,8 +96,7 @@ const OnboardingQuest: React.FC<Props> = ({ quests, user }) => {
                 animate={{ opacity: 1 }}
                 className="text-sm text-teal-200"
             >
-                Stuck? Ask your AI Coach for a personalized strategy boost.
-            </motion.p>
+                {t('onboardingquest.stuck_ask_your_ai_coach_for_a')}</motion.p>
             )}
         </AnimatePresence>
         

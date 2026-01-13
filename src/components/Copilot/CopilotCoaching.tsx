@@ -1,6 +1,7 @@
 import React from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { AlertCircle } from 'lucide-react';
+import { useTranslation } from '@/hooks';
 
 interface CopilotCoachingProps {
     showCoaching: boolean;
@@ -13,6 +14,7 @@ export const CopilotCoaching: React.FC<CopilotCoachingProps> = ({
     coaching,
     onClose
 }) => {
+    const { t } = useTranslation();
     return (
         <AnimatePresence>
             {showCoaching && coaching && (
@@ -25,15 +27,14 @@ export const CopilotCoaching: React.FC<CopilotCoachingProps> = ({
                     <div className="flex items-start gap-3">
                         <AlertCircle className="w-5 h-5 text-blue-500 dark:text-blue-400 flex-shrink-0 mt-0.5" />
                         <div className="flex-1">
-                            <h4 className="font-bold text-sm text-blue-800 dark:text-blue-300 mb-2">💡 Coaching Tips</h4>
+                            <h4 className="font-bold text-sm text-blue-800 dark:text-blue-300 mb-2">{t('copilotcoaching.coaching_tips')}</h4>
                             <div className="text-sm text-blue-700 dark:text-blue-200 whitespace-pre-wrap">{coaching}</div>
                         </div>
                         <button
                             onClick={onClose}
                             className="text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300 text-xs font-bold transition-colors"
                         >
-                            Đóng
-                        </button>
+                            {t('copilotcoaching.ng')}</button>
                     </div>
                 </motion.div>
             )}

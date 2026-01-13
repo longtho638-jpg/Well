@@ -3,6 +3,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { ShoppingCart, X, Plus, Minus, Trash2, CreditCard } from 'lucide-react';
 import { CartItem } from '@/hooks/useMarketplace';
 import { formatVND } from '@/utils/format';
+import { useTranslation } from '@/hooks';
 
 interface CartDrawerProps {
     isOpen: boolean;
@@ -23,6 +24,7 @@ export const CartDrawer: React.FC<CartDrawerProps> = ({
     onUpdateQuantity,
     onRemove,
 }) => {
+    const { t } = useTranslation();
     return (
         <AnimatePresence>
             {isOpen && (
@@ -46,11 +48,9 @@ export const CartDrawer: React.FC<CartDrawerProps> = ({
                             <div>
                                 <h2 className="text-3xl font-black text-zinc-900 dark:text-white flex items-center gap-3">
                                     <ShoppingCart className="w-8 h-8 text-teal-500" />
-                                    Your Cart
-                                </h2>
+                                    {t('cartdrawer.your_cart')}</h2>
                                 <div className="text-xs text-zinc-400 font-bold uppercase tracking-widest mt-1">
-                                    {itemCount} Items Confirmed
-                                </div>
+                                    {itemCount} {t('cartdrawer.items_confirmed')}</div>
                             </div>
                             <button
                                 onClick={onClose}
@@ -117,8 +117,8 @@ export const CartDrawer: React.FC<CartDrawerProps> = ({
                                     <div className="w-24 h-24 bg-zinc-100 dark:bg-white/5 rounded-full flex items-center justify-center mb-6">
                                         <ShoppingCart size={40} className="text-zinc-300 dark:text-white/20" />
                                     </div>
-                                    <h3 className="text-xl font-black text-zinc-900 dark:text-white mb-2">Your cart is empty</h3>
-                                    <p className="text-sm text-zinc-500 dark:text-zinc-400 px-10">Start adding premium products to earn massive commissions!</p>
+                                    <h3 className="text-xl font-black text-zinc-900 dark:text-white mb-2">{t('cartdrawer.your_cart_is_empty')}</h3>
+                                    <p className="text-sm text-zinc-500 dark:text-zinc-400 px-10">{t('cartdrawer.start_adding_premium_products')}</p>
                                 </div>
                             )}
                         </div>
@@ -127,11 +127,11 @@ export const CartDrawer: React.FC<CartDrawerProps> = ({
                         <div className="p-8 border-t border-zinc-100 dark:border-white/10 bg-white/80 dark:bg-zinc-900/80 backdrop-blur-xl">
                             <div className="space-y-4 mb-8">
                                 <div className="flex justify-between items-center text-zinc-400 font-bold uppercase text-[10px] tracking-[0.2em]">
-                                    <span>Subtotal</span>
+                                    <span>{t('cartdrawer.subtotal')}</span>
                                     <span>{formatVND(total)}</span>
                                 </div>
                                 <div className="flex justify-between items-center text-zinc-900 dark:text-white text-3xl font-black tracking-tighter">
-                                    <span>Total</span>
+                                    <span>{t('cartdrawer.total')}</span>
                                     <span className="text-teal-500">{formatVND(total)}</span>
                                 </div>
                             </div>
@@ -140,8 +140,7 @@ export const CartDrawer: React.FC<CartDrawerProps> = ({
                                 className="w-full bg-teal-600 text-white py-5 rounded-3xl font-black uppercase tracking-widest shadow-2xl shadow-teal-900/40 hover:bg-teal-500 active:scale-95 transition-all flex items-center justify-center gap-3 disabled:opacity-50 disabled:grayscale"
                             >
                                 <CreditCard className="w-5 h-5" />
-                                Proceed to Checkout
-                            </button>
+                                {t('cartdrawer.proceed_to_checkout')}</button>
                         </div>
                     </motion.div>
                 </>

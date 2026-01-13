@@ -27,6 +27,7 @@ import {
     Settings,
     Calendar,
 } from 'lucide-react';
+import { useTranslation } from '@/hooks';
 
 // ============================================================
 // TYPES
@@ -99,6 +100,7 @@ const INITIAL_SETTINGS: SecuritySettings = {
 // ============================================================
 
 const StatusBadge: React.FC<{ status: LoginActivity['status'] }> = ({ status }) => {
+    const { t } = useTranslation();
     const config = {
         success: { className: 'bg-emerald-500/10 text-emerald-400 border-emerald-500/20', label: 'Thành công' },
         failed: { className: 'bg-red-500/10 text-red-400 border-red-500/20', label: 'Thất bại' },
@@ -136,6 +138,7 @@ const ToggleSwitch: React.FC<{
 // ============================================================
 
 export function AdminSecuritySettings() {
+    const { t } = useTranslation();
     const [settings, setSettings] = useState<SecuritySettings>(INITIAL_SETTINGS);
     const [loginActivity] = useState<LoginActivity[]>(DEMO_LOGIN_ACTIVITY);
     const [showSetup2FA, setShowSetup2FA] = useState(false);
@@ -169,8 +172,8 @@ export function AdminSecuritySettings() {
                     <Shield className="w-6 h-6 text-emerald-400" />
                 </div>
                 <div>
-                    <h2 className="text-xl font-bold text-zinc-100">Bảo mật tài khoản</h2>
-                    <p className="text-sm text-zinc-500">Quản lý cài đặt bảo mật của bạn</p>
+                    <h2 className="text-xl font-bold text-zinc-100">{t('adminsecuritysettings.b_o_m_t_t_i_kho_n')}</h2>
+                    <p className="text-sm text-zinc-500">{t('adminsecuritysettings.qu_n_l_c_i_t_b_o_m_t_c_a_b')}</p>
                 </div>
             </div>
 
@@ -180,18 +183,16 @@ export function AdminSecuritySettings() {
                     <div className="flex items-center gap-3">
                         <CheckCircle className="w-8 h-8 text-emerald-400" />
                         <div>
-                            <p className="text-sm text-zinc-400">Điểm bảo mật</p>
+                            <p className="text-sm text-zinc-400">{t('adminsecuritysettings.i_m_b_o_m_t')}</p>
                             <p className="text-2xl font-bold text-emerald-400">
-                                {settings.twoFactorEnabled ? '95' : '70'}/100
-                            </p>
+                                {settings.twoFactorEnabled ? '95' : '70'}{t('adminsecuritysettings.100')}</p>
                         </div>
                     </div>
                     {!settings.twoFactorEnabled && (
                         <div className="text-right">
                             <p className="text-xs text-amber-400 flex items-center gap-1">
                                 <AlertTriangle className="w-3 h-3" />
-                                Bật 2FA để tăng điểm
-                            </p>
+                                {t('adminsecuritysettings.b_t_2fa_t_ng_i_m')}</p>
                         </div>
                     )}
                 </div>
@@ -205,7 +206,7 @@ export function AdminSecuritySettings() {
                         <div className="flex items-center gap-3">
                             <Smartphone className="w-5 h-5 text-blue-400" />
                             <div>
-                                <p className="font-medium text-zinc-100">Xác thực 2 yếu tố</p>
+                                <p className="font-medium text-zinc-100">{t('adminsecuritysettings.x_c_th_c_2_y_u_t')}</p>
                                 <p className="text-sm text-zinc-500">
                                     {settings.twoFactorEnabled
                                         ? 'Đã bật - Tài khoản được bảo vệ'
@@ -227,15 +228,14 @@ export function AdminSecuritySettings() {
                         <div className="flex items-center gap-3">
                             <Key className="w-5 h-5 text-amber-400" />
                             <div>
-                                <p className="font-medium text-zinc-100">Mật khẩu</p>
+                                <p className="font-medium text-zinc-100">{t('adminsecuritysettings.m_t_kh_u')}</p>
                                 <p className="text-sm text-zinc-500">
-                                    Đổi lần cuối: {settings.passwordLastChanged}
+                                    {t('adminsecuritysettings.i_l_n_cu_i')}{settings.passwordLastChanged}
                                 </p>
                             </div>
                         </div>
                         <button className="text-sm text-emerald-400 hover:underline">
-                            Đổi mật khẩu
-                        </button>
+                            {t('adminsecuritysettings.i_m_t_kh_u')}</button>
                     </div>
                 </div>
 
@@ -245,8 +245,8 @@ export function AdminSecuritySettings() {
                         <div className="flex items-center gap-3">
                             <AlertTriangle className="w-5 h-5 text-purple-400" />
                             <div>
-                                <p className="font-medium text-zinc-100">Cảnh báo đăng nhập</p>
-                                <p className="text-sm text-zinc-500">Nhận thông báo khi có đăng nhập mới</p>
+                                <p className="font-medium text-zinc-100">{t('adminsecuritysettings.c_nh_b_o_ng_nh_p')}</p>
+                                <p className="text-sm text-zinc-500">{t('adminsecuritysettings.nh_n_th_ng_b_o_khi_c_ng_nh')}</p>
                             </div>
                         </div>
                         <ToggleSwitch
@@ -262,8 +262,8 @@ export function AdminSecuritySettings() {
                         <div className="flex items-center gap-3">
                             <Clock className="w-5 h-5 text-rose-400" />
                             <div>
-                                <p className="font-medium text-zinc-100">Thời gian phiên</p>
-                                <p className="text-sm text-zinc-500">Tự động đăng xuất sau {settings.sessionTimeout} phút</p>
+                                <p className="font-medium text-zinc-100">{t('adminsecuritysettings.th_i_gian_phi_n')}</p>
+                                <p className="text-sm text-zinc-500">{t('adminsecuritysettings.t_ng_ng_xu_t_sau')}{settings.sessionTimeout} {t('adminsecuritysettings.ph_t')}</p>
                             </div>
                         </div>
                         <select
@@ -271,10 +271,10 @@ export function AdminSecuritySettings() {
                             onChange={(e) => setSettings(prev => ({ ...prev, sessionTimeout: Number(e.target.value) }))}
                             className="bg-zinc-800 border border-zinc-700 text-zinc-100 rounded-lg px-3 py-1 text-sm"
                         >
-                            <option value={15}>15 phút</option>
-                            <option value={30}>30 phút</option>
-                            <option value={60}>1 giờ</option>
-                            <option value={120}>2 giờ</option>
+                            <option value={15}>{t('adminsecuritysettings.15_ph_t')}</option>
+                            <option value={30}>{t('adminsecuritysettings.30_ph_t')}</option>
+                            <option value={60}>{t('adminsecuritysettings.1_gi')}</option>
+                            <option value={120}>{t('adminsecuritysettings.2_gi')}</option>
                         </select>
                     </div>
                 </div>
@@ -285,9 +285,9 @@ export function AdminSecuritySettings() {
                 <div className="p-4 border-b border-zinc-800 flex items-center justify-between">
                     <div className="flex items-center gap-3">
                         <Calendar className="w-5 h-5 text-zinc-400" />
-                        <h3 className="font-medium text-zinc-100">Lịch sử đăng nhập</h3>
+                        <h3 className="font-medium text-zinc-100">{t('adminsecuritysettings.l_ch_s_ng_nh_p')}</h3>
                     </div>
-                    <span className="text-xs text-zinc-500">{loginActivity.length} hoạt động</span>
+                    <span className="text-xs text-zinc-500">{loginActivity.length} {t('adminsecuritysettings.ho_t_ng')}</span>
                 </div>
                 <div className="divide-y divide-zinc-800">
                     {loginActivity.map((activity) => (
@@ -345,10 +345,9 @@ export function AdminSecuritySettings() {
                                 <div className="w-16 h-16 bg-emerald-500/10 rounded-full flex items-center justify-center mx-auto mb-4">
                                     <Smartphone className="w-8 h-8 text-emerald-400" />
                                 </div>
-                                <h3 className="text-xl font-bold text-zinc-100">Thiết lập 2FA</h3>
+                                <h3 className="text-xl font-bold text-zinc-100">{t('adminsecuritysettings.thi_t_l_p_2fa')}</h3>
                                 <p className="text-sm text-zinc-500 mt-2">
-                                    Quét mã QR với ứng dụng xác thực
-                                </p>
+                                    {t('adminsecuritysettings.qu_t_m_qr_v_i_ng_d_ng_x_c_th')}</p>
                             </div>
 
                             {/* QR Placeholder */}
@@ -365,16 +364,14 @@ export function AdminSecuritySettings() {
                                     onClick={() => setShowSetup2FA(false)}
                                     className="flex-1 px-4 py-2 bg-zinc-800 hover:bg-zinc-700 text-zinc-100 rounded-lg"
                                 >
-                                    Hủy
-                                </button>
+                                    {t('adminsecuritysettings.h_y')}</button>
                                 <button
                                     onClick={complete2FASetup}
                                     disabled={loading2FA}
                                     className="flex-1 px-4 py-2 bg-emerald-500 hover:bg-emerald-600 text-white rounded-lg flex items-center justify-center gap-2"
                                 >
                                     {loading2FA ? <Loader2 className="w-4 h-4 animate-spin" /> : <CheckCircle className="w-4 h-4" />}
-                                    Xác nhận
-                                </button>
+                                    {t('adminsecuritysettings.x_c_nh_n')}</button>
                             </div>
                         </motion.div>
                     </motion.div>

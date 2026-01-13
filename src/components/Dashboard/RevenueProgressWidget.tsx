@@ -7,6 +7,7 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import { TrendingUp, Target, DollarSign, Users, ArrowUpRight, Sparkles, Globe } from 'lucide-react';
 import { formatVND } from '@/utils/format';
+import { useTranslation } from '@/hooks';
 
 interface RevenueProgressProps {
     currentGMV: number;
@@ -21,6 +22,7 @@ export const RevenueProgressWidget: React.FC<RevenueProgressProps> = ({
     currentOrders,
     activeDistributors,
 }) => {
+    const { t } = useTranslation();
     // Calculate metrics with precision
     const progressPercent = Math.min((currentGMV / targetGMV) * 100, 100);
     const avgOrderValue = currentOrders > 0 ? currentGMV / currentOrders : 0;
@@ -50,23 +52,21 @@ export const RevenueProgressWidget: React.FC<RevenueProgressProps> = ({
                     </div>
                     <div>
                         <h3 className="text-2xl font-black text-white tracking-tighter uppercase italic leading-none">
-                            Revenue Milestone
-                        </h3>
+                            {t('revenueprogresswidget.revenue_milestone')}</h3>
                         <p className="text-[10px] font-black text-zinc-500 uppercase tracking-[0.3em] mt-2">
-                            Global Ecosystem Velocity
-                        </p>
+                            {t('revenueprogresswidget.global_ecosystem_velocity')}</p>
                     </div>
                 </div>
                 <div className="flex items-center gap-3 bg-emerald-500/10 border border-emerald-500/20 px-6 py-3 rounded-2xl shadow-xl">
                     <Sparkles className="w-4 h-4 text-emerald-400" />
-                    <span className="text-sm font-black text-emerald-400 italic">BENCHMARK: {progress1M.toFixed(1)}%</span>
+                    <span className="text-sm font-black text-emerald-400 italic">{t('revenueprogresswidget.benchmark')}{progress1M.toFixed(1)}%</span>
                 </div>
             </div>
 
             {/* Main GMV Progress Lab */}
             <div className="space-y-6 mb-12">
                 <div className="flex justify-between items-end px-1">
-                    <p className="text-[10px] font-black text-zinc-500 uppercase tracking-[0.3em]">Monthly Liquidity Flow</p>
+                    <p className="text-[10px] font-black text-zinc-500 uppercase tracking-[0.3em]">{t('revenueprogresswidget.monthly_liquidity_flow')}</p>
                     <div className="text-right">
                         <p className="font-black text-white text-3xl tracking-tighter italic">{formatVND(currentGMV)}</p>
                     </div>
@@ -88,8 +88,8 @@ export const RevenueProgressWidget: React.FC<RevenueProgressProps> = ({
                 </div>
 
                 <div className="flex justify-between text-[10px] font-black text-zinc-600 uppercase tracking-widest px-1 pt-1">
-                    <span>Baseline: 0đ</span>
-                    <span className="text-zinc-400">Target: {formatVND(targetGMV)}</span>
+                    <span>{t('revenueprogresswidget.baseline_0')}</span>
+                    <span className="text-zinc-400">{t('revenueprogresswidget.target')}{formatVND(targetGMV)}</span>
                 </div>
             </div>
 
@@ -124,7 +124,7 @@ export const RevenueProgressWidget: React.FC<RevenueProgressProps> = ({
 
                 <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 relative z-10">
                     <div className="space-y-1">
-                        <span className="text-[10px] font-black text-zinc-500 uppercase tracking-[0.3em]">Annualized Run Rate (ARR)</span>
+                        <span className="text-[10px] font-black text-zinc-500 uppercase tracking-[0.3em]">{t('revenueprogresswidget.annualized_run_rate_arr')}</span>
                         <p className="text-3xl font-black text-emerald-500 tracking-tighter italic">{formatVND(monthlyRunRate)}</p>
                     </div>
                     <div className="bg-[#00575A]/20 px-6 py-3 rounded-2xl border border-teal-500/20 backdrop-blur-xl">

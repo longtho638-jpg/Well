@@ -1,6 +1,7 @@
 import React from 'react';
 import { Search, ShoppingCart, Filter } from 'lucide-react';
 import { motion } from 'framer-motion';
+import { useTranslation } from '@/hooks';
 
 interface MarketplaceHeaderProps {
     searchTerm: string;
@@ -23,6 +24,7 @@ export const MarketplaceHeader: React.FC<MarketplaceHeaderProps> = ({
     searchPlaceholder,
     totalProducts,
 }) => {
+    const { t } = useTranslation();
     return (
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-6 mb-8">
             <div>
@@ -30,8 +32,7 @@ export const MarketplaceHeader: React.FC<MarketplaceHeaderProps> = ({
                     {title}
                 </h2>
                 <p className="text-sm text-zinc-500 dark:text-zinc-400 font-medium mt-1 uppercase tracking-widest">
-                    {totalProducts} Items Available
-                </p>
+                    {totalProducts} {t('marketplaceheader.items_available')}</p>
             </div>
 
             <div className="flex items-center gap-4 w-full sm:w-auto">

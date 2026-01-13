@@ -1,6 +1,7 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { Award, MapPin } from 'lucide-react';
+import { useTranslation } from '@/hooks';
 
 interface VenturePortfolioProps {
     content: {
@@ -21,6 +22,7 @@ interface VenturePortfolioProps {
 }
 
 export const VenturePortfolio: React.FC<VenturePortfolioProps> = ({ content }) => {
+    const { t } = useTranslation();
     return (
         <section id="portfolio" className="relative py-32 overflow-hidden">
             <div className="absolute inset-0 bg-gradient-to-b from-transparent via-teal-950/10 to-transparent" />
@@ -69,7 +71,7 @@ export const VenturePortfolio: React.FC<VenturePortfolioProps> = ({ content }) =
                                     <div className="absolute top-6 right-6">
                                         <div className="bg-teal-500/20 backdrop-blur-xl border border-teal-500/40 rounded-full px-5 py-2 shadow-2xl">
                                             <span className="text-teal-400 font-black text-[10px] uppercase tracking-widest">
-                                                Val: {company.valuation}
+                                                {t('ventureportfolio.val')}{company.valuation}
                                             </span>
                                         </div>
                                     </div>
@@ -98,13 +100,13 @@ export const VenturePortfolio: React.FC<VenturePortfolioProps> = ({ content }) =
 
                                     <div className="grid grid-cols-2 gap-6 pt-6 border-t border-white/5">
                                         <div>
-                                            <div className="text-[8px] font-black text-zinc-500 uppercase tracking-widest mb-1 italic">Growth</div>
+                                            <div className="text-[8px] font-black text-zinc-500 uppercase tracking-widest mb-1 italic">{t('ventureportfolio.growth')}</div>
                                             <div className="text-xl font-black text-emerald-400 font-mono italic">
                                                 {company.growth}
                                             </div>
                                         </div>
                                         <div className="text-right">
-                                            <div className="text-[8px] font-black text-zinc-500 uppercase tracking-widest mb-1 italic">ARR Node</div>
+                                            <div className="text-[8px] font-black text-zinc-500 uppercase tracking-widest mb-1 italic">{t('ventureportfolio.arr_node')}</div>
                                             <div className="text-xl font-black text-white font-mono italic">
                                                 {company.metric}
                                             </div>

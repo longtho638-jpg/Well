@@ -1183,7 +1183,6 @@ export const vi = {
     stakingSuccess: 'Gửi tiết kiệm thành công!',
     unstakingSuccess: 'Rút tiết kiệm thành công!',
   }
-};
 
-// Export type for TypeScript autocomplete
-export type TranslationKeys = typeof vi;
+  
+};

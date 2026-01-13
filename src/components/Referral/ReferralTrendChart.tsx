@@ -3,12 +3,15 @@ import { motion } from 'framer-motion';
 import { TrendingUp } from 'lucide-react';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 import { formatVND } from '@/utils/format';
+import { useTranslation } from '../../hooks';
 
 interface ReferralTrendChartProps {
     data: { month: string; referrals: number; revenue: number }[];
 }
 
-export const ReferralTrendChart: React.FC<ReferralTrendChartProps> = ({ data }) => (
+export const ReferralTrendChart: React.FC<ReferralTrendChartProps> = ({ data }) => {
+    const { t } = useTranslation();
+    return (
     <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
@@ -19,8 +22,8 @@ export const ReferralTrendChart: React.FC<ReferralTrendChartProps> = ({ data }) 
                 <TrendingUp size={24} />
             </div>
             <div>
-                <h3 className="text-2xl font-black text-white italic tracking-tighter uppercase">Propagation Velocity</h3>
-                <p className="text-zinc-500 text-[10px] font-black uppercase tracking-widest italic">Growth & Yield Trajectory</p>
+                <h3 className="text-2xl font-black text-white italic tracking-tighter uppercase">{t('referraltrendchart.propagation_velocity')}</h3>
+                <p className="text-zinc-500 text-[10px] font-black uppercase tracking-widest italic">{t('referraltrendchart.growth_yield_trajectory')}</p>
             </div>
         </div>
 
@@ -97,3 +100,4 @@ export const ReferralTrendChart: React.FC<ReferralTrendChartProps> = ({ data }) 
         </div>
     </motion.div>
 );
+};

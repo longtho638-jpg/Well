@@ -6,12 +6,14 @@ import { ShoppingBag, Share2, Loader2, CheckCircle, Eye } from 'lucide-react';
 import { formatVND } from '../utils/format';
 import { useStore } from '../store';
 import { useNavigate } from 'react-router-dom';
+import { useTranslation } from '@/hooks';
 
 interface Props {
   product: Product;
 }
 
 const ProductCard: React.FC<Props> = ({ product }) => {
+    const { t } = useTranslation();
   const { simulateOrder } = useStore();
   const navigate = useNavigate();
   const [isBuying, setIsBuying] = useState(false);
@@ -67,19 +69,18 @@ const ProductCard: React.FC<Props> = ({ product }) => {
 
         {/* Overlay Badge */}
         <div className="absolute top-3 right-3 bg-white/90 dark:bg-slate-900/90 backdrop-blur-md text-brand-primary dark:text-teal-400 border border-brand-primary/20 dark:border-teal-500/30 text-[10px] font-bold px-3 py-1.5 rounded-full shadow-lg flex items-center gap-1 z-10 group-hover:scale-105 transition-transform">
-          Earn {new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND', maximumFractionDigits: 0 }).format(commissionAmount)}
+          {t('productcard.earn')}{new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND', maximumFractionDigits: 0 }).format(commissionAmount)}
         </div>
 
         {/* Hover Overlay for View Details */}
         <div className="absolute inset-0 bg-black/0 group-hover:bg-black/5 dark:group-hover:bg-black/40 transition-colors duration-300 flex items-center justify-center">
           <div className="opacity-0 group-hover:opacity-100 transition-all duration-300 bg-white/90 dark:bg-slate-900/90 backdrop-blur-xl text-brand-dark dark:text-slate-100 px-5 py-2.5 rounded-full shadow-2xl border border-white/50 dark:border-white/10 font-bold text-xs flex items-center gap-2 transform translate-y-4 group-hover:translate-y-0 hover:scale-105">
-            <Eye className="w-3.5 h-3.5" /> View Details
-          </div>
+            <Eye className="w-3.5 h-3.5" /> {t('productcard.view_details')}</div>
         </div>
 
         {outOfStock && (
           <div className="absolute inset-0 flex items-center justify-center bg-white/60 dark:bg-black/60 backdrop-blur-[2px] z-20">
-            <span className="bg-gray-900 text-white text-xs font-bold px-4 py-1.5 rounded-full shadow-xl">Out of Stock</span>
+            <span className="bg-gray-900 text-white text-xs font-bold px-4 py-1.5 rounded-full shadow-xl">{t('productcard.out_of_stock')}</span>
           </div>
         )}
       </div>
@@ -96,7 +97,7 @@ const ProductCard: React.FC<Props> = ({ product }) => {
           <div className="flex items-center justify-between mb-4">
             <span className="text-brand-primary dark:text-teal-400 font-extrabold text-xl text-glow-brand">{formatVND(product.price)}</span>
             <span className={`text-[10px] px-2.5 py-1 rounded-full font-bold border ${outOfStock ? 'bg-red-50 dark:bg-red-900/20 text-red-600 dark:text-red-400 border-red-200 dark:border-red-800' : 'bg-teal-50 dark:bg-teal-900/20 text-teal-700 dark:text-teal-300 border-teal-200 dark:border-teal-800'}`}>
-              Stock: {product.stock}
+              {t('productcard.stock')}{product.stock}
             </span>
           </div>
 
@@ -108,8 +109,7 @@ const ProductCard: React.FC<Props> = ({ product }) => {
               className="flex items-center justify-center gap-2 bg-white dark:bg-slate-800 border border-gray-200 dark:border-slate-600 hover:border-gray-300 dark:hover:border-slate-500 text-gray-700 dark:text-slate-300 hover:bg-gray-50 dark:hover:bg-slate-700 active:bg-gray-100 dark:active:bg-slate-600 py-3 rounded-xl text-xs font-bold transition-all duration-200 hover:shadow-lg active:scale-95"
               aria-label="Share product link"
             >
-              <Share2 className="w-3.5 h-3.5" /> Share
-            </button>
+              <Share2 className="w-3.5 h-3.5" /> {t('productcard.share')}</button>
 
             <button
               onClick={handleBuy}
@@ -126,12 +126,10 @@ const ProductCard: React.FC<Props> = ({ product }) => {
                 <Loader2 className="w-3.5 h-3.5 animate-spin" />
               ) : showSuccess ? (
                 <div className="flex items-center gap-1 animate-in fade-in zoom-in">
-                  <CheckCircle className="w-3.5 h-3.5" /> Added
-                </div>
+                  <CheckCircle className="w-3.5 h-3.5" /> {t('productcard.added')}</div>
               ) : (
                 <>
-                  <ShoppingBag className="w-3.5 h-3.5" /> Buy Now
-                </>
+                  <ShoppingBag className="w-3.5 h-3.5" /> {t('productcard.buy_now')}</>
               )}
             </button>
           </div>

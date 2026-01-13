@@ -23,6 +23,7 @@ import {
     AlertTriangle,
     Rocket,
 } from 'lucide-react';
+import { useTranslation } from '@/hooks';
 
 // ============================================================
 // TYPES & CONSTANTS
@@ -79,6 +80,7 @@ const AI_RECOMMENDATIONS = [
 // ============================================================
 
 const ProgressRing: React.FC<{ percentage: number }> = ({ percentage }) => {
+    const { t } = useTranslation();
     const radius = 60;
     const strokeWidth = 10;
     const normalizedRadius = radius - strokeWidth / 2;
@@ -114,13 +116,14 @@ const ProgressRing: React.FC<{ percentage: number }> = ({ percentage }) => {
             </svg>
             <div className="absolute inset-0 flex flex-col items-center justify-center">
                 <span className="text-2xl font-bold text-zinc-100">{percentage.toFixed(1)}%</span>
-                <span className="text-xs text-zinc-500">of goal</span>
+                <span className="text-xs text-zinc-500">{t('founderrevenuegoal.of_goal')}</span>
             </div>
         </div>
     );
 };
 
 const PriorityBadge: React.FC<{ priority: string }> = ({ priority }) => {
+    const { t } = useTranslation();
     const config = {
         high: 'bg-red-500/10 text-red-400 border-red-500/20',
         medium: 'bg-amber-500/10 text-amber-400 border-amber-500/20',
@@ -138,6 +141,7 @@ const PriorityBadge: React.FC<{ priority: string }> = ({ priority }) => {
 // ============================================================
 
 export function FounderRevenueGoal() {
+    const { t } = useTranslation();
     const progressPercentage = (CURRENT_REVENUE_USD / GOAL_USD) * 100;
     const daysInYear = 365;
     const currentDay = new Date().getDate() + (new Date().getMonth() * 30); // Approximate
@@ -156,8 +160,8 @@ export function FounderRevenueGoal() {
                         <Target className="w-6 h-6 text-white" />
                     </div>
                     <div>
-                        <h2 className="text-xl font-bold text-zinc-100">Mục tiêu 2026</h2>
-                        <p className="text-sm text-emerald-400 font-medium">$1,000,000 USD</p>
+                        <h2 className="text-xl font-bold text-zinc-100">{t('founderrevenuegoal.m_c_ti_u_2026')}</h2>
+                        <p className="text-sm text-emerald-400 font-medium">{t('founderrevenuegoal.1_000_000_usd')}</p>
                     </div>
                 </div>
                 <div className={`flex items-center gap-2 px-3 py-1.5 rounded-full ${paceStatus === 'ahead'
@@ -167,12 +171,12 @@ export function FounderRevenueGoal() {
                     {paceStatus === 'ahead' ? (
                         <>
                             <TrendingUp className="w-4 h-4" />
-                            <span className="text-sm font-medium">Vượt tiến độ</span>
+                            <span className="text-sm font-medium">{t('founderrevenuegoal.v_t_ti_n')}</span>
                         </>
                     ) : (
                         <>
                             <TrendingDown className="w-4 h-4" />
-                            <span className="text-sm font-medium">Cần tăng tốc</span>
+                            <span className="text-sm font-medium">{t('founderrevenuegoal.c_n_t_ng_t_c')}</span>
                         </>
                     )}
                 </div>
@@ -184,7 +188,7 @@ export function FounderRevenueGoal() {
 
                 <div className="flex-1 space-y-4">
                     <div>
-                        <p className="text-sm text-zinc-500 mb-1">Doanh thu hiện tại</p>
+                        <p className="text-sm text-zinc-500 mb-1">{t('founderrevenuegoal.doanh_thu_hi_n_t_i')}</p>
                         <p className="text-3xl font-bold text-zinc-100">
                             ${CURRENT_REVENUE_USD.toLocaleString('en-US')}
                         </p>
@@ -212,6 +216,7 @@ export function FounderRevenueGoal() {
             {/* Milestones */}
             <div className="grid grid-cols-4 gap-3 mb-6">
                 {[250_000, 500_000, 750_000, 1_000_000].map((milestone, i) => {
+                    const { t } = useTranslation();
                     const reached = CURRENT_REVENUE_USD >= milestone;
                     return (
                         <div
@@ -243,7 +248,7 @@ export function FounderRevenueGoal() {
             <div className="border-t border-zinc-800 pt-4">
                 <div className="flex items-center gap-2 mb-3">
                     <Sparkles className="w-4 h-4 text-purple-400" />
-                    <h3 className="text-sm font-medium text-zinc-300">AI Đề xuất hành động</h3>
+                    <h3 className="text-sm font-medium text-zinc-300">{t('founderrevenuegoal.ai_xu_t_h_nh_ng')}</h3>
                 </div>
                 <div className="space-y-2">
                     {AI_RECOMMENDATIONS.map((rec, i) => (

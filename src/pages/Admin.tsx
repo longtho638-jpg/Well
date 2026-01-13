@@ -74,9 +74,8 @@ const Admin: React.FC = () => {
               </div>
               <div>
                 <h1 className="font-black text-white uppercase italic tracking-tighter text-lg leading-tight">
-                  Mission
-                </h1>
-                <p className="text-[10px] font-black text-emerald-500 uppercase tracking-[0.3em] opacity-80">Control Center</p>
+                  {t('admin.mission')}</h1>
+                <p className="text-[10px] font-black text-emerald-500 uppercase tracking-[0.3em] opacity-80">{t('admin.control_center')}</p>
               </div>
             </motion.div>
           )}
@@ -98,14 +97,15 @@ const Admin: React.FC = () => {
             </div>
             <div className="flex items-center gap-3 mb-2 relative z-10">
               <Sparkles className="w-4 h-4 text-emerald-400 animate-pulse" />
-              <span className="text-[10px] font-black text-white uppercase tracking-widest italic">AI Sentinel active</span>
+              <span className="text-[10px] font-black text-white uppercase tracking-widest italic">{t('admin.ai_sentinel_active')}</span>
             </div>
-            <p className="text-[10px] font-bold text-zinc-500 uppercase tracking-widest relative z-10">Monitoring 2.4k identity nodes</p>
+            <p className="text-[10px] font-bold text-zinc-500 uppercase tracking-widest relative z-10">{t('admin.monitoring_2_4k_identity_nodes')}</p>
           </motion.div>
         )}
 
         <nav className="flex-1 px-4 py-8 space-y-2 overflow-y-auto scrollbar-hide">
           {navItems.map((item) => {
+              const { t } = useTranslation();
             const active = isActive(item.path);
             return (
               <button
@@ -158,7 +158,7 @@ const Admin: React.FC = () => {
           >
             <ChevronLeft size={20} className="group-hover:-translate-x-1 transition-transform" />
             {!sidebarCollapsed && (
-              <span className="font-black text-[11px] uppercase tracking-[0.2em] italic">Bảng điều khiển</span>
+              <span className="font-black text-[11px] uppercase tracking-[0.2em] italic">{t('admin.b_ng_i_u_khi_n')}</span>
             )}
           </button>
 
@@ -174,8 +174,8 @@ const Admin: React.FC = () => {
                 A
               </div>
               <div className="flex-1">
-                <p className="text-xs font-black text-white uppercase italic tracking-widest">Administrator</p>
-                <p className="text-[9px] font-black text-zinc-600 uppercase tracking-[0.2em] mt-0.5">Superuser node</p>
+                <p className="text-xs font-black text-white uppercase italic tracking-widest">{t('admin.administrator')}</p>
+                <p className="text-[9px] font-black text-zinc-600 uppercase tracking-[0.2em] mt-0.5">{t('admin.superuser_node')}</p>
               </div>
             </div>
           )}
@@ -202,7 +202,7 @@ const Admin: React.FC = () => {
               <div className="h-24 border-b border-white/5 flex items-center justify-between px-8">
                 <div className="flex items-center gap-4">
                   <ShieldCheck className="text-emerald-400 w-8 h-8" />
-                  <h1 className="font-black text-white uppercase italic tracking-tighter text-lg">Mission Control</h1>
+                  <h1 className="font-black text-white uppercase italic tracking-tighter text-lg">{t('admin.mission_control')}</h1>
                 </div>
                 <button onClick={() => setMobileMenuOpen(false)} className="p-3 bg-zinc-900 rounded-xl text-zinc-500">
                   <X size={20} />
@@ -210,6 +210,7 @@ const Admin: React.FC = () => {
               </div>
               <nav className="flex-1 p-6 space-y-3">
                 {navItems.map((item) => {
+                    const { t } = useTranslation();
                   const active = isActive(item.path);
                   return (
                     <button
@@ -254,7 +255,7 @@ const Admin: React.FC = () => {
               <Menu size={24} />
             </button>
             <div className="flex items-center gap-4 text-[10px] font-black uppercase tracking-[0.4em] text-zinc-600 italic">
-              <span className="hover:text-zinc-400 transition-colors cursor-pointer">ADMINISTRATION</span>
+              <span className="hover:text-zinc-400 transition-colors cursor-pointer">{t('admin.administration')}</span>
               <span className="text-zinc-800">/</span>
               <motion.span
                 key={location.pathname}
@@ -278,7 +279,7 @@ const Admin: React.FC = () => {
             <div className="h-10 w-px bg-white/5 mx-2" />
             <div className="flex items-center gap-3 bg-[#00575A]/10 border border-[#00575A]/20 px-4 py-2 rounded-xl">
               <div className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse shadow-[0_0_10px_rgba(16,185,129,0.8)]" />
-              <span className="text-[10px] font-black text-emerald-400 uppercase tracking-widest italic">SECURE SESSION</span>
+              <span className="text-[10px] font-black text-emerald-400 uppercase tracking-widest italic">{t('admin.secure_session')}</span>
             </div>
           </div>
         </header>

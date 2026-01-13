@@ -3,6 +3,7 @@ import { motion } from 'framer-motion';
 import { TrendingUp, Award, Zap } from 'lucide-react';
 import { formatVND } from '@/utils/format';
 import { UserRank } from '@/types';
+import { useTranslation } from '@/hooks';
 
 interface RankProgressBarProps {
     currentRank: UserRank;
@@ -13,6 +14,7 @@ const RankProgressBar: React.FC<RankProgressBarProps> = ({
     currentRank,
     accumulatedBonusRevenue,
 }) => {
+    const { t } = useTranslation();
     // Only show for CTV rank (before Khởi Nghiệp upgrade)
     if (currentRank !== UserRank.CTV) {
         return null;
@@ -36,11 +38,9 @@ const RankProgressBar: React.FC<RankProgressBarProps> = ({
                     </div>
                     <div>
                         <h3 className="font-bold text-slate-900 dark:text-slate-100">
-                            Rank Upgrade Progress
-                        </h3>
+                            {t('rankprogressbar.rank_upgrade_progress')}</h3>
                         <p className="text-xs text-slate-600 dark:text-slate-400">
-                            Upgrade to <span className="font-bold text-amber-600 dark:text-amber-400">Khởi Nghiệp</span> (25% commission)
-                        </p>
+                            {t('rankprogressbar.upgrade_to')}<span className="font-bold text-amber-600 dark:text-amber-400">{t('rankprogressbar.kh_i_nghi_p')}</span> {t('rankprogressbar.25_commission')}</p>
                     </div>
                 </div>
                 <div className="text-right">
@@ -48,8 +48,7 @@ const RankProgressBar: React.FC<RankProgressBarProps> = ({
                         {progress.toFixed(1)}%
                     </div>
                     <div className="text-[10px] text-slate-500 dark:text-slate-400 uppercase tracking-wide">
-                        Complete
-                    </div>
+                        {t('rankprogressbar.complete')}</div>
                 </div>
             </div>
 
@@ -76,20 +75,17 @@ const RankProgressBar: React.FC<RankProgressBarProps> = ({
             <div className="grid grid-cols-2 gap-3">
                 <div className="bg-white dark:bg-slate-800 p-3 rounded-lg">
                     <div className="text-[10px] text-slate-500 dark:text-slate-400 uppercase tracking-wide mb-1">
-                        Remaining
-                    </div>
+                        {t('rankprogressbar.remaining')}</div>
                     <div className="font-bold text-slate-900 dark:text-slate-100">
                         {formatVND(remaining)}
                     </div>
                 </div>
                 <div className="bg-white dark:bg-slate-800 p-3 rounded-lg">
                     <div className="text-[10px] text-slate-500 dark:text-slate-400 uppercase tracking-wide mb-1">
-                        After Upgrade
-                    </div>
+                        {t('rankprogressbar.after_upgrade')}</div>
                     <div className="font-bold text-amber-600 dark:text-amber-400 flex items-center gap-1">
                         <Zap className="w-4 h-4" />
-                        25% Rate
-                    </div>
+                        {t('rankprogressbar.25_rate')}</div>
                 </div>
             </div>
 
@@ -101,7 +97,7 @@ const RankProgressBar: React.FC<RankProgressBarProps> = ({
                     className="mt-4 bg-gradient-to-r from-amber-500 to-yellow-500 dark:from-amber-600 dark:to-yellow-600 text-white text-sm font-medium p-3 rounded-lg flex items-center gap-2"
                 >
                     <TrendingUp className="w-4 h-4" />
-                    <span>Almost there! Just {formatVND(remaining)} more to Khởi Nghiệp rank! 🚀</span>
+                    <span>{t('rankprogressbar.almost_there_just')}{formatVND(remaining)} {t('rankprogressbar.more_to_kh_i_nghi_p_rank')}</span>
                 </motion.div>
             )}
         </motion.div>

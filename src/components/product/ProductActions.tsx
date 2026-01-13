@@ -5,6 +5,7 @@
 
 import React from 'react';
 import { Share2, ShoppingBag, Loader2 } from 'lucide-react';
+import { useTranslation } from '@/hooks';
 
 interface Props {
     onShare: () => void;
@@ -15,6 +16,7 @@ interface Props {
 }
 
 export const ProductActions: React.FC<Props> = ({ onShare, onBuy, isBuying, showSuccess, outOfStock }) => {
+    const { t } = useTranslation();
     return (
         <div className="grid grid-cols-1 sm:grid-cols-5 gap-6">
             <button
@@ -22,8 +24,7 @@ export const ProductActions: React.FC<Props> = ({ onShare, onBuy, isBuying, show
                 className="sm:col-span-2 flex items-center justify-center gap-4 py-6 rounded-2xl font-black uppercase text-[10px] tracking-[0.2em] border border-white/5 bg-zinc-900 hover:text-white hover:border-white/10 transition-all active:scale-95 italic"
             >
                 <Share2 className="w-4 h-4" />
-                Copy Ref Node
-            </button>
+                {t('productactions.copy_ref_node')}</button>
 
             <button
                 onClick={onBuy}

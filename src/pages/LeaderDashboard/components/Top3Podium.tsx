@@ -8,12 +8,14 @@ import { motion } from 'framer-motion';
 import { Award, Crown, Star } from 'lucide-react';
 import { TeamMember } from '@/types';
 import { formatVND } from '@/utils/format';
+import { useTranslation } from '@/hooks';
 
 interface Top3PodiumProps {
     performers: TeamMember[];
 }
 
 export function Top3Podium({ performers }: Top3PodiumProps) {
+    const { t } = useTranslation();
     if (performers.length < 3) return null;
 
     return (
@@ -34,9 +36,8 @@ export function Top3Podium({ performers }: Top3PodiumProps) {
                             <div className="p-2 bg-yellow-500/20 rounded-xl">
                                 <Award className="w-6 h-6 text-yellow-400" />
                             </div>
-                            Top 3 Tướng Tài
-                        </h2>
-                        <p className="text-zinc-400 text-sm mt-1">Doanh số cao nhất tháng này</p>
+                            {t('top3podium.top_3_t_ng_t_i')}</h2>
+                        <p className="text-zinc-400 text-sm mt-1">{t('top3podium.doanh_s_cao_nh_t_th_ng_n_y')}</p>
                     </div>
                 </div>
 
@@ -62,6 +63,7 @@ interface PodiumPlaceProps {
 }
 
 function PodiumPlace({ performer, place }: PodiumPlaceProps) {
+    const { t } = useTranslation();
     const config = {
         1: {
             delay: 0.2,
@@ -124,7 +126,7 @@ function PodiumPlace({ performer, place }: PodiumPlaceProps) {
                 {performer.rank}
             </p>
             <div className={`${place === 1 ? 'bg-yellow-500/10 border-yellow-500/20 p-4' : 'bg-zinc-100 dark:bg-zinc-800/50 border-zinc-300 dark:border-zinc-700 p-3'} backdrop-blur-sm rounded-xl border`}>
-                <p className={`${place === 1 ? 'text-yellow-200' : 'text-zinc-400'} text-xs mb-1`}>Doanh số</p>
+                <p className={`${place === 1 ? 'text-yellow-200' : 'text-zinc-400'} text-xs mb-1`}>{t('top3podium.doanh_s')}</p>
                 <p className={`text-white font-bold ${place === 1 ? 'text-lg' : ''}`}>{formatVND(performer.personalSales)}</p>
             </div>
         </motion.div>

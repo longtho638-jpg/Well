@@ -29,8 +29,10 @@ import { RecentActivityList } from '../components/Dashboard/RecentActivityList';
 import { AchievementGrid } from '../components/Dashboard/AchievementGrid';
 import { Wallet, DollarSign, Users } from 'lucide-react';
 import { formatVND } from '@/utils/format';
+import { useTranslation } from '@/hooks';
 
 export const Dashboard: React.FC = () => {
+    
   const {
     user,
     revenueData,
@@ -81,7 +83,7 @@ export const Dashboard: React.FC = () => {
                   {t('dashboard.title')}
                 </h2>
                 <p className="text-zinc-500 font-bold uppercase tracking-[0.2em] text-sm mt-1">
-                  <span className="text-emerald-500 italic">SYSTEM ONLINE</span> • {t('dashboard.welcome', { name: user.name.split(' ').pop() })}
+                  <span className="text-emerald-500 italic">{t('dashboard.system_online')}</span> • {t('dashboard.welcome', { name: user.name.split(' ').pop() })}
                 </p>
               </div>
             </div>

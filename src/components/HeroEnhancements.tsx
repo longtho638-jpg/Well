@@ -5,6 +5,7 @@
 
 import React, { useState, useEffect, useRef } from 'react';
 import { motion, useInView } from 'framer-motion';
+import { useTranslation } from '@/hooks';
 
 // ============================================================================
 // ANIMATED COUNTER
@@ -27,6 +28,7 @@ export function AnimatedCounter({
     label,
     icon,
 }: CounterProps) {
+    const { t } = useTranslation();
     const [count, setCount] = useState(0);
     const ref = useRef<HTMLDivElement>(null);
     const isInView = useInView(ref, { once: true, margin: '-100px' });
@@ -96,6 +98,7 @@ interface HeroStatsProps {
 }
 
 export function HeroStats({ stats }: HeroStatsProps) {
+    const { t } = useTranslation();
     return (
         <motion.div
             className="w-full max-w-4xl mx-auto mt-16"
@@ -136,6 +139,7 @@ interface SocialProofTickerProps {
 }
 
 export function SocialProofTicker({ items }: SocialProofTickerProps) {
+    const { t } = useTranslation();
     const [currentIndex, setCurrentIndex] = useState(0);
 
     useEffect(() => {
@@ -196,6 +200,7 @@ interface TestimonialsProps {
 }
 
 export function TestimonialsCarousel({ testimonials }: TestimonialsProps) {
+    const { t } = useTranslation();
     const [current, setCurrent] = useState(0);
 
     useEffect(() => {
@@ -275,11 +280,11 @@ interface TrustBadgesProps {
 }
 
 export function TrustBadges({ badges }: TrustBadgesProps) {
+    const { t } = useTranslation();
     return (
         <div className="py-12 border-y border-zinc-800">
             <p className="text-center text-sm text-zinc-500 mb-8 uppercase tracking-widest">
-                Được tin tưởng bởi
-            </p>
+                {t('heroenhancements.c_tin_t_ng_b_i')}</p>
             <div className="flex flex-wrap items-center justify-center gap-8 md:gap-12 opacity-60">
                 {badges.map((badge, index) => (
                     <motion.div

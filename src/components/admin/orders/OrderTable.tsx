@@ -7,6 +7,7 @@ import {
 } from 'lucide-react';
 import { PendingOrder } from '@/services/orderService';
 import { formatVND } from '@/utils/format';
+import { useTranslation } from '@/hooks';
 
 interface OrderTableProps {
     orders: PendingOrder[];
@@ -23,6 +24,7 @@ export const OrderTable: React.FC<OrderTableProps> = ({
     onApprove,
     onReject
 }) => {
+    const { t } = useTranslation();
     return (
         <div className="bg-zinc-950/80 backdrop-blur-3xl rounded-[2.5rem] overflow-hidden border border-white/5 shadow-2xl">
             <div className="overflow-x-auto">
@@ -83,6 +85,7 @@ const OrderRow: React.FC<OrderRowProps> = ({
     onApprove,
     onReject
 }) => {
+    const { t } = useTranslation();
     const formatDate = (dateString: string) => {
         return new Date(dateString).toLocaleString('vi-VN', {
             year: 'numeric', month: '2-digit', day: '2-digit',
@@ -102,7 +105,7 @@ const OrderRow: React.FC<OrderRowProps> = ({
                 <div className="text-[11px] font-black text-zinc-400 font-mono tracking-widest uppercase mb-1">
                     {formatDate(order.created_at)}
                 </div>
-                <div className="text-[10px] text-zinc-600 font-black uppercase tracking-[0.2em]">Transaction Logged</div>
+                <div className="text-[10px] text-zinc-600 font-black uppercase tracking-[0.2em]">{t('ordertable.transaction_logged')}</div>
             </td>
 
             <td className="p-8">
@@ -118,7 +121,7 @@ const OrderRow: React.FC<OrderRowProps> = ({
                 <div className="font-black text-emerald-500 text-2xl tracking-tighter italic">
                     {formatVND(order.amount)}
                 </div>
-                <div className="text-[10px] text-zinc-600 font-black uppercase tracking-[0.3em] mt-1">{order.currency} ASSET</div>
+                <div className="text-[10px] text-zinc-600 font-black uppercase tracking-[0.3em] mt-1">{order.currency} {t('ordertable.asset')}</div>
             </td>
 
             <td className="p-8">
@@ -130,13 +133,11 @@ const OrderRow: React.FC<OrderRowProps> = ({
                         className="flex items-center gap-3 bg-zinc-900 text-teal-500 px-5 py-3 rounded-2xl border border-teal-500/20 hover:bg-teal-500/10 hover:border-teal-500/40 transition-all font-black text-[10px] uppercase tracking-widest group/btn shadow-xl"
                     >
                         <Eye size={16} className="group-hover/btn:scale-110 transition-transform" />
-                        INSPECT BILL
-                    </motion.button>
+                        {t('ordertable.inspect_bill')}</motion.button>
                 ) : (
                     <div className="flex items-center gap-3 text-rose-500/60 text-[10px] font-black uppercase tracking-widest italic p-3 border border-dashed border-zinc-800 rounded-2xl bg-rose-500/5">
                         <AlertTriangle size={14} />
-                        NO EVIDENCE
-                    </div>
+                        {t('ordertable.no_evidence')}</div>
                 )}
             </td>
 
@@ -150,8 +151,7 @@ const OrderRow: React.FC<OrderRowProps> = ({
                         className="flex items-center gap-3 bg-[#00575A] text-white px-6 py-3.5 rounded-2xl font-black text-[11px] uppercase tracking-[0.15em] hover:bg-[#004447] transition-all disabled:opacity-50 shadow-xl border border-white/5 italic"
                     >
                         {isProcessing ? <Loader2 size={16} className="animate-spin" /> : <CheckCircle size={16} />}
-                        Approve
-                    </motion.button>
+                        {t('ordertable.approve')}</motion.button>
                     <motion.button
                         whileHover={{ scale: 1.05 }}
                         whileTap={{ scale: 0.95 }}

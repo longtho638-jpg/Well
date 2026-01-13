@@ -71,8 +71,7 @@ export const HeroCard: React.FC<Props> = ({ user }) => {
                 className="bg-amber-400 text-zinc-950 text-[10px] font-black px-5 py-2.5 rounded-xl uppercase tracking-[0.25em] flex items-center gap-2 shadow-[0_0_30px_rgba(251,191,36,0.3)] border border-amber-300/50"
               >
                 <Zap className="w-4 h-4 fill-current" />
-                Founders Pathway
-              </motion.div>
+                {t('herocard.founders_pathway')}</motion.div>
               <span className="text-teal-400 text-[10px] font-black uppercase tracking-[0.2em] border border-teal-500/20 px-5 py-2.5 rounded-xl backdrop-blur-2xl bg-white/5">
                 {t('dashboard.hero.daysLeft', { days: 18 })}
               </span>
@@ -83,7 +82,7 @@ export const HeroCard: React.FC<Props> = ({ user }) => {
                 {t('dashboard.hero.ipoPathway')}
               </h2>
               <p className="text-zinc-400 font-medium text-xl max-w-xl leading-relaxed">
-                Reach <span className="text-white font-black underline underline-offset-8 decoration-teal-500/50">100M VND Revenue</span> to unlock <span className="text-white font-black italic">Venture Partner Status</span>.
+                {t('herocard.reach')}<span className="text-white font-black underline underline-offset-8 decoration-teal-500/50">{t('herocard.100m_vnd_revenue')}</span> {t('herocard.to_unlock')}<span className="text-white font-black italic">{t('herocard.venture_partner_status')}</span>.
               </p>
             </div>
           </div>
@@ -94,8 +93,8 @@ export const HeroCard: React.FC<Props> = ({ user }) => {
 
             <div className="flex justify-between items-end relative z-10">
               <div className="space-y-1">
-                <span className="text-[10px] font-black text-zinc-500 uppercase tracking-[0.3em]">Achievement Logic</span>
-                <h4 className="text-white font-black text-lg uppercase tracking-tight">Ecosystem Scaling</h4>
+                <span className="text-[10px] font-black text-zinc-500 uppercase tracking-[0.3em]">{t('herocard.achievement_logic')}</span>
+                <h4 className="text-white font-black text-lg uppercase tracking-tight">{t('herocard.ecosystem_scaling')}</h4>
               </div>
               <span className="text-5xl font-black text-amber-400 tracking-tighter leading-none italic">{progressPercent.toFixed(1)}%</span>
             </div>
@@ -121,8 +120,7 @@ export const HeroCard: React.FC<Props> = ({ user }) => {
                 <Trophy size={20} />
               </div>
               <p className="text-sm font-bold text-zinc-400 tracking-tight">
-                <span className="text-white font-black text-lg mr-2">{formatVND(remaining)}</span> {t('dashboard.hero.remaining')} to hit next milestone
-              </p>
+                <span className="text-white font-black text-lg mr-2">{formatVND(remaining)}</span> {t('dashboard.hero.remaining')} {t('herocard.to_hit_next_milestone')}</p>
             </div>
           </div>
         </div>
@@ -138,7 +136,7 @@ export const HeroCard: React.FC<Props> = ({ user }) => {
               <h4 className="text-[10px] font-black text-zinc-500 uppercase tracking-[0.3em] italic">{t('referral.link.title')}</h4>
               <div className="flex items-center gap-2 text-emerald-400 animate-pulse">
                 <div className="w-1.5 h-1.5 bg-emerald-500 rounded-full" />
-                <span className="text-[9px] font-black uppercase">Live</span>
+                <span className="text-[9px] font-black uppercase">{t('herocard.live')}</span>
               </div>
             </div>
             <div className="relative group/input">

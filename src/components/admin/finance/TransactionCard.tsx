@@ -4,6 +4,7 @@ import { Wallet, TrendingUp, ShieldAlert, Check, X, Loader2, ArrowUpRight, Arrow
 import { Transaction } from '@/services/financeService';
 import { formatVND } from '@/utils/format';
 import { FraudBadge } from './FraudBadge';
+import { useTranslation } from '@/hooks';
 
 interface TransactionCardProps {
     transaction: Transaction;
@@ -13,6 +14,7 @@ interface TransactionCardProps {
 }
 
 export const TransactionCard: React.FC<TransactionCardProps> = ({ transaction, onApprove, onReject, loading }) => {
+    const { t } = useTranslation();
     const isHighRisk = transaction.fraudScore >= 70;
 
     return (
@@ -47,7 +49,7 @@ export const TransactionCard: React.FC<TransactionCardProps> = ({ transaction, o
                                 <FraudBadge score={transaction.fraudScore} />
                             </div>
                             <p className="text-[10px] font-black text-zinc-500 uppercase tracking-[0.2em]">
-                                UID: {transaction.id.slice(0, 12)}... • LATENCY: <span className="text-zinc-400">OPTIMAL</span> • {transaction.timestamp}
+                                {t('transactioncard.uid')}{transaction.id.slice(0, 12)}{t('transactioncard.latency')}<span className="text-zinc-400">{t('transactioncard.optimal')}</span> • {transaction.timestamp}
                             </p>
                         </div>
                     </div>
@@ -56,20 +58,20 @@ export const TransactionCard: React.FC<TransactionCardProps> = ({ transaction, o
                         {transaction.type === 'payout' ? (
                             <div className="flex items-center gap-6">
                                 <div>
-                                    <p className="text-[10px] font-black uppercase tracking-widest text-zinc-500 mb-2">Internal Ledger Net</p>
+                                    <p className="text-[10px] font-black uppercase tracking-widest text-zinc-500 mb-2">{t('transactioncard.internal_ledger_net')}</p>
                                     <div className="text-3xl font-black text-white tracking-tighter italic">
                                         {formatVND(transaction.net || 0)}
                                     </div>
                                 </div>
                                 <div className="h-10 w-px bg-white/5 mx-2" />
                                 <div className="space-y-1">
-                                    <div className="text-[10px] font-bold text-zinc-600">GROSS: {formatVND(transaction.gross || 0)}</div>
-                                    <div className="text-[10px] font-bold text-rose-500/60 uppercase">RETENTION: -{formatVND(transaction.tax || 0)}</div>
+                                    <div className="text-[10px] font-bold text-zinc-600">{t('transactioncard.gross')}{formatVND(transaction.gross || 0)}</div>
+                                    <div className="text-[10px] font-bold text-rose-500/60 uppercase">{t('transactioncard.retention')}{formatVND(transaction.tax || 0)}</div>
                                 </div>
                             </div>
                         ) : (
                             <div>
-                                <p className="text-[10px] font-black uppercase tracking-widest text-emerald-500/70 mb-2">System Yield Injected</p>
+                                <p className="text-[10px] font-black uppercase tracking-widest text-emerald-500/70 mb-2">{t('transactioncard.system_yield_injected')}</p>
                                 <div className="text-4xl font-black text-emerald-400 tracking-tighter italic">
                                     +{formatVND(transaction.amount)}
                                 </div>
@@ -105,8 +107,7 @@ export const TransactionCard: React.FC<TransactionCardProps> = ({ transaction, o
                                 className="col-span-3 h-14 bg-[#00575A] text-white text-[11px] font-black uppercase tracking-[0.2em] rounded-2xl hover:bg-[#004447] transition-all disabled:opacity-50 flex items-center justify-center gap-3 italic shadow-xl shadow-teal-900/20 border border-white/10"
                             >
                                 {loading ? <Loader2 className="w-4 h-4 animate-spin" /> : <Check className="w-4 h-4" />}
-                                Commit Approval
-                            </motion.button>
+                                {t('transactioncard.commit_approval')}</motion.button>
                             <motion.button
                                 whileHover={{ scale: 1.05 }}
                                 whileTap={{ scale: 0.95 }}
@@ -127,10 +128,9 @@ export const TransactionCard: React.FC<TransactionCardProps> = ({ transaction, o
                         <ShieldAlert className="text-rose-500" size={24} />
                     </div>
                     <div className="flex-1">
-                        <p className="font-black text-rose-500 uppercase tracking-widest text-[10px] mb-1 italic">Security Engine Quarantine</p>
+                        <p className="font-black text-rose-500 uppercase tracking-widest text-[10px] mb-1 italic">{t('transactioncard.security_engine_quarantine')}</p>
                         <p className="text-zinc-500 text-xs font-medium leading-relaxed">
-                            Flagged for behavioral anomaly. High risk indicated by velocity tracking. Manual verification mandatory.
-                        </p>
+                            {t('transactioncard.flagged_for_behavioral_anomaly')}</p>
                     </div>
                 </div>
             )}

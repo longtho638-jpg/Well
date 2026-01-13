@@ -3,6 +3,7 @@ import { motion } from 'framer-motion';
 import { Network, Award, Zap, CheckCircle, UserPlus, Clock, XCircle } from 'lucide-react';
 import { Referral } from '@/types';
 import { formatVND } from '@/utils/format';
+import { useTranslation } from '@/hooks';
 
 interface ReferralNetworkViewProps {
     f1Referrals: Referral[];
@@ -10,6 +11,7 @@ interface ReferralNetworkViewProps {
 }
 
 export const ReferralNetworkView: React.FC<ReferralNetworkViewProps> = ({ f1Referrals, f2Referrals }) => {
+    const { t } = useTranslation();
     return (
         <div className="space-y-12">
             <div className="bg-zinc-900/50 backdrop-blur-3xl border border-white/5 p-12 rounded-[3rem] shadow-2xl">
@@ -18,8 +20,8 @@ export const ReferralNetworkView: React.FC<ReferralNetworkViewProps> = ({ f1Refe
                         <Network className="w-6 h-6 text-teal-400" />
                     </div>
                     <div>
-                        <h3 className="text-2xl font-black text-white italic tracking-tighter uppercase">Network Architecture</h3>
-                        <p className="text-zinc-500 text-[10px] font-black uppercase tracking-widest italic">Tier 1 & Tier 2 Visualization</p>
+                        <h3 className="text-2xl font-black text-white italic tracking-tighter uppercase">{t('referralnetworkview.network_architecture')}</h3>
+                        <p className="text-zinc-500 text-[10px] font-black uppercase tracking-widest italic">{t('referralnetworkview.tier_1_tier_2_visualization')}</p>
                     </div>
                 </div>
 
@@ -27,10 +29,9 @@ export const ReferralNetworkView: React.FC<ReferralNetworkViewProps> = ({ f1Refe
                 <div className="mb-16">
                     <div className="flex items-center gap-4 mb-8">
                         <Award className="w-6 h-6 text-teal-500" />
-                        <h4 className="text-lg font-black text-white italic tracking-tighter uppercase">F1 Sentinel Nodes</h4>
+                        <h4 className="text-lg font-black text-white italic tracking-tighter uppercase">{t('referralnetworkview.f1_sentinel_nodes')}</h4>
                         <span className="bg-teal-500/10 text-teal-400 border border-teal-500/20 px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-widest">
-                            {f1Referrals.length} Nodes
-                        </span>
+                            {f1Referrals.length} {t('referralnetworkview.nodes')}</span>
                     </div>
 
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -44,10 +45,9 @@ export const ReferralNetworkView: React.FC<ReferralNetworkViewProps> = ({ f1Refe
                 <div>
                     <div className="flex items-center gap-4 mb-8">
                         <Zap className="w-6 h-6 text-amber-500" />
-                        <h4 className="text-lg font-black text-white italic tracking-tighter uppercase">F2 Secondary Propagation</h4>
+                        <h4 className="text-lg font-black text-white italic tracking-tighter uppercase">{t('referralnetworkview.f2_secondary_propagation')}</h4>
                         <span className="bg-amber-500/10 text-amber-400 border border-amber-500/20 px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-widest">
-                            {f2Referrals.length} Nodes
-                        </span>
+                            {f2Referrals.length} {t('referralnetworkview.nodes_1')}</span>
                     </div>
 
                     <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-4">
@@ -62,6 +62,7 @@ export const ReferralNetworkView: React.FC<ReferralNetworkViewProps> = ({ f1Refe
 };
 
 const ReferralNodeCard = ({ referral, index, level, isCompact = false }: { referral: Referral; index: number; level: string; isCompact?: boolean }) => {
+    const { t } = useTranslation();
     const getStatusTheme = (status: Referral['status']) => {
         switch (status) {
             case 'active': return { icon: CheckCircle, color: 'text-emerald-500', bg: 'bg-emerald-500/10', border: 'border-emerald-500/20', label: 'Active Sync' };
@@ -121,11 +122,11 @@ const ReferralNodeCard = ({ referral, index, level, isCompact = false }: { refer
 
                 <div className="grid grid-cols-2 gap-4 pt-4 border-t border-white/5">
                     <div>
-                        <p className="text-[8px] font-black text-zinc-500 uppercase tracking-widest mb-1 italic">Node Val</p>
+                        <p className="text-[8px] font-black text-zinc-500 uppercase tracking-widest mb-1 italic">{t('referralnetworkview.node_val')}</p>
                         <p className="text-sm font-black text-white tabular-nums">{referral.totalRevenue > 0 ? formatVND(referral.totalRevenue) : '-'}</p>
                     </div>
                     <div className="text-right">
-                        <p className="text-[8px] font-black text-zinc-500 uppercase tracking-widest mb-1 italic">Yield</p>
+                        <p className="text-[8px] font-black text-zinc-500 uppercase tracking-widest mb-1 italic">{t('referralnetworkview.yield')}</p>
                         <p className="text-sm font-black text-emerald-400 tabular-nums">{referral.referralBonus > 0 ? formatVND(referral.referralBonus) : '-'}</p>
                     </div>
                 </div>

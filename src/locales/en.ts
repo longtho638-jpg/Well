@@ -1103,7 +1103,6 @@ export const en = {
         stakingSuccess: 'Staking successful!',
         unstakingSuccess: 'Unstaking successful!',
     }
-};
 
-// Export type for TypeScript autocomplete
-export type TranslationKeysEN = typeof en;
+  
+};

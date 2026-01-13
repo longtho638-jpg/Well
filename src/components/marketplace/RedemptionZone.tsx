@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { Award, Zap, ChevronRight, Loader2 } from 'lucide-react';
 import { formatNumber } from '@/utils/format';
+import { useTranslation } from '@/hooks';
 
 interface RedemptionItem {
     id: string;
@@ -25,6 +26,7 @@ export const RedemptionZone: React.FC<RedemptionZoneProps> = ({
     userGrowBalance,
     onRedeem,
 }) => {
+    const { t } = useTranslation();
     const [selectedCategory, setSelectedCategory] = useState<'all' | 'electronics' | 'travel' | 'education' | 'experience'>('all');
     const [redeemingId, setRedeemingId] = useState<string | null>(null);
 
@@ -53,19 +55,17 @@ export const RedemptionZone: React.FC<RedemptionZoneProps> = ({
                 <div>
                     <h2 className="text-5xl font-black text-white tracking-tighter mb-4 flex items-center gap-4">
                         <Award className="text-purple-500" size={48} />
-                        GROW REWARDS
-                    </h2>
+                        {t('redemptionzone.grow_rewards')}</h2>
                     <p className="text-zinc-400 text-lg font-medium leading-relaxed max-w-lg">
-                        Sử dụng GROW Token tích lũy từ hoạt động kinh doanh để đổi lấy những phần quà đẳng cấp và trải nghiệm độc quyền.
-                    </p>
+                        {t('redemptionzone.s_d_ng_grow_token_t_ch_l_y_t')}</p>
                 </div>
                 <div className="bg-zinc-900 border border-purple-500/30 rounded-[2rem] p-8 text-center shadow-2xl shadow-purple-950/40 transform rotate-2">
-                    <div className="text-xs text-purple-400 font-black uppercase tracking-widest mb-2">Số dư hiện tại</div>
+                    <div className="text-xs text-purple-400 font-black uppercase tracking-widest mb-2">{t('redemptionzone.s_d_hi_n_t_i')}</div>
                     <div className="text-5xl font-black text-white mb-2 flex items-center justify-center gap-3">
                         <Zap className="text-yellow-400 fill-yellow-400" size={32} />
                         {formatNumber(userGrowBalance)}
                     </div>
-                    <div className="text-[10px] text-zinc-500 font-bold uppercase tracking-[0.3em]">GROW TOKENS</div>
+                    <div className="text-[10px] text-zinc-500 font-bold uppercase tracking-[0.3em]">{t('redemptionzone.grow_tokens')}</div>
                 </div>
             </div>
 
@@ -89,6 +89,7 @@ export const RedemptionZone: React.FC<RedemptionZoneProps> = ({
             {/* Rewards Grid */}
             <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-8">
                 {filteredItems.map((item) => {
+                    const { t } = useTranslation();
                     const canAfford = userGrowBalance >= item.growCost;
                     const isProcessing = redeemingId === item.id;
 

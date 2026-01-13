@@ -1,6 +1,7 @@
 import React from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { X, ExternalLink, ShieldCheck, AlertTriangle } from 'lucide-react';
+import { useTranslation } from '@/hooks';
 
 interface OrderImageModalProps {
     imageUrl: string | null;
@@ -8,6 +9,7 @@ interface OrderImageModalProps {
 }
 
 export const OrderImageModal: React.FC<OrderImageModalProps> = ({ imageUrl, onClose }) => {
+    const { t } = useTranslation();
     return (
         <AnimatePresence>
             {imageUrl && (
@@ -32,8 +34,8 @@ export const OrderImageModal: React.FC<OrderImageModalProps> = ({ imageUrl, onCl
                                     <ShieldCheck className="text-teal-500" size={24} />
                                 </div>
                                 <div>
-                                    <h3 className="text-white font-black text-xl italic tracking-tight uppercase">EVIDENCE INSPECTION</h3>
-                                    <p className="text-[10px] text-zinc-500 font-black uppercase tracking-[0.3em] mt-0.5">Payment Verification System v3.0</p>
+                                    <h3 className="text-white font-black text-xl italic tracking-tight uppercase">{t('orderimagemodal.evidence_inspection')}</h3>
+                                    <p className="text-[10px] text-zinc-500 font-black uppercase tracking-[0.3em] mt-0.5">{t('orderimagemodal.payment_verification_system_v3')}</p>
                                 </div>
                             </div>
                             <div className="flex items-center gap-4">
@@ -47,8 +49,7 @@ export const OrderImageModal: React.FC<OrderImageModalProps> = ({ imageUrl, onCl
                                     title="Open Source in and Expand"
                                 >
                                     <ExternalLink size={16} />
-                                    External View
-                                </motion.a>
+                                    {t('orderimagemodal.external_view')}</motion.a>
                                 <motion.button
                                     whileHover={{ scale: 1.1, rotate: 90 }}
                                     whileTap={{ scale: 0.9 }}
@@ -76,7 +77,7 @@ export const OrderImageModal: React.FC<OrderImageModalProps> = ({ imageUrl, onCl
                         <div className="p-6 bg-amber-500/[0.03] border-t border-amber-500/10">
                             <div className="flex items-center justify-center gap-3 text-amber-500 text-[10px] font-black uppercase tracking-[0.2em] italic">
                                 <AlertTriangle size={16} className="animate-pulse" />
-                                <span>Security Protocol: Cross-verify actual bank statement before committing approval.</span>
+                                <span>{t('orderimagemodal.security_protocol_cross_verif')}</span>
                             </div>
                         </div>
                     </motion.div>

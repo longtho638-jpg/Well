@@ -19,7 +19,8 @@ describe('Button', () => {
   it('shows loading state', () => {
     render(<Button isLoading>Click me</Button>);
 
-    expect(screen.getByText('Loading...')).toBeInTheDocument();
+    // i18n key is shown in tests since i18next mock returns the key
+    expect(screen.getByText('button.loading')).toBeInTheDocument();
     expect(screen.getByRole('button')).toBeDisabled();
     expect(screen.queryByText('Click me')).not.toBeInTheDocument();
   });

@@ -15,8 +15,10 @@ import { PartnerFilters } from '@/components/admin/partners/PartnerFilters';
 import { PartnersTable } from '@/components/admin/partners/PartnersTable';
 import { BulkActionsBar } from '@/components/admin/partners/BulkActionsBar';
 import { PartnerDetailModal } from '@/components/admin/partners/PartnerDetailModal';
+import { useTranslation } from '@/hooks';
 
 const Partners: React.FC = () => {
+    const { t } = useTranslation();
   const {
     loading,
     searchQuery,
@@ -61,10 +63,10 @@ const Partners: React.FC = () => {
             <div className="w-12 h-12 bg-[#FFBF00] rounded-2xl flex items-center justify-center shadow-[0_0_20px_rgba(255,191,0,0.3)]">
               <Zap className="text-zinc-950 w-7 h-7" />
             </div>
-            <h2 className="text-4xl font-black text-white tracking-tighter uppercase italic">Partner Recon CRM</h2>
+            <h2 className="text-4xl font-black text-white tracking-tighter uppercase italic">{t('partners.partner_recon_crm')}</h2>
           </div>
           <p className="text-zinc-500 font-medium text-lg max-w-2xl leading-relaxed">
-            Precision orchestration of network nodes, financial balances, and ecosystem <span className="text-[#FFBF00] font-bold uppercase italic">Rank Intelligence</span>.
+            {t('partners.precision_orchestration_of_net')}<span className="text-[#FFBF00] font-bold uppercase italic">{t('partners.rank_intelligence')}</span>.
           </p>
         </div>
 

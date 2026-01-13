@@ -4,6 +4,7 @@ import { Button } from './ui/Button';
 import { Input } from './ui/Input';
 import { formatVND } from '../utils/format';
 import { Wallet, AlertTriangle, CheckCircle2, CreditCard, Building2 } from 'lucide-react';
+import { useTranslation } from '@/hooks';
 
 interface WithdrawalModalProps {
   isOpen: boolean;
@@ -16,6 +17,7 @@ export const WithdrawalModal: React.FC<WithdrawalModalProps> = ({
   onClose,
   availableBalance,
 }) => {
+    const { t } = useTranslation();
   const [amount, setAmount] = useState('');
   const [bankName, setBankName] = useState('');
   const [accountNumber, setAccountNumber] = useState('');
@@ -126,9 +128,9 @@ export const WithdrawalModal: React.FC<WithdrawalModalProps> = ({
           <div className="w-16 h-16 bg-green-100 dark:bg-green-900/30 rounded-full flex items-center justify-center mx-auto mb-4">
             <CheckCircle2 className="w-8 h-8 text-green-600 dark:text-green-400" />
           </div>
-          <h3 className="text-xl font-bold text-gray-900 dark:text-zinc-100 mb-2">Request Submitted!</h3>
-          <p className="text-gray-600 dark:text-zinc-400 mb-1">Your withdrawal request has been received.</p>
-          <p className="text-sm text-gray-500 dark:text-zinc-500">Processing time: 1-3 business days</p>
+          <h3 className="text-xl font-bold text-gray-900 dark:text-zinc-100 mb-2">{t('withdrawalmodal.request_submitted')}</h3>
+          <p className="text-gray-600 dark:text-zinc-400 mb-1">{t('withdrawalmodal.your_withdrawal_request_has_be')}</p>
+          <p className="text-sm text-gray-500 dark:text-zinc-500">{t('withdrawalmodal.processing_time_1_3_business')}</p>
         </div>
       ) : (
         <form onSubmit={handleSubmit} className="space-y-6">
@@ -136,7 +138,7 @@ export const WithdrawalModal: React.FC<WithdrawalModalProps> = ({
           <div className="bg-gradient-to-r from-brand-primary to-teal-800 dark:from-slate-800 dark:to-slate-900 rounded-xl p-5 text-white shadow-lg">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-teal-200 dark:text-slate-400 text-xs uppercase tracking-wider mb-1">Available Balance</p>
+                <p className="text-teal-200 dark:text-slate-400 text-xs uppercase tracking-wider mb-1">{t('withdrawalmodal.available_balance')}</p>
                 <p className="text-2xl font-bold">{formatVND(availableBalance)}</p>
               </div>
               <Wallet className="w-8 h-8 text-brand-accent dark:text-yellow-400" />
@@ -164,29 +166,25 @@ export const WithdrawalModal: React.FC<WithdrawalModalProps> = ({
                 onClick={() => setQuickAmount(0.25)}
                 className="px-3 py-2 text-xs font-medium text-brand-primary dark:text-teal-400 border border-brand-primary dark:border-teal-400 rounded-lg hover:bg-brand-primary hover:text-white dark:hover:bg-teal-400 dark:hover:text-slate-900 transition-colors"
               >
-                25%
-              </button>
+                {t('withdrawalmodal.25')}</button>
               <button
                 type="button"
                 onClick={() => setQuickAmount(0.5)}
                 className="px-3 py-2 text-xs font-medium text-brand-primary dark:text-teal-400 border border-brand-primary dark:border-teal-400 rounded-lg hover:bg-brand-primary hover:text-white dark:hover:bg-teal-400 dark:hover:text-slate-900 transition-colors"
               >
-                50%
-              </button>
+                {t('withdrawalmodal.50')}</button>
               <button
                 type="button"
                 onClick={() => setQuickAmount(0.75)}
                 className="px-3 py-2 text-xs font-medium text-brand-primary dark:text-teal-400 border border-brand-primary dark:border-teal-400 rounded-lg hover:bg-brand-primary hover:text-white dark:hover:bg-teal-400 dark:hover:text-slate-900 transition-colors"
               >
-                75%
-              </button>
+                {t('withdrawalmodal.75')}</button>
               <button
                 type="button"
                 onClick={() => setQuickAmount(1)}
                 className="px-3 py-2 text-xs font-medium text-brand-primary dark:text-teal-400 border border-brand-primary dark:border-teal-400 rounded-lg hover:bg-brand-primary hover:text-white dark:hover:bg-teal-400 dark:hover:text-slate-900 transition-colors"
               >
-                Max
-              </button>
+                {t('withdrawalmodal.max')}</button>
             </div>
           </div>
 
@@ -194,8 +192,7 @@ export const WithdrawalModal: React.FC<WithdrawalModalProps> = ({
           <div className="space-y-4">
             <h3 className="text-sm font-bold text-gray-900 dark:text-zinc-100 flex items-center gap-2">
               <Building2 className="w-4 h-4 text-brand-primary dark:text-teal-400" />
-              Bank Account Details
-            </h3>
+              {t('withdrawalmodal.bank_account_details')}</h3>
 
             <Input
               label="Bank Name"
@@ -244,10 +241,9 @@ export const WithdrawalModal: React.FC<WithdrawalModalProps> = ({
           <div className="bg-yellow-50 dark:bg-yellow-900/20 border border-yellow-200 dark:border-yellow-900/50 rounded-lg p-4 flex gap-3">
             <AlertTriangle className="w-5 h-5 text-yellow-600 dark:text-yellow-500 flex-shrink-0 mt-0.5" />
             <div className="text-sm text-yellow-800 dark:text-yellow-200">
-              <p className="font-medium mb-1">Processing Time</p>
+              <p className="font-medium mb-1">{t('withdrawalmodal.processing_time')}</p>
               <p className="text-xs leading-relaxed">
-                Withdrawal requests are processed within 1-3 business days. Please ensure your bank details are correct.
-              </p>
+                {t('withdrawalmodal.withdrawal_requests_are_proces')}</p>
             </div>
           </div>
 
@@ -260,16 +256,14 @@ export const WithdrawalModal: React.FC<WithdrawalModalProps> = ({
               disabled={isSubmitting}
               className="flex-1"
             >
-              Cancel
-            </Button>
+              {t('withdrawalmodal.cancel')}</Button>
             <Button
               type="submit"
               variant="primary"
               isLoading={isSubmitting}
               className="flex-1"
             >
-              Submit Request
-            </Button>
+              {t('withdrawalmodal.submit_request')}</Button>
           </div>
         </form>
       )}

@@ -3,6 +3,7 @@ import { motion } from 'framer-motion';
 import { Copy, Check, Lightbulb } from 'lucide-react';
 import { CopilotMessage, ObjectionType } from '@/types';
 import { useToast } from '@/components/ui/Toast';
+import { useTranslation } from '@/hooks';
 
 interface CopilotMessageItemProps {
     message: CopilotMessage;
@@ -35,6 +36,7 @@ const useTypingEffect = (text: string, speed: number = 20) => {
 };
 
 const TypingText: React.FC<{ text: string; speed?: number }> = ({ text, speed = 20 }) => {
+    const { t } = useTranslation();
     const { displayedText, isTyping } = useTypingEffect(text, speed);
     return (
         <span>
@@ -45,6 +47,7 @@ const TypingText: React.FC<{ text: string; speed?: number }> = ({ text, speed = 
 };
 
 export const CopilotMessageItem: React.FC<CopilotMessageItemProps> = React.memo(({ message, isLast, isLoading }) => {
+    const { t } = useTranslation();
     const { showToast } = useToast();
     const [copied, setCopied] = useState(false);
 
@@ -56,6 +59,7 @@ export const CopilotMessageItem: React.FC<CopilotMessageItemProps> = React.memo(
     };
 
     const getObjectionBadge = (type?: ObjectionType) => {
+        const { t } = useTranslation();
         if (!type) return null;
         const badges: Record<ObjectionType, { label: string; color: string }> = {
             price: { label: 'Giá cả', color: 'bg-orange-100 text-orange-700' },
@@ -105,7 +109,7 @@ export const CopilotMessageItem: React.FC<CopilotMessageItemProps> = React.memo(
                         <div className="flex items-start gap-2 text-xs">
                             <Lightbulb className="w-4 h-4 text-emerald-500 flex-shrink-0 mt-0.5" />
                             <div className="flex-1">
-                                <p className="text-zinc-500 dark:text-zinc-400 mb-1 font-medium">Gợi ý nhanh:</p>
+                                <p className="text-zinc-500 dark:text-zinc-400 mb-1 font-medium">{t('copilotmessageitem.g_i_nhanh')}</p>
                                 <p className="text-zinc-700 dark:text-zinc-300 italic">{message.suggestion}</p>
                             </div>
                             <button

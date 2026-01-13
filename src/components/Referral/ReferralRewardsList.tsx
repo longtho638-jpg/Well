@@ -1,8 +1,10 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { Gift } from 'lucide-react';
+import { useTranslation } from '@/hooks';
 
 export const ReferralRewardsList: React.FC = () => {
+    const { t } = useTranslation();
     const rewards = [
         {
             title: 'Activation Milestone',
@@ -37,8 +39,8 @@ export const ReferralRewardsList: React.FC = () => {
                     <Gift size={24} />
                 </div>
                 <div>
-                    <h3 className="text-2xl font-black text-white italic tracking-tighter uppercase">Yield Mechanics</h3>
-                    <p className="text-zinc-500 text-[10px] font-black uppercase tracking-widest italic">Incentive Algorithm</p>
+                    <h3 className="text-2xl font-black text-white italic tracking-tighter uppercase">{t('referralrewardslist.yield_mechanics')}</h3>
+                    <p className="text-zinc-500 text-[10px] font-black uppercase tracking-widest italic">{t('referralrewardslist.incentive_algorithm')}</p>
                 </div>
             </div>
 

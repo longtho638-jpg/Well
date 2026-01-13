@@ -3,6 +3,7 @@ import { motion } from 'framer-motion';
 import { User, Bot, Clock } from 'lucide-react';
 import { Message, ProductRecommendation } from '@/hooks/useHealthCoach';
 import { ProductRecommendationCard } from './ProductRecommendationCard';
+import { useTranslation } from '@/hooks';
 
 interface ChatMessageProps {
     message: Message;
@@ -11,6 +12,7 @@ interface ChatMessageProps {
 }
 
 export const ChatMessage: React.FC<ChatMessageProps> = ({ message, index, onQuickOrder }) => {
+    const { t } = useTranslation();
     const isAssistant = message.role === 'assistant';
 
     return (
@@ -69,8 +71,7 @@ export const ChatMessage: React.FC<ChatMessageProps> = ({ message, index, onQuic
                     </span>
                     {message.role === 'assistant' && (
                         <span className="text-[10px] font-black text-emerald-500 uppercase tracking-widest px-2 py-0.5 rounded-lg bg-emerald-500/5 border border-emerald-500/10">
-                            Verified Advice
-                        </span>
+                            {t('chatmessage.verified_advice')}</span>
                     )}
                 </div>
             </div>

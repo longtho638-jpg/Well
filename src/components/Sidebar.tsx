@@ -94,13 +94,14 @@ export const Sidebar: React.FC<SidebarProps> = ({ onMobileClose }) => {
       >
         <div className="w-10 h-10 bg-zinc-900 rounded-xl flex items-center justify-center text-emerald-400 font-bold shadow-lg border border-zinc-800 flex-shrink-0">W</div>
         <div>
-          <h1 className="font-bold text-xl text-zinc-900 dark:text-zinc-100 leading-none">WellNexus</h1>
-          <p className="text-[10px] text-zinc-500 dark:text-zinc-400 uppercase tracking-widest font-semibold mt-1">Social Commerce</p>
+          <h1 className="font-bold text-xl text-zinc-900 dark:text-zinc-100 leading-none">{t('sidebar.wellnexus')}</h1>
+          <p className="text-[10px] text-zinc-500 dark:text-zinc-400 uppercase tracking-widest font-semibold mt-1">{t('sidebar.social_commerce')}</p>
         </div>
       </div>
 
       <nav className="flex-1 px-4 space-y-1 py-4" aria-label="Primary navigation">
         {menuItems.map((item) => {
+            const { t } = useTranslation();
           const Icon = item.icon;
           const isActive = location.pathname === item.path || (item.matches && item.matches.some(m => location.pathname.startsWith(m)));
 
@@ -135,9 +136,8 @@ export const Sidebar: React.FC<SidebarProps> = ({ onMobileClose }) => {
           <div className="relative z-10">
             <div className="flex justify-between items-center mb-4">
               <div className="flex items-center gap-2 text-zinc-100 font-bold text-sm">
-                <Bot className="w-4 h-4 text-emerald-400" /> The Coach
-              </div>
-              <span className="text-[10px] font-bold bg-zinc-800 text-zinc-400 px-2 py-1 rounded-full border border-zinc-700">Day 3/30</span>
+                <Bot className="w-4 h-4 text-emerald-400" /> {t('sidebar.the_coach')}</div>
+              <span className="text-[10px] font-bold bg-zinc-800 text-zinc-400 px-2 py-1 rounded-full border border-zinc-700">{t('sidebar.day_3_30')}</span>
             </div>
 
             <div className="space-y-2 mb-4">
@@ -147,7 +147,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ onMobileClose }) => {
                   <div className="flex-1">
                     <p className={`font-medium ${q.isCompleted ? 'text-zinc-400 line-through' : 'text-zinc-300'}`}>{q.title}</p>
                   </div>
-                  <span className="text-[10px] font-bold text-emerald-400 bg-emerald-500/10 px-1.5 py-0.5 rounded">+{q.xp}XP</span>
+                  <span className="text-[10px] font-bold text-emerald-400 bg-emerald-500/10 px-1.5 py-0.5 rounded">+{q.xp}{t('sidebar.xp')}</span>
                 </div>
               ))}
             </div>
@@ -170,8 +170,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ onMobileClose }) => {
                   className="w-full py-2.5 bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs rounded-lg flex items-center justify-center gap-2 transition-all duration-200 shadow-lg shadow-emerald-500/20 hover:shadow-emerald-500/30"
                   aria-label={loading ? t('common.loading') : 'Get personalized AI advice'}
                 >
-                  {loading ? <Sparkles className="w-3 h-3 animate-spin" aria-hidden="true" /> : <Sparkles className="w-3 h-3" aria-hidden="true" />} Get AI Advice
-                </button>
+                  {loading ? <Sparkles className="w-3 h-3 animate-spin" aria-hidden="true" /> : <Sparkles className="w-3 h-3" aria-hidden="true" />} {t('sidebar.get_ai_advice')}</button>
               )}
             </AnimatePresence>
           </div>

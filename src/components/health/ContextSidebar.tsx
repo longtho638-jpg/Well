@@ -35,19 +35,19 @@ export const ContextSidebar: React.FC = () => {
                         <User className="w-6 h-6 text-zinc-500 dark:text-zinc-300" />
                     </div>
                     <div>
-                        <h3 className="font-bold text-zinc-900 dark:text-zinc-100">Hồ Sơ Khách Hàng</h3>
-                        <p className="text-xs text-zinc-500 dark:text-zinc-500">Thông tin tư vấn</p>
+                        <h3 className="font-bold text-zinc-900 dark:text-zinc-100">{t('contextsidebar.h_s_kh_ch_h_ng')}</h3>
+                        <p className="text-xs text-zinc-500 dark:text-zinc-500">{t('contextsidebar.th_ng_tin_t_v_n')}</p>
                     </div>
                 </div>
 
                 <div className="space-y-4">
                     <div className="flex items-center justify-between py-3 border-b border-zinc-200 dark:border-zinc-700">
-                        <span className="text-sm text-zinc-500 dark:text-zinc-400">Tuổi</span>
-                        <span className="font-bold text-zinc-900 dark:text-zinc-100">{MOCK_PATIENT.age} tuổi</span>
+                        <span className="text-sm text-zinc-500 dark:text-zinc-400">{t('contextsidebar.tu_i')}</span>
+                        <span className="font-bold text-zinc-900 dark:text-zinc-100">{MOCK_PATIENT.age} {t('contextsidebar.tu_i_1')}</span>
                     </div>
 
                     <div>
-                        <p className="text-sm text-zinc-500 dark:text-zinc-400 mb-2">Vấn đề chính</p>
+                        <p className="text-sm text-zinc-500 dark:text-zinc-400 mb-2">{t('contextsidebar.v_n_ch_nh')}</p>
                         <div className="flex flex-wrap gap-2">
                             {MOCK_PATIENT.mainConcerns.map((concern, idx) => (
                                 <span
@@ -58,7 +58,7 @@ export const ContextSidebar: React.FC = () => {
                                 </span>
                             ))}
                         </div>
-                        <p className="text-sm text-zinc-500 dark:text-zinc-400 mt-4 mb-2">Lịch sử mua hàng</p>
+                        <p className="text-sm text-zinc-500 dark:text-zinc-400 mt-4 mb-2">{t('contextsidebar.l_ch_s_mua_h_ng')}</p>
                         <div className="space-y-2">
                             {MOCK_PATIENT.purchaseHistory.map((item, idx) => (
                                 <div
@@ -73,7 +73,7 @@ export const ContextSidebar: React.FC = () => {
                     </div>
 
                     <div className="flex items-center justify-between py-3 border-t border-zinc-200 dark:border-zinc-700">
-                        <span className="text-sm text-zinc-500 dark:text-zinc-400">Lần tư vấn gần nhất</span>
+                        <span className="text-sm text-zinc-500 dark:text-zinc-400">{t('contextsidebar.l_n_t_v_n_g_n_nh_t')}</span>
                         <span className="text-xs font-semibold text-zinc-900 dark:text-zinc-100">
                             {MOCK_PATIENT.lastVisit.toLocaleDateString('vi-VN')}
                         </span>
@@ -85,7 +85,7 @@ export const ContextSidebar: React.FC = () => {
             <div className="bg-white dark:bg-zinc-800 rounded-2xl p-6 shadow-xl text-zinc-900 dark:text-white border border-zinc-200 dark:border-zinc-700">
                 <div className="flex items-center gap-3 mb-4">
                     <Heart className="w-8 h-8 text-emerald-600 dark:text-emerald-400" />
-                    <h3 className="font-bold text-lg">Điểm Sức Khỏe</h3>
+                    <h3 className="font-bold text-lg">{t('contextsidebar.i_m_s_c_kh_e')}</h3>
                 </div>
 
                 <div className="flex items-center justify-center mb-4">
@@ -121,8 +121,7 @@ export const ContextSidebar: React.FC = () => {
                 </div>
 
                 <p className="text-center text-zinc-500 dark:text-zinc-400 text-sm">
-                    Điểm số tốt! Tiếp tục duy trì lối sống lành mạnh.
-                </p>
+                    {t('contextsidebar.i_m_s_t_t_ti_p_t_c_duy_tr')}</p>
             </div>
 
             {/* Quick Stats */}
@@ -130,12 +129,12 @@ export const ContextSidebar: React.FC = () => {
                 <div className="bg-zinc-50 dark:bg-zinc-800/50 backdrop-blur-sm rounded-xl p-4 shadow-md border border-zinc-200 dark:border-zinc-700">
                     <Activity className="w-8 h-8 text-blue-500 dark:text-blue-400 mb-2" />
                     <p className="text-2xl font-bold text-zinc-900 dark:text-zinc-100">12</p>
-                    <p className="text-xs text-zinc-500 dark:text-zinc-500">Tư vấn hoàn thành</p>
+                    <p className="text-xs text-zinc-500 dark:text-zinc-500">{t('contextsidebar.t_v_n_ho_n_th_nh')}</p>
                 </div>
                 <div className="bg-zinc-50 dark:bg-zinc-800/50 backdrop-blur-sm rounded-xl p-4 shadow-md border border-zinc-200 dark:border-zinc-700">
                     <TrendingUp className="w-8 h-8 text-emerald-600 dark:text-emerald-400 mb-2" />
-                    <p className="text-2xl font-bold text-zinc-900 dark:text-zinc-100">+15%</p>
-                    <p className="text-xs text-zinc-500 dark:text-zinc-500">Cải thiện sức khỏe</p>
+                    <p className="text-2xl font-bold text-zinc-900 dark:text-zinc-100">{t('contextsidebar.15')}</p>
+                    <p className="text-xs text-zinc-500 dark:text-zinc-500">{t('contextsidebar.c_i_thi_n_s_c_kh_e')}</p>
                 </div>
             </div>
 

@@ -204,8 +204,8 @@ export function PremiumHeader() {
                                 <div className="absolute inset-0 bg-gradient-to-br from-emerald-500 to-cyan-500 rounded-xl blur-lg opacity-30 group-hover:opacity-50 transition-opacity" />
                             </motion.div>
                             <div className="hidden sm:block">
-                                <div className="font-bold text-xl text-white tracking-tight">WellNexus</div>
-                                <div className="text-[10px] text-emerald-400/80 font-medium tracking-widest uppercase">Social Commerce 2.0</div>
+                                <div className="font-bold text-xl text-white tracking-tight">{t('premiumnavigation.wellnexus')}</div>
+                                <div className="text-[10px] text-emerald-400/80 font-medium tracking-widest uppercase">{t('premiumnavigation.social_commerce_2_0')}</div>
                             </div>
                         </Link>
 
@@ -361,7 +361,7 @@ export function PremiumHeader() {
                                                 <span className="text-sm font-medium text-white max-w-[100px] truncate">
                                                     {user.email?.split('@')[0] || 'User'}
                                                 </span>
-                                                <span className="text-[10px] text-emerald-400">Premium Member</span>
+                                                <span className="text-[10px] text-emerald-400">{t('premiumnavigation.premium_member')}</span>
                                             </div>
                                         </motion.div>
                                         <motion.button
@@ -445,7 +445,7 @@ export function PremiumHeader() {
                                             >
                                                 {item.label}
                                                 {item.highlight && (
-                                                    <span className="px-2 py-1 text-xs bg-emerald-500/20 text-emerald-400 rounded-lg">Hot</span>
+                                                    <span className="px-2 py-1 text-xs bg-emerald-500/20 text-emerald-400 rounded-lg">{t('premiumnavigation.hot')}</span>
                                                 )}
                                             </Link>
                                         ) : (
@@ -494,7 +494,7 @@ export function PremiumHeader() {
                                                 </div>
                                                 <div>
                                                     <div className="font-medium text-white">{user.email?.split('@')[0]}</div>
-                                                    <div className="text-sm text-emerald-400">Premium Member</div>
+                                                    <div className="text-sm text-emerald-400">{t('premiumnavigation.premium_member_1')}</div>
                                                 </div>
                                             </div>
                                             <Link
@@ -502,15 +502,13 @@ export function PremiumHeader() {
                                                 className="flex items-center gap-3 px-4 py-4 text-lg font-medium text-white"
                                             >
                                                 <LayoutDashboard className="w-5 h-5" />
-                                                Dashboard
-                                            </Link>
+                                                {t('premiumnavigation.dashboard')}</Link>
                                             <button
                                                 onClick={handleLogout}
                                                 className="flex items-center gap-3 px-4 py-4 text-lg font-medium text-red-400 w-full"
                                             >
                                                 <LogOut className="w-5 h-5" />
-                                                Đăng Xuất
-                                            </button>
+                                                {t('premiumnavigation.ng_xu_t')}</button>
                                         </>
                                     ) : (
                                         <Link
@@ -518,8 +516,7 @@ export function PremiumHeader() {
                                             className="flex items-center justify-center gap-3 px-6 py-4 text-lg font-bold text-black bg-gradient-to-r from-emerald-500 to-cyan-500 rounded-xl"
                                         >
                                             <Zap className="w-5 h-5" />
-                                            Bắt Đầu Ngay
-                                        </Link>
+                                            {t('premiumnavigation.b_t_u_ngay')}</Link>
                                     )}
                                 </div>
                             </nav>
@@ -571,6 +568,7 @@ const SOCIAL_LINKS = [
 ];
 
 export function PremiumFooter() {
+    const { t } = useTranslation();
     const { isAuthenticated } = useStore();
     const FOOTER_LINKS = getFooterLinks(isAuthenticated);
 
@@ -611,14 +609,12 @@ export function PremiumFooter() {
                         <div className="text-center lg:text-left">
                             <div className="inline-flex items-center gap-2 px-4 py-1.5 bg-emerald-500/10 border border-emerald-500/20 rounded-full text-emerald-400 text-sm font-medium mb-4">
                                 <Mail className="w-4 h-4" />
-                                Newsletter
-                            </div>
+                                {t('premiumnavigation.newsletter')}</div>
                             <h3 className="text-3xl font-bold text-white mb-3">
-                                Nhận Thông Tin <span className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 to-cyan-400">Độc Quyền</span>
+                                {t('premiumnavigation.nh_n_th_ng_tin')}<span className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 to-cyan-400">{t('premiumnavigation.c_quy_n')}</span>
                             </h3>
                             <p className="text-zinc-400 max-w-md">
-                                Đăng ký để nhận tin tức, ưu đãi đặc biệt và insights từ đội ngũ WellNexus
-                            </p>
+                                {t('premiumnavigation.ng_k_nh_n_tin_t_c_u')}</p>
                         </div>
                         <form onSubmit={handleSubscribe} className="flex gap-3 w-full max-w-lg">
                             <div className="relative flex-1">
@@ -652,13 +648,11 @@ export function PremiumFooter() {
                                         >
                                             ✓
                                         </motion.span>
-                                        Đã Đăng Ký
-                                    </>
+                                        {t('premiumnavigation.ng_k')}</>
                                 ) : (
                                     <>
                                         <Send className="w-4 h-4" />
-                                        Đăng Ký
-                                    </>
+                                        {t('premiumnavigation.ng_k_1')}</>
                                 )}
                             </motion.button>
                         </form>
@@ -682,13 +676,12 @@ export function PremiumFooter() {
                                 <div className="absolute inset-0 bg-gradient-to-br from-emerald-500 to-cyan-500 rounded-2xl blur-xl opacity-30 group-hover:opacity-50 transition-opacity" />
                             </motion.div>
                             <div>
-                                <div className="font-bold text-2xl text-white">WellNexus</div>
-                                <div className="text-xs text-emerald-400/80 font-medium tracking-widest uppercase">Social Commerce 2.0</div>
+                                <div className="font-bold text-2xl text-white">{t('premiumnavigation.wellnexus_1')}</div>
+                                <div className="text-xs text-emerald-400/80 font-medium tracking-widest uppercase">{t('premiumnavigation.social_commerce_2_0_1')}</div>
                             </div>
                         </Link>
                         <p className="text-zinc-400 text-sm leading-relaxed mb-8 max-w-sm">
-                            Hệ sinh thái Social Commerce tiên phong tại Đông Nam Á với AI-driven technology. Đồng hành cùng 50,000+ Partners.
-                        </p>
+                            {t('premiumnavigation.h_sinh_th_i_social_commerce_t')}</p>
 
                         {/* Contact */}
                         <div className="space-y-4">
@@ -696,19 +689,19 @@ export function PremiumFooter() {
                                 <div className="w-10 h-10 rounded-lg bg-zinc-800/50 border border-zinc-700/50 flex items-center justify-center group-hover:bg-emerald-500/10 group-hover:border-emerald-500/30 transition-colors">
                                     <Mail className="w-4 h-4" />
                                 </div>
-                                <span className="text-sm">hello@wellnexus.vn</span>
+                                <span className="text-sm">{t('premiumnavigation.hello_wellnexus_vn')}</span>
                             </a>
                             <a href="tel:+84901234567" className="flex items-center gap-3 text-zinc-400 hover:text-emerald-400 transition-colors group">
                                 <div className="w-10 h-10 rounded-lg bg-zinc-800/50 border border-zinc-700/50 flex items-center justify-center group-hover:bg-emerald-500/10 group-hover:border-emerald-500/30 transition-colors">
                                     <Phone className="w-4 h-4" />
                                 </div>
-                                <span className="text-sm">+84 901 234 567</span>
+                                <span className="text-sm">{t('premiumnavigation.84_901_234_567')}</span>
                             </a>
                             <div className="flex items-center gap-3 text-zinc-400">
                                 <div className="w-10 h-10 rounded-lg bg-zinc-800/50 border border-zinc-700/50 flex items-center justify-center">
                                     <MapPin className="w-4 h-4" />
                                 </div>
-                                <span className="text-sm">Q1, TP.HCM, Vietnam</span>
+                                <span className="text-sm">{t('premiumnavigation.q1_tp_hcm_vietnam')}</span>
                             </div>
                         </div>
                     </div>
@@ -746,14 +739,14 @@ export function PremiumFooter() {
                     <div className="flex flex-col md:flex-row items-center justify-between gap-6">
                         {/* Copyright */}
                         <div className="text-sm text-zinc-500 text-center md:text-left">
-                            © {new Date().getFullYear()} WellNexus. All rights reserved.
-                            <span className="text-zinc-600 mx-2">|</span>
-                            <span className="text-emerald-400/60">Made with 💚 in Vietnam</span>
+                            © {new Date().getFullYear()} {t('premiumnavigation.wellnexus_all_rights_reserved')}<span className="text-zinc-600 mx-2">|</span>
+                            <span className="text-emerald-400/60">{t('premiumnavigation.made_with_in_vietnam')}</span>
                         </div>
 
                         {/* Social Links */}
                         <div className="flex items-center gap-2">
                             {SOCIAL_LINKS.map((social) => {
+                                const { t } = useTranslation();
                                 const Icon = social.icon;
                                 return (
                                     <motion.a
@@ -781,11 +774,11 @@ export function PremiumFooter() {
                         <div className="flex items-center gap-4">
                             <div className="flex items-center gap-2 px-3 py-1.5 bg-zinc-800/50 rounded-lg border border-zinc-700/50">
                                 <Shield className="w-4 h-4 text-emerald-400" />
-                                <span className="text-xs text-zinc-400">SSL Secured</span>
+                                <span className="text-xs text-zinc-400">{t('premiumnavigation.ssl_secured')}</span>
                             </div>
                             <div className="flex items-center gap-2 px-3 py-1.5 bg-zinc-800/50 rounded-lg border border-zinc-700/50">
                                 <Award className="w-4 h-4 text-amber-400" />
-                                <span className="text-xs text-zinc-400">Top 10 East Asia</span>
+                                <span className="text-xs text-zinc-400">{t('premiumnavigation.top_10_east_asia')}</span>
                             </div>
                         </div>
                     </div>

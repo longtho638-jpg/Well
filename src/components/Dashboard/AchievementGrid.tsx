@@ -44,8 +44,7 @@ export const AchievementGrid: React.FC<AchievementGridProps> = ({ achievements }
                     </div>
                     <div className="text-right">
                         <p className="text-[10px] font-black text-zinc-500 uppercase tracking-widest mb-1 italic">
-                            Ecosystem Standing
-                        </p>
+                            {t('achievementgrid.ecosystem_standing')}</p>
                         <div className="text-xl font-black text-white italic tracking-tighter">
                             {unlockedCount} / {achievements.length}
                         </div>

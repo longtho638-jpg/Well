@@ -1,6 +1,7 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { History, MessageSquare } from 'lucide-react';
+import { useTranslation } from '@/hooks';
 
 export interface ChatHistory {
     id: string;
@@ -36,6 +37,7 @@ interface ChatSidebarProps {
 }
 
 export const ChatSidebar: React.FC<ChatSidebarProps> = ({ selectedId, onSelect }) => {
+    const { t } = useTranslation();
     return (
         <motion.div
             initial={{ x: -100, opacity: 0 }}
@@ -48,14 +50,13 @@ export const ChatSidebar: React.FC<ChatSidebarProps> = ({ selectedId, onSelect }
                         <History className="w-6 h-6 text-white" />
                     </div>
                     <div>
-                        <h2 className="text-lg font-bold text-zinc-900 dark:text-zinc-100">Lịch Sử</h2>
-                        <p className="text-xs text-zinc-500 dark:text-zinc-500">Các cuộc hội thoại</p>
+                        <h2 className="text-lg font-bold text-zinc-900 dark:text-zinc-100">{t('chatsidebar.l_ch_s')}</h2>
+                        <p className="text-xs text-zinc-500 dark:text-zinc-500">{t('chatsidebar.c_c_cu_c_h_i_tho_i')}</p>
                     </div>
                 </div>
                 <button className="w-full bg-gradient-to-r from-[#00575A] to-teal-600 text-white py-3 px-4 rounded-xl font-semibold hover:shadow-lg transition-all duration-300 flex items-center justify-center gap-2 group">
                     <MessageSquare className="w-5 h-5 group-hover:scale-110 transition-transform" />
-                    Tạo Cuộc Hội Thoại Mới
-                </button>
+                    {t('chatsidebar.t_o_cu_c_h_i_tho_i_m_i')}</button>
             </div>
 
             <div className="flex-1 overflow-y-auto p-4 space-y-2">

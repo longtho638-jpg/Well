@@ -1,6 +1,7 @@
 import React from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Sparkles, Bot, TrendingUp } from 'lucide-react';
+import { useTranslation } from '@/hooks';
 
 interface AIRecommendationProps {
     suggestion: { text: string; productIds: string[] } | null;
@@ -17,6 +18,7 @@ export const AIRecommendation: React.FC<AIRecommendationProps> = ({
     liveLabel,
     loadingText,
 }) => {
+    const { t } = useTranslation();
     return (
         <motion.div
             initial={{ opacity: 0, y: 30 }}
@@ -83,8 +85,8 @@ export const AIRecommendation: React.FC<AIRecommendationProps> = ({
 
                 <div className="hidden lg:block shrink-0">
                     <div className="px-6 py-4 bg-white/5 backdrop-blur-md rounded-2xl border border-white/10 text-center">
-                        <div className="text-3xl font-black text-white">240+</div>
-                        <div className="text-[10px] text-indigo-300 font-bold uppercase tracking-widest mt-1">Users Helped</div>
+                        <div className="text-3xl font-black text-white">{t('airecommendation.240')}</div>
+                        <div className="text-[10px] text-indigo-300 font-bold uppercase tracking-widest mt-1">{t('airecommendation.users_helped')}</div>
                     </div>
                 </div>
             </div>

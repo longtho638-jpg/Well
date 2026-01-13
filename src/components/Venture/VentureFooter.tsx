@@ -1,6 +1,7 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { Mail, Facebook, Instagram, Linkedin } from 'lucide-react';
+import { useTranslation } from '@/hooks';
 
 interface VentureFooterProps {
     content: {
@@ -20,6 +21,7 @@ interface VentureFooterProps {
 }
 
 export const VentureFooter: React.FC<VentureFooterProps> = ({ content }) => {
+    const { t } = useTranslation();
     return (
         <footer className="relative bg-zinc-950 text-white pt-32 pb-16 border-t border-white/5 overflow-hidden">
             <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-10 mix-blend-overlay" />
@@ -37,8 +39,7 @@ export const VentureFooter: React.FC<VentureFooterProps> = ({ content }) => {
                                         {content.logo}
                                     </div>
                                     <div className="text-[10px] text-zinc-500 font-black uppercase tracking-widest italic leading-none">
-                                        Strategic Ecosystem Builder
-                                    </div>
+                                        {t('venturefooter.strategic_ecosystem_builder')}</div>
                                 </div>
                             </div>
                             <p className="text-zinc-500 text-xl font-medium leading-relaxed max-w-2xl italic">
@@ -71,8 +72,7 @@ export const VentureFooter: React.FC<VentureFooterProps> = ({ content }) => {
                             </motion.button>
                         </div>
                         <p className="text-[10px] font-black text-zinc-600 uppercase tracking-widest leading-relaxed">
-                            Subscribe for exclusive intake announcements and deal-flow distribution updates.
-                        </p>
+                            {t('venturefooter.subscribe_for_exclusive_intake')}</p>
                     </div>
                 </div>
 

@@ -1,6 +1,7 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { Bot, Sparkles, MessageSquare, TrendingUp } from 'lucide-react';
+import { useTranslation } from '@/hooks';
 
 interface CopilotHeaderProps {
     productContext?: string;
@@ -17,6 +18,7 @@ export const CopilotHeader: React.FC<CopilotHeaderProps> = React.memo(({
     onGenerateScript,
     onGetCoaching
 }) => {
+    const { t } = useTranslation();
     return (
         <div className="relative overflow-hidden">
             {/* Background */}
@@ -54,15 +56,14 @@ export const CopilotHeader: React.FC<CopilotHeaderProps> = React.memo(({
 
                     <div>
                         <h3 className="font-bold text-zinc-900 dark:text-white flex items-center gap-2 text-lg">
-                            The Copilot
-                            <motion.div
+                            {t('copilotheader.the_copilot')}<motion.div
                                 animate={{ rotate: [0, 10, -10, 0] }}
                                 transition={{ repeat: Infinity, duration: 2, ease: 'easeInOut' }}
                             >
                                 <Sparkles className="w-4 h-4 text-emerald-400" />
                             </motion.div>
                         </h3>
-                        <p className="text-xs text-zinc-400">AI Sales Assistant • Powered by Gemini</p>
+                        <p className="text-xs text-zinc-400">{t('copilotheader.ai_sales_assistant_powered_b')}</p>
                     </div>
                 </div>
 
@@ -75,8 +76,7 @@ export const CopilotHeader: React.FC<CopilotHeaderProps> = React.memo(({
                             title="Generate sales script"
                         >
                             <MessageSquare className="w-3.5 h-3.5" />
-                            Script
-                        </button>
+                            {t('copilotheader.script')}</button>
                     )}
                     <button
                         onClick={onGetCoaching}
@@ -85,8 +85,7 @@ export const CopilotHeader: React.FC<CopilotHeaderProps> = React.memo(({
                         title="Get coaching tips"
                     >
                         <TrendingUp className="w-3.5 h-3.5" />
-                        Coach
-                    </button>
+                        {t('copilotheader.coach')}</button>
                 </div>
             </div>
         </div>

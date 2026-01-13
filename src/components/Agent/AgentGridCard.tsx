@@ -2,6 +2,7 @@ import React, { useMemo } from 'react';
 import { motion } from 'framer-motion';
 import { AgentDefinition } from '@/types/agentic';
 import { Zap, Target, Activity } from 'lucide-react';
+import { useTranslation } from '@/hooks';
 
 interface AgentGridCardProps {
     agent: AgentDefinition;
@@ -11,6 +12,7 @@ interface AgentGridCardProps {
 }
 
 export const AgentGridCard: React.FC<AgentGridCardProps> = ({ agent, isSelected, onClick, getKPIs }) => {
+    const { t } = useTranslation();
     const kpis = getKPIs(agent.agent_name);
     const isActive = agent.agent_name === 'The Bee' || agent.agent_name === 'Project Manager';
 
@@ -44,8 +46,7 @@ export const AgentGridCard: React.FC<AgentGridCardProps> = ({ agent, isSelected,
                         )}
                     </h3>
                     <p className="text-[9px] font-black text-zinc-500 uppercase tracking-widest opacity-80 italic">
-                        Node ID: {agent.agent_name.toUpperCase().replace(/\s+/g, '_')}_0X
-                    </p>
+                        {t('agentgridcard.node_id')}{agent.agent_name.toUpperCase().replace(/\s+/g, '_')}{t('agentgridcard.0x')}</p>
                 </div>
 
                 <div className={`px-3 py-1.5 rounded-xl border text-[9px] font-black uppercase tracking-widest italic
@@ -86,13 +87,13 @@ export const AgentGridCard: React.FC<AgentGridCardProps> = ({ agent, isSelected,
                     ) : (
                         <div className="flex items-center gap-3 text-zinc-600">
                             <Activity size={14} />
-                            <span className="text-[10px] font-black uppercase tracking-[0.2em] italic">Telemetry Stream Active</span>
+                            <span className="text-[10px] font-black uppercase tracking-[0.2em] italic">{t('agentgridcard.telemetry_stream_active')}</span>
                         </div>
                     )
                 ) : (
                     <div className="space-y-3 bg-indigo-500/5 p-4 rounded-2xl border border-indigo-500/10">
                         <div className="flex justify-between items-center text-[10px] font-black uppercase tracking-widest text-indigo-400/70 italic">
-                            <span className="flex items-center gap-2"><Zap size={12} className="animate-pulse" /> Neural Training</span>
+                            <span className="flex items-center gap-2"><Zap size={12} className="animate-pulse" /> {t('agentgridcard.neural_training')}</span>
                             <span>{trainingProgress}%</span>
                         </div>
                         <div className="h-1 w-full bg-indigo-900/20 rounded-full overflow-hidden">

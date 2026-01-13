@@ -1,6 +1,7 @@
 import React from 'react';
 import { SlidersHorizontal, X } from 'lucide-react';
 import { PriceRange, ProductCategory } from '@/hooks/useMarketplace';
+import { useTranslation } from '@/hooks';
 
 interface MarketplaceFiltersProps {
     category: ProductCategory;
@@ -19,6 +20,7 @@ export const MarketplaceFilters: React.FC<MarketplaceFiltersProps> = ({
     onClose,
     onReset,
 }) => {
+    const { t } = useTranslation();
     const categories: { value: ProductCategory; label: string; icon: string }[] = [
         { value: 'all', label: 'Tất cả sản phẩm', icon: '🎁' },
         { value: 'health', label: 'Sức khỏe', icon: '💊' },
@@ -38,8 +40,7 @@ export const MarketplaceFilters: React.FC<MarketplaceFiltersProps> = ({
             <div className="flex items-center justify-between mb-8">
                 <h3 className="font-black text-zinc-900 dark:text-white text-xl flex items-center gap-3">
                     <SlidersHorizontal className="w-5 h-5 text-teal-400" />
-                    BỘ LỌC
-                </h3>
+                    {t('marketplacefilters.b_l_c')}</h3>
                 <button
                     onClick={onClose}
                     className="lg:hidden p-2 hover:bg-zinc-100 dark:hover:bg-white/10 rounded-xl text-zinc-500"
@@ -50,7 +51,7 @@ export const MarketplaceFilters: React.FC<MarketplaceFiltersProps> = ({
 
             <div className="space-y-8">
                 <div>
-                    <h4 className="font-bold text-zinc-500 dark:text-zinc-400 mb-4 text-xs uppercase tracking-widest">Danh Mục</h4>
+                    <h4 className="font-bold text-zinc-500 dark:text-zinc-400 mb-4 text-xs uppercase tracking-widest">{t('marketplacefilters.danh_m_c')}</h4>
                     <div className="space-y-2">
                         {categories.map((cat) => (
                             <button
@@ -69,7 +70,7 @@ export const MarketplaceFilters: React.FC<MarketplaceFiltersProps> = ({
                 </div>
 
                 <div>
-                    <h4 className="font-bold text-zinc-500 dark:text-zinc-400 mb-4 text-xs uppercase tracking-widest">Khoảng Giá</h4>
+                    <h4 className="font-bold text-zinc-500 dark:text-zinc-400 mb-4 text-xs uppercase tracking-widest">{t('marketplacefilters.kho_ng_gi')}</h4>
                     <div className="grid grid-cols-1 gap-2">
                         {prices.map((p) => (
                             <button
@@ -91,8 +92,7 @@ export const MarketplaceFilters: React.FC<MarketplaceFiltersProps> = ({
                     onClick={onReset}
                     className="w-full mt-4 py-4 bg-zinc-900 dark:bg-zinc-100 text-white dark:text-zinc-900 rounded-2xl text-sm font-black uppercase tracking-widest transition-transform hover:scale-[1.02] active:scale-95 shadow-xl"
                 >
-                    Đặt lại bộ lọc
-                </button>
+                    {t('marketplacefilters.t_l_i_b_l_c')}</button>
             </div>
         </div>
     );

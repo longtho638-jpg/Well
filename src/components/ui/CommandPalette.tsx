@@ -4,6 +4,7 @@ import { AGENCYOS_COMMANDS, AgencyOSCategory } from '@/agents/custom/AgencyOSAge
 import { agentRegistry } from '@/agents';
 import { commandRateLimiter } from '@/lib/rate-limiter';
 import analytics from '@/lib/analytics';
+import { useTranslation } from '@/hooks';
 
 interface CommandPaletteProps {
     isOpen: boolean;
@@ -29,6 +30,7 @@ const CATEGORY_LABELS: Record<AgencyOSCategory, string> = {
 };
 
 export function CommandPalette({ isOpen, onClose }: CommandPaletteProps) {
+    const { t } = useTranslation();
     const [search, setSearch] = useState('');
     const [selectedCategory, setSelectedCategory] = useState<AgencyOSCategory | null>(null);
     const [isExecuting, setIsExecuting] = useState(false);
@@ -163,8 +165,7 @@ export function CommandPalette({ isOpen, onClose }: CommandPaletteProps) {
                             : 'text-gray-400 hover:bg-gray-800'
                             }`}
                     >
-                        All
-                    </button>
+                        {t('commandpalette.all')}</button>
                     {(Object.keys(AGENCYOS_COMMANDS) as AgencyOSCategory[]).map((cat) => (
                         <button
                             key={cat}
@@ -184,7 +185,7 @@ export function CommandPalette({ isOpen, onClose }: CommandPaletteProps) {
                     {filteredCommands.length === 0 ? (
                         <div className="px-4 py-8 text-center text-gray-500">
                             <Search className="w-8 h-8 mx-auto mb-2 opacity-50" />
-                            <p>No commands found</p>
+                            <p>{t('commandpalette.no_commands_found')}</p>
                         </div>
                     ) : (
                         <ul className="py-2">
@@ -223,7 +224,7 @@ export function CommandPalette({ isOpen, onClose }: CommandPaletteProps) {
                         {isExecuting ? (
                             <div className="flex items-center gap-2 text-cyan-400">
                                 <Loader2 className="w-4 h-4 animate-spin" />
-                                <span>Executing command...</span>
+                                <span>{t('commandpalette.executing_command')}</span>
                             </div>
                         ) : lastResult?.success ? (
                             <div className="text-green-400">
@@ -232,7 +233,7 @@ export function CommandPalette({ isOpen, onClose }: CommandPaletteProps) {
                             </div>
                         ) : (
                             <div className="text-red-400">
-                                <p className="font-medium">❌ Error</p>
+                                <p className="font-medium">{t('commandpalette.error')}</p>
                                 <p className="text-sm">{lastResult?.error}</p>
                             </div>
                         )}
@@ -241,11 +242,10 @@ export function CommandPalette({ isOpen, onClose }: CommandPaletteProps) {
 
                 {/* Footer */}
                 <div className="px-4 py-2 border-t border-gray-700 bg-gray-800/30 flex items-center justify-between text-xs text-gray-500">
-                    <span>🏯 AgencyOS • 85+ Commands</span>
+                    <span>{t('commandpalette.agencyos_85_commands')}</span>
                     <span>
                         <kbd className="px-1.5 py-0.5 bg-gray-700 rounded">⌘</kbd> +
-                        <kbd className="px-1.5 py-0.5 bg-gray-700 rounded ml-1">K</kbd> to open
-                    </span>
+                        <kbd className="px-1.5 py-0.5 bg-gray-700 rounded ml-1">K</kbd> {t('commandpalette.to_open')}</span>
                 </div>
             </div>
         </div>

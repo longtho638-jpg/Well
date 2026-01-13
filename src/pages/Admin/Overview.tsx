@@ -31,6 +31,7 @@ import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContai
 import { useAdminOverview, AIAction } from '@/hooks/useAdminOverview';
 import { formatVND } from '@/utils/format';
 import { useToast } from '@/components/ui/Toast';
+import { useTranslation } from '@/hooks';
 
 // ============================================================
 // SUB-COMPONENTS
@@ -60,6 +61,7 @@ const MetricCard: React.FC<{ label: string; value: string; trend: string; icon: 
 );
 
 const AIActionItem: React.FC<{ action: AIAction; onAction: (id: string, decision: 'approve' | 'reject') => void }> = ({ action, onAction }) => {
+    const { t } = useTranslation();
   const icons = {
     kyc: UserCheck,
     withdrawal: Wallet,
@@ -86,8 +88,7 @@ const AIActionItem: React.FC<{ action: AIAction; onAction: (id: string, decision
               <p className="text-xs text-zinc-500 font-medium mt-1 uppercase tracking-widest flex items-center gap-1.5"><Clock size={10} /> {action.timestamp}</p>
             </div>
             <span className={`px-3 py-1 text-[9px] font-black uppercase tracking-widest rounded-lg ${action.priority === 'high' ? 'bg-rose-500 text-white shadow-lg shadow-rose-500/20' : 'bg-zinc-200 dark:bg-zinc-700 text-zinc-500'}`}>
-              {action.priority} Risk
-            </span>
+              {action.priority} {t('overview.risk')}</span>
           </div>
           <p className="text-sm text-zinc-600 dark:text-zinc-400 font-medium leading-relaxed">"{action.description}"</p>
 
@@ -96,12 +97,12 @@ const AIActionItem: React.FC<{ action: AIAction; onAction: (id: string, decision
             <div className="flex-1 h-1.5 bg-zinc-200 dark:bg-zinc-700 rounded-full overflow-hidden">
               <motion.div initial={{ width: 0 }} animate={{ width: `${action.aiConfidence}%` }} className="h-full bg-[#00575A]" />
             </div>
-            <span className="text-[10px] font-black text-[#00575A] uppercase tracking-tighter">AI: {action.aiConfidence}% Confident</span>
+            <span className="text-[10px] font-black text-[#00575A] uppercase tracking-tighter">{t('overview.ai')}{action.aiConfidence}{t('overview.confident')}</span>
           </div>
 
           <div className="flex gap-2 pt-2">
-            <button onClick={() => onAction(action.id, 'approve')} className="flex-1 bg-[#00575A] text-white py-3 rounded-2xl font-black uppercase tracking-widest text-[10px] shadow-lg shadow-teal-500/20 hover:scale-[1.02] transition-all">Resolve</button>
-            <button onClick={() => onAction(action.id, 'reject')} className="flex-1 bg-zinc-100 dark:bg-zinc-800 text-zinc-500 py-3 rounded-2xl font-black uppercase tracking-widest text-[10px] border border-zinc-200 dark:border-white/5">Reject</button>
+            <button onClick={() => onAction(action.id, 'approve')} className="flex-1 bg-[#00575A] text-white py-3 rounded-2xl font-black uppercase tracking-widest text-[10px] shadow-lg shadow-teal-500/20 hover:scale-[1.02] transition-all">{t('overview.resolve')}</button>
+            <button onClick={() => onAction(action.id, 'reject')} className="flex-1 bg-zinc-100 dark:bg-zinc-800 text-zinc-500 py-3 rounded-2xl font-black uppercase tracking-widest text-[10px] border border-zinc-200 dark:border-white/5">{t('overview.reject')}</button>
           </div>
         </div>
       </div>
@@ -114,6 +115,7 @@ const AIActionItem: React.FC<{ action: AIAction; onAction: (id: string, decision
 // ============================================================
 
 const Overview: React.FC = () => {
+    const { t } = useTranslation();
   const { metrics, aiActions, loading, growthData, refresh, handleAction } = useAdminOverview();
   const { showToast } = useToast();
 
@@ -131,8 +133,8 @@ const Overview: React.FC = () => {
       {/* Mission Control Header */}
       <div className="flex flex-col md:flex-row justify-between items-start md:items-end gap-6">
         <div className="space-y-1">
-          <h2 className="text-5xl font-black text-zinc-900 dark:text-white tracking-tighter uppercase italic">Mission Control</h2>
-          <p className="text-zinc-500 font-medium text-lg">Autonomous ecosystem orchestration & real-time telemetry.</p>
+          <h2 className="text-5xl font-black text-zinc-900 dark:text-white tracking-tighter uppercase italic">{t('overview.mission_control')}</h2>
+          <p className="text-zinc-500 font-medium text-lg">{t('overview.autonomous_ecosystem_orchestra')}</p>
         </div>
         <div className="flex items-center gap-3">
           <button onClick={refresh} className="p-4 bg-white dark:bg-zinc-900 border border-zinc-100 dark:border-white/5 rounded-2xl shadow-sm text-zinc-500">
@@ -143,7 +145,7 @@ const Overview: React.FC = () => {
               <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
               <span className="relative inline-flex rounded-full h-3 w-3 bg-emerald-500"></span>
             </div>
-            <span className="text-[10px] font-black uppercase tracking-widest">Ecosystem Online</span>
+            <span className="text-[10px] font-black uppercase tracking-widest">{t('overview.ecosystem_online')}</span>
           </div>
         </div>
       </div>
@@ -163,9 +165,9 @@ const Overview: React.FC = () => {
           <div className="flex items-center justify-between px-4">
             <div className="flex items-center gap-3">
               <Sparkles className="text-[#00575A]" size={20} />
-              <h3 className="text-xl font-black text-zinc-900 dark:text-white uppercase tracking-tighter">AI Action Center</h3>
+              <h3 className="text-xl font-black text-zinc-900 dark:text-white uppercase tracking-tighter">{t('overview.ai_action_center')}</h3>
             </div>
-            <span className="text-[10px] font-black text-zinc-400 uppercase tracking-widest">Autonomous Recommendations</span>
+            <span className="text-[10px] font-black text-zinc-400 uppercase tracking-widest">{t('overview.autonomous_recommendations')}</span>
           </div>
 
           <div className="space-y-4">
@@ -178,8 +180,8 @@ const Overview: React.FC = () => {
                     <CheckCircle2 size={40} />
                   </div>
                   <div className="space-y-1">
-                    <h4 className="text-2xl font-black text-zinc-900 dark:text-white uppercase tracking-tighter">Queue Exhausted</h4>
-                    <p className="text-zinc-500 font-medium">AI Agent has autonomously resolved all prioritized tasks.</p>
+                    <h4 className="text-2xl font-black text-zinc-900 dark:text-white uppercase tracking-tighter">{t('overview.queue_exhausted')}</h4>
+                    <p className="text-zinc-500 font-medium">{t('overview.ai_agent_has_autonomously_reso')}</p>
                   </div>
                 </motion.div>
               )}
@@ -191,7 +193,7 @@ const Overview: React.FC = () => {
         <div className="space-y-6">
           <div className="flex items-center gap-3 px-2">
             <Zap className="text-[#00575A]" size={20} />
-            <h3 className="text-xl font-black text-zinc-900 dark:text-white uppercase tracking-tighter italic">Live Pulse</h3>
+            <h3 className="text-xl font-black text-zinc-900 dark:text-white uppercase tracking-tighter italic">{t('overview.live_pulse')}</h3>
           </div>
 
           <div className="bg-zinc-900 text-white p-8 rounded-[3rem] space-y-8 shadow-2xl relative overflow-hidden">
@@ -200,8 +202,8 @@ const Overview: React.FC = () => {
             </div>
 
             <div className="space-y-1 relative z-10">
-              <p className="text-[10px] font-black text-zinc-500 uppercase tracking-[0.2em]">Growth trajectory</p>
-              <h4 className="text-2xl font-black tracking-tighter uppercase italic">Ecosystem scale</h4>
+              <p className="text-[10px] font-black text-zinc-500 uppercase tracking-[0.2em]">{t('overview.growth_trajectory')}</p>
+              <h4 className="text-2xl font-black tracking-tighter uppercase italic">{t('overview.ecosystem_scale')}</h4>
             </div>
 
             <div className="h-48 relative z-10 -mx-4">

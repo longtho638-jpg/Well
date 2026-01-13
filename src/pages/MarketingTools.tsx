@@ -538,7 +538,7 @@ export default function MarketingTools() {
                     </div>
                     <div className="flex items-center justify-between">
                       <span className="text-sm text-gray-600 dark:text-slate-400">{t('marketing.affiliate.stats.conversion')}</span>
-                      <span className="font-bold text-primary dark:text-cyan-400">4.9%</span>
+                      <span className="font-bold text-primary dark:text-cyan-400">{t('marketingtools.4_9')}</span>
                     </div>
                   </div>
                 </div>
@@ -603,10 +603,9 @@ export default function MarketingTools() {
               </div>
               <div>
                 <h2 className="text-2xl font-bold text-white flex items-center gap-2">
-                  AI Landing Builder
-                  <span className="bg-accent text-primary text-xs px-3 py-1 rounded-full font-bold">NEW</span>
+                  {t('marketingtools.ai_landing_builder')}<span className="bg-accent text-primary text-xs px-3 py-1 rounded-full font-bold">{t('marketingtools.new')}</span>
                 </h2>
-                <p className="text-white/90 text-sm">Tạo trang tuyển dụng chuyên nghiệp với AI trong 60 giây</p>
+                <p className="text-white/90 text-sm">{t('marketingtools.t_o_trang_tuy_n_d_ng_chuy_n_ng')}</p>
               </div>
             </div>
           </div>
@@ -618,8 +617,7 @@ export default function MarketingTools() {
                 <div>
                   <h3 className="font-bold text-gray-900 dark:text-slate-100 mb-3 flex items-center gap-2">
                     <Palette className="w-5 h-5 text-purple-600" />
-                    Chọn Template
-                  </h3>
+                    {t('marketingtools.ch_n_template')}</h3>
                   <div className="grid grid-cols-1 gap-3">
                     {landingPageTemplates.map((template) => (
                       <motion.button
@@ -655,8 +653,7 @@ export default function MarketingTools() {
                 <div>
                   <h3 className="font-bold text-gray-900 dark:text-slate-100 mb-3 flex items-center gap-2">
                     <Upload className="w-5 h-5 text-purple-600" />
-                    Upload Ảnh Chân Dung
-                  </h3>
+                    {t('marketingtools.upload_nh_ch_n_dung')}</h3>
                   <div className="border-2 border-dashed border-gray-300 dark:border-slate-600 rounded-xl p-6 hover:border-purple-500 dark:hover:border-purple-400 transition-colors">
                     <input
                       type="file"
@@ -674,15 +671,15 @@ export default function MarketingTools() {
                             className="w-20 h-20 rounded-full object-cover"
                           />
                           <div>
-                            <p className="text-sm font-medium text-gray-900">Ảnh đã tải lên</p>
-                            <p className="text-xs text-gray-600">Click để thay đổi</p>
+                            <p className="text-sm font-medium text-gray-900">{t('marketingtools.nh_t_i_l_n')}</p>
+                            <p className="text-xs text-gray-600">{t('marketingtools.click_thay_i')}</p>
                           </div>
                         </div>
                       ) : (
                         <div className="text-center">
                           <ImageIcon className="w-12 h-12 text-gray-400 dark:text-slate-500 mx-auto mb-2" />
-                          <p className="text-sm font-medium text-gray-900 dark:text-slate-100">Click để tải ảnh lên</p>
-                          <p className="text-xs text-gray-600 dark:text-slate-400">JPG, PNG, tối đa 5MB</p>
+                          <p className="text-sm font-medium text-gray-900 dark:text-slate-100">{t('marketingtools.click_t_i_nh_l_n')}</p>
+                          <p className="text-xs text-gray-600 dark:text-slate-400">{t('marketingtools.jpg_png_t_i_a_5mb')}</p>
                         </div>
                       )}
                     </label>
@@ -698,13 +695,11 @@ export default function MarketingTools() {
                   {isGeneratingBio ? (
                     <>
                       <Sparkles className="w-6 h-6 animate-spin" />
-                      AI Đang Viết Câu Chuyện...
-                    </>
+                      {t('marketingtools.ai_ang_vi_t_c_u_chuy_n')}</>
                   ) : (
                     <>
                       <Wand2 className="w-6 h-6" />
-                      AI Viết Câu Chuyện Của Tôi
-                    </>
+                      {t('marketingtools.ai_vi_t_c_u_chuy_n_c_a_t_i')}</>
                   )}
                 </button>
               </div>
@@ -713,8 +708,7 @@ export default function MarketingTools() {
               <div className="space-y-4">
                 <h3 className="font-bold text-gray-900 dark:text-slate-100 flex items-center gap-2">
                   <Eye className="w-5 h-5 text-purple-600" />
-                  Preview Landing Page
-                </h3>
+                  {t('marketingtools.preview_landing_page')}</h3>
 
                 {generatedLandingPage ? (
                   <motion.div
@@ -744,7 +738,7 @@ export default function MarketingTools() {
 
                     <div className="space-y-3">
                       <div className="flex items-center justify-between bg-white dark:bg-slate-800 rounded-lg p-3">
-                        <span className="text-sm text-gray-600 dark:text-slate-400">Link Landing Page:</span>
+                        <span className="text-sm text-gray-600 dark:text-slate-400">{t('marketingtools.link_landing_page')}</span>
                         <div className="flex items-center gap-2">
                           <code className="text-xs bg-purple-100 dark:bg-purple-900 text-purple-700 dark:text-purple-300 px-2 py-1 rounded">
                             {generatedLandingPage.publishedUrl}
@@ -766,12 +760,12 @@ export default function MarketingTools() {
                         <div className="bg-white dark:bg-slate-800 rounded-lg p-3">
                           <Eye className="w-5 h-5 text-blue-600 dark:text-blue-400 mx-auto mb-1" />
                           <p className="text-lg font-bold text-gray-900 dark:text-slate-100">{generatedLandingPage.views}</p>
-                          <p className="text-xs text-gray-600 dark:text-slate-400">Lượt xem</p>
+                          <p className="text-xs text-gray-600 dark:text-slate-400">{t('marketingtools.l_t_xem')}</p>
                         </div>
                         <div className="bg-white dark:bg-slate-800 rounded-lg p-3">
                           <TrendingUp className="w-5 h-5 text-green-600 dark:text-green-400 mx-auto mb-1" />
                           <p className="text-lg font-bold text-gray-900 dark:text-slate-100">{generatedLandingPage.conversions}</p>
-                          <p className="text-xs text-gray-600 dark:text-slate-400">Chuyển đổi</p>
+                          <p className="text-xs text-gray-600 dark:text-slate-400">{t('marketingtools.chuy_n_i')}</p>
                         </div>
                         <div className="bg-white dark:bg-slate-800 rounded-lg p-3">
                           <BarChart3 className="w-5 h-5 text-purple-600 dark:text-purple-400 mx-auto mb-1" />
@@ -780,7 +774,7 @@ export default function MarketingTools() {
                               ? ((generatedLandingPage.conversions / generatedLandingPage.views) * 100).toFixed(1)
                               : '0.0'}%
                           </p>
-                          <p className="text-xs text-gray-600 dark:text-slate-400">Tỷ lệ</p>
+                          <p className="text-xs text-gray-600 dark:text-slate-400">{t('marketingtools.t_l')}</p>
                         </div>
                       </div>
 
@@ -790,13 +784,12 @@ export default function MarketingTools() {
                           className="w-full flex items-center justify-center gap-2 bg-gradient-to-r from-green-600 to-teal-600 text-white px-6 py-3 rounded-xl font-bold hover:shadow-lg active:scale-95 transition-all duration-300"
                         >
                           <ExternalLink className="w-5 h-5" />
-                          Xuất Bản Ngay
-                        </button>
+                          {t('marketingtools.xu_t_b_n_ngay')}</button>
                       ) : (
                         <div className="bg-green-50 dark:bg-green-900/20 border-2 border-green-500 dark:border-green-600 rounded-xl p-4 text-center">
                           <CheckCircle2 className="w-8 h-8 text-green-600 dark:text-green-400 mx-auto mb-2" />
-                          <p className="text-sm font-bold text-green-800 dark:text-green-300">Landing Page Đã Xuất Bản!</p>
-                          <p className="text-xs text-green-700 dark:text-green-400">Link đã sẵn sàng để chia sẻ</p>
+                          <p className="text-sm font-bold text-green-800 dark:text-green-300">{t('marketingtools.landing_page_xu_t_b_n')}</p>
+                          <p className="text-xs text-green-700 dark:text-green-400">{t('marketingtools.link_s_n_s_ng_chia_s')}</p>
                         </div>
                       )}
                     </div>
@@ -804,8 +797,8 @@ export default function MarketingTools() {
                 ) : (
                   <div className="bg-gray-50 dark:bg-slate-700 rounded-xl p-12 text-center border-2 border-dashed border-gray-300 dark:border-slate-600">
                     <Wand2 className="w-16 h-16 text-gray-400 dark:text-slate-500 mx-auto mb-4" />
-                    <p className="text-gray-600 dark:text-slate-300 font-medium">Chọn template và click "AI Viết Câu Chuyện"</p>
-                    <p className="text-sm text-gray-500 dark:text-slate-400 mt-2">AI sẽ tạo landing page chuyên nghiệp cho bạn</p>
+                    <p className="text-gray-600 dark:text-slate-300 font-medium">{t('marketingtools.ch_n_template_v_click_ai_vi')}</p>
+                    <p className="text-sm text-gray-500 dark:text-slate-400 mt-2">{t('marketingtools.ai_s_t_o_landing_page_chuy_n')}</p>
                   </div>
                 )}
               </div>
@@ -814,7 +807,7 @@ export default function MarketingTools() {
             {/* Existing Landing Pages */}
             {userLandingPages.length > 0 && (
               <div className="mt-8 pt-8 border-t border-gray-200 dark:border-slate-700">
-                <h3 className="font-bold text-gray-900 dark:text-slate-100 mb-4">Landing Pages Đã Tạo ({userLandingPages.length})</h3>
+                <h3 className="font-bold text-gray-900 dark:text-slate-100 mb-4">{t('marketingtools.landing_pages_t_o')}{userLandingPages.length})</h3>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   {userLandingPages.map((page) => (
                     <div
@@ -825,13 +818,12 @@ export default function MarketingTools() {
                         <span className="text-sm font-bold text-gray-900 dark:text-slate-100">{page.template}</span>
                         {page.isPublished && (
                           <span className="bg-green-100 text-green-700 text-xs px-2 py-1 rounded-full font-bold">
-                            Live
-                          </span>
+                            {t('marketingtools.live')}</span>
                         )}
                       </div>
                       <div className="flex items-center justify-between text-xs text-gray-600 dark:text-slate-400">
-                        <span>👁️ {page.views} views</span>
-                        <span>✅ {page.conversions} conversions</span>
+                        <span>👁️ {page.views} {t('marketingtools.views')}</span>
+                        <span>✅ {page.conversions} {t('marketingtools.conversions')}</span>
                       </div>
                     </div>
                   ))}

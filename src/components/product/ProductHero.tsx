@@ -6,6 +6,7 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { Product } from '@/types';
+import { useTranslation } from '@/hooks';
 
 interface Props {
     product: Product;
@@ -13,6 +14,7 @@ interface Props {
 }
 
 export const ProductHero: React.FC<Props> = ({ product, outOfStock }) => {
+    const { t } = useTranslation();
     return (
         <div className="relative bg-zinc-900/30 flex items-center justify-center p-12 lg:p-20 min-h-[600px] border-r border-white/5">
             <div className="absolute inset-x-8 inset-y-8 rounded-[3rem] border border-white/5 opacity-50 pointer-events-none" />
@@ -24,7 +26,7 @@ export const ProductHero: React.FC<Props> = ({ product, outOfStock }) => {
             />
             {outOfStock && (
                 <div className="absolute inset-0 flex items-center justify-center bg-black/40 backdrop-blur-sm">
-                    <span className="bg-white text-zinc-950 text-[10px] font-black px-12 py-4 rounded-full uppercase tracking-[0.3em] shadow-2xl skew-x-[-12deg]">Logistics Depleted</span>
+                    <span className="bg-white text-zinc-950 text-[10px] font-black px-12 py-4 rounded-full uppercase tracking-[0.3em] shadow-2xl skew-x-[-12deg]">{t('producthero.logistics_depleted')}</span>
                 </div>
             )}
         </div>

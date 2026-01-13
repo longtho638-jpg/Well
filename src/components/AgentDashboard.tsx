@@ -2,6 +2,7 @@ import { agentRegistry } from '@/agents';
 import { BaseAgent } from '@/agents/core/BaseAgent';
 import { Activity, AlertCircle, CheckCircle2, Clock, Zap, TrendingUp } from 'lucide-react';
 import { useEffect, useState } from 'react';
+import { useTranslation } from '@/hooks';
 
 interface AgentMetrics {
     name: string;
@@ -17,6 +18,7 @@ interface AgentMetrics {
 }
 
 export function AgentDashboard() {
+    const { t } = useTranslation();
     const [agents, setAgents] = useState<AgentMetrics[]>([]);
 
     useEffect(() => {
@@ -51,12 +53,10 @@ export function AgentDashboard() {
                 <div className="flex items-center gap-3">
                     <Zap className="w-10 h-10 text-purple-600 animate-pulse" />
                     <h1 className="text-4xl font-bold bg-gradient-to-r from-purple-600 to-blue-600 bg-clip-text text-transparent">
-                        Agent Ecosystem
-                    </h1>
+                        {t('agentdashboard.agent_ecosystem')}</h1>
                 </div>
                 <p className="text-gray-600 text-lg">
-                    Monitoring <span className="font-bold text-purple-600">{totalAgents}</span> intelligent agents
-                </p>
+                    {t('agentdashboard.monitoring')}<span className="font-bold text-purple-600">{totalAgents}</span> {t('agentdashboard.intelligent_agents')}</p>
             </div>
 
             {/* Summary Cards with gradient backgrounds */}
@@ -64,7 +64,7 @@ export function AgentDashboard() {
                 <div className="p-6 bg-gradient-to-br from-blue-500 to-blue-600 rounded-xl shadow-lg hover:shadow-xl transition-all transform hover:-translate-y-1">
                     <div className="flex items-center justify-between text-white">
                         <div>
-                            <p className="text-sm opacity-90">Total Agents</p>
+                            <p className="text-sm opacity-90">{t('agentdashboard.total_agents')}</p>
                             <p className="text-3xl font-bold">{totalAgents}</p>
                         </div>
                         <Activity className="w-10 h-10 opacity-80" />
@@ -74,7 +74,7 @@ export function AgentDashboard() {
                 <div className="p-6 bg-gradient-to-br from-green-500 to-green-600 rounded-xl shadow-lg hover:shadow-xl transition-all transform hover:-translate-y-1">
                     <div className="flex items-center justify-between text-white">
                         <div>
-                            <p className="text-sm opacity-90">Active Now</p>
+                            <p className="text-sm opacity-90">{t('agentdashboard.active_now')}</p>
                             <p className="text-3xl font-bold">{activeAgents}</p>
                         </div>
                         <CheckCircle2 className="w-10 h-10 opacity-80" />
@@ -84,7 +84,7 @@ export function AgentDashboard() {
                 <div className="p-6 bg-gradient-to-br from-purple-500 to-purple-600 rounded-xl shadow-lg hover:shadow-xl transition-all transform hover:-translate-y-1">
                     <div className="flex items-center justify-between text-white">
                         <div>
-                            <p className="text-sm opacity-90">Total KPIs</p>
+                            <p className="text-sm opacity-90">{t('agentdashboard.total_kpis')}</p>
                             <p className="text-3xl font-bold">{totalKPIs}</p>
                         </div>
                         <TrendingUp className="w-10 h-10 opacity-80" />
@@ -94,7 +94,7 @@ export function AgentDashboard() {
                 <div className="p-6 bg-gradient-to-br from-orange-500 to-orange-600 rounded-xl shadow-lg hover:shadow-xl transition-all transform hover:-translate-y-1">
                     <div className="flex items-center justify-between text-white">
                         <div>
-                            <p className="text-sm opacity-90">Total Actions</p>
+                            <p className="text-sm opacity-90">{t('agentdashboard.total_actions')}</p>
                             <p className="text-3xl font-bold">{totalActions}</p>
                         </div>
                         <AlertCircle className="w-10 h-10 opacity-80" />
@@ -130,8 +130,9 @@ export function AgentDashboard() {
                             {/* KPIs with progress bars */}
                             {agent.kpis.length > 0 && (
                                 <div className="space-y-2 pt-2">
-                                    <p className="text-xs font-semibold text-gray-700 uppercase tracking-wide">Performance</p>
+                                    <p className="text-xs font-semibold text-gray-700 uppercase tracking-wide">{t('agentdashboard.performance')}</p>
                                     {agent.kpis.slice(0, 3).map((kpi, i) => {
+                                        const { t } = useTranslation();
                                         const progress = Math.min((kpi.current / kpi.target) * 100, 100);
                                         return (
                                             <div key={i} className="space-y-1">
@@ -156,7 +157,7 @@ export function AgentDashboard() {
                             {/* Actions Count */}
                             <div className="pt-3 border-t border-gray-100 flex items-center justify-between">
                                 <p className="text-xs text-gray-500">
-                                    {agent.actions.length} action{agent.actions.length !== 1 ? 's' : ''}
+                                    {agent.actions.length} {t('agentdashboard.action')}{agent.actions.length !== 1 ? 's' : ''}
                                 </p>
                                 <Zap className="w-4 h-4 text-purple-500" />
                             </div>

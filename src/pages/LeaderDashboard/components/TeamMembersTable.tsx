@@ -111,8 +111,8 @@ export function TeamMembersTable({
                                 className="px-4 py-2.5 bg-zinc-100 dark:bg-zinc-800/50 border border-zinc-300 dark:border-zinc-700 rounded-xl text-sm text-white focus:outline-none focus:ring-2 focus:ring-emerald-500/50 backdrop-blur-sm"
                             >
                                 <option value="all" className="bg-zinc-900">{t('team.filters.allRanks')}</option>
-                                <option value="Partner" className="bg-zinc-900">Partner</option>
-                                <option value="Member" className="bg-zinc-900">Member</option>
+                                <option value="Partner" className="bg-zinc-900">{t('teammemberstable.partner')}</option>
+                                <option value="Member" className="bg-zinc-900">{t('teammemberstable.member')}</option>
                             </select>
 
                             {/* Sort */}

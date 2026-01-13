@@ -28,6 +28,7 @@ import {
 import { useProducts } from '@/hooks/useProducts';
 import { Product, NewProductDto } from '@/services/productService';
 import { formatVND } from '@/utils/format';
+import { useTranslation } from '@/hooks';
 
 // ============================================================
 // SUB-COMPONENTS
@@ -46,14 +47,15 @@ const StatCard: React.FC<{ label: string; value: number; icon: React.ElementType
 );
 
 const StockBadge: React.FC<{ stock: number }> = ({ stock }) => {
+    const { t } = useTranslation();
     if (stock === 0) return (
-        <span className="px-3 py-1 bg-rose-500/10 text-rose-500 border border-rose-500/20 rounded-lg text-[9px] font-black uppercase tracking-widest">Out of Stock</span>
+        <span className="px-3 py-1 bg-rose-500/10 text-rose-500 border border-rose-500/20 rounded-lg text-[9px] font-black uppercase tracking-widest">{t('products.out_of_stock')}</span>
     );
     if (stock < 10) return (
-        <span className="px-3 py-1 bg-amber-500/10 text-amber-500 border border-amber-500/20 rounded-lg text-[9px] font-black uppercase tracking-widest">Low Stock ({stock})</span>
+        <span className="px-3 py-1 bg-amber-500/10 text-amber-500 border border-amber-500/20 rounded-lg text-[9px] font-black uppercase tracking-widest">{t('products.low_stock')}{stock})</span>
     );
     return (
-        <span className="px-3 py-1 bg-emerald-500/10 text-emerald-500 border border-emerald-500/20 rounded-lg text-[9px] font-black uppercase tracking-widest">In Stock ({stock})</span>
+        <span className="px-3 py-1 bg-emerald-500/10 text-emerald-500 border border-emerald-500/20 rounded-lg text-[9px] font-black uppercase tracking-widest">{t('products.in_stock')}{stock})</span>
     );
 };
 
@@ -62,6 +64,7 @@ const StockBadge: React.FC<{ stock: number }> = ({ stock }) => {
 // ============================================================
 
 const AdminProducts: React.FC = () => {
+    const { t } = useTranslation();
     const {
         loading,
         actionLoading,
@@ -101,9 +104,8 @@ const AdminProducts: React.FC = () => {
                 <div className="space-y-2">
                     <h2 className="text-4xl font-black text-zinc-900 dark:text-white tracking-tighter uppercase italic flex items-center gap-3">
                         <Package className="text-[#00575A] w-10 h-10" />
-                        Global Catalog
-                    </h2>
-                    <p className="text-zinc-500 font-medium text-lg">Inventory management & DTTT strategy control.</p>
+                        {t('products.global_catalog')}</h2>
+                    <p className="text-zinc-500 font-medium text-lg">{t('products.inventory_management_dttt_st')}</p>
                 </div>
                 <div className="flex items-center gap-3">
                     <button onClick={refresh} className="p-4 bg-white dark:bg-zinc-900 border border-zinc-100 dark:border-white/5 rounded-2xl shadow-sm text-zinc-500">
@@ -114,8 +116,7 @@ const AdminProducts: React.FC = () => {
                         className="flex items-center gap-3 bg-[#00575A] text-white px-8 py-4 rounded-2xl font-black uppercase tracking-widest hover:bg-[#004447] transition-all shadow-xl shadow-teal-500/20"
                     >
                         <Plus size={20} />
-                        Add Product
-                    </button>
+                        {t('products.add_product')}</button>
                 </div>
             </div>
 
@@ -132,10 +133,9 @@ const AdminProducts: React.FC = () => {
                     <ShieldCheck size={20} />
                 </div>
                 <div>
-                    <h4 className="text-[10px] font-black uppercase tracking-widest text-[#00575A] mb-1">DTTT Commission Logic</h4>
+                    <h4 className="text-[10px] font-black uppercase tracking-widest text-[#00575A] mb-1">{t('products.dttt_commission_logic')}</h4>
                     <p className="text-sm text-zinc-600 dark:text-zinc-400 font-medium">
-                        Bonus Revenue (DTTT) represents the real financial basis for commission calculation.
-                        <span className="text-[#00575A] font-black ml-2 uppercase tracking-tighter">Member: 21% | Startup: 25%</span>
+                        {t('products.bonus_revenue_dttt_represent')}<span className="text-[#00575A] font-black ml-2 uppercase tracking-tighter">{t('products.member_21_startup_25')}</span>
                     </p>
                 </div>
             </div>
@@ -156,6 +156,7 @@ const AdminProducts: React.FC = () => {
             <div className="space-y-6">
                 <AnimatePresence mode="popLayout">
                     {filteredProducts.map((p) => {
+                        const { t } = useTranslation();
                         const isEditing = editingId === p.id;
                         const data = isEditing ? editForm as Product : p;
                         const memberComm = (data.bonus_revenue || 0) * 0.21;
@@ -190,7 +191,7 @@ const AdminProducts: React.FC = () => {
                                                 )}
                                                 <div className="flex items-center gap-3 mt-2">
                                                     <StockBadge stock={p.stock} />
-                                                    <span className="text-[10px] font-black uppercase tracking-widest text-zinc-400">SKU: {p.id.slice(0, 8)}</span>
+                                                    <span className="text-[10px] font-black uppercase tracking-widest text-zinc-400">{t('products.sku')}{p.id.slice(0, 8)}</span>
                                                 </div>
                                             </div>
                                             {isEditing ? (
@@ -209,7 +210,7 @@ const AdminProducts: React.FC = () => {
                                     {/* Pricing & DTTT */}
                                     <div className="space-y-6">
                                         <div className="space-y-2">
-                                            <label className="text-[10px] font-black text-zinc-400 uppercase tracking-widest">Retail MSRP</label>
+                                            <label className="text-[10px] font-black text-zinc-400 uppercase tracking-widest">{t('products.retail_msrp')}</label>
                                             {isEditing ? (
                                                 <input
                                                     type="number"
@@ -222,7 +223,7 @@ const AdminProducts: React.FC = () => {
                                             )}
                                         </div>
                                         <div className="space-y-2">
-                                            <label className="text-[10px] font-black text-[#00575A] uppercase tracking-widest">DTTT Basis</label>
+                                            <label className="text-[10px] font-black text-[#00575A] uppercase tracking-widest">{t('products.dttt_basis')}</label>
                                             {isEditing ? (
                                                 <input
                                                     type="number"
@@ -240,11 +241,11 @@ const AdminProducts: React.FC = () => {
                                     <div className="flex flex-col justify-between">
                                         <div className="bg-zinc-50 dark:bg-zinc-950/40 p-4 rounded-3xl border border-zinc-100 dark:border-white/5 space-y-2">
                                             <div className="flex justify-between items-center text-[10px] font-black uppercase text-zinc-400">
-                                                <span>Member Comm</span>
+                                                <span>{t('products.member_comm')}</span>
                                                 <span className="text-zinc-700 dark:text-zinc-200">{formatVND(memberComm)}</span>
                                             </div>
                                             <div className="flex justify-between items-center text-[10px] font-black uppercase text-[#00575A]">
-                                                <span>Partner Comm</span>
+                                                <span>{t('products.partner_comm')}</span>
                                                 <span className="font-black">{formatVND(partnerComm)}</span>
                                             </div>
                                         </div>
@@ -252,12 +253,12 @@ const AdminProducts: React.FC = () => {
                                         <div className="flex gap-2 mt-6">
                                             {isEditing ? (
                                                 <>
-                                                    <button onClick={onSave} className="flex-1 bg-[#00575A] text-white py-3 rounded-2xl font-black uppercase tracking-widest text-[10px] shadow-lg shadow-teal-500/20">Commit</button>
-                                                    <button onClick={() => setEditingId(null)} className="px-4 bg-zinc-100 dark:bg-zinc-800 text-zinc-500 py-3 rounded-2xl font-black uppercase tracking-widest text-[10px]">ESC</button>
+                                                    <button onClick={onSave} className="flex-1 bg-[#00575A] text-white py-3 rounded-2xl font-black uppercase tracking-widest text-[10px] shadow-lg shadow-teal-500/20">{t('products.commit')}</button>
+                                                    <button onClick={() => setEditingId(null)} className="px-4 bg-zinc-100 dark:bg-zinc-800 text-zinc-500 py-3 rounded-2xl font-black uppercase tracking-widest text-[10px]">{t('products.esc')}</button>
                                                 </>
                                             ) : (
                                                 <>
-                                                    <button onClick={() => onEdit(p)} className="flex-1 bg-zinc-100 dark:bg-zinc-800 text-zinc-900 dark:text-white py-3 rounded-2xl font-black uppercase tracking-widest text-[10px] border border-zinc-200 dark:border-white/5 hover:bg-zinc-200 transition-all">Edit Config</button>
+                                                    <button onClick={() => onEdit(p)} className="flex-1 bg-zinc-100 dark:bg-zinc-800 text-zinc-900 dark:text-white py-3 rounded-2xl font-black uppercase tracking-widest text-[10px] border border-zinc-200 dark:border-white/5 hover:bg-zinc-200 transition-all">{t('products.edit_config')}</button>
                                                     <button onClick={() => handleDelete(p.id, p.name)} className="p-3 bg-rose-500/5 text-rose-500 hover:bg-rose-500/10 rounded-2xl transition-all border border-rose-500/10"><Trash2 size={16} /></button>
                                                 </>
                                             )}

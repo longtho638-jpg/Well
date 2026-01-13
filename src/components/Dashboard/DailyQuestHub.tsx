@@ -10,17 +10,15 @@ import {
   CheckCircle2,
   ArrowRight,
   Coins,
-  Target,
   TrendingUp,
   Sparkles,
-  Zap,
   Trophy
 } from 'lucide-react';
 
 // Hooks & Orchestration
 import { useQuests, FullQuest } from '@/hooks/useQuests';
-import { useTranslation } from '@/hooks';
 import { formatNumber } from '@/utils/format';
+import { useTranslation } from '@/hooks';
 
 // ============================================================
 // SUB-COMPONENTS
@@ -91,7 +89,7 @@ const QuestCard: React.FC<{
         <div className="flex items-center gap-3">
           <div className="bg-amber-500/5 border border-amber-500/10 px-4 py-2 rounded-2xl flex items-center gap-2">
             <Coins size={16} className="text-amber-500" />
-            <span className="text-xs font-black text-amber-600">+{formatNumber(quest.reward)} GROW</span>
+            <span className="text-xs font-black text-amber-600">+{formatNumber(quest.reward)} {t('dailyquesthub.grow')}</span>
           </div>
           <span className="text-[10px] font-black uppercase tracking-widest text-zinc-400">{quest.type}</span>
         </div>
@@ -107,11 +105,11 @@ const QuestCard: React.FC<{
             }`}
         >
           {quest.status === 'done' ? (
-            <>COMPLETED</>
+            <>{t('dailyquesthub.completed')}</>
           ) : quest.status === 'claimable' ? (
-            <><Sparkles size={14} className="animate-pulse" /> CLAIM REWARD</>
+            <><Sparkles size={14} className="animate-pulse" /> {t('dailyquesthub.claim_reward')}</>
           ) : (
-            <>START QUEST <ArrowRight size={14} /></>
+            <>{t('dailyquesthub.start_quest')}<ArrowRight size={14} /></>
           )}
         </button>
       </div>
@@ -158,13 +156,13 @@ export const DailyQuestHub: React.FC = () => {
               <h3 className="text-2xl font-black text-white tracking-tighter uppercase italic flex items-center gap-3">
                 {t('dashboard.dailyQuest.title')}
                 {stats.isAllCompleted && (
-                  <motion.span initial={{ x: -10, opacity: 0 }} animate={{ x: 0, opacity: 1 }} className="bg-emerald-500 text-white text-[9px] font-black px-3 py-1 rounded-full shadow-lg uppercase tracking-widest">Mastered</motion.span>
+                  <motion.span initial={{ x: -10, opacity: 0 }} animate={{ x: 0, opacity: 1 }} className="bg-emerald-500 text-white text-[9px] font-black px-3 py-1 rounded-full shadow-lg uppercase tracking-widest">{t('dailyquesthub.mastered')}</motion.span>
                 )}
               </h3>
               <div className="flex items-center gap-4 text-white/60 text-[10px] font-black uppercase tracking-[0.2em]">
-                <span>{stats.completedCount}/{stats.totalCount} COMPLETED</span>
+                <span>{stats.completedCount}/{stats.totalCount} {t('dailyquesthub.completed_1')}</span>
                 <span className="w-1 h-1 bg-white/20 rounded-full" />
-                <span className="text-emerald-400">Yield: +{formatNumber(stats.totalRewards)} GROW</span>
+                <span className="text-emerald-400">{t('dailyquesthub.yield')}{formatNumber(stats.totalRewards)} {t('dailyquesthub.grow_1')}</span>
               </div>
             </div>
           </div>
@@ -173,7 +171,7 @@ export const DailyQuestHub: React.FC = () => {
             <TrendingUp className="text-emerald-400" size={20} />
             <div className="text-right">
               <p className="text-white font-black text-lg tracking-widest">+{formatNumber(stats.totalRewards)}</p>
-              <p className="text-[9px] font-black text-white/40 uppercase tracking-widest">Accumulated Today</p>
+              <p className="text-[9px] font-black text-white/40 uppercase tracking-widest">{t('dailyquesthub.accumulated_today')}</p>
             </div>
           </div>
         </div>

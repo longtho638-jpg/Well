@@ -23,6 +23,7 @@ import {
     MapPin,
 } from 'lucide-react';
 import { authLogger } from '@/utils/logger';
+import { useTranslation } from '@/hooks';
 
 export interface Session {
     id: string;
@@ -66,6 +67,7 @@ const MOCK_SESSIONS: Session[] = [
 ];
 
 const DeviceIcon: React.FC<{ device: Session['device'] }> = ({ device }) => {
+    const { t } = useTranslation();
     switch (device) {
         case 'mobile':
             return <Smartphone className="w-5 h-5" />;
@@ -81,6 +83,7 @@ export function SessionManager({
     onRevokeSession,
     onRevokeAllOthers,
 }: SessionManagerProps) {
+    const { t } = useTranslation();
     const [localSessions, setLocalSessions] = useState<Session[]>(sessions);
     const [revoking, setRevoking] = useState<string | null>(null);
     const [revokingAll, setRevokingAll] = useState(false);
@@ -135,10 +138,9 @@ export function SessionManager({
                         <Shield className="w-5 h-5 text-emerald-400" />
                     </div>
                     <div>
-                        <h3 className="text-lg font-bold text-zinc-100">Active Sessions</h3>
+                        <h3 className="text-lg font-bold text-zinc-100">{t('sessionmanager.active_sessions')}</h3>
                         <p className="text-sm text-zinc-500">
-                            {localSessions.length} device{localSessions.length !== 1 ? 's' : ''} connected
-                        </p>
+                            {localSessions.length} {t('sessionmanager.device')}{localSessions.length !== 1 ? 's' : ''} {t('sessionmanager.connected')}</p>
                     </div>
                 </div>
 
@@ -206,8 +208,7 @@ export function SessionManager({
                                         </span>
                                         {session.isCurrent && (
                                             <span className="px-2 py-0.5 text-xs font-bold bg-emerald-500/20 text-emerald-400 rounded-full">
-                                                This device
-                                            </span>
+                                                {t('sessionmanager.this_device')}</span>
                                         )}
                                     </div>
 
@@ -225,9 +226,9 @@ export function SessionManager({
                                     <div className="flex items-center gap-1 text-sm text-zinc-500">
                                         <Clock className="w-3.5 h-3.5" />
                                         {session.isCurrent ? (
-                                            <span className="text-emerald-400">Active now</span>
+                                            <span className="text-emerald-400">{t('sessionmanager.active_now')}</span>
                                         ) : (
-                                            <span>Last active {session.lastActive}</span>
+                                            <span>{t('sessionmanager.last_active')}{session.lastActive}</span>
                                         )}
                                     </div>
                                 </div>
@@ -258,10 +259,9 @@ export function SessionManager({
                 <div className="flex items-start gap-3">
                     <AlertCircle className="w-5 h-5 text-amber-400 flex-shrink-0 mt-0.5" />
                     <div className="text-sm">
-                        <p className="text-amber-200 font-medium">Security Note</p>
+                        <p className="text-amber-200 font-medium">{t('sessionmanager.security_note')}</p>
                         <p className="text-zinc-400 mt-1">
-                            If you don't recognize a session, sign out of it immediately and change your password.
-                        </p>
+                            {t('sessionmanager.if_you_don_t_recognize_a_sessi')}</p>
                     </div>
                 </div>
             </div>

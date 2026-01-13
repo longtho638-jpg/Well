@@ -29,6 +29,7 @@ import {
 
 // Hooks & Types
 import { useCMS, Banner, Announcement, NotificationTemplate } from '@/hooks/useCMS';
+import { useTranslation } from '@/hooks';
 
 // ============================================================
 // SUB-COMPONENTS
@@ -60,6 +61,7 @@ const TabButton: React.FC<{
 );
 
 const StatusBadge: React.FC<{ status: Banner['status'] | Announcement['status'] }> = ({ status }) => {
+    const { t } = useTranslation();
   const config = {
     active: { className: 'bg-emerald-500/10 text-emerald-500 border-emerald-500/20', label: 'LIVE' },
     draft: { className: 'bg-zinc-500/10 text-zinc-500 border-zinc-500/20', label: 'DRAFT' },
@@ -78,6 +80,7 @@ const StatusBadge: React.FC<{ status: Banner['status'] | Announcement['status'] 
 // ============================================================
 
 const CMS: React.FC = () => {
+    const { t } = useTranslation();
   const {
     activeTab,
     setActiveTab,
@@ -107,8 +110,8 @@ const CMS: React.FC = () => {
       {/* Header */}
       <div className="flex flex-col md:flex-row justify-between items-start md:items-end gap-6">
         <div>
-          <h2 className="text-4xl font-black text-zinc-900 dark:text-white tracking-tighter">Content Orchestrator</h2>
-          <p className="text-zinc-500 font-medium text-lg mt-1">Cross-platform content delivery & notification governance.</p>
+          <h2 className="text-4xl font-black text-zinc-900 dark:text-white tracking-tighter">{t('cms.content_orchestrator')}</h2>
+          <p className="text-zinc-500 font-medium text-lg mt-1">{t('cms.cross_platform_content_deliver')}</p>
         </div>
         <div className="flex items-center gap-3">
           <motion.button
@@ -129,7 +132,7 @@ const CMS: React.FC = () => {
             className="flex items-center gap-3 bg-[#00575A] text-white px-8 py-4 rounded-2xl font-black uppercase tracking-widest hover:bg-[#004447] transition-all shadow-xl shadow-teal-500/20"
           >
             <Plus size={20} />
-            CREATE {activeTab.slice(0, -1)}
+            {t('cms.create')}{activeTab.slice(0, -1)}
           </motion.button>
         </div>
       </div>
@@ -191,13 +194,13 @@ const CMS: React.FC = () => {
                           <h3 className="text-xl font-black text-zinc-900 dark:text-white tracking-tight">{banner.title}</h3>
                           <StatusBadge status={banner.status} />
                           <span className="px-3 py-1 text-[9px] font-black uppercase tracking-widest bg-zinc-100 dark:bg-zinc-800 text-zinc-500 rounded-lg">
-                            LOC: {banner.location}
+                            {t('cms.loc')}{banner.location}
                           </span>
                         </div>
                         <p className="text-sm font-medium text-zinc-500">"{banner.subtitle}"</p>
                         <div className="flex items-center gap-4 text-[10px] font-black uppercase tracking-widest text-zinc-400">
-                          <span>ACTION: {banner.ctaText}</span>
-                          <span>LINK: {banner.ctaLink}</span>
+                          <span>{t('cms.action')}{banner.ctaText}</span>
+                          <span>{t('cms.link')}{banner.ctaLink}</span>
                         </div>
                       </div>
                     </div>
@@ -234,7 +237,7 @@ const CMS: React.FC = () => {
                             <StatusBadge status={ann.status} />
                           </div>
                           <div className="flex items-center gap-4 mt-1 text-[10px] font-black uppercase tracking-widest text-zinc-400">
-                            <span className="flex items-center gap-1.5"><Globe size={11} /> TARGET: {ann.target}</span>
+                            <span className="flex items-center gap-1.5"><Globe size={11} /> {t('cms.target')}{ann.target}</span>
                             <span className="flex items-center gap-1.5"><Clock size={11} /> {new Date(ann.createdAt).toLocaleDateString('vi-VN')}</span>
                           </div>
                         </div>

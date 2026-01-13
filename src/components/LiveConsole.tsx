@@ -9,12 +9,14 @@ import { Terminal, Cpu, Wifi, Activity, ShieldCheck } from 'lucide-react';
 
 // Hooks
 import { useLiveConsole, LogEntry } from '@/hooks/useLiveConsole';
+import { useTranslation } from '@/hooks';
 
 // ============================================================
 // SUB-COMPONENTS
 // ============================================================
 
 const LogLine: React.FC<{ log: LogEntry }> = ({ log }) => {
+    const { t } = useTranslation();
     const statusColors = {
         info: 'text-teal-400/80',
         success: 'text-emerald-400',
@@ -50,6 +52,7 @@ const LogLine: React.FC<{ log: LogEntry }> = ({ log }) => {
 // ============================================================
 
 export const LiveConsole: React.FC = () => {
+    const { t } = useTranslation();
     const { logs } = useLiveConsole();
     const scrollRef = useRef<HTMLDivElement>(null);
 
@@ -75,17 +78,16 @@ export const LiveConsole: React.FC = () => {
                     </div>
                     <div className="flex items-center gap-3 text-teal-500">
                         <Terminal size={18} />
-                        <span className="font-black tracking-[0.2em] text-[10px] uppercase italic text-teal-400">Live Operations // Node.Agent.Bee</span>
+                        <span className="font-black tracking-[0.2em] text-[10px] uppercase italic text-teal-400">{t('liveconsole.live_operations_node_agent')}</span>
                     </div>
                 </div>
 
                 <div className="flex items-center gap-6 text-[9px] font-black text-teal-500/50 uppercase tracking-widest hidden sm:flex">
-                    <div className="flex items-center gap-2"><Cpu size={12} /> SYNC: ACTIVE</div>
-                    <div className="flex items-center gap-2"><Wifi size={12} /> LAT: 4ms</div>
+                    <div className="flex items-center gap-2"><Cpu size={12} /> {t('liveconsole.sync_active')}</div>
+                    <div className="flex items-center gap-2"><Wifi size={12} /> {t('liveconsole.lat_4ms')}</div>
                     <div className="flex items-center gap-2 text-emerald-400">
                         <div className="w-2 h-2 bg-emerald-500 rounded-full animate-pulse shadow-[0_0_10px_rgba(16,185,129,0.5)]"></div>
-                        ENCRYPTED
-                    </div>
+                        {t('liveconsole.encrypted')}</div>
                 </div>
             </div>
 
@@ -104,7 +106,7 @@ export const LiveConsole: React.FC = () => {
 
                 {/* Blinking Prompt */}
                 <div className="flex items-center gap-2 text-teal-500 mt-4 px-3">
-                    <span className="text-[10px] font-black">wellnexus@bee:~ $</span>
+                    <span className="text-[10px] font-black">{t('liveconsole.wellnexus_bee')}</span>
                     <motion.div
                         animate={{ opacity: [1, 0] }}
                         transition={{ repeat: Infinity, duration: 0.8 }}
@@ -116,8 +118,8 @@ export const LiveConsole: React.FC = () => {
             {/* Footer Telemetry */}
             <div className="bg-teal-500/5 border-t border-teal-500/10 px-6 py-2 flex justify-between items-center text-[8px] font-black text-teal-500/30 uppercase tracking-[0.3em]">
                 {/* <div>BEE-AGENT CORE V4.2.0-STABLE</div> */}
-                <span>BEE-AGENT CORE V4.2.0-STABLE</span>
-                <span>TX: {Math.floor(Math.random() * 9999)} bps</span>
+                <span>{t('liveconsole.bee_agent_core_v4_2_0_stable')}</span>
+                <span>{t('liveconsole.tx')}{Math.floor(Math.random() * 9999)} {t('liveconsole.bps')}</span>
             </div>
         </div>
     );

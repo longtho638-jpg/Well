@@ -34,6 +34,10 @@ export interface LiveActivity {
     color: string;
     bgColor: string;
     amount?: number;
+    // Aligning types for consistency across components
+    user?: string; 
+    detail?: string;
+    location?: string;
 }
 
 const vietnameseNames = [
@@ -121,12 +125,15 @@ export function useDashboard() {
             id: `activity-${Date.now()}-${Math.random()}`,
             type: randomType,
             userName: randomName,
+            user: randomName, // Alias for compatibility
             message: messageText,
+            detail: messageText, // Alias for compatibility
             timestamp: new Date(),
             icon: template.icon,
             color: template.color,
             bgColor: template.bgColor,
-            amount
+            amount,
+            location: 'HCM' // Default location
         };
     }, [t]);
 

@@ -21,6 +21,7 @@ import {
     Download,
     Filter,
 } from 'lucide-react';
+import { useTranslation } from '@/hooks';
 
 export interface LoginAttempt {
     id: string;
@@ -81,6 +82,7 @@ const MOCK_ATTEMPTS: LoginAttempt[] = [
 ];
 
 const StatusBadge: React.FC<{ status: LoginAttempt['status'] }> = ({ status }) => {
+    const { t } = useTranslation();
     const config = {
         success: {
             icon: CheckCircle,
@@ -133,6 +135,7 @@ export function LoginActivityLog({
     attempts = MOCK_ATTEMPTS,
     onExport,
 }: LoginActivityLogProps) {
+    const { t } = useTranslation();
     const [filter, setFilter] = useState<'all' | 'success' | 'failed'>('all');
 
     const filteredAttempts = attempts.filter((attempt) => {
@@ -148,10 +151,9 @@ export function LoginActivityLog({
             {/* Header */}
             <div className="flex items-center justify-between">
                 <div>
-                    <h3 className="text-lg font-bold text-zinc-100">Login Activity</h3>
+                    <h3 className="text-lg font-bold text-zinc-100">{t('loginactivitylog.login_activity')}</h3>
                     <p className="text-sm text-zinc-500">
-                        Recent sign-in attempts to your account
-                    </p>
+                        {t('loginactivitylog.recent_sign_in_attempts_to_you')}</p>
                 </div>
 
                 <div className="flex items-center gap-2">
@@ -196,11 +198,9 @@ export function LoginActivityLog({
                         <AlertTriangle className="w-5 h-5 text-red-400 flex-shrink-0" />
                         <div className="text-sm">
                             <p className="text-red-200 font-medium">
-                                {failedCount} failed login attempt{failedCount !== 1 ? 's' : ''} detected
-                            </p>
+                                {failedCount} {t('loginactivitylog.failed_login_attempt')}{failedCount !== 1 ? 's' : ''} {t('loginactivitylog.detected')}</p>
                             <p className="text-zinc-400 mt-1">
-                                If you don't recognize these attempts, we recommend changing your password.
-                            </p>
+                                {t('loginactivitylog.if_you_don_t_recognize_these_a')}</p>
                         </div>
                     </div>
                 </motion.div>
@@ -212,17 +212,13 @@ export function LoginActivityLog({
                     <thead className="bg-zinc-900/50 border-b border-zinc-800">
                         <tr>
                             <th className="px-4 py-3 text-left text-xs font-medium text-zinc-500 uppercase tracking-wider">
-                                Time
-                            </th>
+                                {t('loginactivitylog.time')}</th>
                             <th className="px-4 py-3 text-left text-xs font-medium text-zinc-500 uppercase tracking-wider">
-                                Device
-                            </th>
+                                {t('loginactivitylog.device')}</th>
                             <th className="px-4 py-3 text-left text-xs font-medium text-zinc-500 uppercase tracking-wider">
-                                Location
-                            </th>
+                                {t('loginactivitylog.location')}</th>
                             <th className="px-4 py-3 text-left text-xs font-medium text-zinc-500 uppercase tracking-wider">
-                                Status
-                            </th>
+                                {t('loginactivitylog.status')}</th>
                         </tr>
                     </thead>
                     <tbody className="divide-y divide-zinc-800">
@@ -273,8 +269,7 @@ export function LoginActivityLog({
 
                 {filteredAttempts.length === 0 && (
                     <div className="px-4 py-8 text-center text-zinc-500">
-                        No login attempts found
-                    </div>
+                        {t('loginactivitylog.no_login_attempts_found')}</div>
                 )}
             </div>
         </div>

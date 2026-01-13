@@ -1,6 +1,7 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { Network, Globe, TrendingUp, ChevronRight } from 'lucide-react';
+import { useTranslation } from '@/hooks';
 
 interface VentureMarketMapProps {
     content: {
@@ -18,6 +19,7 @@ interface VentureMarketMapProps {
 }
 
 export const VentureMarketMap: React.FC<VentureMarketMapProps> = ({ content, onJoin }) => {
+    const { t } = useTranslation();
     return (
         <section id="market" className="relative py-32 bg-zinc-950/20">
             <div className="relative z-10 max-w-7xl mx-auto px-6 lg:px-12">
@@ -111,7 +113,7 @@ export const VentureMarketMap: React.FC<VentureMarketMapProps> = ({ content, onJ
                                     <div className="text-4xl font-black text-white italic tracking-tighter group-hover:text-teal-400 transition-colors">
                                         {region.market}
                                     </div>
-                                    <div className="text-[9px] text-zinc-500 font-black uppercase tracking-widest italic mt-1">Total Addressable Market</div>
+                                    <div className="text-[9px] text-zinc-500 font-black uppercase tracking-widest italic mt-1">{t('venturemarketmap.total_addressable_market')}</div>
                                 </div>
 
                                 <div className="flex items-center gap-3">
@@ -119,7 +121,7 @@ export const VentureMarketMap: React.FC<VentureMarketMapProps> = ({ content, onJ
                                     <span className="text-emerald-400 font-black text-xs font-mono">
                                         {region.growth}
                                     </span>
-                                    <span className="text-zinc-600 text-[9px] font-black uppercase tracking-widest italic">Velocity</span>
+                                    <span className="text-zinc-600 text-[9px] font-black uppercase tracking-widest italic">{t('venturemarketmap.velocity')}</span>
                                 </div>
                             </motion.div>
                         ))}
@@ -139,8 +141,7 @@ export const VentureMarketMap: React.FC<VentureMarketMapProps> = ({ content, onJ
                         whileTap={{ scale: 0.98 }}
                     >
                         <Globe className="w-6 h-6" />
-                        Init SEA Expansion Protocol
-                        <ChevronRight className="w-6 h-6 group-hover:translate-x-1 transition-transform" />
+                        {t('venturemarketmap.init_sea_expansion_protocol')}<ChevronRight className="w-6 h-6 group-hover:translate-x-1 transition-transform" />
                     </motion.button>
                 </motion.div>
             </div>

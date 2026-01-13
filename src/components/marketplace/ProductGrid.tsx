@@ -4,6 +4,7 @@ import { ShoppingCart, ArrowRight } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { Product } from '@/types';
 import { formatVND } from '@/utils/format';
+import { useTranslation } from '@/hooks';
 
 interface ProductGridProps {
     products: Product[];
@@ -18,9 +19,11 @@ export const ProductGrid: React.FC<ProductGridProps> = ({
     onAddToCart,
     onViewDetail,
 }) => {
+    const { t } = useTranslation();
     return (
         <BentoGrid className="grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {products.map((product, idx) => {
+                const { t } = useTranslation();
                 const isRecommended = recommendedIds.includes(product.id);
 
                 return (
@@ -37,7 +40,7 @@ export const ProductGrid: React.FC<ProductGridProps> = ({
                         >
                             {isRecommended && (
                                 <div className="absolute -top-4 left-1/2 -translate-x-1/2 z-20">
-                                    <AuraBadge color="pink">AI RECOMMENDED</AuraBadge>
+                                    <AuraBadge color="pink">{t('productgrid.ai_recommended')}</AuraBadge>
                                 </div>
                             )}
 
@@ -59,8 +62,7 @@ export const ProductGrid: React.FC<ProductGridProps> = ({
                                         className="bg-white text-zinc-900 px-6 py-3.5 rounded-2xl font-black text-xs uppercase tracking-tighter flex items-center gap-2.5 shadow-2xl transform translate-y-4 group-hover:translate-y-0 transition-all duration-300"
                                     >
                                         <ShoppingCart className="w-4 h-4" />
-                                        Add to Cart
-                                    </motion.button>
+                                        {t('productgrid.add_to_cart')}</motion.button>
                                 </div>
                             </div>
 
@@ -77,7 +79,7 @@ export const ProductGrid: React.FC<ProductGridProps> = ({
 
                                 <div className="flex items-end justify-between mt-auto">
                                     <div className="space-y-1">
-                                        <div className="text-[10px] text-zinc-400 font-black uppercase tracking-widest">Price</div>
+                                        <div className="text-[10px] text-zinc-400 font-black uppercase tracking-widest">{t('productgrid.price')}</div>
                                         <div className="text-2xl font-black text-zinc-900 dark:text-white tracking-tight">
                                             {formatVND(product.price)}
                                         </div>
@@ -85,8 +87,7 @@ export const ProductGrid: React.FC<ProductGridProps> = ({
 
                                     <div className="flex flex-col items-end gap-3">
                                         <div className="px-3 py-1.5 bg-emerald-500/10 border border-emerald-500/20 rounded-full text-[10px] text-emerald-600 font-black uppercase tracking-wider">
-                                            +{product.commissionRate * 100}% Commission
-                                        </div>
+                                            +{product.commissionRate * 100}{t('productgrid.commission')}</div>
                                         <button
                                             onClick={() => onViewDetail(product.id)}
                                             className="w-12 h-12 bg-zinc-900 dark:bg-white rounded-2xl flex items-center justify-center text-white dark:text-zinc-900 hover:scale-110 transition-transform shadow-xl"
