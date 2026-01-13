@@ -1040,7 +1040,19 @@ export const vi = {
       notifications: 'Thông báo',
       integrations: 'Tích hợp',
       backup: 'Sao lưu',
-    }
+    },
+
+    // AST Migration Keys
+    mission: 'Mission',
+    control_center: 'Control Center',
+    ai_sentinel_active: 'AI Sentinel Active',
+    monitoring_2_4k_identity_nodes: 'Monitoring 2.4k identity nodes',
+    b_ng_i_u_khi_n: 'Bảng điều khiển',
+    administrator: 'Administrator',
+    superuser_node: 'Superuser node',
+    mission_control: 'Mission Control',
+    administration: 'Administration',
+    secure_session: 'Secure Session',
   },
 
   // Auth Pages
@@ -1204,7 +1216,124 @@ export const vi = {
     withdrawalSuccess: 'Yêu cầu rút tiền thành công!',
     stakingSuccess: 'Gửi tiết kiệm thành công!',
     unstakingSuccess: 'Rút tiết kiệm thành công!',
-  }
+  },
+
+  // Agent Dashboard - AST Migration Keys
+  agentdashboard: {
+    establishing_node_sync: 'Establishing node sync...',
+    agent_command_center: 'Agent Command Center',
+    intelligence_grid_optimal: 'Intelligence Grid: Optimal',
+    operational_tier: 'Operational Tier: ',
+    v1_2_0_stable: 'v1.2.0 Stable',
+    registry: 'Registry',
+    nodes: 'Nodes',
+    strategic_simulator_offline: 'Strategic Simulator Offline',
+    connect_to_the_policy_engine_r: 'Connect to the Policy Engine to run real-time market simulations.',
+  },
+
+  // Copilot Page - AST Migration Keys
+  copilotpage: {
+    chat_m_i: 'Chat mới',
+    l_ch_s_chat: 'Lịch sử Chat',
+    xem_l_ch_s_chat: 'Xem lịch sử chat',
+    g_i_prompt_click_d_ng_n: 'Gợi ý Prompt - Click để dùng ngay',
+    '85': '85%',
+  },
+
+  // Signup Page - AST Migration Keys
+  signup: {
+    early_access_2_0: 'Early Access 2.0',
+  },
+
+  // Error Boundary - AST Migration Keys
+  errorboundary: {
+    oops_something_went_wrong: 'Oops! Something went wrong',
+    we_ve_encountered_an_unexpecte: 'We encountered an unexpected error. Please try again.',
+    error_details_dev_only: 'Error Details (Dev Only)',
+    reload_page: 'Reload Page',
+    go_home: 'Go Home',
+  },
+
+  // Rank Progress Bar - AST Migration Keys
+  rankprogressbar: {
+    rank_upgrade_progress: 'Tiến độ nâng hạng',
+    upgrade_to: 'Nâng lên ',
+    kh_i_nghi_p: 'Khởi nghiệp',
+    '25_commission': '- Hoa hồng 25%',
+    complete: 'Hoàn thành',
+    remaining: 'Còn lại',
+    after_upgrade: 'Sau nâng hạng',
+    '25_rate': '25% Hoa hồng',
+    almost_there_just: 'Sắp đạt rồi! Chỉ còn ',
+    more_to_kh_i_nghi_p_rank: ' nữa để lên hạng Khởi nghiệp!',
+  },
+
+  // Withdrawal Modal - AST Migration Keys
+  withdrawalmodal: {
+    request_submitted: 'Yêu cầu đã gửi!',
+    your_withdrawal_request_has_be: 'Yêu cầu rút tiền đã được gửi thành công.',
+    processing_time_1_3_business: 'Thời gian xử lý: 1-3 ngày làm việc',
+    available_balance: 'Số dư khả dụng',
+    '25': '25%',
+    '50': '50%',
+    '75': '75%',
+    max: 'Max',
+    bank_account_details: 'Thông tin tài khoản ngân hàng',
+    processing_time: 'Thời gian xử lý',
+    withdrawal_requests_are_proces: 'Yêu cầu rút tiền được xử lý trong 1-3 ngày làm việc.',
+    cancel: 'Hủy',
+    submit_request: 'Gửi yêu cầu',
+  },
+
+  // East Asia Brand - AST Migration Keys
+  eastasiabrand: {
+    wellnexus: 'WellNexus',
+    v_ch_ng_t_i: 'Về chúng tôi',
+    s_n_ph_m: 'Sản phẩm',
+    i_t_c: 'Đối tác',
+    b_t_u: 'Bắt đầu',
+  },
+
+  // Sidebar - AST Migration Keys
+  sidebar: {
+    wellnexus: 'WellNexus',
+    social_commerce: 'Social Commerce',
+    the_coach: 'The Coach',
+    day_3_30: 'Day 3/30',
+    xp: 'XP',
+    get_ai_advice: 'Get AI Advice',
+  },
+
+  // Live Activities Ticker - AST Migration Keys
+  liveactivitiesticker: {
+    recent: '',
+    nodes: ' activities',
+  },
+
+  // Referral QR Code - AST Migration Keys
+  referralqrcode: {
+    visual_id_key: 'Visual ID Key',
+    wellnexus_network: 'WellNexus Network',
+    scanning_initiates_sync: 'Scanning initiates sync',
+    commit_to_local_storage: 'Commit to Local Storage',
+    recommended_for_high_conversio: 'Recommended for high conversion',
+  },
+
+  // Referral Trend Chart - AST Migration Keys
+  referraltrendchart: {
+    propagation_velocity: 'Propagation Velocity',
+    growth_yield_trajectory: 'Growth & Yield Trajectory',
+  },
+
+  // Affiliate Link Section - AST Migration Keys
+  affiliatelinksection: {
+    '4_9': '4.9%',
+  },
+
+  // Button Component
+  button: {
+    loading: 'Đang tải...',
+  },
 
 
 };
