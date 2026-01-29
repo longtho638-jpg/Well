@@ -488,29 +488,35 @@ export const Wallet: React.FC = () => {
                     </td>
                     <td className="py-4 px-4">
                       <div className="flex items-center gap-2">
-                        <code className="text-emerald-600 dark:text-emerald-400 text-xs font-mono bg-emerald-500/10 px-2 py-1 rounded border border-emerald-500/20">
-                          {tx.hash.slice(0, 10)}...{tx.hash.slice(-8)}
-                        </code>
-                        <button
-                          onClick={() => handleCopyHash(tx.hash)}
-                          className="p-2 hover:bg-zinc-100 dark:hover:bg-zinc-800 rounded-lg transition-all group/btn opacity-0 group-hover/row:opacity-100"
-                          title={t('common.copy')}
-                        >
-                          {copiedHash === tx.hash ? (
-                            <CheckCircle className="w-4 h-4 text-emerald-600 dark:text-emerald-400" />
-                          ) : (
-                            <Copy className="w-4 h-4 text-zinc-400 dark:text-zinc-500 group-hover/btn:text-emerald-600 dark:group-hover/btn:text-emerald-400" />
-                          )}
-                        </button>
-                        <a
-                          href={`https://bscscan.com/tx/${tx.hash}`}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="p-2 hover:bg-zinc-100 dark:hover:bg-zinc-800 rounded-lg transition-all group/btn opacity-0 group-hover/row:opacity-100"
-                          title="View on BSCScan"
-                        >
-                          <ExternalLink className="w-4 h-4 text-zinc-400 dark:text-zinc-500 group-hover/btn:text-emerald-600 dark:group-hover/btn:text-emerald-400" />
-                        </a>
+                        {tx.hash ? (
+                          <>
+                            <code className="text-emerald-600 dark:text-emerald-400 text-xs font-mono bg-emerald-500/10 px-2 py-1 rounded border border-emerald-500/20">
+                              {tx.hash.slice(0, 10)}...{tx.hash.slice(-8)}
+                            </code>
+                            <button
+                              onClick={() => handleCopyHash(tx.hash!)}
+                              className="p-2 hover:bg-zinc-100 dark:hover:bg-zinc-800 rounded-lg transition-all group/btn opacity-0 group-hover/row:opacity-100"
+                              title={t('common.copy')}
+                            >
+                              {copiedHash === tx.hash ? (
+                                <CheckCircle className="w-4 h-4 text-emerald-600 dark:text-emerald-400" />
+                              ) : (
+                                <Copy className="w-4 h-4 text-zinc-400 dark:text-zinc-500 group-hover/btn:text-emerald-600 dark:group-hover/btn:text-emerald-400" />
+                              )}
+                            </button>
+                            <a
+                              href={`https://bscscan.com/tx/${tx.hash}`}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="p-2 hover:bg-zinc-100 dark:hover:bg-zinc-800 rounded-lg transition-all group/btn opacity-0 group-hover/row:opacity-100"
+                              title="View on BSCScan"
+                            >
+                              <ExternalLink className="w-4 h-4 text-zinc-400 dark:text-zinc-500 group-hover/btn:text-emerald-600 dark:group-hover/btn:text-emerald-400" />
+                            </a>
+                          </>
+                        ) : (
+                          <span className="text-zinc-400 text-xs">—</span>
+                        )}
                       </div>
                     </td>
                   </motion.tr>

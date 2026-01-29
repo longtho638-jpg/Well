@@ -73,6 +73,7 @@ export const Modal: React.FC<ModalProps> = ({
         document.removeEventListener('keydown', handleTab);
       };
     }
+    return undefined;
   }, [isOpen]);
 
   const maxWidthClasses = {

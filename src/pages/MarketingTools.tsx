@@ -3,48 +3,30 @@ import { useState } from 'react';
 import { motion } from 'framer-motion';
 import {
   Gift,
-  Copy,
-  Download,
-  Image as ImageIcon,
-  Share2,
-  CheckCircle2,
-  Plus,
+  Sparkles,
+  FileText,
   QrCode,
+  Wand2,
+  Palette,
+  CheckCircle2,
+  Upload,
+  Image as ImageIcon,
   Eye,
   TrendingUp,
-  FileText,
-  Link as LinkIcon,
-  Sparkles,
-  Tag,
-  Palette,
-  Upload,
-  Wand2,
+  BarChart3,
   ExternalLink,
-  BarChart3
+  Copy,
 } from 'lucide-react';
 import { useStore } from '@/store';
-import { formatVND, formatNumber } from '@/utils/format';
 import { useTranslation } from '@/hooks';
 import { LandingPageTemplateType } from '@/types';
-
-// Gift Card Interface
-interface GiftCard {
-  id: string;
-  code: string;
-  discount: number;
-  type: 'percentage' | 'fixed';
-  usageCount: number;
-  createdAt: Date;
-}
-
-// Content Template Interface
-interface ContentTemplate {
-  id: string;
-  title: string;
-  content: string;
-  imageUrl: string;
-  category: 'product' | 'testimonial' | 'tips' | 'promotion';
-}
+import {
+  GiftCardSection,
+  ContentLibrarySection,
+  AffiliateLinkSection,
+  GiftCard,
+  ContentTemplate,
+} from '@/components/MarketingTools';
 
 // Sample content templates
 const contentTemplates: ContentTemplate[] = [
@@ -100,12 +82,7 @@ export default function MarketingTools() {
     }
   ]);
 
-  const [showCreateCard, setShowCreateCard] = useState(false);
-  const [newCardCode, setNewCardCode] = useState('');
-  const [newCardDiscount, setNewCardDiscount] = useState('');
-  const [newCardType, setNewCardType] = useState<'percentage' | 'fixed'>('fixed');
   const [copiedText, setCopiedText] = useState<string | null>(null);
-  const [showQRCode, setShowQRCode] = useState(false);
 
   // AI Landing Builder State
   const [selectedTemplate, setSelectedTemplate] = useState<LandingPageTemplateType>('expert');
@@ -117,28 +94,20 @@ export default function MarketingTools() {
   const affiliateLink = `https://wellnexus.vn/ref/${user.id}`;
   const qrCodeUrl = `https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=${encodeURIComponent(affiliateLink)}&bgcolor=00575A&color=FFBF00`;
 
-  const handleCreateGiftCard = () => {
-    if (!newCardCode || !newCardDiscount) return;
-
-    const newCard: GiftCard = {
-      id: Date.now().toString(),
-      code: newCardCode.toUpperCase(),
-      discount: parseFloat(newCardDiscount),
-      type: newCardType,
-      usageCount: 0,
-      createdAt: new Date()
-    };
-
-    setGiftCards(prev => [newCard, ...prev]);
-    setNewCardCode('');
-    setNewCardDiscount('');
-    setShowCreateCard(false);
-  };
-
   const handleCopyText = (text: string, id: string) => {
     navigator.clipboard.writeText(text);
     setCopiedText(id);
     setTimeout(() => setCopiedText(null), 2000);
+  };
+
+  const handleCreateGiftCard = (cardData: Omit<GiftCard, 'id' | 'usageCount' | 'createdAt'>) => {
+    const newCard: GiftCard = {
+      ...cardData,
+      id: Date.now().toString(),
+      usageCount: 0,
+      createdAt: new Date()
+    };
+    setGiftCards(prev => [newCard, ...prev]);
   };
 
   const handleDownloadImage = (imageUrl: string, filename: string) => {
@@ -167,7 +136,7 @@ export default function MarketingTools() {
         // User cancelled share - no action needed
       }
     } else {
-      handleCopyText(affiliateLink, 'qr-link');
+      navigator.clipboard.writeText(affiliateLink);
     }
   };
 
@@ -242,352 +211,28 @@ export default function MarketingTools() {
           </div>
         </div>
 
+
         {/* Gift Card Section */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.1 }}
-          className="bg-white dark:bg-slate-800 rounded-2xl shadow-xl overflow-hidden"
-        >
-          <div className="bg-gradient-to-r from-pink-50 dark:from-slate-700 to-purple-50 dark:to-slate-700 border-b border-gray-200 dark:border-slate-700 p-6">
-            <div className="flex items-center justify-between">
-              <div className="flex items-center gap-3">
-                <div className="bg-gradient-to-br from-pink-500 to-purple-600 p-3 rounded-xl shadow-lg">
-                  <Gift className="w-6 h-6 text-white" />
-                </div>
-                <div>
-                  <h2 className="text-2xl font-bold text-gray-900 dark:text-slate-100">{t('marketing.giftCards.title')}</h2>
-                  <p className="text-sm text-gray-600 dark:text-slate-400">{t('marketing.giftCards.subtitle')}</p>
-                </div>
-              </div>
-              <button
-                onClick={() => setShowCreateCard(!showCreateCard)}
-                className="flex items-center gap-2 bg-gradient-to-r from-pink-500 to-purple-600 text-white px-6 py-3 rounded-xl font-semibold hover:shadow-lg active:scale-95 active:shadow-inner transition-all duration-300"
-              >
-                <Plus className="w-5 h-5" />
-                {t('marketing.giftCards.createNew')}
-              </button>
-            </div>
-          </div>
-
-          <div className="p-6">
-            {/* Create Gift Card Form */}
-            {showCreateCard && (
-              <motion.div
-                initial={{ opacity: 0, height: 0 }}
-                animate={{ opacity: 1, height: 'auto' }}
-                exit={{ opacity: 0, height: 0 }}
-                className="bg-gradient-to-br from-pink-50 dark:from-slate-700 to-purple-50 dark:to-slate-700 rounded-xl p-6 mb-6 border-2 border-pink-200 dark:border-slate-600"
-              >
-                <h3 className="text-lg font-bold text-gray-900 dark:text-slate-100 mb-4">{t('marketing.giftCards.createTitle')}</h3>
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 dark:text-slate-300 mb-2">
-                      {t('marketing.giftCards.codeLabel')}
-                    </label>
-                    <input
-                      type="text"
-                      value={newCardCode}
-                      onChange={(e) => setNewCardCode(e.target.value)}
-                      placeholder={t('marketing.giftCards.codePlaceholder')}
-                      className="w-full px-4 py-2 rounded-lg border-2 border-gray-300 dark:border-slate-600 bg-white dark:bg-slate-800 text-gray-900 dark:text-slate-100 placeholder:text-gray-400 dark:placeholder:text-slate-500 focus:border-pink-500 dark:focus:border-pink-400 focus:ring-2 focus:ring-pink-500/20 dark:focus:ring-pink-400/20 focus:outline-none transition-all duration-200"
-                    />
-                  </div>
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 dark:text-slate-300 mb-2">
-                      {t('marketing.giftCards.valueLabel')}
-                    </label>
-                    <input
-                      type="number"
-                      value={newCardDiscount}
-                      onChange={(e) => setNewCardDiscount(e.target.value)}
-                      placeholder={newCardType === 'fixed' ? '200000' : '15'}
-                      className="w-full px-4 py-2 rounded-lg border-2 border-gray-300 dark:border-slate-600 bg-white dark:bg-slate-800 text-gray-900 dark:text-slate-100 placeholder:text-gray-400 dark:placeholder:text-slate-500 focus:border-pink-500 dark:focus:border-pink-400 focus:ring-2 focus:ring-pink-500/20 dark:focus:ring-pink-400/20 focus:outline-none transition-all duration-200"
-                    />
-                  </div>
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 dark:text-slate-300 mb-2">
-                      {t('marketing.giftCards.typeLabel')}
-                    </label>
-                    <select
-                      value={newCardType}
-                      onChange={(e) => setNewCardType(e.target.value as 'percentage' | 'fixed')}
-                      className="w-full px-4 py-2 rounded-lg border-2 border-gray-300 dark:border-slate-600 bg-white dark:bg-slate-800 text-gray-900 dark:text-slate-100 focus:border-pink-500 dark:focus:border-pink-400 focus:ring-2 focus:ring-pink-500/20 dark:focus:ring-pink-400/20 focus:outline-none transition-all duration-200"
-                    >
-                      <option value="fixed">{t('marketing.giftCards.typeFixed')}</option>
-                      <option value="percentage">{t('marketing.giftCards.typePercentage')}</option>
-                    </select>
-                  </div>
-                </div>
-                <div className="flex gap-3">
-                  <button
-                    onClick={handleCreateGiftCard}
-                    className="flex items-center gap-2 bg-gradient-to-r from-pink-500 to-purple-600 text-white px-6 py-2 rounded-lg font-semibold hover:shadow-lg active:scale-95 transition-all duration-300"
-                  >
-                    <CheckCircle2 className="w-5 h-5" />
-                    {t('marketing.giftCards.createButton')}
-                  </button>
-                  <button
-                    onClick={() => setShowCreateCard(false)}
-                    className="px-6 py-2 rounded-lg border-2 border-gray-300 dark:border-slate-600 bg-white dark:bg-slate-800 text-gray-700 dark:text-slate-100 hover:bg-gray-50 dark:hover:bg-slate-700 active:bg-gray-100 dark:active:bg-slate-600 transition-all duration-200"
-                  >
-                    {t('marketing.giftCards.cancel')}
-                  </button>
-                </div>
-              </motion.div>
-            )}
-
-            {/* Gift Cards List */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              {giftCards.map((card, index) => (
-                <motion.div
-                  key={card.id}
-                  initial={{ opacity: 0, x: -20 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  transition={{ delay: index * 0.1 }}
-                  className="bg-gradient-to-br from-pink-100 dark:from-slate-700 via-purple-100 dark:via-slate-700 to-blue-100 dark:to-slate-700 rounded-xl p-6 border-2 border-pink-200 dark:border-slate-600 hover:shadow-lg transition-all duration-300"
-                >
-                  <div className="flex items-start justify-between mb-4">
-                    <div>
-                      <div className="flex items-center gap-2 mb-2">
-                        <Tag className="w-5 h-5 text-pink-600" />
-                        <h3 className="text-2xl font-bold text-gray-900 dark:text-slate-100">{card.code}</h3>
-                      </div>
-                      <p className="text-3xl font-bold text-pink-600 dark:text-pink-400">
-                        {card.type === 'fixed' ? formatVND(card.discount) : `${card.discount}%`}
-                      </p>
-                    </div>
-                    <button
-                      onClick={() => handleCopyText(card.code, card.id)}
-                      className="bg-white dark:bg-slate-800 p-2 rounded-lg hover:bg-pink-50 dark:hover:bg-slate-700 active:bg-pink-100 dark:active:bg-slate-600 transition-colors border border-pink-200 dark:border-slate-600"
-                    >
-                      {copiedText === card.id ? (
-                        <CheckCircle2 className="w-5 h-5 text-green-600" />
-                      ) : (
-                        <Copy className="w-5 h-5 text-pink-600" />
-                      )}
-                    </button>
-                  </div>
-
-                  <div className="space-y-2">
-                    <div className="flex items-center justify-between text-sm">
-                      <span className="text-gray-600 dark:text-slate-400">{t('marketing.giftCards.usageCount')}</span>
-                      <span className="font-bold text-gray-900 dark:text-slate-100 flex items-center gap-1">
-                        <Eye className="w-4 h-4 text-purple-600" />
-                        {card.usageCount}
-                      </span>
-                    </div>
-                    <div className="flex items-center justify-between text-sm">
-                      <span className="text-gray-600 dark:text-slate-400">{t('marketing.giftCards.createdDate')}</span>
-                      <span className="font-medium text-gray-900 dark:text-slate-100">
-                        {card.createdAt.toLocaleDateString('vi-VN')}
-                      </span>
-                    </div>
-                  </div>
-                </motion.div>
-              ))}
-            </div>
-          </div>
-        </motion.div>
+        <GiftCardSection
+          giftCards={giftCards}
+          onCreateCard={handleCreateGiftCard}
+        />
 
         {/* Content Library Section */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.2 }}
-          className="bg-white dark:bg-slate-800 rounded-2xl shadow-xl overflow-hidden"
-        >
-          <div className="bg-gradient-to-r from-blue-50 dark:from-slate-700 to-cyan-50 dark:to-slate-700 border-b border-gray-200 dark:border-slate-700 p-6">
-            <div className="flex items-center gap-3">
-              <div className="bg-gradient-to-br from-blue-500 to-cyan-600 p-3 rounded-xl shadow-lg">
-                <FileText className="w-6 h-6 text-white" />
-              </div>
-              <div>
-                <h2 className="text-2xl font-bold text-gray-900 dark:text-slate-100">{t('marketing.contentLibrary.title')}</h2>
-                <p className="text-sm text-gray-600 dark:text-slate-400">{t('marketing.contentLibrary.subtitle')}</p>
-              </div>
-            </div>
-          </div>
-
-          <div className="p-6">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              {contentTemplates.map((template, index) => (
-                <motion.div
-                  key={template.id}
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.3 + index * 0.1 }}
-                  className="bg-white dark:bg-slate-800 rounded-xl border-2 border-gray-200 dark:border-slate-700 overflow-hidden hover:shadow-xl transition-all duration-300"
-                >
-                  <div className="relative h-48 overflow-hidden">
-                    <img
-                      src={template.imageUrl}
-                      alt={template.title}
-                      className="w-full h-full object-cover"
-                    />
-                    <div className="absolute top-3 right-3">
-                      <span className="bg-white dark:bg-slate-800 backdrop-blur-sm px-3 py-1 rounded-full text-xs font-semibold text-primary dark:text-cyan-400 border border-primary/20 dark:border-cyan-400/20">
-                        {template.category === 'product' && t('marketing.contentLibrary.categories.product')}
-                        {template.category === 'testimonial' && t('marketing.contentLibrary.categories.testimonial')}
-                        {template.category === 'tips' && t('marketing.contentLibrary.categories.tips')}
-                        {template.category === 'promotion' && t('marketing.contentLibrary.categories.promotion')}
-                      </span>
-                    </div>
-                  </div>
-
-                  <div className="p-4">
-                    <h3 className="text-lg font-bold text-gray-900 dark:text-slate-100 mb-2">
-                      {template.title}
-                    </h3>
-                    <p className="text-sm text-gray-600 dark:text-slate-400 mb-4 line-clamp-3 whitespace-pre-line">
-                      {template.content}
-                    </p>
-
-                    <div className="flex gap-2">
-                      <button
-                        onClick={() => handleCopyText(template.content, `content-${template.id}`)}
-                        className="flex-1 flex items-center justify-center gap-2 bg-gradient-to-r from-blue-500 to-cyan-600 text-white px-4 py-2 rounded-lg font-semibold hover:shadow-lg active:scale-95 transition-all duration-300"
-                      >
-                        {copiedText === `content-${template.id}` ? (
-                          <>
-                            <CheckCircle2 className="w-4 h-4" />
-                            {t('marketing.contentLibrary.copied')}
-                          </>
-                        ) : (
-                          <>
-                            <Copy className="w-4 h-4" />
-                            {t('marketing.contentLibrary.copyText')}
-                          </>
-                        )}
-                      </button>
-                      <button
-                        onClick={() => handleDownloadImage(template.imageUrl, `${template.title}.jpg`)}
-                        className="flex items-center justify-center gap-2 bg-white dark:bg-slate-700 border-2 border-blue-500 dark:border-blue-400 text-blue-600 dark:text-blue-400 px-4 py-2 rounded-lg font-semibold hover:bg-blue-50 dark:hover:bg-slate-600 active:bg-blue-100 dark:active:bg-slate-500 active:scale-95 transition-all duration-200"
-                      >
-                        <Download className="w-4 h-4" />
-                        {t('marketing.contentLibrary.downloadImage')}
-                      </button>
-                    </div>
-                  </div>
-                </motion.div>
-              ))}
-            </div>
-          </div>
-        </motion.div>
+        <ContentLibrarySection
+          templates={contentTemplates}
+          onDownloadImage={handleDownloadImage}
+        />
 
         {/* Affiliate Link & QR Code Section */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.6 }}
-          className="bg-white dark:bg-slate-800 rounded-2xl shadow-xl overflow-hidden"
-        >
-          <div className="bg-gradient-to-r from-green-50 dark:from-slate-700 to-teal-50 dark:to-slate-700 border-b border-gray-200 dark:border-slate-700 p-6">
-            <div className="flex items-center gap-3">
-              <div className="bg-gradient-to-br from-green-500 to-teal-600 p-3 rounded-xl shadow-lg">
-                <QrCode className="w-6 h-6 text-white" />
-              </div>
-              <div>
-                <h2 className="text-2xl font-bold text-gray-900 dark:text-slate-100">{t('marketing.affiliate.title')}</h2>
-                <p className="text-sm text-gray-600 dark:text-slate-400">{t('marketing.affiliate.subtitle')}</p>
-              </div>
-            </div>
-          </div>
-
-          <div className="p-6">
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-              {/* Affiliate Link */}
-              <div className="space-y-4">
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 dark:text-slate-300 mb-2">
-                    {t('marketing.affiliate.linkLabel')}
-                  </label>
-                  <div className="flex gap-2">
-                    <input
-                      type="text"
-                      value={affiliateLink}
-                      readOnly
-                      className="flex-1 px-4 py-3 rounded-lg border-2 border-gray-300 dark:border-slate-600 bg-gray-50 dark:bg-slate-700 text-gray-700 dark:text-slate-300 font-mono text-sm"
-                    />
-                    <button
-                      onClick={() => handleCopyText(affiliateLink, 'affiliate-link')}
-                      className="bg-gradient-to-r from-green-500 to-teal-600 text-white px-6 py-3 rounded-lg font-semibold hover:shadow-lg active:scale-95 transition-all duration-300"
-                    >
-                      {copiedText === 'affiliate-link' ? (
-                        <CheckCircle2 className="w-5 h-5" />
-                      ) : (
-                        <Copy className="w-5 h-5" />
-                      )}
-                    </button>
-                  </div>
-                </div>
-
-                <div className="bg-gradient-to-br from-green-50 dark:from-slate-700 to-teal-50 dark:to-slate-700 rounded-xl p-6 border-2 border-green-200 dark:border-slate-600">
-                  <h3 className="font-bold text-gray-900 dark:text-slate-100 mb-3 flex items-center gap-2">
-                    <TrendingUp className="w-5 h-5 text-green-600" />
-                    {t('marketing.affiliate.stats.title')}
-                  </h3>
-                  <div className="space-y-2">
-                    <div className="flex items-center justify-between">
-                      <span className="text-sm text-gray-600 dark:text-slate-400">{t('marketing.affiliate.stats.clicks')}</span>
-                      <span className="font-bold text-gray-900 dark:text-slate-100">245</span>
-                    </div>
-                    <div className="flex items-center justify-between">
-                      <span className="text-sm text-gray-600 dark:text-slate-400">{t('marketing.affiliate.stats.signups')}</span>
-                      <span className="font-bold text-green-600 dark:text-green-400">12</span>
-                    </div>
-                    <div className="flex items-center justify-between">
-                      <span className="text-sm text-gray-600 dark:text-slate-400">{t('marketing.affiliate.stats.conversion')}</span>
-                      <span className="font-bold text-primary dark:text-cyan-400">{t('marketingtools.4_9')}</span>
-                    </div>
-                  </div>
-                </div>
-
-                <div className="bg-blue-50 dark:bg-slate-700 rounded-xl p-4 border border-blue-200 dark:border-slate-600">
-                  <p className="text-sm text-gray-700 dark:text-slate-300">{t('marketing.affiliate.tip')}</p>
-                </div>
-              </div>
-
-              {/* QR Code */}
-              <div className="flex flex-col items-center justify-center">
-                <div className="bg-gradient-to-br from-green-100 dark:from-slate-700 to-teal-100 dark:to-slate-700 p-8 rounded-2xl border-4 border-white dark:border-slate-600 shadow-2xl">
-                  <img
-                    src={qrCodeUrl}
-                    alt="QR Code"
-                    className="w-64 h-64 rounded-xl"
-                  />
-                  <div className="mt-4 text-center">
-                    <p className="text-sm font-semibold text-gray-700 dark:text-slate-200 mb-1">
-                      {user.name}
-                    </p>
-                    <p className="text-xs text-gray-500 dark:text-slate-400">{t('marketing.affiliate.partnerLabel')}</p>
-                  </div>
-                </div>
-
-                <div className="flex gap-3 mt-6">
-                  <button
-                    onClick={handleDownloadQRCode}
-                    className="flex items-center gap-2 bg-gradient-to-r from-green-500 to-teal-600 text-white px-6 py-3 rounded-xl font-semibold hover:shadow-lg active:scale-95 transition-all duration-300"
-                  >
-                    <Download className="w-5 h-5" />
-                    {t('marketing.affiliate.downloadQR')}
-                  </button>
-                  <button
-                    onClick={handleShareQRCode}
-                    className="flex items-center gap-2 bg-white dark:bg-slate-700 border-2 border-green-500 dark:border-green-400 text-green-600 dark:text-green-400 px-6 py-3 rounded-xl font-semibold hover:bg-green-50 dark:hover:bg-slate-600 active:bg-green-100 dark:active:bg-slate-500 active:scale-95 transition-all duration-300"
-                  >
-                    <Share2 className="w-5 h-5" />
-                    {t('marketing.affiliate.share')}
-                  </button>
-                </div>
-
-                <p className="text-xs text-gray-500 dark:text-slate-400 text-center mt-4 max-w-xs">
-                  {t('marketing.affiliate.qrTip')}
-                </p>
-              </div>
-            </div>
-          </div>
-        </motion.div>
+        <AffiliateLinkSection
+          userId={user.id}
+          userName={user.name}
+          affiliateLink={affiliateLink}
+          qrCodeUrl={qrCodeUrl}
+          onDownloadQRCode={handleDownloadQRCode}
+          onShareQRCode={handleShareQRCode}
+        />
 
         {/* AI Landing Builder Section - TREE MAX LEVEL */}
         <motion.div

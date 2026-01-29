@@ -4,32 +4,24 @@ import {
   Users,
   TrendingUp,
   Award,
-  Filter,
-  Search,
-  Download,
-  Mail,
-  Phone,
-  MoreVertical,
   Crown,
   Target,
   Activity,
   DollarSign,
   AlertTriangle,
   Brain,
-  Bell,
+  Mail,
   Gift as GiftIcon,
   CheckCircle2,
-  Clock,
   AlertCircle,
   Star,
-  Sparkles,
   Zap,
 } from 'lucide-react';
 import NetworkTree from '@/components/NetworkTree';
+import { StatCard, TeamTable, PerformanceChart } from '@/components/LeaderDashboard';
 import { useStore } from '@/store';
-import { TeamMember, UserRank, RANK_NAMES } from '@/types';
-import { formatVND, formatNumber } from '@/utils/format';
-import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, PieChart, Pie, Cell } from 'recharts';
+import { UserRank, RANK_NAMES } from '@/types';
+import { formatVND } from '@/utils/format';
 import { useTranslation } from '@/hooks';
 
 export default function LeaderDashboard() {
@@ -347,313 +339,74 @@ export default function LeaderDashboard() {
 
           {/* Key Metrics */}
           <div className="grid md:grid-cols-4 gap-4">
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.3 }}
-              className="relative group"
-            >
-              <div className="absolute inset-0 bg-gradient-to-br from-blue-500/10 to-blue-600/10 rounded-2xl blur-xl opacity-0 group-hover:opacity-100 transition-opacity" />
-              <div className="relative bg-zinc-900/50 backdrop-blur-xl rounded-2xl p-6 border border-zinc-800 hover:border-blue-500/30 transition-all">
-                <div className="flex items-center justify-between mb-3">
-                  <Users className="w-8 h-8 text-blue-400" />
-                  <span className="text-xs font-bold bg-blue-500/10 text-blue-300 px-2 py-1 rounded-full border border-blue-500/20">
-                    {teamMetrics.activeMembers}/{teamMetrics.totalMembers} {t('team.metrics.active')}
-                  </span>
-                </div>
-                <h3 className="text-3xl font-bold text-white mb-1">{teamMetrics.totalMembers}</h3>
-                <p className="text-sm text-zinc-400">{t('team.metrics.totalMembers')}</p>
-              </div>
-            </motion.div>
-
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.4 }}
-              className="relative group"
-            >
-              <div className="absolute inset-0 bg-gradient-to-br from-emerald-500/10 to-emerald-600/10 rounded-2xl blur-xl opacity-0 group-hover:opacity-100 transition-opacity" />
-              <div className="relative bg-zinc-900/50 backdrop-blur-xl rounded-2xl p-6 border border-zinc-800 hover:border-emerald-500/30 transition-all">
-                <div className="flex items-center justify-between mb-3">
-                  <DollarSign className="w-8 h-8 text-emerald-400" />
-                  <TrendingUp className="w-5 h-5 text-emerald-400" />
-                </div>
-                <h3 className="text-3xl font-bold text-white mb-1">{formatVND(teamMetrics.totalTeamVolume)}</h3>
-                <p className="text-sm text-zinc-400">{t('team.metrics.teamVolume')}</p>
-              </div>
-            </motion.div>
-
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.5 }}
-              className="relative group"
-            >
-              <div className="absolute inset-0 bg-gradient-to-br from-purple-500/10 to-purple-600/10 rounded-2xl blur-xl opacity-0 group-hover:opacity-100 transition-opacity" />
-              <div className="relative bg-zinc-900/50 backdrop-blur-xl rounded-2xl p-6 border border-zinc-800 hover:border-purple-500/30 transition-all">
-                <div className="flex items-center justify-between mb-3">
-                  <Target className="w-8 h-8 text-purple-400" />
-                  <span className="text-xs font-bold bg-emerald-500/10 text-emerald-300 px-2 py-1 rounded-full border border-emerald-500/20">
-                    +{teamMetrics.monthlyGrowth}%
-                  </span>
-                </div>
-                <h3 className="text-3xl font-bold text-white mb-1">{formatVND(teamMetrics.averageSalesPerMember)}</h3>
-                <p className="text-sm text-zinc-400">{t('team.metrics.averageSales')}</p>
-              </div>
-            </motion.div>
-
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.6 }}
-              className="relative group"
-            >
-              <div className="absolute inset-0 bg-gradient-to-br from-orange-500/10 to-orange-600/10 rounded-2xl blur-xl opacity-0 group-hover:opacity-100 transition-opacity" />
-              <div className="relative bg-zinc-900/50 backdrop-blur-xl rounded-2xl p-6 border border-zinc-800 hover:border-orange-500/30 transition-all">
-                <div className="flex items-center justify-between mb-3">
-                  <Award className="w-8 h-8 text-orange-400" />
-                  <Activity className="w-5 h-5 text-orange-400" />
-                </div>
-                <h3 className="text-3xl font-bold text-white mb-1">{teamMetrics.topPerformers.length}</h3>
-                <p className="text-sm text-zinc-400">{t('team.metrics.topPerformers')}</p>
-              </div>
-            </motion.div>
+            <StatCard
+              icon={Users}
+              iconColor="text-blue-400"
+              value={teamMetrics.totalMembers}
+              label={t('team.metrics.totalMembers')}
+              delay={0.3}
+              gradientFrom="from-blue-500/10"
+              gradientTo="to-blue-600/10"
+              badge={
+                <span className="text-xs font-bold bg-blue-500/10 text-blue-300 px-2 py-1 rounded-full border border-blue-500/20">
+                  {teamMetrics.activeMembers}/{teamMetrics.totalMembers} {t('team.metrics.active')}
+                </span>
+              }
+            />
+            <StatCard
+              icon={DollarSign}
+              iconColor="text-emerald-400"
+              value={formatVND(teamMetrics.totalTeamVolume)}
+              label={t('team.metrics.teamVolume')}
+              delay={0.4}
+              gradientFrom="from-emerald-500/10"
+              gradientTo="to-emerald-600/10"
+              badge={<TrendingUp className="w-5 h-5 text-emerald-400" />}
+            />
+            <StatCard
+              icon={Target}
+              iconColor="text-purple-400"
+              value={formatVND(teamMetrics.averageSalesPerMember)}
+              label={t('team.metrics.averageSales')}
+              delay={0.5}
+              gradientFrom="from-purple-500/10"
+              gradientTo="to-purple-600/10"
+              badge={
+                <span className="text-xs font-bold bg-emerald-500/10 text-emerald-300 px-2 py-1 rounded-full border border-emerald-500/20">
+                  +{teamMetrics.monthlyGrowth}%
+                </span>
+              }
+            />
+            <StatCard
+              icon={Award}
+              iconColor="text-orange-400"
+              value={teamMetrics.topPerformers.length}
+              label={t('team.metrics.topPerformers')}
+              delay={0.6}
+              gradientFrom="from-orange-500/10"
+              gradientTo="to-orange-600/10"
+              badge={<Activity className="w-5 h-5 text-orange-400" />}
+            />
           </div>
 
           {/* Charts - Network Health & Rank Distribution */}
-          <div className="grid md:grid-cols-2 gap-6">
-            {/* Network Health - Donut Chart */}
-            <motion.div
-              initial={{ opacity: 0, x: -20 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ delay: 0.7 }}
-              className="relative group"
-            >
-              <div className="absolute inset-0 bg-gradient-to-br from-cyan-500/10 to-blue-500/10 rounded-2xl blur-xl opacity-50" />
-              <div className="relative bg-zinc-900/50 backdrop-blur-xl rounded-2xl p-6 border border-zinc-800">
-                <h3 className="font-bold text-white text-lg mb-4 flex items-center gap-2">
-                  <Activity className="w-5 h-5 text-cyan-400" />
-                  {t('leaderdashboard.network_health')}</h3>
-                <ResponsiveContainer width="100%" height={250}>
-                  <PieChart>
-                    <Pie
-                      data={networkHealthData}
-                      cx="50%"
-                      cy="50%"
-                      innerRadius={60}
-                      outerRadius={90}
-                      paddingAngle={5}
-                      dataKey="value"
-                      label={({ name, value, percent }) => `${name}: ${value} (${(percent * 100).toFixed(0)}%)`}
-                    >
-                      {networkHealthData.map((entry, index) => (
-                        <Cell key={`cell-${index}`} fill={entry.color} />
-                      ))}
-                    </Pie>
-                    <Tooltip
-                      contentStyle={{
-                        backgroundColor: 'rgba(0, 0, 0, 0.8)',
-                        border: '1px solid rgba(255, 255, 255, 0.2)',
-                        borderRadius: '12px',
-                        color: 'white'
-                      }}
-                    />
-                  </PieChart>
-                </ResponsiveContainer>
-
-                {/* Legend */}
-                <div className="flex justify-center gap-4 mt-4">
-                  {networkHealthData.map((item, index) => (
-                    <div key={index} className="flex items-center gap-2">
-                      <div className="w-3 h-3 rounded-full" style={{ backgroundColor: item.color }} />
-                      <span className="text-zinc-400 text-sm">{item.name}</span>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            </motion.div>
-
-            {/* Rank Distribution */}
-            <motion.div
-              initial={{ opacity: 0, x: 20 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ delay: 0.8 }}
-              className="relative group"
-            >
-              <div className="absolute inset-0 bg-gradient-to-br from-purple-500/10 to-pink-500/10 rounded-2xl blur-xl opacity-50" />
-              <div className="relative bg-zinc-900/50 backdrop-blur-xl rounded-2xl p-6 border border-zinc-800">
-                <h3 className="font-bold text-white text-lg mb-4 flex items-center gap-2">
-                  <Award className="w-5 h-5 text-purple-400" />
-                  {t('team.charts.rankDistribution')}
-                </h3>
-                <ResponsiveContainer width="100%" height={250}>
-                  <PieChart>
-                    <Pie
-                      data={rankDistribution}
-                      cx="50%"
-                      cy="50%"
-                      labelLine={false}
-                      label={({ name, value, percent }) => `${name}: ${value} (${(percent * 100).toFixed(0)}%)`}
-                      outerRadius={90}
-                      fill="#8884d8"
-                      dataKey="value"
-                    >
-                      {rankDistribution.map((entry, index) => (
-                        <Cell key={`cell-${index}`} fill={entry.color} />
-                      ))}
-                    </Pie>
-                    <Tooltip
-                      contentStyle={{
-                        backgroundColor: 'rgba(0, 0, 0, 0.8)',
-                        border: '1px solid rgba(255, 255, 255, 0.2)',
-                        borderRadius: '12px',
-                        color: 'white'
-                      }}
-                    />
-                  </PieChart>
-                </ResponsiveContainer>
-              </div>
-            </motion.div>
-          </div>
+          <PerformanceChart
+            networkHealthData={networkHealthData}
+            rankDistribution={rankDistribution}
+          />
 
           {/* Team Members Table */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.9 }}
-            className="relative group"
-          >
-            <div className="absolute inset-0 bg-gradient-to-br from-white/5 to-white/10 rounded-2xl blur-xl opacity-50" />
-            <div className="relative bg-white/80 dark:bg-zinc-900/50 backdrop-blur-xl border border-zinc-200 dark:border-zinc-800 rounded-2xl overflow-hidden">
-              {/* Header */}
-              <div className="p-6 border-b border-zinc-800">
-                <div className="flex flex-col md:flex-row gap-4 items-start md:items-center justify-between">
-                  <div>
-                    <h3 className="font-bold text-white text-lg flex items-center gap-2">
-                      <Users className="w-5 h-5 text-primary" />
-                      {t('team.members.teamMembers')} ({filteredMembers.length})
-                    </h3>
-                  </div>
-
-                  <div className="flex flex-col md:flex-row gap-3 w-full md:w-auto">
-                    {/* Search */}
-                    <div className="relative">
-                      <Search className="w-4 h-4 text-zinc-400 absolute left-3 top-1/2 -translate-y-1/2" />
-                      <input
-                        type="text"
-                        value={searchTerm}
-                        onChange={(e) => setSearchTerm(e.target.value)}
-                        placeholder={t('team.members.search')}
-                        className="pl-9 pr-4 py-2.5 bg-zinc-100 dark:bg-zinc-800/50 border border-zinc-300 dark:border-zinc-700 rounded-xl text-sm text-white placeholder-zinc-500 focus:outline-none focus:ring-2 focus:ring-emerald-500/50 backdrop-blur-sm"
-                      />
-                    </div>
-
-                    {/* Filter by Rank */}
-                    <select
-                      value={filterRank}
-                      onChange={(e) => setFilterRank(e.target.value as UserRank | 'all')}
-                      className="px-4 py-2.5 bg-zinc-100 dark:bg-zinc-800/50 border border-zinc-300 dark:border-zinc-700 rounded-xl text-sm text-white focus:outline-none focus:ring-2 focus:ring-emerald-500/50 backdrop-blur-sm"
-                    >
-                      <option value="all" className="bg-zinc-900">{t('team.filters.allRanks')}</option>
-                      <option value="Partner" className="bg-zinc-900">{t('leaderdashboard.partner')}</option>
-                      <option value="Member" className="bg-zinc-900">{t('leaderdashboard.member')}</option>
-                    </select>
-
-                    {/* Sort */}
-                    <select
-                      value={sortBy}
-                      onChange={(e) => setSortBy(e.target.value as 'sales' | 'growth' | 'team')}
-                      className="px-4 py-2.5 bg-zinc-100 dark:bg-zinc-800/50 border border-zinc-300 dark:border-zinc-700 rounded-xl text-sm text-white focus:outline-none focus:ring-2 focus:ring-emerald-500/50 backdrop-blur-sm"
-                    >
-                      <option value="sales" className="bg-zinc-900">{t('team.filters.sortSales')}</option>
-                      <option value="growth" className="bg-zinc-900">{t('team.filters.sortGrowth')}</option>
-                      <option value="team" className="bg-zinc-900">{t('team.filters.sortTeam')}</option>
-                    </select>
-
-                    {/* Export */}
-                    <button className="px-4 py-2.5 bg-emerald-500 hover:bg-emerald-600 text-white rounded-xl text-sm font-bold flex items-center gap-2 transition-all shadow-lg shadow-emerald-500/30">
-                      <Download className="w-4 h-4" />
-                      {t('team.filters.export')}
-                    </button>
-                  </div>
-                </div>
-              </div>
-
-              {/* Table */}
-              <div className="overflow-x-auto">
-                <table className="w-full">
-                  <thead className="bg-zinc-900/50 border-b border-zinc-800">
-                    <tr>
-                      <th className="px-6 py-4 text-left text-xs font-bold text-zinc-400 uppercase tracking-wider">{t('team.members.member')}</th>
-                      <th className="px-6 py-4 text-left text-xs font-bold text-zinc-400 uppercase tracking-wider">{t('team.members.rank')}</th>
-                      <th className="px-6 py-4 text-right text-xs font-bold text-zinc-400 uppercase tracking-wider">{t('team.members.personalSales')}</th>
-                      <th className="px-6 py-4 text-right text-xs font-bold text-zinc-400 uppercase tracking-wider">{t('team.members.teamVolume')}</th>
-                      <th className="px-6 py-4 text-center text-xs font-bold text-zinc-400 uppercase tracking-wider">{t('team.members.downlines')}</th>
-                      <th className="px-6 py-4 text-center text-xs font-bold text-zinc-400 uppercase tracking-wider">{t('team.members.growth')}</th>
-                      <th className="px-6 py-4 text-center text-xs font-bold text-zinc-400 uppercase tracking-wider">{t('team.members.actions')}</th>
-                    </tr>
-                  </thead>
-                  <tbody className="divide-y divide-zinc-800">
-                    {filteredMembers.map((member, index) => (
-                      <motion.tr
-                        key={member.id}
-                        initial={{ opacity: 0 }}
-                        animate={{ opacity: 1 }}
-                        transition={{ delay: index * 0.05 }}
-                        className="hover:bg-zinc-100 dark:bg-zinc-800/30 transition-colors"
-                      >
-                        <td className="px-6 py-4">
-                          <div className="flex items-center gap-3">
-                            <img
-                              src={member.avatarUrl}
-                              alt={member.name}
-                              className="w-10 h-10 rounded-full ring-2 ring-white/20"
-                            />
-                            <div>
-                              <p className="font-medium text-white">{member.name}</p>
-                              <p className="text-xs text-zinc-400">{member.email}</p>
-                            </div>
-                          </div>
-                        </td>
-                        <td className="px-6 py-4">
-                          <span className={`px-2 py-1 rounded-full text-xs font-medium ${getRankBadgeColor(member.rank)}`}>
-                            {RANK_NAMES[member.rank]}
-                          </span>
-                        </td>
-                        <td className="px-6 py-4 text-right font-medium text-white">
-                          {formatVND(member.personalSales)}
-                        </td>
-                        <td className="px-6 py-4 text-right font-medium text-white">
-                          {formatVND(member.teamVolume)}
-                        </td>
-                        <td className="px-6 py-4 text-center">
-                          <span className="text-sm font-medium text-zinc-300">{member.activeDownlines}</span>
-                        </td>
-                        <td className="px-6 py-4 text-center">
-                          <span className={`text-sm font-bold ${getGrowthColor(member.monthlyGrowth)}`}>
-                            +{member.monthlyGrowth}%
-                          </span>
-                        </td>
-                        <td className="px-6 py-4">
-                          <div className="flex items-center justify-center gap-2">
-                            <button className="p-2 hover:bg-zinc-100 dark:bg-zinc-800 active:bg-zinc-700 rounded-lg transition-all duration-200 group" title={t('team.actions.sendEmail')}>
-                              <Mail className="w-4 h-4 text-zinc-400 group-hover:text-blue-400 transition-colors duration-200" />
-                            </button>
-                            <button className="p-2 hover:bg-zinc-100 dark:bg-zinc-800 active:bg-zinc-700 rounded-lg transition-all duration-200 group" title={t('team.actions.call')}>
-                              <Phone className="w-4 h-4 text-zinc-400 group-hover:text-green-400 transition-colors duration-200" />
-                            </button>
-                            <button className="p-2 hover:bg-zinc-100 dark:bg-zinc-800 active:bg-zinc-700 rounded-lg transition-all duration-200 group" title={t('team.actions.moreActions')}>
-                              <MoreVertical className="w-4 h-4 text-zinc-400 group-hover:text-purple-400 transition-colors duration-200" />
-                            </button>
-                          </div>
-                        </td>
-                      </motion.tr>
-                    ))}
-                  </tbody>
-                </table>
-              </div>
-            </div>
-          </motion.div>
+          <TeamTable
+            filteredMembers={filteredMembers}
+            searchTerm={searchTerm}
+            setSearchTerm={setSearchTerm}
+            filterRank={filterRank}
+            setFilterRank={setFilterRank}
+            sortBy={sortBy}
+            setSortBy={setSortBy}
+            getRankBadgeColor={getRankBadgeColor}
+            getGrowthColor={getGrowthColor}
+          />
         </>
       )}
 

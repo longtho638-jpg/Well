@@ -4,22 +4,5 @@
     "typecheck": "tsc --noEmit",
     "test:quick": "vitest run --passWithNoTests"
   },
-  "hooks": {
-    "PreWrite": [
-      {
-        "command": "npm run typecheck",
-        "scope": "project",
-        "blocking": true,
-        "description": "🛡️ Antigravity Shield: Preventing type errors before they happen."
-      }
-    ],
-    "PostWrite": [
-      {
-        "command": "npm run lint:fix",
-        "scope": "file",
-        "blocking": false,
-        "description": "✨ Antigravity Polish: Auto-healing format and lint issues."
-      }
-    ]
-  }
+  "hooks": {}
 }

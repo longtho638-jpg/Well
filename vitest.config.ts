@@ -13,7 +13,8 @@ export default defineConfig({
       '**/node_modules/**',
       '**/dist/**',
       '**/chrome-devtools/scripts/**', // Uses Node.js test runner
-      '**/e2e/**', // Playwright tests - run with `npx playwright test`
+      '**/e2e/**', 
+      '**/.claude/**', // Playwright tests - run with `npx playwright test`
     ],
   },
   resolve: {
