@@ -2,6 +2,25 @@
 
 All notable changes to WellNexus are documented in this file.
 
+The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
+and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+
+## [2.2.0] - 2026-01-30
+
+### Added
+- Professional documentation (CONTRIBUTING.md, LICENSE, ARCHITECTURE.md)
+- Comprehensive test coverage (224 tests, 100% passing)
+- Production deployment automation via Vercel
+
+### Changed
+- Architecture refactoring: 1,169 lines reduced (38.3% code reduction)
+- Extracted 14 reusable components for better maintainability
+- Improved bundle optimization (~350 KB gzipped)
+
+### Fixed
+- Build time optimization (12-15s)
+- Type safety improvements (0 TypeScript errors)
+
 ## [2.1.0] - 2026-01-09
 
 ### 🚀 WOW Session - 13 Phases Complete

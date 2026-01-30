@@ -1,8 +1,0 @@
-{
-  "commands": {
-    "lint:fix": "eslint . --ext .ts,.tsx --fix",
-    "typecheck": "tsc --noEmit",
-    "test:quick": "vitest run --passWithNoTests"
-  },
-  "hooks": {}
-}

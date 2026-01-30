@@ -35,3 +35,10 @@ firebase-debug.*.log
 *.sw?
 .vercel
 .env*.local
+
+# AI development tools (excluded from production)
+.claude/
+.clinerules
+.cursorrules
+.aiderignore
+CLAUDE.md
