@@ -13,8 +13,9 @@ export default defineConfig({
       '**/node_modules/**',
       '**/dist/**',
       '**/chrome-devtools/scripts/**', // Uses Node.js test runner
-      '**/e2e/**', 
+      '**/e2e/**',
       '**/.claude/**', // Playwright tests - run with `npx playwright test`
+      '**/admin-panel/**', // Has its own test suite and React version
     ],
   },
   resolve: {

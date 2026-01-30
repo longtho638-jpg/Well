@@ -5,6 +5,7 @@
 
 import { supabase } from '@/lib/supabase';
 import { adminLogger } from '@/utils/logger';
+import { OrderPayload } from '@/types/checkout';
 
 export interface PendingOrder {
     id: string;
@@ -19,9 +20,50 @@ export interface PendingOrder {
         name: string;
         email: string;
     };
+    metadata?: any;
 }
 
 export const orderService = {
+    /**
+     * Create a new order (guest or authenticated)
+     */
+    async createOrder(payload: OrderPayload): Promise<string> {
+        const { items, customer, paymentMethod, totalAmount } = payload;
+
+        // Prepare transaction data
+        // Note: user_id is null for guests. Ensure DB 'transactions.user_id' is nullable
+        // or RLS policies allow public insert with metadata.
+        const transactionData = {
+            user_id: customer.userId || null,
+            amount: totalAmount,
+            type: 'sale', // standard sale type
+            status: 'pending',
+            currency: 'VND',
+            created_at: new Date().toISOString(),
+            metadata: {
+                guest_profile: customer.guestProfile,
+                items: items,
+                payment_method: paymentMethod,
+                is_guest: !customer.userId
+            }
+        };
+
+        const { data, error } = await supabase
+            .from('transactions')
+            .insert(transactionData)
+            .select()
+            .single();
+
+        if (error) {
+            console.error('Create order failed', error);
+            // Fallback for demo/dev if DB restriction prevents insert
+            // Throwing to let UI handle it
+            throw error;
+        }
+
+        return data.id;
+    },
+
     /**
      * Fetch all pending 'sale' transactions with user details
      */

@@ -28,6 +28,10 @@ import {
 } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { useStore } from '../store';
+import { useCartStore } from '../store/cartStore';
+import { FeaturedProducts } from '../components/landing/FeaturedProducts';
+import { CartDrawer } from '../components/marketplace/CartDrawer';
+import { Product } from '../types';
 import { BentoGrid, BentoCard, AuraBadge, GridPattern } from '../components/ui/Aura';
 import {
   HeroStats,
@@ -81,7 +85,24 @@ import {
 export default function LandingPage() {
   const { t } = useTranslation();
   const navigate = useNavigate();
-  const { login } = useStore();
+  const { login, products, fetchProducts } = useStore();
+  const [isCartOpen, setIsCartOpen] = React.useState(false);
+
+  const cartItems = useCartStore(state => state.items);
+  const cartTotal = useCartStore(state => state.getTotal());
+  const cartItemCount = useCartStore(state => state.getItemCount());
+  const addToCart = useCartStore(state => state.addToCart);
+  const updateQuantity = useCartStore(state => state.updateQuantity);
+  const removeFromCart = useCartStore(state => state.removeFromCart);
+
+  React.useEffect(() => {
+    fetchProducts();
+  }, [fetchProducts]);
+
+  const handleAddToCart = (product: Product) => {
+    addToCart(product);
+    setIsCartOpen(true);
+  };
 
   const CONTENT = {
     hero: {
@@ -660,11 +681,28 @@ export default function LandingPage() {
       {/* Live Social Proof Ticker - Fixed Position */}
       <SocialProofTicker items={SOCIAL_PROOF_ITEMS} />
 
+      {/* ================================================================== */}
+      {/* FEATURED PRODUCTS SECTION */}
+      {/* ================================================================== */}
+      <FeaturedProducts
+        products={products}
+        onAddToCart={handleAddToCart}
+      />
 
       {/* ================================================================== */}
       {/* PREMIUM FOOTER - Phase 22 East Asia 2026 */}
       {/* ================================================================== */}
       <PremiumFooter />
+
+      <CartDrawer
+        isOpen={isCartOpen}
+        onClose={() => setIsCartOpen(false)}
+        items={cartItems}
+        total={cartTotal}
+        itemCount={cartItemCount}
+        onUpdateQuantity={updateQuantity}
+        onRemove={removeFromCart}
+      />
     </div>
   );
 }

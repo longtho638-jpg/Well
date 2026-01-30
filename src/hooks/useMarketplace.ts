@@ -1,12 +1,10 @@
 import { useState, useEffect, useMemo, useCallback } from 'react';
 import { useStore } from '../store';
+import { useCartStore } from '../store/cartStore';
 import { Product } from '../types';
 import { useTranslation } from '../hooks';
 
-export interface CartItem {
-    product: Product;
-    quantity: number;
-}
+export type CartItem = import('../store/cartStore').CartItem;
 
 export type PriceRange = 'all' | 'low' | 'medium' | 'high';
 export type ProductCategory = 'all' | 'health' | 'wellness' | 'supplement';
@@ -14,6 +12,14 @@ export type ProductCategory = 'all' | 'health' | 'wellness' | 'supplement';
 export function useMarketplace() {
     const { t } = useTranslation();
     const { products, user, redemptionItems, redeemItem } = useStore();
+
+    // Use Persistent Cart Store
+    const cart = useCartStore(state => state.items);
+    const addToCartStore = useCartStore(state => state.addToCart);
+    const removeFromCartStore = useCartStore(state => state.removeFromCart);
+    const updateQuantityStore = useCartStore(state => state.updateQuantity);
+    const cartTotal = useCartStore(state => state.getTotal());
+    const cartItemCount = useCartStore(state => state.getItemCount());
 
     const [searchTerm, setSearchTerm] = useState('');
     const [aiSuggestion, setAiSuggestion] = useState<{ text: string; productIds: string[] } | null>(null);
@@ -27,9 +33,6 @@ export function useMarketplace() {
     // Filter state
     const [priceRange, setPriceRange] = useState<PriceRange>('all');
     const [category, setCategory] = useState<ProductCategory>('all');
-
-    // Cart state
-    const [cart, setCart] = useState<CartItem[]>([]);
 
     // Derived: Filtered Products
     const filteredProducts = useMemo(() => {
@@ -72,36 +75,22 @@ export function useMarketplace() {
         triggerAi();
     }, [products, t]);
 
-    // Cart Actions
+    // Cart Actions Wrappers
     const addToCart = useCallback((product: Product) => {
-        setCart(prev => {
-            const existing = prev.find(item => item.product.id === product.id);
-            if (existing) {
-                return prev.map(item =>
-                    item.product.id === product.id ? { ...item, quantity: item.quantity + 1 } : item
-                );
-            }
-            return [...prev, { product, quantity: 1 }];
-        });
+        addToCartStore(product);
         setShowCart(true);
-    }, []);
+    }, [addToCartStore]);
 
     const updateQuantity = useCallback((productId: string, delta: number) => {
-        setCart(prev => prev.map(item => {
-            if (item.product.id === productId) {
-                return { ...item, quantity: Math.max(1, item.quantity + delta) };
-            }
-            return item;
-        }).filter(i => i.quantity > 0));
-    }, []);
+        const item = cart.find(i => i.product.id === productId);
+        if (item) {
+            updateQuantityStore(productId, item.quantity + delta);
+        }
+    }, [cart, updateQuantityStore]);
 
     const removeFromCart = useCallback((productId: string) => {
-        setCart(prev => prev.filter(item => item.product.id !== productId));
-    }, []);
-
-    // Totals
-    const cartTotal = useMemo(() => cart.reduce((s, i) => s + (i.product.price * i.quantity), 0), [cart]);
-    const cartItemCount = useMemo(() => cart.reduce((s, i) => s + i.quantity, 0), [cart]);
+        removeFromCartStore(productId);
+    }, [removeFromCartStore]);
 
     return {
         // State

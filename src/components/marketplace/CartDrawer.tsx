@@ -1,4 +1,5 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ShoppingCart, X, Plus, Minus, Trash2, CreditCard } from 'lucide-react';
 import { CartItem } from '@/hooks/useMarketplace';
@@ -25,6 +26,13 @@ export const CartDrawer: React.FC<CartDrawerProps> = ({
     onRemove,
 }) => {
     const { t } = useTranslation();
+    const navigate = useNavigate();
+
+    const handleCheckout = () => {
+        onClose();
+        navigate('/checkout');
+    };
+
     return (
         <AnimatePresence>
             {isOpen && (
@@ -136,6 +144,7 @@ export const CartDrawer: React.FC<CartDrawerProps> = ({
                                 </div>
                             </div>
                             <button
+                                onClick={handleCheckout}
                                 disabled={items.length === 0}
                                 className="w-full bg-teal-600 text-white py-5 rounded-3xl font-black uppercase tracking-widest shadow-2xl shadow-teal-900/40 hover:bg-teal-500 active:scale-95 transition-all flex items-center justify-center gap-3 disabled:opacity-50 disabled:grayscale"
                             >

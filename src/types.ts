@@ -284,3 +284,7 @@ export interface RedemptionOrder {
   completedAt?: string;
   trackingNumber?: string;
 }
+export interface CartItem {
+  product: Product;
+  quantity: number;
+}

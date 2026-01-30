@@ -24,6 +24,9 @@ const Admin = lazy(() => import('./pages/Admin'));
 const TestPage = lazy(() => import('./pages/TestPage'));
 const DebuggerPage = lazy(() => import('./pages/DebuggerPage'));
 const AgentDashboard = lazy(() => import('./pages/AgentDashboard'));
+const CheckoutPage = lazy(() => import('./pages/Checkout/CheckoutPage').then(m => ({ default: m.CheckoutPage })));
+const OrderSuccess = lazy(() => import('./components/checkout/OrderSuccess').then(m => ({ default: m.OrderSuccess })));
+
 // Code splitting: Lazy load Admin pages for better performance
 const Overview = lazy(() => import('./pages/Admin/Overview'));
 const CMS = lazy(() => import('./pages/Admin/CMS'));
@@ -58,6 +61,12 @@ const App: React.FC = () => {
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<Signup />} />
           <Route path="/venture" element={<Suspense fallback={<div className="flex items-center justify-center h-screen bg-zinc-950"><div className="animate-spin rounded-full h-12 w-12 border-b-2 border-emerald-500"></div></div>}><VenturePage /></Suspense>} />
+
+          {/* ============================================================ */}
+          {/* CHECKOUT ROUTES */}
+          {/* ============================================================ */}
+          <Route path="/checkout" element={<Suspense fallback={<div className="flex items-center justify-center h-screen"><div className="animate-spin rounded-full h-12 w-12 border-b-2 border-teal-500"></div></div>}><CheckoutPage /></Suspense>} />
+          <Route path="/checkout/success" element={<OrderSuccess />} />
 
           {/* ============================================================ */}
           {/* ADMIN ROUTES: Mission Control with Nested Routes (Protected) */}
