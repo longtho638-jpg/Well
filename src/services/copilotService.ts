@@ -127,7 +127,7 @@ export async function generateCopilotResponse(
       message: userMessage,
       history: conversationHistory,
       productContext
-    });
+    }) as any;
 
     if (result && !result.error) {
        return result;
@@ -166,7 +166,7 @@ export async function generateSalesScript(
       productName,
       productDescription,
       customerProfile
-    });
+    }) as any;
 
     if (typeof result === 'string') return result;
     if (result && result.error) throw new Error(result.error);
@@ -203,7 +203,7 @@ export async function getCopilotCoaching(
     const result = await agent.execute({
       action: 'analyzeConversation',
       history: conversationHistory
-    });
+    }) as any;
 
     if (typeof result === 'string') return result;
     if (result && result.error) throw new Error(result.error);
