@@ -1054,6 +1054,13 @@ export const en = {
             cta: 'Get Started',
             learnMore: 'Learn More',
         },
+        featured: {
+            badge: 'Featured',
+            title: 'Comprehensive Health Solutions',
+            subtitle: 'Trusted by over 5,000+ customers and healthcare professionals',
+            viewAll: 'View all products',
+            addToCart: 'Add to cart',
+        },
         features: {
             title: 'Key Features',
             ai: {

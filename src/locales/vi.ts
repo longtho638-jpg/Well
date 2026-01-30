@@ -1213,6 +1213,13 @@ export const vi = {
       cta: 'Bắt đầu ngay',
       learnMore: 'Tìm hiểu thêm',
     },
+    featured: {
+      badge: 'Nổi bật',
+      title: 'Giải Pháp Sức Khỏe Toàn Diện',
+      subtitle: 'Được tin dùng bởi hơn 5,000+ khách hàng và chuyên gia y tế',
+      viewAll: 'Xem tất cả sản phẩm',
+      addToCart: 'Thêm vào giỏ',
+    },
     features: {
       title: 'Tính năng nổi bật',
       ai: {
@@ -1602,13 +1609,13 @@ export const vi = {
 
   // cartdrawer
   cartdrawer: {
-    items_confirmed: 'Items Confirmed',
-    proceed_to_checkout: 'Proceed to Checkout',
-    start_adding_premium_products: 'Start Adding Premium Products',
-    subtotal: 'Subtotal',
-    total: 'Total',
-    your_cart: 'Your Cart',
-    your_cart_is_empty: 'Your Cart Is Empty',
+    items_confirmed: 'Sản phẩm đã chọn',
+    proceed_to_checkout: 'Thanh toán',
+    start_adding_premium_products: 'Bắt đầu thêm sản phẩm cao cấp vào giỏ hàng',
+    subtotal: 'Tạm tính',
+    total: 'Tổng cộng',
+    your_cart: 'Giỏ hàng',
+    your_cart_is_empty: 'Giỏ hàng trống',
   },
 
   // chatmessage
