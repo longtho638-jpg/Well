@@ -7,7 +7,7 @@
 
 import React from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { ShoppingCart, Award } from 'lucide-react';
+import { ShoppingCart, Award, Zap } from 'lucide-react';
 import { GridPattern } from '@/components/ui/Aura';
 
 // Hooks
@@ -20,8 +20,10 @@ import { AIRecommendation } from '@/components/marketplace/AIRecommendation';
 import { ProductGrid } from '@/components/marketplace/ProductGrid';
 import { CartDrawer } from '@/components/marketplace/CartDrawer';
 import { RedemptionZone } from '@/components/marketplace/RedemptionZone';
+import { QuickPurchaseModal } from '@/components/marketplace/QuickPurchaseModal';
 
 export const Marketplace: React.FC = () => {
+  const [showQuickBuy, setShowQuickBuy] = React.useState(false);
   const {
     // State
     user,
@@ -181,6 +183,25 @@ export const Marketplace: React.FC = () => {
         itemCount={cartItemCount}
         onUpdateQuantity={updateQuantity}
         onRemove={removeFromCart}
+      />
+
+      {/* Quick Buy FAB */}
+      {!showRedemption && (
+        <motion.button
+          initial={{ scale: 0, rotate: 180 }}
+          animate={{ scale: 1, rotate: 0 }}
+          whileHover={{ scale: 1.1, rotate: 15 }}
+          whileTap={{ scale: 0.9 }}
+          onClick={() => setShowQuickBuy(true)}
+          className="fixed bottom-8 right-8 z-30 w-16 h-16 bg-gradient-to-br from-emerald-400 to-teal-600 rounded-full shadow-[0_0_30px_rgba(16,185,129,0.4)] flex items-center justify-center text-white border border-white/20"
+        >
+          <Zap className="w-8 h-8 fill-white" />
+        </motion.button>
+      )}
+
+      <QuickPurchaseModal
+        isOpen={showQuickBuy}
+        onClose={() => setShowQuickBuy(false)}
       />
     </div>
   );

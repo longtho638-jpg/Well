@@ -24,6 +24,7 @@ import { BentoGrid, BentoCard, AuraBadge, GridPattern, AuraBadgeColor } from '@/
 // Aura Elite Modular Components
 import { LiveActivitiesTicker } from '../components/Dashboard/LiveActivitiesTicker';
 import { ValuationCard } from '../components/Dashboard/ValuationCard';
+import { CommissionWidget } from '../components/Dashboard/CommissionWidget';
 import { RevenueBreakdown } from '../components/Dashboard/RevenueBreakdown';
 import { RecentActivityList } from '../components/Dashboard/RecentActivityList';
 import { AchievementGrid } from '../components/Dashboard/AchievementGrid';
@@ -105,6 +106,7 @@ export const Dashboard: React.FC = () => {
         <div className="grid grid-cols-1 xl:grid-cols-12 gap-8">
           <div className="xl:col-span-8 flex flex-col gap-8">
             <HeroCard user={user} />
+            <CommissionWidget />
             <RankProgressBar
               currentRank={user.rank}
               accumulatedBonusRevenue={user.accumulatedBonusRevenue || 0}

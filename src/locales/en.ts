@@ -122,6 +122,21 @@ export const en = {
             vsLastMonth: 'MoM Growth',
         },
 
+        // Commission Widget
+        commission: {
+            title: 'Commission Earnings',
+            subtitle: 'Real-time earnings tracker',
+            today: 'Today',
+            thisWeek: 'This Week',
+            thisMonth: 'This Month',
+            breakdown: 'Earnings Breakdown',
+            directSales: 'Direct Sales',
+            teamVolume: 'Team Volume',
+            total: 'Total Earnings',
+            withdraw: 'Withdraw',
+            viewDetails: 'View Details',
+        },
+
         // Revenue Chart
         revenue: {
             title: '7-Day Asset Performance',
@@ -391,7 +406,22 @@ export const en = {
             reviews: 'Reviews',
             rating: '{score} / 5',
             reviewCount: '{count} reviews',
-        }
+        },
+        // Quick Purchase Modal
+        quickBuy: {
+            title: 'Quick Purchase',
+            subtitle: 'Express checkout for your essentials',
+            recent: 'Recent',
+            favorites: 'Favorites',
+            noItems: 'No {tab} items found',
+            noRecent: 'Your purchase history will appear here',
+            noFavorites: 'Mark items as favorite to access them quickly',
+            vatIncluded: 'Prices include VAT where applicable',
+            viewFullMarketplace: 'View full marketplace →',
+            buyNow: 'Buy Now',
+            purchased: 'Purchased!',
+            commission: 'Comm: {rate}%',
+        },
     },
 
     // Team Dashboard

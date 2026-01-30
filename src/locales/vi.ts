@@ -122,6 +122,21 @@ export const vi = {
       vsLastMonth: 'MoM Growth',
     },
 
+    // Commission Widget
+    commission: {
+      title: 'Hoa Hồng',
+      subtitle: 'Thu nhập theo thời gian thực',
+      today: 'Hôm nay',
+      thisWeek: 'Tuần này',
+      thisMonth: 'Tháng này',
+      breakdown: 'Chi tiết thu nhập',
+      directSales: 'Bán hàng trực tiếp',
+      teamVolume: 'Doanh số đội nhóm',
+      total: 'Tổng thu nhập',
+      withdraw: 'Rút tiền',
+      viewDetails: 'Xem chi tiết',
+    },
+
     // Revenue Chart (WEALTH OS: Asset Performance)
     revenue: {
       title: '7 ngày Asset Performance',
@@ -412,7 +427,22 @@ export const vi = {
       reviews: 'Đánh giá',
       rating: '{score} / 5',
       reviewCount: '{count} đánh giá',
-    }
+    },
+    // Quick Purchase Modal
+    quickBuy: {
+      title: 'Mua Nhanh',
+      subtitle: 'Thanh toán tốc hành cho nhu cầu thiết yếu',
+      recent: 'Gần đây',
+      favorites: 'Yêu thích',
+      noItems: 'Không tìm thấy mục {tab} nào',
+      noRecent: 'Lịch sử mua hàng sẽ hiển thị tại đây',
+      noFavorites: 'Đánh dấu yêu thích để truy cập nhanh',
+      vatIncluded: 'Giá đã bao gồm VAT',
+      viewFullMarketplace: 'Xem tất cả sản phẩm →',
+      buyNow: 'Mua Ngay',
+      purchased: 'Đã Mua!',
+      commission: 'Hoa hồng: {rate}%',
+    },
   },
 
   // Team Dashboard (WEALTH OS: Portfolio Management)
