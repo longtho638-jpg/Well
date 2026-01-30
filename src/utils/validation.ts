@@ -46,6 +46,12 @@ export interface ValidationResult<T> {
     firstError: string | null;
 }
 
+/**
+ * Validate a data object against a set of rules
+ * @param data - The data object to validate
+ * @param rules - Map of field names to arrays of validation rules
+ * @returns ValidationResult object containing validity status and errors
+ */
 export function validate<T extends Record<string, unknown>>(
     data: T,
     rules: Partial<Record<keyof T, ValidationRule<unknown>[]>>
@@ -77,6 +83,7 @@ export function validate<T extends Record<string, unknown>>(
 
 // ============================================================================
 // FORM SCHEMAS
+// Pre-defined validation schemas for common forms
 // ============================================================================
 
 export const loginSchema = {

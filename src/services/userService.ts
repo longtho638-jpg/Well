@@ -8,10 +8,13 @@ const userLogger = createLogger('UserService');
 /**
  * WellNexus User Service (Hardened)
  * Orchestrates member profiles and identity logic.
+ * Handles fetching and updating user profile data in Firestore.
  */
 export const userService = {
     /**
      * Get user by ID with strict type casting
+     * @param userId - The UUID of the user
+     * @returns Promise<User | null> User profile object
      */
     async getUser(userId: string): Promise<User | null> {
         try {
@@ -32,6 +35,11 @@ export const userService = {
 
     /**
      * Create new user with associated wallet node
+     * Initializes user document and empty wallet document in Firestore.
+     *
+     * @param userId - The Auth ID of the new user
+     * @param userData - Initial user data
+     * @returns Promise<void>
      */
     async createUser(userId: string, userData: Partial<User>): Promise<void> {
         try {
@@ -62,6 +70,9 @@ export const userService = {
 
     /**
      * Update user profile mutation
+     * @param userId - The UUID of the user
+     * @param updates - Partial user object with fields to update
+     * @returns Promise<void>
      */
     async updateUser(userId: string, updates: Partial<User>): Promise<void> {
         try {

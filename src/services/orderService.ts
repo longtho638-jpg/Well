@@ -62,7 +62,7 @@ export const orderService = {
             .single();
 
         if (error) {
-            console.error('Create order failed', error);
+            adminLogger.error('Create order failed', error);
             // Fallback for demo/dev if DB restriction prevents insert
             // Throwing to let UI handle it
             throw error;

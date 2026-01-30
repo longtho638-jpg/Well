@@ -17,7 +17,11 @@ export const VentureNavigation: React.FC<VentureNavigationProps> = ({ logo, onSc
             className="fixed top-0 w-full z-50 backdrop-blur-3xl bg-zinc-950/50 border-b border-white/5"
         >
             <div className="max-w-7xl mx-auto px-6 lg:px-12 h-24 flex items-center justify-between">
-                <div className="flex items-center gap-4 cursor-pointer" onClick={() => onScroll('hero')}>
+                <button
+                    onClick={() => onScroll('hero')}
+                    className="flex items-center gap-4 cursor-pointer bg-transparent border-0 p-0"
+                    aria-label="Scroll to top"
+                >
                     <div className="w-12 h-12 bg-teal-500 rounded-2xl flex items-center justify-center text-zinc-950 font-black text-2xl shadow-xl italic">
                         W
                     </div>
@@ -25,7 +29,7 @@ export const VentureNavigation: React.FC<VentureNavigationProps> = ({ logo, onSc
                         <span className="font-black text-xl text-white tracking-tighter uppercase italic">{logo}</span>
                         <span className="text-[8px] font-black text-zinc-500 uppercase tracking-widest italic">{t('venturenavigation.venture_builder')}</span>
                     </div>
-                </div>
+                </button>
 
                 <div className="hidden md:flex items-center gap-10">
                     {[

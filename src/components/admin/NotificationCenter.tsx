@@ -3,7 +3,7 @@
  * Standardized components for high-performance admin alerts.
  */
 
-import React from 'react';
+import { FC } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
     Bell,
@@ -21,7 +21,7 @@ import {
 import { useNotificationCenter, Notification } from '../../hooks/useNotificationCenter';
 import { useTranslation } from '@/hooks';
 
-const NotificationIcon: React.FC<{ type: Notification['type'] }> = ({ type }) => {
+const NotificationIcon: FC<{ type: Notification['type'] }> = ({ type }) => {
     const { t } = useTranslation();
     const config = {
         success: { icon: CheckCircle, className: 'text-emerald-400' },
@@ -34,7 +34,7 @@ const NotificationIcon: React.FC<{ type: Notification['type'] }> = ({ type }) =>
     return <Icon className={`w-5 h-5 ${className}`} />;
 };
 
-const NotificationItem: React.FC<{
+const NotificationItem: FC<{
     notification: Notification;
     onRead: (id: string) => void;
     onDelete: (id: string) => void;
@@ -142,7 +142,19 @@ export function NotificationCenter() {
             <AnimatePresence>
                 {isOpen && (
                     <>
-                        <div className="fixed inset-0 z-40" onClick={close} />
+                        <div
+                            className="fixed inset-0 z-40"
+                            onClick={close}
+                            role="button"
+                            tabIndex={0}
+                            onKeyDown={(e) => {
+                                if (e.key === 'Escape' || e.key === 'Enter' || e.key === ' ') {
+                                    e.preventDefault();
+                                    close();
+                                }
+                            }}
+                            aria-label="Close notification panel"
+                        />
 
                         <motion.div
                             initial={{ opacity: 0, y: 12, scale: 0.95 }}

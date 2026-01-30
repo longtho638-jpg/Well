@@ -19,6 +19,13 @@ export const TAX_CONSTANTS = {
   RATE: 0.10,         // 10%
 };
 
+/**
+ * Calculate Personal Income Tax (PIT) for Vietnam
+ * Applies 10% tax if amount >= 2,000,000 VND
+ *
+ * @param amount - Gross income amount in VND
+ * @returns TaxResult object with gross, net, and tax details
+ */
 export const calculatePIT = (amount: number): TaxResult => {
   const isTaxable = amount >= TAX_CONSTANTS.THRESHOLD;
   const taxAmount = isTaxable ? amount * TAX_CONSTANTS.RATE : 0;

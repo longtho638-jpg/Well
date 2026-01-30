@@ -69,6 +69,9 @@ export const partnerService = {
 
     /**
      * Update a single partner's record
+     * @param id - The UUID of the partner/user
+     * @param updates - Partial object containing fields to update
+     * @returns Promise<void>
      */
     async updatePartner(id: string, updates: Partial<SupabaseUserRecord>): Promise<void> {
         try {
@@ -87,6 +90,11 @@ export const partnerService = {
 
     /**
      * Bulk update partner statuses (Mock implementation for now)
+     * Useful for mass-banning or activating users.
+     *
+     * @param ids - Array of partner UUIDs
+     * @param status - New status to apply ('Active' | 'Banned')
+     * @returns Promise<void>
      */
     async bulkUpdateStatus(ids: string[], status: 'Active' | 'Banned'): Promise<void> {
         try {

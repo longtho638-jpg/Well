@@ -32,10 +32,17 @@ const QUEST_METADATA: Record<string, QuestMetadata> = {
 };
 
 export const questService = {
+    /**
+     * Get metadata for a specific daily quest
+     * @param id - Quest ID (e.g., 'daily-1')
+     */
     getMetadata(id: string): QuestMetadata | undefined {
         return QUEST_METADATA[id];
     },
 
+    /**
+     * Get all available quest metadata
+     */
     getAllMetadata(): QuestMetadata[] {
         return Object.values(QUEST_METADATA);
     }

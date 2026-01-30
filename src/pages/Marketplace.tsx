@@ -5,7 +5,7 @@
  * Modular architecture leveraging useMarketplace hook and domain components.
  */
 
-import React from 'react';
+import React, { lazy, Suspense } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ShoppingCart, Award, Zap } from 'lucide-react';
 import { GridPattern } from '@/components/ui/Aura';
@@ -18,9 +18,11 @@ import { MarketplaceHeader } from '@/components/marketplace/MarketplaceHeader';
 import { MarketplaceFilters } from '@/components/marketplace/MarketplaceFilters';
 import { AIRecommendation } from '@/components/marketplace/AIRecommendation';
 import { ProductGrid } from '@/components/marketplace/ProductGrid';
-import { CartDrawer } from '@/components/marketplace/CartDrawer';
 import { RedemptionZone } from '@/components/marketplace/RedemptionZone';
-import { QuickPurchaseModal } from '@/components/marketplace/QuickPurchaseModal';
+
+// Lazy Loaded Components
+const QuickPurchaseModal = lazy(() => import('@/components/marketplace/QuickPurchaseModal').then(m => ({ default: m.QuickPurchaseModal })));
+const CartDrawer = lazy(() => import('@/components/marketplace/CartDrawer').then(m => ({ default: m.CartDrawer })));
 
 export const Marketplace: React.FC = () => {
   const [showQuickBuy, setShowQuickBuy] = React.useState(false);
@@ -175,15 +177,17 @@ export const Marketplace: React.FC = () => {
       </div>
 
       {/* Cart Drawer Overlay */}
-      <CartDrawer
-        isOpen={showCart}
-        onClose={() => setShowCart(false)}
-        items={cart}
-        total={cartTotal}
-        itemCount={cartItemCount}
-        onUpdateQuantity={updateQuantity}
-        onRemove={removeFromCart}
-      />
+      <Suspense fallback={null}>
+        <CartDrawer
+          isOpen={showCart}
+          onClose={() => setShowCart(false)}
+          items={cart}
+          total={cartTotal}
+          itemCount={cartItemCount}
+          onUpdateQuantity={updateQuantity}
+          onRemove={removeFromCart}
+        />
+      </Suspense>
 
       {/* Quick Buy FAB */}
       {!showRedemption && (
@@ -199,10 +203,12 @@ export const Marketplace: React.FC = () => {
         </motion.button>
       )}
 
-      <QuickPurchaseModal
-        isOpen={showQuickBuy}
-        onClose={() => setShowQuickBuy(false)}
-      />
+      <Suspense fallback={null}>
+        <QuickPurchaseModal
+          isOpen={showQuickBuy}
+          onClose={() => setShowQuickBuy(false)}
+        />
+      </Suspense>
     </div>
   );
 };

@@ -34,6 +34,10 @@ export interface PolicyConfig {
 }
 
 export const policyService = {
+    /**
+     * Retrieve global policy configuration
+     * Fetches commission rates, rules, and rank requirements.
+     */
     async fetchPolicy(): Promise<PolicyConfig | null> {
         try {
             const { data, error } = await supabase
@@ -50,6 +54,11 @@ export const policyService = {
         }
     },
 
+    /**
+     * Update global policy configuration
+     * Requires 'admin' role via RLS.
+     * @param config - New policy configuration object
+     */
     async savePolicy(config: PolicyConfig): Promise<void> {
         const { data: { session } } = await supabase.auth.getSession();
 

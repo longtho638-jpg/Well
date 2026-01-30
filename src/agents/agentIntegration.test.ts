@@ -21,7 +21,7 @@ describe('Agent Integration Flow', () => {
 
     const geminiCoach = agentRegistry.get('Gemini Coach');
     expect(geminiCoach).toBeDefined();
-    expect(geminiCoach?.getDefinition().business_function).toBe('Market & Research');
+    expect(geminiCoach?.getDefinition().business_function).toBe('Customer Success & Support');
   });
 
   it('Store slice should retrieve agents from registry', () => {

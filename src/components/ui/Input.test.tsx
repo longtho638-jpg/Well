@@ -1,4 +1,5 @@
-import { render, screen, fireEvent } from '@testing-library/react';
+import { render } from '@testing-library/react';
+import { screen, fireEvent, waitFor } from '@testing-library/dom';
 import { describe, it, expect } from 'vitest';
 import { Input } from './Input';
 import { Mail } from 'lucide-react';

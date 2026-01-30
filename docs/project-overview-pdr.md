@@ -54,7 +54,7 @@
 - **Security:** Secure handling of user data and API keys.
 
 ### 4. Technical Constraints
-- **Framework:** React 18+ with TypeScript.
+- **Framework:** React 19 with TypeScript 5.7+.
 - **State:** Zustand for global state.
 - **Styling:** Tailwind CSS.
 - **Deployment:** Vercel (CI/CD pipeline).

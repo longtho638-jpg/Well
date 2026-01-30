@@ -6,6 +6,7 @@ import { Product } from '@/types';
 import { formatVND } from '@/utils/format';
 import { useTranslation } from '@/hooks';
 import { useNavigate } from 'react-router-dom';
+import { uiLogger } from '@/utils/logger';
 
 interface QuickPurchaseModalProps {
   isOpen: boolean;
@@ -30,7 +31,7 @@ export const QuickPurchaseModal: React.FC<QuickPurchaseModalProps> = ({ isOpen, 
       try {
         setFavorites(JSON.parse(saved));
       } catch (e) {
-        console.error('Failed to parse favorites', e);
+        uiLogger.error('Failed to parse favorites', e);
       }
     }
   }, []);
@@ -84,7 +85,7 @@ export const QuickPurchaseModal: React.FC<QuickPurchaseModalProps> = ({ isOpen, 
         // onClose(); // Optional: close on success
       }, 1000);
     } catch (error) {
-      console.error('Purchase failed', error);
+      uiLogger.error('Purchase failed', error);
       setProcessingId(null);
     }
   };

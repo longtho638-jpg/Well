@@ -1,4 +1,4 @@
-import React from 'react';
+import { useState, useEffect } from 'react';
 import { useTranslation } from '../hooks';
 import { motion } from 'framer-motion';
 import { ParticleBackground } from '@/components/ParticleBackground';
@@ -86,7 +86,7 @@ export default function LandingPage() {
   const { t } = useTranslation();
   const navigate = useNavigate();
   const { login, products, fetchProducts } = useStore();
-  const [isCartOpen, setIsCartOpen] = React.useState(false);
+  const [isCartOpen, setIsCartOpen] = useState(false);
 
   const cartItems = useCartStore(state => state.items);
   const cartTotal = useCartStore(state => state.getTotal());
@@ -95,7 +95,7 @@ export default function LandingPage() {
   const updateQuantity = useCartStore(state => state.updateQuantity);
   const removeFromCart = useCartStore(state => state.removeFromCart);
 
-  React.useEffect(() => {
+  useEffect(() => {
     fetchProducts();
   }, [fetchProducts]);
 

@@ -4,6 +4,13 @@ import { aiLogger } from '@/utils/logger';
 // NOTE: In a real production app, engage a backend proxy to hide this key.
 // const genAI = new GoogleGenerativeAI(import.meta.env.VITE_GEMINI_API_KEY || 'demo-key'); // Removed direct usage
 
+/**
+ * Get personalized coaching advice from Gemini Agent
+ * @param userName - Name of the user
+ * @param salesData - Total sales amount
+ * @param pendingQuests - List of pending tasks
+ * @returns Promise<string> Coaching advice text
+ */
 export const getCoachAdvice = async (
   userName: string,
   salesData: number,
@@ -43,6 +50,11 @@ export const getCoachAdvice = async (
   }
 };
 
+/**
+ * Check text compliance using Gemini Agent
+ * @param text - Text to analyze
+ * @returns Promise<boolean> True if compliant, false otherwise
+ */
 export const checkCompliance = async (text: string): Promise<boolean> => {
   try {
     // The new agent has checkTaxCompliance, but the old service signature returned boolean.

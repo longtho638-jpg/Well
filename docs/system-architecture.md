@@ -38,13 +38,13 @@ graph TD
 ## Core Components
 
 ### 1. Distributor Portal (Frontend)
-- **Framework:** React 18, Vite, TypeScript
+- **Framework:** React 19, Vite 7, TypeScript 5.7+
 - **State:** Zustand (Global State)
 - **Focus:** Sales, Team Management, AI Coaching
 - **Key Modules:** Dashboard, Marketplace, Agent-OS
 
 ### 2. Admin Panel (Frontend)
-- **Framework:** React 19, Vite, TypeScript
+- **Framework:** React 19, Vite 7, TypeScript 5.7+
 - **State:** TanStack Query (Server State) + Zustand (Auth)
 - **Styling:** Tailwind CSS + Radix UI
 - **Focus:** Platform Oversight, Data Management, Analytics

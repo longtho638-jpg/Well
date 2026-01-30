@@ -30,6 +30,13 @@
   - **Admin Specific:** `admin-panel/src/types/`
 - **Props:** Use `interface Props` or `type Props`.
 
+## Accessibility (a11y)
+- **Standards:** WCAG 2.1 AA compliance.
+- **Semantic HTML:** Use proper HTML5 semantic elements (`<nav>`, `<main>`, `<article>`, etc.).
+- **ARIA:** Use ARIA roles and attributes only when necessary (e.g., custom widgets).
+- **Keyboard Navigation:** Ensure all interactive elements are focusable and usable via keyboard.
+- **Testing:** Verify with screen readers and keyboard-only navigation.
+
 ## Testing
 - **Framework:** Vitest + React Testing Library.
 - **Requirement:** 100% pass rate.

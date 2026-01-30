@@ -114,7 +114,7 @@ export function useInView<T extends Element>(options: UseInViewOptions = {}) {
 
 export function useClickOutside<T extends HTMLElement>(
     callback: () => void
-): React.RefObject<T> {
+): React.RefObject<T | null> {
     const ref = useRef<T>(null);
 
     useEffect(() => {
@@ -141,7 +141,7 @@ interface ElementSize {
 }
 
 export function useElementSize<T extends HTMLElement>(): [
-    React.RefObject<T>,
+    React.RefObject<T | null>,
     ElementSize
 ] {
     const ref = useRef<T>(null);
@@ -170,7 +170,7 @@ export function useElementSize<T extends HTMLElement>(): [
 // ============================================================================
 
 export function useHover<T extends HTMLElement>(): [
-    React.RefObject<T>,
+    React.RefObject<T | null>,
     boolean
 ] {
     const ref = useRef<T>(null);
@@ -200,7 +200,7 @@ export function useHover<T extends HTMLElement>(): [
 // ============================================================================
 
 export function useFocus<T extends HTMLElement>(): [
-    React.RefObject<T>,
+    React.RefObject<T | null>,
     boolean,
     { focus: () => void; blur: () => void }
 ] {

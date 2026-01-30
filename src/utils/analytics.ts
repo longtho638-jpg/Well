@@ -105,7 +105,7 @@ class AnalyticsService {
 
         // For now, just log in production
         if (import.meta.env.DEV) {
-            console.debug('[Analytics]', type, payload);
+            analyticsLogger.debug(`[Analytics Provider] ${type}`, payload);
         }
     }
 

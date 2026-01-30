@@ -1,0 +1,10 @@
+# robots.txt for WellNexus
+User-agent: *
+Allow: /
+
+# Sitemap location
+Sitemap: https://wellnexus.vn/sitemap.xml
+
+# Block sensitive paths (if any in future)
+Disallow: /admin
+Disallow: /api

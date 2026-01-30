@@ -1,0 +1,36 @@
+<svg width="1200" height="630" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background gradient -->
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#0F172A;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#1E293B;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="text" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#60A5FA;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#3B82F6;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+
+  <!-- Background -->
+  <rect width="1200" height="630" fill="url(#bg)"/>
+
+  <!-- Title -->
+  <text x="600" y="250" font-family="Arial, sans-serif" font-size="80" font-weight="bold" fill="url(#text)" text-anchor="middle">
+    WellNexus 2.0
+  </text>
+
+  <!-- Subtitle -->
+  <text x="600" y="330" font-family="Arial, sans-serif" font-size="40" fill="#94A3B8" text-anchor="middle">
+    Agentic HealthFi OS
+  </text>
+
+  <!-- Features -->
+  <text x="600" y="420" font-family="Arial, sans-serif" font-size="28" fill="#E2E8F0" text-anchor="middle">
+    🤖 24+ AI Agents • 💰 MLM/Affiliate • 🪙 Dual-Token Wallet
+  </text>
+
+  <!-- Badge -->
+  <text x="600" y="500" font-family="Arial, sans-serif" font-size="22" fill="#60A5FA" text-anchor="middle">
+    Hybrid Community Commerce Platform for Vietnam
+  </text>
+</svg>

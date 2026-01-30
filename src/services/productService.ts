@@ -25,7 +25,15 @@ export interface NewProductDto {
     category: string;
 }
 
+/**
+ * Product Service
+ * Handles CRUD operations for marketplace products using Supabase.
+ */
 export const productService = {
+    /**
+     * Fetch all active products sorted by sales count
+     * @returns Promise<Product[]> List of products
+     */
     async getProducts(): Promise<Product[]> {
         const { data, error } = await supabase
             .from('products')
@@ -39,6 +47,11 @@ export const productService = {
         return data || [];
     },
 
+    /**
+     * Update product details
+     * @param id - Product ID
+     * @param updates - Partial product object
+     */
     async updateProduct(id: string, updates: Partial<Product>): Promise<void> {
         const { error } = await supabase
             .from('products')
@@ -51,6 +64,10 @@ export const productService = {
         }
     },
 
+    /**
+     * Create a new product
+     * @param product - New product data
+     */
     async createProduct(product: NewProductDto): Promise<void> {
         const { error } = await supabase
             .from('products')
@@ -67,6 +84,10 @@ export const productService = {
         }
     },
 
+    /**
+     * Soft delete a product (or hard delete if policy allows)
+     * @param id - Product ID
+     */
     async deleteProduct(id: string): Promise<void> {
         const { error } = await supabase
             .from('products')

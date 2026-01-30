@@ -61,6 +61,11 @@ export const OBJECTION_TEMPLATES: ObjectionTemplate[] = [
 ];
 
 // Detect objection type from user message
+/**
+ * Analyze user message to detect sales objection type
+ * @param message - User input text
+ * @returns ObjectionType - Detected category (price, trust, etc.)
+ */
 export function detectObjection(message: string): ObjectionType {
   // Use agent if available
   const agent = agentRegistry.get('Sales Copilot');
@@ -100,6 +105,11 @@ export function detectObjection(message: string): ObjectionType {
 }
 
 // Get suggested response for objection
+/**
+ * Retrieve a template response for a specific objection type
+ * @param objectionType - Category of objection
+ * @returns string - Suggested response text
+ */
 export function getSuggestedResponse(objectionType: ObjectionType): string {
   const template = OBJECTION_TEMPLATES.find(t => t.type === objectionType);
   if (!template || template.responses.length === 0) {
@@ -111,6 +121,13 @@ export function getSuggestedResponse(objectionType: ObjectionType): string {
 }
 
 // Generate AI-powered response using Gemini
+/**
+ * Generate context-aware response using AI Agent
+ * @param userMessage - Current message from user
+ * @param conversationHistory - Chat history
+ * @param productContext - Optional context about current product
+ * @returns Promise with response text and metadata
+ */
 export async function generateCopilotResponse(
   userMessage: string,
   conversationHistory: Array<{ role: string; content: string }>,
@@ -152,6 +169,13 @@ export async function generateCopilotResponse(
 }
 
 // Generate sales script for a product
+/**
+ * Create a tailored sales script for a specific product
+ * @param productName - Name of product
+ * @param productDescription - Details/Benefits
+ * @param customerProfile - Optional target audience info
+ * @returns Promise<string> Markdown formatted script
+ */
 export async function generateSalesScript(
   productName: string,
   productDescription: string,
@@ -193,6 +217,11 @@ Hiện tại chúng tôi có chương trình ưu đãi đặc biệt. Bạn mu�
 }
 
 // Analyze conversation and provide coaching tips
+/**
+ * Analyze chat history to provide coaching feedback
+ * @param conversationHistory - Array of chat messages
+ * @returns Promise<string> Coaching feedback text
+ */
 export async function getCopilotCoaching(
   conversationHistory: Array<{ role: string; content: string }>
 ): Promise<string> {

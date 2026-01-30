@@ -7,6 +7,7 @@ import { GuestInfoValues } from '../../utils/validation/checkoutSchema';
 import { ArrowLeft, CreditCard, Loader2 } from 'lucide-react';
 import { orderService } from '../../services/orderService';
 import { useToast } from '../../components/ui/Toast';
+import { uiLogger } from '../../utils/logger';
 import { OrderPayload } from '../../types/checkout';
 
 export const CheckoutPage: React.FC = () => {
@@ -47,7 +48,7 @@ export const CheckoutPage: React.FC = () => {
             showToast('Đặt hàng thành công! Đơn hàng của bạn đã được ghi nhận.', 'success');
             navigate('/checkout/success');
         } catch (error) {
-            console.error('Checkout failed:', error);
+            uiLogger.error('Checkout failed:', error);
             showToast('Có lỗi xảy ra khi xử lý đơn hàng. Vui lòng thử lại.', 'error');
         } finally {
             setIsSubmitting(false);
