@@ -1,10 +1,8 @@
-import { GoogleGenerativeAI } from "@google/generative-ai";
 import { ObjectionType, ObjectionTemplate } from "@/types";
 import { aiLogger } from "@/utils/logger";
+import { agentRegistry } from "@/agents";
 
-const genAI = new GoogleGenerativeAI(import.meta.env.VITE_GEMINI_API_KEY || 'demo-key');
-
-// Objection handling templates
+// Kept for backward compatibility if needed, though ideally accessed via agent
 export const OBJECTION_TEMPLATES: ObjectionTemplate[] = [
   {
     type: 'price',
@@ -64,18 +62,40 @@ export const OBJECTION_TEMPLATES: ObjectionTemplate[] = [
 
 // Detect objection type from user message
 export function detectObjection(message: string): ObjectionType {
-  const lowerMessage = message.toLowerCase();
+  // Use agent if available
+  const agent = agentRegistry.get('Sales Copilot');
+  if (agent) {
+    // We can't use await here because the function is synchronous
+    // So we fallback to local logic or change signature.
+    // Given the task is to wrapper, but signature change might break UI.
+    // For synchronous methods, we'll keep local logic OR execute synchronously if possible (Agent execute is async).
+    // Let's keep the local logic for synchronous functions to avoid breaking changes,
+    // but ideally we should update the UI to handle async.
+    // For this refactoring, we'll just keep the local logic duplicated in service for safety
+    // or refactor to async if we can confirm usage.
+    // Looking at usage in UI might be helpful. Assuming we must keep signature:
+    const lowerMessage = message.toLowerCase();
+    for (const template of OBJECTION_TEMPLATES) {
+      if (template.keywords.length === 0) continue;
+      for (const keyword of template.keywords) {
+        if (lowerMessage.includes(keyword.toLowerCase())) {
+          return template.type;
+        }
+      }
+    }
+    return 'general';
+  }
 
+  // Fallback (same logic)
+  const lowerMessage = message.toLowerCase();
   for (const template of OBJECTION_TEMPLATES) {
     if (template.keywords.length === 0) continue;
-
     for (const keyword of template.keywords) {
       if (lowerMessage.includes(keyword.toLowerCase())) {
         return template.type;
       }
     }
   }
-
   return 'general';
 }
 
@@ -97,55 +117,27 @@ export async function generateCopilotResponse(
   productContext?: string
 ): Promise<{ response: string; objectionType?: ObjectionType; suggestion?: string }> {
   try {
-    const model = genAI.getGenerativeModel({ model: "gemini-pro" });
+    const agent = agentRegistry.get('Sales Copilot');
+    if (!agent) {
+       throw new Error("Sales Copilot Agent not found");
+    }
 
-    // Detect objection
-    const objectionType = detectObjection(userMessage);
-    const suggestion = getSuggestedResponse(objectionType);
+    const result = await agent.execute({
+      action: 'generateResponse',
+      message: userMessage,
+      history: conversationHistory,
+      productContext
+    });
 
-    // Build context-aware prompt
-    const contextPrompt = productContext
-      ? `Product Context: ${productContext}\n\n`
-      : '';
+    if (result && !result.error) {
+       return result;
+    }
 
-    const historyText = conversationHistory
-      .map(msg => `${msg.role === 'user' ? 'Customer' : 'Sales Rep'}: ${msg.content}`)
-      .join('\n');
+    // Fallback if agent returns error structure
+    throw new Error(result?.error || "Agent execution failed");
 
-    const prompt = `
-You are "The Copilot" - an AI sales assistant for WellNexus, a Vietnamese social commerce platform.
-
-${contextPrompt}
-
-Conversation History:
-${historyText}
-
-Latest Customer Message: "${userMessage}"
-
-Detected Objection Type: ${objectionType}
-
-Your task:
-1. Address the customer's concern professionally and empathetically
-2. Use Vietnamese language naturally (mix with English if appropriate for product names)
-3. Keep response concise (2-3 sentences max)
-4. Focus on building trust and providing value
-5. If it's a sales objection, gently overcome it without being pushy
-6. End with a question to keep the conversation flowing
-
-Generate a natural, persuasive response:
-    `.trim();
-
-    const result = await model.generateContent(prompt);
-    const response = await result.response;
-    const text = response.text();
-
-    return {
-      response: text || suggestion,
-      objectionType,
-      suggestion
-    };
   } catch (error) {
-    aiLogger.warn('Copilot AI Error', error);
+    aiLogger.warn('Copilot Service Error', error);
 
     // Fallback to template-based response
     const objectionType = detectObjection(userMessage);
@@ -166,27 +158,20 @@ export async function generateSalesScript(
   customerProfile?: string
 ): Promise<string> {
   try {
-    const model = genAI.getGenerativeModel({ model: "gemini-pro" });
+    const agent = agentRegistry.get('Sales Copilot');
+    if (!agent) throw new Error("Sales Copilot Agent not found");
 
-    const prompt = `
-Create a professional sales script in Vietnamese for:
+    const result = await agent.execute({
+      action: 'generateSalesScript',
+      productName,
+      productDescription,
+      customerProfile
+    });
 
-Product: ${productName}
-Description: ${productDescription}
-${customerProfile ? `Customer Profile: ${customerProfile}` : ''}
+    if (typeof result === 'string') return result;
+    if (result && result.error) throw new Error(result.error);
+    return "Script đang được cập nhật...";
 
-Generate a 4-step sales script:
-1. Opening (grab attention)
-2. Problem identification
-3. Solution presentation
-4. Closing (call to action)
-
-Keep it conversational, natural, and persuasive. Use Vietnamese primarily.
-    `.trim();
-
-    const result = await model.generateContent(prompt);
-    const response = await result.response;
-    return response.text() || "Script đang được cập nhật...";
   } catch (error) {
     aiLogger.warn('Script Generation Error', error);
     return `
@@ -212,28 +197,18 @@ export async function getCopilotCoaching(
   conversationHistory: Array<{ role: string; content: string }>
 ): Promise<string> {
   try {
-    const model = genAI.getGenerativeModel({ model: "gemini-pro" });
+    const agent = agentRegistry.get('Sales Copilot');
+    if (!agent) throw new Error("Sales Copilot Agent not found");
 
-    const historyText = conversationHistory
-      .map(msg => `${msg.role === 'user' ? 'Customer' : 'You'}: ${msg.content}`)
-      .join('\n');
+    const result = await agent.execute({
+      action: 'analyzeConversation',
+      history: conversationHistory
+    });
 
-    const prompt = `
-Analyze this sales conversation and provide coaching tips:
+    if (typeof result === 'string') return result;
+    if (result && result.error) throw new Error(result.error);
+    return "Phân tích đang được cập nhật...";
 
-${historyText}
-
-As a sales coach, provide:
-1. What went well (1 point)
-2. What could be improved (1 point)
-3. Next step suggestion (1 point)
-
-Keep it brief, actionable, and encouraging. Use Vietnamese.
-    `.trim();
-
-    const result = await model.generateContent(prompt);
-    const response = await result.response;
-    return response.text() || "Phân tích đang được cập nhật...";
   } catch (error) {
     aiLogger.warn('Coaching Error', error);
     return "✅ Tốt: Bạn đã lắng nghe khách hàng\n⚠️ Cải thiện: Hỏi thêm câu hỏi mở\n🎯 Tiếp theo: Đưa ra case study cụ thể";

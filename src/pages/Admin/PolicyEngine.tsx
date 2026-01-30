@@ -48,7 +48,7 @@ const PolicyEngine: React.FC = () => {
     return (
       <div className="min-h-screen flex flex-col items-center justify-center p-6 space-y-4 bg-zinc-950">
         <div className="w-12 h-12 border-2 border-emerald-500 border-t-transparent rounded-full animate-spin shadow-[0_0_20px_rgba(16,185,129,0.5)]" />
-        <p className="text-[10px] font-black text-zinc-500 uppercase tracking-[0.4em] italic animate-pulse">{t('policyengine.synchronizing_policy_core')}</p>
+        <p className="text-[10px] font-black text-zinc-500 uppercase tracking-[0.4em] italic animate-pulse">{t('policyEngine.synchronizingPolicyCore')}</p>
       </div>
     );
   }
@@ -69,18 +69,18 @@ const PolicyEngine: React.FC = () => {
             </div>
             <div>
               <h2 className="text-5xl font-black text-white tracking-tighter uppercase italic drop-shadow-2xl">
-                {t('policyengine.policy_engine')}<span className="text-zinc-700">{t('policyengine.v3_1')}</span>
+                {t('policyEngine.title')}<span className="text-zinc-700">{t('policyEngine.version')}</span>
               </h2>
               <div className="flex items-center gap-4 mt-2">
                 <div className="flex items-center gap-2">
                   <div className="w-2 h-2 rounded-full bg-emerald-500 shadow-[0_0_10px_rgba(16,185,129,0.5)] animate-pulse" />
-                  <span className="text-[10px] font-black text-emerald-400 uppercase tracking-[0.2em] italic">{t('policyengine.strategic_integrity_confirmed')}</span>
+                  <span className="text-[10px] font-black text-emerald-400 uppercase tracking-[0.2em] italic">{t('policyEngine.strategicIntegrityConfirmed')}</span>
                 </div>
                 {lastSaved && (
                   <>
                     <span className="text-zinc-800">/</span>
                     <span className="text-[10px] font-black text-zinc-500 uppercase tracking-[0.2em] italic flex items-center gap-2">
-                      <Database size={12} /> {t('policyengine.sync')}{lastSaved}
+                      <Database size={12} /> {t('policyEngine.sync')}{lastSaved}
                     </span>
                   </>
                 )}
@@ -138,8 +138,8 @@ const PolicyEngine: React.FC = () => {
             className="sticky top-10 space-y-8"
           >
             <div className="flex items-center justify-between mb-2">
-              <h3 className="text-[10px] font-black text-zinc-500 uppercase tracking-[0.4em] italic">{t('policyengine.projection_simulator')}</h3>
-              <AuraBadge color="amber">{t('policyengine.real_time')}</AuraBadge>
+              <h3 className="text-[10px] font-black text-zinc-500 uppercase tracking-[0.4em] italic">{t('policyEngine.projectionSimulator')}</h3>
+              <AuraBadge color="amber">{t('policyEngine.realTime')}</AuraBadge>
             </div>
             <SimulationPanel simulation={simulation} />
 
@@ -152,7 +152,7 @@ const PolicyEngine: React.FC = () => {
                   <ShieldCheck size={20} />
                 </div>
                 <p className="text-[10px] font-black text-white uppercase tracking-widest italic leading-relaxed">
-                  {t('policyengine.policy_changes_are_cryptograph')}</p>
+                  {t('policyEngine.policyChangesAreCryptographicallySigned')}</p>
               </div>
             </div>
           </motion.div>

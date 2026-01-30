@@ -965,6 +965,14 @@ export const vi = {
   agentDashboard: {
     title: 'Hệ Điều Hành Agent',
     subtitle: 'Quản lý và vận hành đội ngũ nhân sự AI',
+    establishingNodeSync: 'Đang đồng bộ node...',
+    intelligenceGridOptimal: 'Lưới thông minh: Tối ưu',
+    operationalTier: 'Cấp độ vận hành: ',
+    version: 'v1.2.0 Ổn định',
+    registry: 'Registry',
+    nodes: 'Nodes',
+    strategicSimulatorOffline: 'Mô phỏng chiến lược Offline',
+    connectToPolicyEngine: 'Kết nối Policy Engine để chạy mô phỏng thị trường thực.',
     stats: {
       totalAgents: 'Tổng số Agent',
       activeFunctions: 'Phân hệ nghiệp vụ',
@@ -2570,17 +2578,6 @@ export const vi = {
     x_y_ra_l_i: 'Xảy ra lỗi',
   },
 
-  // policyengine keys
-  policyenginex: {
-    policy_changes_are_cryptograph: 'Policy changes are cryptographically signed',
-    policy_engine: 'Policy Engine',
-    projection_simulator: 'Projection Simulator',
-    real_time: 'Real-time',
-    strategic_integrity_confirmed: 'Strategic Integrity Confirmed',
-    sync: 'Sync',
-    synchronizing_policy_core: 'Synchronizing Policy Core',
-    v3_1: 'v3.1',
-  },
 
   // portfoliosection keys
   portfoliosection: {
@@ -2661,16 +2658,16 @@ export const vi = {
     we_ll_notify_you_when_somethin: "We'll notify you when something happens",
   },
 
-  // policyengine - CORRECT section (8 keys)
-  policyengine: {
-    policy_changes_are_cryptograph: 'Policy changes are cryptographically signed',
-    policy_engine: 'Policy Engine',
-    projection_simulator: 'Projection Simulator',
-    real_time: 'Real-time',
-    strategic_integrity_confirmed: 'Strategic Integrity Confirmed',
-    sync: 'Sync',
-    synchronizing_policy_core: 'Synchronizing Policy Core',
-    v3_1: 'v3.1',
+  // Policy Engine
+  policyEngine: {
+    title: 'Policy Engine',
+    version: 'v3.1',
+    synchronizingPolicyCore: 'Đang đồng bộ Policy Core',
+    strategicIntegrityConfirmed: 'Toàn vẹn chiến lược đã xác nhận',
+    sync: 'Đồng bộ:',
+    projectionSimulator: 'Mô phỏng dự báo',
+    realTime: 'Thời gian thực',
+    policyChangesAreCryptographicallySigned: 'Thay đổi chính sách được ký bảo mật',
   },
 
   // healthcheck - CORRECT section (6 keys)

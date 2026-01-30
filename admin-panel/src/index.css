@@ -1,0 +1,50 @@
+@import "tailwindcss";
+
+@layer base {
+  :root {
+    --font-display: 'Manrope', system-ui, -apple-system, sans-serif;
+    --font-body: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+  }
+
+  html {
+    font-family: var(--font-body);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  /* Body styles moved to index.html classes to avoid @apply issues in v4 */
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-display);
+    font-weight: 800;
+    letter-spacing: -0.02em;
+  }
+}
+
+@layer components {
+  /* Glassmorphism */
+  .glass-panel {
+    @apply bg-white/10 backdrop-blur-xl border border-white/20 shadow-xl;
+  }
+
+  .dark .glass-panel {
+    @apply bg-zinc-900/70 border-zinc-700/50 shadow-black/50;
+  }
+
+  .glass-card {
+     @apply bg-white/70 backdrop-blur-xl border border-white/40 shadow-sm;
+  }
+
+  .dark .glass-card {
+      @apply bg-zinc-900/40 backdrop-blur-md border border-white/5;
+  }
+
+  /* Text Glow */
+  .text-glow {
+    text-shadow: 0 0 20px rgba(255, 255, 255, 0.5);
+  }
+
+  .text-glow-brand {
+    text-shadow: 0 0 20px rgba(0, 87, 90, 0.3);
+  }
+}

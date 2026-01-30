@@ -18,21 +18,21 @@ This plan implements high-impact UX optimizations for the WellNexus Distributor 
 
 ## Phases
 
-- **[Phase 1: Commission Widget](./phase-01-commission-widget.md)**
+- [x] **[Phase 1: Commission Widget](./phase-01-commission-widget.md)**
     - Implement `CommissionWidget.tsx` with memoized calculations.
     - Visualize Direct Sales vs Team Volume.
-- **[Phase 2: Quick Purchase Modal](./phase-02-quick-purchase-modal.md)**
+- [x] **[Phase 2: Quick Purchase Modal](./phase-02-quick-purchase-modal.md)**
     - Build `QuickPurchaseModal.tsx` with Recent/Favorites tabs.
     - Implement express checkout logic.
-- **[Phase 3: Dashboard Integration](./phase-03-dashboard-integration.md)**
+- [x] **[Phase 3: Dashboard Integration](./phase-03-dashboard-integration.md)**
     - Integrate widget into `Dashboard.tsx` grid.
     - Ensure mobile responsiveness.
-- **[Phase 4: Marketplace Integration](./phase-04-marketplace-integration.md)**
+- [x] **[Phase 4: Marketplace Integration](./phase-04-marketplace-integration.md)**
     - Add Floating Action Button (FAB) for Quick Buy.
     - Wire up modal state and props.
-- **[Phase 5: Translation Keys](./phase-05-translation-keys.md)**
+- [x] **[Phase 5: Translation Keys](./phase-05-translation-keys.md)**
     - Add i18n support for new components.
-- **[Phase 6: Testing & Verification](./phase-06-testing-verification.md)**
+- [x] **[Phase 6: Testing & Verification](./phase-06-testing-verification.md)**
     - Unit testing, build verification, and responsive QA.
 
 ## Key Technical Decisions

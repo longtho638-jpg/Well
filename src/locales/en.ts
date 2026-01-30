@@ -1154,7 +1154,49 @@ export const en = {
         withdrawalSuccess: 'Withdrawal request successful!',
         stakingSuccess: 'Staking successful!',
         unstakingSuccess: 'Unstaking successful!',
+    },
+
+    // Agent Dashboard
+    agentDashboard: {
+        title: 'Agent Command Center',
+        subtitle: 'Orchestrate your AI workforce',
+        establishingNodeSync: 'Establishing node sync...',
+        intelligenceGridOptimal: 'Intelligence Grid: Optimal',
+        operationalTier: 'Operational Tier: ',
+        version: 'v1.2.0 Stable',
+        registry: 'Registry',
+        nodes: 'Nodes',
+        strategicSimulatorOffline: 'Strategic Simulator Offline',
+        connectToPolicyEngine: 'Connect to the Policy Engine to run real-time market simulations.',
+        stats: {
+            totalAgents: 'Total Agents',
+            activeFunctions: 'Active Functions',
+            customAgents: 'Expert Agents',
+        },
+        grid: {
+            neuralSync: 'Neural Link Sync...',
+            statusActive: 'Active',
+            statusTraining: 'Training',
+            statusStandby: 'Standby',
+        },
+        details: {
+            efficiency: 'Efficiency',
+            accuracy: 'Accuracy',
+            latency: 'Latency',
+            capabilities: 'Capabilities',
+            trainingHistory: 'Training History',
+        }
+    },
+
+    // Policy Engine
+    policyEngine: {
+        title: 'Policy Engine',
+        version: 'v3.1',
+        synchronizingPolicyCore: 'Synchronizing Policy Core',
+        strategicIntegrityConfirmed: 'Strategic Integrity Confirmed',
+        sync: 'Sync:',
+        projectionSimulator: 'Projection Simulator',
+        realTime: 'Real-time',
+        policyChangesAreCryptographicallySigned: 'Policy changes are cryptographically signed',
     }
-
-
 };

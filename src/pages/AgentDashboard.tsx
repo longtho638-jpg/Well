@@ -53,7 +53,7 @@ export const AgentDashboard: React.FC = () => {
     return (
       <div className="min-h-screen bg-zinc-950 flex flex-col items-center justify-center p-6 space-y-4">
         <div className="w-12 h-12 border-2 border-teal-500 border-t-transparent rounded-full animate-spin shadow-[0_0_20px_rgba(20,184,166,0.5)]" />
-        <p className="text-[10px] font-black text-zinc-500 uppercase tracking-[0.4em] italic animate-pulse">{t('agentdashboard.establishing_node_sync')}</p>
+        <p className="text-[10px] font-black text-zinc-500 uppercase tracking-[0.4em] italic animate-pulse">{t('agentDashboard.establishingNodeSync')}</p>
       </div>
     );
   }
@@ -83,15 +83,15 @@ export const AgentDashboard: React.FC = () => {
               </motion.div>
               <div>
                 <h2 className="text-5xl font-black text-white tracking-tighter uppercase italic drop-shadow-lg">
-                  {t('agentdashboard.agent_command_center')}</h2>
+                  {t('agentDashboard.title')}</h2>
                 <div className="flex items-center gap-4 mt-2">
                   <div className="flex items-center gap-2">
                     <div className="w-2 h-2 rounded-full bg-emerald-500 shadow-[0_0_10px_rgba(16,185,129,0.5)] animate-pulse" />
-                    <span className="text-[10px] font-black text-emerald-400 uppercase tracking-[0.2em] italic">{t('agentdashboard.intelligence_grid_optimal')}</span>
+                    <span className="text-[10px] font-black text-emerald-400 uppercase tracking-[0.2em] italic">{t('agentDashboard.intelligenceGridOptimal')}</span>
                   </div>
                   <span className="text-zinc-800">/</span>
                   <span className="text-[10px] font-black text-zinc-500 uppercase tracking-[0.2em] italic">
-                    {t('agentdashboard.operational_tier')}{userRole.toUpperCase()}
+                    {t('agentDashboard.operationalTier')}{userRole.toUpperCase()}
                   </span>
                 </div>
               </div>
@@ -115,7 +115,7 @@ export const AgentDashboard: React.FC = () => {
             <div className="h-10 w-px bg-white/5 mx-2 hidden xl:block" />
             <div className="flex items-center gap-4 bg-zinc-900/50 border border-white/5 px-6 py-4 rounded-2xl">
               <Terminal size={16} className="text-teal-500" />
-              <span className="text-xs font-black text-zinc-300 font-mono italic uppercase tracking-widest leading-none">{t('agentdashboard.v1_2_0_stable')}</span>
+              <span className="text-xs font-black text-zinc-300 font-mono italic uppercase tracking-widest leading-none">{t('agentDashboard.version')}</span>
             </div>
           </div>
         </motion.div>
@@ -156,10 +156,10 @@ export const AgentDashboard: React.FC = () => {
               <div className="flex items-center gap-6">
                 <div className="h-0.5 w-12 bg-gradient-to-r from-teal-500 to-transparent" />
                 <h3 className="text-[10px] font-black text-zinc-500 uppercase tracking-[0.5em] italic">
-                  {functionName} {t('agentdashboard.registry')}</h3>
+                  {functionName} {t('agentDashboard.registry')}</h3>
                 <div className="flex-1 h-px bg-white/5" />
                 <AuraBadge color="teal" className="opacity-50">
-                  {functionAgents.length} {t('agentdashboard.nodes')}</AuraBadge>
+                  {functionAgents.length} {t('agentDashboard.nodes')}</AuraBadge>
               </div>
 
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 gap-8">
@@ -188,9 +188,9 @@ export const AgentDashboard: React.FC = () => {
               <Target className="w-8 h-8 text-teal-500" />
             </div>
             <div className="space-y-2">
-              <h3 className="text-2xl font-black text-white italic tracking-tighter uppercase">{t('agentdashboard.strategic_simulator_offline')}</h3>
+              <h3 className="text-2xl font-black text-white italic tracking-tighter uppercase">{t('agentDashboard.strategicSimulatorOffline')}</h3>
               <p className="text-zinc-500 text-xs font-black uppercase tracking-widest max-w-md mx-auto leading-relaxed">
-                {t('agentdashboard.connect_to_the_policy_engine_r')}</p>
+                {t('agentDashboard.connectToPolicyEngine')}</p>
             </div>
           </div>
         </motion.div>

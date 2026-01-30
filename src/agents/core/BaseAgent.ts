@@ -33,7 +33,7 @@ export abstract class BaseAgent {
       if (policy.enforcement === 'hard') {
         // Basic policy check - can be enhanced later
         // For now, we just log the check
-
+        agentLogger.warn(`[Policy Check] ${policy.rule} for action: ${action}`);
       }
     }
     return true; // Allow by default for now
