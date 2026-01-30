@@ -97,6 +97,38 @@ npm run test:coverage # Generate coverage report
 npm run build
 ```
 
+## 🚀 Deployment
+
+### Vercel Deployment
+
+This project is configured for Vercel deployment. The `vercel.json` file handles the configuration for SPA routing and security headers.
+
+1. **Install Vercel CLI** (optional, for local deployment):
+   ```bash
+   npm i -g vercel
+   ```
+
+2. **Deploy via CLI:**
+   ```bash
+   vercel
+   ```
+
+3. **Deploy via Vercel Dashboard:**
+   - Connect your GitHub repository to Vercel.
+   - Select the `admin-panel` directory as the root directory.
+   - Vercel will automatically detect the Vite framework settings.
+   - **Environment Variables:** Add the following variables in the Vercel Project Settings:
+     - `VITE_SUPABASE_URL`
+     - `VITE_SUPABASE_ANON_KEY`
+     - `VITE_API_URL` (if applicable)
+
+### Configuration
+
+- **Output Directory:** `dist`
+- **Build Command:** `npm run build`
+- **Install Command:** `npm install`
+- **Configuration File:** `vercel.json` includes rewrites for SPA routing and security headers.
+
 ## 🧪 Testing Strategy
 
 We maintain a strict **100% Pass Rate** policy.
