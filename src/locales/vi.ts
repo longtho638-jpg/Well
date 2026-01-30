@@ -379,6 +379,20 @@ export const vi = {
     'vnd_stablecoin_1_1000': 'VND Stablecoin 1:1000',
   },
 
+  // Cart/Checkout
+  cart: {
+    empty: 'Giỏ hàng trống',
+    yourOrder: 'Đơn hàng của bạn',
+    quantity: 'SL',
+    subtotal: 'Tạm tính',
+    shipping: 'Phí vận chuyển',
+    shippingFree: 'Miễn phí',
+    total: 'Tổng cộng',
+    viewCart: 'Xem giỏ hàng',
+    checkout: 'Thanh toán',
+    removeItem: 'Xóa sản phẩm',
+  },
+
   // Marketplace Page
   marketplace: {
     title: 'Cửa hàng',

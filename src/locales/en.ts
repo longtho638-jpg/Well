@@ -275,6 +275,20 @@ export const en = {
         }
     },
 
+    // Cart/Checkout
+    cart: {
+        empty: 'Cart is empty',
+        yourOrder: 'Your Order',
+        quantity: 'Qty',
+        subtotal: 'Subtotal',
+        shipping: 'Shipping',
+        shippingFree: 'Free',
+        total: 'Total',
+        viewCart: 'View Cart',
+        checkout: 'Checkout',
+        removeItem: 'Remove item',
+    },
+
     // Wallet Page
     wallet: {
         title: 'Asset Management',
