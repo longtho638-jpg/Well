@@ -24,7 +24,7 @@
 - **Imports:** Group imports: External -> Internal -> Types -> Styles. Use `@/` alias.
 
 ## TypeScript
-- **Strict Mode:** Enabled. No `any` types unless absolutely necessary.
+- **Strict Mode:** Enabled. Zero-tolerance policy for `any` types (enforced via active tech debt elimination).
 - **Interfaces:**
   - **Shared:** `src/types.ts`
   - **Admin Specific:** `admin-panel/src/types/`

@@ -7,7 +7,7 @@ import * as storeModule from '@/store';
 // Mock dependencies
 vi.mock('@/hooks', () => ({
   useTranslation: () => ({
-    t: (key: string, params: any) => {
+    t: (key: string, params?: Record<string, string | number>) => {
         if (key === 'marketplace.quickBuy.noItems') return `No ${params?.tab || ''} items found`;
         if (key === 'marketplace.quickBuy.commission') return `Comm: ${params?.rate || ''}%`;
         return key;
@@ -52,8 +52,14 @@ describe('QuickPurchaseModal', () => {
   beforeEach(() => {
     vi.clearAllMocks();
 
+    interface StoreState {
+      products: typeof mockProducts;
+      transactions: typeof mockTransactions;
+      simulateOrder: typeof simulateOrder;
+    }
+
     // Mock Store
-    (storeModule.useStore as any).mockImplementation((selector: any) => {
+    (storeModule.useStore as unknown as ReturnType<typeof vi.fn>).mockImplementation((selector: (state: StoreState) => unknown) => {
         const state = {
             products: mockProducts,
             transactions: mockTransactions,

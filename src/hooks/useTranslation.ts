@@ -1,9 +1,12 @@
 import { useTranslation as useI18nTranslation } from 'react-i18next';
 import { vi } from '@/locales/vi';
-import i18next from 'i18next';
+import i18next, { TOptions } from 'i18next';
 
-// Define a simpler type for t that accepts any arguments and returns a string
-type SimpleT = (key: string, ...args: any[]) => string;
+// Define a translation function type using i18next's TOptions
+type TranslationFunction = (
+  key: string,
+  options?: TOptions | string
+) => string;
 
 /**
  * Enterprise Translation Hook (i18next Wrapper)
@@ -21,8 +24,8 @@ export function useTranslation() {
   };
 
   // Explicitly cast t to a simple function signature to bypass strict i18next type checks
-  const t: SimpleT = (key: string, ...args: any[]): string => {
-    return i18nT(key, ...args) as string;
+  const t: TranslationFunction = (key: string, options?: TOptions | string): string => {
+    return i18nT(key, options) as string;
   };
 
   return { t, lang, setLang, i18n };

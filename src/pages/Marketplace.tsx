@@ -132,7 +132,7 @@ export const Marketplace: React.FC = () => {
                   loading={loadingAi}
                   title={t('marketplace.aiRecommendation.title')}
                   liveLabel={t('marketplace.aiRecommendation.live')}
-                  loadingText={t('marketplace.aiRecommendation.loading', { count: '100+' })}
+                  loadingText={t('marketplace.aiRecommendation.loading', { count: 100 })}
                 />
 
                 <ProductGrid

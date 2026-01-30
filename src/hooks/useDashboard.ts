@@ -20,7 +20,8 @@ import {
     Crown,
     Target,
     Star,
-    Zap
+    Zap,
+    type LucideIcon
 } from 'lucide-react';
 import { formatVND, formatNumber } from '@/utils/format';
 
@@ -30,12 +31,12 @@ export interface LiveActivity {
     userName: string;
     message: string;
     timestamp: Date;
-    icon: React.ElementType;
+    icon: LucideIcon;
     color: string;
     bgColor: string;
     amount?: number;
     // Aligning types for consistency across components
-    user?: string; 
+    user?: string;
     detail?: string;
     location?: string;
 }

@@ -5,6 +5,19 @@ import { supabase } from '@/lib/supabase';
 import { uiLogger } from '@/utils/logger';
 import { useSocialShare } from './useSocialShare';
 
+interface ReferralTreeNode {
+  id: string;
+  sponsor_id: string | null;
+  email: string;
+  name: string;
+  created_at: string;
+  level?: number;
+  rank?: string;
+  avatar_url?: string;
+  total_sales?: number;
+  kyc_status?: boolean;
+}
+
 export const useReferral = () => {
     const { user } = useStore();
     const [referrals, setReferrals] = useState<Referral[]>([]);
@@ -43,7 +56,7 @@ export const useReferral = () => {
 
                 if (!rpcError && treeData) {
                     // Map RPC data
-                    const mappedReferrals: Referral[] = treeData.map((u: any) => ({
+                    const mappedReferrals: Referral[] = treeData.map((u: ReferralTreeNode) => ({
                         id: u.id,
                         referrerId: u.sponsor_id || user.id, // Best guess if RPC doesn't return parent
                         referredUserId: u.id,
@@ -75,7 +88,7 @@ export const useReferral = () => {
                 if (error) throw error;
 
                 // Map Supabase data to Referral type
-                const mappedReferrals: Referral[] = (f1Data || []).map((u: any) => ({
+                const mappedReferrals: Referral[] = (f1Data || []).map((u: ReferralTreeNode) => ({
                     id: u.id,
                     referrerId: user.id || '',
                     referredUserId: u.id,

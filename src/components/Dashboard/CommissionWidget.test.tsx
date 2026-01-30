@@ -38,8 +38,13 @@ describe('CommissionWidget', () => {
 
   beforeEach(() => {
     vi.clearAllMocks();
+
+    interface StoreState {
+      transactions: typeof mockTransactions;
+    }
+
     // Mock useStore implementation to handle selectors
-    (storeModule.useStore as any).mockImplementation((selector: any) => {
+    (storeModule.useStore as unknown as ReturnType<typeof vi.fn>).mockImplementation((selector: (state: StoreState) => unknown) => {
       const state = {
         transactions: mockTransactions
       };

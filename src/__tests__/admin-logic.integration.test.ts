@@ -1,6 +1,12 @@
 import { describe, it, expect, beforeEach } from 'vitest';
 import { agentRegistry } from '@/agents';
 import { AgencyOSAgent } from '@/agents/custom/AgencyOSAgent';
+import type { AgentDefinition, AgentKPI } from '@/types/agentic';
+
+interface SearchResult {
+  success: boolean;
+  suggestion: string[];
+}
 
 /**
  * Admin-focused integration tests
@@ -19,7 +25,7 @@ describe('Admin Logic Integration Tests', () => {
             expect(allAgents.length).toBeGreaterThanOrEqual(5);
 
             // Verify core agents present
-            const agentNames = allAgents.map((a: any) => a.agent_name);
+            const agentNames = allAgents.map((a: AgentDefinition) => a.agent_name);
             expect(agentNames).toContain('AgencyOS');
             expect(agentNames).toContain('Gemini Coach'); // Note: has space
             expect(agentNames).toContain('Sales Copilot'); // Note: has space
@@ -38,11 +44,11 @@ describe('Admin Logic Integration Tests', () => {
 
             // Filter manually (getByFunction doesn't exist)
             const opsAgents = allAgents.filter(
-                (a: any) => a.business_function === 'Operations & Logistics'
+                (a: AgentDefinition) => a.business_function === 'Operations & Logistics'
             );
 
             expect(opsAgents.length).toBeGreaterThan(0);
-            expect(opsAgents.some((a: any) => a.agent_name === 'AgencyOS')).toBe(true);
+            expect(opsAgents.some((a: AgentDefinition) => a.agent_name === 'AgencyOS')).toBe(true);
         });
 
         it('should handle agent registration workflow', () => {
@@ -62,7 +68,7 @@ describe('Admin Logic Integration Tests', () => {
         it('should retrieve KPIs from all agents', () => {
             const allAgents = agentRegistry.listAll();
 
-            const agentKPIs = allAgents.map((agentDef: any) => {
+            const agentKPIs = allAgents.map((agentDef: AgentDefinition) => {
                 const agent = agentRegistry.get(agentDef.agent_name);
                 return {
                     name: agentDef.agent_name,
@@ -74,7 +80,7 @@ describe('Admin Logic Integration Tests', () => {
             expect(agentKPIs.length).toBeGreaterThan(0);
 
             // AgencyOS should have 3 KPIs
-            const agencyOSKPIs = agentKPIs.find((a: any) => a.name === 'AgencyOS');
+            const agencyOSKPIs = agentKPIs.find((a: { name: string; kpis: AgentKPI[] }) => a.name === 'AgencyOS');
             expect(agencyOSKPIs?.kpis.length).toBe(3);
         });
 
@@ -97,7 +103,7 @@ describe('Admin Logic Integration Tests', () => {
             const allAgents = agentRegistry.listAll();
 
             // All agents should be accessible
-            allAgents.forEach((agentDef: any) => {
+            allAgents.forEach((agentDef: AgentDefinition) => {
                 const agent = agentRegistry.get(agentDef.agent_name);
                 expect(agent).toBeDefined();
                 expect(agent?.getDefinition()).toBeDefined();
@@ -120,7 +126,7 @@ describe('Admin Logic Integration Tests', () => {
 
             // Get aggregated stats
             const kpis = agent!.getKPIs();
-            const commandsExecuted = kpis.find((k: any) => k.name === 'Commands Executed');
+            const commandsExecuted = kpis.find((k: AgentKPI) => k.name === 'Commands Executed');
 
             expect(commandsExecuted?.current).toBeGreaterThanOrEqual(3);
         });
@@ -134,7 +140,7 @@ describe('Admin Logic Integration Tests', () => {
             await agent!.execute({ action: 'executeCommand', command: '/invoice' });
 
             const kpis = agent!.getKPIs();
-            const successRate = kpis.find((k: any) => k.name === 'Success Rate');
+            const successRate = kpis.find((k: AgentKPI) => k.name === 'Success Rate');
 
             expect(successRate).toBeDefined();
             expect(successRate?.current).toBeGreaterThan(0);
@@ -194,13 +200,13 @@ describe('Admin Logic Integration Tests', () => {
             const allAgents = agentRegistry.listAll();
 
             // Check for duplicates
-            const agentNames = allAgents.map((a: any) => a.agent_name);
+            const agentNames = allAgents.map((a: AgentDefinition) => a.agent_name);
             const uniqueNames = new Set(agentNames);
 
             expect(agentNames.length).toBe(uniqueNames.size);
 
             // Each agent should have required fields
-            allAgents.forEach((agentDef: any) => {
+            allAgents.forEach((agentDef: AgentDefinition) => {
                 expect(agentDef.agent_name).toBeDefined();
                 expect(agentDef.business_function).toBeDefined();
                 expect(agentDef.core_actions).toBeDefined();
@@ -235,12 +241,12 @@ describe('Admin Logic Integration Tests', () => {
 
             // 6. Check updated KPIs
             const updatedKPIs = agencyOS!.getKPIs();
-            const commandsExecuted = updatedKPIs.find((k: any) => k.name === 'Commands Executed');
+            const commandsExecuted = updatedKPIs.find((k: AgentKPI) => k.name === 'Commands Executed');
             expect(commandsExecuted?.current).toBeGreaterThan(0);
         });
 
         it('should handle multi-agent dashboard view', () => {
-            const dashboardData = agentRegistry.listAll().map((agentDef: any) => {
+            const dashboardData = agentRegistry.listAll().map((agentDef: AgentDefinition) => {
                 const agent = agentRegistry.get(agentDef.agent_name);
                 return {
                     name: agentDef.agent_name,
@@ -254,7 +260,7 @@ describe('Admin Logic Integration Tests', () => {
             expect(dashboardData.length).toBeGreaterThanOrEqual(5);
 
             // Each should have KPIs
-            dashboardData.forEach((data: any) => {
+            dashboardData.forEach((data: { name: string; function: string; kpis: AgentKPI[]; logs: number }) => {
                 expect(data.kpis).toBeDefined();
             });
         });
@@ -278,7 +284,7 @@ describe('Admin Logic Integration Tests', () => {
             const searchResults = await agent!.execute({
                 action: 'searchCommands',
                 command: 'plan',
-            }) as { success: boolean; suggestion: any[] };
+            }) as SearchResult;
 
             expect(searchResults.success).toBe(true);
             expect(Array.isArray(searchResults.suggestion)).toBe(true);

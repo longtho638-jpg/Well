@@ -127,10 +127,12 @@ export const designTokens = {
 /**
  * Helper function to get color from design tokens
  */
+type NestedValue = string | number | { [key: string]: NestedValue };
+
 export function getColor(path: string): string {
   const keys = path.split('.');
-  let value: any = designTokens;
-  
+  let value: NestedValue = designTokens as NestedValue;
+
   for (const key of keys) {
     if (value && typeof value === 'object' && key in value) {
       value = value[key];
@@ -139,8 +141,8 @@ export function getColor(path: string): string {
       return '#000000';
     }
   }
-  
-  return value;
+
+  return typeof value === 'string' ? value : '#000000';
 }
 
 export default designTokens;

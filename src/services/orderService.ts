@@ -7,6 +7,13 @@ import { supabase } from '@/lib/supabase';
 import { adminLogger } from '@/utils/logger';
 import { OrderPayload } from '@/types/checkout';
 
+interface OrderMetadata {
+    source?: string;
+    campaign?: string;
+    notes?: string;
+    [key: string]: string | number | boolean | undefined;
+}
+
 export interface PendingOrder {
     id: string;
     user_id: string;
@@ -20,7 +27,7 @@ export interface PendingOrder {
         name: string;
         email: string;
     };
-    metadata?: any;
+    metadata?: OrderMetadata;
 }
 
 export const orderService = {

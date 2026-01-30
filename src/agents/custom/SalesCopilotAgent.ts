@@ -1,7 +1,7 @@
 import { BaseAgent } from '../core/BaseAgent';
 import { AgentDefinition } from '@/types/agentic';
 import { ObjectionType, ObjectionTemplate } from '@/types';
-import { GoogleGenerativeAI } from '@google/generative-ai';
+import { GoogleGenerativeAI, GenerativeModel } from '@google/generative-ai';
 import { aiLogger } from '@/utils/logger';
 
 // Import templates from original copilotService
@@ -65,7 +65,7 @@ const OBJECTION_TEMPLATES: ObjectionTemplate[] = [
  */
 export class SalesCopilotAgent extends BaseAgent {
   private genAI: GoogleGenerativeAI;
-  private model: any;
+  private model: GenerativeModel;
 
   constructor() {
     const definition: AgentDefinition = {

@@ -20,6 +20,10 @@
   - [x] BaseAgent & Registry
   - [x] Agent Slice & Hooks (`useAgentOS`, `useAgentCenter`)
   - [x] ClaudeKit Adapter
+- [x] **Tech Debt Elimination**
+  - [x] Removed all `: any` types (31 occurrences)
+  - [x] 100% TypeScript Strict Compliance
+  - [x] Verified Build & Tests
 - [x] **Agent Dashboard**
   - [x] UI Implementation (`AgentDashboard.tsx`)
   - [x] Localization (EN/VI)

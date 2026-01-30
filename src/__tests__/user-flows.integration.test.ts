@@ -2,6 +2,17 @@ import { describe, it, expect, beforeEach, vi } from 'vitest';
 import { agentRegistry } from '@/agents';
 import { commandRateLimiter } from '@/lib/rate-limiter';
 import analytics from '@/lib/analytics';
+import type { AgentKPI } from '@/types/agentic';
+
+interface SearchResult {
+  success: boolean;
+  suggestion: string[];
+}
+
+interface ExecuteResult {
+  success: boolean;
+  [key: string]: unknown;
+}
 
 /**
  * Integration tests simulating real user workflows
@@ -22,7 +33,7 @@ describe('User Flow Integration Tests', () => {
             const searchResults = await agent!.execute({
                 action: 'searchCommands',
                 command: 'marketing',
-            }) as { success: boolean; suggestion: any[] };
+            }) as SearchResult;
 
             expect(searchResults.success).toBe(true);
             expect(searchResults.suggestion.length).toBeGreaterThan(0);
@@ -91,7 +102,7 @@ describe('User Flow Integration Tests', () => {
             );
 
             // All should succeed
-            results.forEach((result: any) => {
+            results.forEach((result: ExecuteResult) => {
                 expect(result.success).toBe(true);
             });
 
@@ -215,7 +226,7 @@ describe('User Flow Integration Tests', () => {
 
             // 4. Verify KPIs updated
             const kpis = agent!.getKPIs();
-            const commandsExecuted = kpis.find((k: any) => k.name === 'Commands Executed');
+            const commandsExecuted = kpis.find((k: AgentKPI) => k.name === 'Commands Executed');
             expect(commandsExecuted?.current).toBeGreaterThan(0);
         });
     });
@@ -272,7 +283,7 @@ describe('User Flow Integration Tests', () => {
             const searchResults = await agent!.execute({
                 action: 'searchCommands',
                 command: 'proposal',
-            }) as { success: boolean; suggestion: any[] };
+            }) as SearchResult;
             expect(searchResults.success).toBe(true);
             expect(searchResults.suggestion.length).toBeGreaterThan(0);
 
@@ -298,7 +309,7 @@ describe('User Flow Integration Tests', () => {
             expect(history.length).toBeGreaterThanOrEqual(3);
 
             const kpis = agent!.getKPIs();
-            const executed = kpis.find((k: any) => k.name === 'Commands Executed')?.current || 0;
+            const executed = kpis.find((k: AgentKPI) => k.name === 'Commands Executed')?.current || 0;
             expect(executed).toBeGreaterThanOrEqual(3);
         });
     });

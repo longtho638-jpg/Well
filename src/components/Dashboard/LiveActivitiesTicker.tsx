@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Zap, ShoppingBag, UserPlus, Star, Trophy, Activity, TrendingDown, Gift } from 'lucide-react';
+import { Zap, ShoppingBag, UserPlus, Star, Trophy, Activity, TrendingDown, Gift, type LucideIcon } from 'lucide-react';
 import { useTranslation } from '@/hooks';
 
 // Types - Unified with useDashboard.ts
@@ -18,7 +18,7 @@ export interface LiveActivity {
     location?: string;
     bgColor?: string;
     color?: string;
-    icon?: any;
+    icon?: LucideIcon;
 }
 
 interface LiveActivitiesTickerProps {
