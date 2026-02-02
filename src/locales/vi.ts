@@ -1440,32 +1440,59 @@ export const vi = {
     },
     roadmap: {
       sectionBadge: 'Lộ Trình Phát Triển',
-      sectionTitle: 'The Evolution Map',
+      sectionTitle: 'Bản Đồ Tiến Hóa',
       subheadline: 'Hành trình từ Partner đến Empire Builder',
+      unlock_at: 'Mở khóa khi đạt ',
+      view_vision: 'Xem tầm nhìn',
+      current_stage: 'Giai đoạn hiện tại',
       stages: {
         seed: {
           name: 'HẠT GIỐNG',
           description: 'Tuyển 200 Founders Club, Xây dựng niềm tin',
           mission: 'Bán lẻ & Xây dựng cộng đồng',
-          status: 'Đang diễn ra'
+          status: 'Đang diễn ra',
+          benefits: {
+            income: 'Thu nhập chủ động từ bán hàng',
+            founder: 'Hoa hồng Founders Club',
+            ai: 'Công cụ AI cơ bản',
+            support: 'Đào tạo & Hỗ trợ 1-1',
+          }
         },
         tree: {
           name: 'CÂY',
           description: 'Tự động hóa Sales với AI',
-          mission: 'Scale team & Automation',
-          status: 'Sắp mở khóa'
+          mission: 'Mở rộng đội nhóm & Tự động hóa',
+          status: 'Sắp mở khóa',
+          benefits: {
+            copilot: 'AI Copilot nâng cao',
+            marketing: 'Tự động hóa Marketing',
+            dashboard: 'Bảng điều khiển Leader',
+            passive: 'Thu nhập thụ động từ đội nhóm',
+          }
         },
         forest: {
           name: 'RỪNG',
           description: 'Marketplace & Hệ sinh thái',
-          mission: 'Build ecosystem products',
-          status: 'Tương lai'
+          mission: 'Xây dựng hệ sinh thái sản phẩm',
+          status: 'Tương lai',
+          benefits: {
+            platform: 'Nền tảng Health Coach',
+            market: 'Sở hữu Marketplace',
+            data: 'Kiếm tiền từ dữ liệu',
+            equity: 'Tham gia cổ phần',
+          }
         },
         empire: {
           name: 'ĐẤT',
           description: 'Venture Builder & IPO',
-          mission: 'Build the empire',
-          status: 'Tầm nhìn 2028'
+          mission: 'Xây dựng đế chế',
+          status: 'Tầm nhìn 2028',
+          benefits: {
+            venture: 'Nền tảng Venture Builder',
+            ipo: 'Chuẩn bị IPO',
+            holdings: 'Cơ cấu Holdings',
+            expansion: 'Mở rộng SEA',
+          }
         }
       }
     },
