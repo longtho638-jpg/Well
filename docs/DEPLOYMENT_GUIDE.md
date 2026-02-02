@@ -821,6 +821,64 @@ VITE_SENTRY_DSN=https://xxx@sentry.io/xxx
 
 ## CI/CD Pipeline Setup
 
+### Current Implementation (2026-02-02)
+
+WellNexus uses **GitHub Actions** + **Vercel Git Integration** for automated CI/CD:
+
+#### Active Workflows
+
+**1. CI Pipeline** (`.github/workflows/ci.yml`)
+- Triggers: Push to main, Pull Requests
+- Status: ✅ Passing (1m25s average)
+- Steps:
+  - Checkout code
+  - Setup Node.js 20.x with npm cache
+  - Install dependencies (`npm ci`)
+  - **Security audit** (`npm audit --audit-level=high`)
+  - Run linter (`npm run lint`)
+  - Run tests (`npm test`)
+  - Build project (`npm run build`)
+  - Upload build artifacts (7-day retention)
+
+**2. Lighthouse CI** (`.github/workflows/lighthouse.yml`)
+- Triggers: Pull Requests only
+- Purpose: Performance auditing
+- Thresholds:
+  - Performance: 80%
+  - Accessibility: 90%
+  - Best Practices: 90%
+  - SEO: 90%
+
+**3. Vercel Auto-Deploy**
+- Platform: Vercel
+- Production URL: https://wellnexus.vn
+- Triggers: Every push to main branch
+- Build time: ~10 minutes (includes CDN warming)
+- Features:
+  - Automatic preview deployments for PRs
+  - CDN caching (HIT rate ~95%)
+  - HTTPS/HTTP2 enabled
+  - Security headers (HSTS, CSP, X-Frame-Options)
+
+#### Security Scanning
+
+**npm audit** - High severity vulnerabilities check
+- Runs on every CI build
+- Command: `npm audit --audit-level=high || true`
+- Non-blocking (continues on warnings)
+
+**Note:** CodeQL (GitHub Advanced Security) is disabled for private repositories. Use npm audit for basic dependency scanning.
+
+#### View Workflow Runs
+
+https://github.com/longtho638-jpg/Well/actions
+
+---
+
+### Legacy Reference: Full-Stack Deployment (Future)
+
+Below is the original AWS ECS deployment plan for Phase 2 (backend + infrastructure):
+
 ### GitHub Actions Workflow
 
 Create `.github/workflows/deploy.yml`:
