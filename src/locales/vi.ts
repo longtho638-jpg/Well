@@ -1279,6 +1279,14 @@ export const vi = {
     },
     adminLabel: 'Admin',
     superUser: 'Super User',
+    control_center: 'Trung Tâm Điều Khiển',
+    ai_sentinel_active: 'AI Sentinel Đang Hoạt Động',
+    monitoring_2_4k_identity_nodes: 'Giám Sát 2.4K Nút Định Danh',
+    b_ng_i_u_khi_n: 'Bảng Điều Khiển',
+    administrator: 'Quản Trị Viên',
+    superuser_node: 'Nút Superuser',
+    administration: 'Quản Trị Hệ Thống',
+    secure_session: 'Phiên Bảo Mật',
 
     // Tabs
     tabs: {
@@ -1392,15 +1400,6 @@ export const vi = {
 
     // AST Migration Keys
     mission: 'Mission',
-    control_center: 'Control Center',
-    ai_sentinel_active: 'AI Sentinel Active',
-    monitoring_2_4k_identity_nodes: 'Monitoring 2.4k identity nodes',
-    b_ng_i_u_khi_n: 'Bảng điều khiển',
-    administrator: 'Administrator',
-    superuser_node: 'Superuser node',
-    mission_control: 'Mission Control',
-    administration: 'Administration',
-    secure_session: 'Secure Session',
     // Merged keys
     analyze_all: 'Analyze All',
     automated_fraud_detection: 'Automated Fraud Detection',
@@ -1776,11 +1775,11 @@ export const vi = {
 
   // Error Boundary - AST Migration Keys
   errorboundary: {
-    oops_something_went_wrong: 'Oops! Something went wrong',
-    we_ve_encountered_an_unexpecte: 'We encountered an unexpected error. Please try again.',
-    error_details_dev_only: 'Error Details (Dev Only)',
-    reload_page: 'Reload Page',
-    go_home: 'Go Home',
+    oops_something_went_wrong: 'Rất tiếc! Đã xảy ra lỗi',
+    we_ve_encountered_an_unexpecte: 'Chúng tôi gặp phải lỗi không mong muốn. Vui lòng thử lại.',
+    error_details_dev_only: 'Chi Tiết Lỗi (Chỉ Dành Cho Nhà Phát Triển)',
+    reload_page: 'Tải Lại Trang',
+    go_home: 'Về Trang Chủ',
   },
 
   // Rank Progress Bar - AST Migration Keys
@@ -1845,11 +1844,11 @@ export const vi = {
   // Sidebar - AST Migration Keys
   sidebar: {
     wellnexus: 'WellNexus',
-    social_commerce: 'Social Commerce',
-    the_coach: 'The Coach',
-    day_3_30: 'Day 3/30',
+    social_commerce: 'Thương Mại Xã Hội',
+    the_coach: 'Huấn Luyện Viên',
+    day_3_30: 'Ngày 3/30',
     xp: 'XP',
-    get_ai_advice: 'Get AI Advice',
+    get_ai_advice: 'Nhận Tư Vấn AI',
   },
 
   // Live Activities Ticker - AST Migration Keys
@@ -2241,8 +2240,9 @@ export const vi = {
     total_yield: 'Total Yield',
     welcome: 'Welcome',
     // Merged keys
-    '100m_vnd_revenue': '100M VND Revenue',
-    achievement_logic: 'Achievement Logic',
+    '100m_vnd_revenue': 'Doanh Thu 100 Triệu VND',
+    access_secured: 'Quyền Truy Cập Bảo Mật',
+    achievement_logic: 'Công Thức Thành Tích',
     ecosystem_scaling: 'Ecosystem Scaling',
     founders_pathway: 'Founders Pathway',
     live: 'LIVE',
@@ -2662,6 +2662,8 @@ export const vi = {
     facebook: 'Facebook',
     telegram: 'Telegram',
     zalo: 'Zalo',
+    hideQR: 'Ẩn Mã QR',
+    showQR: 'Hiện Mã QR',
   },
 
   // signupform
@@ -2852,11 +2854,11 @@ export const vi = {
 
   // onboardingquest keys
   onboardingquest: {
-    ai_strategy: 'AI Strategy',
-    day_3_30: 'Day 3/30',
-    powered_by_gemini_ai: 'Powered by Gemini AI',
-    stuck_ask_your_ai_coach_for_a: 'Stuck? Ask your AI Coach for a tip!',
-    the_coach: 'The Coach',
+    ai_strategy: 'Chiến Lược AI',
+    day_3_30: 'Ngày 3/30',
+    powered_by_gemini_ai: 'Được hỗ trợ bởi Gemini AI',
+    stuck_ask_your_ai_coach_for_a: 'Gặp khó khăn? Hỏi Huấn Luyện Viên AI để nhận gợi ý!',
+    the_coach: 'Huấn Luyện Viên',
     xp: 'XP',
   },
 

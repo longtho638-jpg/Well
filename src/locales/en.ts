@@ -1172,6 +1172,14 @@ export const en = {
         },
         adminLabel: 'Admin',
         superUser: 'Super User',
+        control_center: 'Control Center',
+        ai_sentinel_active: 'AI Sentinel Active',
+        monitoring_2_4k_identity_nodes: 'Monitoring 2.4K Identity Nodes',
+        b_ng_i_u_khi_n: 'Dashboard',
+        administrator: 'Administrator',
+        superuser_node: 'Superuser Node',
+        administration: 'Administration',
+        secure_session: 'Secure Session',
 
         tabs: {
             overview: 'Overview',
@@ -2111,6 +2119,35 @@ export const en = {
         vc_simulation_engine: 'VC Simulation Engine',
     },
 
+    // onboardingquest
+    onboardingquest: {
+        ai_strategy: 'AI Strategy',
+        day_3_30: 'Day 3/30',
+        powered_by_gemini_ai: 'Powered by Gemini AI',
+        stuck_ask_your_ai_coach_for_a: 'Stuck? Ask your AI Coach for a tip!',
+        the_coach: 'The Coach',
+        xp: 'XP',
+    },
+
+    // sidebar
+    sidebar: {
+        wellnexus: 'WellNexus',
+        social_commerce: 'Social Commerce',
+        the_coach: 'The Coach',
+        day_3_30: 'Day 3/30',
+        xp: 'XP',
+        get_ai_advice: 'Get AI Advice',
+    },
+
+    // errorboundary
+    errorboundary: {
+        oops_something_went_wrong: 'Oops! Something went wrong',
+        we_ve_encountered_an_unexpecte: "We've encountered an unexpected error. Please try again.",
+        error_details_dev_only: 'Error Details (Dev Only)',
+        reload_page: 'Reload Page',
+        go_home: 'Go Home',
+    },
+
     // herocard
     herocard: {
         commission: 'Commission',
@@ -2122,6 +2159,7 @@ export const en = {
         total_yield: 'Total Yield',
         welcome: 'Welcome',
         '100m_vnd_revenue': '100M VND Revenue',
+        access_secured: 'Access Secured',
         achievement_logic: 'Achievement Logic',
         ecosystem_scaling: 'Ecosystem Scaling',
         founders_pathway: 'Founders Pathway',
