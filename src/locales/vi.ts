@@ -515,7 +515,7 @@ export const vi = {
   team: {
     title: 'Portfolio Management',
     subtitle: 'Quản lý mạng lưới đối tác & scaling tài sản',
-    leaderDashboard: 'Partner Network Dashboard',
+    leaderDashboard: 'Bảng điều khiển mạng lưới đối tác',
     description: 'Theo dõi performance đối tác, mở rộng thị phần, và tối ưu hóa tăng trưởng portfolio.',
 
     // Metrics (WEALTH OS: Investment Metrics)
@@ -1288,6 +1288,7 @@ export const vi = {
       loginButton: 'Đăng nhập',
       noAccount: 'Chưa có tài khoản?',
       signUp: 'Đăng ký ngay',
+      demo: 'Đăng nhập demo',
     },
     register: {
       title: 'Đăng ký',
@@ -1335,9 +1336,10 @@ export const vi = {
   // Landing Page
   landing: {
     hero: {
-      title: 'Xây dựng sự nghiệp với WellNexus',
+      title: 'Xây dựng sự nghiệp',
       badge: 'Hành Trình Thịnh Vượng',
-      headlineAccent: 'Cùng WellNexus',
+      badge_ultimate: 'ĐỈNH CAO SỨC KHỎE',
+      headlineAccent: 'Với WellNexus',
       subtitle: 'Nền tảng kinh doanh thông minh kết hợp AI, Tokenomics và cộng đồng',
       cta: 'Bắt đầu ngay',
       learnMore: 'Tìm hiểu thêm',
