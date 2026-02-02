@@ -1969,6 +1969,90 @@ export const en = {
         no_items_in_the_current_filter: 'No items in the current filter',
     },
 
+    // agencyosdemo
+    agencyosdemo: {
+        '85_ai_powered_automation_comm': '85% AI Powered Automation',
+        agencyos_integration: 'AgencyOS Integration',
+        agent_kpis: 'Agent KPIs',
+        all_commands: 'All Commands',
+        command_categories: 'Command Categories',
+        commands: 'Commands',
+        execution_history: 'Execution History',
+        no_commands_executed_yet_clic: 'No commands executed yet. Click to run.',
+        open_command_palette_k: 'Open Command Palette (⌘K)',
+    },
+
+    // liveconsole
+    liveconsole: {
+        autonomous_agents_real_time_l: 'Autonomous Agents Real-time Log',
+        bee_agent_core_v4_2_0_stable: 'BEE Agent Core v4.2.0 Stable',
+        bps: 'bps',
+        encrypted: 'Encrypted',
+        intelligence_console: 'Intelligence Console',
+        lat_4ms: 'Lat: 4ms',
+        live: 'LIVE',
+        live_operations_node_agent: 'Live Operations Node Agent',
+        sync_active: 'Sync Active',
+        tx: 'Tx',
+        wellnexus_bee: 'WellNexus BEE',
+    },
+
+    // ordermanagement
+    ordermanagement: {
+        actions: 'Actions',
+        activate_commissions: 'Activate Commissions',
+        all: 'All',
+        all_pending_orders_have_been_p: 'All pending orders have been processed',
+        all_synced: 'All Synced',
+        cashflow_hub: 'Cashflow Hub',
+        customer: 'Customer',
+        date: 'Date',
+        filters: 'Filters',
+        fraud_check: 'Fraud Check',
+        never_approve: 'Never Approve',
+        operational_risk_protocol: 'Operational Risk Protocol',
+        order: 'Order',
+        order_id: 'Order ID',
+        order_orchestrator: 'Order Orchestrator',
+        orders: 'Orders',
+        queue_synchronized: 'Queue Synchronized',
+        real_time_order_pipeline_manag: 'Real-time Order Pipeline Management',
+        status: 'Status',
+        strict_compliance_rule: 'Strict Compliance Rule',
+        sync: 'Sync',
+        syncing_global_ledgers: 'Syncing Global Ledgers',
+        verify_transactions_and: 'Verify Transactions and',
+        without_verified_bank_clearanc: 'Without Verified Bank Clearance',
+    },
+
+    // loginactivitylog
+    loginactivitylog: {
+        detected: 'Detected',
+        device: 'Device',
+        failed_login_attempt: 'Failed Login Attempt',
+        if_you_don_t_recognize_these_a: "If you don't recognize these activities, secure your account immediately.",
+        location: 'Location',
+        login_activity: 'Login Activity',
+        no_login_attempts_found: 'No login attempts found',
+        recent_sign_in_attempts_to_you: 'Recent sign-in attempts to your account',
+        status: 'Status',
+        time: 'Time',
+    },
+
+    // partnerstable
+    partnerstable: {
+        auth_pending: 'Auth Pending',
+        auth_status: 'Auth Status',
+        direct_yield: 'Direct Yield',
+        ecosystem_rank: 'Ecosystem Rank',
+        ghost_network_detected: 'Ghost Network Detected',
+        identity_node: 'Identity Node',
+        no_partner_nodes_matching_curr: 'No partner nodes matching current filter',
+        ops: 'Ops',
+        points_buffer: 'Points Buffer',
+        synchronizing_crm_ledger: 'Synchronizing CRM Ledger',
+    },
+
     // herocard
     herocard: {
         commission: 'Commission',
