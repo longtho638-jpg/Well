@@ -8,10 +8,14 @@ Comprehensive infrastructure hardening and monitoring integration.
 ### Added
 - **Monitoring:** Integrated Sentry for real-time error tracking (100% sample rate).
 - **Security:** Implemented Content Security Policy (CSP) and HSTS headers.
+- **Security:** Migrated auth tokens from localStorage to Secure In-Memory Storage (mitigates XSS).
+- **Security:** Implemented strong password validation with visual strength meter (zxcvbn-like scoring).
+- **Security:** Removed hardcoded admin/demo emails in favor of environment variables.
 - **Documentation:** Created Disaster Recovery Plan and Email DNS Configuration Guide.
 
 ### Configured
 - **Performance:** Optimized CDN cache settings for static assets.
+- **Validation:** Added `validateConfig` to fail-fast on missing environment variables.
 
 ## [2.1.1] - 2026-02-02
 
