@@ -14,7 +14,7 @@ export function useProducts() {
         try {
             const data = await productService.getProducts();
             setProducts(data);
-        } catch (error) {
+        } catch {
             showToast('Failed to load products', 'error');
         } finally {
             setLoading(false);
@@ -46,7 +46,7 @@ export function useProducts() {
             setProducts(prev => prev.map(p => p.id === id ? { ...p, ...updates } : p));
             showToast('Product updated', 'success');
             return true;
-        } catch (error) {
+        } catch {
             showToast('Failed to update', 'error');
             return false;
         } finally {
@@ -61,7 +61,7 @@ export function useProducts() {
             showToast('Product created', 'success');
             fetchProducts();
             return true;
-        } catch (error) {
+        } catch {
             showToast('Failed to create', 'error');
             return false;
         } finally {
@@ -76,7 +76,7 @@ export function useProducts() {
             await productService.deleteProduct(id);
             setProducts(prev => prev.filter(p => p.id !== id));
             showToast('Product deleted', 'info');
-        } catch (error) {
+        } catch {
             showToast('Failed to delete', 'error');
         } finally {
             setActionLoading(null);

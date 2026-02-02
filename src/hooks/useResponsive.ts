@@ -3,7 +3,7 @@
  * Phase 10: Forms and Responsive
  */
 
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect } from 'react';
 
 // ============================================================================
 // BREAKPOINTS
@@ -206,7 +206,8 @@ export function useResponsiveValue<T>(values: ResponsiveValue<T>): T {
     for (let i = currentIndex; i < breakpoints.length; i++) {
         const bp = breakpoints[i];
         if (bp === 'xs') return values.base;
-        if (values[bp] !== undefined) return values[bp]!;
+        const val = values[bp];
+        if (val !== undefined) return val;
     }
 
     return values.base;

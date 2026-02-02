@@ -84,7 +84,7 @@ export function memoize<Args extends unknown[], Result>(
         const key = keyFn(...args);
 
         if (memoCache.has(key)) {
-            return memoCache.get(key)!;
+            return memoCache.get(key) as Result;
         }
 
         const result = fn(...args);
@@ -115,8 +115,9 @@ export function cacheAsync<Args extends unknown[], Result>(
         if (cached !== null) return cached;
 
         // Check pending
-        if (pending.has(key)) {
-            return pending.get(key)!;
+        const pendingPromise = pending.get(key);
+        if (pendingPromise) {
+            return pendingPromise;
         }
 
         // Execute and cache

@@ -67,7 +67,6 @@ const MOCK_SESSIONS: Session[] = [
 ];
 
 const DeviceIcon: React.FC<{ device: Session['device'] }> = ({ device }) => {
-    const { t } = useTranslation();
     switch (device) {
         case 'mobile':
             return <Smartphone className="w-5 h-5" />;

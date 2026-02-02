@@ -39,7 +39,7 @@ const MOCK_USER: User = {
 };
 
 export function useAuth() {
-  const { setUser, setIsAuthenticated, fetchRealData } = useStore();
+  const { setUser, setIsAuthenticated, fetchRealData, fetchUserFromDB } = useStore();
 
   useEffect(() => {
     // Skip Supabase auth if not configured (dev mode)
@@ -51,8 +51,11 @@ export function useAuth() {
     // Check active session on mount
     supabase.auth.getSession().then(({ data: { session } }) => {
       if (session?.user) {
-        // Fetch full user data from database
-        fetchUserData(session.user.id);
+        // Fetch full user data from database using store action
+        fetchUserFromDB().then(() => {
+             // Load other real data from Supabase after login
+             fetchRealData();
+        });
       }
     });
 
@@ -60,58 +63,17 @@ export function useAuth() {
     const { data: { subscription } } = supabase.auth.onAuthStateChange(
       async (event, session) => {
         if (event === 'SIGNED_IN' && session?.user) {
-          await fetchUserData(session.user.id);
+          await fetchUserFromDB();
+          fetchRealData();
         } else if (event === 'SIGNED_OUT') {
           setIsAuthenticated(false);
+          setUser(null);
         }
       }
     );
 
     return () => subscription.unsubscribe();
-  }, []);
-
-  const fetchUserData = async (userId: string) => {
-    try {
-      const { data, error } = await supabase
-        .from('users')
-        .select('*')
-        .eq('id', userId)
-        .single();
-
-      if (error) throw error;
-
-      if (data) {
-        // Map Supabase user to app User type
-        const user: User = {
-          id: data.id,
-          name: data.name,
-          email: data.email,
-          rank: (data.role_id as UserRank) || UserRank.CTV,
-          roleId: data.role_id || 8,
-          sponsorId: data.sponsor_id,
-          totalSales: data.total_sales || 0,
-          teamVolume: data.team_volume || 0,
-          shopBalance: data.shop_balance || 0,
-          growBalance: data.pending_cashback || 0,
-          pendingCashback: data.pending_cashback || 0,
-          pointBalance: data.point_balance || 0,
-          stakedGrowBalance: data.staked_grow_balance || 0,
-          avatarUrl: data.avatar_url || '',
-          joinedAt: data.created_at || '',
-          kycStatus: true,
-          referralLink: `wellnexus.vn/ref/${data.id}`,
-        };
-
-        setUser(user);
-        setIsAuthenticated(true);
-
-        // Load real data from Supabase after login
-        fetchRealData();
-      }
-    } catch (error) {
-      authLogger.error('Error fetching user', error);
-    }
-  };
+  }, [fetchRealData, fetchUserFromDB, setIsAuthenticated, setUser]);
 
   return {
     signIn: async (email: string, password: string) => {
@@ -147,7 +109,7 @@ export function useAuth() {
 
       // 2. Create user record in users table
       if (data.user) {
-        await supabase.from('users').insert([
+        const { error: insertError } = await supabase.from('users').insert([
           {
             id: data.user.id,
             email,
@@ -155,6 +117,11 @@ export function useAuth() {
             rank: 'Member',
           },
         ]);
+
+        if (insertError) {
+             authLogger.error("Failed to create user record", insertError);
+             // Note: We don't throw here to allow auth to succeed, but user might be incomplete
+        }
       }
 
       return data;

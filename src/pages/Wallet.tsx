@@ -8,7 +8,6 @@ import {
   Lock,
   Copy,
   ExternalLink,
-  ChevronDown,
   CheckCircle,
   Clock,
   Hash,
@@ -17,20 +16,17 @@ import {
   Eye,
   EyeOff,
   ArrowUpRight,
-  ArrowDownRight,
   Sparkles,
 } from 'lucide-react';
 import { useStore } from '@/store';
 import { useTranslation } from '@/hooks';
-import type { Transaction, TokenType } from '@/types';
-import { formatToken, calculateStakingReward } from '@/utils/tokenomics';
+import { calculateStakingReward } from '@/utils/tokenomics';
 
 // Counter Animation Component
 const AnimatedCounter: React.FC<{ value: number; decimals?: number }> = ({
   value,
   decimals = 0,
 }) => {
-    const { t } = useTranslation();
   const count = useMotionValue(0);
   const rounded = useTransform(count, (latest) => {
     return latest.toFixed(decimals);
@@ -494,7 +490,7 @@ export const Wallet: React.FC = () => {
                               {tx.hash.slice(0, 10)}...{tx.hash.slice(-8)}
                             </code>
                             <button
-                              onClick={() => handleCopyHash(tx.hash!)}
+                              onClick={() => tx.hash && handleCopyHash(tx.hash)}
                               className="p-2 hover:bg-zinc-100 dark:hover:bg-zinc-800 rounded-lg transition-all group/btn opacity-0 group-hover/row:opacity-100"
                               title={t('common.copy')}
                             >

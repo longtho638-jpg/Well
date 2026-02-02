@@ -10,10 +10,10 @@
     "test": "vitest",
     "test:ui": "vitest --ui",
     "test:run": "vitest run",
-    "test:coverage": "vitest run --coverage"
+    "test:coverage": "vitest run --coverage",
+    "lint": "eslint src"
   },
   "dependencies": {
-    "@google/generative-ai": "^0.21.0",
     "@hookform/resolvers": "^5.2.2",
     "@supabase/supabase-js": "^2.93.3",
     "clsx": "^2.1.0",

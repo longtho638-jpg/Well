@@ -5,7 +5,7 @@
 
 import React from 'react';
 import { motion } from 'framer-motion';
-import { TrendingUp, Target, DollarSign, Users, ArrowUpRight, Sparkles, Globe } from 'lucide-react';
+import { TrendingUp, Target, DollarSign, Users, Sparkles, Globe } from 'lucide-react';
 import { formatVND } from '@/utils/format';
 import { useTranslation } from '@/hooks';
 

@@ -6,7 +6,6 @@
 import { useState, useEffect, useCallback, useMemo } from 'react';
 import { useToast } from '@/components/ui/Toast';
 import { orderService, PendingOrder } from '@/services/orderService';
-import { adminLogger } from '@/utils/logger';
 
 export const useOrders = () => {
     const [orders, setOrders] = useState<PendingOrder[]>([]);
@@ -22,7 +21,7 @@ export const useOrders = () => {
             setLoading(true);
             const data = await orderService.getPendingOrders();
             setOrders(data);
-        } catch (error) {
+        } catch {
             showToast('Failed to load orders', 'error');
         } finally {
             setLoading(false);
@@ -42,7 +41,7 @@ export const useOrders = () => {
             await orderService.updateOrderStatus(orderId, 'completed');
             showToast('✅ Order Approved - Commission Triggered!', 'success');
             setOrders(prev => prev.filter(o => o.id !== orderId));
-        } catch (error) {
+        } catch {
             showToast('Failed to approve order', 'error');
         } finally {
             setProcessingId(null);
@@ -60,7 +59,7 @@ export const useOrders = () => {
             await orderService.updateOrderStatus(orderId, 'cancelled');
             showToast('Order rejected', 'info');
             setOrders(prev => prev.filter(o => o.id !== orderId));
-        } catch (error) {
+        } catch {
             showToast('Failed to reject order', 'error');
         } finally {
             setProcessingId(null);

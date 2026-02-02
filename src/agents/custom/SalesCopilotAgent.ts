@@ -1,8 +1,8 @@
 import { BaseAgent } from '../core/BaseAgent';
 import { AgentDefinition } from '@/types/agentic';
 import { ObjectionType, ObjectionTemplate } from '@/types';
-import { GoogleGenerativeAI, GenerativeModel } from '@google/generative-ai';
 import { aiLogger } from '@/utils/logger';
+import { supabase } from '@/lib/supabase';
 
 // Import templates from original copilotService
 const OBJECTION_TEMPLATES: ObjectionTemplate[] = [
@@ -60,12 +60,22 @@ const OBJECTION_TEMPLATES: ObjectionTemplate[] = [
   }
 ];
 
+export interface SalesCopilotResponse {
+  response: string;
+  objectionType?: ObjectionType;
+  suggestion?: string;
+}
+
+export type SalesCopilotResult =
+  | string
+  | ObjectionType
+  | SalesCopilotResponse
+  | { error: string };
+
 /**
  * Sales Copilot Agent - AI assistant for objection handling.
  */
 export class SalesCopilotAgent extends BaseAgent {
-  private genAI: GoogleGenerativeAI;
-  private model: GenerativeModel;
 
   constructor() {
     const definition: AgentDefinition = {
@@ -82,7 +92,7 @@ export class SalesCopilotAgent extends BaseAgent {
         { source: 'conversation_context', dataType: 'CRM' },
         { source: 'product_info', dataType: 'API' }
       ],
-      tools_and_systems: ['Objection Template Database', 'CRM', 'Google Gemini API'],
+      tools_and_systems: ['Objection Template Database', 'CRM', 'Google Gemini API (via Edge Function)'],
       core_actions: [
         'detectObjection',
         'suggestResponse',
@@ -128,15 +138,33 @@ export class SalesCopilotAgent extends BaseAgent {
     };
 
     super(definition);
+  }
 
-    // Initialize Gemini API
-    const apiKey = import.meta.env.VITE_GEMINI_API_KEY;
-    if (!apiKey && import.meta.env.DEV) {
-       aiLogger.debug('SalesCopilotAgent - No API key, using template fallbacks');
+  /**
+   * Helper to call Gemini Edge Function
+   */
+  private async callGemini(prompt: string, history: Array<{ role: string; content: string }> = [], modelName: string = 'gemini-pro'): Promise<string> {
+    try {
+        const { data, error } = await supabase.functions.invoke('gemini-chat', {
+            body: { prompt, history, modelName }
+        });
+
+        if (error) {
+            aiLogger.warn('Gemini Edge Function returned error', error);
+            throw new Error(`Gemini Edge Function Error: ${error.message}`);
+        }
+
+        if (!data || !data.text) {
+             if (data && data.error) throw new Error(data.error);
+             aiLogger.warn('Gemini Edge Function returned empty response');
+             throw new Error('Gemini Edge Function returned empty response');
+        }
+
+        return data.text;
+    } catch (err) {
+        aiLogger.error('Call Gemini Failed', err);
+        throw err;
     }
-    this.genAI = new GoogleGenerativeAI(apiKey || 'dummy-key');
-    // Using gemini-pro for text generation tasks
-    this.model = this.genAI.getGenerativeModel({ model: "gemini-pro" });
   }
 
   /**
@@ -150,7 +178,7 @@ export class SalesCopilotAgent extends BaseAgent {
     productName?: string;
     productDescription?: string;
     customerProfile?: string;
-  }): Promise<any> {
+  }): Promise<SalesCopilotResult> {
     const { action, message, history, productContext, productName, productDescription, customerProfile } = input;
 
     const canProceed = await this.checkPolicies(action, input);
@@ -159,7 +187,7 @@ export class SalesCopilotAgent extends BaseAgent {
     }
 
     try {
-      let output;
+      let output: SalesCopilotResult;
 
       switch (action) {
         case 'detectObjection':
@@ -167,12 +195,13 @@ export class SalesCopilotAgent extends BaseAgent {
           output = this.detectObjection(message);
           break;
 
-        case 'suggestResponse':
+        case 'suggestResponse': {
           // Template-based suggestion
           if (!message) throw new Error('Message required for response suggestion');
           const type = this.detectObjection(message);
           output = this.getObjectionResponse(type);
           break;
+        }
 
         case 'generateResponse':
           // AI-based response generation
@@ -245,11 +274,6 @@ export class SalesCopilotAgent extends BaseAgent {
     const objectionType = this.detectObjection(userMessage);
     const suggestion = this.getObjectionResponse(objectionType);
 
-    const apiKey = import.meta.env.VITE_GEMINI_API_KEY;
-    if (!apiKey) {
-      return { response: suggestion, objectionType, suggestion };
-    }
-
     try {
         const contextPrompt = productContext ? `Product Context: ${productContext}\n\n` : '';
         const historyText = conversationHistory
@@ -279,9 +303,13 @@ export class SalesCopilotAgent extends BaseAgent {
     Generate a natural, persuasive response:
         `.trim();
 
-        const result = await this.model.generateContent(prompt);
-        const response = await result.response;
-        const text = response.text();
+        // Note: For gemini-chat function, we pass the prompt directly. The history parameter in callGemini
+        // is for chat mode, but here we are constructing the history in the prompt for better control
+        // or we could use the history parameter.
+        // The implementation in gemini-chat handles history if provided.
+        // Let's rely on the prompt construction here as it includes context and instructions.
+
+        const text = await this.callGemini(prompt);
 
         return {
           response: text || suggestion,
@@ -302,25 +330,6 @@ export class SalesCopilotAgent extends BaseAgent {
     productDescription: string,
     customerProfile?: string
   ): Promise<string> {
-    const apiKey = import.meta.env.VITE_GEMINI_API_KEY;
-    if (!apiKey) {
-        return `
-    🎯 **Kịch Bản Bán Hàng - ${productName}**
-
-    1️⃣ **Mở Đầu**
-    Chào bạn! Tôi là [tên] từ WellNexus. Tôi nhận thấy bạn quan tâm đến ${productName}. Đây là sản phẩm rất phù hợp cho người muốn [benefit].
-
-    2️⃣ **Xác Định Vấn Đề**
-    Bạn có đang gặp vấn đề với [pain point]? Nhiều khách hàng của tôi cũng từng như vậy.
-
-    3️⃣ **Giới Thiệu Giải Pháp**
-    ${productName} được thiết kế đặc biệt để giải quyết chính xác vấn đề này. ${productDescription}
-
-    4️⃣ **Kết Thúc**
-    Hiện tại chúng tôi có chương trình ưu đãi đặc biệt. Bạn muốn tôi tư vấn chi tiết hơn không?
-        `.trim();
-    }
-
     try {
         const prompt = `
     Create a professional sales script in Vietnamese for:
@@ -338,9 +347,8 @@ export class SalesCopilotAgent extends BaseAgent {
     Keep it conversational, natural, and persuasive. Use Vietnamese primarily.
         `.trim();
 
-        const result = await this.model.generateContent(prompt);
-        const response = await result.response;
-        return response.text() || "Script đang được cập nhật...";
+        const text = await this.callGemini(prompt);
+        return text || "Script đang được cập nhật...";
     } catch (error) {
         aiLogger.warn('SalesCopilotAgent Script Error', error);
         return "Lỗi tạo kịch bản. Vui lòng thử lại sau.";
@@ -353,11 +361,6 @@ export class SalesCopilotAgent extends BaseAgent {
   private async getCopilotCoaching(
     conversationHistory: Array<{ role: string; content: string }>
   ): Promise<string> {
-    const apiKey = import.meta.env.VITE_GEMINI_API_KEY;
-    if (!apiKey) {
-        return "✅ Tốt: Bạn đã lắng nghe khách hàng\n⚠️ Cải thiện: Hỏi thêm câu hỏi mở\n🎯 Tiếp theo: Đưa ra case study cụ thể";
-    }
-
     try {
         const historyText = conversationHistory
           .map(msg => `${msg.role === 'user' ? 'Customer' : 'You'}: ${msg.content}`)
@@ -376,9 +379,8 @@ export class SalesCopilotAgent extends BaseAgent {
     Keep it brief, actionable, and encouraging. Use Vietnamese.
         `.trim();
 
-        const result = await this.model.generateContent(prompt);
-        const response = await result.response;
-        return response.text() || "Phân tích đang được cập nhật...";
+        const text = await this.callGemini(prompt);
+        return text || "Phân tích đang được cập nhật...";
     } catch (error) {
         aiLogger.warn('SalesCopilotAgent Coaching Error', error);
         return "Lỗi phân tích hội thoại.";

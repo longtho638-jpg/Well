@@ -163,7 +163,7 @@ describe('Project Manager Agent', () => {
             // @ts-ignore - Explicitly testing invalid action
             const result = await agent.execute({
                 action: 'unknownAction'
-            } as any);
+            } as unknown as { action: 'generateReport' }); // Cast to valid type to bypass TS check for test
 
             expect(result.success).toBe(false);
             expect(result.error).toBeDefined();

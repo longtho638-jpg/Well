@@ -19,7 +19,6 @@ import {
 
 // Hooks & Services
 import { useFinance } from '@/hooks/useFinance';
-import { formatVND } from '@/utils/format';
 import { useToast } from '@/components/ui/Toast';
 
 // Modular Components

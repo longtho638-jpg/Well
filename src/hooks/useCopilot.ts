@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useCallback } from 'react';
 import { useAgentOS } from '@/hooks/useAgentOS';
 import { useToast } from '@/components/ui/Toast';
 import { CopilotMessage, ObjectionType } from '@/types';
@@ -99,7 +99,7 @@ export const useCopilot = ({ productContext, userName = "Bạn" }: UseCopilotPro
 
             setMessages(prev => [...prev, scriptMessage]);
             showToast('Sales script generated', 'success');
-        } catch (error) {
+        } catch {
             showToast('Failed to generate script', 'error');
         } finally {
             setIsLoading(false);
@@ -120,7 +120,7 @@ export const useCopilot = ({ productContext, userName = "Bạn" }: UseCopilotPro
             const tips = await getCopilotCoaching(conversationHistory);
             setCoaching(tips);
             showToast('Coaching tips ready', 'success');
-        } catch (error) {
+        } catch {
             showToast('Failed to get coaching', 'error');
         } finally {
             setIsLoading(false);

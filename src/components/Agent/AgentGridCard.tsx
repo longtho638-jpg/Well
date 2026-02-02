@@ -1,6 +1,6 @@
 import React, { useMemo } from 'react';
 import { motion } from 'framer-motion';
-import { AgentDefinition } from '@/types/agentic';
+import { AgentDefinition, AgentKPI } from '@/types/agentic';
 import { Zap, Target, Activity } from 'lucide-react';
 import { useTranslation } from '@/hooks';
 
@@ -8,7 +8,7 @@ interface AgentGridCardProps {
     agent: AgentDefinition;
     isSelected: boolean;
     onClick: () => void;
-    getKPIs: (agentName: string) => any[];
+    getKPIs: (agentName: string) => AgentKPI[];
 }
 
 export const AgentGridCard: React.FC<AgentGridCardProps> = ({ agent, isSelected, onClick, getKPIs }) => {

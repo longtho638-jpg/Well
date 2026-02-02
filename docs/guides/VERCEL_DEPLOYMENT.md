@@ -104,7 +104,8 @@ Add these in the Vercel dashboard:
 
 | Variable Name | Value | Environment |
 |--------------|-------|-------------|
-| `VITE_GEMINI_API_KEY` | `your_google_gemini_api_key` | Production, Preview, Development |
+| `VITE_SUPABASE_URL` | `your_supabase_url` | All |
+| `VITE_SUPABASE_ANON_KEY` | `your_supabase_anon_key` | All |
 | `VITE_ENVIRONMENT` | `production` | Production only |
 | `VITE_APP_VERSION` | `1.0.0-seed` | All |
 
@@ -113,15 +114,17 @@ Add these in the Vercel dashboard:
 **Step-by-Step:**
 
 1. Click "Add New" in Environment Variables section
-2. Enter variable name: `VITE_GEMINI_API_KEY`
+2. Enter variable name: `VITE_SUPABASE_URL`
 3. Select environment(s): Check "Production", "Preview", and "Development"
-4. Enter the value (get from [Google AI Studio](https://makersuite.google.com/app/apikey))
+4. Enter the value
 5. Click "Save"
+6. Repeat for `VITE_SUPABASE_ANON_KEY`
 
 **Important Notes:**
 - ⚠️ Vite requires `VITE_` prefix for environment variables
 - Variables are encrypted at rest in Vercel
 - Changing variables requires redeployment to take effect
+- **GEMINI_API_KEY** is NO LONGER set here. It is managed in Supabase Edge Functions.
 
 ### Getting a Gemini API Key
 
@@ -129,7 +132,7 @@ Add these in the Vercel dashboard:
 2. Click "Get API Key"
 3. Click "Create API key in new project"
 4. Copy the generated key
-5. Add to Vercel environment variables
+5. Set in Supabase: `supabase secrets set GEMINI_API_KEY=...`
 
 ---
 

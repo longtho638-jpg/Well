@@ -1,5 +1,5 @@
 import React, { lazy, Suspense } from 'react';
-import { Routes, Route, Navigate, useLocation } from 'react-router-dom';
+import { Routes, Route, Navigate } from 'react-router-dom';
 import { AppLayout } from './components/AppLayout';
 import LandingPage from './pages/LandingPage';
 import Login from './pages/Login';
@@ -41,13 +41,11 @@ import { useStore } from './store';
 import { ThemeProvider } from './context/ThemeContext';
 import { ToastProvider } from './components/ui/Toast';
 import { CursorGlow } from './components/CursorGlow';
-import { AnimatePresence, motion } from 'framer-motion';
 import { useTranslation } from '@/hooks';
 
 const App: React.FC = () => {
     const { t } = useTranslation();
   const { isAuthenticated } = useStore();
-  const location = useLocation();
 
   return (
     <ThemeProvider>

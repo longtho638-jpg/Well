@@ -6,16 +6,11 @@
 import React from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
-  Activity,
   Zap,
-  BarChart3,
-  Cpu,
   Terminal,
   ShieldCheck,
   Hexagon,
-  Target,
-  Users,
-  Package
+  Target
 } from 'lucide-react';
 
 // Hooks & Store
@@ -25,13 +20,12 @@ import { useAgentCenter } from '@/hooks/useAgentCenter';
 import { ParticleBackground } from '@/components/ParticleBackground';
 import { CursorGlow } from '@/components/CursorGlow';
 import { LiveConsole } from '@/components/LiveConsole';
-import { GridPattern, BentoGrid, AuraBadge } from '@/components/ui/Aura';
+import { GridPattern, AuraBadge } from '@/components/ui/Aura';
 
 // Modular Components
 import { AgentStatCard } from '@/components/Agent/AgentStatCard';
 import { AgentGridCard } from '@/components/Agent/AgentGridCard';
 import { AgentDetailsModal } from '@/components/Agent/AgentDetailsModal';
-import { useTranslation } from '@/hooks';
 
 export const AgentDashboard: React.FC = () => {
     
@@ -163,7 +157,7 @@ export const AgentDashboard: React.FC = () => {
               </div>
 
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 gap-8">
-                {functionAgents.map((agent, agentIdx) => (
+                {functionAgents.map((agent) => (
                   <AgentGridCard
                     key={agent.agent_name}
                     agent={agent}

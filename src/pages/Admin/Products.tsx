@@ -7,26 +7,19 @@ import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
     Package,
-    Edit2,
-    Save,
-    X,
-    DollarSign,
     Plus,
     Trash2,
     Search,
     RefreshCw,
     AlertTriangle,
     Image as ImageIcon,
-    Check,
-    Loader2,
     TrendingUp,
     ShieldCheck,
-    Info
 } from 'lucide-react';
 
 // Hooks & Services
 import { useProducts } from '@/hooks/useProducts';
-import { Product, NewProductDto } from '@/services/productService';
+import { Product } from '@/services/productService';
 import { formatVND } from '@/utils/format';
 import { useTranslation } from '@/hooks';
 
@@ -67,20 +60,17 @@ const AdminProducts: React.FC = () => {
     const { t } = useTranslation();
     const {
         loading,
-        actionLoading,
         searchQuery,
         setSearchQuery,
         filteredProducts,
         stats,
         refresh,
         handleUpdate,
-        handleCreate,
         handleDelete
     } = useProducts();
 
     const [editingId, setEditingId] = useState<string | null>(null);
     const [editForm, setEditForm] = useState<Partial<Product>>({});
-    const [showAddModal, setShowAddModal] = useState(false);
 
     const onEdit = (p: Product) => {
         setEditingId(p.id);
@@ -112,7 +102,6 @@ const AdminProducts: React.FC = () => {
                         <RefreshCw size={20} className={loading ? 'animate-spin' : ''} />
                     </button>
                     <button
-                        onClick={() => setShowAddModal(true)}
                         className="flex items-center gap-3 bg-[#00575A] text-white px-8 py-4 rounded-2xl font-black uppercase tracking-widest hover:bg-[#004447] transition-all shadow-xl shadow-teal-500/20"
                     >
                         <Plus size={20} />
@@ -156,7 +145,6 @@ const AdminProducts: React.FC = () => {
             <div className="space-y-6">
                 <AnimatePresence mode="popLayout">
                     {filteredProducts.map((p) => {
-                        const { t } = useTranslation();
                         const isEditing = editingId === p.id;
                         const data = isEditing ? editForm as Product : p;
                         const memberComm = (data.bonus_revenue || 0) * 0.21;

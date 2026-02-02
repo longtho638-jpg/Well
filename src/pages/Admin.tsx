@@ -17,7 +17,6 @@ import {
   Menu,
   Settings,
   X,
-  Bot,
   Sparkles,
   DollarSign,
   Package,
@@ -105,7 +104,6 @@ const Admin: React.FC = () => {
 
         <nav className="flex-1 px-4 py-8 space-y-2 overflow-y-auto scrollbar-hide">
           {navItems.map((item) => {
-              const { t } = useTranslation();
             const active = isActive(item.path);
             return (
               <button
@@ -210,7 +208,6 @@ const Admin: React.FC = () => {
               </div>
               <nav className="flex-1 p-6 space-y-3">
                 {navItems.map((item) => {
-                    const { t } = useTranslation();
                   const active = isActive(item.path);
                   return (
                     <button

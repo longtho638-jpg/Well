@@ -3,7 +3,7 @@
  * Phase 16: Keyboard and Gestures
  */
 
-import { useEffect, useCallback, useRef } from 'react';
+import { useEffect, useRef } from 'react';
 
 // ============================================================================
 // KEY CODES

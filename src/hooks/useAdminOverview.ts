@@ -61,7 +61,7 @@ export function useAdminOverview() {
         fetchMetrics();
     }, [fetchMetrics]);
 
-    const handleAction = useCallback((id: string, decision: 'approve' | 'reject') => {
+    const handleAction = useCallback((id: string, __decision: "approve" | "reject") => {
         setAIActions(prev => prev.filter(a => a.id !== id));
         // Logic for decision would be here
     }, []);

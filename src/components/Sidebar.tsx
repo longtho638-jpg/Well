@@ -67,7 +67,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ onMobileClose }) => {
       const pending = quests.filter(q => !q.isCompleted).map(q => q.title);
       const text = await getCoachAdvice(user.name, user.totalSales, pending);
       setAdvice(text);
-    } catch (e) {
+    } catch {
       setAdvice("Focus on sharing value today. Sales will follow!");
     }
     setLoading(false);
@@ -101,7 +101,6 @@ export const Sidebar: React.FC<SidebarProps> = ({ onMobileClose }) => {
 
       <nav className="flex-1 px-4 space-y-1 py-4" aria-label="Primary navigation">
         {menuItems.map((item) => {
-            const { t } = useTranslation();
           const Icon = item.icon;
           const isActive = location.pathname === item.path || (item.matches && item.matches.some(m => location.pathname.startsWith(m)));
 

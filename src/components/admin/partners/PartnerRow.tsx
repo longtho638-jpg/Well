@@ -1,6 +1,6 @@
 import React, { memo } from 'react';
 import { motion } from 'framer-motion';
-import { Check, Eye, ShieldCheck, User } from 'lucide-react';
+import { Check, Eye, User } from 'lucide-react';
 import { formatVND } from '@/utils/format';
 import { RANK_NAMES } from '@/types';
 import { Partner } from '@/hooks/usePartners';

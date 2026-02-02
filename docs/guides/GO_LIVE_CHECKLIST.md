@@ -15,7 +15,8 @@
 - [ ] Production environment variables set in Vercel
   - [ ] `VITE_SUPABASE_URL`
   - [ ] `VITE_SUPABASE_ANON_KEY`
-  - [ ] `VITE_GEMINI_API_KEY`
+- [ ] Gemini API Key set in Supabase Secrets
+  - [ ] `GEMINI_API_KEY` (via Vault)
 - [ ] Database migrations applied to production
 - [ ] RLS policies reviewed and updated
 
@@ -28,7 +29,7 @@
 - [x] Referrer-Policy configured
 - [x] Permissions-Policy set
 - [x] Rate limiting implemented (10 commands/min)
-- [ ] API keys secured (not in code)
+- [x] API keys secured (backend proxy / Edge Functions)
 - [ ] CORS policies configured
 
 ### 📊 Monitoring & Observability
@@ -61,7 +62,9 @@ npm run build
 In Vercel Dashboard → Settings → Environment Variables:
 - Add `VITE_SUPABASE_URL`
 - Add `VITE_SUPABASE_ANON_KEY`
-- Add `VITE_GEMINI_API_KEY`
+
+In Supabase Dashboard → Settings → Edge Functions:
+- Add `GEMINI_API_KEY` to Secrets
 
 ### 3. Deploy to Production
 ```bash

@@ -4,6 +4,8 @@ import { createAgentSlice } from '../store/slices/agentSlice';
 import { create } from 'zustand';
 import { AgentSlice } from '../store/slices/agentSlice';
 
+import { BaseAgent } from './core/BaseAgent';
+
 // Mock store creation
 const useTestStore = create<AgentSlice>((...a) => ({
   ...createAgentSlice(...a),
@@ -39,7 +41,7 @@ describe('Agent Integration Flow', () => {
         if (!acc[fn]) acc[fn] = [];
         acc[fn].push(agent);
         return acc;
-    }, {} as Record<string, any[]>);
+    }, {} as Record<string, BaseAgent[]>);
 
     expect(Object.keys(grouped).length).toBeGreaterThan(0);
     // Check for a known function

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
-import { Award, Zap, ChevronRight, Loader2 } from 'lucide-react';
+import { Award, Zap, Loader2 } from 'lucide-react';
 import { formatNumber } from '@/utils/format';
 import { useTranslation } from '@/hooks';
 
@@ -89,7 +89,6 @@ export const RedemptionZone: React.FC<RedemptionZoneProps> = ({
             {/* Rewards Grid */}
             <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-8">
                 {filteredItems.map((item) => {
-                    const { t } = useTranslation();
                     const canAfford = userGrowBalance >= item.growCost;
                     const isProcessing = redeemingId === item.id;
 

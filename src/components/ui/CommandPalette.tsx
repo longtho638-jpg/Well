@@ -1,5 +1,5 @@
 import React, { useState, useMemo, useCallback } from 'react';
-import { Search, Command, ChevronRight, X, Loader2, AlertCircle } from 'lucide-react';
+import { Search, Command, ChevronRight, X, Loader2 } from 'lucide-react';
 import { AGENCYOS_COMMANDS, AgencyOSCategory } from '@/agents/custom/AgencyOSAgent';
 import { agentRegistry } from '@/agents';
 import { commandRateLimiter } from '@/lib/rate-limiter';
@@ -34,7 +34,7 @@ export function CommandPalette({ isOpen, onClose }: CommandPaletteProps) {
     const [search, setSearch] = useState('');
     const [selectedCategory, setSelectedCategory] = useState<AgencyOSCategory | null>(null);
     const [isExecuting, setIsExecuting] = useState(false);
-    const [lastResult, setLastResult] = useState<any>(null);
+    const [lastResult, setLastResult] = useState<{ success: boolean; message?: string; output?: string; error?: string } | null>(null);
 
     // Filter commands based on search and category
     const filteredCommands = useMemo(() => {

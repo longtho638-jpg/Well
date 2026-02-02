@@ -1,5 +1,5 @@
 import { uiLogger } from '@/utils/logger';
-import { useState } from 'react';
+import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import {
   Gift,
@@ -19,7 +19,7 @@ import {
 } from 'lucide-react';
 import { useStore } from '@/store';
 import { useTranslation } from '@/hooks';
-import { LandingPageTemplateType } from '@/types';
+import { LandingPageTemplateType, UserLandingPage } from '@/types';
 import {
   GiftCardSection,
   ContentLibrarySection,
@@ -88,7 +88,7 @@ export default function MarketingTools() {
   const [selectedTemplate, setSelectedTemplate] = useState<LandingPageTemplateType>('expert');
   const [portraitUrl, setPortraitUrl] = useState<string>('');
   const [isGeneratingBio, setIsGeneratingBio] = useState(false);
-  const [generatedLandingPage, setGeneratedLandingPage] = useState<any>(null);
+  const [generatedLandingPage, setGeneratedLandingPage] = useState<UserLandingPage | null>(null);
 
   // Affiliate link
   const affiliateLink = `https://wellnexus.vn/ref/${user.id}`;
@@ -132,7 +132,7 @@ export default function MarketingTools() {
           text: t('marketing.affiliate.shareText'),
           url: affiliateLink
         });
-      } catch (err) {
+      } catch {
         // User cancelled share - no action needed
       }
     } else {

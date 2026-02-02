@@ -36,7 +36,6 @@ const useTypingEffect = (text: string, speed: number = 20) => {
 };
 
 const TypingText: React.FC<{ text: string; speed?: number }> = ({ text, speed = 20 }) => {
-    const { t } = useTranslation();
     const { displayedText, isTyping } = useTypingEffect(text, speed);
     return (
         <span>
@@ -59,7 +58,6 @@ export const CopilotMessageItem: React.FC<CopilotMessageItemProps> = React.memo(
     };
 
     const getObjectionBadge = (type?: ObjectionType) => {
-        const { t } = useTranslation();
         if (!type) return null;
         const badges: Record<ObjectionType, { label: string; color: string }> = {
             price: { label: 'Giá cả', color: 'bg-orange-100 text-orange-700' },
@@ -113,7 +111,7 @@ export const CopilotMessageItem: React.FC<CopilotMessageItemProps> = React.memo(
                                 <p className="text-zinc-700 dark:text-zinc-300 italic">{message.suggestion}</p>
                             </div>
                             <button
-                                onClick={() => handleCopy(message.suggestion!)}
+                                onClick={() => handleCopy(message.suggestion || '')}
                                 className="p-1.5 hover:bg-zinc-100 dark:hover:bg-zinc-800 rounded-lg transition-colors"
                                 title="Copy suggestion"
                             >

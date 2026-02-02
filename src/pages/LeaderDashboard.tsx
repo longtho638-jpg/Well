@@ -26,7 +26,7 @@ import { useTranslation } from '@/hooks';
 
 export default function LeaderDashboard() {
   const { t } = useTranslation();
-  const { user, teamInsights, teamMembers, teamMetrics, sendReminder, sendGift, fetchTeamData } = useStore();
+  const { teamInsights, teamMembers, teamMetrics, sendReminder, sendGift } = useStore();
   const [searchTerm, setSearchTerm] = useState('');
   const [filterRank, setFilterRank] = useState<UserRank | 'all'>('all');
   const [sortBy, setSortBy] = useState<'sales' | 'growth' | 'team'>('sales');
@@ -62,11 +62,11 @@ export default function LeaderDashboard() {
     .slice(0, 3);
 
   // Chart data
-  const performanceData = teamMembers.slice(0, 5).map(m => ({
-    name: m.name.split(' ').pop(),
-    sales: m.personalSales / 1000000,
-    team: m.teamVolume / 1000000
-  }));
+  // const performanceData = teamMembers.slice(0, 5).map(m => ({
+  //   name: m.name.split(' ').pop(),
+  //   sales: m.personalSales / 1000000,
+  //   team: m.teamVolume / 1000000
+  // }));
 
   // Network Health Data
   const activeCount = teamMembers.filter(m => m.monthlyGrowth > 0).length;
@@ -113,7 +113,7 @@ export default function LeaderDashboard() {
     try {
       await sendReminder(memberId);
       alert('Đã gửi tin nhắn nhắc nhở thành công!');
-    } catch (error) {
+    } catch {
       alert('Gửi tin nhắn thất bại. Vui lòng thử lại.');
     } finally {
       setActionLoading(null);
@@ -125,7 +125,7 @@ export default function LeaderDashboard() {
     try {
       await sendGift(memberId, 200000); // 200k VND voucher
       alert('Đã tặng voucher 200.000đ thành công!');
-    } catch (error) {
+    } catch {
       alert('Tặng quà thất bại. Vui lòng thử lại.');
     } finally {
       setActionLoading(null);

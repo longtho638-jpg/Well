@@ -25,7 +25,6 @@ export const CopilotSuggestions: React.FC<CopilotSuggestionsProps> = ({ onSelect
             <p className="text-zinc-400 text-xs font-medium">{t('copilotsuggestions.g_i_c_u_h_i')}</p>
             <div className="grid grid-cols-2 gap-2">
                 {suggestionChips.map((chip, index) => {
-                    const { t } = useTranslation();
                     const Icon = chip.icon;
                     return (
                         <motion.button

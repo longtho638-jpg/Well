@@ -53,14 +53,14 @@ export const FeaturedProducts: React.FC<FeaturedProductsProps> = ({ products, on
             <div className="inline-flex items-center gap-2 bg-purple-500/10 border border-purple-500/20 rounded-full px-5 py-2 mb-6">
               <Sparkles className="w-4 h-4 text-purple-400" />
               <span className="text-sm font-bold text-purple-400 uppercase tracking-wider">
-                {t('landing.featured.badge') || 'Sản Phẩm Nổi Bật'}
+                {t('landing.featured.badge')}
               </span>
             </div>
             <h2 className="text-4xl md:text-5xl font-black text-white mb-4">
-              {t('landing.featured.title') || 'Giải Pháp Sức Khỏe Toàn Diện'}
+              {t('landing.featured.title')}
             </h2>
             <p className="text-zinc-400 max-w-2xl text-lg">
-              {t('landing.featured.subtitle') || 'Được tin dùng bởi hơn 5,000+ khách hàng và chuyên gia y tế'}
+              {t('landing.featured.subtitle')}
             </p>
           </motion.div>
 
@@ -71,7 +71,7 @@ export const FeaturedProducts: React.FC<FeaturedProductsProps> = ({ products, on
             onClick={() => navigate('/marketplace')}
             className="group flex items-center gap-2 text-white font-bold bg-white/5 hover:bg-white/10 px-6 py-3 rounded-xl border border-white/10 hover:border-white/20 transition-all"
           >
-            {t('landing.featured.viewAll') || 'Xem tất cả sản phẩm'}
+            {t('landing.featured.viewAll')}
             <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
           </motion.button>
         </div>
@@ -118,7 +118,7 @@ export const FeaturedProducts: React.FC<FeaturedProductsProps> = ({ products, on
                     className="w-full bg-white text-zinc-950 font-bold py-3 rounded-xl shadow-xl flex items-center justify-center gap-2 hover:bg-teal-50 transition-colors"
                   >
                     <ShoppingBag className="w-4 h-4" />
-                    {t('landing.featured.addToCart') || 'Thêm vào giỏ'}
+                    {t('landing.featured.addToCart')}
                   </button>
                 </div>
               </div>

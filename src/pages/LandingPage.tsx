@@ -1,9 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useTranslation } from '../hooks';
 import { motion } from 'framer-motion';
-import { ParticleBackground } from '@/components/ParticleBackground';
 import {
-  ArrowRight,
   Sprout,
   TreeDeciduous,
   Trees,
@@ -14,17 +12,11 @@ import {
   Users,
   TrendingUp,
   Award,
-  Rocket,
   ChevronRight,
-  Mail,
-  Facebook,
-  Instagram,
-  Linkedin,
   Star,
   Zap,
   Target,
   Globe,
-  ChevronDown
 } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { useStore } from '../store';
@@ -32,7 +24,7 @@ import { useCartStore } from '../store/cartStore';
 import { FeaturedProducts } from '../components/landing/FeaturedProducts';
 import { CartDrawer } from '../components/marketplace/CartDrawer';
 import { Product } from '../types';
-import { BentoGrid, BentoCard, AuraBadge, GridPattern } from '../components/ui/Aura';
+import { BentoGrid, BentoCard, GridPattern } from '../components/ui/Aura';
 import {
   HeroStats,
   SocialProofTicker,
@@ -45,28 +37,18 @@ import {
 } from '../components/HeroEnhancements';
 import {
   AnimatedGradientBg,
-  FloatingElement,
-  GlassCard,
   CursorGlow,
-  ShimmerText,
   SparkleEffect,
-  Reveal,
-  PulseRing,
 } from '../components/PremiumEffects';
 import {
-  TiltCard,
-  Typewriter,
   GradientText,
-  SpotlightCard,
   AnimatedBorder,
   MorphingBlob,
-  Marquee,
 } from '../components/UltimateEffects';
 import {
   ZenDivider,
   AwardsBar,
   ScrollProgress,
-  StaggeredText,
   EA_AWARDS,
 } from '../components/EastAsiaBrand';
 import {
@@ -85,7 +67,7 @@ import {
 export default function LandingPage() {
   const { t } = useTranslation();
   const navigate = useNavigate();
-  const { login, products, fetchProducts } = useStore();
+  const { products, fetchProducts } = useStore();
   const [isCartOpen, setIsCartOpen] = useState(false);
 
   const cartItems = useCartStore(state => state.items);
@@ -265,34 +247,8 @@ export default function LandingPage() {
   };
 
   // Animation Variants
-  const fadeInUp = {
-    hidden: { opacity: 0, y: 40 },
-    visible: {
-      opacity: 1,
-      y: 0,
-      transition: { duration: 0.6, ease: [0.16, 1, 0.3, 1] }
-    }
-  };
 
-  const staggerContainer = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        staggerChildren: 0.15,
-        delayChildren: 0.2
-      }
-    }
-  };
 
-  const scaleIn = {
-    hidden: { opacity: 0, scale: 0.9 },
-    visible: {
-      opacity: 1,
-      scale: 1,
-      transition: { duration: 0.5, ease: [0.16, 1, 0.3, 1] }
-    }
-  };
 
   return (
     <div className="min-h-screen bg-zinc-950 overflow-x-hidden selection:bg-emerald-900 selection:text-emerald-100">
@@ -465,7 +421,6 @@ export default function LandingPage() {
           {/* Stages Grid */}
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
             {CONTENT.roadmap.stages.map((stage, idx) => {
-                const { t } = useTranslation();
               const StageIcon = stage.icon;
               const isActive = stage.status === 'active';
               const isLocked = stage.status === 'locked' || stage.status === 'vision';
@@ -594,7 +549,6 @@ export default function LandingPage() {
           {/* Benefits Grid */}
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
             {CONTENT.whyNow.benefits.map((benefit, idx) => {
-                const { t } = useTranslation();
               const BenefitIcon = benefit.icon;
               return (
                 <motion.div

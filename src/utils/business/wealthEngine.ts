@@ -1,4 +1,4 @@
-import { User, UserRank } from '@/types';
+import { User } from '@/types';
 
 /**
  * Calculate Business Valuation (Investment-grade metric)

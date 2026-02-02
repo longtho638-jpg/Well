@@ -21,7 +21,7 @@ export default function CopilotPage() {
 
   // Chat history state
   const [showHistory, setShowHistory] = useState(true);
-  const [chatSessions, setChatSessions] = useState<ChatSession[]>([
+  const [chatSessions] = useState<ChatSession[]>([
     {
       id: '1',
       title: 'Tư vấn khách hàng về ANIMA 119',
@@ -224,7 +224,6 @@ export default function CopilotPage() {
               {/* Features Grid */}
               <div className="grid md:grid-cols-3 gap-4">
                 {features.map((feature, index) => {
-                    const { t } = useTranslation();
                   const Icon = feature.icon;
                   return (
                     <motion.div

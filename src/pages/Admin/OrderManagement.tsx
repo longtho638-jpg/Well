@@ -6,7 +6,7 @@
  */
 
 import React, { useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion } from 'framer-motion';
 import { DollarSign, RefreshCw, Loader2, CheckCircle, AlertTriangle, ShieldCheck } from 'lucide-react';
 import { useOrders } from '@/hooks/useOrders';
 

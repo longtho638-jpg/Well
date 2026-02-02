@@ -41,7 +41,7 @@ export const useReferral = () => {
         generateQRCodeUrl 
     } = useSocialShare(referralUrl);
 
-    const qrCodeUrl = useMemo(() => generateQRCodeUrl(), [referralUrl]);
+    const qrCodeUrl = useMemo(() => generateQRCodeUrl(), [generateQRCodeUrl]);
 
     // Fetch Real Referrals from Supabase (Optimized F1-F7 Tree)
     useEffect(() => {

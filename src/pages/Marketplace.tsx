@@ -141,7 +141,7 @@ export const Marketplace: React.FC = () => {
                   products={products}
                   recommendedIds={aiSuggestion?.productIds || []}
                   onAddToCart={addToCart}
-                  onViewDetail={(id) => { /* Detail view transition logic here */ }}
+                  onViewDetail={(_id) => { /* Detail view transition logic here */ }}
                 />
 
                 {products.length === 0 && (

@@ -108,9 +108,10 @@ export class ScoutExternalAgent extends BaseAgent {
                     result = await this.compareSolutions(action.query);
                     break;
 
-                default:
-                    const exhaustiveCheck: never = action;
+                default: {
+                    const _exhaustiveCheck: never = action;
                     throw new Error(`Unknown action: ${(action as { action: string }).action}`);
+                }
             }
 
             return { success: true, data: result };
@@ -148,7 +149,7 @@ export class ScoutExternalAgent extends BaseAgent {
         };
     }
 
-    private async findDocumentation(query: string): Promise<DocumentationResult> {
+    private async findDocumentation(_query: string): Promise<DocumentationResult> {
         return {
             officialDocs: ['https://docs.example.com'],
             tutorials: ['https://tutorial.example.com'],
@@ -156,7 +157,7 @@ export class ScoutExternalAgent extends BaseAgent {
         };
     }
 
-    private async collectCodeExamples(query: string): Promise<CodeExamplesResult> {
+    private async collectCodeExamples(_query: string): Promise<CodeExamplesResult> {
         return {
             examples: [
                 {
@@ -170,7 +171,7 @@ export class ScoutExternalAgent extends BaseAgent {
         };
     }
 
-    private async compareSolutions(query: string): Promise<ComparisonResult> {
+    private async compareSolutions(_query: string): Promise<ComparisonResult> {
         return {
             comparison: {
                 optionA: { pros: ['Fast', 'Popular'], cons: ['Complex'] },

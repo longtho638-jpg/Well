@@ -1,6 +1,6 @@
 import React from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import { Check, Loader2, Users, Ghost } from 'lucide-react';
+import { AnimatePresence } from 'framer-motion';
+import { Check, Loader2, Ghost } from 'lucide-react';
 import { PartnerRow } from './PartnerRow';
 import { Partner } from '@/hooks/usePartners';
 import { useTranslation } from '@/hooks';

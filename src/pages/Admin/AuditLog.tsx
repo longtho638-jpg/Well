@@ -9,7 +9,6 @@ import {
     FileText,
     Download,
     Search,
-    Calendar,
     User,
     Clock,
     CheckCircle,
@@ -56,7 +55,6 @@ const ACTION_CONFIG: Record<AuditActionType, { icon: React.ElementType; color: s
 // ============================================================
 
 const ActionBadge: React.FC<{ action: AuditActionType }> = ({ action }) => {
-    const { t } = useTranslation();
     const config = ACTION_CONFIG[action];
     const Icon = config.icon;
 

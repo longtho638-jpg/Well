@@ -68,7 +68,7 @@ export const createAuthSlice: StateCreator<
     [],
     [],
     AuthSlice
-> = (set, get) => ({
+> = (set) => ({
     // Initial State
     isAuthenticated: false,
     user: createEmptyUser(),
@@ -105,7 +105,7 @@ export const createAuthSlice: StateCreator<
         const { data: { session } } = await supabase.auth.getSession();
         if (!session?.user) return;
 
-        const { data, error } = await supabase
+        const { data } = await supabase
             .from('users')
             .select('*')
             .eq('id', session.user.id)

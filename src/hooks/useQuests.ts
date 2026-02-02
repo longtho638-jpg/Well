@@ -2,7 +2,6 @@ import { useState, useCallback, useMemo } from 'react';
 import { useStore } from '@/store';
 import { questService } from '@/services/questService';
 import { Quest } from '@/types';
-import { useTranslation } from '@/hooks';
 
 import { LucideIcon } from 'lucide-react';
 
@@ -17,7 +16,6 @@ export interface FullQuest extends Quest {
 }
 
 export function useQuests() {
-    const { t } = useTranslation();
     const quests = useStore(state => state.quests);
     const completeQuest = useStore(state => state.completeQuest);
 

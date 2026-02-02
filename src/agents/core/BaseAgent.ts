@@ -1,4 +1,4 @@
-import { AgentDefinition, AgentLog, AgentKPI, AgentPolicy } from '@/types/agentic';
+import { AgentDefinition, AgentLog, AgentKPI } from '@/types/agentic';
 import { agentLogger } from '@/utils/logger';
 
 /**
@@ -28,7 +28,7 @@ export abstract class BaseAgent {
    * Check if an action violates any policies.
    * @returns true if action is allowed, false if blocked
    */
-  protected async checkPolicies(action: string, context: Record<string, unknown>): Promise<boolean> {
+  protected async checkPolicies(action: string, _context: Record<string, unknown>): Promise<boolean> {
     for (const policy of this.definition.policy_and_constraints) {
       if (policy.enforcement === 'hard') {
         // Basic policy check - can be enhanced later

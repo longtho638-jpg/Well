@@ -5,7 +5,7 @@
 
 import React, { useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Terminal, Cpu, Wifi, Activity, ShieldCheck } from 'lucide-react';
+import { Terminal, Cpu, Wifi, ShieldCheck } from 'lucide-react';
 
 // Hooks
 import { useLiveConsole, LogEntry } from '@/hooks/useLiveConsole';
@@ -16,7 +16,6 @@ import { useTranslation } from '@/hooks';
 // ============================================================
 
 const LogLine: React.FC<{ log: LogEntry }> = ({ log }) => {
-    const { t } = useTranslation();
     const statusColors = {
         info: 'text-teal-400/80',
         success: 'text-emerald-400',

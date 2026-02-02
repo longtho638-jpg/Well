@@ -20,11 +20,7 @@ import {
     Globe,
     AlertTriangle,
     CheckCircle,
-    Lock,
-    Eye,
-    EyeOff,
     Loader2,
-    Settings,
     Calendar,
 } from 'lucide-react';
 import { useTranslation } from '@/hooks';
@@ -100,7 +96,6 @@ const INITIAL_SETTINGS: SecuritySettings = {
 // ============================================================
 
 const StatusBadge: React.FC<{ status: LoginActivity['status'] }> = ({ status }) => {
-    const { t } = useTranslation();
     const config = {
         success: { className: 'bg-emerald-500/10 text-emerald-400 border-emerald-500/20', label: 'Thành công' },
         failed: { className: 'bg-red-500/10 text-red-400 border-red-500/20', label: 'Thất bại' },

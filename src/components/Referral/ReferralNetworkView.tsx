@@ -61,7 +61,7 @@ export const ReferralNetworkView: React.FC<ReferralNetworkViewProps> = ({ f1Refe
     );
 };
 
-const ReferralNodeCard = ({ referral, index, level, isCompact = false }: { referral: Referral; index: number; level: string; isCompact?: boolean }) => {
+const ReferralNodeCard = ({ referral, index, level: _level, isCompact = false }: { referral: Referral; index: number; level: string; isCompact?: boolean }) => {
     const { t } = useTranslation();
     const getStatusTheme = (status: Referral['status']) => {
         switch (status) {

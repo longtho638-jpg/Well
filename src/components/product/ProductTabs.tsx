@@ -28,7 +28,6 @@ export const ProductTabs: React.FC<Props> = ({ activeTab, setActiveTab, details 
         <div className="border-t border-white/5">
             <div className="flex border-b border-white/5">
                 {TABS.map((tab) => {
-                    const { t } = useTranslation();
                     const Icon = tab.icon;
                     const active = activeTab === tab.id;
                     return (

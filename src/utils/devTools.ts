@@ -43,7 +43,7 @@ class DebugLogger {
         if (!this.enabled) return;
 
         const prefix = `[${category}]`;
-        const logFn = console[level] || console.log;
+        const logFn = console[level] || console.log; // eslint-disable-line no-console
 
         if (data !== undefined) {
             logFn(prefix, message, data);

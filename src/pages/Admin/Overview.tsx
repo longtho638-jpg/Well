@@ -14,18 +14,13 @@ import {
   ShieldAlert,
   TrendingUp,
   Clock,
-  Check,
-  X,
   UserCheck,
   Wallet,
   Zap,
   RefreshCw,
-  ChevronRight,
-  Search,
-  Mail,
   Settings
 } from 'lucide-react';
-import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
+import { AreaChart, Area, ResponsiveContainer } from 'recharts';
 
 // Hooks & Utils
 import { useAdminOverview, AIAction } from '@/hooks/useAdminOverview';

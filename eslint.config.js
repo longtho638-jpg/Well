@@ -15,6 +15,7 @@ export default [
             '*.config.js',
             '*.config.ts',
             'public/**',
+            'src/__tests__/**',
         ],
     },
 
@@ -63,6 +64,7 @@ export default [
             // General rules
             'no-console': ['warn', { allow: ['warn', 'error'] }],
             'no-unused-vars': 'off', // Use TypeScript version
+            'no-undef': 'off', // TypeScript handles this
             'prefer-const': 'warn',
             'no-debugger': 'error',
         },

@@ -16,13 +16,12 @@ import {
     Trash2,
     CheckCheck,
 } from 'lucide-react';
+import { useTranslation } from '@/hooks';
 
 // Hooks
 import { useNotificationCenter, Notification } from '../../hooks/useNotificationCenter';
-import { useTranslation } from '@/hooks';
 
 const NotificationIcon: FC<{ type: Notification['type'] }> = ({ type }) => {
-    const { t } = useTranslation();
     const config = {
         success: { icon: CheckCircle, className: 'text-emerald-400' },
         warning: { icon: AlertTriangle, className: 'text-amber-400' },

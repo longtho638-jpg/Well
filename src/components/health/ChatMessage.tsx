@@ -13,7 +13,6 @@ interface ChatMessageProps {
 
 export const ChatMessage: React.FC<ChatMessageProps> = ({ message, index, onQuickOrder }) => {
     const { t } = useTranslation();
-    const isAssistant = message.role === 'assistant';
 
     return (
         <motion.div
@@ -55,7 +54,7 @@ export const ChatMessage: React.FC<ChatMessageProps> = ({ message, index, onQuic
                     <div className="mt-4">
                         <ProductRecommendationCard
                             recommendation={message.productRecommendation}
-                            onOrder={() => onQuickOrder(message.productRecommendation!)}
+                            onOrder={() => message.productRecommendation && onQuickOrder(message.productRecommendation)}
                         />
                     </div>
                 )}

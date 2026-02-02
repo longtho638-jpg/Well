@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Zap, ShoppingBag, UserPlus, Star, Trophy, Activity, TrendingDown, Gift, type LucideIcon } from 'lucide-react';
+import { Zap, ShoppingBag, UserPlus, Star, Trophy, Activity, TrendingDown, type LucideIcon } from 'lucide-react';
 import { useTranslation } from '@/hooks';
 
 // Types - Unified with useDashboard.ts

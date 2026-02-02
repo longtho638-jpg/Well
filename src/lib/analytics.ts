@@ -23,7 +23,7 @@ export const analytics = {
     /**
      * Track a custom event
      */
-    event: (name: string, data?: Record<string, any>) => {
+    event: (name: string, data?: Record<string, unknown>) => {
         if (import.meta.env.PROD && window.va) {
             window.va('event', { name, data });
         }
@@ -48,7 +48,7 @@ export const analytics = {
     /**
      * Track agent interaction
      */
-    trackAgent: (agentName: string, action: string, data?: Record<string, any>) => {
+    trackAgent: (agentName: string, action: string, data?: Record<string, unknown>) => {
         analytics.event('agent_interaction', {
             agentName,
             action,
@@ -59,7 +59,7 @@ export const analytics = {
     /**
      * Track errors
      */
-    trackError: (error: Error, context?: Record<string, any>) => {
+    trackError: (error: Error, context?: Record<string, unknown>) => {
         analytics.event('error', {
             message: error.message,
             stack: error.stack,

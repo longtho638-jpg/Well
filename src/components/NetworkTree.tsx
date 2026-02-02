@@ -69,7 +69,7 @@ const AddMemberModal: React.FC<{
         setLoading(true);
 
         try {
-            const { data: authData, error: authError } = await supabase.auth.signUp({
+            const { error: authError } = await supabase.auth.signUp({
                 email: formData.email,
                 password: formData.password,
                 options: {
@@ -282,7 +282,7 @@ const TreeNodeComponent: React.FC<{
                         )}
 
                         {/* Vertical Connectors for each child */}
-                        {node.children.map((child, index) => (
+                        {node.children.map((child) => (
                             <div key={child.id} className="flex flex-col items-center relative">
                                 {/* Top vertical line connecting to horizontal bar */}
                                 <div className="h-4 w-px bg-zinc-700 absolute -top-4"></div>

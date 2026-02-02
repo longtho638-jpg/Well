@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Command, Zap, CheckCircle, Clock, TrendingUp } from 'lucide-react';
+import { Command, Zap, CheckCircle, Clock } from 'lucide-react';
 import { agentRegistry } from '@/agents';
 import { AGENCYOS_COMMANDS, AgencyOSCategory, AgencyOSCommand } from '@/agents/custom/AgencyOSAgent';
 import CommandPalette from '@/components/ui/CommandPalette';

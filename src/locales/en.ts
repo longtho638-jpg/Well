@@ -372,6 +372,51 @@ export const en = {
         }
     },
 
+    checkout: {
+        title: 'Checkout',
+        backToShop: 'Back to Shop',
+        guestInfo: 'Guest Information',
+        shippingAddress: 'Shipping Address',
+        placeOrder: 'Place Order',
+        processing: 'Processing...',
+        terms: 'By placing an order, you agree to WellNexus Terms of Service and Privacy Policy.',
+        success: 'Order placed successfully! Your order has been received.',
+        error: 'An error occurred while processing your order. Please try again.',
+        form: {
+            fullName: 'Full Name',
+            phone: 'Phone Number',
+            email: 'Email (For order notifications)',
+            city: 'City / Province',
+            district: 'District',
+            ward: 'Ward / Commune',
+            street: 'Detailed Address',
+            note: 'Note (Optional)',
+            notePlaceholder: 'Delivery during office hours...',
+            fullNamePlaceholder: 'John Doe',
+            phonePlaceholder: '0901234567',
+            emailPlaceholder: 'example@email.com',
+            cityPlaceholder: 'Ho Chi Minh City',
+            districtPlaceholder: 'District 1',
+            wardPlaceholder: 'Ben Nghe Ward',
+            streetPlaceholder: '123 Nguyen Hue Street',
+        },
+        validation: {
+            fullNameRequired: 'Full name must be at least 2 characters',
+            emailInvalid: 'Invalid email',
+            phoneInvalid: 'Invalid phone number',
+            streetRequired: 'Address must be more detailed (house number, street name)',
+            wardRequired: 'Ward/Commune is required',
+            districtRequired: 'District is required',
+            cityRequired: 'City/Province is required',
+        },
+        successPage: {
+            title: 'Order Successful!',
+            message: 'Thank you for purchasing at WellNexus. We will contact you shortly to confirm your order.',
+            continueShopping: 'Continue Shopping',
+            backToHome: 'Back to Home',
+        }
+    },
+
     // Marketplace Page
     marketplace: {
         title: 'Marketplace',

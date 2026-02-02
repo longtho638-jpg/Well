@@ -1,5 +1,5 @@
 import { render } from '@testing-library/react';
-import { screen, fireEvent, waitFor } from '@testing-library/dom';
+import { screen } from '@testing-library/dom';
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { CommissionWidget } from './CommissionWidget';
 import { BrowserRouter } from 'react-router-dom';
@@ -91,7 +91,7 @@ describe('CommissionWidget', () => {
     // Note: 1.500.000 contains 500.000, so we must be careful.
     // However, getAllByText returns all matches. As long as it finds them, it passes.
     // To be more precise, we could check for exact text matching including symbol
-    const teamVolumeElements = screen.getAllByText((content, element) => {
+    const teamVolumeElements = screen.getAllByText((content) => {
       return content.includes('500.000');
     });
     expect(teamVolumeElements.length).toBeGreaterThan(0);

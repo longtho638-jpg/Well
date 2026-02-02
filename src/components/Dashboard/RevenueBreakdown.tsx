@@ -62,7 +62,7 @@ export const RevenueBreakdown: React.FC<RevenueBreakdownProps> = ({ data, totalS
                                 color: '#fff'
                             }}
                             itemStyle={{ color: '#fff' }}
-                            formatter={(value: number) => [`\${(value / 1000000).toFixed(1)}M ₫`, 'Yield']}
+                            formatter={(value: number) => [`${(value / 1000000).toFixed(1)}M ₫`, 'Yield']}
                         />
                     </PieChart>
                 </ResponsiveContainer>

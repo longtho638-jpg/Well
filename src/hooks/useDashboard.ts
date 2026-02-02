@@ -16,7 +16,6 @@ import {
     CheckCircle2,
     Users,
     Package,
-    Clock,
     Crown,
     Target,
     Star,

@@ -24,7 +24,6 @@ interface AffiliateLinkSectionProps {
  * Provides shareable referral link and downloadable QR code
  */
 export default function AffiliateLinkSection({
-  userId,
   userName,
   affiliateLink,
   qrCodeUrl,

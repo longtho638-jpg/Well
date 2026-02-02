@@ -24,11 +24,21 @@
 - **Imports:** Group imports: External -> Internal -> Types -> Styles. Use `@/` alias.
 
 ## TypeScript
-- **Strict Mode:** Enabled. Zero-tolerance policy for `any` types (enforced via active tech debt elimination).
+- **Strict Mode:** Enabled. Zero-tolerance policy for `any` types.
+- **Prohibited Patterns:**
+  - ❌ `: any` types (use proper interfaces/types)
+  - ❌ `as any` casts (use proper type assertions or `unknown`)
+  - ❌ `@ts-ignore` without justification
+- **Recommended Patterns:**
+  - ✅ Interface definitions for external data
+  - ✅ Union types for multiple possibilities
+  - ✅ Generic types for reusable logic
+  - ✅ Type guards for runtime checks
 - **Interfaces:**
   - **Shared:** `src/types.ts`
   - **Admin Specific:** `admin-panel/src/types/`
 - **Props:** Use `interface Props` or `type Props`.
+- **Verification:** `tsc --noEmit` and tests must pass before commit.
 
 ## Accessibility (a11y)
 - **Standards:** WCAG 2.1 AA compliance.

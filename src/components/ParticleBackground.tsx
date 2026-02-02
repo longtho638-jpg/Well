@@ -11,6 +11,7 @@ interface Particle {
 
 export const ParticleBackground: React.FC = () => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
+  const animationFrameId = useRef<number | null>(null);
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -24,6 +25,7 @@ export const ParticleBackground: React.FC = () => {
 
     const particles: Particle[] = [];
     const colors = ['rgba(0, 137, 123, 0.5)', 'rgba(159, 122, 234, 0.5)', 'rgba(255, 107, 88, 0.5)'];
+    let isMounted = true;
 
     // Create particles
     for (let i = 0; i < 80; i++) {
@@ -38,6 +40,7 @@ export const ParticleBackground: React.FC = () => {
     }
 
     const animate = () => {
+      if (!isMounted) return;
       ctx.clearRect(0, 0, canvas.width, canvas.height);
 
       particles.forEach((particle) => {
@@ -55,7 +58,7 @@ export const ParticleBackground: React.FC = () => {
         ctx.fill();
       });
 
-      requestAnimationFrame(animate);
+      animationFrameId.current = requestAnimationFrame(animate);
     };
 
     animate();
@@ -66,7 +69,14 @@ export const ParticleBackground: React.FC = () => {
     };
 
     window.addEventListener('resize', handleResize);
-    return () => window.removeEventListener('resize', handleResize);
+
+    return () => {
+      isMounted = false;
+      window.removeEventListener('resize', handleResize);
+      if (animationFrameId.current) {
+        cancelAnimationFrame(animationFrameId.current);
+      }
+    };
   }, []);
 
   return (

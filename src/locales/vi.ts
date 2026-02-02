@@ -393,8 +393,53 @@ export const vi = {
     removeItem: 'Xóa sản phẩm',
   },
 
-  // Marketplace Page
-  marketplace: {
+    checkout: {
+      title: 'Thanh Toán',
+      backToShop: 'Quay lại cửa hàng',
+      guestInfo: 'Thông tin khách hàng',
+      shippingAddress: 'Địa chỉ giao hàng',
+      placeOrder: 'Đặt hàng ngay',
+      processing: 'Đang xử lý...',
+      terms: 'Bằng việc đặt hàng, bạn đồng ý với Điều khoản dịch vụ và Chính sách bảo mật của WellNexus.',
+      success: 'Đặt hàng thành công! Đơn hàng của bạn đã được ghi nhận.',
+      error: 'Có lỗi xảy ra khi xử lý đơn hàng. Vui lòng thử lại.',
+      form: {
+        fullName: 'Họ và tên',
+        phone: 'Số điện thoại',
+        email: 'Email (Để nhận thông báo đơn hàng)',
+        city: 'Tỉnh / Thành phố',
+        district: 'Quận / Huyện',
+        ward: 'Phường / Xã',
+        street: 'Địa chỉ chi tiết',
+        note: 'Ghi chú (Tùy chọn)',
+        notePlaceholder: 'Giao hàng trong giờ hành chính...',
+        fullNamePlaceholder: 'Nguyễn Văn A',
+        phonePlaceholder: '0901234567',
+        emailPlaceholder: 'example@email.com',
+        cityPlaceholder: 'TP. Hồ Chí Minh',
+        districtPlaceholder: 'Quận 1',
+        wardPlaceholder: 'Phường Bến Nghé',
+        streetPlaceholder: 'Số 123, Đường Nguyễn Huệ',
+      },
+      validation: {
+        fullNameRequired: 'Họ tên phải có ít nhất 2 ký tự',
+        emailInvalid: 'Email không hợp lệ',
+        phoneInvalid: 'Số điện thoại không hợp lệ',
+        streetRequired: 'Địa chỉ phải chi tiết hơn (số nhà, tên đường)',
+        wardRequired: 'Phường/Xã là bắt buộc',
+        districtRequired: 'Quận/Huyện là bắt buộc',
+        cityRequired: 'Tỉnh/Thành phố là bắt buộc',
+      },
+      successPage: {
+        title: 'Đặt hàng thành công!',
+        message: 'Cảm ơn bạn đã mua hàng tại WellNexus. Chúng tôi sẽ liên hệ với bạn sớm nhất để xác nhận đơn hàng.',
+        continueShopping: 'Tiếp tục mua sắm',
+        backToHome: 'Về trang chủ',
+      }
+    },
+
+    // Marketplace Page
+    marketplace: {
     title: 'Cửa hàng',
     subtitle: 'Sản phẩm chất lượng cao',
     searchPlaceholder: 'Tìm kiếm sản phẩm...',

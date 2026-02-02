@@ -104,7 +104,7 @@ export const walletService = {
                     filter: `id=eq.${userId}`
                 },
                 (payload) => {
-                    const newData = payload.new as any;
+                    const newData = payload.new as { shop_balance?: number };
                     onUpdate({
                         balance: newData.shop_balance || 0,
                         totalEarnings: 0,

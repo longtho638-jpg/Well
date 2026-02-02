@@ -171,10 +171,10 @@ export default function HealthCheck() {
 
   const getHealthDimensions = (): HealthDimension[] => {
     const dimensions = [
-      { id: 'sleep', name: 'Giấc Ngủ' },
-      { id: 'stress', name: 'Căng Thẳng' },
-      { id: 'energy', name: 'Năng Lượng' },
-      { id: 'exercise', name: 'Hoạt Động' }
+      { id: 'sleep', name: t('healthCheck.dimensions.sleep') },
+      { id: 'stress', name: t('healthCheck.dimensions.stress') },
+      { id: 'energy', name: t('healthCheck.dimensions.energy') },
+      { id: 'exercise', name: t('healthCheck.dimensions.exercise') }
     ];
 
     return dimensions.map(dim => {
@@ -202,7 +202,7 @@ export default function HealthCheck() {
     if (goal === 'better_sleep' || goal === 'reduce_stress' || sleepScore < 60 || stressScore < 60) {
       recommendations.push({
         id: '1',
-        name: 'ANIMA 119 - Viên Uống Thần Kinh',
+        name: t('healthCheck.products.anima119.name'),
         price: 15900000,
         reason: t('healthCheck.products.anima119.reason'),
         benefits: [
@@ -219,7 +219,7 @@ export default function HealthCheck() {
     if (goal === 'increase_energy' || goal === 'boost_immunity' || energyScore < 60) {
       recommendations.push({
         id: '3',
-        name: 'ANIMA Immune Boost',
+        name: t('healthCheck.products.immuneBoost.name'),
         price: 890000,
         reason: t('healthCheck.products.immuneBoost.reason'),
         benefits: [
@@ -236,7 +236,7 @@ export default function HealthCheck() {
     if (goal === 'overall_health' || recommendations.length === 0) {
       recommendations.push({
         id: '2',
-        name: 'ANIMA Starter Kit',
+        name: t('healthCheck.products.starterKit.name'),
         price: 4500000,
         reason: t('healthCheck.products.starterKit.reason'),
         benefits: [
@@ -459,7 +459,6 @@ export default function HealthCheck() {
             {/* Bento Grid Layout */}
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
               {recommendations.map((product, index) => {
-                  const { t } = useTranslation();
                 const isLarge = index === 0 && recommendations.length > 2;
 
                 return (

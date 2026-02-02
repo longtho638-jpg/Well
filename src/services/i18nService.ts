@@ -21,10 +21,12 @@ export const i18nService = {
      */
     getNumberFormatter(locale: Locale): Intl.NumberFormat {
         const key = locale;
-        if (!formatters.number.has(key)) {
-            formatters.number.set(key, new Intl.NumberFormat(locale === 'vi' ? 'vi-VN' : 'en-US'));
+        let formatter = formatters.number.get(key);
+        if (!formatter) {
+            formatter = new Intl.NumberFormat(locale === 'vi' ? 'vi-VN' : 'en-US');
+            formatters.number.set(key, formatter);
         }
-        return formatters.number.get(key)!;
+        return formatter;
     },
 
     /**
@@ -32,16 +34,18 @@ export const i18nService = {
      */
     getCurrencyFormatter(locale: Locale): Intl.NumberFormat {
         const key = locale;
-        if (!formatters.currency.has(key)) {
+        let formatter = formatters.currency.get(key);
+        if (!formatter) {
             const config = LOCALES[locale];
-            formatters.currency.set(key, new Intl.NumberFormat(locale === 'vi' ? 'vi-VN' : 'en-US', {
+            formatter = new Intl.NumberFormat(locale === 'vi' ? 'vi-VN' : 'en-US', {
                 style: 'currency',
                 currency: config.currencyCode,
                 minimumFractionDigits: 0,
                 maximumFractionDigits: 0,
-            }));
+            });
+            formatters.currency.set(key, formatter);
         }
-        return formatters.currency.get(key)!;
+        return formatter;
     },
 
     /**
@@ -49,14 +53,16 @@ export const i18nService = {
      */
     getPercentFormatter(locale: Locale): Intl.NumberFormat {
         const key = locale;
-        if (!formatters.percent.has(key)) {
-            formatters.percent.set(key, new Intl.NumberFormat(locale === 'vi' ? 'vi-VN' : 'en-US', {
+        let formatter = formatters.percent.get(key);
+        if (!formatter) {
+            formatter = new Intl.NumberFormat(locale === 'vi' ? 'vi-VN' : 'en-US', {
                 style: 'percent',
                 minimumFractionDigits: 0,
                 maximumFractionDigits: 1,
-            }));
+            });
+            formatters.percent.set(key, formatter);
         }
-        return formatters.percent.get(key)!;
+        return formatter;
     },
 
     /**
@@ -64,14 +70,16 @@ export const i18nService = {
      */
     getDateFormatter(locale: Locale): Intl.DateTimeFormat {
         const key = locale;
-        if (!formatters.date.has(key)) {
-            formatters.date.set(key, new Intl.DateTimeFormat(locale === 'vi' ? 'vi-VN' : 'en-US', {
+        let formatter = formatters.date.get(key);
+        if (!formatter) {
+            formatter = new Intl.DateTimeFormat(locale === 'vi' ? 'vi-VN' : 'en-US', {
                 year: 'numeric',
                 month: 'short',
                 day: 'numeric',
-            }));
+            });
+            formatters.date.set(key, formatter);
         }
-        return formatters.date.get(key)!;
+        return formatter;
     },
 
     /**
@@ -79,16 +87,18 @@ export const i18nService = {
      */
     getDateTimeFormatter(locale: Locale): Intl.DateTimeFormat {
         const key = locale;
-        if (!formatters.dateTime.has(key)) {
-            formatters.dateTime.set(key, new Intl.DateTimeFormat(locale === 'vi' ? 'vi-VN' : 'en-US', {
+        let formatter = formatters.dateTime.get(key);
+        if (!formatter) {
+            formatter = new Intl.DateTimeFormat(locale === 'vi' ? 'vi-VN' : 'en-US', {
                 year: 'numeric',
                 month: 'short',
                 day: 'numeric',
                 hour: '2-digit',
                 minute: '2-digit',
-            }));
+            });
+            formatters.dateTime.set(key, formatter);
         }
-        return formatters.dateTime.get(key)!;
+        return formatter;
     },
 
     /**
@@ -96,10 +106,12 @@ export const i18nService = {
      */
     getRelativeTimeFormatter(locale: Locale): Intl.RelativeTimeFormat {
         const key = locale;
-        if (!formatters.relativeTime.has(key)) {
-            formatters.relativeTime.set(key, new Intl.RelativeTimeFormat(locale === 'vi' ? 'vi' : 'en', { numeric: 'auto' }));
+        let formatter = formatters.relativeTime.get(key);
+        if (!formatter) {
+            formatter = new Intl.RelativeTimeFormat(locale === 'vi' ? 'vi' : 'en', { numeric: 'auto' });
+            formatters.relativeTime.set(key, formatter);
         }
-        return formatters.relativeTime.get(key)!;
+        return formatter;
     },
 
     /**

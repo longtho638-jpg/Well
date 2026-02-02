@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { ShoppingBag, Users, Globe, Mail, Phone, MapPin, ChevronRight } from 'lucide-react';
+import { Mail, Phone, MapPin, ChevronRight } from 'lucide-react';
 import { useTranslation } from '@/hooks';
 
 interface FooterLink {

@@ -209,7 +209,7 @@ export class ScoutAgent extends BaseAgent {
     /**
      * Discover implementation patterns
      */
-    private async discoverPatterns(query: string, scope?: string): Promise<Record<string, unknown>> {
+    private async discoverPatterns(query: string, _scope?: string): Promise<Record<string, unknown>> {
         const patterns: PatternMatch[] = [];
 
         // Simulate pattern discovery

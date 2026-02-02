@@ -24,7 +24,6 @@ export const OrderTable: React.FC<OrderTableProps> = ({
     onApprove,
     onReject
 }) => {
-    const { t } = useTranslation();
     return (
         <div className="bg-zinc-950/80 backdrop-blur-3xl rounded-[2.5rem] overflow-hidden border border-white/5 shadow-2xl">
             <div className="overflow-x-auto">
@@ -129,7 +128,7 @@ const OrderRow: React.FC<OrderRowProps> = ({
                     <motion.button
                         whileHover={{ scale: 1.05 }}
                         whileTap={{ scale: 0.95 }}
-                        onClick={() => onViewBill(order.payment_proof_url!)}
+                        onClick={() => order.payment_proof_url && onViewBill(order.payment_proof_url)}
                         className="flex items-center gap-3 bg-zinc-900 text-teal-500 px-5 py-3 rounded-2xl border border-teal-500/20 hover:bg-teal-500/10 hover:border-teal-500/40 transition-all font-black text-[10px] uppercase tracking-widest group/btn shadow-xl"
                     >
                         <Eye size={16} className="group-hover/btn:scale-110 transition-transform" />

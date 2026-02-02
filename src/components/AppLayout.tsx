@@ -3,7 +3,7 @@ import { Outlet, useLocation } from 'react-router-dom';
 import { Menu, Bell, Search } from 'lucide-react';
 import { Sidebar } from './Sidebar';
 import { ThemeToggle } from './ui/ThemeToggle';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion } from 'framer-motion';
 import { useStore } from '../store';
 import { useTranslation } from '../hooks';
 

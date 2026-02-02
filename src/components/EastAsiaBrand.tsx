@@ -48,7 +48,6 @@ interface ScrollRevealSectionProps {
 }
 
 export function ScrollRevealSection({ children, className = '' }: ScrollRevealSectionProps) {
-    const { t } = useTranslation();
     const ref = useRef<HTMLDivElement>(null);
     const isInView = useInView(ref, { once: true, margin: '-20%' });
 
@@ -70,7 +69,6 @@ export function ScrollRevealSection({ children, className = '' }: ScrollRevealSe
 // ============================================================================
 
 export function ZenDivider({ className = '' }: { className?: string }) {
-    const { t } = useTranslation();
     return (
         <div className={`flex items-center justify-center gap-6 py-12 ${className}`}>
             <motion.div
@@ -113,7 +111,6 @@ export function MinimalistCard({
     className = '',
     accentColor = 'jade'
 }: MinimalistCardProps) {
-    const { t } = useTranslation();
     const accentColors = {
         jade: 'hover:border-emerald-500/30',
         gold: 'hover:border-amber-500/30',
@@ -156,7 +153,6 @@ interface AwardsBarProps {
 }
 
 export function AwardsBar({ awards, className = '' }: AwardsBarProps) {
-    const { t } = useTranslation();
     return (
         <div className={`border-y border-zinc-800/50 py-8 ${className}`}>
             <div className="max-w-7xl mx-auto px-6">
@@ -234,7 +230,6 @@ export function FloatingNav() {
 // ============================================================================
 
 export function ScrollProgress() {
-    const { t } = useTranslation();
     const { scrollYProgress } = useScroll();
     const scaleX = useSpring(scrollYProgress, { stiffness: 100, damping: 30 });
 
@@ -258,7 +253,6 @@ interface ParallaxImageProps {
 }
 
 export function ParallaxImage({ src, alt, className = '', speed = 0.3 }: ParallaxImageProps) {
-    const { t } = useTranslation();
     const ref = useRef<HTMLDivElement>(null);
     const { scrollYProgress } = useScroll({
         target: ref,
@@ -289,7 +283,6 @@ interface StaggeredTextProps {
 }
 
 export function StaggeredText({ text, className = '', tag: Tag = 'h2' }: StaggeredTextProps) {
-    const { t } = useTranslation();
     const words = text.split(' ');
 
     return (

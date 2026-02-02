@@ -28,7 +28,6 @@ export function AnimatedCounter({
     label,
     icon,
 }: CounterProps) {
-    const { t } = useTranslation();
     const [count, setCount] = useState(0);
     const ref = useRef<HTMLDivElement>(null);
     const isInView = useInView(ref, { once: true, margin: '-100px' });
@@ -98,7 +97,6 @@ interface HeroStatsProps {
 }
 
 export function HeroStats({ stats }: HeroStatsProps) {
-    const { t } = useTranslation();
     return (
         <motion.div
             className="w-full max-w-4xl mx-auto mt-16"
@@ -139,7 +137,6 @@ interface SocialProofTickerProps {
 }
 
 export function SocialProofTicker({ items }: SocialProofTickerProps) {
-    const { t } = useTranslation();
     const [currentIndex, setCurrentIndex] = useState(0);
 
     useEffect(() => {
@@ -200,7 +197,6 @@ interface TestimonialsProps {
 }
 
 export function TestimonialsCarousel({ testimonials }: TestimonialsProps) {
-    const { t } = useTranslation();
     const [current, setCurrent] = useState(0);
 
     useEffect(() => {

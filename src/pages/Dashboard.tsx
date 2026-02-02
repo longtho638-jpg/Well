@@ -30,7 +30,6 @@ import { RecentActivityList } from '../components/Dashboard/RecentActivityList';
 import { AchievementGrid } from '../components/Dashboard/AchievementGrid';
 import { Wallet, DollarSign, Users } from 'lucide-react';
 import { formatVND } from '@/utils/format';
-import { useTranslation } from '@/hooks';
 
 export const Dashboard: React.FC = () => {
     

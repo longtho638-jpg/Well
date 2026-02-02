@@ -3,7 +3,6 @@
  * Phase 7: Developer Experience
  */
 
-import React, { ReactElement } from 'react';
 
 // ============================================================================
 // MOCK DATA GENERATORS

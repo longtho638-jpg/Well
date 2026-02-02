@@ -38,7 +38,8 @@ npm install
 
 # Environment
 cp .env.example .env.local
-# Add: VITE_SUPABASE_URL, VITE_SUPABASE_ANON_KEY, VITE_GEMINI_API_KEY
+# Add: VITE_SUPABASE_URL, VITE_SUPABASE_ANON_KEY
+# Note: GEMINI_API_KEY is now managed via Supabase Edge Functions (vault)
 
 # Development
 npm run dev

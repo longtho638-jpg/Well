@@ -9,9 +9,11 @@ import { orderService } from '../../services/orderService';
 import { useToast } from '../../components/ui/Toast';
 import { uiLogger } from '../../utils/logger';
 import { OrderPayload } from '../../types/checkout';
+import { useTranslation } from '@/hooks';
 
 export const CheckoutPage: React.FC = () => {
     const navigate = useNavigate();
+    const { t } = useTranslation();
     const { showToast } = useToast();
     const cartItems = useCartStore(state => state.items);
     const cartTotal = useCartStore(state => state.getTotal());
@@ -45,11 +47,11 @@ export const CheckoutPage: React.FC = () => {
 
             // Success
             clearCart();
-            showToast('Đặt hàng thành công! Đơn hàng của bạn đã được ghi nhận.', 'success');
+            showToast(t('checkout.success'), 'success');
             navigate('/checkout/success');
         } catch (error) {
             uiLogger.error('Checkout failed:', error);
-            showToast('Có lỗi xảy ra khi xử lý đơn hàng. Vui lòng thử lại.', 'error');
+            showToast(t('checkout.error'), 'error');
         } finally {
             setIsSubmitting(false);
         }
@@ -65,10 +67,10 @@ export const CheckoutPage: React.FC = () => {
                         className="flex items-center gap-2 text-zinc-500 hover:text-zinc-900 dark:hover:text-white transition-colors"
                     >
                         <ArrowLeft size={20} />
-                        <span className="font-bold">Quay lại cửa hàng</span>
+                        <span className="font-bold">{t('checkout.backToShop')}</span>
                     </button>
                     <div className="text-lg font-black uppercase tracking-widest text-zinc-900 dark:text-white">
-                        Thanh Toán
+                        {t('checkout.title')}
                     </div>
                     <div className="w-24"></div> {/* Spacer for center alignment */}
                 </div>
@@ -94,18 +96,18 @@ export const CheckoutPage: React.FC = () => {
                             {isSubmitting ? (
                                 <>
                                     <Loader2 className="animate-spin" />
-                                    Đang xử lý...
+                                    {t('checkout.processing')}
                                 </>
                             ) : (
                                 <>
                                     <CreditCard size={20} />
-                                    Đặt hàng ngay
+                                    {t('checkout.placeOrder')}
                                 </>
                             )}
                         </button>
 
                         <p className="text-xs text-center text-zinc-400 leading-relaxed px-4">
-                            Bằng việc đặt hàng, bạn đồng ý với Điều khoản dịch vụ và Chính sách bảo mật của WellNexus.
+                            {t('checkout.terms')}
                         </p>
                     </div>
                 </div>
