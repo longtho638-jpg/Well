@@ -1,8 +1,9 @@
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { authLogger } from '@/utils/logger';
 import { useTranslation } from '@/hooks';
 import { supabase } from '@/lib/supabase';
+import { validatePassword, PasswordValidation } from '@/utils/password-validation';
 
 export function useSignup() {
     const [formData, setFormData] = useState({
@@ -13,12 +14,23 @@ export function useSignup() {
     });
     const [error, setError] = useState('');
     const [loading, setLoading] = useState(false);
+    const [touchedPassword, setTouchedPassword] = useState(false);
 
     const { t } = useTranslation();
     const navigate = useNavigate();
 
+    // Memoize password validation to avoid unnecessary recalculations
+    const passwordValidation: PasswordValidation = useMemo(() => {
+        return validatePassword(formData.password);
+    }, [formData.password]);
+
     const handleChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target;
+
+        if (name === 'password') {
+            setTouchedPassword(true);
+        }
+
         setFormData(prev => ({
             ...prev,
             [name]: value
@@ -29,6 +41,14 @@ export function useSignup() {
         e.preventDefault();
         setLoading(true);
         setError('');
+
+        // Strict Password Validation
+        const validation = validatePassword(formData.password);
+        if (!validation.isValid) {
+            setError(t(validation.errors[0]) || 'Password does not meet requirements');
+            setLoading(false);
+            return;
+        }
 
         if (formData.password !== formData.confirmPassword) {
             setError(t('errors.passwordsDoNotMatch'));
@@ -66,6 +86,8 @@ export function useSignup() {
         formData,
         error,
         loading,
+        passwordValidation,
+        touchedPassword,
         handleChange,
         handleSubmit
     };

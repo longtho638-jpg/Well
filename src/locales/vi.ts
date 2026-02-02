@@ -1313,6 +1313,21 @@ export const vi = {
       sendReset: 'Gửi link đặt lại',
       backToLogin: 'Quay lại đăng nhập',
     },
+    password: {
+        strength: {
+            weak: 'Yếu',
+            fair: 'Trung bình',
+            good: 'Tốt',
+            strong: 'Mạnh',
+        },
+        requirements: {
+            length: 'Tối thiểu 8 ký tự',
+            uppercase: 'Ít nhất 1 chữ hoa',
+            lowercase: 'Ít nhất 1 chữ thường',
+            number: 'Ít nhất 1 số',
+            special: 'Ít nhất 1 ký tự đặc biệt',
+        }
+    },
     // Merged keys
     demo: 'Demo',
   },

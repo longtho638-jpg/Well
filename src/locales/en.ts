@@ -1319,6 +1319,21 @@ export const en = {
             email: 'Email',
             sendReset: 'Send Reset Link',
             backToLogin: 'Back to Login',
+        },
+        password: {
+            strength: {
+                weak: 'Weak',
+                fair: 'Fair',
+                good: 'Good',
+                strong: 'Strong',
+            },
+            requirements: {
+                length: 'At least 8 characters',
+                uppercase: 'At least one uppercase letter',
+                lowercase: 'At least one lowercase letter',
+                number: 'At least one number',
+                special: 'At least one special character',
+            }
         }
     },
 

@@ -3,6 +3,7 @@ import { motion } from 'framer-motion';
 import { Mail, Lock, User, ArrowRight, Loader2, AlertCircle } from 'lucide-react';
 import { useSignup } from '@/hooks/useSignup';
 import { useTranslation } from '@/hooks';
+import { PasswordStrengthMeter } from './PasswordStrengthMeter';
 
 export const SignupForm: React.FC = () => {
     const { t } = useTranslation();
@@ -10,6 +11,8 @@ export const SignupForm: React.FC = () => {
         formData,
         error,
         loading,
+        passwordValidation,
+        touchedPassword,
         handleChange,
         handleSubmit
     } = useSignup();
@@ -78,6 +81,13 @@ export const SignupForm: React.FC = () => {
                                 className="w-full bg-slate-950/50 border border-slate-800 text-white rounded-2xl py-4 pl-12 pr-4 focus:outline-none focus:ring-2 focus:ring-teal-500/30 focus:border-teal-500/50 transition-all placeholder:text-slate-700"
                             />
                         </div>
+                        {/* Password Strength Meter */}
+                        {(formData.password || touchedPassword) && (
+                            <PasswordStrengthMeter
+                                validation={passwordValidation}
+                                showDetails={!!formData.password}
+                            />
+                        )}
                     </div>
 
                     <div className="space-y-2">
