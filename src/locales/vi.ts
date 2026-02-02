@@ -1931,6 +1931,18 @@ export const vi = {
     x_c_th_c_2_y_u_t: 'Xác thực 2 yếu tố',
   },
 
+  // AgencyOS
+  agencyos: {
+    categories: {
+      marketing: 'Marketing',
+      sales: 'Sales (Bán hàng)',
+      finance: 'Finance (Tài chính)',
+      operations: 'Operations (Vận hành)',
+      strategy: 'Strategy (Binh Pháp)',
+      agents: 'AI Agents (Đại lý AI)',
+    },
+  },
+
   // agencyosdemo
   agencyosdemo: {
     '85_ai_powered_automation_comm': '85% AI Powered Automation',
