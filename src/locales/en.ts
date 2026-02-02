@@ -1259,6 +1259,90 @@ export const en = {
         }
     },
 
+    // Network Tree
+    networktree: {
+        nh_p_c_y_add_member: 'Input Tree / Add Member',
+        sponsor: 'Sponsor: ',
+        full_name: 'Full Name',
+        email: 'Email',
+        phone: 'Phone Number',
+        password: 'Password',
+        rank: 'Rank',
+        c_ng_t_c_vi_n_ctv: 'Collaborator (CTV)',
+        kh_i_nghi_p: 'Startup',
+        i_s: 'Ambassador',
+        add_member: 'Add Member',
+        sales: 'Sales',
+        team: 'Team',
+        s_h_th_ng_network_tree: 'Network Tree System',
+        visual_representation_of_your: 'Visual representation of your downline structure',
+        loading_network_data: 'Loading network data...',
+        no_data_available: 'No data available',
+        name_placeholder: 'John Doe',
+        email_placeholder: 'email@example.com',
+        phone_placeholder: '0912345678',
+        password_placeholder: '••••••••',
+        toast: {
+            added_success: 'Added {name} to the team!',
+            add_failed: 'Failed to add member',
+        },
+    },
+
+    // Premium Navigation
+    premiumnavigation: {
+        newsletter: 'Newsletter',
+        nh_n_th_ng_tin: 'Get information ',
+        c_quy_n: 'exclusive',
+        ng_k_nh_n_tin_t_c_u: 'Subscribe to receive the latest news, offers, and business tips from WellNexus.',
+        ng_k: 'Subscribed',
+        ng_k_1: 'Subscribe',
+        email_placeholder: 'email@example.com',
+        wellnexus: 'WellNexus',
+        social_commerce_2_0: 'Social Commerce 2.0',
+        premium_member: 'Premium Member',
+        hot: 'HOT',
+        premium_member_1: 'Premium Member',
+        dashboard: 'Dashboard',
+        ng_xu_t: 'Logout',
+        b_t_u_ngay: 'Start Now',
+        wellnexus_1: 'WellNexus',
+        social_commerce_2_0_1: 'Social Commerce 2.0',
+        h_sinh_th_i_social_commerce_t: 'Vietnam\'s most advanced Social Commerce ecosystem',
+        hello_wellnexus_vn: 'hello@wellnexus.vn',
+        '84_901_234_567': '+84 901 234 567',
+        q1_tp_hcm_vietnam: 'D1, HCMC, Vietnam',
+    },
+
+    // Withdrawal Modal
+    withdrawalmodal: {
+        request_submitted: 'Request Submitted!',
+        your_withdrawal_request_has_be: 'Your withdrawal request has been submitted successfully.',
+        processing_time_1_3_business: 'Processing time: 1-3 business days',
+        available_balance: 'Available Balance',
+        '25': '25%',
+        '50': '50%',
+        '75': '75%',
+        max: 'Max',
+        bank_account_details: 'Bank Account Details',
+        processing_time: 'Processing Time',
+        withdrawal_requests_are_proces: 'Withdrawal requests are processed within 1-3 business days.',
+        cancel: 'Cancel',
+        submit_request: 'Submit Request',
+        enter_amount: 'Enter amount',
+        bank_placeholder: 'e.g., Vietcombank, Techcombank',
+        account_number_placeholder: 'Enter account number',
+        account_name_placeholder: 'Account holder name',
+        validation: {
+            amount_required: 'Please enter an amount',
+            min_withdrawal: 'Minimum withdrawal is {amount}',
+            exceeds_balance: 'Amount exceeds available balance',
+            bank_name_required: 'Please enter bank name',
+            account_number_required: 'Please enter account number',
+            account_number_numeric: 'Account number must contain only numbers',
+            account_name_required: 'Please enter account holder name',
+        },
+    },
+
     // Error Messages
     errors: {
         network: 'Network error. Please try again.',
@@ -1391,6 +1475,26 @@ export const en = {
         tu_i_1: 'years old',
         v_n_ch_nh: 'Main Concerns',
     },
+
+    // Copilot Components
+    copilotheader: {
+        ai_sales_assistant_powered_b: 'AI Sales Assistant powered by Gemini',
+        coach: 'Coach',
+        script: 'Script',
+        the_copilot: 'The Copilot',
+    },
+    copilotmessageitem: {
+        g_i_nhanh: 'Quick Copy',
+    },
+    copilotcoaching: {
+        coaching_tips: 'Coaching Tips',
+        ng: 'Got it',
+    },
+    copilotsuggestions: {
+        g_i: 'Send',
+        g_i_c_u_h_i: 'Ask a question',
+    },
+
     // useCopilot
     useCopilot: {
         greeting: 'Hello {name}! 👋 I am **The Copilot** - your AI Sales Assistant.\n\nI can help you:\n✅ Handle customer objections\n✅ Suggest smart responses\n✅ Create sales scripts\n\nTry entering a customer objection, e.g., "This product is too expensive!"',

@@ -129,7 +129,7 @@ const AddMemberModal: React.FC<{
                             value={formData.name}
                             onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                             className="w-full bg-zinc-800 border border-zinc-700 rounded-lg px-4 py-2 text-white focus:outline-none focus:border-emerald-500"
-                            placeholder="Nguyen Van A"
+                            placeholder={t('networktree.name_placeholder')}
                         />
                     </div>
 
@@ -141,7 +141,7 @@ const AddMemberModal: React.FC<{
                             value={formData.email}
                             onChange={(e) => setFormData({ ...formData, email: e.target.value })}
                             className="w-full bg-zinc-800 border border-zinc-700 rounded-lg px-4 py-2 text-white focus:outline-none focus:border-emerald-500"
-                            placeholder="email@example.com"
+                            placeholder={t('networktree.email_placeholder')}
                         />
                     </div>
 
@@ -152,7 +152,7 @@ const AddMemberModal: React.FC<{
                             value={formData.phone}
                             onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
                             className="w-full bg-zinc-800 border border-zinc-700 rounded-lg px-4 py-2 text-white focus:outline-none focus:border-emerald-500"
-                            placeholder="0912345678"
+                            placeholder={t('networktree.phone_placeholder')}
                         />
                     </div>
 
@@ -164,7 +164,7 @@ const AddMemberModal: React.FC<{
                             value={formData.password}
                             onChange={(e) => setFormData({ ...formData, password: e.target.value })}
                             className="w-full bg-zinc-800 border border-zinc-700 rounded-lg px-4 py-2 text-white focus:outline-none focus:border-emerald-500"
-                            placeholder="••••••••"
+                            placeholder={t('networktree.password_placeholder')}
                         />
                     </div>
 

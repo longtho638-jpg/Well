@@ -51,25 +51,25 @@ export const WithdrawalModal: React.FC<WithdrawalModalProps> = ({
     const newErrors: Record<string, string> = {};
 
     if (!amount || parseInt(amount) === 0) {
-      newErrors.amount = 'Please enter an amount';
+      newErrors.amount = t('withdrawalmodal.validation.amount_required');
     } else if (parseInt(amount) < MIN_WITHDRAWAL) {
-      newErrors.amount = `Minimum withdrawal is ${formatVND(MIN_WITHDRAWAL)}`;
+      newErrors.amount = t('withdrawalmodal.validation.min_withdrawal').replace('{amount}', formatVND(MIN_WITHDRAWAL));
     } else if (parseInt(amount) > MAX_WITHDRAWAL) {
-      newErrors.amount = `Amount exceeds available balance`;
+      newErrors.amount = t('withdrawalmodal.validation.exceeds_balance');
     }
 
     if (!bankName.trim()) {
-      newErrors.bankName = 'Please enter bank name';
+      newErrors.bankName = t('withdrawalmodal.validation.bank_name_required');
     }
 
     if (!accountNumber.trim()) {
-      newErrors.accountNumber = 'Please enter account number';
+      newErrors.accountNumber = t('withdrawalmodal.validation.account_number_required');
     } else if (!/^\d+$/.test(accountNumber)) {
-      newErrors.accountNumber = 'Account number must contain only numbers';
+      newErrors.accountNumber = t('withdrawalmodal.validation.account_number_numeric');
     }
 
     if (!accountName.trim()) {
-      newErrors.accountName = 'Please enter account holder name';
+      newErrors.accountName = t('withdrawalmodal.validation.account_name_required');
     }
 
     setErrors(newErrors);
@@ -152,7 +152,7 @@ export const WithdrawalModal: React.FC<WithdrawalModalProps> = ({
               type="text"
               value={amount ? formatVND(parseInt(amount)) : ''}
               onChange={handleAmountChange}
-              placeholder="Enter amount"
+              placeholder={t('withdrawalmodal.enter_amount')}
               error={errors.amount}
               helperText={`Min: ${formatVND(MIN_WITHDRAWAL)} • Max: ${formatVND(MAX_WITHDRAWAL)}`}
               required
@@ -202,7 +202,7 @@ export const WithdrawalModal: React.FC<WithdrawalModalProps> = ({
                 setBankName(e.target.value);
                 if (errors.bankName) setErrors(prev => ({ ...prev, bankName: '' }));
               }}
-              placeholder="e.g., Vietcombank, Techcombank"
+              placeholder={t('withdrawalmodal.bank_placeholder')}
               error={errors.bankName}
               required
               icon={<Building2 className="w-5 h-5" />}
@@ -216,7 +216,7 @@ export const WithdrawalModal: React.FC<WithdrawalModalProps> = ({
                 setAccountNumber(e.target.value);
                 if (errors.accountNumber) setErrors(prev => ({ ...prev, accountNumber: '' }));
               }}
-              placeholder="Enter account number"
+              placeholder={t('withdrawalmodal.account_number_placeholder')}
               error={errors.accountNumber}
               required
               icon={<CreditCard className="w-5 h-5" />}
@@ -230,7 +230,7 @@ export const WithdrawalModal: React.FC<WithdrawalModalProps> = ({
                 setAccountName(e.target.value);
                 if (errors.accountName) setErrors(prev => ({ ...prev, accountName: '' }));
               }}
-              placeholder="Full name as registered"
+              placeholder={t('withdrawalmodal.account_name_placeholder')}
               error={errors.accountName}
               helperText="Must match your registered name"
               required
