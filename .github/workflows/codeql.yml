@@ -31,14 +31,7 @@ jobs:
         uses: github/codeql-action/init@v3
         with:
           languages: ${{ matrix.language }}
-          queries: +security-and-quality
-          config: |
-            paths-ignore:
-              - '**/coverage/**'
-              - '**/dist/**'
-              - '**/node_modules/**'
-              - '**/.claude/**'
-              - '**/admin-panel/**'
+          config-file: ./.github/codeql-config.yml
 
       - name: Autobuild
         uses: github/codeql-action/autobuild@v3

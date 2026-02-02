@@ -1,0 +1,13 @@
+name: "CodeQL Config"
+
+paths-ignore:
+  - '**/coverage/**'
+  - '**/dist/**'
+  - '**/node_modules/**'
+  - '**/.claude/**'
+  - '**/admin-panel/**'
+  - '**/playwright-report/**'
+  - '**/*.html'
+
+queries:
+  - uses: security-and-quality
