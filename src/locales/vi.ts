@@ -1262,6 +1262,16 @@ export const vi = {
 
     // Sidebar
     sidebarTitle: 'Mission Control',
+    nav: {
+      overview: 'Tổng Quan',
+      content: 'Nội Dung',
+      partners: 'Đối Tác',
+      finance: 'Tài Chính',
+      orders: 'Đơn Hàng',
+      products: 'Sản Phẩm',
+      strategy: 'Chiến Lược',
+      auditLog: 'Nhật Ký Kiểm Toán',
+    },
     adminLabel: 'Admin',
     superUser: 'Super User',
 
