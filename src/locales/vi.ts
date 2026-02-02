@@ -3087,4 +3087,15 @@ export const vi = {
       terms: 'Tuân Thủ Bảng Điều Khoản',
     },
   },
+
+  // useStatsGrid Hook
+  useStatsGrid: {
+    tbd: 'Chưa Xác Định',
+  },
+
+  // useHeroCard Hook
+  useHeroCard: {
+    share_title: 'Tiêu Đề Chia Sẻ',
+    share_text: 'Nội Dung Chia Sẻ',
+  },
 };

@@ -2532,6 +2532,7 @@ export const en = {
     productinfo: {
         bio_optic_optimization: 'BIO-OPTIC OPTIMIZATION',
         core_rating_4_9: '4.9 CORE RATING',
+        '4_9_core_rating': '4.9 Core Rating',
         available_capacity: 'AVAILABLE CAPACITY: ',
         units: ' UNITS',
     },
@@ -2666,6 +2667,29 @@ export const en = {
     // Success Animation
     successanimation: {
         success: 'Success',
+    },
+
+    // Valuation Card
+    valuationcard: {
+        '12_5_pe_ratio': 'P/E Ratio 12.5',
+        mom_growth: 'MoM Growth',
+    },
+
+    // Revenue Breakdown
+    revenuebreakdown: {
+        '100': '100%',
+        total_yield: 'Total Yield',
+    },
+
+    // Recent Activity List
+    recentactivitylist: {
+        view_digital_audit_trace: 'View Digital Audit Trace',
+    },
+
+    // Live Activities Ticker
+    liveactivitiesticker: {
+        recent: 'Recent: ',
+        nodes: ' activities',
     },
 };
 
