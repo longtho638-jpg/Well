@@ -1342,6 +1342,26 @@ export const vi = {
       cta: 'Bắt đầu ngay',
       learnMore: 'Tìm hiểu thêm',
     },
+    bento: {
+      ai_coach: {
+        title: 'Trợ lý AI',
+        description: 'Hướng dẫn cá nhân hóa bởi Gemini',
+      },
+      passive_income: {
+        title: 'Thu Nhập Thụ Động',
+        description: 'Theo dõi hoa hồng theo thời gian thực',
+        amount: '12,450,000₫',
+        label: 'Thu nhập TB/Đối tác',
+      },
+      community: {
+        title: 'Cộng Đồng',
+        description: 'Tham gia cùng 1,000+ Founder thành công',
+      },
+      global: {
+        title: 'Mở Rộng Toàn Cầu',
+        description: 'Sẵn sàng chinh phục thị trường Đông Nam Á',
+      }
+    },
     featured: {
       badge: 'Nổi bật',
       title: 'Giải Pháp Sức Khỏe Toàn Diện',
