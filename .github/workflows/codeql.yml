@@ -32,6 +32,12 @@ jobs:
         with:
           languages: ${{ matrix.language }}
           queries: +security-and-quality
+          paths-ignore:
+            - '**/coverage/**'
+            - '**/dist/**'
+            - '**/node_modules/**'
+            - '**/.claude/**'
+            - '**/admin-panel/coverage/**'
 
       - name: Autobuild
         uses: github/codeql-action/autobuild@v3
