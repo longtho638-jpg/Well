@@ -2200,6 +2200,15 @@ export const en = {
         allocated_successfully: 'ALLOCATED SUCCESSFULLY',
         order_prototype: 'ORDER PROTOTYPE',
     },
+    productcard: {
+        earn: 'Earn ',
+        view_details: 'View Details',
+        out_of_stock: 'Out of Stock',
+        stock: 'Stock: ',
+        share: 'Share',
+        added: 'Added',
+        buy_now: 'Buy Now',
+    },
     producthero: {
         logistics_depleted: 'LOGISTICS DEPLETED',
     },

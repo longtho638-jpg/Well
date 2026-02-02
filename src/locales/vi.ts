@@ -23,6 +23,7 @@ export const vi = {
     sort: 'Sắp xếp',
     viewAll: 'Xem tất cả',
     viewDetails: 'Xem chi tiết',
+    notSupportedYet: 'Tính năng sắp ra mắt',
     currency: {
       vnd: 'đ',
       grow: 'Token',
@@ -30,6 +31,10 @@ export const vi = {
     },
     location: {
       vietnam: 'Việt Nam',
+    },
+    rank: {
+      daisu: 'Đại Sứ',
+      ctv: 'Cộng Tác Viên',
     }
   },
 
@@ -53,6 +58,10 @@ export const vi = {
     logout: 'Đăng xuất',
     darkMode: 'Giao diện tối',
     lightMode: 'Giao diện sáng',
+    company: 'Công Ty',
+    aboutUs: 'Về Chúng Tôi',
+    careers: 'Tuyển Dụng',
+    ventureProgram: 'Chương Trình Venture',
   },
 
   // Landing Page - AST Migration Keys
@@ -124,6 +133,9 @@ export const vi = {
       growth: 'Asset Growth',
       thisMonth: 'Tháng này',
       vsLastMonth: 'MoM Growth',
+      totalNodeYield: 'Tổng Năng Suất Nút',
+      liquidCapital: 'Vốn Thanh Khoản',
+      ecosystemVolume: 'Khối Lượng Hệ Sinh Thái',
     },
 
     // Commission Widget
@@ -1774,6 +1786,19 @@ export const vi = {
     withdrawal_requests_are_proces: 'Yêu cầu rút tiền được xử lý trong 1-3 ngày làm việc.',
     cancel: 'Hủy',
     submit_request: 'Gửi yêu cầu',
+    enter_amount: 'Nhập số tiền',
+    bank_placeholder: 'vd: Vietcombank, Techcombank',
+    account_number_placeholder: 'Nhập số tài khoản',
+    account_name_placeholder: 'Tên chủ tài khoản',
+    validation: {
+      amount_required: 'Vui lòng nhập số tiền',
+      min_withdrawal: 'Số tiền rút tối thiểu là {amount}',
+      exceeds_balance: 'Số tiền vượt quá số dư khả dụng',
+      bank_name_required: 'Vui lòng nhập tên ngân hàng',
+      account_number_required: 'Vui lòng nhập số tài khoản',
+      account_number_numeric: 'Số tài khoản chỉ được chứa số',
+      account_name_required: 'Vui lòng nhập tên chủ tài khoản',
+    },
   },
 
   // East Asia Brand - AST Migration Keys
@@ -1783,6 +1808,12 @@ export const vi = {
     s_n_ph_m: 'Sản phẩm',
     i_t_c: 'Đối tác',
     b_t_u: 'Bắt đầu',
+    awards: {
+      top10: { title: 'Top 10 Startup', subtitle: 'Việt Nam 2025' },
+      sea: { title: 'Mở Rộng SEA', subtitle: '4 Quốc Gia' },
+      partner: { title: 'Đối Tác Cao Cấp', subtitle: 'Hạng A+' },
+      iso: { title: 'ISO 27001', subtitle: 'Chứng Nhận Bảo Mật' },
+    }
   },
 
   // Sidebar - AST Migration Keys
@@ -2387,18 +2418,17 @@ export const vi = {
 
   // productcard
   productcard: {
-    add_to_cart: 'Add to Cart',
-    ai_pick: 'AI Pick',
-    commission: 'Commission',
-    price: 'Price',
-    view_details: 'View Details',
-    // Merged keys
-    added: 'Added',
-    buy_now: 'Buy Now',
-    earn: 'Earn',
-    out_of_stock: 'Out of Stock',
-    share: 'Share',
-    stock: 'Stock',
+    add_to_cart: 'Thêm vào giỏ hàng',
+    ai_pick: 'AI Gợi Ý',
+    commission: 'Hoa Hồng',
+    price: 'Giá',
+    view_details: 'Xem Chi Tiết',
+    added: 'Đã Thêm',
+    buy_now: 'Mua Ngay',
+    earn: 'Kiếm ',
+    out_of_stock: 'Hết Hàng',
+    share: 'Chia Sẻ',
+    stock: 'Còn: ',
   },
 
   // productdetail
@@ -2830,7 +2860,6 @@ export const vi = {
   productactions: {
     copy_ref_node: 'Copy Ref Node',
   },
-
 
 
   // notificationcenter - CORRECT section (6 keys)
