@@ -26,6 +26,8 @@ const DebuggerPage = lazy(() => import('./pages/DebuggerPage'));
 const AgentDashboard = lazy(() => import('./pages/AgentDashboard'));
 const CheckoutPage = lazy(() => import('./pages/Checkout/CheckoutPage').then(m => ({ default: m.CheckoutPage })));
 const OrderSuccess = lazy(() => import('./components/checkout/OrderSuccess').then(m => ({ default: m.OrderSuccess })));
+const SettingsPage = lazy(() => import('./pages/SettingsPage'));
+const ProfilePage = lazy(() => import('./pages/ProfilePage'));
 
 // Code splitting: Lazy load Admin pages for better performance
 const Overview = lazy(() => import('./pages/Admin/Overview'));
@@ -125,6 +127,8 @@ const App: React.FC = () => {
             <Route path="leaderboard" element={<Suspense fallback={<div className="flex items-center justify-center h-96"><div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#00575A]"></div></div>}><Leaderboard /></Suspense>} />
             <Route path="marketing-tools" element={<Suspense fallback={<div className="flex items-center justify-center h-96"><div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#00575A]"></div></div>}><MarketingTools /></Suspense>} />
             <Route path="agents" element={<Suspense fallback={<div className="flex items-center justify-center h-96"><div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#00575A]"></div></div>}><AgentDashboard /></Suspense>} />
+            <Route path="settings" element={<Suspense fallback={<div className="flex items-center justify-center h-96"><div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#00575A]"></div></div>}><SettingsPage /></Suspense>} />
+            <Route path="profile" element={<Suspense fallback={<div className="flex items-center justify-center h-96"><div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#00575A]"></div></div>}><ProfilePage /></Suspense>} />
           </Route>
 
           {/* ============================================================ */}

@@ -145,14 +145,15 @@ describe('Commission Logic - Full Level', () => {
         });
 
         it('should verify rank names are defined for all ranks', () => {
-            expect(RANK_NAMES[UserRank.THIEN_LONG]).toBe('Thiên Long');
-            expect(RANK_NAMES[UserRank.PHUONG_HOANG]).toBe('Phượng Hoàng');
-            expect(RANK_NAMES[UserRank.DAI_SU_DIAMOND]).toBe('Đại Sứ Diamond');
-            expect(RANK_NAMES[UserRank.DAI_SU_GOLD]).toBe('Đại Sứ Gold');
-            expect(RANK_NAMES[UserRank.DAI_SU_SILVER]).toBe('Đại Sứ Silver');
-            expect(RANK_NAMES[UserRank.DAI_SU]).toBe('Đại Sứ');
-            expect(RANK_NAMES[UserRank.KHOI_NGHIEP]).toBe('Khởi Nghiệp');
-            expect(RANK_NAMES[UserRank.CTV]).toBe('Cộng Tác Viên');
+            // RANK_NAMES now returns translation keys (refactored for i18n)
+            expect(RANK_NAMES[UserRank.THIEN_LONG]).toBe('ranks.thien_long');
+            expect(RANK_NAMES[UserRank.PHUONG_HOANG]).toBe('ranks.phuong_hoang');
+            expect(RANK_NAMES[UserRank.DAI_SU_DIAMOND]).toBe('ranks.dai_su_diamond');
+            expect(RANK_NAMES[UserRank.DAI_SU_GOLD]).toBe('ranks.dai_su_gold');
+            expect(RANK_NAMES[UserRank.DAI_SU_SILVER]).toBe('ranks.dai_su_silver');
+            expect(RANK_NAMES[UserRank.DAI_SU]).toBe('ranks.dai_su');
+            expect(RANK_NAMES[UserRank.KHOI_NGHIEP]).toBe('ranks.khoi_nghiep');
+            expect(RANK_NAMES[UserRank.CTV]).toBe('ranks.ctv');
         });
     });
 

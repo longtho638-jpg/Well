@@ -83,13 +83,13 @@ const AddMemberModal: React.FC<{
 
             if (authError) throw authError;
 
-            showToast(`Added ${formData.name} to the team!`, 'success');
+            showToast(t('networktree.toast.added_success', { name: formData.name }), 'success');
             onSuccess();
             onClose();
         } catch (err) {
             const error = err as Error;
             uiLogger.error('Error adding member', error);
-            showToast(error.message || 'Failed to add member', 'error');
+            showToast(error.message || t('networktree.toast.add_failed'), 'error');
         } finally {
             setLoading(false);
         }
@@ -243,7 +243,7 @@ const TreeNodeComponent: React.FC<{
                                 onAddMember(node.id, node.name);
                             }}
                             className="p-2 hover:bg-zinc-800 rounded-lg transition-colors text-emerald-400"
-                            title="Add Member Under This User"
+                            title={t('networktree.add_member')}
                         >
                             <UserPlus className="w-4 h-4" />
                         </button>
@@ -329,7 +329,7 @@ const NetworkTree: React.FC = () => {
             const rootNode: TreeNode = {
                 id: user.id,
                 name: user.name,
-                rank: RANK_NAMES[user.roleId as UserRank] || 'Unknown',
+                rank: user.roleId in RANK_NAMES ? t(RANK_NAMES[user.roleId as UserRank]) : t('ranks.unknown'),
                 roleId: user.roleId,
                 sales: user.totalSales,
                 teamVolume: user.teamVolume,

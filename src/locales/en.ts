@@ -29,6 +29,9 @@ export const en = {
             grow: 'Token',
             shop: 'SHOP',
         },
+        location: {
+            vietnam: 'Vietnam',
+        },
         rank: {
             daisu: 'Ambassador',
             ctv: 'Collaborator',
@@ -78,6 +81,7 @@ export const en = {
     // Dashboard Page
     dashboard: {
         title: 'Dashboard',
+        system_online: 'System Online',
         welcome: 'Welcome back, {name}!',
         serverTime: 'Server Time',
 
@@ -157,7 +161,16 @@ export const en = {
             tooltip_label: 'Revenue',
         },
 
-        // Revenue Breakdown
+        // Revenue Chart Component
+    revenuechart: {
+        revenue_growth: 'Revenue Growth',
+        last_7_days_performance: 'Last 7 Days Performance',
+        last_7_days: 'Last 7 Days',
+        last_30_days: 'Last 30 Days',
+        revenue: 'Revenue',
+    },
+
+    // Revenue Breakdown
         revenueBreakdown: {
             title: 'Income Streams',
             directSales: 'Direct Income',
@@ -2012,6 +2025,33 @@ export const en = {
     partner: 'Partner',
     member: 'Member',
     network_health: 'Network Health',
+    status: {
+        active: 'Active',
+        at_risk: 'At Risk',
+        inactive: 'Inactive'
+    },
+    ranks: {
+        thien_long: 'Thien Long',
+        phuong_hoang: 'Phoenix',
+        dai_su_diamond: 'Diamond Ambassador',
+        dai_su_gold: 'Gold Ambassador',
+        dai_su_silver: 'Silver Ambassador',
+        dai_su: 'Ambassador',
+        khoi_nghiep: 'Startup',
+        ctv: 'Collaborator',
+        unknown: 'Unknown'
+    },
+    alerts: {
+        reminder_success: 'Reminder sent successfully!',
+        reminder_failed: 'Failed to send reminder',
+        gift_success: 'Gift sent successfully!',
+        gift_failed: 'Failed to send gift'
+    },
+    risk_levels: {
+        high: 'High Risk',
+        medium: 'Medium Risk',
+        low: 'Low Risk'
+    }
   },
 
 

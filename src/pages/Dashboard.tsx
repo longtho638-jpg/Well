@@ -83,7 +83,7 @@ export const Dashboard: React.FC = () => {
                   {t('dashboard.title')}
                 </h2>
                 <p className="text-zinc-500 font-bold uppercase tracking-[0.2em] text-sm mt-1">
-                  <span className="text-emerald-500 italic">{t('dashboard.system_online')}</span> • {t('dashboard.welcome', { name: user.name.split(' ').pop() })}
+                  <span className="text-emerald-500 italic">{t('dashboard.system_online')}</span> • {t('dashboard.welcome', { name: (user?.name || '').split(' ').pop() || 'Partner' })}
                 </p>
               </div>
             </div>

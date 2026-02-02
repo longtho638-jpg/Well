@@ -23,9 +23,11 @@ import { useStore } from '@/store';
 import { UserRank, RANK_NAMES } from '@/types';
 import { formatVND } from '@/utils/format';
 import { useTranslation } from '@/hooks';
+import { useToast } from '@/components/ui/Toast';
 
 export default function LeaderDashboard() {
   const { t } = useTranslation();
+  const { showToast } = useToast();
   const { teamInsights, teamMembers, teamMetrics, sendReminder, sendGift } = useStore();
   const [searchTerm, setSearchTerm] = useState('');
   const [filterRank, setFilterRank] = useState<UserRank | 'all'>('all');
@@ -61,26 +63,19 @@ export default function LeaderDashboard() {
     .sort((a, b) => b.personalSales - a.personalSales)
     .slice(0, 3);
 
-  // Chart data
-  // const performanceData = teamMembers.slice(0, 5).map(m => ({
-  //   name: m.name.split(' ').pop(),
-  //   sales: m.personalSales / 1000000,
-  //   team: m.teamVolume / 1000000
-  // }));
-
   // Network Health Data
   const activeCount = teamMembers.filter(m => m.monthlyGrowth > 0).length;
   const inactiveCount = teamMembers.length - activeCount;
 
   const networkHealthData = [
-    { name: 'Active', value: activeCount, color: '#10B981' },
-    { name: 'At Risk', value: Math.floor(teamMembers.length * 0.15), color: '#F59E0B' },
-    { name: 'Inactive', value: inactiveCount - Math.floor(teamMembers.length * 0.15), color: '#EF4444' }
+    { name: t('leaderdashboard.status.active'), value: activeCount, color: '#10B981' },
+    { name: t('leaderdashboard.status.at_risk'), value: Math.floor(teamMembers.length * 0.15), color: '#F59E0B' },
+    { name: t('leaderdashboard.status.inactive'), value: inactiveCount - Math.floor(teamMembers.length * 0.15), color: '#EF4444' }
   ];
 
   const rankDistribution = [
-    { name: 'Đại Sứ', value: teamMembers.filter(m => m.rank === UserRank.DAI_SU).length, color: '#00575A' },
-    { name: 'CTV', value: teamMembers.filter(m => m.rank === UserRank.CTV).length, color: '#FFBF00' }
+    { name: t('leaderdashboard.ranks.dai_su'), value: teamMembers.filter(m => m.rank === UserRank.DAI_SU).length, color: '#00575A' },
+    { name: t('leaderdashboard.ranks.ctv'), value: teamMembers.filter(m => m.rank === UserRank.CTV).length, color: '#FFBF00' }
   ];
 
   const getRankBadgeColor = (rank: UserRank) => {
@@ -112,9 +107,9 @@ export default function LeaderDashboard() {
     setActionLoading(`reminder-${memberId}`);
     try {
       await sendReminder(memberId);
-      alert('Đã gửi tin nhắn nhắc nhở thành công!');
+      showToast(t('leaderdashboard.alerts.reminder_success'), 'success');
     } catch {
-      alert('Gửi tin nhắn thất bại. Vui lòng thử lại.');
+      showToast(t('leaderdashboard.alerts.reminder_failed'), 'error');
     } finally {
       setActionLoading(null);
     }
@@ -124,9 +119,9 @@ export default function LeaderDashboard() {
     setActionLoading(`gift-${memberId}`);
     try {
       await sendGift(memberId, 200000); // 200k VND voucher
-      alert('Đã tặng voucher 200.000đ thành công!');
+      showToast(t('leaderdashboard.alerts.gift_success'), 'success');
     } catch {
-      alert('Tặng quà thất bại. Vui lòng thử lại.');
+      showToast(t('leaderdashboard.alerts.gift_failed'), 'error');
     } finally {
       setActionLoading(null);
     }
@@ -521,9 +516,9 @@ export default function LeaderDashboard() {
                             <p className="text-sm text-zinc-500 dark:text-gray-400">{atRiskMember.member.email}</p>
                           </div>
                           <span className={`text-xs px-3 py-1.5 rounded-full font-bold border ${getRiskBadgeColor(atRiskMember.riskLevel)}`}>
-                            {atRiskMember.riskLevel === 'high' && 'Rủi ro cao'}
-                            {atRiskMember.riskLevel === 'medium' && 'Rủi ro trung bình'}
-                            {atRiskMember.riskLevel === 'low' && 'Rủi ro thấp'}
+                            {atRiskMember.riskLevel === 'high' && t('leaderdashboard.risk_levels.high')}
+                            {atRiskMember.riskLevel === 'medium' && t('leaderdashboard.risk_levels.medium')}
+                            {atRiskMember.riskLevel === 'low' && t('leaderdashboard.risk_levels.low')}
                           </span>
                         </div>
 
@@ -595,11 +590,11 @@ export default function LeaderDashboard() {
             onChange={(e) => setFilterRank(e.target.value === 'all' ? 'all' : Number(e.target.value) as UserRank)}
           >
             <option value="all">{t('leaderdashboard.all_ranks')}</option>
-            <option value={UserRank.THIEN_LONG}>{RANK_NAMES[UserRank.THIEN_LONG]}</option>
-            <option value={UserRank.PHUONG_HOANG}>{RANK_NAMES[UserRank.PHUONG_HOANG]}</option>
-            <option value={UserRank.DAI_SU}>{RANK_NAMES[UserRank.DAI_SU]}</option>
-            <option value={UserRank.KHOI_NGHIEP}>{RANK_NAMES[UserRank.KHOI_NGHIEP]}</option>
-            <option value={UserRank.CTV}>{RANK_NAMES[UserRank.CTV]}</option>
+            <option value={UserRank.THIEN_LONG}>{t(RANK_NAMES[UserRank.THIEN_LONG])}</option>
+            <option value={UserRank.PHUONG_HOANG}>{t(RANK_NAMES[UserRank.PHUONG_HOANG])}</option>
+            <option value={UserRank.DAI_SU}>{t(RANK_NAMES[UserRank.DAI_SU])}</option>
+            <option value={UserRank.KHOI_NGHIEP}>{t(RANK_NAMES[UserRank.KHOI_NGHIEP])}</option>
+            <option value={UserRank.CTV}>{t(RANK_NAMES[UserRank.CTV])}</option>
           </select>
         </motion.div>
       )}

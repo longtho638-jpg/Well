@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Outlet, useLocation } from 'react-router-dom';
+import { Outlet, useLocation, useNavigate } from 'react-router-dom';
 import { Menu, Bell, Search } from 'lucide-react';
 import { Sidebar } from './Sidebar';
 import { ThemeToggle } from './ui/ThemeToggle';
@@ -16,6 +16,7 @@ export const AppLayout: React.FC = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const { user } = useStore();
   const location = useLocation();
+  const navigate = useNavigate();
 
   // Close mobile menu on escape key
   useEffect(() => {
@@ -102,7 +103,10 @@ export const AppLayout: React.FC = () => {
 
             <div className="h-8 w-px bg-gray-200 dark:bg-slate-700 mx-1 hidden sm:block"></div>
 
-            <div className="flex items-center gap-3 pl-1 cursor-pointer hover:opacity-80 transition-opacity">
+            <div
+              className="flex items-center gap-3 pl-1 cursor-pointer hover:opacity-80 transition-opacity"
+              onClick={() => navigate('/dashboard/profile')}
+            >
               <div className="text-right hidden sm:block">
                 <p className="text-sm font-bold text-gray-900 dark:text-slate-100">{user.name}</p>
                 <p className="text-xs text-primary font-medium">{user.rank}</p>

@@ -2,9 +2,11 @@ import React, { useState } from 'react';
 import { Modal } from './ui/Modal';
 import { Button } from './ui/Button';
 import { Input } from './ui/Input';
+import { Select } from './ui/Select';
 import { formatVND } from '../utils/format';
 import { Wallet, AlertTriangle, CheckCircle2, CreditCard, Building2 } from 'lucide-react';
 import { useTranslation } from '@/hooks';
+import { VIETNAM_BANKS } from '../constants/banks';
 
 interface WithdrawalModalProps {
   isOpen: boolean;
@@ -115,6 +117,11 @@ export const WithdrawalModal: React.FC<WithdrawalModalProps> = ({
     }
   };
 
+  const bankOptions = VIETNAM_BANKS.map(bank => ({
+    value: bank.name,
+    label: `${bank.shortName} - ${bank.name}`
+  }));
+
   return (
     <Modal
       isOpen={isOpen}
@@ -194,15 +201,14 @@ export const WithdrawalModal: React.FC<WithdrawalModalProps> = ({
               <Building2 className="w-4 h-4 text-brand-primary dark:text-teal-400" />
               {t('withdrawalmodal.bank_account_details')}</h3>
 
-            <Input
+            <Select
               label="Bank Name"
-              type="text"
               value={bankName}
               onChange={(e) => {
                 setBankName(e.target.value);
                 if (errors.bankName) setErrors(prev => ({ ...prev, bankName: '' }));
               }}
-              placeholder={t('withdrawalmodal.bank_placeholder')}
+              options={bankOptions}
               error={errors.bankName}
               required
               icon={<Building2 className="w-5 h-5" />}

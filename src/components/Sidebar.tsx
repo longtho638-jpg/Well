@@ -1,6 +1,6 @@
 
 import React, { useState } from 'react';
-import { LayoutDashboard, ShoppingBag, Wallet, LogOut, Sparkles, Bot, CheckCircle2, Circle, Users, Share2, Trophy, Heart, Megaphone, Moon, Sun, Activity, Shield } from 'lucide-react';
+import { LayoutDashboard, ShoppingBag, Wallet, LogOut, Sparkles, Bot, CheckCircle2, Circle, Users, Share2, Trophy, Heart, Megaphone, Moon, Sun, Activity, Shield, Settings } from 'lucide-react';
 import { getCoachAdvice } from '../services/geminiService';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useStore } from '../store';
@@ -47,6 +47,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ onMobileClose }) => {
     { path: '/dashboard/copilot', label: t('nav.copilot'), icon: Bot, badge: 'AI' },
     { path: '/dashboard/team', label: t('nav.team'), icon: Users },
     { path: '/dashboard/referral', label: t('nav.referral'), icon: Share2 },
+    { path: '/dashboard/settings', label: t('nav.settings'), icon: Settings },
     // Admin menu - only visible to admin users
     ...(isAdmin ? [{ path: '/admin', label: t('nav.admin'), icon: Shield, badge: 'ADMIN' }] : []),
   ];
