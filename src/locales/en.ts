@@ -1841,6 +1841,31 @@ export const en = {
         g_i_c_u_h_i: 'Suggested Questions',
     },
 
+    // Commission Wallet
+    commissionwallet: {
+        withdrawable_balance: 'Withdrawable Balance',
+        total_earnings_gross: 'Total Earnings (Gross)',
+        withheld_tax_pit_10: 'Withheld Tax (PIT 10%)',
+        tax_compliance_mode: 'Tax Compliance Mode',
+        wellnexus_automatically_deduct: 'WellNexus automatically deducts ',
+        '10_pit': '10% PIT',
+        for_income_exceeding_2_000_000: ' for income exceeding 2,000,000 VND/month',
+        request_withdrawal: 'Request Withdrawal',
+        earnings_history: 'Earnings History',
+        export_statement: 'Export Statement',
+        date_ref: 'Date / Ref',
+        type: 'Type',
+        gross_amount: 'Gross Amount',
+        pit_10: 'PIT (10%)',
+        net_received: 'Net Received',
+        status: 'Status',
+        the_bee: 'THE BEE',
+        source: 'Source',
+        commission_calculation: 'Commission Calculation',
+        bonus_revenue: 'Bonus Revenue: ',
+        rate: 'Rate (',
+    },
+
     // herocard
     herocard: {
         commission: 'Commission',
