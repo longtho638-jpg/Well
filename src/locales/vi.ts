@@ -965,6 +965,7 @@ export const vi = {
         clicks: 'Lượt click:',
         signups: 'Đăng ký mới:',
         conversion: 'Tỷ lệ chuyển đổi:',
+        conversionValue: 'Giá Trị Chuyển Đổi',
       },
       tip: '💡 Tip: Chia sẻ link này trên Facebook, Zalo, hoặc website cá nhân của bạn để nhận hoa hồng từ mỗi đơn hàng!',
       partnerLabel: 'WellNexus Partner',
@@ -1065,6 +1066,7 @@ export const vi = {
     // Footer Disclaimers
     disclaimerTech: '💡 Health Coach AI sử dụng công nghệ phân tích triệu chứng để đề xuất sản phẩm phù hợp.',
     disclaimerMedical: 'Lưu ý: Đây là công cụ hỗ trợ, không thay thế tư vấn y tế chuyên nghiệp.',
+    analyzing: 'Đang phân tích...',
   },
 
   // Health Check (Health Quiz)
@@ -1157,6 +1159,8 @@ export const vi = {
       average: 'Sức khỏe của bạn cần được quan tâm nhiều hơn. Hãy bắt đầu thay đổi ngay!',
       poor: 'Sức khỏe của bạn đang cần được cải thiện khẩn cấp. Hãy tham khảo các giải pháp dưới đây!',
     },
+
+    radarTitle: 'Điểm Sức Khỏe',
 
     // Recommendations
     recommendationsTitle: 'Gợi ý sản phẩm phù hợp',
@@ -1730,15 +1734,15 @@ export const vi = {
     strategic_simulator_offline: 'Strategic Simulator Offline',
     connect_to_the_policy_engine_r: 'Connect to the Policy Engine to run real-time market simulations.',
     // Missing keys merged
-    action: 'Action',
-    active_now: 'Active Now',
-    agent_ecosystem: 'Agent Ecosystem',
-    intelligent_agents: 'Intelligent Agents',
-    monitoring: 'Monitoring',
-    performance: 'Performance',
-    total_actions: 'Total Actions',
-    total_agents: 'Total Agents',
-    total_kpis: 'Total KPIs',
+    action: 'Hành Động',
+    active_now: 'Đang Hoạt Động',
+    agent_ecosystem: 'Hệ Sinh Thái Đại Lý',
+    intelligent_agents: 'Đại Lý Thông Minh',
+    monitoring: 'Giám Sát',
+    performance: 'Hiệu Suất',
+    total_actions: 'Tổng Hành Động',
+    total_agents: 'Tổng Đại Lý',
+    total_kpis: 'Tổng KPI',
   },
 
   // Copilot Page - AST Migration Keys
@@ -1995,7 +1999,7 @@ export const vi = {
 
   // app
   app: {
-    commission_wallet: 'Commission Wallet',
+    commission_wallet: 'Ví Hoa Hồng',
   },
 
   // auditlog
@@ -2023,20 +2027,20 @@ export const vi = {
 
   // beeautomationsection
   beeautomationsection: {
-    auto_upgrade_threshold: 'Auto Upgrade Threshold',
-    bee_engine_automation: 'BEE Engine Automation',
-    ctv_commission_r_8: 'CTV Commission R=8%',
-    sponsor_bonus_amb: 'Sponsor Bonus (AMB)',
-    vnd_sales_ctv_startup: 'VND Sales CTV Startup',
+    auto_upgrade_threshold: 'Ngưỡng Nâng Cấp Tự Động',
+    bee_engine_automation: 'Hệ Thống Tự Động BEE',
+    ctv_commission_r_8: 'Hoa Hồng CTV: ₫8',
+    sponsor_bonus_amb: 'Thưởng Người Giới Thiệu (AMB)',
+    vnd_sales_ctv_startup: 'Doanh Số VND CTV→Startup',
   },
 
   // bulkactionsbar
   bulkactionsbar: {
-    activate: 'Activate',
-    ban: 'Ban',
-    export_csv: 'Export CSV',
-    partner: 'Partner',
-    selected: 'Selected',
+    activate: 'Kích Hoạt',
+    ban: 'Cấm',
+    export_csv: 'Xuất CSV',
+    partner: 'Đối Tác',
+    selected: 'Đã Chọn',
   },
 
   // cartdrawer
@@ -2064,13 +2068,13 @@ export const vi = {
 
   // cms
   cms: {
-    action: 'Action',
-    content_orchestrator: 'Content Orchestrator',
-    create: 'Create',
-    cross_platform_content_deliver: 'Cross Platform Content Delivery',
-    link: 'Link',
+    action: 'Hành Động',
+    content_orchestrator: 'Điều Phối Nội Dung',
+    create: 'Tạo',
+    cross_platform_content_deliver: 'Phân Phối Nội Dung Đa Nền Tảng',
+    link: 'Liên Kết',
     loc: 'LOC',
-    target: 'Target',
+    target: 'Mục Tiêu',
   },
 
   // commandpalette
@@ -2085,9 +2089,9 @@ export const vi = {
 
   // commissionsection
   commissionsection: {
-    commission_architecture: 'Commission Architecture',
-    max_risk_operational_margin_c: 'Max Risk Operational Margin Cap',
-    total_system_payout_threshold: 'Total System Payout Threshold',
+    commission_architecture: 'Kiến Trúc Hoa Hồng',
+    max_risk_operational_margin_c: 'Giới Hạn Biên Lợi Nhuận Hoạt Động Tối Đa',
+    total_system_payout_threshold: 'Ngưỡng Chi Trả Toàn Hệ Thống',
   },
 
   // commissionwallet
@@ -2466,6 +2470,9 @@ export const vi = {
     status: 'Status',
     verified: 'Verified',
     view_profile: 'View Profile',
+    partner_recon_crm: 'CRM Đối Soát Đối Tác',
+    precision_orchestration_of_net: 'Điều Phối Chính Xác Mạng Lưới',
+    rank_intelligence: 'Thông Minh Cấp Bậc',
   },
 
   // productcard
@@ -2565,11 +2572,11 @@ export const vi = {
 
   // rankladdersection
   rankladdersection: {
-    downlines: 'Downlines',
-    rank_migration_ladder: 'Rank Migration Ladder',
-    sales_req_vnd: 'Sales Req (VND)',
-    target_rank: 'Target Rank',
-    team_volume: 'Team Volume',
+    downlines: 'Tuyến Dưới',
+    rank_migration_ladder: 'Thang Nâng Cấp Hạng',
+    sales_req_vnd: 'Doanh Số Yêu Cầu (VND)',
+    target_rank: 'Hạng Mục Tiêu',
+    team_volume: 'Khối Lượng Nhóm',
   },
 
   // recentactivitylist
@@ -2733,10 +2740,10 @@ export const vi = {
 
   // topproducts
   topproducts: {
-    based_on_units_sold: 'Based on Units Sold',
-    earn: 'Earn',
-    sold: 'Sold',
-    top_products: 'Top Products',
+    based_on_units_sold: 'Dựa Trên Số Lượng Đã Bán',
+    earn: 'Kiếm',
+    sold: 'Đã Bán',
+    top_products: 'Sản Phẩm Hàng Đầu',
   },
 
   // transactioncard
@@ -2939,12 +2946,12 @@ export const vi = {
 
   // notificationcenter - CORRECT section (6 keys)
   notificationcenter: {
-    actions_required: 'Actions Required',
-    audit_center: 'Audit Center',
-    clear_history: 'Clear History',
-    no_new_activity: 'No New Activity',
-    notifications: 'Notifications',
-    we_ll_notify_you_when_somethin: "We'll notify you when something happens",
+    actions_required: 'Hành Động Cần Thực Hiện',
+    audit_center: 'Trung Tâm Kiểm Toán',
+    clear_history: 'Xóa Lịch Sử',
+    no_new_activity: 'Không Có Hoạt Động Mới',
+    notifications: 'Thông Báo',
+    we_ll_notify_you_when_somethin: 'Chúng tôi sẽ thông báo khi có hoạt động mới',
   },
 
   // Policy Engine

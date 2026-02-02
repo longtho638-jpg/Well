@@ -2555,4 +2555,87 @@ export const en = {
         local_storage_keys: 'Local Storage Keys',
         empty: 'Empty',
     },
+
+    // Agent Dashboard
+    agentdashboard: {
+        agent_ecosystem: 'Agent Ecosystem',
+        monitoring: 'Monitoring',
+        intelligent_agents: 'Intelligent Agents',
+        total_agents: 'Total Agents',
+        active_now: 'Active Now',
+        total_kpis: 'Total KPIs',
+        total_actions: 'Total Actions',
+        performance: 'Performance',
+        action: 'Action',
+    },
+
+    // Partners
+    partners: {
+        partner_recon_crm: 'Partner Recon CRM',
+        precision_orchestration_of_net: 'Precision Orchestration of Network',
+        rank_intelligence: 'Rank Intelligence',
+    },
+
+    // CMS
+    cms: {
+        content_orchestrator: 'Content Orchestrator',
+        cross_platform_content_deliver: 'Cross-Platform Content Delivery',
+        create: 'Create',
+        loc: 'LOC',
+        action: 'Action',
+        link: 'Link',
+    },
+
+    // Notification Center
+    notificationcenter: {
+        notifications: 'Notifications',
+        actions_required: 'Actions Required',
+        no_new_activity: 'No New Activity',
+        we_ll_notify_you_when_somethin: "We'll notify you when something happens",
+        clear_history: 'Clear History',
+        audit_center: 'Audit Center',
+    },
+
+    // Top Products
+    topproducts: {
+        top_products: 'Top Products',
+        based_on_units_sold: 'Based on Units Sold',
+        sold: 'Sold',
+        earn: 'Earn',
+    },
+
+    // Rank Ladder Section
+    rankladdersection: {
+        rank_migration_ladder: 'Rank Migration Ladder',
+        target_rank: 'Target Rank',
+        sales_req_vnd: 'Sales Req (VND)',
+        team_volume: 'Team Volume',
+        downlines: 'Downlines',
+    },
+
+    // Commission Section
+    commissionsection: {
+        commission_architecture: 'Commission Architecture',
+        total_system_payout_threshold: 'Total System Payout Threshold',
+        max_risk_operational_margin_c: 'Max Risk Operational Margin Cap',
+    },
+
+    // Bee Automation Section
+    beeautomationsection: {
+        bee_engine_automation: 'BEE Engine Automation',
+        ctv_commission_r_8: 'CTV Commission: ₫8',
+        sponsor_bonus_amb: 'Sponsor Bonus (AMB)',
+        auto_upgrade_threshold: 'Auto Upgrade Threshold',
+        vnd_sales_ctv_startup: 'VND Sales CTV→Startup',
+    },
+
+    // Bulk Actions Bar
+    bulkactionsbar: {
+        partner: 'Partner',
+        selected: 'Selected',
+        activate: 'Activate',
+        ban: 'Ban',
+        export_csv: 'Export CSV',
+    },
 };
+
