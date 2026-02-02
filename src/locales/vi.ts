@@ -853,6 +853,17 @@ export const vi = {
       timing: 'Thời điểm',
       need: 'Nhu cầu',
       general: 'Khác',
+    },
+
+    input: {
+      placeholder: 'Nhập lời phản đối của khách hàng...',
+    },
+
+    suggestions: {
+      price: 'Giá sản phẩm quá cao!',
+      trust: 'Tôi chưa tin tưởng sản phẩm này',
+      competitor: 'Sản phẩm X rẻ hơn',
+      script: 'Viết kịch bản bán hàng cho tôi',
     }
   },
 
@@ -2755,6 +2766,18 @@ export const vi = {
     danh_m_c: 'Danh mục',
     kho_ng_gi: 'Khoảng giá',
     t_l_i_b_l_c: 'Thiết lại bộ lọc',
+    categories: {
+      all: 'Tất cả',
+      health: 'Sức khỏe',
+      wellness: 'Chăm sóc',
+      nutrition: 'Dinh dưỡng',
+    },
+    prices: {
+      all: 'Tất cả giá',
+      under5m: 'Dưới 5 triệu',
+      '5to15m': '5 - 15 triệu',
+      over15m: 'Trên 15 triệu',
+    },
   },
 
   // marketplaceheader keys
