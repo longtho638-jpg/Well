@@ -796,6 +796,35 @@ export const en = {
         }
     },
 
+    // Marketing Tools (AI Landing Builder)
+    marketingtools: {
+        ai_landing_builder: 'AI Landing Builder',
+        new: 'New',
+        t_o_trang_tuy_n_d_ng_chuy_n_ng: 'Create professional recruiting pages in seconds',
+        ch_n_template: 'Select Template',
+        upload_nh_ch_n_dung: 'Upload Portrait',
+        nh_t_i_l_n: 'Uploaded Image',
+        click_thay_i: 'Click to change',
+        click_t_i_nh_l_n: 'Click to upload image',
+        jpg_png_t_i_a_5mb: 'JPG, PNG (Max 5MB)',
+        ai_ang_vi_t_c_u_chuy_n: 'AI is writing your story...',
+        ai_vi_t_c_u_chuy_n_c_a_t_i: 'AI, write my story',
+        preview_landing_page: 'Preview Landing Page',
+        link_landing_page: 'Landing Page Link:',
+        l_t_xem: 'Views',
+        chuy_n_i: 'Conversions',
+        t_l: 'Rate',
+        xu_t_b_n_ngay: 'Publish Now',
+        landing_page_xu_t_b_n: 'Landing Page Published!',
+        link_s_n_s_ng_chia_s: 'Link is ready to share with candidates',
+        ch_n_template_v_click_ai_vi: 'Select a template and click "AI write my story" to start',
+        ai_s_t_o_landing_page_chuy_n: 'AI will create a professional Landing Page based on your profile',
+        landing_pages_t_o: 'Created Landing Pages (',
+        live: 'LIVE',
+        views: 'Views',
+        conversions: 'Conversions',
+    },
+
     // Health Coach
     healthCoach: {
         title: 'Health Coach AI',
@@ -1287,5 +1316,61 @@ export const en = {
         projectionSimulator: 'Projection Simulator',
         realTime: 'Real-time',
         policyChangesAreCryptographicallySigned: 'Policy changes are cryptographically signed',
+    },
+
+    // Admin Security Settings
+    adminsecuritysettings: {
+        '100': '/100',
+        '15_ph_t': '15 minutes',
+        '1_gi': '1 hour',
+        '2_gi': '2 hours',
+        '30_ph_t': '30 minutes',
+        b_o_m_t_t_i_kho_n: 'Account Security',
+        b_t_2fa_t_ng_i_m: 'Enable 2FA to boost score',
+        c_nh_b_o_ng_nh_p: 'Login Alerts',
+        h_y: 'Cancel',
+        ho_t_ng: 'Activities',
+        i_l_n_cu_i: 'last changed ',
+        i_m_b_o_m_t: 'Security Score',
+        i_m_t_kh_u: 'Change Password',
+        l_ch_s_ng_nh_p: 'Login History',
+        m_t_kh_u: 'Password',
+        nh_n_th_ng_b_o_khi_c_ng_nh: 'Receive alerts on new logins',
+        ph_t: 'minutes',
+        qu_n_l_c_i_t_b_o_m_t_c_a_b: 'Manage your security settings',
+        qu_t_m_qr_v_i_ng_d_ng_x_c_th: 'Scan QR code with authenticator app',
+        t_ng_ng_xu_t_sau: 'Auto logout after ',
+        th_i_gian_phi_n: 'Session Timeout',
+        thi_t_l_p_2fa: 'Setup 2FA',
+        x_c_nh_n: 'Confirm',
+        x_c_th_c_2_y_u_t: 'Two-Factor Authentication',
+        b_t_2fa_b_o_v: 'Enabled - Account protected',
+        th_m_l_p_b_o_m_t: 'Add extra security layer',
+    },
+
+    // Command Palette
+    commandpalette: {
+        agencyos_85_commands: 'AgencyOS: 85 Commands',
+        all: 'All',
+        error: 'Error',
+        executing_command: 'Executing Command',
+        no_commands_found: 'No Commands Found',
+        to_open: 'to open',
+    },
+
+    // Context Sidebar
+    contextsidebar: {
+        '15': '15',
+        c_i_thi_n_s_c_kh_e: 'Health Improvements',
+        h_s_kh_ch_h_ng: 'Customer Profile',
+        i_m_s_c_kh_e: 'Health Score',
+        i_m_s_t_t_ti_p_t_c_duy_tr: 'Good score, keep it up',
+        l_ch_s_mua_h_ng: 'Purchase History',
+        l_n_t_v_n_g_n_nh_t: 'Last Consultation',
+        t_v_n_ho_n_th_nh: 'Consultations Completed',
+        th_ng_tin_t_v_n: 'Consultation Info',
+        tu_i: 'Age',
+        tu_i_1: 'years old',
+        v_n_ch_nh: 'Main Concerns',
     }
 };

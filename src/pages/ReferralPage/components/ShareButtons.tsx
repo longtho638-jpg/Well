@@ -133,7 +133,7 @@ export function ShareButtons({
                 className="w-full px-6 py-4 bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 active:scale-95 text-white rounded-xl flex items-center justify-center gap-3 transition-all shadow-lg font-bold text-lg group"
             >
                 <QrCode className="w-6 h-6 group-hover:rotate-12 transition-transform" />
-                {showQRCode ? 'Ẩn QR Code' : 'Hiển Thị QR Code'}
+                {showQRCode ? t('sharebuttons.hideQR') : t('sharebuttons.showQR')}
             </motion.button>
         </motion.div>
     );

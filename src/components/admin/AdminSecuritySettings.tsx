@@ -96,10 +96,11 @@ const INITIAL_SETTINGS: SecuritySettings = {
 // ============================================================
 
 const StatusBadge: React.FC<{ status: LoginActivity['status'] }> = ({ status }) => {
+    const { t } = useTranslation();
     const config = {
-        success: { className: 'bg-emerald-500/10 text-emerald-400 border-emerald-500/20', label: 'Thành công' },
-        failed: { className: 'bg-red-500/10 text-red-400 border-red-500/20', label: 'Thất bại' },
-        blocked: { className: 'bg-amber-500/10 text-amber-400 border-amber-500/20', label: 'Chặn' },
+        success: { className: 'bg-emerald-500/10 text-emerald-400 border-emerald-500/20', label: t('common.success') },
+        failed: { className: 'bg-red-500/10 text-red-400 border-red-500/20', label: t('common.failed') },
+        blocked: { className: 'bg-amber-500/10 text-amber-400 border-amber-500/20', label: t('common.blocked') || 'Chặn' },
     };
     const { className, label } = config[status];
     return (
@@ -204,8 +205,8 @@ export function AdminSecuritySettings() {
                                 <p className="font-medium text-zinc-100">{t('adminsecuritysettings.x_c_th_c_2_y_u_t')}</p>
                                 <p className="text-sm text-zinc-500">
                                     {settings.twoFactorEnabled
-                                        ? 'Đã bật - Tài khoản được bảo vệ'
-                                        : 'Thêm lớp bảo mật cho tài khoản'}
+                                        ? t('adminsecuritysettings.b_t_2fa_b_o_v')
+                                        : t('adminsecuritysettings.th_m_l_p_b_o_m_t')}
                                 </p>
                             </div>
                         </div>

@@ -81,10 +81,10 @@ export function PremiumHeader() {
       label: t('nav.partner'),
       children: [
         {
-          label: 'Venture Program', // Keep as is or add translation
+          label: t('nav.partner'),
           href: '/venture',
           icon: <Gem className="w-5 h-5" />,
-          description: 'Gia nhập đội ngũ 200+ Co-Founders', // Can translate later
+          description: t('nav.ventureDescription'),
           badge: '🔥',
         },
         {

@@ -28,8 +28,8 @@ export function TeamCharts({ teamMembers }: TeamChartsProps) {
     ];
 
     const rankDistribution = [
-        { name: 'Đại Sứ', value: teamMembers.filter(m => m.rank === UserRank.DAI_SU).length, color: '#00575A' },
-        { name: 'CTV', value: teamMembers.filter(m => m.rank === UserRank.CTV).length, color: '#FFBF00' }
+        { name: t('common.rank.daisu'), value: teamMembers.filter(m => m.rank === UserRank.DAI_SU).length, color: '#00575A' },
+        { name: t('common.rank.ctv'), value: teamMembers.filter(m => m.rank === UserRank.CTV).length, color: '#FFBF00' }
     ];
 
     const tooltipStyle = {

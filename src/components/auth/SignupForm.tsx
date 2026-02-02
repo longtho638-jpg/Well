@@ -39,7 +39,7 @@ export const SignupForm: React.FC = () => {
                             value={formData.name}
                             onChange={handleChange}
                             required
-                            placeholder="Nguyễn Văn A"
+                            placeholder={t('signupform.placeholders.name')}
                             className="w-full bg-slate-950/50 border border-slate-800 text-white rounded-2xl py-4 pl-12 pr-4 focus:outline-none focus:ring-2 focus:ring-teal-500/30 focus:border-teal-500/50 transition-all placeholder:text-slate-700 font-medium"
                         />
                     </div>
@@ -56,7 +56,7 @@ export const SignupForm: React.FC = () => {
                             value={formData.email}
                             onChange={handleChange}
                             required
-                            placeholder="ceo@wellnexus.vn"
+                            placeholder={t('signupform.placeholders.email')}
                             className="w-full bg-slate-950/50 border border-slate-800 text-white rounded-2xl py-4 pl-12 pr-4 focus:outline-none focus:ring-2 focus:ring-teal-500/30 focus:border-teal-500/50 transition-all placeholder:text-slate-700 font-medium"
                         />
                     </div>

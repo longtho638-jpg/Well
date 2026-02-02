@@ -830,7 +830,36 @@ export const vi = {
       qrTip: 'In QR code này ra giấy và dán tại cửa hàng, hoặc chia sẻ online để khách hàng dễ dàng truy cập!',
       shareTitle: 'QR Code của tôi - WellNexus',
       shareText: 'Quét QR code này để truy cập link giới thiệu của tôi!',
-    }
+    },
+  },
+
+  // Marketing Tools (AI Landing Builder)
+  marketingtools: {
+    ai_landing_builder: 'AI Landing Builder',
+    new: 'Mới',
+    t_o_trang_tuy_n_d_ng_chuy_n_ng: 'Tạo trang tuyển dụng chuyên nghiệp trong tích tắc',
+    ch_n_template: 'Chọn Template',
+    upload_nh_ch_n_dung: 'Upload Ảnh Chân Dung',
+    nh_t_i_l_n: 'Ảnh đã tải lên',
+    click_thay_i: 'Click để thay đổi',
+    click_t_i_nh_l_n: 'Click để tải ảnh lên',
+    jpg_png_t_i_a_5mb: 'JPG, PNG (Tối đa 5MB)',
+    ai_ang_vi_t_c_u_chuy_n: 'AI đang viết câu chuyện...',
+    ai_vi_t_c_u_chuy_n_c_a_t_i: 'AI, viết câu chuyện của tôi',
+    preview_landing_page: 'Xem trước Landing Page',
+    link_landing_page: 'Link Landing Page:',
+    l_t_xem: 'Lượt xem',
+    chuy_n_i: 'Chuyển đổi',
+    t_l: 'Tỷ lệ',
+    xu_t_b_n_ngay: 'Xuất bản ngay',
+    landing_page_xu_t_b_n: 'Landing Page đã xuất bản!',
+    link_s_n_s_ng_chia_s: 'Link đã sẵn sàng để chia sẻ với ứng viên',
+    ch_n_template_v_click_ai_vi: 'Chọn template và click "AI viết câu chuyện" để bắt đầu',
+    ai_s_t_o_landing_page_chuy_n: 'AI sẽ tạo Landing Page chuyên nghiệp dựa trên profile của bạn',
+    landing_pages_t_o: 'Landing Pages đã tạo (',
+    live: 'LIVE',
+    views: 'Views',
+    conversions: 'Conversions',
   },
 
   // Health Coach
@@ -1300,6 +1329,45 @@ export const vi = {
     },
     testimonials: {
       title: 'Câu chuyện thành công',
+      items: {
+        item1: {
+          name: 'Nguyễn Minh Anh',
+          role: 'Gold Partner • TP.HCM',
+          content: 'Từ khi tham gia WellNexus, thu nhập của mình tăng 3 lần chỉ sau 6 tháng. Công nghệ AI giúp mình bán hàng hiệu quả hơn rất nhiều!',
+        },
+        item2: {
+          name: 'Trần Hoàng Nam',
+          role: 'Platinum Partner • Hà Nội',
+          content: 'Mô hình Social Commerce của WellNexus rất khác biệt. Mình có thể xây dựng đội ngũ và có thu nhập thụ động thực sự.',
+        },
+        item3: {
+          name: 'Lê Thanh Hà',
+          role: 'Diamond Partner • Đà Nẵng',
+          content: 'Team hỗ trợ rất tận tâm, sản phẩm chất lượng cao. Đây là cơ hội kinh doanh tốt nhất mình từng gặp!',
+        }
+      }
+    },
+    heroStats: {
+      partnersActive: 'Partners Active',
+      gmvTotal: 'GMV Total',
+      yoyGrowth: 'Tăng trưởng YoY',
+      slotsRemaining: 'Slots còn lại'
+    },
+    socialProof: {
+      actions: {
+        joined: 'vừa gia nhập Founders Club',
+        silver: 'đạt hạng Silver Partner',
+        withdraw: 'rút hoa hồng ₫12,500,000',
+        team: 'xây dựng team 15 người',
+        order: 'đặt hàng ₫2,800,000'
+      },
+      times: {
+        min2: '2 phút trước',
+        min5: '5 phút trước',
+        min8: '8 phút trước',
+        min12: '12 phút trước',
+        min15: '15 phút trước'
+      }
     },
     cta: {
       title: 'Sẵn sàng bắt đầu?',
@@ -2168,7 +2236,15 @@ export const vi = {
     grow_rewards: 'GROW Rewards',
     grow_tokens: 'GROW Tokens',
     s_d_hi_n_t_i: 'Số dư hiện tại',
-    s_d_ng_grow_token_t_ch_l_y_t: 'Sử dụng GROW Token tích lũy từ',
+    s_d_ng_grow_token_t_ch_l_y_t: 'Sử dụng GROW Token tích lũy từ hoạt động kinh doanh để đổi lấy những phần quà giá trị.',
+    redeem_reward: 'Đổi quà ngay',
+    not_enough_grow: 'Chưa đủ GROW',
+    categories: {
+      all: 'Tất cả',
+      tech: 'Công nghệ',
+      travel: 'Du lịch',
+      courses: 'Khóa học',
+    }
   },
 
   // referralhero

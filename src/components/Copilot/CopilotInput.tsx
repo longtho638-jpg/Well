@@ -1,5 +1,6 @@
 import React from 'react';
 import { Send } from 'lucide-react';
+import { useTranslation } from '@/hooks';
 
 interface CopilotInputProps {
     input: string;
@@ -14,6 +15,7 @@ export const CopilotInput: React.FC<CopilotInputProps> = ({
     isLoading,
     onSend
 }) => {
+    const { t } = useTranslation();
     return (
         <div className="p-4 bg-white dark:bg-zinc-900 border-t border-zinc-200 dark:border-zinc-800">
             <div className="flex gap-2">
@@ -22,7 +24,7 @@ export const CopilotInput: React.FC<CopilotInputProps> = ({
                     value={input}
                     onChange={(e) => setInput(e.target.value)}
                     onKeyPress={(e) => e.key === 'Enter' && onSend()}
-                    placeholder="Nhập câu phản đối của khách hàng..."
+                    placeholder={t('copilot.input.placeholder')}
                     className="flex-1 px-4 py-3 bg-zinc-100 dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 rounded-xl focus:outline-none focus:ring-2 focus:ring-emerald-500/50 focus:border-emerald-500/50 text-sm text-zinc-900 dark:text-white placeholder-zinc-500 transition-all"
                     disabled={isLoading}
                 />

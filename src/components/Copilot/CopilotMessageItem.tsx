@@ -60,12 +60,12 @@ export const CopilotMessageItem: React.FC<CopilotMessageItemProps> = React.memo(
     const getObjectionBadge = (type?: ObjectionType) => {
         if (!type) return null;
         const badges: Record<ObjectionType, { label: string; color: string }> = {
-            price: { label: 'Giá cả', color: 'bg-orange-100 text-orange-700' },
-            skepticism: { label: 'Nghi ngờ', color: 'bg-red-100 text-red-700' },
-            competition: { label: 'Đối thủ', color: 'bg-purple-100 text-purple-700' },
-            timing: { label: 'Thời điểm', color: 'bg-blue-100 text-blue-700' },
-            need: { label: 'Nhu cầu', color: 'bg-green-100 text-green-700' },
-            general: { label: 'Chung', color: 'bg-gray-100 text-gray-700' }
+            price: { label: t('copilot.objectionTypes.price'), color: 'bg-orange-100 text-orange-700' },
+            skepticism: { label: t('copilot.objectionTypes.skepticism'), color: 'bg-red-100 text-red-700' },
+            competition: { label: t('copilot.objectionTypes.competition'), color: 'bg-purple-100 text-purple-700' },
+            timing: { label: t('copilot.objectionTypes.timing'), color: 'bg-blue-100 text-blue-700' },
+            need: { label: t('copilot.objectionTypes.need'), color: 'bg-green-100 text-green-700' },
+            general: { label: t('copilot.objectionTypes.general'), color: 'bg-gray-100 text-gray-700' }
         };
         const badge = badges[type];
         return (

@@ -31,10 +31,10 @@ export const RedemptionZone: React.FC<RedemptionZoneProps> = ({
     const [redeemingId, setRedeemingId] = useState<string | null>(null);
 
     const categories: Array<{ id: 'all' | 'electronics' | 'travel' | 'education' | 'experience', label: string, icon: string }> = [
-        { id: 'all', label: 'Tất cả', icon: '🎁' },
-        { id: 'electronics', label: 'Công nghệ', icon: '📱' },
-        { id: 'travel', label: 'Du lịch', icon: '✈️' },
-        { id: 'education', label: 'Khóa học', icon: '📚' },
+        { id: 'all', label: t('redemptionzone.categories.all'), icon: '🎁' },
+        { id: 'electronics', label: t('redemptionzone.categories.tech'), icon: '📱' },
+        { id: 'travel', label: t('redemptionzone.categories.travel'), icon: '✈️' },
+        { id: 'education', label: t('redemptionzone.categories.courses'), icon: '📚' },
     ];
 
     const filteredItems = items.filter(i => selectedCategory === 'all' || i.category === selectedCategory);
@@ -119,7 +119,7 @@ export const RedemptionZone: React.FC<RedemptionZoneProps> = ({
                                         }`}
                                 >
                                     {isProcessing ? <Loader2 className="animate-spin" size={16} /> : <Zap size={16} />}
-                                    {canAfford ? 'Redeem Reward' : 'Not Enough Grow'}
+                                    {canAfford ? t('redemptionzone.redeem_reward') : t('redemptionzone.not_enough_grow')}
                                 </button>
                             </div>
                         </motion.div>

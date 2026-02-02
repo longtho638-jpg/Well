@@ -28,8 +28,9 @@ import {
   ContentTemplate,
 } from '@/components/MarketingTools';
 
-// Sample content templates
-const contentTemplates: ContentTemplate[] = [
+// Sample content templates - moved inside component or use translation keys if strictly needed
+// For now keeping static content but translating categories
+const getContentTemplates = (t: (key: string) => string): ContentTemplate[] => [
   {
     id: '1',
     title: 'Giới thiệu ANIMA 119',
@@ -62,6 +63,7 @@ const contentTemplates: ContentTemplate[] = [
 
 export default function MarketingTools() {
   const { t } = useTranslation();
+  const contentTemplates = getContentTemplates(t);
   const { user, landingPageTemplates, userLandingPages, createLandingPage, publishLandingPage } = useStore();
   const [giftCards, setGiftCards] = useState<GiftCard[]>([
     {

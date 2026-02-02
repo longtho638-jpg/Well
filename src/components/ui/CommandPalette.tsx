@@ -31,12 +31,26 @@ const CATEGORY_LABELS: Record<AgencyOSCategory, string> = {
 
 export function CommandPalette({ isOpen, onClose }: CommandPaletteProps) {
     const { t } = useTranslation();
-    const [search, setSearch] = useState('');
-    const [selectedCategory, setSelectedCategory] = useState<AgencyOSCategory | null>(null);
-    const [isExecuting, setIsExecuting] = useState(false);
-    const [lastResult, setLastResult] = useState<{ success: boolean; message?: string; output?: string; error?: string } | null>(null);
 
-    // Filter commands based on search and category
+    const CATEGORY_ICONS: Record<AgencyOSCategory, string> = {
+        marketing: '📣',
+        sales: '💼',
+        finance: '💰',
+        operations: '⚙️',
+        strategy: '🎯',
+        agents: '🤖',
+    };
+
+    const CATEGORY_LABELS: Record<AgencyOSCategory, string> = {
+        marketing: 'Marketing',
+        sales: 'Sales',
+        finance: 'Finance',
+        operations: 'Operations',
+        strategy: 'Strategy (Binh Pháp)',
+        agents: 'AI Agents',
+    };
+
+    const [search, setSearch] = useState('');
     const filteredCommands = useMemo(() => {
         const results: Array<{ category: AgencyOSCategory; command: string; description: string }> = [];
         const lowerSearch = search.toLowerCase();
@@ -142,7 +156,7 @@ export function CommandPalette({ isOpen, onClose }: CommandPaletteProps) {
                     <Command className="w-5 h-5 text-cyan-400" />
                     <input
                         type="text"
-                        placeholder="Type a command or search..."
+                        placeholder={t('common.search')}
                         value={search}
                         onChange={(e) => setSearch(e.target.value)}
                         className="flex-1 bg-transparent text-white placeholder-gray-500 outline-none text-lg"

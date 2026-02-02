@@ -30,9 +30,6 @@ import {
   SocialProofTicker,
   TestimonialsCarousel,
   TrustBadges,
-  HERO_STATS,
-  SOCIAL_PROOF_ITEMS,
-  TESTIMONIALS,
   TRUST_BADGES,
 } from '../components/HeroEnhancements';
 import {
@@ -85,6 +82,42 @@ export default function LandingPage() {
     addToCart(product);
     setIsCartOpen(true);
   };
+
+  const HERO_STATS = [
+    { value: 1243, suffix: '+', label: t('landing.heroStats.partnersActive') },
+    { value: 5200000000, prefix: '₫', label: t('landing.heroStats.gmvTotal') },
+    { value: 320, suffix: '%', label: t('landing.heroStats.yoyGrowth') },
+    { value: 157, label: t('landing.heroStats.slotsRemaining') },
+  ];
+
+  const SOCIAL_PROOF_ITEMS = [
+    { name: 'Minh Anh', action: t('landing.socialProof.actions.joined'), time: t('landing.socialProof.times.min2') },
+    { name: 'Hoàng Nam', action: t('landing.socialProof.actions.silver'), time: t('landing.socialProof.times.min5') },
+    { name: 'Thanh Hà', action: t('landing.socialProof.actions.withdraw'), time: t('landing.socialProof.times.min8') },
+    { name: 'Tuấn Anh', action: t('landing.socialProof.actions.team'), time: t('landing.socialProof.times.min12') },
+    { name: 'Ngọc Linh', action: t('landing.socialProof.actions.order'), time: t('landing.socialProof.times.min15') },
+  ];
+
+  const TESTIMONIALS = [
+    {
+      name: t('landing.testimonials.items.item1.name'),
+      role: t('landing.testimonials.items.item1.role'),
+      content: t('landing.testimonials.items.item1.content'),
+      rating: 5,
+    },
+    {
+      name: t('landing.testimonials.items.item2.name'),
+      role: t('landing.testimonials.items.item2.role'),
+      content: t('landing.testimonials.items.item2.content'),
+      rating: 5,
+    },
+    {
+      name: t('landing.testimonials.items.item3.name'),
+      role: t('landing.testimonials.items.item3.role'),
+      content: t('landing.testimonials.items.item3.content'),
+      rating: 5,
+    },
+  ];
 
   const CONTENT = {
     hero: {
