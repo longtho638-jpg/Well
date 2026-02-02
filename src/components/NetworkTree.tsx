@@ -344,7 +344,7 @@ const NetworkTree: React.FC = () => {
         } finally {
             setLoading(false);
         }
-    }, [user?.id, user?.name, user?.roleId, user?.totalSales, user?.teamVolume, user?.avatarUrl, user?.joinedAt, fetchDownlineTree]);
+    }, [user?.id, user?.name, user?.roleId, user?.totalSales, user?.teamVolume, user?.avatarUrl, user?.joinedAt, fetchDownlineTree, t]);
 
     useEffect(() => {
         loadTree();

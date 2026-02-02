@@ -72,5 +72,5 @@ export interface SendEmailResponse {
   id?: string;
   message?: string;
   error?: string;
-  details?: any;
+  details?: Record<string, unknown>;
 }

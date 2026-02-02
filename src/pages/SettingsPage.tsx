@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
-import { Settings, Bell, Lock, Globe, Moon, Shield, CreditCard, LogOut } from 'lucide-react';
+import { Settings, Bell, Lock, Globe, Moon, Shield, LogOut } from 'lucide-react';
 import { useStore } from '@/store';
 import { useTheme } from '@/context/ThemeContext';
 import { useNavigate } from 'react-router-dom';
 
 export default function SettingsPage() {
-  const { user, logout } = useStore();
+  const { logout } = useStore();
   const { theme, toggleTheme } = useTheme();
   const navigate = useNavigate();
   const [notifications, setNotifications] = useState({

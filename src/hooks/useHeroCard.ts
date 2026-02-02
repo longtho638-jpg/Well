@@ -50,7 +50,7 @@ export function useHeroCard(user: User) {
         } else {
             handleCopyLink();
         }
-    }, [referralLink, handleCopyLink]);
+    }, [referralLink, handleCopyLink, t]);
 
     return {
         progressPercent,

@@ -6,6 +6,9 @@
  */
 
 import * as Sentry from '@sentry/react';
+import { createLogger } from './logger';
+
+const logger = createLogger('Sentry');
 
 /**
  * Initialize Sentry error tracking
@@ -14,14 +17,14 @@ import * as Sentry from '@sentry/react';
 export function initSentry() {
   // Only initialize in production
   if (import.meta.env.MODE !== 'production') {
-    console.log('[Sentry] Skipping initialization in development');
+    logger.debug('Skipping initialization in development');
     return;
   }
 
   // Check if DSN is configured
   const dsn = import.meta.env.VITE_SENTRY_DSN;
   if (!dsn) {
-    console.warn('[Sentry] DSN not configured - error tracking disabled');
+    logger.warn('DSN not configured - error tracking disabled');
     return;
   }
 
@@ -76,13 +79,13 @@ export function initSentry() {
     ],
   });
 
-  console.log('[Sentry] Initialized successfully');
+  logger.info('Initialized successfully');
 }
 
 /**
  * Capture custom error with context
  */
-export function captureError(error: Error, context?: Record<string, any>) {
+export function captureError(error: Error, context?: Record<string, unknown>) {
   if (context) {
     Sentry.setContext('custom', context);
   }

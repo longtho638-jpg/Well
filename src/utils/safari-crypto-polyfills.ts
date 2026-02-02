@@ -3,6 +3,10 @@
  * Ensures compatibility with Safari < 14 and non-HTTPS contexts
  */
 
+import { createLogger } from './logger';
+
+const logger = createLogger('Polyfills');
+
 // ============================================================================
 // PROMISE.ALLSETTLED POLYFILL (Safari < 13)
 // ============================================================================
@@ -40,7 +44,7 @@ export function safeGetRandomValues(array: Uint8Array): Uint8Array {
     try {
       return window.crypto.getRandomValues(array);
     } catch (error) {
-      console.warn('crypto.getRandomValues failed, using Math.random fallback:', error);
+      logger.warn('crypto.getRandomValues failed, using Math.random fallback:', error);
     }
   }
 
@@ -59,7 +63,7 @@ export async function safeDigest(algorithm: string, data: ArrayBuffer): Promise<
     try {
       return await window.crypto.subtle.digest(algorithm, data);
     } catch (error) {
-      console.warn('crypto.subtle.digest failed, using fallback:', error);
+      logger.warn('crypto.subtle.digest failed, using fallback:', error);
     }
   }
 
@@ -85,12 +89,12 @@ export async function safeDigest(algorithm: string, data: ArrayBuffer): Promise<
 export function initializePolyfills(): void {
   // Log crypto availability
   if (!isCryptoAvailable()) {
-    console.warn('Web Crypto API not available. Using fallback implementations.');
+    logger.warn('Web Crypto API not available. Using fallback implementations.');
   }
 
   // Safari detection
   const isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
   if (isSafari) {
-    console.info('Safari detected. Polyfills active for compatibility.');
+    logger.info('Safari detected. Polyfills active for compatibility.');
   }
 }

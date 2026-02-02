@@ -7,7 +7,7 @@ export interface ConfigState {
  * Validates that all required environment variables are present.
  * Throws an error in production or logs a warning in development if keys are missing.
  */
-export function validateConfig(env: any = import.meta.env): ConfigState {
+export function validateConfig(env: Record<string, string | boolean | undefined> = import.meta.env): ConfigState {
   const requiredEnvVars = [
     'VITE_FIREBASE_API_KEY',
     'VITE_FIREBASE_AUTH_DOMAIN',
