@@ -831,6 +831,24 @@ export const vi = {
       shareTitle: 'QR Code của tôi - WellNexus',
       shareText: 'Quét QR code này để truy cập link giới thiệu của tôi!',
     },
+    templates: {
+      t1: {
+        title: 'Giới thiệu ANIMA 119',
+        content: '🌿 ANIMA 119 - Giải pháp vàng cho giấc ngủ ngon!\n\n✨ Bạn đang gặp khó khăn với giấc ngủ?\n✨ Thường xuyên lo âu, căng thẳng?\n✨ Muốn cải thiện sức khỏe thần kinh?\n\n💊 ANIMA 119 là câu trả lời hoàn hảo:\n✅ Giúp ngủ sâu, ngủ ngon\n✅ Giảm stress, lo âu\n✅ Cân bằng cảm xúc\n✅ 100% thành phần tự nhiên\n\n💰 Giá: 15.900.000đ\n🎁 Ưu đãi đặc biệt cho khách hàng mới!\n\n📱 Liên hệ ngay để được tư vấn miễn phí!',
+      },
+      t2: {
+        title: 'Câu chuyện thành công',
+        content: '💪 Câu chuyện của chị Mai - 35 tuổi\n\n"Trước đây, tôi thường xuyên mất ngủ, mệt mỏi suốt ngày. Sau 2 tuần sử dụng ANIMA 119, tôi đã có những đêm ngủ ngon hơn rất nhiều. Cảm ơn ANIMA đã giúp tôi lấy lại sức khỏe!"\n\n🌟 Bạn cũng có thể thay đổi cuộc sống như chị Mai!\n\n📞 Inbox để được tư vấn và nhận ưu đãi đặc biệt!',
+      },
+      t3: {
+        title: 'Tips sức khỏe',
+        content: '🌙 5 Tips để có giấc ngủ ngon:\n\n1️⃣ Tắt điện thoại trước khi ngủ 30 phút\n2️⃣ Uống trà thảo mộc\n3️⃣ Tạo không gian ngủ thoải mái\n4️⃣ Tập yoga hoặc thiền trước khi ngủ\n5️⃣ Sử dụng ANIMA 119 để hỗ trợ giấc ngủ sâu\n\n💚 Chăm sóc sức khỏe là chăm sóc bản thân!\n\n#SứcKhỏe #GiấcNgủNgon #ANIMA',
+      },
+      t4: {
+        title: 'Khuyến mãi đặc biệt',
+        content: '🎉 FLASH SALE - Chỉ 3 ngày!\n\n🔥 GIẢM 20% toàn bộ sản phẩm ANIMA\n🎁 Tặng kèm quà tặng trị giá 500.000đ\n🚚 Miễn phí vận chuyển toàn quốc\n\n⏰ Chương trình kết thúc sau:\n📅 72 giờ nữa!\n\n💰 Đặt hàng ngay:\n👉 Nhắn tin để được hỗ trợ\n👉 Số lượng có hạn!\n\n#FlashSale #KhuyếnMãi #ANIMA',
+      },
+    },
   },
 
   // Marketing Tools (AI Landing Builder)
@@ -2836,4 +2854,14 @@ export const vi = {
     u_ti_n: 'Ưu tiên',
   },
 
+  // useCopilot
+  useCopilot: {
+    greeting: 'Xin chào {name}! 👋 Tôi là **The Copilot** - trợ lý bán hàng AI của bạn.\n\nTôi sẽ giúp bạn:\n✅ Xử lý từ chối khách hàng\n✅ Gợi ý câu trả lời thông minh\n✅ Tạo kịch bản bán hàng\n\nHãy thử nhập một câu phản đối của khách hàng, ví dụ: "Sản phẩm này đắt quá!"',
+    error_processing: 'Xin lỗi, tôi gặp sự cố. Vui lòng thử lại!',
+    script_generated: 'Đã tạo kịch bản bán hàng',
+    failed_generate: 'Không thể tạo kịch bản',
+    coaching_ready: 'Coaching tips đã sẵn sàng',
+    failed_coaching: 'Không thể lấy coaching',
+    current_product: 'Sản phẩm hiện tại',
+  },
 };

@@ -33,29 +33,29 @@ import {
 const getContentTemplates = (t: (key: string) => string): ContentTemplate[] => [
   {
     id: '1',
-    title: 'Giới thiệu ANIMA 119',
-    content: '🌿 ANIMA 119 - Giải pháp vàng cho giấc ngủ ngon!\n\n✨ Bạn đang gặp khó khăn với giấc ngủ?\n✨ Thường xuyên lo âu, căng thẳng?\n✨ Muốn cải thiện sức khỏe thần kinh?\n\n💊 ANIMA 119 là câu trả lời hoàn hảo:\n✅ Giúp ngủ sâu, ngủ ngon\n✅ Giảm stress, lo âu\n✅ Cân bằng cảm xúc\n✅ 100% thành phần tự nhiên\n\n💰 Giá: 15.900.000đ\n🎁 Ưu đãi đặc biệt cho khách hàng mới!\n\n📱 Liên hệ ngay để được tư vấn miễn phí!',
+    title: t('marketing.templates.t1.title'),
+    content: t('marketing.templates.t1.content'),
     imageUrl: 'https://images.unsplash.com/photo-1541480601022-2308c0f02487?w=800',
     category: 'product'
   },
   {
     id: '2',
-    title: 'Câu chuyện thành công',
-    content: '💪 Câu chuyện của chị Mai - 35 tuổi\n\n"Trước đây, tôi thường xuyên mất ngủ, mệt mỏi suốt ngày. Sau 2 tuần sử dụng ANIMA 119, tôi đã có những đêm ngủ ngon hơn rất nhiều. Cảm ơn ANIMA đã giúp tôi lấy lại sức khỏe!"\n\n🌟 Bạn cũng có thể thay đổi cuộc sống như chị Mai!\n\n📞 Inbox để được tư vấn và nhận ưu đãi đặc biệt!',
+    title: t('marketing.templates.t2.title'),
+    content: t('marketing.templates.t2.content'),
     imageUrl: 'https://images.unsplash.com/photo-1544027993-37dbfe43562a?w=800',
     category: 'testimonial'
   },
   {
     id: '3',
-    title: 'Tips sức khỏe',
-    content: '🌙 5 Tips để có giấc ngủ ngon:\n\n1️⃣ Tắt điện thoại trước khi ngủ 30 phút\n2️⃣ Uống trà thảo mộc\n3️⃣ Tạo không gian ngủ thoải mái\n4️⃣ Tập yoga hoặc thiền trước khi ngủ\n5️⃣ Sử dụng ANIMA 119 để hỗ trợ giấc ngủ sâu\n\n💚 Chăm sóc sức khỏe là chăm sóc bản thân!\n\n#SứcKhỏe #GiấcNgủNgon #ANIMA',
+    title: t('marketing.templates.t3.title'),
+    content: t('marketing.templates.t3.content'),
     imageUrl: 'https://images.unsplash.com/photo-1506126613408-eca07ce68773?w=800',
     category: 'tips'
   },
   {
     id: '4',
-    title: 'Khuyến mãi đặc biệt',
-    content: '🎉 FLASH SALE - Chỉ 3 ngày!\n\n🔥 GIẢM 20% toàn bộ sản phẩm ANIMA\n🎁 Tặng kèm quà tặng trị giá 500.000đ\n🚚 Miễn phí vận chuyển toàn quốc\n\n⏰ Chương trình kết thúc sau:\n📅 72 giờ nữa!\n\n💰 Đặt hàng ngay:\n👉 Nhắn tin để được hỗ trợ\n👉 Số lượng có hạn!\n\n#FlashSale #KhuyếnMãi #ANIMA',
+    title: t('marketing.templates.t4.title'),
+    content: t('marketing.templates.t4.content'),
     imageUrl: 'https://images.unsplash.com/photo-1607082348824-0a96f2a4b9da?w=800',
     category: 'promotion'
   }

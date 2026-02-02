@@ -793,6 +793,24 @@ export const en = {
             qrTip: 'Print this QR code and display at your store, or share online for easy customer access!',
             shareTitle: 'My QR Code - WellNexus',
             shareText: 'Scan this QR code to access my referral link!',
+        },
+        templates: {
+            t1: {
+                title: 'Introducing ANIMA 119',
+                content: '🌿 ANIMA 119 - The golden solution for good sleep!\n\n✨ Are you struggling with sleep?\n✨ Often anxious or stressed?\n✨ Want to improve neurological health?\n\n💊 ANIMA 119 is the perfect answer:\n✅ Helps sleep deep and well\n✅ Reduces stress, anxiety\n✅ Balances emotions\n✅ 100% natural ingredients\n\n💰 Price: 15,900,000₫\n🎁 Special offer for new customers!\n\n📱 Contact now for free consultation!',
+            },
+            t2: {
+                title: 'Success Story',
+                content: '💪 Mai\'s Success Story - 35 years old\n\n"Previously, I often suffered from insomnia and fatigue all day. After 2 weeks of using ANIMA 119, I have had much better sleep. Thank you ANIMA for helping me regain my health!"\n\n🌟 You can also change your life like Mai!\n\n📞 Inbox for consultation and special offers!',
+            },
+            t3: {
+                title: 'Health Tips',
+                content: '🌙 5 Tips for a good night\'s sleep:\n\n1️⃣ Turn off phone 30 mins before bed\n2️⃣ Drink herbal tea\n3️⃣ Create comfortable sleep environment\n4️⃣ Yoga or meditation before sleep\n5️⃣ Use ANIMA 119 to support deep sleep\n\n💚 Caring for health is caring for yourself!\n\n#Health #GoodSleep #ANIMA',
+            },
+            t4: {
+                title: 'Special Promotion',
+                content: '🎉 FLASH SALE - 3 Days Only!\n\n🔥 20% OFF all ANIMA products\n🎁 Free gift worth 500,000₫\n🚚 Free shipping nationwide\n\n⏰ Ends in:\n📅 72 hours!\n\n💰 Order Now:\n👉 Message for support\n👉 Limited quantity!\n\n#FlashSale #Promotion #ANIMA',
+            },
         }
     },
 
@@ -1372,5 +1390,15 @@ export const en = {
         tu_i: 'Age',
         tu_i_1: 'years old',
         v_n_ch_nh: 'Main Concerns',
+    },
+    // useCopilot
+    useCopilot: {
+        greeting: 'Hello {name}! 👋 I am **The Copilot** - your AI Sales Assistant.\n\nI can help you:\n✅ Handle customer objections\n✅ Suggest smart responses\n✅ Create sales scripts\n\nTry entering a customer objection, e.g., "This product is too expensive!"',
+        error_processing: 'Sorry, I encountered an error. Please try again!',
+        script_generated: 'Sales script generated',
+        failed_generate: 'Failed to generate script',
+        coaching_ready: 'Coaching tips ready',
+        failed_coaching: 'Failed to get coaching',
+        current_product: 'Current Product',
     }
 };
