@@ -24,6 +24,7 @@ export const en = {
         viewAll: 'View All',
         viewDetails: 'View Details',
         notSupportedYet: 'Feature coming soon',
+        blocked: 'Blocked',
         currency: {
             vnd: '₫',
             grow: 'Token',
@@ -1152,6 +1153,14 @@ export const en = {
         chatNow: 'Chat on Zalo Now',
 
         restartQuiz: 'Retake Assessment →',
+
+        // Additional health check keys
+        '100': '100%',
+        ph_n_t_ch_chi_ti_t: 'Detailed Analysis',
+        i_m_s_t_ng_kh_a_c_nh_s_c_kh: 'Overall Health Score',
+        s_n_ph_m_c_ai_xu_t_d_nh: 'Recommended AI Products',
+        u_ti_n: 'Priority',
+        l_i_ch_kh_c: 'Other Benefits',
     },
 
     // Admin Panel
@@ -2636,6 +2645,27 @@ export const en = {
         activate: 'Activate',
         ban: 'Ban',
         export_csv: 'Export CSV',
+    },
+
+    // App (global app keys)
+    app: {
+        commission_wallet: 'Commission Wallet',
+    },
+
+    // Patterns (error patterns)
+    patterns: {
+        x_y_ra_l_i: 'An error occurred',
+        th_l_i: 'Failed',
+    },
+
+    // Button (common button states)
+    button: {
+        loading: 'Loading...',
+    },
+
+    // Success Animation
+    successanimation: {
+        success: 'Success',
     },
 };
 
