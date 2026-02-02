@@ -853,6 +853,7 @@ export const vi = {
 
   // Marketing Tools (AI Landing Builder)
   marketingtools: {
+    '4_9': '4.9',
     ai_landing_builder: 'AI Landing Builder',
     new: 'Mới',
     t_o_trang_tuy_n_d_ng_chuy_n_ng: 'Tạo trang tuyển dụng chuyên nghiệp trong tích tắc',
@@ -1314,6 +1315,8 @@ export const vi = {
   landing: {
     hero: {
       title: 'Xây dựng sự nghiệp với WellNexus',
+      badge: 'Hành Trình Thịnh Vượng',
+      headlineAccent: 'Cùng WellNexus',
       subtitle: 'Nền tảng kinh doanh thông minh kết hợp AI, Tokenomics và cộng đồng',
       cta: 'Bắt đầu ngay',
       learnMore: 'Tìm hiểu thêm',
@@ -1511,6 +1514,25 @@ export const vi = {
     xem_l_ch_s_chat: 'Xem lịch sử chat',
     g_i_prompt_click_d_ng_n: 'Gợi ý Prompt - Click để dùng ngay',
     '85': '85%',
+    time: {
+        justNow: 'Vừa xong',
+        hoursAgo: '{{count}} giờ trước',
+        yesterday: 'Hôm qua',
+    },
+    mock: {
+        session1: { title: 'Tư vấn khách hàng về ANIMA 119', preview: 'Khách hỏi về giá và công dụng của ANIMA...' },
+        session2: { title: 'Xử lý từ chối - Giá cao', preview: 'Khách nói sản phẩm đắt quá...' },
+        session3: { title: 'Kịch bản chốt sale cuối tháng', preview: 'Tạo kịch bản chốt sale cho khuyến mãi...' },
+        session4: { title: 'Viết bài đăng Facebook', preview: 'Viết bài giới thiệu sản phẩm mới...' },
+    },
+    prompts: {
+        facebook: { title: 'Viết bài đăng Facebook', prompt: 'Giúp tôi viết bài đăng Facebook giới thiệu ANIMA 119 hấp dẫn, có emoji và call-to-action mạnh mẽ' },
+        salesScript: { title: 'Kịch bản chốt sale', prompt: 'Tạo kịch bản chốt sale cho khách hàng đang do dự về giá' },
+        objection: { title: 'Xử lý từ chối', prompt: 'Khách hàng nói "Tôi cần suy nghĩ thêm". Tôi nên trả lời thế nào?' },
+        coldCall: { title: 'Kịch bản gọi điện', prompt: 'Viết kịch bản gọi điện chào hàng cho khách hàng mới' },
+        highlight: { title: 'Highlight sản phẩm', prompt: 'Liệt kê 5 điểm nổi bật nhất của ANIMA 119 để thuyết phục khách' },
+        promotion: { title: 'Chương trình khuyến mãi', prompt: 'Tạo ý tưởng chương trình khuyến mãi thu hút cho sản phẩm' },
+    },
   },
 
   // Signup Page - AST Migration Keys
@@ -1631,7 +1653,6 @@ export const vi = {
     '84_901_234_567': '+84 901 234 567',
     q1_tp_hcm_vietnam: 'Q1, TP. HCM, Vietnam',
     email_placeholder: 'email@example.com',
-  },
     wellnexus_all_rights_reserved: 'WellNexus. All rights reserved.',
     made_with_in_vietnam: 'Made with ❤️ in Vietnam',
     ssl_secured: 'SSL Secured',
@@ -2233,8 +2254,17 @@ export const vi = {
 
   // quickactionscard
   quickactionscard: {
+    achievement_copied: 'Thành tích đã được sao chép vào clipboard!',
+    achievement_share_text: '🎉 Thành tích WellNexus của tôi:\n\n🏆 Cấp bậc: {{rank}}\n💰 Doanh số: {{sales}}\n👥 Team Volume: {{team}}\n\nTham gia cùng tôi tại WellNexus! 💪',
+    achievement_title: 'Thành tích WellNexus',
     c_ng_c_h_tr_kinh_doanh: 'Công cụ hỗ trợ kinh doanh',
-    tip_s_d_ng_c_c_c_ng_c_n: 'Tip: Sử dụng các công cụ này',
+    gift_card_created: 'Gift Card đã tạo: {{code}} (Đã sao chép)',
+    health_check_share_text: 'Kiểm tra sức khỏe miễn phí cùng WellNexus!',
+    link_copied: 'Link đã được sao chép vào clipboard!',
+    send_gift_card: 'Gửi Gift Card',
+    share_health_check: 'Chia sẻ Link Health Check',
+    share_health_check_desc: 'Gửi link kiểm tra sức khỏe',
+    tip_s_d_ng_c_c_c_ng_c_n: 'Tip: Sử dụng các công cụ này để tăng tương tác với khách hàng',
   },
 
   // rankladdersection
@@ -2308,12 +2338,17 @@ export const vi = {
   // revenueprogresswidget
   revenueprogresswidget: {
     annualized_run_rate_arr: 'Annualized Run Rate (ARR)',
-    baseline_0: 'Baseline 0',
-    benchmark: 'Benchmark',
+    avg_unit_order: 'Avg Unit Order',
+    baseline_0: 'Baseline $0',
+    benchmark: 'Benchmark: ',
+    benchmark_achieved: '🎉 BENCHMARK ACHIEVED',
+    daily_momentum: 'Daily Momentum',
+    days_to_benchmark: 'NGÀY ĐỂ ĐẠT MỐC $1M',
     global_ecosystem_velocity: 'Global Ecosystem Velocity',
     monthly_liquidity_flow: 'Monthly Liquidity Flow',
     revenue_milestone: 'Revenue Milestone',
-    target: 'Target',
+    target: 'Target: ',
+    verified_partners: 'Verified Partners',
   },
 
   // sessionmanager
@@ -2530,18 +2565,6 @@ export const vi = {
     u_ti_n: 'Ưu tiên',
   },
 
-  // Additional herocard keys
-  herocardx: {
-    '100m_vnd_revenue': '100M VND Revenue',
-    achievement_logic: 'Achievement Logic',
-    ecosystem_scaling: 'Ecosystem Scaling',
-    founders_pathway: 'Founders Pathway',
-    live: 'LIVE',
-    reach: 'Reach',
-    to_hit_next_milestone: 'to hit next milestone',
-    to_unlock: 'to unlock',
-    venture_partner_status: 'Venture Partner Status',
-  },
 
   // leaderdashboard keys
   leaderdashboardx: {
@@ -2796,36 +2819,6 @@ export const vi = {
     t_ng_t_i_s_n: 'Tổng tài sản',
     th_ng_n_y: 'Tháng này',
     vnd_stablecoin_1_1000: 'VND Stablecoin 1:1000',
-  },
-
-  // marketingtools - CORRECT section (40 keys from MarketingTools.tsx)
-  marketingtools: {
-    '4_9': '4.9',
-    ai_ang_vi_t_c_u_chuy_n: 'AI đang viết câu chuyện',
-    ai_landing_builder: 'AI Landing Builder',
-    ai_s_t_o_landing_page_chuy_n: 'AI sẽ tạo Landing Page chuyên nghiệp',
-    ai_vi_t_c_u_chuy_n_c_a_t_i: 'AI viết câu chuyện của tôi',
-    ch_n_template: 'Chọn Template',
-    ch_n_template_v_click_ai_vi: 'Chọn Template và Click AI viết',
-    chuy_n_i: 'Chuyển đổi',
-    click_t_i_nh_l_n: 'Click tải ảnh lên',
-    click_thay_i: 'Click thay đổi',
-    conversions: 'Conversions',
-    jpg_png_t_i_a_5mb: 'JPG, PNG tối đa 5MB',
-    l_t_xem: 'Lượt xem',
-    landing_page_xu_t_b_n: 'Landing Page xuất bản',
-    landing_pages_t_o: 'Landing Pages đã tạo',
-    link_landing_page: 'Link Landing Page',
-    link_s_n_s_ng_chia_s: 'Link sẵn sàng chia sẻ',
-    live: 'LIVE',
-    new: 'New',
-    nh_t_i_l_n: 'Nhấn tải lên',
-    preview_landing_page: 'Preview Landing Page',
-    t_l: 'Tỷ lệ',
-    t_o_trang_tuy_n_d_ng_chuy_n_ng: 'Tạo trang tuyển dụng chuyên nghiệp',
-    upload_nh_ch_n_dung: 'Upload ảnh chân dung',
-    views: 'Views',
-    xu_t_b_n_ngay: 'Xuất bản ngay',
   },
 
   // notificationcenter - CORRECT section (6 keys)

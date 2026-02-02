@@ -16,7 +16,7 @@ export const QuickActionsCard: React.FC = () => {
     // Mock logic for SEED phase
     const code = 'GIFT-' + Math.random().toString(36).substr(2, 6).toUpperCase();
     navigator.clipboard.writeText(code);
-    showToast(`Gift Card created: ${code} (Copied)`, 'success');
+    showToast(t('quickactionscard.gift_card_created', { code }), 'success');
   };
 
   const handleShareHealthCheck = () => {
@@ -24,29 +24,29 @@ export const QuickActionsCard: React.FC = () => {
     if (navigator.share) {
       navigator.share({
         title: 'WellNexus Health Check',
-        text: 'Kiểm tra sức khỏe miễn phí cùng WellNexus!',
+        text: t('quickactionscard.health_check_share_text'),
         url: healthCheckLink,
       }).catch(() => {
         // Fallback to clipboard
         navigator.clipboard.writeText(healthCheckLink);
-        alert('Link đã được sao chép vào clipboard!');
+        alert(t('quickactionscard.link_copied'));
       });
     } else {
       navigator.clipboard.writeText(healthCheckLink);
-      alert('Link đã được sao chép vào clipboard!');
+      alert(t('quickactionscard.link_copied'));
     }
   };
 
   const handleShareAchievement = () => {
     // Create achievement message based on user's current stats
-    const achievementText = `🎉 Thành tích WellNexus của tôi:\n\n` +
-      `🏆 Cấp bậc: ${user.rank}\n` +
-      `💰 Doanh số: ${formatVND(user.totalSales)}\n` +
-      `👥 Team Volume: ${formatVND(user.teamVolume)}\n\n` +
-      `Tham gia cùng tôi tại WellNexus! 💪`;
+    const achievementText = t('quickactionscard.achievement_share_text', {
+      rank: user.rank,
+      sales: formatVND(user.totalSales),
+      team: formatVND(user.teamVolume)
+    });
 
     const shareData = {
-      title: 'Thành tích WellNexus',
+      title: t('quickactionscard.achievement_title'),
       text: achievementText,
       url: user.referralLink || 'https://wellnexus.app',
     };
@@ -56,20 +56,20 @@ export const QuickActionsCard: React.FC = () => {
         // User cancelled or error occurred, fallback to clipboard
         if (error.name !== 'AbortError') {
           navigator.clipboard.writeText(achievementText + '\n\n' + shareData.url);
-          alert('Thành tích đã được sao chép vào clipboard!');
+          alert(t('quickactionscard.achievement_copied'));
         }
       });
     } else {
       // Fallback to clipboard for browsers that don't support Web Share API
       navigator.clipboard.writeText(achievementText + '\n\n' + shareData.url);
-      alert('Thành tích đã được sao chép vào clipboard!');
+      alert(t('quickactionscard.achievement_copied'));
     }
   };
 
   const quickActions = [
     {
       id: 'gift-card',
-      label: 'Gửi Gift Card',
+      label: t('quickactionscard.send_gift_card'),
       icon: Gift,
       color: 'from-pink-500 to-rose-600',
       bgColor: 'bg-pink-50',
@@ -79,13 +79,13 @@ export const QuickActionsCard: React.FC = () => {
     },
     {
       id: 'health-check',
-      label: 'Chia sẻ Link Health Check',
+      label: t('quickactionscard.share_health_check'),
       icon: Heart,
       color: 'from-red-500 to-pink-600',
       bgColor: 'bg-red-50',
       iconColor: 'text-red-600',
       onClick: handleShareHealthCheck,
-      description: 'Gửi link kiểm tra sức khỏe',
+      description: t('quickactionscard.share_health_check_desc'),
     },
     {
       id: 'share-achievement',

@@ -84,16 +84,16 @@ export const LiveActivitiesTicker: React.FC<LiveActivitiesTickerProps> = ({ acti
                                 <div className="flex-1 min-w-0">
                                     <div className="flex items-center justify-between mb-0.5">
                                         <p className="text-xs font-bold text-white truncate">
-                                            {activity.userName || activity.user} <span className="text-zinc-500 font-normal ml-1">in {activity.location || 'Vietnam'}</span>
+                                            {activity.userName || activity.user} <span className="text-zinc-500 font-normal ml-1">{t('liveActivities.in')} {activity.location || 'Vietnam'}</span>
                                         </p>
-                                        <span className="text-[10px] text-zinc-500 font-mono">Just now</span>
+                                        <span className="text-[10px] text-zinc-500 font-mono">{t('liveActivities.just_now')}</span>
                                     </div>
                                     <p className="text-[11px] text-zinc-400 truncate">{activity.message || activity.detail}</p>
                                 </div>
                                 {activity.amount && activity.amount > 0 && (
                                     <div className="text-right shrink-0">
                                         <div className="text-xs font-bold text-emerald-400">+{activity.amount.toLocaleString()}</div>
-                                        <div className="text-[9px] text-zinc-600 uppercase">VND</div>
+                                        <div className="text-[9px] text-zinc-600 uppercase">{t('liveActivities.vnd')}</div>
                                     </div>
                                 )}
                             </motion.div>

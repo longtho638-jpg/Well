@@ -110,6 +110,11 @@ export const en = {
             annualizedRevenue: 'Annualized Revenue',
             assetGrowth: 'Asset Growth',
             valuationMethod: 'Valuation Method: DCF & Comparable',
+            sub: {
+                shop_token_liquidity: 'SHOP Token Liquidity',
+                grow_token_yield: 'GROW Token Yield',
+                annualized_revenue_rate: 'Annualized Revenue Rate',
+            },
         },
 
         // Stats Grid (WEALTH OS)
@@ -145,6 +150,7 @@ export const en = {
             total: 'Total',
             average: 'Average',
             peak: 'Peak',
+            tooltip_label: 'Revenue',
         },
 
         // Revenue Breakdown
@@ -226,6 +232,9 @@ export const en = {
             systemActive: 'System is active!',
             new: 'NEW',
             loading: 'Loading activities...',
+            in: 'in',
+            just_now: 'Just now',
+            vnd: 'VND',
             activities: {
                 earnedGrow: 'just earned {amount} GROW tokens',
                 rewardedGrow: 'rewarded {amount} GROW',
@@ -1164,6 +1173,8 @@ export const en = {
     landing: {
         hero: {
             title: 'Build Your Career with WellNexus',
+            badge: 'Journey to Prosperity',
+            headlineAccent: 'With WellNexus',
             subtitle: 'Smart business platform combining AI, Tokenomics, and community',
             cta: 'Get Started',
             learnMore: 'Learn More',
@@ -1491,8 +1502,75 @@ export const en = {
         ng: 'Got it',
     },
     copilotsuggestions: {
-        g_i: 'Send',
-        g_i_c_u_h_i: 'Ask a question',
+        g_i: 'Suggestion ',
+        g_i_c_u_h_i: 'Suggested Questions',
+    },
+
+    // herocard
+    herocard: {
+        commission: 'Commission',
+        h_ng_n_m: 'Annual',
+        live_commission: 'Live Commission',
+        partner_id: 'Partner ID',
+        t_ng_tr_ng: 'Growth',
+        th_ng: 'Month',
+        total_yield: 'Total Yield',
+        welcome: 'Welcome',
+        '100m_vnd_revenue': '100M VND Revenue',
+        achievement_logic: 'Achievement Logic',
+        ecosystem_scaling: 'Ecosystem Scaling',
+        founders_pathway: 'Founders Pathway',
+        live: 'LIVE',
+        reach: 'Reach ',
+        to_hit_next_milestone: 'to hit next milestone',
+        to_unlock: ' to unlock ',
+        venture_partner_status: 'Venture Partner Status',
+    },
+
+    // statsgrid
+    statsgrid: {
+        '10_pit': '10% PIT',
+        next_cycle: 'Next Cycle',
+        reserved_tier_gt_2m: 'Reserved Tier >2M',
+    },
+
+    // Copilot Page
+    copilotpage: {
+        chat_m_i: 'New Chat',
+        l_ch_s_chat: 'Chat History',
+        xem_l_ch_s_chat: 'View chat history',
+        g_i_prompt_click_d_ng_n: 'Prompt Suggestions - Click to use',
+        '85': '85%',
+        time: {
+            justNow: 'Just now',
+            hoursAgo: '{{count}} hours ago',
+            yesterday: 'Yesterday',
+        },
+        mock: {
+            session1: { title: 'Customer consultation for ANIMA 119', preview: 'Customer asking about price and benefits...' },
+            session2: { title: 'Objection Handling - High Price', preview: 'Customer says product is too expensive...' },
+            session3: { title: 'Month-end Closing Script', preview: 'Create closing script for promotion...' },
+            session4: { title: 'Facebook Post Writing', preview: 'Write a post introducing new product...' },
+        },
+        prompts: {
+            facebook: { title: 'Write Facebook Post', prompt: 'Help me write an engaging Facebook post for ANIMA 119 with emojis and strong CTA' },
+            salesScript: { title: 'Closing Script', prompt: 'Create a closing script for hesitant customers regarding price' },
+            objection: { title: 'Objection Handling', prompt: 'Customer says "I need to think about it". How should I respond?' },
+            coldCall: { title: 'Cold Call Script', prompt: 'Write a cold call script for new customers' },
+            highlight: { title: 'Product Highlights', prompt: 'List 5 key highlights of ANIMA 119 to persuade customers' },
+            promotion: { title: 'Promotion Ideas', prompt: 'Create attractive promotion ideas for the product' },
+        },
+    },
+
+    // useHeroCard
+    useHeroCard: {
+        share_title: 'Join WellNexus',
+        share_text: 'Join me on WellNexus and start earning!',
+    },
+
+    // useStatsGrid
+    useStatsGrid: {
+        tbd: 'TBD',
     },
 
     // useCopilot
@@ -1504,5 +1582,36 @@ export const en = {
         coaching_ready: 'Coaching tips ready',
         failed_coaching: 'Failed to get coaching',
         current_product: 'Current Product',
-    }
+    },
+
+    // Revenue Progress Widget
+    revenueprogresswidget: {
+        revenue_milestone: 'Revenue Milestone',
+        global_ecosystem_velocity: 'Global Ecosystem Velocity',
+        benchmark: 'Benchmark: ',
+        monthly_liquidity_flow: 'Monthly Liquidity Flow',
+        baseline_0: 'Baseline $0',
+        target: 'Target: ',
+        annualized_run_rate_arr: 'Annualized Run Rate (ARR)',
+        avg_unit_order: 'Avg Unit Order',
+        daily_momentum: 'Daily Momentum',
+        verified_partners: 'Verified Partners',
+        benchmark_achieved: '🎉 BENCHMARK ACHIEVED',
+        days_to_benchmark: 'DAYS TO $1M BENCHMARK',
+    },
+
+    // Quick Actions Card
+    quickactionscard: {
+        c_ng_c_h_tr_kinh_doanh: 'Business Support Tools',
+        gift_card_created: 'Gift Card created: {{code}} (Copied)',
+        health_check_share_text: 'Free Health Check with WellNexus!',
+        link_copied: 'Link copied to clipboard!',
+        achievement_title: 'My WellNexus Achievement',
+        achievement_share_text: '🎉 My WellNexus Achievement:\n\n🏆 Rank: {{rank}}\n💰 Sales: {{sales}}\n👥 Team Volume: {{team}}\n\nJoin me at WellNexus! 💪',
+        achievement_copied: 'Achievement copied to clipboard!',
+        send_gift_card: 'Send Gift Card',
+        share_health_check: 'Share Health Check Link',
+        share_health_check_desc: 'Send health check link',
+        tip_s_d_ng_c_c_c_ng_c_n: 'Tip: Use these tools to increase customer engagement',
+    },
 };

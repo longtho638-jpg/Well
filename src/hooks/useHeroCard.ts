@@ -1,8 +1,10 @@
 import { useState, useCallback, useMemo } from 'react';
 import { User } from '@/types';
 import { uiLogger } from '@/utils/logger';
+import { useTranslation } from './useTranslation';
 
 export function useHeroCard(user: User) {
+    const { t } = useTranslation();
     const [copied, setCopied] = useState(false);
 
     // Gamification Logic: Founder Club Quest
@@ -36,8 +38,8 @@ export function useHeroCard(user: User) {
         if (navigator.share) {
             try {
                 await navigator.share({
-                    title: 'Join WellNexus',
-                    text: 'Join me on WellNexus and start earning!',
+                    title: t('useHeroCard.share_title'),
+                    text: t('useHeroCard.share_text'),
                     url: referralLink,
                 });
             } catch (err) {
