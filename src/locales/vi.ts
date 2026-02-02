@@ -35,6 +35,7 @@ export const vi = {
     dashboard: 'Trang chủ',
     products: 'Sản Phẩm',
     partner: 'Partner',
+    ventureDescription: 'Gia nhập đội ngũ 200+ Co-Founders',
     marketplace: 'Cửa hàng',
     wallet: 'Ví tiền',
     team: 'Đội nhóm',

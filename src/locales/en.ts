@@ -35,6 +35,7 @@ export const en = {
         dashboard: 'Dashboard',
         products: 'Products',
         partner: 'Partner',
+        ventureDescription: 'Join the team of 200+ Co-Founders',
         marketplace: 'Marketplace',
         wallet: 'Wallet',
         team: 'Team',
@@ -682,6 +683,17 @@ export const en = {
             timing: 'Timing',
             need: 'Need',
             general: 'General',
+        },
+
+        input: {
+            placeholder: 'Enter customer objection...',
+        },
+
+        suggestions: {
+            price: 'Product price is too high!',
+            trust: 'I don\'t trust this product yet',
+            competitor: 'Product X is cheaper',
+            script: 'Write a sales script for me',
         }
     },
 
