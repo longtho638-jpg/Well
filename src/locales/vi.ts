@@ -427,6 +427,42 @@ export const vi = {
       terms: 'Bằng việc đặt hàng, bạn đồng ý với Điều khoản dịch vụ và Chính sách bảo mật của WellNexus.',
       success: 'Đặt hàng thành công! Đơn hàng của bạn đã được ghi nhận.',
       error: 'Có lỗi xảy ra khi xử lý đơn hàng. Vui lòng thử lại.',
+      guestForm: {
+        fullName: {
+          label: 'Họ và tên',
+          placeholder: 'Nguyễn Văn A'
+        },
+        phone: {
+          label: 'Số điện thoại',
+          placeholder: '0901234567'
+        },
+        email: {
+          label: 'Email (Để nhận thông báo đơn hàng)',
+          placeholder: 'example@email.com'
+        },
+        address: {
+          city: {
+            label: 'Tỉnh / Thành phố',
+            placeholder: 'TP. Hồ Chí Minh'
+          },
+          district: {
+            label: 'Quận / Huyện',
+            placeholder: 'Quận 1'
+          },
+          ward: {
+            label: 'Phường / Xã',
+            placeholder: 'Phường Bến Nghé'
+          },
+          street: {
+            label: 'Địa chỉ chi tiết',
+            placeholder: 'Số 123, Đường Nguyễn Huệ'
+          }
+        },
+        note: {
+          label: 'Ghi chú (Tùy chọn)',
+          placeholder: 'Giao hàng trong giờ hành chính...'
+        }
+      },
       form: {
         fullName: 'Họ và tên',
         phone: 'Số điện thoại',
@@ -1370,8 +1406,10 @@ export const vi = {
     register: {
       title: 'Đăng ký',
       subtitle: 'Tham gia cộng đồng WellNexus',
+      earlyAccess: 'Truy Cập Sớm 2.0',
       fullName: 'Họ và tên',
       email: 'Email',
+      emailBusiness: 'Email Doanh Nghiệp',
       phone: 'Số điện thoại',
       password: 'Mật khẩu',
       confirmPassword: 'Xác nhận mật khẩu',
@@ -1381,8 +1419,13 @@ export const vi = {
       and: 'và',
       privacy: 'Chính sách bảo mật',
       registerButton: 'Đăng ký',
+      processing: 'Đang tạo tài khoản...',
       haveAccount: 'Đã có tài khoản?',
       login: 'Đăng nhập',
+      placeholders: {
+        name: 'Nhập họ và tên đầy đủ',
+        email: 'ten@congty.com'
+      }
     },
     forgotPassword: {
       title: 'Quên mật khẩu',
@@ -1577,6 +1620,7 @@ export const vi = {
       sectionBadge: 'Lợi Thế Tiên Phong',
       sectionTitle: 'Tại Sao Phải Tham Gia Ngay?',
       subheadline: 'Quyền lợi đặc biệt dành cho những người đi đầu trong giai đoạn Hạt Giống',
+      cta: 'Tham Gia Ngay - Chỉ còn 157 slot',
       benefits: {
         founders: {
           title: 'Founders Club Bonus',
@@ -1600,6 +1644,11 @@ export const vi = {
 
   // Error Messages
   errors: {
+    passwordsDoNotMatch: 'Mật khẩu không khớp',
+    signupFailed: 'Đăng ký thất bại. Vui lòng thử lại.',
+    invalidCredentials: 'Email hoặc mật khẩu không đúng.',
+    timeout: 'Đăng nhập hết thời gian. Vui lòng kiểm tra kết nối mạng.',
+    emailNotConfirmed: 'Email chưa được xác nhận. Vui lòng kiểm tra hộp thư.',
     network: 'Lỗi kết nối mạng. Vui lòng thử lại.',
     unauthorized: 'Bạn không có quyền truy cập.',
     notFound: 'Không tìm thấy trang này.',
