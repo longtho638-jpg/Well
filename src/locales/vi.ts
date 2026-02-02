@@ -24,6 +24,7 @@ export const vi = {
     viewAll: 'Xem tất cả',
     viewDetails: 'Xem chi tiết',
     notSupportedYet: 'Tính năng sắp ra mắt',
+    blocked: 'Bị Chặn',
     currency: {
       vnd: 'đ',
       grow: 'Token',
@@ -2304,7 +2305,8 @@ export const vi = {
     },
     ranks: {
         dai_su: 'Đại sứ',
-        ctv: 'Cộng tác viên'
+        ctv: 'Cộng tác viên',
+        unknown: 'Không Rõ',
     },
     alerts: {
         reminder_success: 'Đã gửi nhắc nhở thành công!',
@@ -2506,10 +2508,10 @@ export const vi = {
 
   // productinfo
   productinfo: {
-    '4_9_core_rating': '4.9 Core Rating',
-    available_capacity: 'Available Capacity',
-    bio_optic_optimization: 'Bio Optic Optimization',
-    units: 'Units',
+    '4_9_core_rating': 'Đánh Giá Cốt Lõi 4.9',
+    available_capacity: 'Công Suất Khả Dụng',
+    bio_optic_optimization: 'Tối Ưu Hóa Bio Optic',
+    units: 'Đơn Vị',
   },
 
   // productpricing
@@ -2542,6 +2544,8 @@ export const vi = {
   // producttabs
   producttabs: {
     standard_engagement_protocol: 'Standard Engagement Protocol',
+    primary_yield: 'Lợi Nhuận Chính',
+    composition: 'Thành Phần',
   },
 
   // quickactionscard
@@ -2751,8 +2755,8 @@ export const vi = {
 
   // valuationcard
   valuationcard: {
-    '12_5_pe_ratio': '12.5 PE Ratio',
-    mom_growth: 'MoM Growth',
+    '12_5_pe_ratio': 'Tỷ Lệ P/E 12.5',
+    mom_growth: 'Tăng Trưởng MoM',
   },
 
   // venturefooter
@@ -2845,6 +2849,10 @@ export const vi = {
     sponsor: 'Người giới thiệu: ',
     team: 'Đội nhóm',
     visual_representation_of_your: 'Biểu đồ trực quan về cấu trúc đội nhóm của bạn',
+    name_placeholder: 'Nguyễn Văn A',
+    email_placeholder: 'email@example.com',
+    phone_placeholder: '0912345678',
+    password_placeholder: '••••••••',
     toast: {
       added_success: 'Đã thêm {name} vào đội nhóm!',
       add_failed: 'Thêm thành viên thất bại',
@@ -2923,6 +2931,9 @@ export const vi = {
   // productactions keys
   productactions: {
     copy_ref_node: 'Copy Ref Node',
+    logistics_offline: 'Logistics Ngoại Tuyến',
+    allocated_successfully: 'Đã Phân Bổ Thành Công',
+    order_prototype: 'Mẫu Đơn Hàng',
   },
 
 
