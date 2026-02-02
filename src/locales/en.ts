@@ -1866,6 +1866,29 @@ export const en = {
         rate: 'Rate (',
     },
 
+    // Audit Log
+    auditlog: {
+        all_administrators: 'All Administrators',
+        analyze_all_actions: 'Analyze All Actions',
+        audit_trail: 'Audit Trail',
+        browser_api_gateway_node: 'Browser API Gateway Node',
+        classification: 'Classification',
+        close_inspection: 'Close Inspection',
+        detailed_forensics_for_trace: 'Detailed Forensics For Trace',
+        event_inspection: 'Event Inspection',
+        export_dataset: 'Export Dataset',
+        immutable_ledger_of_administra: 'Immutable Ledger of Administration',
+        network_origin: 'Network Origin',
+        no_telemetry_signals_detected: 'No Telemetry Signals Detected',
+        operator: 'Operator',
+        payload_metadata: 'Payload Metadata',
+        resource_node: 'Resource Node',
+        temporal_signature: 'Temporal Signature',
+        timeline: 'Timeline',
+        tracing: 'Tracing',
+        utc_synchronization_active: 'UTC Synchronization Active',
+    },
+
     // herocard
     herocard: {
         commission: 'Commission',
