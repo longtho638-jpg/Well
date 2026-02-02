@@ -180,36 +180,36 @@ export function PremiumHeader() {
 // PREMIUM FOOTER - MAX LEVEL 2026 East Asian Brand
 // ============================================================================
 
-const getFooterLinks = (isAuth: boolean) => [
-  {
-    title: 'Sản Phẩm',
-    icon: <ShoppingBag className="w-4 h-4" />,
-    links: [
-      { label: 'Marketplace', href: isAuth ? '/dashboard/marketplace' : '/login?redirect=/dashboard/marketplace' },
-      { label: 'AI Health Coach', href: isAuth ? '/dashboard/health-coach' : '/login?redirect=/dashboard/health-coach' },
-    ]
-  },
-  {
-    title: 'Partner',
-    icon: <Users className="w-4 h-4" />,
-    links: [
-      { label: 'Venture Program', href: '/venture' },
-      { label: 'Leader Dashboard', href: isAuth ? '/dashboard/team' : '/login?redirect=/dashboard/team' },
-    ]
-  },
-  {
-    title: 'Company',
-    icon: <Globe className="w-4 h-4" />,
-    links: [
-      { label: 'About Us', href: '/venture' },
-      { label: 'Careers', href: '/venture' },
-    ]
-  }
-];
-
 export function PremiumFooter() {
   const { isAuthenticated } = useStore();
-  const FOOTER_LINKS = getFooterLinks(isAuthenticated);
+  const { t } = useTranslation();
+
+  const FOOTER_LINKS = [
+    {
+      title: t('nav.products'),
+      icon: <ShoppingBag className="w-4 h-4" />,
+      links: [
+        { label: t('nav.marketplace'), href: isAuthenticated ? '/dashboard/marketplace' : '/login?redirect=/dashboard/marketplace' },
+        { label: t('nav.healthCoach'), href: isAuthenticated ? '/dashboard/health-coach' : '/login?redirect=/dashboard/health-coach' },
+      ]
+    },
+    {
+      title: t('nav.partner'),
+      icon: <Users className="w-4 h-4" />,
+      links: [
+        { label: t('nav.ventureProgram'), href: '/venture' },
+        { label: t('team.leaderDashboard'), href: isAuthenticated ? '/dashboard/team' : '/login?redirect=/dashboard/team' },
+      ]
+    },
+    {
+      title: t('nav.company'),
+      icon: <Globe className="w-4 h-4" />,
+      links: [
+        { label: t('nav.aboutUs'), href: '/venture' },
+        { label: t('nav.careers'), href: '/venture' },
+      ]
+    }
+  ];
 
   return (
     <footer className="relative bg-zinc-950 overflow-hidden">

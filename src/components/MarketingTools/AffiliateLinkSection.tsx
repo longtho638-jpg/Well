@@ -102,7 +102,7 @@ export default function AffiliateLinkSection({
                 </div>
                 <div className="flex items-center justify-between">
                   <span className="text-sm text-gray-600 dark:text-slate-400">{t('marketing.affiliate.stats.conversion')}</span>
-                  <span className="font-bold text-primary dark:text-cyan-400">{t('marketingtools.4_9')}</span>
+                  <span className="font-bold text-primary dark:text-cyan-400">{t('marketingtools.4_9')}%</span>
                 </div>
               </div>
             </div>

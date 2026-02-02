@@ -39,7 +39,7 @@ export const VentureFooter: React.FC<VentureFooterProps> = ({ content }) => {
                                         {content.logo}
                                     </div>
                                     <div className="text-[10px] text-zinc-500 font-black uppercase tracking-widest italic leading-none">
-                                        {t('venturefooter.strategic_ecosystem_builder')}</div>
+                                        {t('venture.footer.strategic_ecosystem_builder')}</div>
                                 </div>
                             </div>
                             <p className="text-zinc-500 text-xl font-medium leading-relaxed max-w-2xl italic">
@@ -72,7 +72,7 @@ export const VentureFooter: React.FC<VentureFooterProps> = ({ content }) => {
                             </motion.button>
                         </div>
                         <p className="text-[10px] font-black text-zinc-600 uppercase tracking-widest leading-relaxed">
-                            {t('venturefooter.subscribe_for_exclusive_intake')}</p>
+                            {t('venture.footer.subscribe_for_exclusive_intake')}</p>
                     </div>
                 </div>
 
@@ -81,8 +81,8 @@ export const VentureFooter: React.FC<VentureFooterProps> = ({ content }) => {
                         {content.copyright}
                     </div>
                     <div className="flex items-center gap-10">
-                        <FooterLink label="Ecosystem Privacy" />
-                        <FooterLink label="Term Sheet Compliance" />
+                        <FooterLink label={t('venture.footer.privacy')} />
+                        <FooterLink label={t('venture.footer.terms')} />
                     </div>
                 </div>
             </div>

@@ -52,7 +52,7 @@ export const AgentDetailsModal: React.FC<AgentDetailsModalProps> = ({ agentName,
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
                     <div className="space-y-12">
-                        <ModalSection title="Strategic Objectives" icon={Target}>
+                        <ModalSection title={t('agentDashboard.strategic_objectives')} icon={Target}>
                             <ul className="space-y-4">
                                 {def.primary_objectives.map((obj, i) => (
                                     <li key={i} className="flex gap-4 group/item">
@@ -63,7 +63,7 @@ export const AgentDetailsModal: React.FC<AgentDetailsModalProps> = ({ agentName,
                             </ul>
                         </ModalSection>
 
-                        <ModalSection title="Operational Policies" icon={Shield}>
+                        <ModalSection title={t('agentDashboard.operational_policies')} icon={Shield}>
                             <div className="space-y-4">
                                 {def.policy_and_constraints.map((policy, i) => (
                                     <div key={i} className={`p-5 rounded-2xl border ${policy.enforcement === 'hard' ? 'bg-rose-500/5 border-rose-500/10' : 'bg-amber-500/5 border-amber-500/10'}`}>
@@ -77,7 +77,7 @@ export const AgentDetailsModal: React.FC<AgentDetailsModalProps> = ({ agentName,
                     </div>
 
                     <div className="space-y-12">
-                        <ModalSection title="Operational Telemetry" icon={Activity}>
+                        <ModalSection title={t('agentDashboard.operational_telemetry')} icon={Activity}>
                             <div className="space-y-6">
                                 {kpis.map((kpi, i) => (
                                     <div key={i} className="bg-zinc-900 border border-white/5 rounded-2xl p-6 group/kpi">
@@ -99,7 +99,7 @@ export const AgentDetailsModal: React.FC<AgentDetailsModalProps> = ({ agentName,
                             </div>
                         </ModalSection>
 
-                        <ModalSection title="Inputs & Data Streams" icon={BookOpen}>
+                        <ModalSection title={t('agentDashboard.inputs_data_streams')} icon={BookOpen}>
                             <div className="flex flex-wrap gap-2">
                                 {def.inputs.map((input, i) => (
                                     <span key={i} className="px-4 py-2 bg-zinc-900 border border-white/5 rounded-xl text-[9px] font-black text-zinc-500 uppercase tracking-widest italic group hover:text-white hover:border-white/10 transition-all">

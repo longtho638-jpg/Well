@@ -181,7 +181,7 @@ export default function Login() {
                                 disabled={loading || success}
                                 className="w-full bg-slate-900/40 hover:bg-slate-800/60 border border-teal-500/20 text-teal-400 font-semibold py-3.5 rounded-2xl flex items-center justify-center gap-2 transition-all disabled:opacity-50"
                             >
-                                {t('login.demo')}</button>
+                                {t('auth.login.demo')}</button>
                         </div>
                     </form>
                 </div>

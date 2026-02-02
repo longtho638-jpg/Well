@@ -1,7 +1,8 @@
 import { useState, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useAuth } from './useAuth';
 import { authLogger } from '@/utils/logger';
+import { useTranslation } from '@/hooks';
+import { supabase } from '@/lib/supabase';
 
 export function useSignup() {
     const [formData, setFormData] = useState({
@@ -13,7 +14,7 @@ export function useSignup() {
     const [error, setError] = useState('');
     const [loading, setLoading] = useState(false);
 
-    const { signUp } = useAuth();
+    const { t } = useTranslation();
     const navigate = useNavigate();
 
     const handleChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
@@ -30,13 +31,24 @@ export function useSignup() {
         setError('');
 
         if (formData.password !== formData.confirmPassword) {
-            setError('Mật khẩu nhập lại không khớp');
+            setError(t('errors.passwordsDoNotMatch'));
             setLoading(false);
             return;
         }
 
         try {
-            await signUp(formData.email, formData.password, formData.name);
+            const { error: signUpError } = await supabase.auth.signUp({
+                email: formData.email,
+                password: formData.password,
+                options: {
+                    data: {
+                        name: formData.name
+                    }
+                }
+            });
+
+            if (signUpError) throw signUpError;
+
             authLogger.info('Signup successful for:', formData.email);
 
             // Artificial delay for UX transitions
@@ -44,11 +56,11 @@ export function useSignup() {
         } catch (e) {
             const err = e as Error;
             authLogger.error('Signup failed', err);
-            setError(err.message || 'Đăng ký thất bại. Vui lòng thử lại.');
+            setError(err.message || t('errors.signupFailed'));
         } finally {
             setLoading(false);
         }
-    }, [formData, signUp, navigate]);
+    }, [formData, navigate, t]);
 
     return {
         formData,

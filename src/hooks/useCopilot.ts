@@ -4,20 +4,22 @@ import { useToast } from '@/components/ui/Toast';
 import { CopilotMessage, ObjectionType } from '@/types';
 import { generateSalesScript, getCopilotCoaching } from '@/services/copilotService';
 import { uiLogger } from '@/utils/logger';
+import { useTranslation } from '@/hooks';
 
 interface UseCopilotProps {
     productContext?: string;
     userName?: string;
 }
 
-export const useCopilot = ({ productContext, userName = "Bạn" }: UseCopilotProps) => {
+export const useCopilot = ({ productContext, userName }: UseCopilotProps) => {
+    const { t } = useTranslation();
     const { executeAgent } = useAgentOS();
     const { showToast } = useToast();
     const [messages, setMessages] = useState<CopilotMessage[]>([
         {
             id: '1',
             role: 'assistant',
-            content: `Xin chào ${userName}! 👋 Tôi là **The Copilot** - trợ lý bán hàng AI của bạn.\n\nTôi sẽ giúp bạn:\n✅ Xử lý từ chối khách hàng\n✅ Gợi ý câu trả lời thông minh\n✅ Tạo kịch bản bán hàng\n\nHãy thử nhập một câu phản đối của khách hàng, ví dụ: "Sản phẩm này đắt quá!"`,
+            content: t('useCopilot.greeting', { name: userName || t('common.you') || 'Bạn' }),
             timestamp: new Date().toISOString()
         }
     ]);
@@ -70,15 +72,15 @@ export const useCopilot = ({ productContext, userName = "Bạn" }: UseCopilotPro
             const errorMessage: CopilotMessage = {
                 id: (Date.now() + 1).toString(),
                 role: 'assistant',
-                content: 'Xin lỗi, tôi gặp sự cố. Vui lòng thử lại!',
+                content: t('useCopilot.error_processing'),
                 timestamp: new Date().toISOString()
             };
             setMessages(prev => [...prev, errorMessage]);
-            showToast('Failed to process message', 'error');
+            showToast(t('useCopilot.error_processing'), 'error');
         } finally {
             setIsLoading(false);
         }
-    }, [input, isLoading, executeAgent, showToast]);
+    }, [input, isLoading, executeAgent, showToast, t]);
 
     const handleGenerateScript = useCallback(async () => {
         if (!productContext) return;
@@ -86,7 +88,7 @@ export const useCopilot = ({ productContext, userName = "Bạn" }: UseCopilotPro
         setIsLoading(true);
         try {
             const script = await generateSalesScript(
-                'Sản phẩm hiện tại',
+                t('useCopilot.current_product'),
                 productContext
             );
 
@@ -98,13 +100,13 @@ export const useCopilot = ({ productContext, userName = "Bạn" }: UseCopilotPro
             };
 
             setMessages(prev => [...prev, scriptMessage]);
-            showToast('Sales script generated', 'success');
+            showToast(t('useCopilot.script_generated'), 'success');
         } catch {
-            showToast('Failed to generate script', 'error');
+            showToast(t('useCopilot.failed_generate'), 'error');
         } finally {
             setIsLoading(false);
         }
-    }, [productContext, showToast]);
+    }, [productContext, showToast, t]);
 
     const handleGetCoaching = useCallback(async () => {
         if (messages.length < 3) return;
@@ -119,13 +121,13 @@ export const useCopilot = ({ productContext, userName = "Bạn" }: UseCopilotPro
 
             const tips = await getCopilotCoaching(conversationHistory);
             setCoaching(tips);
-            showToast('Coaching tips ready', 'success');
+            showToast(t('useCopilot.coaching_ready'), 'success');
         } catch {
-            showToast('Failed to get coaching', 'error');
+            showToast(t('useCopilot.failed_coaching'), 'error');
         } finally {
             setIsLoading(false);
         }
-    }, [messages, showToast]);
+    }, [messages, showToast, t]);
 
     return {
         messages,

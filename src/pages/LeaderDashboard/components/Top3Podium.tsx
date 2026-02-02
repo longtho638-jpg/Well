@@ -36,8 +36,8 @@ export function Top3Podium({ performers }: Top3PodiumProps) {
                             <div className="p-2 bg-yellow-500/20 rounded-xl">
                                 <Award className="w-6 h-6 text-yellow-400" />
                             </div>
-                            {t('top3podium.top_3_t_ng_t_i')}</h2>
-                        <p className="text-zinc-400 text-sm mt-1">{t('top3podium.doanh_s_cao_nh_t_th_ng_n_y')}</p>
+                            {t('leaderdashboard.top_3_t_ng_t_i')}</h2>
+                        <p className="text-zinc-400 text-sm mt-1">{t('leaderdashboard.doanh_s_cao_nh_t_th_ng_n_y')}</p>
                     </div>
                 </div>
 
@@ -126,7 +126,7 @@ function PodiumPlace({ performer, place }: PodiumPlaceProps) {
                 {performer.rank}
             </p>
             <div className={`${place === 1 ? 'bg-yellow-500/10 border-yellow-500/20 p-4' : 'bg-zinc-100 dark:bg-zinc-800/50 border-zinc-300 dark:border-zinc-700 p-3'} backdrop-blur-sm rounded-xl border`}>
-                <p className={`${place === 1 ? 'text-yellow-200' : 'text-zinc-400'} text-xs mb-1`}>{t('top3podium.doanh_s')}</p>
+                <p className={`${place === 1 ? 'text-yellow-200' : 'text-zinc-400'} text-xs mb-1`}>{t('leaderdashboard.doanh_s')}</p>
                 <p className={`text-white font-bold ${place === 1 ? 'text-lg' : ''}`}>{formatVND(performer.personalSales)}</p>
             </div>
         </motion.div>

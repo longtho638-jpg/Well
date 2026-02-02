@@ -111,13 +111,13 @@ export const ReferralPage: React.FC = () => {
             active={selectedTab === 'overview'}
             onClick={() => setSelectedTab('overview')}
             icon={TrendingUp}
-            label="Propagation Analytics"
+            label={t('referral.tabs.propagation')}
           />
           <TabButton
             active={selectedTab === 'network'}
             onClick={() => setSelectedTab('network')}
             icon={Network}
-            label={`Node Topology (${f1Referrals.length + f2Referrals.length})`}
+            label={`${t('referral.tabs.network')} (${f1Referrals.length + f2Referrals.length})`}
           />
         </div>
 

@@ -55,7 +55,7 @@ export const AgentGridCard: React.FC<AgentGridCardProps> = ({ agent, isSelected,
                         : 'bg-indigo-500/10 border-indigo-500/20 text-indigo-400'
                     }`}
                 >
-                    {isActive ? 'Active Node' : 'Training'}
+                    {isActive ? t('agentDashboard.active_node') : t('agentDashboard.training')}
                 </div>
             </div>
 

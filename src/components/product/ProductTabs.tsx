@@ -16,14 +16,15 @@ interface Props {
     details: ProductDetails;
 }
 
-const TABS = [
-    { id: 'benefits' as const, label: 'Primary Yield', icon: Zap },
-    { id: 'ingredients' as const, label: 'Composition', icon: Leaf },
-    { id: 'usage' as const, label: 'Protocol', icon: Clock },
-];
-
 export const ProductTabs: React.FC<Props> = ({ activeTab, setActiveTab, details }) => {
     const { t } = useTranslation();
+
+    const TABS = [
+        { id: 'benefits' as const, label: t('producttabs.primary_yield'), icon: Zap },
+        { id: 'ingredients' as const, label: t('producttabs.composition'), icon: Leaf },
+        { id: 'usage' as const, label: t('producttabs.protocol'), icon: Clock },
+    ];
+
     return (
         <div className="border-t border-white/5">
             <div className="flex border-b border-white/5">

@@ -20,8 +20,8 @@ export const ReferralNetworkView: React.FC<ReferralNetworkViewProps> = ({ f1Refe
                         <Network className="w-6 h-6 text-teal-400" />
                     </div>
                     <div>
-                        <h3 className="text-2xl font-black text-white italic tracking-tighter uppercase">{t('referralnetworkview.network_architecture')}</h3>
-                        <p className="text-zinc-500 text-[10px] font-black uppercase tracking-widest italic">{t('referralnetworkview.tier_1_tier_2_visualization')}</p>
+                        <h3 className="text-2xl font-black text-white italic tracking-tighter uppercase">{t('referral.network.network_architecture')}</h3>
+                        <p className="text-zinc-500 text-[10px] font-black uppercase tracking-widest italic">{t('referral.network.tier_1_tier_2_visualization')}</p>
                     </div>
                 </div>
 
@@ -29,9 +29,9 @@ export const ReferralNetworkView: React.FC<ReferralNetworkViewProps> = ({ f1Refe
                 <div className="mb-16">
                     <div className="flex items-center gap-4 mb-8">
                         <Award className="w-6 h-6 text-teal-500" />
-                        <h4 className="text-lg font-black text-white italic tracking-tighter uppercase">{t('referralnetworkview.f1_sentinel_nodes')}</h4>
+                        <h4 className="text-lg font-black text-white italic tracking-tighter uppercase">{t('referral.network.f1_sentinel_nodes')}</h4>
                         <span className="bg-teal-500/10 text-teal-400 border border-teal-500/20 px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-widest">
-                            {f1Referrals.length} {t('referralnetworkview.nodes')}</span>
+                            {f1Referrals.length} {t('referral.network.nodes')}</span>
                     </div>
 
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -45,9 +45,9 @@ export const ReferralNetworkView: React.FC<ReferralNetworkViewProps> = ({ f1Refe
                 <div>
                     <div className="flex items-center gap-4 mb-8">
                         <Zap className="w-6 h-6 text-amber-500" />
-                        <h4 className="text-lg font-black text-white italic tracking-tighter uppercase">{t('referralnetworkview.f2_secondary_propagation')}</h4>
+                        <h4 className="text-lg font-black text-white italic tracking-tighter uppercase">{t('referral.network.f2_secondary_propagation')}</h4>
                         <span className="bg-amber-500/10 text-amber-400 border border-amber-500/20 px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-widest">
-                            {f2Referrals.length} {t('referralnetworkview.nodes_1')}</span>
+                            {f2Referrals.length} {t('referral.network.nodes')}</span>
                     </div>
 
                     <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-4">
@@ -65,11 +65,11 @@ const ReferralNodeCard = ({ referral, index, level: _level, isCompact = false }:
     const { t } = useTranslation();
     const getStatusTheme = (status: Referral['status']) => {
         switch (status) {
-            case 'active': return { icon: CheckCircle, color: 'text-emerald-500', bg: 'bg-emerald-500/10', border: 'border-emerald-500/20', label: 'Active Sync' };
-            case 'registered': return { icon: UserPlus, color: 'text-blue-500', bg: 'bg-blue-500/10', border: 'border-blue-500/20', label: 'Identity Auth' };
-            case 'pending': return { icon: Clock, color: 'text-amber-500', bg: 'bg-amber-500/10', border: 'border-amber-500/20', label: 'Awaiting Handshake' };
-            case 'expired': return { icon: XCircle, color: 'text-zinc-500', bg: 'bg-zinc-500/10', border: 'border-zinc-500/20', label: 'Link Severed' };
-            default: return { icon: Clock, color: 'text-zinc-500', bg: 'bg-zinc-500/10', border: 'border-white/5', label: 'Unknown' };
+            case 'active': return { icon: CheckCircle, color: 'text-emerald-500', bg: 'bg-emerald-500/10', border: 'border-emerald-500/20', label: t('referral.network.status.active') };
+            case 'registered': return { icon: UserPlus, color: 'text-blue-500', bg: 'bg-blue-500/10', border: 'border-blue-500/20', label: t('referral.network.status.registered') };
+            case 'pending': return { icon: Clock, color: 'text-amber-500', bg: 'bg-amber-500/10', border: 'border-amber-500/20', label: t('referral.network.status.pending') };
+            case 'expired': return { icon: XCircle, color: 'text-zinc-500', bg: 'bg-zinc-500/10', border: 'border-zinc-500/20', label: t('referral.network.status.expired') };
+            default: return { icon: Clock, color: 'text-zinc-500', bg: 'bg-zinc-500/10', border: 'border-white/5', label: t('referral.network.status.unknown') };
         }
     };
 
@@ -122,11 +122,11 @@ const ReferralNodeCard = ({ referral, index, level: _level, isCompact = false }:
 
                 <div className="grid grid-cols-2 gap-4 pt-4 border-t border-white/5">
                     <div>
-                        <p className="text-[8px] font-black text-zinc-500 uppercase tracking-widest mb-1 italic">{t('referralnetworkview.node_val')}</p>
+                        <p className="text-[8px] font-black text-zinc-500 uppercase tracking-widest mb-1 italic">{t('referral.network.node_val')}</p>
                         <p className="text-sm font-black text-white tabular-nums">{referral.totalRevenue > 0 ? formatVND(referral.totalRevenue) : '-'}</p>
                     </div>
                     <div className="text-right">
-                        <p className="text-[8px] font-black text-zinc-500 uppercase tracking-widest mb-1 italic">{t('referralnetworkview.yield')}</p>
+                        <p className="text-[8px] font-black text-zinc-500 uppercase tracking-widest mb-1 italic">{t('referral.network.yield')}</p>
                         <p className="text-sm font-black text-emerald-400 tabular-nums">{referral.referralBonus > 0 ? formatVND(referral.referralBonus) : '-'}</p>
                     </div>
                 </div>

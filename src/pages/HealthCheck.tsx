@@ -259,7 +259,7 @@ export default function HealthCheck() {
   const handleZaloChat = () => {
     const partnerZaloPhone = '0123456789';
     const message = encodeURIComponent(
-      `Xin chào! Tôi vừa hoàn thành bài đánh giá sức khỏe và muốn được tư vấn thêm về sản phẩm ANIMA phù hợp. Điểm sức khỏe của tôi là ${calculateHealthScore()}.`
+      t('healthCheck.zaloMessage', { score: calculateHealthScore() })
     );
     window.open(`https://zalo.me/${partnerZaloPhone}?text=${message}`, '_blank');
   };
@@ -395,7 +395,7 @@ export default function HealthCheck() {
                 />
                 <PolarRadiusAxis angle={90} domain={[0, 100]} tick={{ fill: '#ffffff60' }} />
                 <Radar
-                  name="Điểm Sức Khỏe"
+                  name={t('healthCheck.radarTitle')}
                   dataKey="score"
                   stroke="#2dd4bf"
                   fill="#2dd4bf"

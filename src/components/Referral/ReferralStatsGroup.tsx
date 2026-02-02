@@ -28,14 +28,14 @@ export const ReferralStatsGroup: React.FC<ReferralStatsGroupProps> = ({
         {
             label: t('referral.stats.conversionRate'),
             value: `${conversionRate}%`,
-            sub: 'Optimized 🎯',
+            sub: t('referral.stats.optimized'),
             icon: Target,
             color: 'amber'
         },
         {
             label: t('referral.stats.monthlyReferrals'),
             value: monthlyReferrals,
-            sub: 'Growth Spike 🎉',
+            sub: t('referral.stats.growth_spike'),
             icon: Gift,
             color: 'purple'
         }

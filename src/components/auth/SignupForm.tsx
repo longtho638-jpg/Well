@@ -30,7 +30,7 @@ export const SignupForm: React.FC = () => {
             <form onSubmit={handleSubmit} className="space-y-6">
                 <div className="space-y-2">
                     <label className="block text-[10px] font-black text-slate-500 uppercase tracking-widest ml-1">
-                        {t('signupform.h_v_t_n')}</label>
+                        {t('auth.register.fullName')}</label>
                     <div className="relative group">
                         <User className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-600 group-focus-within:text-teal-500 transition-colors" />
                         <input
@@ -39,7 +39,7 @@ export const SignupForm: React.FC = () => {
                             value={formData.name}
                             onChange={handleChange}
                             required
-                            placeholder={t('signupform.placeholders.name')}
+                            placeholder={t('auth.register.placeholders.name')}
                             className="w-full bg-slate-950/50 border border-slate-800 text-white rounded-2xl py-4 pl-12 pr-4 focus:outline-none focus:ring-2 focus:ring-teal-500/30 focus:border-teal-500/50 transition-all placeholder:text-slate-700 font-medium"
                         />
                     </div>
@@ -47,7 +47,7 @@ export const SignupForm: React.FC = () => {
 
                 <div className="space-y-2">
                     <label className="block text-[10px] font-black text-slate-500 uppercase tracking-widest ml-1">
-                        {t('signupform.email_business')}</label>
+                        {t('auth.register.emailBusiness')}</label>
                     <div className="relative group">
                         <Mail className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-600 group-focus-within:text-teal-500 transition-colors" />
                         <input
@@ -56,7 +56,7 @@ export const SignupForm: React.FC = () => {
                             value={formData.email}
                             onChange={handleChange}
                             required
-                            placeholder={t('signupform.placeholders.email')}
+                            placeholder={t('auth.register.placeholders.email')}
                             className="w-full bg-slate-950/50 border border-slate-800 text-white rounded-2xl py-4 pl-12 pr-4 focus:outline-none focus:ring-2 focus:ring-teal-500/30 focus:border-teal-500/50 transition-all placeholder:text-slate-700 font-medium"
                         />
                     </div>
@@ -65,7 +65,7 @@ export const SignupForm: React.FC = () => {
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
                     <div className="space-y-2">
                         <label className="block text-[10px] font-black text-slate-500 uppercase tracking-widest ml-1">
-                            {t('signupform.m_t_kh_u')}</label>
+                            {t('auth.register.password')}</label>
                         <div className="relative group">
                             <Lock className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-600 group-focus-within:text-teal-500 transition-colors" />
                             <input
@@ -82,7 +82,7 @@ export const SignupForm: React.FC = () => {
 
                     <div className="space-y-2">
                         <label className="block text-[10px] font-black text-slate-500 uppercase tracking-widest ml-1">
-                            {t('signupform.x_c_nh_n')}</label>
+                            {t('auth.register.confirmPassword')}</label>
                         <div className="relative group">
                             <Lock className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-600 group-focus-within:text-teal-500 transition-colors" />
                             <input
@@ -107,10 +107,10 @@ export const SignupForm: React.FC = () => {
                         {loading ? (
                             <>
                                 <Loader2 className="w-5 h-5 animate-spin" />
-                                {t('signupform.processing_account')}</>
+                                {t('auth.register.processing')}</>
                         ) : (
                             <>
-                                {t('signupform.ng_k_ngay')}<ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+                                {t('auth.register.registerButton')}<ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
                             </>
                         )}
                     </button>

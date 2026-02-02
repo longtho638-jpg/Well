@@ -47,10 +47,10 @@ export const Dashboard: React.FC = () => {
 
   // Optimization: Memoize stats array to prevent re-creation
   const kpiStats = useMemo(() => [
-    { label: 'Total Node Yield', val: walletStats.total, icon: Wallet, color: 'cyan' as AuraBadgeColor, growth: '+12.5%' },
-    { label: 'Liquid Capital', val: walletStats.available, icon: DollarSign, color: 'violet' as AuraBadgeColor, growth: '+8.2%' },
-    { label: 'Ecosystem Volume', val: walletStats.teamVolume, icon: Users, color: 'pink' as AuraBadgeColor, growth: '+22.1%' }
-  ], [walletStats]);
+    { label: t('dashboard.stats.totalNodeYield'), val: walletStats.total, icon: Wallet, color: 'cyan' as AuraBadgeColor, growth: '+12.5%' },
+    { label: t('dashboard.stats.liquidCapital'), val: walletStats.available, icon: DollarSign, color: 'violet' as AuraBadgeColor, growth: '+8.2%' },
+    { label: t('dashboard.stats.ecosystemVolume'), val: walletStats.teamVolume, icon: Users, color: 'pink' as AuraBadgeColor, growth: '+22.1%' }
+  ], [walletStats, t]);
 
   // Optimization: Memoize server time string
   const serverTime = useMemo(() => new Date().toLocaleTimeString('vi-VN', { hour: '2-digit', minute: '2-digit' }), []);

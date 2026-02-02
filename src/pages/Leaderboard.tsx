@@ -119,7 +119,7 @@ const MedalIcon = ({ rank }: { rank: number }) => {
 };
 
 export default function Leaderboard() {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const { user } = useStore();
   const [showConfetti, setShowConfetti] = useState(true);
   const [leaderboardData, setLeaderboardData] = useState<LeaderboardEntry[]>([]);
@@ -439,7 +439,7 @@ export default function Leaderboard() {
               <span className="font-semibold text-white">{t('leaderboard.noteLabel')}</span> {t('leaderboard.noteText')}
             </p>
             <p className="text-xs text-white/40 mt-2">
-              {t('leaderboard.lastUpdate', { time: new Date().toLocaleString('vi-VN') })}
+              {t('leaderboard.lastUpdate', { time: new Date().toLocaleString(i18n.language) })}
             </p>
           </div>
         </motion.div>

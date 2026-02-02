@@ -46,7 +46,6 @@ import {
   ZenDivider,
   AwardsBar,
   ScrollProgress,
-  EA_AWARDS,
 } from '../components/EastAsiaBrand';
 import {
   PremiumHeader,
@@ -121,9 +120,9 @@ export default function LandingPage() {
 
   const CONTENT = {
     hero: {
-      badge: 'Hành Trình Thịnh Vượng',
+      badge: t('landing.hero.badge'),
       headline: t('landing.hero.title'),
-      headlineAccent: 'Cùng WellNexus',
+      headlineAccent: t('landing.hero.headlineAccent'),
       subheadline: t('landing.hero.subtitle'),
       primaryCta: t('landing.hero.cta'), // Using cta.button key logically
       secondaryCta: t('landing.hero.learnMore'),
@@ -149,10 +148,10 @@ export default function LandingPage() {
           description: t('landing.roadmap.stages.seed.description'),
           mission: t('landing.roadmap.stages.seed.mission'),
           benefits: [
-            'Thu nhập chủ động từ bán hàng',
-            'Hoa hồng Founder Club',
-            'Công cụ AI cơ bản',
-            'Đào tạo & hỗ trợ 1-1'
+            t('landing.roadmap.stages.seed.benefits.income'),
+            t('landing.roadmap.stages.seed.benefits.founder'),
+            t('landing.roadmap.stages.seed.benefits.ai'),
+            t('landing.roadmap.stages.seed.benefits.support')
           ],
           unlockCondition: null
         },
@@ -170,10 +169,10 @@ export default function LandingPage() {
           description: t('landing.roadmap.stages.tree.description'),
           mission: t('landing.roadmap.stages.tree.mission'),
           benefits: [
-            'AI Copilot nâng cao',
-            'Tự động hóa marketing',
-            'Leader Dashboard',
-            'Thu nhập thụ động từ team'
+            t('landing.roadmap.stages.tree.benefits.copilot'),
+            t('landing.roadmap.stages.tree.benefits.marketing'),
+            t('landing.roadmap.stages.tree.benefits.dashboard'),
+            t('landing.roadmap.stages.tree.benefits.passive')
           ],
           unlockCondition: '1,000 Partner'
         },
@@ -191,10 +190,10 @@ export default function LandingPage() {
           description: t('landing.roadmap.stages.forest.description'),
           mission: t('landing.roadmap.stages.forest.mission'),
           benefits: [
-            'Health Coach Platform',
-            'Marketplace ownership',
-            'Data monetization',
-            'Equity participation'
+            t('landing.roadmap.stages.forest.benefits.platform'),
+            t('landing.roadmap.stages.forest.benefits.market'),
+            t('landing.roadmap.stages.forest.benefits.data'),
+            t('landing.roadmap.stages.forest.benefits.equity')
           ],
           unlockCondition: '10,000 Partner'
         },
@@ -212,10 +211,10 @@ export default function LandingPage() {
           description: t('landing.roadmap.stages.empire.description'),
           mission: t('landing.roadmap.stages.empire.mission'),
           benefits: [
-            'Venture Builder platform',
-            'IPO preparation',
-            'Holdings structure',
-            'SEA expansion'
+            t('landing.roadmap.stages.empire.benefits.venture'),
+            t('landing.roadmap.stages.empire.benefits.ipo'),
+            t('landing.roadmap.stages.empire.benefits.holdings'),
+            t('landing.roadmap.stages.empire.benefits.expansion')
           ],
           unlockCondition: '100,000 Partner',
           hasVisionLink: true
@@ -232,42 +231,42 @@ export default function LandingPage() {
           icon: Award,
           title: t('landing.whyNow.benefits.founders.title'),
           description: t('landing.whyNow.benefits.founders.description'),
-          highlight: 'Chỉ còn 157 slot'
+          highlight: t('landing.whyNow.benefits.founders.highlight')
         },
         {
           icon: TrendingUp,
           title: t('landing.whyNow.benefits.growth.title'),
           description: t('landing.whyNow.benefits.growth.description'),
-          highlight: '+320% YoY'
+          highlight: t('landing.whyNow.benefits.growth.highlight')
         },
         {
           icon: Zap,
           title: t('landing.whyNow.benefits.tech.title'),
           description: t('landing.whyNow.benefits.tech.description'),
-          highlight: 'Early Access'
+          highlight: t('landing.whyNow.benefits.tech.highlight')
         },
         {
           icon: Globe,
           title: t('landing.whyNow.benefits.market.title'),
           description: t('landing.whyNow.benefits.market.description'),
-          highlight: 'First-Mover'
+          highlight: t('landing.whyNow.benefits.market.highlight')
         }
       ]
     },
 
     footer: {
       logo: 'WellNexus',
-      tagline: 'Hệ sinh thái Social Commerce tiên phong tại Đông Nam Á với AI-driven technology, equity ownership, và lộ trình rõ ràng từ Hạt Giống đến Đế Chế.',
+      tagline: t('landing.footer.tagline'),
       newsletter: {
-        title: 'Nhận Thông Tin Cập Nhật',
-        placeholder: 'Email của bạn'
+        title: t('landing.footer.newsletter.title'),
+        placeholder: t('landing.footer.newsletter.placeholder')
       },
       social: {
         facebook: 'https://facebook.com/wellnexus',
         instagram: 'https://instagram.com/wellnexus',
         linkedin: 'https://linkedin.com/company/wellnexus'
       },
-      copyright: '© 2025 WellNexus. All rights reserved.'
+      copyright: t('landing.footer.copyright')
     }
   };
 
@@ -278,6 +277,13 @@ export default function LandingPage() {
   const handleVisionClick = () => {
     navigate('/venture');
   };
+
+  const EA_AWARDS_DATA = [
+    { icon: '🏆', title: t('eastasiabrand.awards.top10.title'), subtitle: t('eastasiabrand.awards.top10.subtitle') },
+    { icon: '🌏', title: t('eastasiabrand.awards.sea.title'), subtitle: t('eastasiabrand.awards.sea.subtitle') },
+    { icon: '💎', title: t('eastasiabrand.awards.partner.title'), subtitle: t('eastasiabrand.awards.partner.subtitle') },
+    { icon: '🔒', title: t('eastasiabrand.awards.iso.title'), subtitle: t('eastasiabrand.awards.iso.subtitle') },
+  ];
 
   // Animation Variants
 
@@ -326,7 +332,7 @@ export default function LandingPage() {
             >
               <AnimatedBorder>
                 <span className="px-6 py-2 text-sm font-bold text-emerald-400 uppercase tracking-wider">
-                  {t('landingpage.ultimate_level_wellness')}</span>
+                  {t('landing.hero.badge_ultimate')}</span>
               </AnimatedBorder>
             </motion.div>
 
@@ -373,8 +379,8 @@ export default function LandingPage() {
                 <div className="w-12 h-12 rounded-full bg-cyan-500/10 flex items-center justify-center mb-4 border border-cyan-500/20">
                   <Sparkles className="w-6 h-6 text-cyan-400" />
                 </div>
-                <h3 className="text-2xl font-bold text-white mb-2">{t('landingpage.hu_n_luy_n_vi_n_ai')}</h3>
-                <p className="text-zinc-400">{t('landingpage.h_ng_d_n_c_nh_n_h_a_b_i_gemi')}</p>
+                <h3 className="text-2xl font-bold text-white mb-2">{t('landing.bento.ai_coach.title')}</h3>
+                <p className="text-zinc-400">{t('landing.bento.ai_coach.description')}</p>
               </div>
               <div className="mt-8 w-full h-32 bg-gradient-to-r from-cyan-500/10 to-transparent rounded-xl border border-white/5 relative overflow-hidden">
                 <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-20"></div>
@@ -385,25 +391,25 @@ export default function LandingPage() {
               <div className="w-12 h-12 rounded-full bg-violet-500/10 flex items-center justify-center mb-4 border border-violet-500/20">
                 <TrendingUp className="w-6 h-6 text-violet-400" />
               </div>
-              <h3 className="text-2xl font-bold text-white mb-2">{t('landingpage.thu_nh_p_th_ng')}</h3>
-              <p className="text-zinc-400 mb-8">{t('landingpage.theo_d_i_hoa_h_ng_t_ng_v_p')}</p>
+              <h3 className="text-2xl font-bold text-white mb-2">{t('landing.bento.passive_income.title')}</h3>
+              <p className="text-zinc-400 mb-8">{t('landing.bento.passive_income.description')}</p>
               <div className="text-4xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-violet-400 to-pink-400">
-                {t('landingpage.12_450')}</div>
-              <div className="text-sm text-zinc-500 mt-1">{t('landingpage.thu_nh_p_tb_partner')}</div>
+                {t('landing.bento.passive_income.amount')}</div>
+              <div className="text-sm text-zinc-500 mt-1">{t('landing.bento.passive_income.label')}</div>
             </BentoCard>
 
             <BentoCard colSpan={1} className="p-8 min-h-[300px] bg-zinc-900/40">
               <div className="w-12 h-12 rounded-full bg-pink-500/10 flex items-center justify-center mb-4 border border-pink-500/20">
                 <Users className="w-6 h-6 text-pink-400" />
               </div>
-              <h3 className="text-2xl font-bold text-white mb-2">{t('landingpage.c_ng_ng')}</h3>
-              <p className="text-zinc-400">{t('landingpage.tham_gia_c_ng_1_000_founders')}</p>
+              <h3 className="text-2xl font-bold text-white mb-2">{t('landing.bento.community.title')}</h3>
+              <p className="text-zinc-400">{t('landing.bento.community.description')}</p>
             </BentoCard>
 
             <BentoCard colSpan={2} className="p-8 min-h-[300px] bg-zinc-900/40 flex items-center justify-between">
               <div className="max-w-md">
-                <h3 className="text-2xl font-bold text-white mb-2">{t('landingpage.m_r_ng_to_n_c_u')}</h3>
-                <p className="text-zinc-400">{t('landingpage.s_n_s_ng_chinh_ph_c_th_tr_ng')}</p>
+                <h3 className="text-2xl font-bold text-white mb-2">{t('landing.bento.global.title')}</h3>
+                <p className="text-zinc-400">{t('landing.bento.global.description')}</p>
               </div>
               <Globe className="w-32 h-32 text-zinc-800" />
             </BentoCard>
@@ -419,7 +425,7 @@ export default function LandingPage() {
       <TrustBadges badges={TRUST_BADGES} />
 
       {/* East Asia 2026: Awards & Certifications */}
-      <AwardsBar awards={EA_AWARDS} />
+      <AwardsBar awards={EA_AWARDS_DATA} />
 
       {/* East Asia 2026: Zen Divider */}
       <ZenDivider />
@@ -523,7 +529,7 @@ export default function LandingPage() {
                       <div className="pt-4 border-t border-slate-200">
                         <div className="flex items-center gap-2 text-xs text-slate-500">
                           <Lock className="w-3 h-3" />
-                          <span>{t('landingpage.m_kh_a_khi_t')}{stage.unlockCondition}</span>
+                          <span>{t('landing.roadmap.unlock_at')}{stage.unlockCondition}</span>
                         </div>
                       </div>
                     ) : stage.hasVisionLink ? (
@@ -534,13 +540,13 @@ export default function LandingPage() {
                         whileTap={{ scale: 0.98 }}
                       >
                         <Globe className="w-4 h-4" />
-                        {t('landingpage.xem_t_m_nh_n')}<ChevronRight className="w-4 h-4" />
+                        {t('landing.roadmap.view_vision')}<ChevronRight className="w-4 h-4" />
                       </motion.button>
                     ) : (
                       <div className="pt-4 border-t border-slate-200">
                         <div className="flex items-center gap-2 text-xs font-bold text-teal-600">
                           <Star className="w-3 h-3" />
-                          <span>{t('landingpage.giai_o_n_hi_n_t_i')}</span>
+                          <span>{t('landing.roadmap.current_stage')}</span>
                         </div>
                       </div>
                     )}
@@ -632,7 +638,7 @@ export default function LandingPage() {
               whileTap={{ scale: 0.98 }}
             >
               <Users className="w-6 h-6" />
-              {t('landingpage.tham_gia_ngay_ch_c_n_157_sl')}<ChevronRight className="w-6 h-6 group-hover:translate-x-1 transition-transform" />
+              {t('landing.whyNow.cta')}<ChevronRight className="w-6 h-6 group-hover:translate-x-1 transition-transform" />
             </motion.button>
           </motion.div>
         </div>
@@ -653,12 +659,12 @@ export default function LandingPage() {
             <div className="inline-flex items-center gap-2 bg-pink-500/10 border border-pink-500/20 rounded-full px-5 py-2 mb-6">
               <Star className="w-4 h-4 text-pink-400" />
               <span className="text-sm font-bold text-pink-400 uppercase tracking-wider">
-                {t('landingpage.c_u_chuy_n_th_nh_c_ng')}</span>
+                {t('landing.testimonials.badge')}</span>
             </div>
             <h2 className="text-4xl md:text-5xl lg:text-6xl font-black text-zinc-100 mb-6">
-              {t('landingpage.partner_n_i_g_v_wellnexus')}</h2>
+              {t('landing.testimonials.title')}</h2>
             <p className="text-xl text-zinc-400 max-w-3xl mx-auto">
-              {t('landingpage.h_ng_ng_n_partner_thay_i')}</p>
+              {t('landing.testimonials.subtitle')}</p>
           </motion.div>
 
           <TestimonialsCarousel testimonials={TESTIMONIALS} />

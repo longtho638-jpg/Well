@@ -23,10 +23,15 @@ export const en = {
         sort: 'Sort',
         viewAll: 'View All',
         viewDetails: 'View Details',
+        notSupportedYet: 'Feature coming soon',
         currency: {
             vnd: '₫',
             grow: 'Token',
             shop: 'SHOP',
+        },
+        rank: {
+            daisu: 'Ambassador',
+            ctv: 'Collaborator',
         }
     },
 
@@ -50,28 +55,24 @@ export const en = {
         logout: 'Logout',
         darkMode: 'Dark Mode',
         lightMode: 'Light Mode',
+        company: 'Company',
+        aboutUs: 'About Us',
+        careers: 'Careers',
+        ventureProgram: 'Venture Program',
     },
 
-    // Landing Page - AST Migration Keys
-    landingpage: {
-        ultimate_level_wellness: 'ULTIMATE LEVEL WELLNESS',
-        hu_n_luy_n_vi_n_ai: 'AI Coach',
-        h_ng_d_n_c_nh_n_h_a_b_i_gemi: 'Personalized guidance by Gemini',
-        thu_nh_p_th_ng: 'Passive Income',
-        theo_d_i_hoa_h_ng_t_ng_v_p: 'Track commissions in real-time',
-        '12_450': '12,450,000₫',
-        thu_nh_p_tb_partner: 'Avg. Income/Partner',
-        c_ng_ng: 'Community',
-        tham_gia_c_ng_1_000_founders: 'Join 1,000+ successful Founders',
-        m_r_ng_to_n_c_u: 'Global Expansion',
-        s_n_s_ng_chinh_ph_c_th_tr_ng: 'Ready to conquer Southeast Asia market',
-        m_kh_a_khi_t: 'Unlock at ',
-        xem_t_m_nh_n: 'See Vision',
-        giai_o_n_hi_n_t_i: 'Current Stage',
-        tham_gia_ngay_ch_c_n_157_sl: 'Join Now - Only 157 slots left',
-        c_u_chuy_n_th_nh_c_ng: 'Success Stories',
-        partner_n_i_g_v_wellnexus: 'What Partners Say About WellNexus',
-        h_ng_ng_n_partner_thay_i: 'Thousands of Partners have transformed their lives with WellNexus',
+    eastasiabrand: {
+        wellnexus: 'WellNexus',
+        v_ch_ng_t_i: 'About Us',
+        s_n_ph_m: 'Products',
+        i_t_c: 'Partners',
+        b_t_u: 'Start Now',
+        awards: {
+            top10: { title: 'Top 10 Startup', subtitle: 'Vietnam 2025' },
+            sea: { title: 'SEA Expansion', subtitle: '4 Countries' },
+            partner: { title: 'Premium Partner', subtitle: 'Grade A+' },
+            iso: { title: 'ISO 27001', subtitle: 'Security Certified' },
+        }
     },
 
     // Dashboard Page
@@ -126,6 +127,9 @@ export const en = {
             growth: 'Asset Growth',
             thisMonth: 'This Month',
             vsLastMonth: 'MoM Growth',
+            totalNodeYield: 'Total Node Yield',
+            liquidCapital: 'Liquid Capital',
+            ecosystemVolume: 'Ecosystem Volume',
         },
 
         // Commission Widget
@@ -305,15 +309,28 @@ export const en = {
         subtitle: 'Manage your asset portfolio',
 
         balance: {
+            total_assets: 'Total Assets',
+            this_month: 'This Month',
             available: 'Liquid Assets',
             locked: 'Locked Assets',
             staked: 'Staked for Yield',
             total: 'Total Portfolio Value',
             shopToken: 'SHOP Token - Cashflow',
             growToken: 'GROW Token - Equity',
+            vnd_stablecoin: 'VND Stablecoin 1:1',
+            governance_token: 'Governance Token',
+            currency: 'Currency',
+        },
+
+        stats: {
+            growth_12_5: '+12.5%',
+            apy_12_0: '12.0%',
+            apy_12_percent: '12%',
+            days_90: '90 Days'
         },
 
         actions: {
+            deposit_shop: 'Deposit SHOP',
             withdraw: 'Withdraw',
             stake: 'Stake',
             unstake: 'Unstake',
@@ -339,6 +356,7 @@ export const en = {
 
         transactions: {
             title: 'Transaction History',
+            explorer: 'Blockchain Explorer',
             noTransactions: 'No transactions yet',
             id: 'Transaction ID',
             date: 'Date',
@@ -347,6 +365,9 @@ export const en = {
             status: 'Status',
             hash: 'Hash',
             tax: 'Tax',
+            viewOnBscScan: 'View on BSCScan',
+            emptyState: 'Your transaction history will appear here',
+            emptyStateFilter: 'No {filter} transactions yet',
             types: {
                 directSale: 'Direct Sale',
                 teamBonus: 'Team Bonus',
@@ -392,23 +413,41 @@ export const en = {
         terms: 'By placing an order, you agree to WellNexus Terms of Service and Privacy Policy.',
         success: 'Order placed successfully! Your order has been received.',
         error: 'An error occurred while processing your order. Please try again.',
-        form: {
-            fullName: 'Full Name',
-            phone: 'Phone Number',
-            email: 'Email (For order notifications)',
-            city: 'City / Province',
-            district: 'District',
-            ward: 'Ward / Commune',
-            street: 'Detailed Address',
-            note: 'Note (Optional)',
-            notePlaceholder: 'Delivery during office hours...',
-            fullNamePlaceholder: 'John Doe',
-            phonePlaceholder: '0901234567',
-            emailPlaceholder: 'example@email.com',
-            cityPlaceholder: 'Ho Chi Minh City',
-            districtPlaceholder: 'District 1',
-            wardPlaceholder: 'Ben Nghe Ward',
-            streetPlaceholder: '123 Nguyen Hue Street',
+        guestForm: {
+            fullName: {
+                label: 'Full Name',
+                placeholder: 'John Doe'
+            },
+            phone: {
+                label: 'Phone Number',
+                placeholder: '0901234567'
+            },
+            email: {
+                label: 'Email (For order notifications)',
+                placeholder: 'example@email.com'
+            },
+            address: {
+                city: {
+                    label: 'City / Province',
+                    placeholder: 'Ho Chi Minh City'
+                },
+                district: {
+                    label: 'District',
+                    placeholder: 'District 1'
+                },
+                ward: {
+                    label: 'Ward / Commune',
+                    placeholder: 'Ben Nghe Ward'
+                },
+                street: {
+                    label: 'Detailed Address',
+                    placeholder: '123 Nguyen Hue Street'
+                }
+            },
+            note: {
+                label: 'Note (Optional)',
+                placeholder: 'Delivery during office hours...'
+            }
         },
         validation: {
             fullNameRequired: 'Full name must be at least 2 characters',
@@ -580,6 +619,8 @@ export const en = {
         tabs: {
             overview: 'Overview',
             referrals: 'Referrals',
+            network: 'Network Topology',
+            propagation: 'Propagation Analytics',
         },
 
         stats: {
@@ -587,9 +628,11 @@ export const en = {
             activeReferrals: 'Active Referrals',
             active: 'Active',
             conversionRate: 'Conversion Rate',
+            optimized: 'Optimized 🎯',
             totalRevenue: 'Total Revenue',
             totalBonus: 'Total Bonus',
             monthlyReferrals: 'Monthly Referrals',
+            growth_spike: 'Growth Spike 🎉',
         },
 
         link: {
@@ -605,12 +648,43 @@ export const en = {
             twitter: 'Twitter',
             more: 'More',
             qrCode: 'QR Code',
+            generate_visual_key: 'Generate Visual Key',
+            dismiss_visual_key: 'Dismiss Visual Key',
+        },
+
+        qrcode: {
+            visual_id_key: 'Visual Identity Key',
+            wellnexus_network: 'WELLNEXUS NETWORK',
+            scanning_initiates_sync: 'Scanning initiates secure identity sync',
+            commit_to_local_storage: 'Commit to Local Storage',
+            recommended_for_high_conversio: 'Recommended for high-conversion physical touchpoints',
         },
 
         chart: {
             title: 'Referral Trend',
             referrals: 'Referrals',
             revenue: 'Revenue',
+            propagation_velocity: 'Propagation Velocity',
+            growth_yield_trajectory: 'Growth & Yield Trajectory',
+            nodes: 'Nodes',
+            yield: 'Yield'
+        },
+
+        network: {
+            network_architecture: 'Network Architecture',
+            tier_1_tier_2_visualization: 'Tier 1 & Tier 2 Visualization',
+            f1_sentinel_nodes: 'F1 Sentinel Nodes',
+            nodes: 'Nodes',
+            f2_secondary_propagation: 'F2 Secondary Propagation',
+            node_val: 'Node Val',
+            yield: 'Yield',
+            status: {
+                active: 'Active Sync',
+                registered: 'Identity Auth',
+                pending: 'Awaiting Handshake',
+                expired: 'Link Severed',
+                unknown: 'Unknown'
+            }
         },
 
         list: {
@@ -638,7 +712,32 @@ export const en = {
                 signup: 'Receive immediately when referral signs up',
                 firstPurchase: 'Receive when referral makes first purchase',
                 milestone: 'Receive when revenue milestone is reached',
+            },
+            yield_mechanics: 'Yield Mechanics',
+            incentive_algorithm: 'Incentive Algorithm',
+            activation: {
+                title: 'Activation Milestone',
+                desc: 'Instant liquidity on successful identity sync',
+                sub: 'per node'
+            },
+            revenue: {
+                title: 'Revenue Override',
+                desc: 'Secondary yield on ecosystem commerce',
+                sub: 'override'
+            },
+            expansion: {
+                title: 'Expansion Bonus',
+                desc: 'Achieved at 10 active sentinel nodes',
+                sub: 'one-time'
             }
+        },
+        analytics: {
+            propagation: 'Propagation Analytics',
+            node_topology: 'Node Topology'
+        },
+        hero: {
+            accumulated_revenue: 'Accumulated Revenue',
+            this_month: 'This Month'
         }
     },
 
@@ -794,6 +893,7 @@ export const en = {
                 clicks: 'Clicks:',
                 signups: 'Signups:',
                 conversion: 'Conversion Rate:',
+                conversionValue: '4.9%',
             },
             tip: '💡 Tip: Share this link on Facebook, Zalo, or your personal website to earn commission from every order!',
             partnerLabel: 'WellNexus Partner',
@@ -889,6 +989,26 @@ export const en = {
 
         disclaimerTech: '💡 Health Coach AI uses symptom analysis technology to recommend suitable products.',
         disclaimerMedical: 'Note: This is a support tool, not a replacement for professional medical advice.',
+        analyzing: 'Analyzing symptoms...',
+    },
+
+    chatmessage: {
+        verified_advice: 'Verified Advice',
+    },
+
+    sharebuttons: {
+        zalo: 'Zalo',
+        facebook: 'Facebook',
+        telegram: 'Telegram',
+        email: 'Email',
+        showQR: 'Show QR Code',
+        hideQR: 'Hide QR Code',
+    },
+
+    chatsidebar: {
+        l_ch_s: 'History',
+        c_c_cu_c_h_i_tho_i: 'Recent Conversations',
+        t_o_cu_c_h_i_tho_i_m_i: 'New Conversation',
     },
 
     // Health Check (Health Quiz)
@@ -974,6 +1094,8 @@ export const en = {
             average: 'Your health needs more attention. Start making changes now!',
             poor: 'Your health needs urgent improvement. Check the solutions below!',
         },
+        zaloMessage: 'Hello! I just finished the health assessment and would like more advice on suitable ANIMA products. My health score is {score}.',
+        radarTitle: 'Health Score',
 
         recommendationsTitle: 'Recommended Products',
         priceLabel: 'Price',
@@ -1025,6 +1147,16 @@ export const en = {
         subtitle: 'Configure and manage the entire system',
 
         sidebarTitle: 'Mission Control',
+        nav: {
+            overview: 'Overview',
+            content: 'Content',
+            partners: 'Partners',
+            finance: 'Finance',
+            orders: 'Orders',
+            products: 'Products',
+            strategy: 'Strategy',
+            auditLog: 'Audit Log',
+        },
         adminLabel: 'Admin',
         superUser: 'Super User',
 
@@ -1142,12 +1274,15 @@ export const en = {
             loginButton: 'Login',
             noAccount: 'Don\'t have an account?',
             signUp: 'Sign up now',
+            demo: 'Try Demo',
         },
         register: {
             title: 'Register',
             subtitle: 'Join the WellNexus community',
+            earlyAccess: 'Early Access 2.0',
             fullName: 'Full Name',
             email: 'Email',
+            emailBusiness: 'Business Email',
             phone: 'Phone Number',
             password: 'Password',
             confirmPassword: 'Confirm Password',
@@ -1156,9 +1291,14 @@ export const en = {
             terms: 'Terms of Service',
             and: 'and',
             privacy: 'Privacy Policy',
-            registerButton: 'Register',
+            registerButton: 'Register Now',
+            processing: 'Creating account...',
             haveAccount: 'Already have an account?',
             login: 'Login',
+            placeholders: {
+                name: 'Enter your full name',
+                email: 'name@company.com'
+            }
         },
         forgotPassword: {
             title: 'Forgot Password',
@@ -1174,10 +1314,47 @@ export const en = {
         hero: {
             title: 'Build Your Career with WellNexus',
             badge: 'Journey to Prosperity',
+            badge_ultimate: 'ULTIMATE LEVEL WELLNESS',
             headlineAccent: 'With WellNexus',
             subtitle: 'Smart business platform combining AI, Tokenomics, and community',
             cta: 'Get Started',
             learnMore: 'Learn More',
+        },
+        bento: {
+            ai_coach: {
+                title: 'AI Coach',
+                description: 'Personalized guidance by Gemini',
+            },
+            passive_income: {
+                title: 'Passive Income',
+                description: 'Track commissions in real-time',
+                amount: '12,450,000₫',
+                label: 'Avg. Income/Partner',
+            },
+            community: {
+                title: 'Community',
+                description: 'Join 1,000+ successful Founders',
+            },
+            global: {
+                title: 'Global Expansion',
+                description: 'Ready to conquer Southeast Asia market',
+            }
+        },
+        socialProof: {
+            actions: {
+                joined: 'joined WellNexus',
+                silver: 'reached Silver Rank',
+                withdraw: 'withdrew 5,000,000₫',
+                team: 'expanded team',
+                order: 'received order',
+            },
+            times: {
+                min2: '2 mins ago',
+                min5: '5 mins ago',
+                min8: '8 mins ago',
+                min12: '12 mins ago',
+                min15: '15 mins ago',
+            }
         },
         featured: {
             badge: 'Featured',
@@ -1207,7 +1384,26 @@ export const en = {
             }
         },
         testimonials: {
-            title: 'Success Stories',
+            badge: 'Success Stories',
+            title: 'What Partners Say About WellNexus',
+            subtitle: 'Thousands of Partners have transformed their lives with WellNexus',
+            items: {
+                item1: {
+                    name: 'Mai Anh',
+                    role: 'Pharmacist',
+                    content: 'WellNexus helped me utilize my free time to earn extra income. The AI technology is very supportive for sales.',
+                },
+                item2: {
+                    name: 'Tuan Hung',
+                    role: 'Office Worker',
+                    content: 'I am impressed with the transparency of the system. Tax reporting is automatic so I don\'t have to worry about anything.',
+                },
+                item3: {
+                    name: 'Lan Huong',
+                    role: 'Housewife',
+                    content: 'The community is very supportive. I learned a lot of sales skills from other partners.',
+                }
+            }
         },
         cta: {
             title: 'Ready to Start?',
@@ -1218,30 +1414,57 @@ export const en = {
             sectionBadge: 'Development Roadmap',
             sectionTitle: 'The Evolution Map',
             subheadline: 'Journey from Partner to Empire Builder',
+            unlock_at: 'Unlock at ',
+            view_vision: 'See Vision',
+            current_stage: 'Current Stage',
             stages: {
                 seed: {
                     name: 'SEED',
                     description: 'Recruiting 200 Founders Club, Building Trust',
                     mission: 'Retail & Community Building',
-                    status: 'Active'
+                    status: 'Active',
+                    benefits: {
+                        income: 'Active income from sales',
+                        founder: 'Founder Club Commission',
+                        ai: 'Basic AI Tools',
+                        support: '1-1 Training & Support',
+                    }
                 },
                 tree: {
                     name: 'TREE',
                     description: 'Sales Automation with AI',
                     mission: 'Scale team & Automation',
-                    status: 'Unlock Soon'
+                    status: 'Unlock Soon',
+                    benefits: {
+                        copilot: 'Advanced AI Copilot',
+                        marketing: 'Marketing Automation',
+                        dashboard: 'Leader Dashboard',
+                        passive: 'Passive income from team',
+                    }
                 },
                 forest: {
                     name: 'FOREST',
                     description: 'Marketplace & Ecosystem',
                     mission: 'Build ecosystem products',
-                    status: 'Future'
+                    status: 'Future',
+                    benefits: {
+                        platform: 'Health Coach Platform',
+                        market: 'Marketplace ownership',
+                        data: 'Data monetization',
+                        equity: 'Equity participation',
+                    }
                 },
                 empire: {
                     name: 'LAND',
                     description: 'Venture Builder & IPO',
                     mission: 'Build the empire',
-                    status: 'Vision 2028'
+                    status: 'Vision 2028',
+                    benefits: {
+                        venture: 'Venture Builder platform',
+                        ipo: 'IPO preparation',
+                        holdings: 'Holdings structure',
+                        expansion: 'SEA expansion',
+                    }
                 }
             }
         },
@@ -1249,24 +1472,38 @@ export const en = {
             sectionBadge: 'First Mover Advantage',
             sectionTitle: 'Why Join Now?',
             subheadline: 'Special benefits for early adopters in the Seed stage',
+            cta: 'Join Now - Only 157 slots left',
             benefits: {
                 founders: {
                     title: 'Founders Club Bonus',
-                    description: 'Special commission and equity allocation for first 200 Partners'
+                    description: 'Special commission and equity allocation for first 200 Partners',
+                    highlight: 'Only 157 slots left',
                 },
                 growth: {
                     title: 'Early Growth',
-                    description: 'Build team from scratch, benefit from network effect when system scales'
+                    description: 'Build team from scratch, benefit from network effect when system scales',
+                    highlight: '+320% YoY',
                 },
                 tech: {
                     title: 'Exclusive AI Tech',
-                    description: 'Early access to Agentic OS and AI tools only for Founders'
+                    description: 'Early access to Agentic OS and AI tools only for Founders',
+                    highlight: 'Early Access',
                 },
                 market: {
                     title: 'SEA Market First-Mover',
-                    description: 'Lead the $12B market, expanding to 4 SEA countries'
+                    description: 'Lead the $12B market, expanding to 4 SEA countries',
+                    highlight: 'First-Mover',
                 }
             }
+        },
+        heroStats: {
+            partnersActive: 'Active Partners',
+            gmvTotal: 'Total GMV',
+            yoyGrowth: 'YoY Growth',
+            slotsRemaining: 'Slots Remaining',
+        },
+        footer: {
+            tagline: 'Pioneering Social Commerce ecosystem in SEA with AI-driven technology, equity ownership, and a clear roadmap from Seed to Empire.',
         }
     },
 
@@ -1322,6 +1559,10 @@ export const en = {
         hello_wellnexus_vn: 'hello@wellnexus.vn',
         '84_901_234_567': '+84 901 234 567',
         q1_tp_hcm_vietnam: 'D1, HCMC, Vietnam',
+        wellnexus_all_rights_reserved: 'WellNexus. All rights reserved.',
+        made_with_in_vietnam: 'Made with ❤️ in Vietnam',
+        ssl_secured: 'SSL Secured',
+        top_10_east_asia: 'Top 10 East Asia',
     },
 
     // Withdrawal Modal
@@ -1356,6 +1597,11 @@ export const en = {
 
     // Error Messages
     errors: {
+        passwordsDoNotMatch: 'Passwords do not match',
+        signupFailed: 'Signup failed. Please try again.',
+        invalidCredentials: 'Invalid email or password.',
+        timeout: 'Login timed out. Please check your network connection.',
+        emailNotConfirmed: 'Email not confirmed. Please check your inbox.',
         network: 'Network error. Please try again.',
         unauthorized: 'You are not authorized.',
         notFound: 'Page not found.',
@@ -1385,6 +1631,11 @@ export const en = {
         withdrawalSuccess: 'Withdrawal request successful!',
         stakingSuccess: 'Staking successful!',
         unstakingSuccess: 'Unstaking successful!',
+    },
+
+    // Hero Enhancements
+    heroenhancements: {
+        c_tin_t_ng_b_i: 'Trusted by',
     },
 
     // Agent Dashboard
@@ -1459,6 +1710,62 @@ export const en = {
         x_c_th_c_2_y_u_t: 'Two-Factor Authentication',
         b_t_2fa_b_o_v: 'Enabled - Account protected',
         th_m_l_p_b_o_m_t: 'Add extra security layer',
+    },
+
+    // AgencyOS
+    agencyos: {
+        categories: {
+            marketing: 'Marketing',
+            sales: 'Sales',
+            finance: 'Finance',
+            operations: 'Operations',
+            strategy: 'Strategy (Art of War)',
+            agents: 'AI Agents'
+        },
+        commands: {
+            marketing: {
+                plan: 'Create comprehensive marketing plan',
+                calendar: 'Weekly/Monthly content calendar',
+                social: 'Create social media post',
+                email: 'Design email marketing campaign',
+                seo: 'SEO audit and optimization'
+            },
+            sales: {
+                proposal: 'Create professional proposal',
+                pitch: 'Customer pitch deck',
+                crm: 'Sync CRM data',
+                followup: 'Automated follow-up email',
+                quote: 'Quick customer quote'
+            },
+            finance: {
+                invoice: 'Create professional invoice',
+                runway: 'Calculate runway and burn rate',
+                expense: 'Detailed expense report',
+                budget: 'Project/Monthly budget planning',
+                pnl: 'P&L Report (Profit/Loss)'
+            },
+            operations: {
+                sop: 'Generate SOP (Standard Operating Procedures)',
+                workflow: 'Design automated workflow',
+                notes: 'Meeting notes and summary',
+                task: 'Assign team tasks',
+                checklist: 'Create task checklist'
+            },
+            strategy: {
+                binhphap: 'Art of War Strategy Analysis',
+                swot: 'SWOT Analysis',
+                competitor: 'Competitor Analysis',
+                market: 'Market Research',
+                okr: 'Set OKRs'
+            },
+            agents: {
+                researcher: 'AI Research Agent',
+                writer: 'AI Content Writer',
+                analyst: 'AI Data Analyst',
+                designer: 'AI UI/UX Designer',
+                developer: 'AI Developer'
+            }
+        }
     },
 
     // Command Palette
@@ -1613,5 +1920,267 @@ export const en = {
         share_health_check: 'Share Health Check Link',
         share_health_check_desc: 'Send health check link',
         tip_s_d_ng_c_c_c_ng_c_n: 'Tip: Use these tools to increase customer engagement',
+    },
+
+    // Marketplace Header
+    marketplaceheader: {
+        items_available: 'items available',
+    },
+
+    // Product Grid
+    productgrid: {
+        ai_recommended: 'AI Recommended',
+        add_to_cart: 'Add to Cart',
+        price: 'Price',
+        commission: ' Commission',
+    },
+
+    // Redemption Zone
+    redemptionzone: {
+        grow_rewards: 'GROW Rewards',
+        s_d_ng_grow_token_t_ch_l_y_t: 'Use accumulated GROW tokens to redeem exclusive rewards.',
+        s_d_hi_n_t_i: 'Current Balance',
+        grow_tokens: 'GROW Tokens',
+        redeem_reward: 'Redeem Reward',
+        not_enough_grow: 'Not enough GROW',
+        categories: {
+            all: 'All',
+            tech: 'Tech',
+            travel: 'Travel',
+            courses: 'Courses',
+        },
+    },
+
+    // Cart Drawer
+    cartdrawer: {
+        your_cart: 'Your Cart',
+        items_confirmed: 'items confirmed',
+        your_cart_is_empty: 'Your cart is empty',
+        start_adding_premium_products: 'Start adding premium products to your cart.',
+        subtotal: 'Subtotal',
+        total: 'Total',
+        proceed_to_checkout: 'Proceed to Checkout',
+    },
+
+    // AI Recommendation
+    airecommendation: {
+        '240': '240+',
+        users_helped: 'Users Helped Today',
+    },
+
+    // Marketplace Filters
+    marketplacefilters: {
+        b_l_c: 'Filters',
+        danh_m_c: 'Category',
+        kho_ng_gi: 'Price Range',
+        t_l_i_b_l_c: 'Reset Filters',
+        categories: {
+            all: 'All',
+            health: 'Health',
+            wellness: 'Wellness',
+            nutrition: 'Nutrition',
+        },
+        prices: {
+            all: 'All Prices',
+            under5m: 'Under 5M',
+            '5to15m': '5M - 15M',
+            over15m: 'Over 15M',
+        },
+    },
+    // Team & Leader Dashboard
+
+  leaderdashboard: {
+    qu_n_l_i_nh_m: 'Team Management',
+    ai_insights: 'AI Insights',
+    s_h_th_ng: 'System Tree',
+    top_3_t_ng_t_i: 'Top 3 Performers',
+    doanh_s_cao_nh_t_th_ng_n_y: 'Highest sales this month',
+    doanh_s: 'Sales',
+    doanh_s_1: 'Sales',
+    doanh_s_2: 'Sales',
+    th_nh_vi_n_r_i_ro_cao: 'High Risk Members',
+    th_nh_vi_n_r_i_ro_trung_b_nh: 'Medium Risk Members',
+    t_l_gi_ch_n: 'Retention Rate',
+    c_n_ch: 'Attention Needed',
+    th_nh_vi_n_c_n_ch: 'Members Needing Attention (',
+    ai_ph_t_hi_n_nh_ng_th_nh_vi_n: 'AI detected members with decreasing interaction or sales.',
+    l_do_c_n_ch: 'Risk Factors',
+    ai_xu_t: 'AI Suggestions',
+    g_i_nh_c_nh: 'Send Reminder',
+    t_ng_qu_kh_ch_l: 'Send Gift',
+    all_ranks: 'All Ranks',
+    partner: 'Partner',
+    member: 'Member',
+    network_health: 'Network Health',
+  },
+
+
+  agentdetailsmodal: {
+    intelligence_node_context: 'INTELLIGENCE NODE CONTEXT',
+    enforcement: 'ENFORCEMENT',
+  },
+
+  agentgridcard: {
+    node_id: 'NODE ID: ',
+    '0x': ' // 0x',
+    telemetry_stream_active: 'TELEMETRY STREAM ACTIVE',
+    neural_training: 'NEURAL TRAINING',
+  },
+
+  // Venture Page
+    venture: {
+        hero: {
+            badge: 'Co-Founder Recruitment Protocol v4.0',
+            headline: 'Venture Builder:',
+            headlineAccent: 'Next-Gen Health Tech Ecosystem',
+            subheadline: 'Architecting the decentralized health supply chain across SEA. We don\'t recruit employees; we build equity-backed Co-Founder nodes.',
+            primaryCta: 'Init Recruitment Protocol',
+            secondaryCta: 'Audit Portfolio',
+            stats: {
+                valuation_label: 'Accumulated Valuation',
+                nodes_label: 'Nodes Targeted',
+                market_label: 'Primary Market',
+            },
+        },
+        navigation: {
+            apply_recruitment: 'Apply / Recruitment',
+            venture_builder: 'Venture Builder',
+            menu: {
+                portfolio: 'Portfolio',
+                deal: 'The Deal',
+                market: 'SEA Market',
+            },
+        },
+        deal: {
+            sectionBadge: 'The Protocol Deck',
+            sectionTitle: 'Equity & Infrastructure',
+            subheadline: 'Hyper-scalable investment structure for high-performance Co-Founders with local autonomy.',
+            capitalNode: {
+                category: 'Capital Node',
+                item1: 'Inventory sync with zero initial liquidity',
+                item2: 'Network-backed working capital pools',
+                item3: 'Performance-indexed credit extensions',
+            },
+            techStack: {
+                category: 'Tech Stack 2.0',
+                item1: 'Agentic OS - Native AI coordination',
+                item2: 'Real-time valuation & yield telemetry',
+                item3: 'Dynamic tax compliance abstraction',
+                item4: 'Distributed ledger integration',
+            },
+            ownership: {
+                category: 'Ownership Matrix',
+                item1: 'ESOP - Direct equity ownership tracks',
+                item2: 'GROW Delta - Incentive-aligned yield',
+                item3: 'Linear 4-year vesting // 1-year cliff',
+                item4: 'IPO-indexed valuation milestones',
+            },
+        },
+        portfolio: {
+            sectionBadge: 'Active Founder Nodes',
+            sectionTitle: 'Proven Yield Generations',
+            subheadline: 'Ecosystem telemetry from active high-performance nodes.',
+            roles: {
+                ceo: 'Co-Founder // CEO',
+                cmo: 'Co-Founder // CMO',
+                cto: 'Co-Founder // CTO',
+            },
+            regions: {
+                hanoi: 'Hanoi',
+                hcmc: 'HCMC',
+                danang: 'Da Nang',
+            },
+            val: 'Val',
+            growth: 'Growth',
+            arr_node: 'ARR Node',
+        },
+        market: {
+            sectionBadge: 'Ecosystem Expansion',
+            sectionTitle: 'SEA Regional Dominance',
+            subheadline: 'Multi-lateral expansion protocol into $12B addressable market.',
+            regions: {
+                vietnam: 'Vietnam',
+                thailand: 'Thailand',
+                indonesia: 'Indonesia',
+                philippines: 'Philippines',
+            },
+            status: {
+                active: 'Active',
+                expanding: 'Expanding',
+                protocol_init: 'Protocol Init',
+                pending: 'Pending',
+            },
+            total_addressable_market: 'Total Addressable Market',
+            velocity: 'Velocity',
+            init_sea_expansion_protocol: 'Init SEA Expansion Protocol',
+        },
+        footer: {
+            tagline: 'Venture Builder powering high-fidelity administrative surfaces and decentralized health commerce across Southeast Asia.',
+            strategic_ecosystem_builder: 'Strategic Ecosystem Builder',
+            newsletter: {
+                title: 'Transmission Sync',
+                placeholder: 'comm_channel@secure.vn',
+            },
+            subscribe_for_exclusive_intake: 'Subscribe for Exclusive Intake',
+            copyright: '© 2026 WellNexus Venture Builder // Absolute Zero Debt',
+            privacy: 'Ecosystem Privacy',
+            terms: 'Term Sheet Compliance',
+        },
+    },
+
+    // Product Detail
+    productdetail: {
+        identity_missing: 'IDENTITY MISSING',
+        the_requested_product_node_is: 'THE REQUESTED PRODUCT NODE IS UNREACHABLE OR HAS BEEN DEPRECATED FROM THE NETWORK.',
+        revert_to_marketplace: 'REVERT TO MARKETPLACE',
+        back_to_command_registry: 'BACK TO COMMAND REGISTRY',
+        verified_node: 'VERIFIED NODE',
+        premium_tier: 'PREMIUM TIER',
+    },
+
+    // Product Components
+    productactions: {
+        copy_ref_node: 'COPY REF NODE',
+        logistics_offline: 'LOGISTICS OFFLINE',
+        allocated_successfully: 'ALLOCATED SUCCESSFULLY',
+        order_prototype: 'ORDER PROTOTYPE',
+    },
+    producthero: {
+        logistics_depleted: 'LOGISTICS DEPLETED',
+    },
+    productinfo: {
+        bio_optic_optimization: 'BIO-OPTIC OPTIMIZATION',
+        core_rating_4_9: '4.9 CORE RATING',
+        available_capacity: 'AVAILABLE CAPACITY: ',
+        units: ' UNITS',
+    },
+    productpricing: {
+        market_valuation: 'MARKET VALUATION',
+        node_yield_profit: 'NODE YIELD PROFIT',
+    },
+    producttabs: {
+        standard_engagement_protocol: 'STANDARD ENGAGEMENT PROTOCOL',
+        primary_yield: 'Primary Yield',
+        composition: 'Composition',
+        protocol: 'Protocol',
+    },
+
+    // Test Page
+    testpage: {
+        well_test_page: 'Well Test Page',
+        connectivity_check: 'Connectivity Check',
+        client_status: 'Client Status',
+        active: 'Active',
+    },
+
+    // Debugger Page
+    debuggerpage: {
+        system_debugger: 'System Debugger',
+        v_debug_1_0: 'v.debug.1.0',
+        zustand_store_state: 'Zustand Store State',
+        environment_window: 'Environment & Window',
+        window_props: 'Window Properties',
+        local_storage_keys: 'Local Storage Keys',
+        empty: 'Empty',
     },
 };

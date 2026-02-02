@@ -16,7 +16,7 @@ interface ChatSession {
 }
 
 export default function CopilotPage() {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const { user } = useStore();
 
   // Chat history state
@@ -24,27 +24,27 @@ export default function CopilotPage() {
   const [chatSessions] = useState<ChatSession[]>([
     {
       id: '1',
-      title: 'Tư vấn khách hàng về ANIMA 119',
-      timestamp: new Date('2025-01-20 14:30'),
-      preview: 'Khách hỏi về giá và công dụng của ANIMA...'
+      title: t('copilotpage.mock.session1.title'),
+      timestamp: new Date(new Date().setHours(new Date().getHours() - 2)), // 2 hours ago
+      preview: t('copilotpage.mock.session1.preview')
     },
     {
       id: '2',
-      title: 'Xử lý từ chối - Giá cao',
-      timestamp: new Date('2025-01-20 10:15'),
-      preview: 'Khách nói sản phẩm đắt quá...'
+      title: t('copilotpage.mock.session2.title'),
+      timestamp: new Date(new Date().setHours(new Date().getHours() - 5)), // 5 hours ago
+      preview: t('copilotpage.mock.session2.preview')
     },
     {
       id: '3',
-      title: 'Kịch bản chốt sale cuối tháng',
-      timestamp: new Date('2025-01-19 16:45'),
-      preview: 'Tạo kịch bản chốt sale cho khuyến mãi...'
+      title: t('copilotpage.mock.session3.title'),
+      timestamp: new Date(new Date().setDate(new Date().getDate() - 1)), // Yesterday
+      preview: t('copilotpage.mock.session3.preview')
     },
     {
       id: '4',
-      title: 'Viết bài đăng Facebook',
-      timestamp: new Date('2025-01-19 09:20'),
-      preview: 'Viết bài giới thiệu sản phẩm mới...'
+      title: t('copilotpage.mock.session4.title'),
+      timestamp: new Date(new Date().setDate(new Date().getDate() - 2)), // 2 days ago
+      preview: t('copilotpage.mock.session4.preview')
     }
   ]);
   const [selectedSession, setSelectedSession] = useState<string | null>(null);
@@ -53,33 +53,33 @@ export default function CopilotPage() {
   const promptSuggestions = [
     {
       icon: '📝',
-      title: 'Viết bài đăng Facebook',
-      prompt: 'Giúp tôi viết bài đăng Facebook giới thiệu ANIMA 119 hấp dẫn, có emoji và call-to-action mạnh mẽ'
+      title: t('copilotpage.prompts.facebook.title'),
+      prompt: t('copilotpage.prompts.facebook.prompt')
     },
     {
       icon: '💬',
-      title: 'Kịch bản chốt sale',
-      prompt: 'Tạo kịch bản chốt sale cho khách hàng đang do dự về giá'
+      title: t('copilotpage.prompts.salesScript.title'),
+      prompt: t('copilotpage.prompts.salesScript.prompt')
     },
     {
       icon: '🎯',
-      title: 'Xử lý từ chối',
-      prompt: 'Khách hàng nói "Tôi cần suy nghĩ thêm". Tôi nên trả lời thế nào?'
+      title: t('copilotpage.prompts.objection.title'),
+      prompt: t('copilotpage.prompts.objection.prompt')
     },
     {
       icon: '📞',
-      title: 'Kịch bản gọi điện',
-      prompt: 'Viết kịch bản gọi điện chào hàng cho khách hàng mới'
+      title: t('copilotpage.prompts.coldCall.title'),
+      prompt: t('copilotpage.prompts.coldCall.prompt')
     },
     {
       icon: '✨',
-      title: 'Highlight sản phẩm',
-      prompt: 'Liệt kê 5 điểm nổi bật nhất của ANIMA 119 để thuyết phục khách'
+      title: t('copilotpage.prompts.highlight.title'),
+      prompt: t('copilotpage.prompts.highlight.prompt')
     },
     {
       icon: '🎁',
-      title: 'Chương trình khuyến mãi',
-      prompt: 'Tạo ý tưởng chương trình khuyến mãi thu hút cho sản phẩm'
+      title: t('copilotpage.prompts.promotion.title'),
+      prompt: t('copilotpage.prompts.promotion.prompt')
     }
   ];
 
@@ -109,10 +109,10 @@ export default function CopilotPage() {
     const now = new Date();
     const diffHours = Math.floor((now.getTime() - date.getTime()) / (1000 * 60 * 60));
 
-    if (diffHours < 1) return 'Vừa xong';
-    if (diffHours < 24) return `${diffHours} giờ trước`;
-    if (diffHours < 48) return 'Hôm qua';
-    return date.toLocaleDateString('vi-VN');
+    if (diffHours < 1) return t('copilotpage.time.justNow');
+    if (diffHours < 24) return t('copilotpage.time.hoursAgo', { count: diffHours });
+    if (diffHours < 48) return t('copilotpage.time.yesterday');
+    return date.toLocaleDateString(i18n.language);
   };
 
   return (

@@ -61,6 +61,15 @@ export function AgencyOSDemo() {
         ? { [selectedCategory]: AGENCYOS_COMMANDS[selectedCategory] }
         : AGENCYOS_COMMANDS;
 
+    const CATEGORY_LABELS: Record<AgencyOSCategory, string> = {
+        marketing: t('agencyos.categories.marketing'),
+        sales: t('agencyos.categories.sales'),
+        finance: t('agencyos.categories.finance'),
+        operations: t('agencyos.categories.operations'),
+        strategy: t('agencyos.categories.strategy'),
+        agents: t('agencyos.categories.agents'),
+    };
+
     return (
         <div className="min-h-screen bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 text-white p-8">
             {/* Header */}
@@ -104,7 +113,7 @@ export function AgencyOSDemo() {
                                         <div className="flex items-center gap-3">
                                             <span className="text-2xl">{CATEGORY_ICONS[cat]}</span>
                                             <div>
-                                                <div className="font-medium capitalize">{cat}</div>
+                                                <div className="font-medium capitalize">{CATEGORY_LABELS[cat]}</div>
                                                 <div className="text-xs opacity-75">
                                                     {AGENCYOS_COMMANDS[cat].length} {t('agencyosdemo.commands')}</div>
                                             </div>
@@ -153,8 +162,8 @@ export function AgencyOSDemo() {
                     <div className="bg-gray-800/50 backdrop-blur-sm rounded-xl p-6 border border-gray-700">
                         <h2 className="text-xl font-bold mb-4">
                             {selectedCategory
-                                ? `${CATEGORY_ICONS[selectedCategory]} ${selectedCategory.charAt(0).toUpperCase() + selectedCategory.slice(1)} Commands`
-                                : '🚀 All Commands'}
+                                ? `${CATEGORY_ICONS[selectedCategory]} ${CATEGORY_LABELS[selectedCategory]} ${t('agencyosdemo.commands')}`
+                                : `🚀 ${t('agencyosdemo.all_commands')}`}
                         </h2>
                         <div className="grid grid-cols-1 gap-3">
                             {(Object.entries(commandsByCategory) as unknown as [AgencyOSCategory, ReadonlyArray<AgencyOSCommand>][]).map(([cat, commands]) =>
@@ -172,10 +181,10 @@ export function AgencyOSDemo() {
                                                         {cmd.command}
                                                     </code>
                                                     <span className="text-xs text-gray-500 bg-gray-800 px-2 py-0.5 rounded">
-                                                        {cat}
+                                                        {CATEGORY_LABELS[cat as AgencyOSCategory]}
                                                     </span>
                                                 </div>
-                                                <p className="text-gray-400 text-sm">{cmd.description}</p>
+                                                <p className="text-gray-400 text-sm">{t(cmd.i18nKey)}</p>
                                             </div>
                                             <Zap className="w-4 h-4 text-cyan-400 opacity-0 group-hover:opacity-100 transition-opacity" />
                                         </div>

@@ -40,7 +40,7 @@ export const ProductActions: React.FC<Props> = ({ onShare, onBuy, isBuying, show
                 {isBuying ? <Loader2 className="w-5 h-5 animate-spin" /> : (
                     <>
                         <ShoppingBag className="w-4 h-4" />
-                        {outOfStock ? 'Logistics Offline' : (showSuccess ? 'Allocated Successfully' : 'Order Prototype')}
+                        {outOfStock ? t('productactions.logistics_offline') : (showSuccess ? t('productactions.allocated_successfully') : t('productactions.order_prototype'))}
                     </>
                 )}
             </button>

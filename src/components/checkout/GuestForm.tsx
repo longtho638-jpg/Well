@@ -32,11 +32,11 @@ export const GuestForm: React.FC<GuestFormProps> = ({ onSubmit, isSubmitting: _i
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div className="space-y-2">
-                        <label className="text-xs font-bold text-zinc-500 uppercase tracking-wider">{t('checkout.form.fullName')}</label>
+                        <label className="text-xs font-bold text-zinc-500 uppercase tracking-wider">{t('checkout.guestForm.fullName.label')}</label>
                         <div className="relative">
                             <input
                                 {...register('fullName')}
-                                placeholder={t('checkout.form.fullNamePlaceholder')}
+                                placeholder={t('checkout.guestForm.fullName.placeholder')}
                                 className={`w-full bg-zinc-50 dark:bg-black/20 border ${errors.fullName ? 'border-rose-500' : 'border-zinc-200 dark:border-white/10'} rounded-xl px-4 py-3 pl-10 focus:outline-none focus:ring-2 focus:ring-teal-500/20 focus:border-teal-500 transition-all`}
                             />
                             <User size={16} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-zinc-400" />
@@ -45,11 +45,11 @@ export const GuestForm: React.FC<GuestFormProps> = ({ onSubmit, isSubmitting: _i
                     </div>
 
                     <div className="space-y-2">
-                        <label className="text-xs font-bold text-zinc-500 uppercase tracking-wider">{t('checkout.form.phone')}</label>
+                        <label className="text-xs font-bold text-zinc-500 uppercase tracking-wider">{t('checkout.guestForm.phone.label')}</label>
                         <div className="relative">
                             <input
                                 {...register('phone')}
-                                placeholder={t('checkout.form.phonePlaceholder')}
+                                placeholder={t('checkout.guestForm.phone.placeholder')}
                                 className={`w-full bg-zinc-50 dark:bg-black/20 border ${errors.phone ? 'border-rose-500' : 'border-zinc-200 dark:border-white/10'} rounded-xl px-4 py-3 pl-10 focus:outline-none focus:ring-2 focus:ring-teal-500/20 focus:border-teal-500 transition-all`}
                             />
                             <Phone size={16} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-zinc-400" />
@@ -58,11 +58,11 @@ export const GuestForm: React.FC<GuestFormProps> = ({ onSubmit, isSubmitting: _i
                     </div>
 
                     <div className="space-y-2 md:col-span-2">
-                        <label className="text-xs font-bold text-zinc-500 uppercase tracking-wider">{t('checkout.form.email')}</label>
+                        <label className="text-xs font-bold text-zinc-500 uppercase tracking-wider">{t('checkout.guestForm.email.label')}</label>
                         <div className="relative">
                             <input
                                 {...register('email')}
-                                placeholder={t('checkout.form.emailPlaceholder')}
+                                placeholder={t('checkout.guestForm.email.placeholder')}
                                 className={`w-full bg-zinc-50 dark:bg-black/20 border ${errors.email ? 'border-rose-500' : 'border-zinc-200 dark:border-white/10'} rounded-xl px-4 py-3 pl-10 focus:outline-none focus:ring-2 focus:ring-teal-500/20 focus:border-teal-500 transition-all`}
                             />
                             <Mail size={16} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-zinc-400" />
@@ -80,30 +80,30 @@ export const GuestForm: React.FC<GuestFormProps> = ({ onSubmit, isSubmitting: _i
 
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
                     <div className="space-y-2">
-                        <label className="text-xs font-bold text-zinc-500 uppercase tracking-wider">{t('checkout.form.city')}</label>
+                        <label className="text-xs font-bold text-zinc-500 uppercase tracking-wider">{t('checkout.guestForm.address.city.label')}</label>
                         <input
                             {...register('address.city')}
-                            placeholder={t('checkout.form.cityPlaceholder')}
+                            placeholder={t('checkout.guestForm.address.city.placeholder')}
                             className={`w-full bg-zinc-50 dark:bg-black/20 border ${errors.address?.city ? 'border-rose-500' : 'border-zinc-200 dark:border-white/10'} rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-teal-500/20 focus:border-teal-500 transition-all`}
                         />
                         {errors.address?.city && <p className="text-xs text-rose-500 font-medium">{errors.address.city.message}</p>}
                     </div>
 
                     <div className="space-y-2">
-                        <label className="text-xs font-bold text-zinc-500 uppercase tracking-wider">{t('checkout.form.district')}</label>
+                        <label className="text-xs font-bold text-zinc-500 uppercase tracking-wider">{t('checkout.guestForm.address.district.label')}</label>
                         <input
                             {...register('address.district')}
-                            placeholder={t('checkout.form.districtPlaceholder')}
+                            placeholder={t('checkout.guestForm.address.district.placeholder')}
                             className={`w-full bg-zinc-50 dark:bg-black/20 border ${errors.address?.district ? 'border-rose-500' : 'border-zinc-200 dark:border-white/10'} rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-teal-500/20 focus:border-teal-500 transition-all`}
                         />
                         {errors.address?.district && <p className="text-xs text-rose-500 font-medium">{errors.address.district.message}</p>}
                     </div>
 
                     <div className="space-y-2">
-                        <label className="text-xs font-bold text-zinc-500 uppercase tracking-wider">{t('checkout.form.ward')}</label>
+                        <label className="text-xs font-bold text-zinc-500 uppercase tracking-wider">{t('checkout.guestForm.address.ward.label')}</label>
                         <input
                             {...register('address.ward')}
-                            placeholder={t('checkout.form.wardPlaceholder')}
+                            placeholder={t('checkout.guestForm.address.ward.placeholder')}
                             className={`w-full bg-zinc-50 dark:bg-black/20 border ${errors.address?.ward ? 'border-rose-500' : 'border-zinc-200 dark:border-white/10'} rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-teal-500/20 focus:border-teal-500 transition-all`}
                         />
                         {errors.address?.ward && <p className="text-xs text-rose-500 font-medium">{errors.address.ward.message}</p>}
@@ -111,11 +111,11 @@ export const GuestForm: React.FC<GuestFormProps> = ({ onSubmit, isSubmitting: _i
                 </div>
 
                 <div className="space-y-2">
-                    <label className="text-xs font-bold text-zinc-500 uppercase tracking-wider">{t('checkout.form.street')}</label>
+                    <label className="text-xs font-bold text-zinc-500 uppercase tracking-wider">{t('checkout.guestForm.address.street.label')}</label>
                     <div className="relative">
                         <input
                             {...register('address.street')}
-                            placeholder={t('checkout.form.streetPlaceholder')}
+                            placeholder={t('checkout.guestForm.address.street.placeholder')}
                             className={`w-full bg-zinc-50 dark:bg-black/20 border ${errors.address?.street ? 'border-rose-500' : 'border-zinc-200 dark:border-white/10'} rounded-xl px-4 py-3 pl-10 focus:outline-none focus:ring-2 focus:ring-teal-500/20 focus:border-teal-500 transition-all`}
                         />
                         <Map size={16} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-zinc-400" />
@@ -124,10 +124,10 @@ export const GuestForm: React.FC<GuestFormProps> = ({ onSubmit, isSubmitting: _i
                 </div>
 
                 <div className="space-y-2 mt-6">
-                    <label className="text-xs font-bold text-zinc-500 uppercase tracking-wider">{t('checkout.form.note')}</label>
+                    <label className="text-xs font-bold text-zinc-500 uppercase tracking-wider">{t('checkout.guestForm.note.label')}</label>
                     <textarea
                         {...register('note')}
-                        placeholder={t('checkout.form.notePlaceholder')}
+                        placeholder={t('checkout.guestForm.note.placeholder')}
                         rows={3}
                         className="w-full bg-zinc-50 dark:bg-black/20 border border-zinc-200 dark:border-white/10 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-teal-500/20 focus:border-teal-500 transition-all resize-none"
                     />

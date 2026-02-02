@@ -307,42 +307,6 @@ export function TrustBadges({ badges }: TrustBadgesProps) {
 // DATA FOR LANDING PAGE
 // ============================================================================
 
-export const HERO_STATS = [
-    { value: 1243, suffix: '+', label: 'Partners Active' },
-    { value: 5200000000, prefix: '₫', label: 'GMV Total' },
-    { value: 320, suffix: '%', label: 'Tăng trưởng YoY' },
-    { value: 157, label: 'Slots còn lại' },
-];
-
-export const SOCIAL_PROOF_ITEMS: ProofItem[] = [
-    { name: 'Minh Anh', action: 'vừa gia nhập Founders Club', time: '2 phút trước' },
-    { name: 'Hoàng Nam', action: 'đạt hạng Silver Partner', time: '5 phút trước' },
-    { name: 'Thanh Hà', action: 'rút hoa hồng ₫12,500,000', time: '8 phút trước' },
-    { name: 'Tuấn Anh', action: 'xây dựng team 15 người', time: '12 phút trước' },
-    { name: 'Ngọc Linh', action: 'đặt hàng ₫2,800,000', time: '15 phút trước' },
-];
-
-export const TESTIMONIALS: Testimonial[] = [
-    {
-        name: 'Nguyễn Minh Anh',
-        role: 'Gold Partner • TP.HCM',
-        content: 'Từ khi tham gia WellNexus, thu nhập của mình tăng 3 lần chỉ sau 6 tháng. Công nghệ AI giúp mình bán hàng hiệu quả hơn rất nhiều!',
-        rating: 5,
-    },
-    {
-        name: 'Trần Hoàng Nam',
-        role: 'Platinum Partner • Hà Nội',
-        content: 'Mô hình Social Commerce của WellNexus rất khác biệt. Mình có thể xây dựng đội ngũ và có thu nhập thụ động thực sự.',
-        rating: 5,
-    },
-    {
-        name: 'Lê Thanh Hà',
-        role: 'Diamond Partner • Đà Nẵng',
-        content: 'Team hỗ trợ rất tận tâm, sản phẩm chất lượng cao. Đây là cơ hội kinh doanh tốt nhất mình từng gặp!',
-        rating: 5,
-    },
-];
-
 export const TRUST_BADGES = [
     { name: 'VNPay' },
     { name: 'Momo' },

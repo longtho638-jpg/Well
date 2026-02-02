@@ -321,13 +321,3 @@ export function formatVND(amount: number): string {
     return amount.toLocaleString('vi-VN');
 }
 
-// ============================================================================
-// DATA FOR EAST ASIAN BRAND
-// ============================================================================
-
-export const EA_AWARDS = [
-    { icon: '🏆', title: 'Top 10 Startup', subtitle: 'Vietnam 2025' },
-    { icon: '🌏', title: 'SEA Expansion', subtitle: '4 Countries' },
-    { icon: '💎', title: 'Premium Partner', subtitle: 'Grade A+' },
-    { icon: '🔒', title: 'ISO 27001', subtitle: 'Security Certified' },
-];

@@ -11,24 +11,6 @@ interface CommandPaletteProps {
     onClose: () => void;
 }
 
-const CATEGORY_ICONS: Record<AgencyOSCategory, string> = {
-    marketing: '📣',
-    sales: '💼',
-    finance: '💰',
-    operations: '⚙️',
-    strategy: '🎯',
-    agents: '🤖',
-};
-
-const CATEGORY_LABELS: Record<AgencyOSCategory, string> = {
-    marketing: 'Marketing',
-    sales: 'Sales',
-    finance: 'Finance',
-    operations: 'Operations',
-    strategy: 'Strategy (Binh Pháp)',
-    agents: 'AI Agents',
-};
-
 export function CommandPalette({ isOpen, onClose }: CommandPaletteProps) {
     const { t } = useTranslation();
 
@@ -42,17 +24,21 @@ export function CommandPalette({ isOpen, onClose }: CommandPaletteProps) {
     };
 
     const CATEGORY_LABELS: Record<AgencyOSCategory, string> = {
-        marketing: 'Marketing',
-        sales: 'Sales',
-        finance: 'Finance',
-        operations: 'Operations',
-        strategy: 'Strategy (Binh Pháp)',
-        agents: 'AI Agents',
+        marketing: t('agencyos.categories.marketing'),
+        sales: t('agencyos.categories.sales'),
+        finance: t('agencyos.categories.finance'),
+        operations: t('agencyos.categories.operations'),
+        strategy: t('agencyos.categories.strategy'),
+        agents: t('agencyos.categories.agents'),
     };
 
     const [search, setSearch] = useState('');
+    const [selectedCategory, setSelectedCategory] = useState<AgencyOSCategory | null>(null);
+    const [isExecuting, setIsExecuting] = useState(false);
+    const [lastResult, setLastResult] = useState<{ success: boolean; message?: string; output?: string; error?: string } | null>(null);
+
     const filteredCommands = useMemo(() => {
-        const results: Array<{ category: AgencyOSCategory; command: string; description: string }> = [];
+        const results: Array<{ category: AgencyOSCategory; command: string; description: string; i18nKey: string }> = [];
         const lowerSearch = search.toLowerCase();
 
         const categories = selectedCategory
@@ -221,7 +207,7 @@ export function CommandPalette({ isOpen, onClose }: CommandPaletteProps) {
                                                 </span>
                                             </div>
                                             <p className="text-gray-400 text-sm truncate">
-                                                {cmd.description}
+                                                {t(cmd.i18nKey)}
                                             </p>
                                         </div>
                                         <ChevronRight className="w-4 h-4 text-gray-600 group-hover:text-cyan-400 transition-colors" />

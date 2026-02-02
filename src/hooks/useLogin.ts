@@ -9,6 +9,7 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from './useAuth';
 import { authLogger } from '@/utils/logger';
+import { useTranslation } from '@/hooks';
 
 // SECURITY: Production admin whitelist - NO demo accounts
 const ADMIN_EMAILS = [
@@ -25,6 +26,7 @@ export const useLogin = () => {
     const [showPassword, setShowPassword] = useState(false);
     const [rememberMe, setRememberMe] = useState(false);
     const [success, setSuccess] = useState(false);
+    const { t } = useTranslation();
 
     const { signIn } = useAuth();
     const navigate = useNavigate();
@@ -71,14 +73,14 @@ export const useLogin = () => {
             const errorObj = err as Error;
             authLogger.error('Login failed', errorObj);
 
-            let errorMessage = 'Email hoặc mật khẩu không đúng.';
+            let errorMessage = t('errors.invalidCredentials');
 
             if (errorObj.message === 'TIMEOUT') {
-                errorMessage = 'Đăng nhập quá thời gian. Vui lòng kiểm tra kết nối mạng.';
+                errorMessage = t('errors.timeout');
             } else if (errorObj.message?.includes('fetch') || errorObj.message?.includes('network')) {
-                errorMessage = 'Không thể kết nối đến máy chủ. Vui lòng thử lại sau.';
+                errorMessage = t('errors.network');
             } else if (errorObj.message?.includes('Email not confirmed')) {
-                errorMessage = 'Email chưa được xác nhận. Vui lòng kiểm tra hộp thư.';
+                errorMessage = t('errors.emailNotConfirmed');
             }
 
             setError(errorMessage);

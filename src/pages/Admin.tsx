@@ -42,14 +42,14 @@ const Admin: React.FC = () => {
   };
 
   const navItems = [
-    { id: 'overview', label: 'Overview', icon: <LayoutDashboard size={20} />, path: '/admin', badge: '3' },
-    { id: 'cms', label: 'Content', icon: <FileText size={20} />, path: '/admin/cms' },
-    { id: 'partners', label: 'Partners', icon: <Users size={20} />, path: '/admin/partners', badge: '5' },
-    { id: 'finance', label: 'Finance', icon: <Wallet size={20} />, path: '/admin/finance', badge: '2' },
-    { id: 'orders', label: 'Orders', icon: <DollarSign size={20} />, path: '/admin/orders' },
-    { id: 'products', label: 'Products', icon: <Package size={20} />, path: '/admin/products' },
-    { id: 'strategy', label: 'Strategy', icon: <Settings size={20} />, path: '/admin/policy-engine' },
-    { id: 'audit', label: 'Audit Log', icon: <ClipboardList size={20} />, path: '/admin/audit-log' },
+    { id: 'overview', label: t('admin.nav.overview'), icon: <LayoutDashboard size={20} />, path: '/admin', badge: '3' },
+    { id: 'cms', label: t('admin.nav.content'), icon: <FileText size={20} />, path: '/admin/cms' },
+    { id: 'partners', label: t('admin.nav.partners'), icon: <Users size={20} />, path: '/admin/partners', badge: '5' },
+    { id: 'finance', label: t('admin.nav.finance'), icon: <Wallet size={20} />, path: '/admin/finance', badge: '2' },
+    { id: 'orders', label: t('admin.nav.orders'), icon: <DollarSign size={20} />, path: '/admin/orders' },
+    { id: 'products', label: t('admin.nav.products'), icon: <Package size={20} />, path: '/admin/products' },
+    { id: 'strategy', label: t('admin.nav.strategy'), icon: <Settings size={20} />, path: '/admin/policy-engine' },
+    { id: 'audit', label: t('admin.nav.auditLog'), icon: <ClipboardList size={20} />, path: '/admin/audit-log' },
   ];
 
   return (
