@@ -50,11 +50,41 @@ export function urlDecode(str: string): Record<string, string> {
 // HASH FUNCTIONS
 // ============================================================================
 
+/**
+ * SHA-256 hash with Safari fallback
+ * Safari-safe: uses simple hash for non-HTTPS contexts
+ */
 export async function sha256(message: string): Promise<string> {
-    const msgBuffer = new TextEncoder().encode(message);
-    const hashBuffer = await crypto.subtle.digest('SHA-256', msgBuffer);
-    const hashArray = Array.from(new Uint8Array(hashBuffer));
-    return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+    // Try crypto.subtle first (requires HTTPS in Safari)
+    if (typeof window !== 'undefined' && window.crypto && window.crypto.subtle) {
+        try {
+            const msgBuffer = new TextEncoder().encode(message);
+            const hashBuffer = await crypto.subtle.digest('SHA-256', msgBuffer);
+            const hashArray = Array.from(new Uint8Array(hashBuffer));
+            return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+        } catch (error) {
+            console.warn('crypto.subtle.digest failed, using fallback hash:', error);
+        }
+    }
+
+    // Fallback: simple hash (not cryptographically secure, but works)
+    return simpleHashString(message);
+}
+
+/**
+ * Simple string hash fallback for Safari non-HTTPS contexts
+ */
+function simpleHashString(str: string): string {
+    let hash = 0;
+    for (let i = 0; i < str.length; i++) {
+        const char = str.charCodeAt(i);
+        hash = ((hash << 5) - hash) + char;
+        hash = hash & hash; // Convert to 32-bit integer
+    }
+
+    // Pad to 64 hex characters (256 bits) like SHA-256
+    const hexHash = Math.abs(hash).toString(16).padStart(8, '0');
+    return hexHash.repeat(8).substring(0, 64);
 }
 
 export function simpleHash(str: string): number {

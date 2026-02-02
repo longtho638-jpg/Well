@@ -53,10 +53,28 @@ export function sanitizeUrl(url: string): string | null {
 
 /**
  * Generate CSRF token
+ * Safari-safe: uses fallback for crypto API
  */
 export function generateCsrfToken(): string {
     const array = new Uint8Array(32);
-    crypto.getRandomValues(array);
+
+    // Safari-safe crypto with fallback
+    if (typeof window !== 'undefined' && window.crypto && typeof window.crypto.getRandomValues === 'function') {
+        try {
+            crypto.getRandomValues(array);
+        } catch {
+            // Fallback to Math.random for non-HTTPS contexts
+            for (let i = 0; i < 32; i++) {
+                array[i] = Math.floor(Math.random() * 256);
+            }
+        }
+    } else {
+        // Fallback to Math.random
+        for (let i = 0; i < 32; i++) {
+            array[i] = Math.floor(Math.random() * 256);
+        }
+    }
+
     return Array.from(array, byte => byte.toString(16).padStart(2, '0')).join('');
 }
 

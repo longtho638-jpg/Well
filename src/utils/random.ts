@@ -80,11 +80,30 @@ export function shortId(): string {
 
 /**
  * Generate nano ID (21 characters by default)
+ * Safari-safe: uses fallback for crypto API
  */
 export function nanoId(size = 21): string {
     const alphabet = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';
     let id = '';
-    const bytes = crypto.getRandomValues(new Uint8Array(size));
+    const bytes = new Uint8Array(size);
+
+    // Safari-safe crypto with fallback
+    if (typeof window !== 'undefined' && window.crypto && typeof window.crypto.getRandomValues === 'function') {
+        try {
+            crypto.getRandomValues(bytes);
+        } catch {
+            // Fallback to Math.random for non-HTTPS contexts
+            for (let i = 0; i < size; i++) {
+                bytes[i] = Math.floor(Math.random() * 256);
+            }
+        }
+    } else {
+        // Fallback to Math.random
+        for (let i = 0; i < size; i++) {
+            bytes[i] = Math.floor(Math.random() * 256);
+        }
+    }
+
     for (let i = 0; i < size; i++) {
         id += alphabet[bytes[i] % alphabet.length];
     }

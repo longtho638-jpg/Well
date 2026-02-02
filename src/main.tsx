@@ -8,6 +8,21 @@ import { LanguageProvider } from './context/LanguageContext';
 import './styles/design-system.css';
 import './index.css';
 
+// ============================================================================
+// SAFARI POLYFILLS - Promise.allSettled (Safari < 13)
+// ============================================================================
+if (!Promise.allSettled) {
+  Promise.allSettled = function <T>(promises: Array<Promise<T>>): Promise<Array<PromiseSettledResult<T>>> {
+    return Promise.all(
+      promises.map(promise =>
+        Promise.resolve(promise)
+          .then(value => ({ status: 'fulfilled' as const, value }))
+          .catch(reason => ({ status: 'rejected' as const, reason }))
+      )
+    );
+  };
+}
+
 // Inject Vercel Analytics in production
 if (import.meta.env.PROD) {
   const script = document.createElement('script');
