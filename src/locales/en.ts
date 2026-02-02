@@ -1678,6 +1678,11 @@ export const en = {
         nodes: 'Nodes',
         strategicSimulatorOffline: 'Strategic Simulator Offline',
         connectToPolicyEngine: 'Connect to the Policy Engine to run real-time market simulations.',
+        active_node: 'Active Node',
+        strategic_objectives: 'Strategic Objectives',
+        operational_policies: 'Operational Policies',
+        operational_telemetry: 'Operational Telemetry',
+        inputs_data_streams: 'Inputs / Data Streams',
         stats: {
             totalAgents: 'Total Agents',
             activeFunctions: 'Active Functions',
@@ -2051,6 +2056,59 @@ export const en = {
         ops: 'Ops',
         points_buffer: 'Points Buffer',
         synchronizing_crm_ledger: 'Synchronizing CRM Ledger',
+    },
+
+    // dailyquesthub
+    dailyquesthub: {
+        accumulated_today: 'Accumulated Today',
+        claim_reward: 'Claim Reward',
+        completed: 'Completed',
+        completed_1: 'Completed',
+        grow: 'GROW',
+        grow_1: 'GROW',
+        mastered: 'Mastered',
+        start_quest: 'Start Quest',
+        yield: 'Yield',
+    },
+
+    // founderrevenuegoal
+    founderrevenuegoal: {
+        '1m_founder_journey': '$1M Founder Journey',
+        '1_000_000_usd': '$1,000,000 USD',
+        ai_xu_t_h_nh_ng: 'AI Recommended Actions',
+        c_n_t_ng_t_c: 'Need Acceleration',
+        current_stage: 'Current Stage',
+        doanh_thu_hi_n_t_i: 'Current Revenue',
+        m_c_ti_u_2026: 'Target 2026',
+        of_goal: 'of Goal',
+        projected_yoy_growth: 'Projected YoY Growth',
+        revenue_milestone: 'Revenue Milestone',
+        v_t_ti_n: 'Ahead of Schedule',
+    },
+
+    // sessionmanager
+    sessionmanager: {
+        active_now: 'Active Now',
+        active_sessions: 'Active Sessions',
+        connected: 'Connected',
+        device: 'Device',
+        if_you_don_t_recognize_a_sessi: "If you don't recognize a session, revoke it immediately.",
+        last_active: 'Last Active',
+        security_note: 'Security Note',
+        this_device: 'This Device',
+    },
+
+    // simulationpanel
+    simulationpanel: {
+        active_distribution_node: 'Active Distribution Node',
+        margin: 'Margin',
+        monthly_fixed: 'Monthly Fixed',
+        nodes: 'Nodes',
+        projected_ebitda: 'Projected EBITDA',
+        projected_gmv: 'Projected GMV',
+        system_payout: 'System Payout',
+        target_aov: 'Target AOV',
+        vc_simulation_engine: 'VC Simulation Engine',
     },
 
     // herocard

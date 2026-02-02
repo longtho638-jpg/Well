@@ -1235,6 +1235,11 @@ export const vi = {
     nodes: 'Nodes',
     strategicSimulatorOffline: 'Mô phỏng chiến lược Offline',
     connectToPolicyEngine: 'Kết nối Policy Engine để chạy mô phỏng thị trường thực.',
+    active_node: 'Nút Hoạt Động',
+    strategic_objectives: 'Mục Tiêu Chiến Lược',
+    operational_policies: 'Chính Sách Vận Hành',
+    operational_telemetry: 'Đo Lường Vận Hành',
+    inputs_data_streams: 'Đầu Vào / Luồng Dữ Liệu',
     stats: {
       totalAgents: 'Tổng số Agent',
       activeFunctions: 'Phân hệ nghiệp vụ',
@@ -2153,15 +2158,15 @@ export const vi = {
 
   // dailyquesthub
   dailyquesthub: {
-    accumulated_today: 'Accumulated Today',
-    claim_reward: 'Claim Reward',
-    completed: 'Completed',
-    completed_1: 'Completed',
-    grow: 'GROW',
-    grow_1: 'GROW',
-    mastered: 'Mastered',
-    start_quest: 'Start Quest',
-    yield: 'Lợi nhuận',
+    accumulated_today: 'Tích Lũy Hôm Nay',
+    claim_reward: 'Nhận Phần Thưởng',
+    completed: 'Hoàn Thành',
+    completed_1: 'Hoàn Thành',
+    grow: 'TĂNG TRƯỞNG',
+    grow_1: 'TĂNG TRƯỞNG',
+    mastered: 'Đã Thành Thạo',
+    start_quest: 'Bắt Đầu Nhiệm Vụ',
+    yield: 'Lợi Nhuận',
   },
 
   // debuggerpage
@@ -2211,18 +2216,18 @@ export const vi = {
 
   // founderrevenuegoal
   founderrevenuegoal: {
-    '1m_founder_journey': '$1M Founder Journey',
-    current_stage: 'Current Stage',
-    projected_yoy_growth: 'Projected YoY Growth',
-    revenue_milestone: 'Revenue Milestone',
+    '1m_founder_journey': 'Hành Trình $1M Founder',
+    current_stage: 'Giai Đoạn Hiện Tại',
+    projected_yoy_growth: 'Tăng Trưởng YoY Dự Kiến',
+    revenue_milestone: 'Mốc Doanh Thu',
     // Merged keys
     '1_000_000_usd': '$1,000,000 USD',
-    ai_xu_t_h_nh_ng: 'AI đề xuất hành động',
-    c_n_t_ng_t_c: 'Cần tăng tốc',
-    doanh_thu_hi_n_t_i: 'Doanh thu hiện tại',
-    'm_c_ti_u_2026': 'Mục tiêu 2026',
-    of_goal: 'of Goal',
-    v_t_ti_n: 'Vượt tiến độ',
+    ai_xu_t_h_nh_ng: 'AI Đề Xuất Hành Động',
+    c_n_t_ng_t_c: 'Cần Tăng Tốc',
+    doanh_thu_hi_n_t_i: 'Doanh Thu Hiện Tại',
+    'm_c_ti_u_2026': 'Mục Tiêu 2026',
+    of_goal: 'của Mục Tiêu',
+    v_t_ti_n: 'Vượt Tiến Độ',
   },
 
   // herocard
@@ -2641,14 +2646,14 @@ export const vi = {
 
   // sessionmanager
   sessionmanager: {
-    active_now: 'Active Now',
-    active_sessions: 'Active Sessions',
-    connected: 'Connected',
-    device: 'Device',
-    if_you_don_t_recognize_a_sessi: "If you don't recognize a session, revoke it immediately.",
-    last_active: 'Last Active',
-    security_note: 'Security Note',
-    this_device: 'This Device',
+    active_now: 'Hoạt Động',
+    active_sessions: 'Phiên Hoạt Động',
+    connected: 'Đã Kết Nối',
+    device: 'Thiết Bị',
+    if_you_don_t_recognize_a_sessi: 'Nếu bạn không nhận ra phiên nào, hãy thu hồi ngay lập tức.',
+    last_active: 'Hoạt Động Lần Cuối',
+    security_note: 'Lưu Ý Bảo Mật',
+    this_device: 'Thiết Bị Này',
   },
 
   // sharebuttons
@@ -2671,15 +2676,15 @@ export const vi = {
 
   // simulationpanel
   simulationpanel: {
-    active_distribution_node: 'Active Distribution Node',
-    margin: 'Margin',
-    monthly_fixed: 'Monthly Fixed',
-    nodes: 'Nodes',
-    projected_ebitda: 'Projected EBITDA',
-    projected_gmv: 'Projected GMV',
-    system_payout: 'System Payout',
-    target_aov: 'Target AOV',
-    vc_simulation_engine: 'VC Simulation Engine',
+    active_distribution_node: 'Nút Phân Phối Hoạt Động',
+    margin: 'Biên Lợi Nhuận',
+    monthly_fixed: 'Cố Định Hàng Tháng',
+    nodes: 'Nút',
+    projected_ebitda: 'EBITDA Dự Kiến',
+    projected_gmv: 'GMV Dự Kiến',
+    system_payout: 'Chi Trả Hệ Thống',
+    target_aov: 'AOV Mục Tiêu',
+    vc_simulation_engine: 'Công Cụ Mô Phỏng VC',
   },
 
   // statsgrid
