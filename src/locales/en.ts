@@ -1889,6 +1889,34 @@ export const en = {
         utc_synchronization_active: 'UTC Synchronization Active',
     },
 
+    // transactioncard
+    transactioncard: {
+        commit_approval: 'Commit Approval',
+        flagged_for_behavioral_anomaly: 'Flagged for Behavioral Anomaly',
+        gross: 'Gross',
+        internal_ledger_net: 'Internal Ledger (Net)',
+        latency: 'Latency',
+        optimal: 'Optimal',
+        retention: 'Retention',
+        security_engine_quarantine: 'Security Engine Quarantine',
+        system_yield_injected: 'System Yield Injected',
+        uid: 'UID',
+    },
+
+    // rankprogressbar
+    rankprogressbar: {
+        rank_upgrade_progress: 'Rank Upgrade Progress',
+        upgrade_to: 'Upgrade to ',
+        kh_i_nghi_p: 'Startup',
+        '25_commission': '- 25% Commission',
+        complete: 'Complete',
+        remaining: 'Remaining',
+        after_upgrade: 'After Upgrade',
+        '25_rate': '25% Commission',
+        almost_there_just: 'Almost there! Just ',
+        more_to_kh_i_nghi_p_rank: ' more to Startup rank!',
+    },
+
     // herocard
     herocard: {
         commission: 'Commission',

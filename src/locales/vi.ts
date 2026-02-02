@@ -1323,14 +1323,14 @@ export const vi = {
 
     // Finance Tab
     finance: {
-      title: 'Finance Operations',
-      subtitle: 'Manage withdrawal requests and tax compliance',
-      gross: 'Gross:',
-      tax: 'Tax (10%):',
-      net: 'Net:',
-      approve: 'Approve',
-      reject: 'Reject',
-      noRequests: 'No withdrawal requests at this time',
+      title: 'Hoạt Động Tài Chính',
+      subtitle: 'Quản lý yêu cầu rút tiền và tuân thủ thuế',
+      gross: 'Tổng:',
+      tax: 'Thuế (10%):',
+      net: 'Thực nhận:',
+      approve: 'Phê duyệt',
+      reject: 'Từ chối',
+      noRequests: 'Hiện không có yêu cầu rút tiền nào',
     },
 
     // User Management
@@ -2718,15 +2718,15 @@ export const vi = {
 
   // transactioncard
   transactioncard: {
-    commit_approval: 'Commit Approval',
-    flagged_for_behavioral_anomaly: 'Flagged for Behavioral Anomaly',
-    gross: 'Gross',
-    internal_ledger_net: 'Internal Ledger (Net)',
-    latency: 'Latency',
-    optimal: 'Optimal',
-    retention: 'Retention',
-    security_engine_quarantine: 'Security Engine Quarantine',
-    system_yield_injected: 'System Yield Injected',
+    commit_approval: 'Phê Duyệt Commit',
+    flagged_for_behavioral_anomaly: 'Đánh Dấu Bất Thường Hành Vi',
+    gross: 'Tổng',
+    internal_ledger_net: 'Sổ Cái Nội Bộ (Thực)',
+    latency: 'Độ Trễ',
+    optimal: 'Tối Ưu',
+    retention: 'Duy Trì',
+    security_engine_quarantine: 'Hệ Thống Bảo Mật Cách Ly',
+    system_yield_injected: 'Lợi Nhuận Hệ Thống Tiêm Vào',
     uid: 'UID',
   },
 
