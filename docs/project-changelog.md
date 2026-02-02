@@ -1,5 +1,18 @@
 # Project Changelog
 
+## [2.1.2] - 2026-02-02
+
+### 🏗️ Infrastructure & Security Upgrade
+Comprehensive infrastructure hardening and monitoring integration.
+
+### Added
+- **Monitoring:** Integrated Sentry for real-time error tracking (100% sample rate).
+- **Security:** Implemented Content Security Policy (CSP) and HSTS headers.
+- **Documentation:** Created Disaster Recovery Plan and Email DNS Configuration Guide.
+
+### Configured
+- **Performance:** Optimized CDN cache settings for static assets.
+
 ## [2.1.1] - 2026-02-02
 
 ### 🔒 Handover Verification & Security Audit

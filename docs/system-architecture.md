@@ -69,9 +69,15 @@ graph TD
 ### 5. Security
 - **Environment Variables:** API keys stored in `.env`.
 - **Authentication:** Firebase Auth integration.
+- **Headers:** Content Security Policy (CSP) and HSTS enforced via Vercel configuration.
 - **Compliance:** Automated tax calculation logic enforced on client-side (for MVP) before transaction recording.
 
+### 6. Observability & Monitoring
+- **Error Tracking:** Sentry (100% sample rate for production errors).
+- **Performance:** Core Web Vitals monitoring via Vercel Analytics.
+
 ## Deployment Pipeline
-- **Host:** Vercel
+- **Host:** Vercel (Edge Network)
 - **Trigger:** Push to `main` branch.
 - **Process:** Build -> Test -> Deploy -> CDN Propagation.
+- **Optimization:** Aggressive caching policies for static assets; immutable deployments.

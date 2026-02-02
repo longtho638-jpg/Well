@@ -5,8 +5,12 @@ import './i18n'; // Initialize i18next
 import App from './App';
 import { ErrorBoundary } from './components/ErrorBoundary';
 import { LanguageProvider } from './context/LanguageContext';
+import { initSentry } from './utils/sentry';
 import './styles/design-system.css';
 import './index.css';
+
+// Initialize Sentry error tracking (production only)
+initSentry();
 
 // ============================================================================
 // SAFARI POLYFILLS - Promise.allSettled (Safari < 13)

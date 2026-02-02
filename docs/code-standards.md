@@ -67,6 +67,27 @@
   - ✅ Organize by feature/page: `checkout.guestForm.email`, `dashboard.stats.revenue`
 - **Verification:** Build must pass with zero duplicate key errors.
 
+## Error Handling & Monitoring
+- **Framework:** Sentry (Production) + Console (Development)
+- **Global Error Boundary:** All uncaught exceptions are caught by `ErrorBoundary.tsx`.
+- **Explicit Error Capture:** Use `captureError` utility for handled exceptions that need tracking.
+  ```typescript
+  import { captureError } from '@/utils/sentry';
+
+  try {
+    await riskyOperation();
+  } catch (error) {
+    captureError(error as Error, { context: 'riskyOperation' });
+    // Handle UI feedback
+  }
+  ```
+- **User Context:** Automatically tracked when user logs in via `setUserContext`.
+- **Performance Tracing:** Automatic for routing and critical interactions.
+- **Prohibited:**
+  - ❌ `console.error` in production (use `captureError`)
+  - ❌ Swallowing errors without reporting
+  - ❌ Logging Sensitive PII (Personally Identifiable Information)
+
 ## Security Best Practices
 - **API Key Security:**
   - ❌ NEVER expose API keys in client code (no `VITE_*` environment variables for secrets)

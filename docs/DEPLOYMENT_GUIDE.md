@@ -808,7 +808,7 @@ aws secretsmanager create-secret \
 
 ### Frontend Environment Variables
 
-In `.env.production`:
+In `.env.production` (or Vercel Project Settings):
 
 ```bash
 VITE_API_URL=https://api.wellnexus.vn/v1
@@ -858,7 +858,8 @@ WellNexus uses **GitHub Actions** + **Vercel Git Integration** for automated CI/
   - Automatic preview deployments for PRs
   - CDN caching (HIT rate ~95%)
   - HTTPS/HTTP2 enabled
-  - Security headers (HSTS, CSP, X-Frame-Options)
+  - **Security headers** (HSTS, CSP, X-Frame-Options) configured via `vercel.json`
+  - **Sentry Source Maps** upload for error debugging
 
 #### Security Scanning
 
@@ -1085,7 +1086,40 @@ aws cloudwatch put-metric-alarm \
 
 ### Application Performance Monitoring (APM)
 
-#### Sentry Integration
+#### Sentry Integration (Frontend)
+
+**Install Sentry SDK:**
+
+```bash
+npm install @sentry/react @sentry/browser
+```
+
+**Configure in frontend (`src/utils/sentry.ts`):**
+
+```typescript
+import * as Sentry from '@sentry/react';
+
+export function initSentry() {
+  if (import.meta.env.MODE !== 'production') return;
+
+  Sentry.init({
+    dsn: import.meta.env.VITE_SENTRY_DSN,
+    environment: import.meta.env.MODE,
+    integrations: [
+      Sentry.browserTracingIntegration(),
+      Sentry.replayIntegration(),
+    ],
+    tracesSampleRate: 1.0,
+    replaysSessionSampleRate: 0.1,
+    replaysOnErrorSampleRate: 1.0,
+  });
+}
+```
+
+**Environment Variable:**
+Ensure `VITE_SENTRY_DSN` is set in Vercel project settings.
+
+#### Sentry Integration (Backend)
 
 **Install Sentry SDK:**
 

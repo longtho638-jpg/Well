@@ -51,7 +51,8 @@
 - **Responsiveness:** Mobile-first design, fully functional on all device sizes.
 - **Localization:** Full support for Vietnamese (vi) and English (en).
 - **Accessibility:** WCAG AA compliance for core flows.
-- **Security:** Secure handling of user data and API keys.
+- **Observability:** Real-time error tracking (Sentry) and performance monitoring.
+- **Security:** Secure handling of user data, API keys, and HTTP headers (CSP, HSTS).
 
 ### 4. Technical Constraints
 - **Framework:** React 19 with TypeScript 5.7+.
