@@ -134,7 +134,7 @@ export const FeaturedProducts: React.FC<FeaturedProductsProps> = ({ products, on
 
                 <div className="flex items-center justify-between pt-4 border-t border-white/5">
                   <div className="flex flex-col">
-                    <span className="text-xs text-zinc-500 uppercase tracking-wider font-bold">Giá bán</span>
+                    <span className="text-xs text-zinc-500 uppercase tracking-wider font-bold">{t('landing.featured.price')}</span>
                     <span className="text-xl font-bold text-white">{formatVND(product.price)}</span>
                   </div>
                   <button

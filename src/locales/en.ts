@@ -825,6 +825,13 @@ export const en = {
 
     // Health Check (Health Quiz)
     healthCheck: {
+        dimensions: {
+            sleep: 'Sleep Quality',
+            stress: 'Stress Level',
+            energy: 'Energy Level',
+            exercise: 'Physical Activity',
+            goal: 'Health Goal',
+        },
         questions: {
             sleep: {
                 question: 'How many hours do you usually sleep each night?',
@@ -906,6 +913,7 @@ export const en = {
 
         products: {
             anima119: {
+                name: 'ANIMA Relaxation Combo',
                 reason: 'Supports nervous system stability, improves sleep and reduces stress',
                 benefits: {
                     sleep: 'Helps sleep deeper and better',
@@ -915,6 +923,7 @@ export const en = {
                 }
             },
             immuneBoost: {
+                name: 'Energy & Immunity Combo',
                 reason: 'Strengthens immune system and body energy',
                 benefits: {
                     immunity: 'Increases resistance',
@@ -924,6 +933,7 @@ export const en = {
                 }
             },
             starterKit: {
+                name: 'Starter Kit',
                 reason: 'Comprehensive nutrition combo for overall health',
                 benefits: {
                     nutrition: 'Complete nutrition supplement',
@@ -1105,6 +1115,7 @@ export const en = {
             subtitle: 'Trusted by over 5,000+ customers and healthcare professionals',
             viewAll: 'View all products',
             addToCart: 'Add to cart',
+            price: 'Price',
         },
         features: {
             title: 'Key Features',

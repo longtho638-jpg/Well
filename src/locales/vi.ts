@@ -877,6 +877,15 @@ export const vi = {
 
   // Health Check (Health Quiz)
   healthCheck: {
+    // Dimensions
+    dimensions: {
+      sleep: 'Giấc ngủ',
+      stress: 'Căng thẳng',
+      energy: 'Năng lượng',
+      exercise: 'Vận động',
+      goal: 'Mục tiêu',
+    },
+
     // Quiz Questions
     questions: {
       sleep: {
@@ -965,6 +974,7 @@ export const vi = {
     // Product Benefits
     products: {
       anima119: {
+        name: 'Combo ANIMA Thư Giãn',
         reason: 'Hỗ trợ ổn định hệ thần kinh, cải thiện giấc ngủ và giảm căng thẳng',
         benefits: {
           sleep: 'Giúp ngủ sâu, ngủ ngon hơn',
@@ -974,6 +984,7 @@ export const vi = {
         }
       },
       immuneBoost: {
+        name: 'Combo Năng Lượng & Miễn Dịch',
         reason: 'Tăng cường hệ miễn dịch và năng lượng cho cơ thể',
         benefits: {
           immunity: 'Tăng sức đề kháng',
@@ -983,6 +994,7 @@ export const vi = {
         }
       },
       starterKit: {
+        name: 'Starter Kit',
         reason: 'Combo dinh dưỡng toàn diện cho sức khỏe tổng thể',
         benefits: {
           nutrition: 'Bổ sung dinh dưỡng đầy đủ',
@@ -1264,6 +1276,7 @@ export const vi = {
       subtitle: 'Được tin dùng bởi hơn 5,000+ khách hàng và chuyên gia y tế',
       viewAll: 'Xem tất cả sản phẩm',
       addToCart: 'Thêm vào giỏ',
+      price: 'Giá bán',
     },
     features: {
       title: 'Tính năng nổi bật',
