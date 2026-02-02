@@ -5,13 +5,13 @@ import { User, UserRank } from '@/types';
 import { authLogger } from '@/utils/logger';
 
 // Demo email for testing (works even in production)
-const DEMO_EMAIL = 'demo@wellnexus.vn';
+const DEMO_EMAIL = 'demo@example.com';
 
 // Mock user for development/demo mode - matches User type exactly
 const MOCK_USER: User = {
   id: 'mock-dev-user-001',
   name: 'Dev User',
-  email: 'dev@wellnexus.vn',
+  email: 'dev@example.com',
   rank: UserRank.DAI_SU_DIAMOND,
   roleId: 2,
   sponsorId: undefined,
@@ -66,8 +66,12 @@ export function useAuth() {
           await fetchUserFromDB();
           fetchRealData();
         } else if (event === 'SIGNED_OUT') {
+          // Secure storage is cleared by Supabase client (via removeItem)
+          // But we ensure local state is reset
           setIsAuthenticated(false);
           setUser(null);
+          // Optional: Force clear if needed, but Supabase adapter handles it
+          // secureTokenStorage.clear();
         }
       }
     );

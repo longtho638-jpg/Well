@@ -2,6 +2,7 @@ import { Navigate } from 'react-router-dom';
 import { useStore } from '@/store';
 import { ReactNode } from 'react';
 import { authLogger } from '@/utils/logger';
+import { isAdmin as checkIsAdmin } from '@/utils/admin-check';
 
 interface AdminRouteProps {
     children: ReactNode;
@@ -26,14 +27,7 @@ export function AdminRoute({ children }: AdminRouteProps) {
     }
 
     // Check 2: Must have admin role
-    // SECURITY: Production admin whitelist - NO demo accounts
-    const ADMIN_EMAILS = [
-        'longtho638@gmail.com',
-        'doanhnhancaotuan@gmail.com'
-        // NOTE: demo@wellnexus.vn REMOVED - real users are making purchases
-    ];
-
-    const isAdmin = ADMIN_EMAILS.includes(user?.email || '') ||
+    const isAdmin = checkIsAdmin(user?.email) ||
         user?.role === 'admin' ||
         user?.role === 'super_admin' ||
         user?.isAdmin === true;

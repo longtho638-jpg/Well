@@ -10,13 +10,7 @@ import { useNavigate } from 'react-router-dom';
 import { useAuth } from './useAuth';
 import { authLogger } from '@/utils/logger';
 import { useTranslation } from '@/hooks';
-
-// SECURITY: Production admin whitelist - NO demo accounts
-const ADMIN_EMAILS = [
-    'longtho638@gmail.com',
-    'doanhnhancaotuan@gmail.com'
-    // NOTE: demo@wellnexus.vn REMOVED - real users are making purchases
-];
+import { isAdmin } from '@/utils/admin-check';
 
 export const useLogin = () => {
     const [email, setEmail] = useState('');
@@ -35,12 +29,12 @@ export const useLogin = () => {
      * Role-based navigation logic
      */
     const navigateAfterLogin = (userEmail: string) => {
-        const isAdmin = ADMIN_EMAILS.includes(userEmail.toLowerCase());
+        const userIsAdmin = isAdmin(userEmail);
         setSuccess(true);
         setLoading(false);
 
         setTimeout(() => {
-            if (isAdmin) {
+            if (userIsAdmin) {
                 navigate('/admin');
             } else {
                 navigate('/dashboard');
@@ -90,9 +84,12 @@ export const useLogin = () => {
 
     /**
      * Handle Demo Login
+     * Only available in development mode
      */
     const handleTryDemo = () => {
-        setEmail('demo@wellnexus.vn');
+        if (!import.meta.env.DEV) return;
+
+        setEmail('demo@example.com');
         setPassword('demo123');
         // Trigger login with a small delay to allow state updates
         setTimeout(() => {

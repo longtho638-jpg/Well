@@ -3,33 +3,27 @@
  * Phase 6: Security + i18n
  */
 
+import DOMPurify from 'dompurify';
+
 // ============================================================================
 // INPUT SANITIZATION
 // ============================================================================
 
 /**
- * Sanitize HTML to prevent XSS attacks
+ * Sanitize HTML to prevent XSS attacks using DOMPurify
  */
 export function sanitizeHtml(input: string): string {
-    const map: Record<string, string> = {
-        '&': '&amp;',
-        '<': '&lt;',
-        '>': '&gt;',
-        '"': '&quot;',
-        "'": '&#x27;',
-        '/': '&#x2F;',
-    };
-    return input.replace(/[&<>"'/]/g, (char) => map[char]);
+    return DOMPurify.sanitize(input);
 }
 
 /**
  * Sanitize user input for safe display
  */
 export function sanitizeInput(input: string): string {
-    return input
-        .trim()
-        .replace(/[<>]/g, '') // Remove angle brackets
-        .slice(0, 10000); // Limit length
+    return DOMPurify.sanitize(input.trim().slice(0, 10000), {
+        ALLOWED_TAGS: [], // Strip all tags for plain text input
+        ALLOWED_ATTR: []
+    });
 }
 
 /**

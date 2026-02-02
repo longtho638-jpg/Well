@@ -30,9 +30,9 @@ export interface AuditLogEntry {
 }
 
 const MOCK_AUDIT_LOGS: AuditLogEntry[] = [
-    { id: 'AL001', timestamp: new Date().toISOString(), adminId: 'admin-001', adminName: 'Minh Tran', adminEmail: 'admin@wellnexus.vn', action: 'order_approved', resource: 'orders', resourceId: 'ORD-2024-001', details: { amount: 15000000, partnerId: 'P001', partnerName: 'Nguyen Van A' }, ipAddress: '113.xxx.xxx.xxx', userAgent: 'Chrome/120 on macOS' },
-    { id: 'AL002', timestamp: new Date(Date.now() - 30 * 60 * 1000).toISOString(), adminId: 'admin-001', adminName: 'Minh Tran', adminEmail: 'admin@wellnexus.vn', action: 'partner_approved', resource: 'partners', resourceId: 'P002', details: { partnerName: 'Le Thi B', kycVerified: true }, ipAddress: '113.xxx.xxx.xxx', userAgent: 'Chrome/120 on macOS' },
-    { id: 'AL003', timestamp: new Date(Date.now() - 2 * 60 * 60 * 1000).toISOString(), adminId: 'admin-002', adminName: 'Lan Nguyen', adminEmail: 'lan@wellnexus.vn', action: 'policy_updated', resource: 'policy_engine', resourceId: 'commission_rates', details: { field: 'retailComm', oldValue: 15, newValue: 18 }, ipAddress: '14.xxx.xxx.xxx', userAgent: 'Safari/17 on iOS' },
+    { id: 'AL001', timestamp: new Date().toISOString(), adminId: 'admin-001', adminName: 'Admin User 1', adminEmail: 'admin1@example.com', action: 'order_approved', resource: 'orders', resourceId: 'ORD-2024-001', details: { amount: 15000000, partnerId: 'P001', partnerName: 'Partner A' }, ipAddress: '113.xxx.xxx.xxx', userAgent: 'Chrome/120 on macOS' },
+    { id: 'AL002', timestamp: new Date(Date.now() - 30 * 60 * 1000).toISOString(), adminId: 'admin-001', adminName: 'Admin User 1', adminEmail: 'admin1@example.com', action: 'partner_approved', resource: 'partners', resourceId: 'P002', details: { partnerName: 'Partner B', kycVerified: true }, ipAddress: '113.xxx.xxx.xxx', userAgent: 'Chrome/120 on macOS' },
+    { id: 'AL003', timestamp: new Date(Date.now() - 2 * 60 * 60 * 1000).toISOString(), adminId: 'admin-002', adminName: 'Admin User 2', adminEmail: 'admin2@example.com', action: 'policy_updated', resource: 'policy_engine', resourceId: 'commission_rates', details: { field: 'retailComm', oldValue: 15, newValue: 18 }, ipAddress: '14.xxx.xxx.xxx', userAgent: 'Safari/17 on iOS' },
 ];
 
 export function useAuditLog() {

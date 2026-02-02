@@ -107,7 +107,7 @@ export default function Login() {
                                     value={email}
                                     onChange={(e) => setEmail(e.target.value)}
                                     required
-                                    placeholder="founder@wellnexus.vn"
+                                    placeholder="user@example.com"
                                     className="w-full bg-slate-950/50 border border-slate-700/50 text-white rounded-2xl py-3.5 pl-12 pr-4 focus:outline-none focus:ring-2 focus:ring-teal-500/40 focus:border-teal-500/50 transition-all placeholder:text-slate-600"
                                 />
                             </div>

@@ -7,9 +7,7 @@ import { useStore } from '../store';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useTranslation } from '../hooks';
 import { useTheme } from '../context/ThemeContext';
-
-// Admin emails - must match AdminRoute.tsx
-const ADMIN_EMAILS = ['longtho638@gmail.com', 'doanhnhancaotuan@gmail.com'];
+import { isAdmin as checkIsAdmin } from '@/utils/admin-check';
 
 interface MenuItem {
   path: string;
@@ -33,7 +31,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ onMobileClose }) => {
   const [loading, setLoading] = useState(false);
 
   // Check if current user is admin
-  const isAdmin = ADMIN_EMAILS.includes(user?.email || '') || user?.role === 'admin' || user?.isAdmin === true;
+  const isAdmin = checkIsAdmin(user?.email) || user?.role === 'admin' || user?.isAdmin === true;
 
   const menuItems: MenuItem[] = [
     { path: '/dashboard', label: t('nav.dashboard'), icon: LayoutDashboard },
