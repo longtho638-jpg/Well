@@ -1917,6 +1917,58 @@ export const en = {
         more_to_kh_i_nghi_p_rank: ' more to Startup rank!',
     },
 
+    // products
+    products: {
+        add_product: 'Add Product',
+        bonus_revenue_dttt_represent: 'Bonus Revenue DTTT Represents',
+        commit: 'Commit',
+        dttt_basis: 'DTTT Basis',
+        dttt_commission_logic: 'DTTT Commission Logic',
+        edit_config: 'Edit Config',
+        global_catalog: 'Global Catalog',
+        in_stock: 'In Stock',
+        inventory_management_dttt_st: 'Inventory Management DTTT Stock',
+        low_stock: 'Low Stock',
+        member_21_startup_25: 'Member 21% / Startup 25%',
+        member_comm: 'Member Comm',
+        partner_comm: 'Partner Comm',
+        retail_msrp: 'Retail (MSRP)',
+        sku: 'SKU',
+    },
+
+    // overview
+    overview: {
+        active_nodes: 'Active Nodes',
+        agent_cluster: 'Agent Cluster',
+        ai_action_center: 'AI Action Center',
+        ai_agent_has_autonomously_reso: 'AI Agent has autonomously resolved all pending actions.',
+        autonomous_ecosystem_orchestra: 'Autonomous Ecosystem Orchestra',
+        autonomous_recommendations: 'Autonomous Recommendations',
+        confident: '% Confident',
+        ecosystem_online: 'Ecosystem Online',
+        ecosystem_scale: 'Ecosystem Scale',
+        growth_trajectory: 'Growth Trajectory',
+        live_pulse: 'Live Pulse',
+        mission_control: 'Mission Control',
+        queue_exhausted: 'Queue Exhausted',
+        resolve: 'Resolve',
+    },
+
+    // finance
+    finance: {
+        treasury_control: 'Treasury Control',
+        platform_liquidity_verificatio: 'Platform Liquidity Verification',
+        automated_fraud_detection: 'Automated Fraud Detection',
+        export_ledger: 'Export Ledger',
+        analyze_all: 'Analyze All',
+        security_passed: 'Security Passed',
+        quarantined_items: 'Quarantined Items',
+        security_batch_commit: 'Security Batch Commit',
+        verifying_digital_ledgers: 'Verifying Digital Ledgers',
+        ledger_synchronized: 'Ledger Synchronized',
+        no_items_in_the_current_filter: 'No items in the current filter',
+    },
+
     // herocard
     herocard: {
         commission: 'Commission',
