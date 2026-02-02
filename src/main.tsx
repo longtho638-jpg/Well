@@ -8,6 +8,10 @@ import { LanguageProvider } from './context/LanguageContext';
 import { initSentry } from './utils/sentry';
 import './styles/design-system.css';
 import './index.css';
+import { validateConfig } from './utils/validate-config';
+
+// Validate configuration before starting the app
+validateConfig();
 
 // Initialize Sentry error tracking (production only)
 initSentry();
