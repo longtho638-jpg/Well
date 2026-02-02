@@ -156,6 +156,36 @@ serve(async (req) => {
             x_amount: directCommission
         });
 
+        // Send commission earned email (direct commission)
+        try {
+            const { data: userData } = await supabase
+                .from('users')
+                .select('email, full_name, pending_balance')
+                .eq('id', userId)
+                .single();
+
+            if (userData?.email) {
+                await supabase.functions.invoke('send-email', {
+                    body: {
+                        to: userData.email,
+                        subject: `💰 Bạn vừa nhận ${(directCommission).toLocaleString('vi-VN')} VND hoa hồng!`,
+                        templateType: 'commission-earned',
+                        data: {
+                            userName: userData.full_name || 'Bạn',
+                            commissionAmount: `${directCommission.toLocaleString('vi-VN')} VND`,
+                            commissionType: 'direct',
+                            orderId: orderId,
+                            currentBalance: `${(userData.pending_balance || 0).toLocaleString('vi-VN')} VND`,
+                            commissionRate: `${(directRate * 100).toFixed(0)}%`
+                        }
+                    }
+                });
+                console.log(`[Email] Direct commission email sent to ${userData.email}`);
+            }
+        } catch (emailError) {
+            console.error('[Email] Failed to send direct commission email:', emailError);
+        }
+
         // --- LOGIC 2: TÍNH ĐIỂM THƯỞNG (NEXUS POINTS) ---
         // Rule: 100k = 1 Point
         const pointsEarned = Math.floor(orderTotal / POLICY.POINT_CONVERSION);
@@ -205,6 +235,43 @@ serve(async (req) => {
                     });
 
                     console.log(`[Bonus] Paid ${f1Bonus} to Sponsor ${sponsor.id}`);
+
+                    // Send F1 bonus email to sponsor
+                    try {
+                        const { data: sponsorData } = await supabase
+                            .from('users')
+                            .select('email, full_name, pending_balance')
+                            .eq('id', sponsor.id)
+                            .single();
+
+                        const { data: buyerData } = await supabase
+                            .from('users')
+                            .select('full_name')
+                            .eq('id', userId)
+                            .single();
+
+                        if (sponsorData?.email) {
+                            await supabase.functions.invoke('send-email', {
+                                body: {
+                                    to: sponsorData.email,
+                                    subject: `🎁 Thưởng F1: ${f1Bonus.toLocaleString('vi-VN')} VND từ ${buyerData?.full_name || 'thành viên'}`,
+                                    templateType: 'commission-earned',
+                                    data: {
+                                        userName: sponsorData.full_name || 'Bạn',
+                                        commissionAmount: `${f1Bonus.toLocaleString('vi-VN')} VND`,
+                                        commissionType: 'sponsor',
+                                        orderId: orderId,
+                                        fromUserName: buyerData?.full_name || 'Thành viên F1',
+                                        currentBalance: `${(sponsorData.pending_balance || 0).toLocaleString('vi-VN')} VND`,
+                                        commissionRate: '8%'
+                                    }
+                                }
+                            });
+                            console.log(`[Email] F1 bonus email sent to ${sponsorData.email}`);
+                        }
+                    } catch (emailError) {
+                        console.error('[Email] Failed to send F1 bonus email:', emailError);
+                    }
                 } else {
                     console.log(`[Bonus] Sponsor ${sponsor.id} rank ${sponsorRoleId} too low for F1 bonus (Requires <= 6)`);
                 }
@@ -294,7 +361,49 @@ serve(async (req) => {
 
                 console.log(`[RankUp] ✅ User ${userId} upgraded: ${applicableUpgrade.name} (${buyerRoleId} → ${applicableUpgrade.toRank})`);
 
-                // TODO: Send congratulation email via Resend API
+                // Send rank upgrade celebration email
+                try {
+                    const oldRankName = rankNames[buyerRoleId as keyof typeof rankNames] || 'CTV';
+                    const newRankName = rankNames[applicableUpgrade.toRank as keyof typeof rankNames] || 'Unknown';
+
+                    const { data: userEmail } = await supabase
+                        .from('users')
+                        .select('email, full_name')
+                        .eq('id', userId)
+                        .single();
+
+                    if (userEmail?.email) {
+                        const emailPayload = {
+                            to: userEmail.email,
+                            subject: `🎉 Chúc mừng! Bạn đã thăng hạng lên ${newRankName}!`,
+                            userName: userEmail.full_name || 'Bạn',
+                            oldRank: oldRankName,
+                            newRank: newRankName,
+                            newRankId: applicableUpgrade.toRank,
+                            achievementDate: new Date().toLocaleDateString('vi-VN'),
+                            newCommissionRate: applicableUpgrade.toRank <= 7 ? '25%' : '21%',
+                            newBenefits: applicableUpgrade.toRank <= 6
+                                ? ['Nhận 8% thưởng quản lý F1', 'Ưu tiên hỗ trợ VIP', 'Tham gia chương trình đào tạo cao cấp']
+                                : ['Hoa hồng cao hơn', 'Công cụ hỗ trợ bán hàng'],
+                            lifetimeSales: lifetimeSales ? `${lifetimeSales.toLocaleString('vi-VN')} VND` : undefined,
+                            teamVolume: teamVolume ? `${teamVolume.toLocaleString('vi-VN')} VND` : undefined
+                        };
+
+                        await supabase.functions.invoke('send-email', {
+                            body: {
+                                to: emailPayload.to,
+                                subject: emailPayload.subject,
+                                templateType: 'rank-upgrade',
+                                data: emailPayload
+                            }
+                        });
+
+                        console.log(`[Email] Rank upgrade email sent to ${userEmail.email}`);
+                    }
+                } catch (emailError) {
+                    console.error('[Email] Failed to send rank upgrade email:', emailError);
+                    // Don't fail the whole request if email fails
+                }
             } else {
                 console.log(`[RankUp] User ${userId} not ready for upgrade yet`);
             }

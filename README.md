@@ -53,7 +53,8 @@ npm install
 # Environment
 cp .env.example .env.local
 # Add: VITE_SUPABASE_URL, VITE_SUPABASE_ANON_KEY
-# Note: GEMINI_API_KEY is now managed via Supabase Edge Functions (vault)
+# Note: GEMINI_API_KEY and RESEND_API_KEY are managed via Supabase Edge Functions (vault)
+# See "Email Setup" section below for RESEND_API_KEY configuration
 
 # Development
 npm run dev
@@ -106,6 +107,57 @@ src/
 | THIEN_LONG → DAI_SU | 1-6 | 25% |
 | KHOI_NGHIEP | 7 | 25% |
 | CTV | 8 | 21% |
+
+## 📧 Email Setup (Resend Integration)
+
+WellNexus uses **Resend** for transactional emails with a generous free tier (100 emails/day, 3,000/month).
+
+### Email Templates
+- ✅ Welcome email (new user signup)
+- ✅ Order confirmation (order completed)
+- ✅ Commission earned (direct + F1 sponsor bonus)
+- ✅ Rank upgrade celebration
+
+### Setup Instructions
+
+1. **Get Resend API Key**
+   - Sign up at [resend.com](https://resend.com)
+   - Navigate to API Keys page
+   - Create new API key (starts with `re_`)
+
+2. **Configure Supabase Edge Function**
+   ```bash
+   # Set secret in Supabase Dashboard
+   # Go to: Project Settings > Edge Functions > Secrets
+   # Add: RESEND_API_KEY = re_xxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+   # Or via Supabase CLI:
+   supabase secrets set RESEND_API_KEY=re_xxxxxxxxxxxxxxxxxxxxxxxxxxxx
+   ```
+
+3. **Verify Domain (Production)**
+   - Add your domain to Resend
+   - Add DNS records (SPF, DKIM, DMARC)
+   - For testing, use default `onboarding@resend.dev`
+
+4. **Test Email Sending**
+   ```typescript
+   import { emailService } from './src/services/email-service-client-side-trigger';
+
+   // Send test welcome email
+   await emailService.sendWelcome('user@example.com', {
+     userName: 'Test User',
+     userEmail: 'user@example.com',
+   });
+   ```
+
+### Email Triggers
+Emails are automatically sent when:
+- ✅ User completes order → Commission earned notification
+- ✅ Sponsor earns F1 bonus → F1 sponsor bonus notification
+- ✅ User achieves rank upgrade → Celebration email with stats
+
+All email sending is handled by Supabase Edge Function `send-email` with error isolation (email failures don't break reward processing).
 
 ## 📝 Documentation
 
