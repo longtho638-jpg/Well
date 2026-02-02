@@ -38,7 +38,7 @@
   - **Shared:** `src/types.ts`
   - **Admin Specific:** `admin-panel/src/types/`
 - **Props:** Use `interface Props` or `type Props`.
-- **Verification:** `tsc --noEmit` and tests must pass before commit.
+- **Verification:** `tsc --noEmit`, `npm run lint`, and tests must pass before commit.
 
 ## Accessibility (a11y)
 - **Standards:** WCAG 2.1 AA compliance.
