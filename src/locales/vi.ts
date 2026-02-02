@@ -292,16 +292,29 @@ export const vi = {
 
     // Token Balances (WEALTH OS: Portfolio Components)
     balance: {
+      total_assets: 'Tổng Tài Sản',
+      this_month: 'Tháng này',
       available: 'Liquid Assets (Khả dụng)',
       locked: 'Locked Assets (Đang khóa)',
       staked: 'Staked for Yield (Đang stake)',
       total: 'Total Portfolio Value',
       shopToken: 'SHOP Token - Cashflow',
       growToken: 'GROW Token - Equity',
+      vnd_stablecoin: 'VND Stablecoin 1:1',
+      governance_token: 'Governance Token',
+      currency: 'Tiền tệ',
+    },
+
+    stats: {
+      growth_12_5: '+12.5%',
+      apy_12_0: '12.0%',
+      apy_12_percent: '12%',
+      days_90: '90 Ngày'
     },
 
     // Actions
     actions: {
+      deposit_shop: 'Nạp SHOP',
       withdraw: 'Rút tiền',
       stake: 'Gửi tiết kiệm',
       unstake: 'Rút tiết kiệm',
@@ -329,6 +342,7 @@ export const vi = {
     // Transaction History
     transactions: {
       title: 'Lịch sử giao dịch',
+      explorer: 'Blockchain Explorer',
       noTransactions: 'Chưa có giao dịch nào',
       id: 'Mã giao dịch',
       date: 'Ngày',
@@ -337,6 +351,9 @@ export const vi = {
       status: 'Trạng thái',
       hash: 'Hash',
       tax: 'Thuế',
+      viewOnBscScan: 'Xem trên BSCScan',
+      emptyState: 'Lịch sử giao dịch của bạn sẽ xuất hiện ở đây',
+      emptyStateFilter: 'Chưa có giao dịch {filter} nào',
       types: {
         directSale: 'Bán trực tiếp',
         teamBonus: 'Thưởng đội nhóm',
@@ -607,6 +624,8 @@ export const vi = {
     tabs: {
       overview: 'Tổng quan',
       referrals: 'Danh sách',
+      network: 'Mạng Lưới Topology',
+      propagation: 'Phân Tích Lan Truyền',
     },
 
     // Referral Stats
@@ -615,9 +634,11 @@ export const vi = {
       activeReferrals: 'Đang hoạt động',
       active: 'Active',
       conversionRate: 'Tỉ Lệ Chuyển Đổi',
+      optimized: 'Đã Tối Ưu 🎯',
       totalRevenue: 'Tổng Doanh Thu',
       totalBonus: 'Tổng Thưởng',
       monthlyReferrals: 'Giới thiệu tháng này',
+      growth_spike: 'Tăng Trưởng Đột Biến 🎉',
     },
 
     // Referral Link
@@ -634,6 +655,17 @@ export const vi = {
       twitter: 'Twitter',
       more: 'Thêm',
       qrCode: 'Mã QR',
+      generate_visual_key: 'Tạo Khóa Trực Quan',
+      dismiss_visual_key: 'Đóng Khóa Trực Quan',
+    },
+
+    // QR Code
+    qrcode: {
+      visual_id_key: 'Khóa Danh Tính Trực Quan',
+      wellnexus_network: 'MẠNG LƯỚI WELLNEXUS',
+      scanning_initiates_sync: 'Quét khởi động đồng bộ danh tính an toàn',
+      commit_to_local_storage: 'Lưu vào Bộ Nhớ Cục Bộ',
+      recommended_for_high_conversio: 'Khuyến nghị cho các điểm tiếp xúc vật lý chuyển đổi cao',
     },
 
     // Chart
@@ -641,6 +673,28 @@ export const vi = {
       title: 'Xu Hướng Giới Thiệu',
       referrals: 'Giới thiệu',
       revenue: 'Doanh thu',
+      propagation_velocity: 'Vận Tốc Lan Truyền',
+      growth_yield_trajectory: 'Quỹ Đạo Tăng Trưởng & Năng Suất',
+      nodes: 'Nút',
+      yield: 'Năng Suất',
+    },
+
+    // Network
+    network: {
+      network_architecture: 'Kiến Trúc Mạng Lưới',
+      tier_1_tier_2_visualization: 'Trực Quan Hóa Tầng 1 & Tầng 2',
+      f1_sentinel_nodes: 'Nút Canh Gác F1',
+      nodes: 'Nút',
+      f2_secondary_propagation: 'Lan Truyền Thứ Cấp F2',
+      node_val: 'Giá Trị Nút',
+      yield: 'Năng Suất',
+      status: {
+        active: 'Đồng Bộ Đang Hoạt Động',
+        registered: 'Xác Thực Danh Tính',
+        pending: 'Đang Chờ Bắt Tay',
+        expired: 'Liên Kết Bị Ngắt',
+        unknown: 'Không Xác Định',
+      }
     },
 
     // Referrals List
@@ -670,8 +724,31 @@ export const vi = {
         signup: 'Nhận ngay khi người được giới thiệu đăng ký',
         firstPurchase: 'Nhận khi người được giới thiệu mua hàng lần đầu',
         milestone: 'Nhận khi đạt mốc doanh số',
+      },
+      yield_mechanics: 'Cơ Chế Năng Suất',
+      incentive_algorithm: 'Thuật Toán Khuyến Khích',
+      activation: {
+        title: 'Mốc Kích Hoạt',
+        desc: 'Thanh khoản tức thời khi đồng bộ danh tính thành công',
+        sub: 'mỗi nút'
+      },
+      revenue: {
+        title: 'Ghi Đè Doanh Thu',
+        desc: 'Năng suất thứ cấp từ thương mại hệ sinh thái',
+        sub: 'ghi đè'
+      },
+      expansion: {
+        title: 'Thưởng Mở Rộng',
+        desc: 'Đạt được khi có 10 nút canh gác đang hoạt động',
+        sub: 'một lần'
       }
-    }
+    },
+
+    // Analytics
+    analytics: {
+      propagation: 'Phân Tích Lan Truyền',
+      node_topology: 'Topology Nút'
+    },
   },
 
   // Copilot (AI Sales Assistant)
@@ -2748,5 +2825,106 @@ export const vi = {
     coaching_ready: 'Coaching tips đã sẵn sàng',
     failed_coaching: 'Không thể lấy coaching',
     current_product: 'Sản phẩm hiện tại',
+  },
+
+  // Venture Builder Section
+  venture: {
+    hero: {
+      badge: 'Giao Thức Tuyển Dụng Co-Founder v4.0',
+      headline: 'Venture Builder:',
+      headlineAccent: 'Hệ Sinh Thái Công Nghệ Y Tế Thế Hệ Mới',
+      subheadline: 'Kiến tạo chuỗi cung ứng y tế phi tập trung xuyên suốt Đông Nam Á. Chúng tôi không tuyển nhân viên; chúng tôi xây dựng các nút Co-Founder được hỗ trợ bằng vốn chủ sở hữu.',
+      primaryCta: 'Khởi Động Giao Thức Tuyển Dụng',
+      secondaryCta: 'Kiểm Tra Danh Mục Đầu Tư',
+      stats: {
+        valuation_label: 'Giá Trị Tích Lũy',
+        nodes_label: 'Nút Mục Tiêu',
+        market_label: 'Thị Trường Chính',
+      },
+    },
+    navigation: {
+      apply_recruitment: 'Ứng Tuyển / Tuyển Dụng',
+      venture_builder: 'Venture Builder',
+      menu: {
+        portfolio: 'Danh Mục',
+        deal: 'Thỏa Thuận',
+        market: 'Thị Trường SEA',
+      },
+    },
+    deal: {
+      sectionBadge: 'Bộ Tài Liệu Giao Thức',
+      sectionTitle: 'Vốn Chủ Sở Hữu & Cơ Sở Hạ Tầng',
+      subheadline: 'Cấu trúc đầu tư siêu mở rộng cho các Co-Founder hiệu suất cao với quyền tự chủ địa phương.',
+      capitalNode: {
+        category: 'Nút Vốn',
+        item1: 'Đồng bộ hàng tồn kho với thanh khoản ban đầu bằng không',
+        item2: 'Nhóm vốn lưu động được mạng lưới hỗ trợ',
+        item3: 'Mở rộng tín dụng theo chỉ số hiệu suất',
+      },
+      techStack: {
+        category: 'Ngăn Xếp Công Nghệ 2.0',
+        item1: 'Agentic OS - Điều phối AI gốc',
+        item2: 'Định giá thời gian thực & đo xa năng suất',
+        item3: 'Trừu tượng hóa tuân thủ thuế động',
+        item4: 'Tích hợp sổ cái phân tán',
+      },
+      ownership: {
+        category: 'Ma Trận Sở Hữu',
+        item1: 'ESOP - Quyền sở hữu vốn chủ sở hữu trực tiếp',
+        item2: 'GROW Delta - Năng suất được căn chỉnh khuyến khích',
+        item3: 'Tuyến tính 4 năm vesting // 1 năm cliff',
+        item4: 'Mốc định giá được lập chỉ mục IPO',
+      },
+    },
+    portfolio: {
+      sectionBadge: 'Nút Founder Hoạt Động',
+      sectionTitle: 'Thế Hệ Năng Suất Đã Chứng Minh',
+      subheadline: 'Đo xa hệ sinh thái từ các nút hiệu suất cao đang hoạt động.',
+      roles: {
+        ceo: 'Co-Founder // CEO',
+        cmo: 'Co-Founder // CMO',
+        cto: 'Co-Founder // CTO',
+      },
+      regions: {
+        hanoi: 'Hà Nội',
+        hcmc: 'TP. HCM',
+        danang: 'Đà Nẵng',
+      },
+      val: 'Giá Trị',
+      growth: 'Tăng Trưởng',
+      arr_node: 'ARR Node',
+    },
+    market: {
+      sectionBadge: 'Mở Rộng Hệ Sinh Thái',
+      sectionTitle: 'Thống Trị Khu Vực SEA',
+      subheadline: 'Giao thức mở rộng đa phương vào thị trường có thể tiếp cận 12 tỷ USD.',
+      regions: {
+        vietnam: 'Việt Nam',
+        thailand: 'Thái Lan',
+        indonesia: 'Indonesia',
+        philippines: 'Philippines',
+      },
+      status: {
+        active: 'Đang Hoạt Động',
+        expanding: 'Đang Mở Rộng',
+        protocol_init: 'Khởi Động Giao Thức',
+        pending: 'Đang Chờ',
+      },
+      total_addressable_market: 'Tổng Thị Trường Có Thể Tiếp Cận',
+      velocity: 'Tốc Độ',
+      init_sea_expansion_protocol: 'Khởi Động Giao Thức Mở Rộng SEA',
+    },
+    footer: {
+      tagline: 'Venture Builder cung cấp năng lượng cho các bề mặt quản trị độ trung thực cao và thương mại y tế phi tập trung xuyên suốt Đông Nam Á.',
+      strategic_ecosystem_builder: 'Nhà Xây Dựng Hệ Sinh Thái Chiến Lược',
+      newsletter: {
+        title: 'Đồng Bộ Truyền Tải',
+        placeholder: 'comm_channel@secure.vn',
+      },
+      subscribe_for_exclusive_intake: 'Đăng Ký Nhận Thông Tin Độc Quyền',
+      copyright: '© 2026 WellNexus Venture Builder // Nợ Tuyệt Đối Bằng Không',
+      privacy: 'Quyền Riêng Tư Hệ Sinh Thái',
+      terms: 'Tuân Thủ Bảng Điều Khoản',
+    },
   },
 };
