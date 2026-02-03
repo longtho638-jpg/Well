@@ -479,6 +479,9 @@ export const en = {
             backToHome: 'Back to Home',
         },
         payment: {
+            title: 'Payment Method',
+            cod: 'Cash on Delivery (COD)',
+            banking: 'Bank Transfer (QR Code)',
             qr_scan: 'Scan QR Code to Pay',
             amount: 'Amount',
             order_code: 'Order Code',

@@ -12,7 +12,7 @@ export interface GuestProfile {
     note?: string;
 }
 
-export type PaymentMethod = 'cod' | 'banking';
+export type PaymentMethod = 'cod' | 'banking' | 'payos';
 
 export interface OrderPayload {
     items: {
@@ -26,4 +26,5 @@ export interface OrderPayload {
     };
     paymentMethod: PaymentMethod;
     totalAmount: number;
+    orderCode?: number; // For PayOS/Payment Gateway
 }

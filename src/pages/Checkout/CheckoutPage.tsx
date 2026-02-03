@@ -4,12 +4,14 @@ import { useCartStore } from '../../store/cartStore';
 import { CartSummary } from '../../components/checkout/CartSummary';
 import { GuestForm } from '../../components/checkout/GuestForm';
 import { GuestInfoValues } from '../../utils/validation/checkoutSchema';
-import { ArrowLeft, CreditCard, Loader2 } from 'lucide-react';
+import { ArrowLeft, CreditCard, Loader2, QrCode, Banknote } from 'lucide-react';
 import { orderService } from '../../services/orderService';
 import { useToast } from '../../components/ui/Toast';
 import { uiLogger } from '../../utils/logger';
-import { OrderPayload } from '../../types/checkout';
+import { OrderPayload, PaymentMethod } from '../../types/checkout';
 import { useTranslation } from '@/hooks';
+import { createPayment, PaymentResponse } from '../../services/payment/payos-client';
+import { QRPaymentModal } from '../../components/checkout/qr-payment-modal';
 
 export const CheckoutPage: React.FC = () => {
     const navigate = useNavigate();
@@ -20,6 +22,12 @@ export const CheckoutPage: React.FC = () => {
     const clearCart = useCartStore(state => state.clearCart);
     const [isSubmitting, setIsSubmitting] = useState(false);
 
+    // Payment State
+    const [paymentMethod, setPaymentMethod] = useState<PaymentMethod>('cod');
+    const [showPaymentModal, setShowPaymentModal] = useState(false);
+    const [paymentData, setPaymentData] = useState<PaymentResponse | null>(null);
+    const [pendingGuestInfo, setPendingGuestInfo] = useState<GuestInfoValues | null>(null);
+
     useEffect(() => {
         if (cartItems.length === 0) {
             navigate('/marketplace');
@@ -28,8 +36,54 @@ export const CheckoutPage: React.FC = () => {
 
     const handleCheckout = async (data: GuestInfoValues) => {
         setIsSubmitting(true);
+        setPendingGuestInfo(data);
+
         try {
-            // Construct Order Payload
+            if (paymentMethod === 'payos') {
+                // Generate a numeric order code (safe for JS numbers, unique enough for demo)
+                // Format: YYMMDD + 4 random digits
+                const datePrefix = new Date().toISOString().slice(2, 10).replace(/-/g, ''); // 240203
+                const randomSuffix = Math.floor(1000 + Math.random() * 9000); // 1000-9999
+                const orderCode = Number(`${datePrefix}${randomSuffix}`);
+
+                // Create PayOS Payment Link
+                const response = await createPayment({
+                    orderCode: orderCode,
+                    amount: cartTotal,
+                    description: `WellNexus Order ${orderCode}`,
+                    items: cartItems.map(item => ({
+                        name: item.product.name,
+                        quantity: item.quantity,
+                        price: item.product.price
+                    })),
+                    returnUrl: `${window.location.origin}/checkout/success`,
+                    cancelUrl: `${window.location.origin}/checkout`
+                });
+
+                if (response && response.checkoutUrl) {
+                    setPaymentData(response);
+                    setShowPaymentModal(true);
+                } else {
+                    throw new Error('Failed to create payment link');
+                }
+            } else {
+                // COD Flow
+                await processOrder(data, 'cod');
+            }
+        } catch (error) {
+            uiLogger.error('Checkout failed:', error);
+            showToast(t('checkout.error'), 'error');
+            setIsSubmitting(false); // Only reset if error/COD. For PayOS, wait for modal.
+        } finally {
+             // For PayOS, we stay "submitting" until modal opens or fails
+             if (paymentMethod === 'cod') {
+                 setIsSubmitting(false);
+             }
+        }
+    };
+
+    const processOrder = async (guestData: GuestInfoValues, method: PaymentMethod, orderCode?: number) => {
+        try {
             const payload: OrderPayload = {
                 items: cartItems.map(item => ({
                     productId: item.product.id,
@@ -37,24 +91,41 @@ export const CheckoutPage: React.FC = () => {
                     price: item.product.price
                 })),
                 customer: {
-                    guestProfile: data
+                    guestProfile: guestData
                 },
-                paymentMethod: 'cod', // Defaulting to COD for MVP
-                totalAmount: cartTotal
+                paymentMethod: method,
+                totalAmount: cartTotal,
+                orderCode: orderCode
             };
 
             await orderService.createOrder(payload);
 
-            // Success
             clearCart();
             showToast(t('checkout.success'), 'success');
             navigate('/checkout/success');
         } catch (error) {
-            uiLogger.error('Checkout failed:', error);
+            uiLogger.error('Order creation failed:', error);
             showToast(t('checkout.error'), 'error');
-        } finally {
-            setIsSubmitting(false);
+            throw error;
         }
+    };
+
+    const handlePaymentSuccess = async (orderCode: number) => {
+        if (pendingGuestInfo) {
+            try {
+                await processOrder(pendingGuestInfo, 'payos', orderCode);
+                setShowPaymentModal(false);
+            } catch (error) {
+                // Error handling already in processOrder
+                setIsSubmitting(false);
+            }
+        }
+    };
+
+    const handlePaymentFailure = (error: string) => {
+        showToast(error, 'error');
+        setShowPaymentModal(false);
+        setIsSubmitting(false);
     };
 
     return (
@@ -81,6 +152,60 @@ export const CheckoutPage: React.FC = () => {
                     {/* Left Column: Form */}
                     <div className="lg:col-span-8 space-y-8">
                         <GuestForm onSubmit={handleCheckout} isSubmitting={isSubmitting} />
+
+                        {/* Payment Method Selection */}
+                        <div className="bg-white dark:bg-zinc-900 rounded-3xl p-8 border border-zinc-200 dark:border-white/10">
+                            <h3 className="text-xl font-bold mb-6 text-zinc-900 dark:text-white flex items-center gap-2">
+                                <CreditCard size={20} className="text-teal-500" />
+                                {t('checkout.payment.title')}
+                            </h3>
+
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                <button
+                                    type="button"
+                                    onClick={() => setPaymentMethod('cod')}
+                                    className={`relative p-4 rounded-xl border-2 transition-all flex items-center gap-4 ${
+                                        paymentMethod === 'cod'
+                                            ? 'border-teal-500 bg-teal-50 dark:bg-teal-900/10'
+                                            : 'border-zinc-200 dark:border-white/10 hover:border-teal-500/50'
+                                    }`}
+                                >
+                                    <div className={`w-5 h-5 rounded-full border-2 flex items-center justify-center ${
+                                        paymentMethod === 'cod' ? 'border-teal-500' : 'border-zinc-300'
+                                    }`}>
+                                        {paymentMethod === 'cod' && <div className="w-2.5 h-2.5 rounded-full bg-teal-500" />}
+                                    </div>
+                                    <div className="flex flex-col items-start">
+                                        <div className="flex items-center gap-2">
+                                            <Banknote size={18} className="text-zinc-500" />
+                                            <span className="font-bold text-zinc-900 dark:text-white">{t('checkout.payment.cod')}</span>
+                                        </div>
+                                    </div>
+                                </button>
+
+                                <button
+                                    type="button"
+                                    onClick={() => setPaymentMethod('payos')}
+                                    className={`relative p-4 rounded-xl border-2 transition-all flex items-center gap-4 ${
+                                        paymentMethod === 'payos'
+                                            ? 'border-teal-500 bg-teal-50 dark:bg-teal-900/10'
+                                            : 'border-zinc-200 dark:border-white/10 hover:border-teal-500/50'
+                                    }`}
+                                >
+                                    <div className={`w-5 h-5 rounded-full border-2 flex items-center justify-center ${
+                                        paymentMethod === 'payos' ? 'border-teal-500' : 'border-zinc-300'
+                                    }`}>
+                                        {paymentMethod === 'payos' && <div className="w-2.5 h-2.5 rounded-full bg-teal-500" />}
+                                    </div>
+                                    <div className="flex flex-col items-start">
+                                        <div className="flex items-center gap-2">
+                                            <QrCode size={18} className="text-zinc-500" />
+                                            <span className="font-bold text-zinc-900 dark:text-white">{t('checkout.payment.banking')}</span>
+                                        </div>
+                                    </div>
+                                </button>
+                            </div>
+                        </div>
                     </div>
 
                     {/* Right Column: Summary & Actions */}
@@ -112,6 +237,18 @@ export const CheckoutPage: React.FC = () => {
                     </div>
                 </div>
             </div>
+
+            {/* PayOS QR Modal */}
+            <QRPaymentModal
+                isOpen={showPaymentModal}
+                onClose={() => {
+                    setShowPaymentModal(false);
+                    setIsSubmitting(false);
+                }}
+                paymentData={paymentData}
+                onSuccess={handlePaymentSuccess}
+                onFailure={handlePaymentFailure}
+            />
         </div>
     );
 };

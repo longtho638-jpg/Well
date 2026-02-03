@@ -510,6 +510,9 @@ export const vi = {
         backToHome: 'Về trang chủ',
       },
       payment: {
+        title: 'Phương thức thanh toán',
+        cod: 'Thanh toán khi nhận hàng (COD)',
+        banking: 'Chuyển khoản ngân hàng (QR Code)',
         qr_scan: 'Quét mã QR để thanh toán',
         amount: 'Số tiền',
         order_code: 'Mã đơn hàng',

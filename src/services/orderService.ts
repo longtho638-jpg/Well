@@ -51,7 +51,8 @@ export const orderService = {
                 guest_profile: customer.guestProfile,
                 items: items,
                 payment_method: paymentMethod,
-                is_guest: !customer.userId
+                is_guest: !customer.userId,
+                order_code: payload.orderCode
             }
         };
 
