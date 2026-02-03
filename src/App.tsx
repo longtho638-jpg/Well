@@ -8,6 +8,8 @@ import { AdminRoute } from './components/AdminRoute';
 
 // Code splitting: Lazy load pages for better performance
 // Named exports need special handling
+const ForgotPasswordPage = lazy(() => import('./pages/forgot-password-page'));
+const ResetPasswordPage = lazy(() => import('./pages/reset-password-page'));
 const Dashboard = lazy(() => import('./pages/Dashboard').then(m => ({ default: m.Dashboard })));
 const Marketplace = lazy(() => import('./pages/Marketplace').then(m => ({ default: m.Marketplace })));
 const ProductDetail = lazy(() => import('./pages/ProductDetail').then(m => ({ default: m.ProductDetail })));
@@ -60,6 +62,8 @@ const App: React.FC = () => {
           <Route path="/" element={<LandingPage />} />
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<Signup />} />
+          <Route path="/forgot-password" element={<ForgotPasswordPage />} />
+          <Route path="/reset-password" element={<ResetPasswordPage />} />
           <Route path="/venture" element={<Suspense fallback={<div className="flex items-center justify-center h-screen bg-zinc-950"><div className="animate-spin rounded-full h-12 w-12 border-b-2 border-emerald-500"></div></div>}><VenturePage /></Suspense>} />
 
           {/* ============================================================ */}

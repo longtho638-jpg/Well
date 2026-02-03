@@ -1333,9 +1333,22 @@ export const en = {
         forgotPassword: {
             title: 'Forgot Password',
             subtitle: 'Enter your email to reset password',
-            email: 'Email',
-            sendReset: 'Send Reset Link',
+            emailPlaceholder: 'Enter your email address',
+            submitButton: 'Send Reset Link',
             backToLogin: 'Back to Login',
+            successMessage: 'Password reset email sent! Please check your inbox.',
+            errorMessage: 'Failed to send reset email. Please try again.',
+        },
+        resetPassword: {
+            title: 'Reset Password',
+            subtitle: 'Enter your new password',
+            newPasswordPlaceholder: 'Enter new password',
+            confirmPasswordPlaceholder: 'Confirm new password',
+            submitButton: 'Reset Password',
+            successMessage: 'Password reset successfully!',
+            errorMessage: 'Failed to reset password. Please try again.',
+            passwordMismatch: 'Passwords do not match',
+            weakPassword: 'Password is too weak. Please choose a stronger password.',
         },
         password: {
             strength: {

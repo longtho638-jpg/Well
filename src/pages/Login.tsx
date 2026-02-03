@@ -117,7 +117,7 @@ export default function Login() {
                                 <label className="text-sm font-semibold text-slate-300">
                                     {t('auth.login.password')}
                                 </label>
-                                <Link to="/forgot-password" title={t('common.notSupportedYet')} className="text-xs text-teal-400 hover:text-teal-300 transition-colors">
+                                <Link to="/forgot-password" className="text-xs text-teal-400 hover:text-teal-300 transition-colors">
                                     {t('auth.login.forgotPassword')}
                                 </Link>
                             </div>

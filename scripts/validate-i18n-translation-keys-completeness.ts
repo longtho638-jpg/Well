@@ -30,10 +30,12 @@ function extractTranslationKeys(filePath: string): string[] {
   const keys: string[] = [];
 
   // Match t('key'), t("key"), and t(`key`) patterns
+  // Ensure 't' is a standalone function call, not part of a word like 'import', 'count', 'set', etc.
+  // We look for a non-word character before 't', or start of line.
   const patterns = [
-    /t\('([^']+)'\)/g,
-    /t\("([^"]+)"\)/g,
-    /t\(`([^`]+)`\)/g,
+    /(?:^|[^a-zA-Z0-9_])t\('([^']+)'\)/g,
+    /(?:^|[^a-zA-Z0-9_])t\("([^"]+)"\)/g,
+    /(?:^|[^a-zA-Z0-9_])t\(`([^`]+)`\)/g,
   ];
 
   patterns.forEach(pattern => {

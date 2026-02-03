@@ -1472,9 +1472,22 @@ export const vi = {
     forgotPassword: {
       title: 'Quên mật khẩu',
       subtitle: 'Nhập email để đặt lại mật khẩu',
-      email: 'Email',
-      sendReset: 'Gửi link đặt lại',
+      emailPlaceholder: 'Nhập địa chỉ email của bạn',
+      submitButton: 'Gửi link đặt lại',
       backToLogin: 'Quay lại đăng nhập',
+      successMessage: 'Email đặt lại mật khẩu đã được gửi! Vui lòng kiểm tra hộp thư.',
+      errorMessage: 'Không thể gửi email đặt lại mật khẩu. Vui lòng thử lại.',
+    },
+    resetPassword: {
+      title: 'Đặt lại mật khẩu',
+      subtitle: 'Nhập mật khẩu mới của bạn',
+      newPasswordPlaceholder: 'Nhập mật khẩu mới',
+      confirmPasswordPlaceholder: 'Xác nhận mật khẩu mới',
+      submitButton: 'Đặt lại mật khẩu',
+      successMessage: 'Mật khẩu đã được đặt lại thành công!',
+      errorMessage: 'Không thể đặt lại mật khẩu. Vui lòng thử lại.',
+      passwordMismatch: 'Mật khẩu không khớp',
+      weakPassword: 'Mật khẩu quá yếu. Vui lòng chọn mật khẩu mạnh hơn.',
     },
     password: {
         strength: {
