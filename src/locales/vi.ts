@@ -1644,16 +1644,16 @@ export const vi = {
             equity: 'Tham gia cổ phần',
           }
         },
-        empire: {
-          name: 'ĐẤT',
-          description: 'Venture Builder & IPO',
-          mission: 'Xây dựng đế chế',
-          status: 'Tầm nhìn 2028',
+        metropolis: {
+          name: 'ĐÔ THỊ',
+          description: 'Mở rộng toàn cầu & Franchise',
+          mission: 'Chinh phục thị trường quốc tế',
+          status: 'Tầm nhìn tương lai',
           benefits: {
-            venture: 'Nền tảng Venture Builder',
-            ipo: 'Chuẩn bị IPO',
-            holdings: 'Cơ cấu Holdings',
-            expansion: 'Mở rộng SEA',
+            franchise: 'Mô hình Franchise toàn cầu',
+            global: 'Mở rộng 10+ quốc gia',
+            diversified: 'Danh mục sản phẩm đa dạng',
+            legacy: 'Xây dựng di sản lâu dài',
           }
         }
       }
