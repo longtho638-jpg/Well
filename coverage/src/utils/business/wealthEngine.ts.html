@@ -23,30 +23,30 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">0% </span>
+                <span class="strong">100% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>0/20</span>
+                <span class='fraction'>20/20</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">0% </span>
+                <span class="strong">100% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>0/6</span>
+                <span class='fraction'>6/6</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">0% </span>
+                <span class="strong">100% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>0/4</span>
+                <span class='fraction'>4/4</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">0% </span>
+                <span class="strong">100% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>0/17</span>
+                <span class='fraction'>17/17</span>
             </div>
         
             
@@ -61,7 +61,7 @@
             </div>
         </template>
     </div>
-    <div class='status-line low'></div>
+    <div class='status-line high'></div>
     <pre><table class="coverage">
 <tr><td class="line-count quiet"><a name='L1'></a><a href='#L1'>1</a>
 <a name='L2'></a><a href='#L2'>2</a>
@@ -128,21 +128,12 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">6x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">6x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">6x</span>
+<span class="cline-any cline-yes">6x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -150,24 +141,33 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">6x</span>
+<span class="cline-any cline-yes">6x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">8x</span>
+<span class="cline-any cline-yes">6x</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">3x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -183,48 +183,48 @@
  * Calculate Business Valuation (Investment-grade metric)
  * Formula: Monthly Profit * 12 (Annualized) * PE Ratio (5x for high-growth SMB)
  */
-export function <span class="fstat-no" title="function not covered" >calculateBusinessValuation(u</span>ser: User): number {
+export function calculateBusinessValuation(user: User): number {
     // Estimate monthly profit: 20% of total sales (conservative margin)
-    const monthlyProfit = <span class="cstat-no" title="statement not covered" >user.totalSales * 0.20;</span>
+    const monthlyProfit = user.totalSales * 0.20;
     // Annualize the monthly profit
-    const annualizedProfit = <span class="cstat-no" title="statement not covered" >monthlyProfit * 12;</span>
+    const annualizedProfit = monthlyProfit * 12;
     // Apply PE ratio of 5x (standard for high-growth small businesses)
-    const PE_RATIO = <span class="cstat-no" title="statement not covered" >5;</span>
-<span class="cstat-no" title="statement not covered" >    return annualizedProfit * PE_RATIO;</span>
+    const PE_RATIO = 5;
+    return annualizedProfit * PE_RATIO;
 }
 &nbsp;
 /**
  * Calculate Equity Value (GROW Token holdings)
  * Assumption: 1 GROW = 10,000 VND market value
  */
-export function <span class="fstat-no" title="function not covered" >calculateEquityValue(g</span>rowBalance: number): number {
-    const GROW_TO_VND_RATE = <span class="cstat-no" title="statement not covered" >10000;</span>
-<span class="cstat-no" title="statement not covered" >    return growBalance * GROW_TO_VND_RATE;</span>
+export function calculateEquityValue(growBalance: number): number {
+    const GROW_TO_VND_RATE = 10000;
+    return growBalance * GROW_TO_VND_RATE;
 }
 &nbsp;
 /**
  * Calculate monthly asset growth rate
  */
-export function <span class="fstat-no" title="function not covered" >calculateAssetGrowthRate(u</span>ser: User): number {
+export function calculateAssetGrowthRate(user: User): number {
     // Simulated growth rate based on team volume momentum
-<span class="cstat-no" title="statement not covered" >    if (user.teamVolume &gt; 100_000_000) <span class="cstat-no" title="statement not covered" >return 15; // 15% monthly growth</span></span>
-<span class="cstat-no" title="statement not covered" >    if (user.teamVolume &gt; 50_000_000) <span class="cstat-no" title="statement not covered" >return 10;  // 10% monthly growth</span></span>
-<span class="cstat-no" title="statement not covered" >    if (user.teamVolume &gt; 20_000_000) <span class="cstat-no" title="statement not covered" >return 7;   // 7% monthly growth</span></span>
-<span class="cstat-no" title="statement not covered" >    return 5; // 5% baseline growth</span>
+    if (user.teamVolume &gt; 100_000_000) return 15; // 15% monthly growth
+    if (user.teamVolume &gt; 50_000_000) return 10;  // 10% monthly growth
+    if (user.teamVolume &gt; 20_000_000) return 7;   // 7% monthly growth
+    return 5; // 5% baseline growth
 }
 &nbsp;
 /**
  * Enrich user with Wealth OS metrics
  */
-export function <span class="fstat-no" title="function not covered" >enrichUserWithWealthMetrics(u</span>ser: User): User {
-    const monthlyProfit = <span class="cstat-no" title="statement not covered" >user.totalSales * 0.20; // 20% profit margin</span>
-    const businessValuation = <span class="cstat-no" title="statement not covered" >calculateBusinessValuation(user);</span>
-    const equityValue = <span class="cstat-no" title="statement not covered" >calculateEquityValue(user.growBalance + user.stakedGrowBalance);</span>
-    const cashflowValue = <span class="cstat-no" title="statement not covered" >user.shopBalance;</span>
-    const assetGrowthRate = <span class="cstat-no" title="statement not covered" >calculateAssetGrowthRate(user);</span>
-    const projectedAnnualProfit = <span class="cstat-no" title="statement not covered" >monthlyProfit * 12;</span>
+export function enrichUserWithWealthMetrics(user: User): User {
+    const monthlyProfit = user.totalSales * 0.20; // 20% profit margin
+    const businessValuation = calculateBusinessValuation(user);
+    const equityValue = calculateEquityValue(user.growBalance + user.stakedGrowBalance);
+    const cashflowValue = user.shopBalance;
+    const assetGrowthRate = calculateAssetGrowthRate(user);
+    const projectedAnnualProfit = monthlyProfit * 12;
 &nbsp;
-<span class="cstat-no" title="statement not covered" >    return {</span>
+    return {
         ...user,
         monthlyProfit,
         businessValuation,
@@ -241,7 +241,7 @@ export function <span class="fstat-no" title="function not covered" >enrichUserW
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2026-02-03T01:14:52.516Z
+                at 2026-02-03T01:27:55.089Z
             </div>
         <script src="../../../prettify.js"></script>
         <script>

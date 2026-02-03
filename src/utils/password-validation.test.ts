@@ -1,68 +1,82 @@
-
 import { describe, it, expect } from 'vitest';
-import { validatePassword } from './password-validation';
+import {
+  validatePassword,
+  getStrengthColor,
+  getStrengthLabel,
+} from './password-validation';
 
-describe('validatePassword', () => {
-    it('should identify empty password as weak and invalid', () => {
-        const result = validatePassword('');
-        expect(result.isValid).toBe(false);
-        expect(result.strength).toBe('weak');
-        expect(result.errors.length).toBe(5); // All rules fail
+describe('password-validation', () => {
+  describe('validatePassword', () => {
+    it('should validate a strong password', () => {
+      const result = validatePassword('Test123!@#');
+      expect(result.isValid).toBe(true);
+      expect(result.strength).toBe('strong');
+      expect(result.errors).toHaveLength(0);
+      expect(result.score).toBe(100);
     });
 
-    it('should fail short passwords', () => {
-        const result = validatePassword('Ab1!');
-        expect(result.isValid).toBe(false);
-        expect(result.errors).toContain('auth.password.requirements.length');
+    it('should reject password without uppercase', () => {
+      const result = validatePassword('test123!@#');
+      expect(result.isValid).toBe(false);
+      expect(result.strength).toBe('good');
+      expect(result.errors).toContain('auth.password.requirements.uppercase');
+      expect(result.score).toBe(80);
     });
 
-    it('should require uppercase letter', () => {
-        const result = validatePassword('password123!');
-        expect(result.isValid).toBe(false);
-        expect(result.errors).toContain('auth.password.requirements.uppercase');
+    it('should reject password without lowercase', () => {
+      const result = validatePassword('TEST123!@#');
+      expect(result.isValid).toBe(false);
+      expect(result.errors).toContain('auth.password.requirements.lowercase');
+      expect(result.score).toBe(80);
     });
 
-    it('should require lowercase letter', () => {
-        const result = validatePassword('PASSWORD123!');
-        expect(result.isValid).toBe(false);
-        expect(result.errors).toContain('auth.password.requirements.lowercase');
+    it('should reject password without numbers', () => {
+      const result = validatePassword('TestAbc!@#');
+      expect(result.isValid).toBe(false);
+      expect(result.errors).toContain('auth.password.requirements.number');
+      expect(result.score).toBe(80);
     });
 
-    it('should require number', () => {
-        const result = validatePassword('Password!');
-        expect(result.isValid).toBe(false);
-        expect(result.errors).toContain('auth.password.requirements.number');
+    it('should reject password without special characters', () => {
+      const result = validatePassword('TestAbc123');
+      expect(result.isValid).toBe(false);
+      expect(result.errors).toContain('auth.password.requirements.special');
+      expect(result.score).toBe(85);
     });
 
-    it('should require special character', () => {
-        const result = validatePassword('Password123');
-        expect(result.isValid).toBe(false);
-        expect(result.errors).toContain('auth.password.requirements.special');
+    it('should reject password too short', () => {
+      const result = validatePassword('Tst12!');
+      expect(result.isValid).toBe(false);
+      expect(result.errors).toContain('auth.password.requirements.length');
+      expect(result.score).toBe(75);
     });
 
-    it('should pass strong passwords', () => {
-        const result = validatePassword('StrongP@ssw0rd!');
-        expect(result.isValid).toBe(true);
-        expect(result.errors.length).toBe(0);
-        expect(result.score).toBe(100);
-        expect(result.strength).toBe('strong');
+    it('should handle empty password', () => {
+      const result = validatePassword('');
+      expect(result.isValid).toBe(false);
+      expect(result.strength).toBe('weak');
+      expect(result.errors).toHaveLength(5);
+      expect(result.score).toBe(0);
     });
+  });
 
-    it('should correctly grade "fair" passwords', () => {
-        // 8 chars + number + uppercase + lowercase (missing special)
-        // 25 + 20 + 20 + 20 = 85 (Good) - wait, score logic check
-        // Missing special char means score -= 15 => max 85.
-        // Let's create something weaker.
-        // 8 chars + lowercase + number. Missing uppercase, special.
-        // 25 + 20 + 20 = 65 (Fair)
-        const result = validatePassword('password123');
-        expect(result.strength).toBe('fair');
+  describe('getStrengthColor', () => {
+    it('should return correct colors for all strengths', () => {
+      expect(getStrengthColor('weak')).toBe('bg-rose-500');
+      expect(getStrengthColor('fair')).toBe('bg-amber-500');
+      expect(getStrengthColor('good')).toBe('bg-blue-500');
+      expect(getStrengthColor('strong')).toBe('bg-emerald-500');
+      expect(getStrengthColor('invalid')).toBe('bg-slate-700');
     });
+  });
 
-    it('should correctly grade "good" passwords', () => {
-        // 8 chars + uppercase + lowercase + number (no special)
-        // 25 + 20 + 20 + 20 = 85
-        const result = validatePassword('Password123');
-        expect(result.strength).toBe('good');
+  describe('getStrengthLabel', () => {
+    it('should return correct labels for all strengths', () => {
+      expect(getStrengthLabel('weak')).toBe('Weak');
+      expect(getStrengthLabel('fair')).toBe('Fair');
+      expect(getStrengthLabel('good')).toBe('Good');
+      expect(getStrengthLabel('strong')).toBe('Strong');
+      expect(getStrengthLabel('invalid')).toBe('');
     });
+  });
 });
