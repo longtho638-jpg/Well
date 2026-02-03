@@ -29,8 +29,7 @@ export default function Login() {
         rememberMe,
         setRememberMe,
         success,
-        handleSubmit,
-        handleTryDemo
+        handleSubmit
     } = useLogin();
 
     return (
@@ -174,14 +173,6 @@ export default function Login() {
                                     </>
                                 )}
                             </button>
-
-                            <button
-                                type="button"
-                                onClick={handleTryDemo}
-                                disabled={loading || success}
-                                className="w-full bg-slate-900/40 hover:bg-slate-800/60 border border-teal-500/20 text-teal-400 font-semibold py-3.5 rounded-2xl flex items-center justify-center gap-2 transition-all disabled:opacity-50"
-                            >
-                                {t('auth.login.demo')}</button>
                         </div>
                     </form>
                 </div>

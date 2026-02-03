@@ -82,21 +82,6 @@ export const useLogin = () => {
         }
     };
 
-    /**
-     * Handle Demo Login
-     * Only available in development mode
-     */
-    const handleTryDemo = () => {
-        if (!import.meta.env.DEV) return;
-
-        setEmail('demo@example.com');
-        setPassword('demo123');
-        // Trigger login with a small delay to allow state updates
-        setTimeout(() => {
-            handleSubmit();
-        }, 100);
-    };
-
     return {
         email,
         setEmail,
@@ -109,7 +94,6 @@ export const useLogin = () => {
         rememberMe,
         setRememberMe,
         success,
-        handleSubmit,
-        handleTryDemo
+        handleSubmit
     };
 };
