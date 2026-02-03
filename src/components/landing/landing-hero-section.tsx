@@ -1,0 +1,189 @@
+/**
+ * Landing Hero Section Component
+ * Max-level Aura Hero with bento grid showcase
+ * Features:
+ * - Animated gradient background
+ * - Sparkle effects
+ * - Morphing blobs
+ * - Bento grid with 5 feature cards
+ * - Hero stats display
+ */
+
+import { motion } from 'framer-motion';
+import {
+  Sparkles,
+  TrendingUp,
+  Users,
+  Globe,
+} from 'lucide-react';
+import { BentoGrid, BentoCard, GridPattern } from '@/components/ui/Aura';
+import { HeroStats } from '@/components/HeroEnhancements';
+import {
+  AnimatedGradientBg,
+  CursorGlow,
+  SparkleEffect,
+} from '@/components/PremiumEffects';
+import {
+  GradientText,
+  AnimatedBorder,
+  MorphingBlob,
+} from '@/components/UltimateEffects';
+
+interface HeroContent {
+  hero: {
+    badge: string;
+    headline: string;
+    headlineAccent: string;
+    subheadline: string;
+    primaryCta: string;
+    secondaryCta: string;
+  };
+  bento: {
+    ai_coach: { title: string; description: string };
+    passive_income: { title: string; description: string; amount: string; label: string };
+    community: { title: string; description: string };
+    global: { title: string; description: string };
+  };
+}
+
+interface HeroStat {
+  value: number;
+  prefix?: string;
+  suffix?: string;
+  label: string;
+}
+
+interface Props {
+  content: HeroContent;
+  heroStats: HeroStat[];
+  onJoin: () => void;
+  t: (key: string) => string;
+}
+
+export default function LandingHeroSection({
+  content,
+  heroStats,
+  onJoin,
+  t,
+}: Props) {
+  return (
+    <section className="relative min-h-screen flex flex-col items-center justify-center overflow-hidden bg-zinc-950 pt-20 pb-20">
+      <GridPattern />
+
+      {/* MAX LEVEL: Animated Gradient Background */}
+      <AnimatedGradientBg />
+
+      {/* MAX LEVEL: Sparkle Effect */}
+      <SparkleEffect count={30} />
+
+      {/* Cursor Glow Effect */}
+      <CursorGlow />
+
+      <div className="relative z-10 max-w-7xl mx-auto px-6 w-full">
+
+        {/* ULTIMATE: Morphing Blob Background */}
+        <MorphingBlob className="w-[600px] h-[600px] bg-gradient-to-r from-emerald-500 to-cyan-500 -top-20 -left-40" />
+        <MorphingBlob className="w-[400px] h-[400px] bg-gradient-to-r from-violet-500 to-pink-500 top-40 -right-20" />
+
+        {/* Header Content */}
+        <div className="text-center mb-20">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5 }}
+            className="inline-flex items-center justify-center mb-6"
+          >
+            <AnimatedBorder>
+              <span className="px-6 py-2 text-sm font-bold text-emerald-400 uppercase tracking-wider">
+                {t('landing.hero.badge_ultimate')}
+              </span>
+            </AnimatedBorder>
+          </motion.div>
+
+          <motion.h1
+            className="text-6xl md:text-8xl font-bold tracking-tight text-white mb-6"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: 0.1 }}
+          >
+            {content.hero.headline} <br />
+            <GradientText className="font-black">
+              {content.hero.headlineAccent}
+            </GradientText>
+          </motion.h1>
+
+          <motion.p
+            className="text-xl text-zinc-400 max-w-2xl mx-auto mb-10"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: 0.2 }}
+          >
+            {content.hero.subheadline}
+          </motion.p>
+
+          <motion.div
+            className="flex items-center justify-center gap-4"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: 0.3 }}
+          >
+            <button onClick={onJoin} className="btn-aura">
+              {content.hero.primaryCta}
+            </button>
+            <button className="btn-aura-outline">
+              {content.hero.secondaryCta}
+            </button>
+          </motion.div>
+        </div>
+
+        {/* Bento Grid Showcase */}
+        <BentoGrid>
+          <BentoCard colSpan={2} className="p-8 min-h-[300px] flex flex-col justify-between bg-zinc-900/40">
+            <div>
+              <div className="w-12 h-12 rounded-full bg-cyan-500/10 flex items-center justify-center mb-4 border border-cyan-500/20">
+                <Sparkles className="w-6 h-6 text-cyan-400" />
+              </div>
+              <h3 className="text-2xl font-bold text-white mb-2">{t('landing.bento.ai_coach.title')}</h3>
+              <p className="text-zinc-400">{t('landing.bento.ai_coach.description')}</p>
+            </div>
+            <div className="mt-8 w-full h-32 bg-gradient-to-r from-cyan-500/10 to-transparent rounded-xl border border-white/5 relative overflow-hidden">
+              <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-20"></div>
+            </div>
+          </BentoCard>
+
+          <BentoCard colSpan={1} className="p-8 min-h-[300px] bg-zinc-900/40">
+            <div className="w-12 h-12 rounded-full bg-violet-500/10 flex items-center justify-center mb-4 border border-violet-500/20">
+              <TrendingUp className="w-6 h-6 text-violet-400" />
+            </div>
+            <h3 className="text-2xl font-bold text-white mb-2">{t('landing.bento.passive_income.title')}</h3>
+            <p className="text-zinc-400 mb-8">{t('landing.bento.passive_income.description')}</p>
+            <div className="text-4xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-violet-400 to-pink-400">
+              {t('landing.bento.passive_income.amount')}
+            </div>
+            <div className="text-sm text-zinc-500 mt-1">{t('landing.bento.passive_income.label')}</div>
+          </BentoCard>
+
+          <BentoCard colSpan={1} className="p-8 min-h-[300px] bg-zinc-900/40">
+            <div className="w-12 h-12 rounded-full bg-pink-500/10 flex items-center justify-center mb-4 border border-pink-500/20">
+              <Users className="w-6 h-6 text-pink-400" />
+            </div>
+            <h3 className="text-2xl font-bold text-white mb-2">{t('landing.bento.community.title')}</h3>
+            <p className="text-zinc-400">{t('landing.bento.community.description')}</p>
+          </BentoCard>
+
+          <BentoCard colSpan={2} className="p-8 min-h-[300px] bg-zinc-900/40 flex items-center justify-between">
+            <div className="max-w-md">
+              <h3 className="text-2xl font-bold text-white mb-2">{t('landing.bento.global.title')}</h3>
+              <p className="text-zinc-400">{t('landing.bento.global.description')}</p>
+            </div>
+            <Globe className="w-32 h-32 text-zinc-800" />
+          </BentoCard>
+        </BentoGrid>
+
+        {/* WOW Enhancement: Hero Stats */}
+        <HeroStats stats={heroStats} />
+
+      </div>
+    </section>
+  );
+}
