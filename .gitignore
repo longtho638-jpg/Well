@@ -49,3 +49,11 @@ CLAUDE.md
 
 # Performance reports
 lighthouse-report.json
+
+# Admin scripts (may contain sensitive keys - use with caution)
+scripts/confirm-admin-email-via-supabase-api.sh
+
+# Test screenshots
+admin-dashboard-verified.png
+failed-*.png
+test-error.png

@@ -477,6 +477,21 @@ export const en = {
             message: 'Thank you for purchasing at WellNexus. We will contact you shortly to confirm your order.',
             continueShopping: 'Continue Shopping',
             backToHome: 'Back to Home',
+        },
+        payment: {
+            qr_scan: 'Scan QR Code to Pay',
+            amount: 'Amount',
+            order_code: 'Order Code',
+            expires_in: 'Expires in',
+            success: 'Payment Successful',
+            failed: 'Payment Failed',
+            success_title: 'Payment Successful!',
+            success_message: 'Your order has been confirmed. Thank you!',
+            failed_title: 'Payment Failed',
+            failed_message: 'Please try again or contact support.',
+            scan_instruction: 'Scan QR code with your banking app',
+            scan_detail: 'Open your banking app and scan the QR code to complete payment',
+            confirm_close: 'Are you sure you want to close? Payment is not complete.',
         }
     },
 

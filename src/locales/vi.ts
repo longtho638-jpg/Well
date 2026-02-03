@@ -508,6 +508,21 @@ export const vi = {
         message: 'Cảm ơn bạn đã mua hàng tại WellNexus. Chúng tôi sẽ liên hệ với bạn sớm nhất để xác nhận đơn hàng.',
         continueShopping: 'Tiếp tục mua sắm',
         backToHome: 'Về trang chủ',
+      },
+      payment: {
+        qr_scan: 'Quét mã QR để thanh toán',
+        amount: 'Số tiền',
+        order_code: 'Mã đơn hàng',
+        expires_in: 'Hết hạn sau',
+        success: 'Thanh toán thành công',
+        failed: 'Thanh toán thất bại',
+        success_title: 'Thanh toán thành công!',
+        success_message: 'Đơn hàng của bạn đã được xác nhận. Cảm ơn bạn!',
+        failed_title: 'Thanh toán thất bại',
+        failed_message: 'Vui lòng thử lại hoặc liên hệ hỗ trợ.',
+        scan_instruction: 'Quét mã QR bằng ứng dụng ngân hàng',
+        scan_detail: 'Mở app ngân hàng và quét mã QR để thanh toán',
+        confirm_close: 'Bạn có chắc muốn đóng? Thanh toán chưa hoàn tất.',
       }
     },
 
