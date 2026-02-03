@@ -11,6 +11,7 @@
 
 import { motion } from 'framer-motion';
 import { Target, ChevronRight } from 'lucide-react';
+import { useTranslation } from '@/hooks';
 
 interface RoadmapStage {
   id: string;
@@ -46,6 +47,8 @@ export default function LandingRoadmapSection({
   content,
   onVisionClick,
 }: Props) {
+  const { t } = useTranslation();
+
   return (
     <section id="roadmap" className="relative py-32 bg-zinc-950">
       <div className="max-w-7xl mx-auto px-6 lg:px-12">
@@ -135,7 +138,7 @@ export default function LandingRoadmapSection({
                   {stage.unlockCondition && (
                     <div className={`mt-auto pt-6 border-t ${stage.borderColor}`}>
                       <p className="text-xs text-zinc-500 uppercase tracking-wider mb-1">
-                        Unlock at
+                        {t('landing.roadmap.unlock_at')}
                       </p>
                       <p className={`text-sm font-bold ${stage.textColor}`}>
                         {stage.unlockCondition}
@@ -150,7 +153,7 @@ export default function LandingRoadmapSection({
                       onClick={onVisionClick}
                       className={`mt-6 w-full bg-gradient-to-r ${stage.gradient} text-white px-6 py-3 rounded-xl font-bold text-sm hover:shadow-xl transition-all duration-300 flex items-center justify-center gap-2`}
                     >
-                      View Vision
+                      {t('landing.roadmap.view_vision')}
                       <ChevronRight className="w-4 h-4" />
                     </motion.button>
                   )}
