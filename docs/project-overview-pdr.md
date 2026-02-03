@@ -46,6 +46,11 @@
 - **Customer CRM:** View customer purchase history and support details.
 - **Security:** Role-based access control (RBAC) for admin staff.
 
+#### F. Authentication & Security (Common)
+- **Password Recovery:** Secure forgot/reset password flow via email link.
+- **Password Strength:** Real-time strength validation and feedback during reset.
+- **Secure Storage:** Encrypted in-memory token management (no localStorage).
+
 ### 3. Non-Functional Requirements
 - **Performance:** Sub-second load times, smooth animations (60fps).
 - **Responsiveness:** Mobile-first design, fully functional on all device sizes.

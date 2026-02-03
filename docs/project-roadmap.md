@@ -37,6 +37,8 @@
 - [x] **Infrastructure Upgrade**
   - [x] Sentry Error Tracking (100% sample rate)
   - [x] Security Hardening (CSP + HSTS Headers)
+  - [x] **Authentication & Security**
+  - [x] Secure Password Recovery Flow (Forgot/Reset Password)
   - [x] Auth Token Security (Encrypted in-memory storage)
   - [x] Password Validation (NIST-compliant with strength meter)
   - [x] Admin Authorization (Environment-based via VITE_ADMIN_EMAILS)

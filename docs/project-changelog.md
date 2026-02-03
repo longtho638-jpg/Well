@@ -1,5 +1,26 @@
 # Project Changelog
 
+## [2.3.0] - 2026-02-03
+
+### ✨ Authentication Enhancement - Forgot Password Flow
+
+Complete implementation of the secure password recovery workflow for users who have lost access to their accounts.
+
+### Added
+
+- **Routes:** New secure routes `/forgot-password` and `/reset-password` for account recovery.
+- **Pages:**
+  - `ForgotPage`: Email submission form with validation.
+  - `ResetPasswordPage`: Secure password reset form with strength meter integration.
+- **Components:** Integrated `PasswordStrengthMeter` into reset flow for security enforcement.
+- **i18n:** Added comprehensive English and Vietnamese translations for auth recovery flows (`auth.forgotPassword`, `auth.resetPassword`).
+- **UX:** Added "Forgot Password?" link to the Login page (removed "Coming Soon" tooltip).
+
+### Security
+
+- **Flow:** Secure token-based password reset via Firebase Auth.
+- **Validation:** Enforced strong password policy during reset using existing NIST-compliant validation.
+
 ## [2.2.0] - 2026-02-02
 
 ### 🎯 Production Handover - Customer Bug Fixes & Security Hardening

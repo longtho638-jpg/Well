@@ -144,6 +144,14 @@
   - ✅ Use Zod schemas for form validation (see `src/utils/validation/checkoutSchema.ts`)
   - ✅ Sanitize user input before rendering
   - ✅ Validate API responses before processing
+  - ✅ **Authentication Tokens:**
+    - ❌ NEVER store access tokens in `localStorage` or `cookies` (vulnerable to XSS)
+    - ✅ Store access tokens in **In-Memory** storage (variables/Zustand)
+    - ✅ Use `sessionStorage` ONLY for encrypted non-sensitive fallbacks if strictly necessary
+  - ✅ **Password Policy:**
+    - ✅ Enforce NIST guidelines (length >= 8, complexity)
+    - ✅ Use `PasswordStrengthMeter` for visual feedback
+    - ✅ Validate on both client (UX) and server (Security)
 
 ## Testing
 - **Framework:** Vitest + React Testing Library.

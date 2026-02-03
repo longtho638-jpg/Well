@@ -43,6 +43,7 @@ Located in `admin-panel/`, this is the internal management dashboard.
 - **Dashboard:** CommissionWidget, StatsGrid, HeroCard.
 - **Marketplace:** QuickPurchaseModal, ProductGrid.
 - **User Management:** SettingsPage, ProfilePage.
+- **Authentication:** ForgotPage, ResetPasswordPage.
 - **UI Components:** Select (dropdown), PasswordStrengthMeter.
 - **Agent System:** Agent Registry, Sales Copilot.
 - **SEO & Accessibility:** Meta tags, Sitemap, Robots.txt, ARIA roles.
@@ -123,6 +124,12 @@ Production-ready handover with all customer issues resolved:
 - **Withdrawal:** Bank dropdown selector (20+ Vietnamese banks).
 - **User Settings:** New SettingsPage with theme, language, notifications, security preferences.
 - **User Profile:** New ProfilePage for viewing and editing account information.
+
+### 8. Authentication Enhancements (New)
+
+- **Forgot Password Flow:** Full email-based password recovery implementation.
+- **Secure Reset:** Token-based verification with NIST-compliant password validation.
+- **UI Integration:** Dedicated pages for Forgot Password and Reset Password, integrated with Login flow.
 
 ## Testing
 

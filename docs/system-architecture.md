@@ -68,7 +68,9 @@ graph TD
 
 ### 5. Security
 - **Environment Variables:** API keys stored in `.env`.
-- **Authentication:** Firebase Auth integration.
+- **Authentication:**
+  - Firebase Auth integration for Sign Up, Login, and Password Recovery.
+  - Secure in-memory token storage (no localStorage for sensitive tokens).
 - **Headers:** Content Security Policy (CSP) and HSTS enforced via Vercel configuration.
 - **Compliance:** Automated tax calculation logic enforced on client-side (for MVP) before transaction recording.
 
