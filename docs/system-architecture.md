@@ -41,7 +41,7 @@ graph TD
 - **Framework:** React 19, Vite 7, TypeScript 5.7+
 - **State:** Zustand (Global State)
 - **Focus:** Sales, Team Management, AI Coaching
-- **Key Modules:** Dashboard, Marketplace, Agent-OS
+- **Key Modules:** Dashboard, Marketplace, Agent-OS, Network Visualization, Wallet
 
 ### 2. Admin Panel (Frontend)
 - **Framework:** React 19, Vite 7, TypeScript 5.7+
@@ -51,6 +51,7 @@ graph TD
 - **Key Modules:**
     - **Distributor Manager:** View/Edit distributor details and hierarchies.
     - **Order Manager:** Transaction processing and status workflows.
+    - **Withdrawal Manager:** Payout request processing and approval flows.
     - **Customer CRM:** User data and behavior tracking.
 
 ### 3. Shared Services

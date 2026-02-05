@@ -11,7 +11,8 @@ import {
   LogOut,
   ChevronLeft,
   ChevronRight,
-  ShieldCheck
+  ShieldCheck,
+  Banknote
 } from "lucide-react"
 import { GlassCard } from "../ui/GlassCard"
 
@@ -27,6 +28,7 @@ export function Sidebar({ collapsed, setCollapsed }: SidebarProps) {
     { icon: Store, label: "Nhà phân phối", path: "/distributors" },
     { icon: Users, label: "Khách hàng", path: "/customers" },
     { icon: ShoppingBag, label: "Đơn hàng", path: "/orders" },
+    { icon: Banknote, label: "Rút tiền", path: "/withdrawals" },
     { icon: BarChart3, label: "Báo cáo", path: "/analytics" },
     { icon: Settings, label: "Cài đặt", path: "/settings" },
   ]

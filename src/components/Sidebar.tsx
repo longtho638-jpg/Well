@@ -44,6 +44,8 @@ export const Sidebar: React.FC<SidebarProps> = ({ onMobileClose }) => {
     { path: '/dashboard/health-coach', label: t('nav.healthCoach'), icon: Sparkles, badge: 'AI' },
     { path: '/dashboard/copilot', label: t('nav.copilot'), icon: Bot, badge: 'AI' },
     { path: '/dashboard/team', label: t('nav.team'), icon: Users },
+    { path: '/dashboard/network', label: t('nav.network'), icon: Users },
+    { path: '/dashboard/withdrawal', label: t('nav.withdrawal'), icon: Wallet },
     { path: '/dashboard/referral', label: t('nav.referral'), icon: Share2 },
     { path: '/dashboard/settings', label: t('nav.settings'), icon: Settings },
     // Admin menu - only visible to admin users

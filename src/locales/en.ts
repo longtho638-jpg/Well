@@ -144,6 +144,7 @@ export const en = {
             today: 'Today',
             thisWeek: 'This Week',
             thisMonth: 'This Month',
+            availableBalance: 'Available Balance',
             breakdown: 'Earnings Breakdown',
             directSales: 'Direct Sales',
             teamVolume: 'Team Volume',

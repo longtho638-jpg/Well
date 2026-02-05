@@ -4,6 +4,7 @@ import { AppLayout } from './components/AppLayout';
 import LandingPage from './pages/LandingPage';
 import Login from './pages/Login';
 import Signup from './pages/Signup';
+import ConfirmEmail from './pages/confirm-email';
 import { AdminRoute } from './components/AdminRoute';
 
 // Code splitting: Lazy load pages for better performance
@@ -20,6 +21,8 @@ const LeaderDashboard = lazy(() => import('./pages/LeaderDashboard'));
 const ReferralPage = lazy(() => import('./pages/ReferralPage'));
 const HealthCoach = lazy(() => import('./pages/HealthCoach'));
 const HealthCheck = lazy(() => import('./pages/HealthCheck'));
+const NetworkPage = lazy(() => import('./pages/NetworkPage'));
+const WithdrawalPage = lazy(() => import('./pages/WithdrawalPage'));
 const Leaderboard = lazy(() => import('./pages/Leaderboard'));
 const MarketingTools = lazy(() => import('./pages/MarketingTools'));
 const Admin = lazy(() => import('./pages/Admin'));
@@ -62,6 +65,7 @@ const App: React.FC = () => {
           <Route path="/" element={<LandingPage />} />
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<Signup />} />
+          <Route path="/confirm-email" element={<ConfirmEmail />} />
           <Route path="/forgot-password" element={<ForgotPasswordPage />} />
           <Route path="/reset-password" element={<ResetPasswordPage />} />
           <Route path="/venture" element={<Suspense fallback={<div className="flex items-center justify-center h-screen bg-zinc-950"><div className="animate-spin rounded-full h-12 w-12 border-b-2 border-emerald-500"></div></div>}><VenturePage /></Suspense>} />
@@ -126,6 +130,8 @@ const App: React.FC = () => {
             <Route path="copilot" element={<Suspense fallback={<div className="flex items-center justify-center h-96"><div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#00575A]"></div></div>}><CopilotPage /></Suspense>} />
             <Route path="team" element={<Suspense fallback={<div className="flex items-center justify-center h-96"><div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#00575A]"></div></div>}><LeaderDashboard /></Suspense>} />
             <Route path="referral" element={<Suspense fallback={<div className="flex items-center justify-center h-96"><div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#00575A]"></div></div>}><ReferralPage /></Suspense>} />
+            <Route path="network" element={<Suspense fallback={<div className="flex items-center justify-center h-96"><div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#00575A]"></div></div>}><NetworkPage /></Suspense>} />
+            <Route path="withdrawal" element={<Suspense fallback={<div className="flex items-center justify-center h-96"><div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#00575A]"></div></div>}><WithdrawalPage /></Suspense>} />
             <Route path="health-coach" element={<Suspense fallback={<div className="flex items-center justify-center h-96"><div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#00575A]"></div></div>}><HealthCoach /></Suspense>} />
             <Route path="health-check" element={<Suspense fallback={<div className="flex items-center justify-center h-96"><div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#00575A]"></div></div>}><HealthCheck /></Suspense>} />
             <Route path="leaderboard" element={<Suspense fallback={<div className="flex items-center justify-center h-96"><div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#00575A]"></div></div>}><Leaderboard /></Suspense>} />

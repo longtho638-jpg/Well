@@ -46,6 +46,10 @@
 - **Customer CRM:** View customer purchase history and support details.
 - **Security:** Role-based access control (RBAC) for admin staff.
 
+#### G. Network & Finance (Distributor)
+- **Network Visualization:** Interactive tree graph to view downline hierarchy and performance (F1-F7).
+- **Commission Withdrawal:** Secure payout request system with bank account management and history tracking.
+
 #### F. Authentication & Security (Common)
 - **Password Recovery:** Secure forgot/reset password flow via email link.
 - **Password Strength:** Real-time strength validation and feedback during reset.

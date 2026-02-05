@@ -1,5 +1,37 @@
 # Project Changelog
 
+## [2.4.0] - 2026-02-06
+
+### 🌿 Referral Network & Withdrawal System
+
+Major feature release introducing the interactive MLM network visualization and comprehensive commission withdrawal system.
+
+### Added
+
+- **Network Visualization:**
+  - Interactive D3-based tree graph for desktop users (`/network`).
+  - Optimized nested accordion view for mobile users.
+  - Real-time performance metrics (Rank, Sales, F1s) per node.
+  - Glassmorphism UI nodes with visual rank indicators.
+- **Withdrawal System:**
+  - Distributor withdrawal request form (`/withdrawal`) with bank validation.
+  - Withdrawal history table with status tracking (Pending, Approved, Rejected).
+  - Real-time balance validation preventing overdrafts.
+- **Admin Withdrawal Management:**
+  - Dedicated admin module for processing payout requests.
+  - Approval/Rejection workflows with mandatory reason logging for rejections.
+  - Automated balance refunds upon rejection.
+- **Services:**
+  - `ReferralService`: Recursive downline tree fetching and transformation.
+  - `WithdrawalService`: Secure request handling and history fetching.
+  - `AdminWithdrawalService`: Payout processing logic.
+
+### Changed
+
+- **Dashboard:** Updated Commission Widget to link directly to new Network and Withdrawal pages.
+- **Navigation:** Added "My Network" and "Withdrawal" links to the main sidebar.
+- **Database:** Generated strict TypeScript types for `referral_nodes` and `withdrawal_requests`.
+
 ## [2.3.0] - 2026-02-03
 
 ### ✨ Authentication Enhancement - Forgot Password Flow

@@ -146,6 +146,7 @@ export const vi = {
       today: 'Hôm nay',
       thisWeek: 'Tuần này',
       thisMonth: 'Tháng này',
+      availableBalance: 'Số dư khả dụng',
       breakdown: 'Chi tiết thu nhập',
       directSales: 'Bán hàng trực tiếp',
       teamVolume: 'Doanh số đội nhóm',
