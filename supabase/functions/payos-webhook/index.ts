@@ -25,23 +25,40 @@ interface WebhookPayload {
   signature: string
 }
 
+// Constant-time string comparison to prevent timing attacks
+function secureCompare(a: string, b: string): boolean {
+  if (a.length !== b.length) return false
+  let result = 0
+  for (let i = 0; i < a.length; i++) {
+    result |= a.charCodeAt(i) ^ b.charCodeAt(i)
+  }
+  return result === 0
+}
+
 serve(async (req) => {
+  const supabase = createClient(
+    Deno.env.get('SUPABASE_URL') ?? '',
+    Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') ?? ''
+  )
+
   try {
     // 1. Parse webhook payload
     const payload: WebhookPayload = await req.json()
     const signature = payload.signature
 
     if (!signature) {
+      await logAudit(supabase, null, 'PAYOS_WEBHOOK_FAILED', { error: 'Missing signature' }, 'failure')
       return new Response(
         JSON.stringify({ error: 'Missing signature' }),
         { status: 401, headers: { 'Content-Type': 'application/json' } }
       )
     }
 
-    // 2. Get checksum key from Vault
+    // 2. Get checksum key
     const checksumKey = Deno.env.get('PAYOS_CHECKSUM_KEY')
     if (!checksumKey) {
-      throw new Error('PAYOS_CHECKSUM_KEY not configured')
+      console.error('PAYOS_CHECKSUM_KEY not configured')
+      throw new Error('Server configuration error')
     }
 
     // 3. Verify webhook signature
@@ -64,58 +81,88 @@ serve(async (req) => {
     const signatureArray = Array.from(new Uint8Array(signatureBuffer))
     const computedSignature = signatureArray.map(b => b.toString(16).padStart(2, '0')).join('')
 
-    if (signature !== computedSignature) {
+    if (!secureCompare(signature, computedSignature)) {
       console.error('Signature mismatch:', { received: signature, computed: computedSignature })
+      await logAudit(supabase, null, 'PAYOS_WEBHOOK_FAILED', { error: 'Invalid signature', payload }, 'failure')
       return new Response(
         JSON.stringify({ error: 'Invalid signature' }),
         { status: 401, headers: { 'Content-Type': 'application/json' } }
       )
     }
 
-    // 4. Update order status using service role (webhook doesn't have user auth)
-    const supabase = createClient(
-      Deno.env.get('SUPABASE_URL') ?? '',
-      Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') ?? ''
-    )
+    // 4. Fetch current order to check state (Idempotency & State Machine)
+    const { data: currentOrder, error: fetchError } = await supabase
+      .from('orders')
+      .select('id, status, user_id, order_code')
+      .eq('order_code', payload.data.orderCode)
+      .single()
 
-    // Determine order status from PayOS webhook code
-    let orderStatus = 'pending'
-    if (payload.data.code === '00') {
-      orderStatus = 'paid'
-    } else if (payload.data.code === '01') {
-      orderStatus = 'cancelled'
+    if (fetchError || !currentOrder) {
+      console.error('Order not found:', payload.data.orderCode)
+      await logAudit(supabase, null, 'PAYOS_WEBHOOK_FAILED', { error: 'Order not found', orderCode: payload.data.orderCode }, 'failure')
+      return new Response(
+        JSON.stringify({ error: 'Order not found' }),
+        { status: 404, headers: { 'Content-Type': 'application/json' } }
+      )
     }
 
+    // Determine new status
+    let newStatus = 'pending'
+    if (payload.data.code === '00') {
+      newStatus = 'paid'
+    } else if (payload.data.code === '01') {
+      newStatus = 'cancelled'
+    }
+
+    // State Machine Check
+    // If order is already paid or cancelled, do not update again (Idempotency)
+    if (currentOrder.status === 'paid' || currentOrder.status === 'cancelled') {
+      console.log(`Order ${currentOrder.order_code} is already ${currentOrder.status}. Ignoring webhook update to ${newStatus}.`)
+      await logAudit(supabase, currentOrder.user_id, 'PAYOS_WEBHOOK_IGNORED', {
+        orderId: currentOrder.id,
+        currentStatus: currentOrder.status,
+        newStatus,
+        reason: 'Order already finalized'
+      }, 'info')
+
+      return new Response(
+        JSON.stringify({ success: true, status: currentOrder.status, message: 'Order already finalized' }),
+        { headers: { 'Content-Type': 'application/json' } }
+      )
+    }
+
+    // 5. Update order status
     const { error: updateError } = await supabase
       .from('orders')
       .update({
-        status: orderStatus,
+        status: newStatus,
         payment_data: payload.data,
         updated_at: new Date().toISOString(),
       })
-      .eq('order_code', payload.data.orderCode)
+      .eq('id', currentOrder.id)
 
     if (updateError) {
       console.error('Database update error:', updateError)
+      await logAudit(supabase, currentOrder.user_id, 'PAYOS_WEBHOOK_ERROR', { error: updateError.message, orderId: currentOrder.id }, 'error')
       throw new Error(`Failed to update order: ${updateError.message}`)
     }
 
-    // 5. Trigger notifications (async - don't block webhook response)
-    if (orderStatus === 'paid') {
-      // Get user_id from order to send email
-      const { data: orderData } = await supabase
-        .from('orders')
-        .select('user_id')
-        .eq('order_code', payload.data.orderCode)
-        .single()
+    // Log success
+    await logAudit(supabase, currentOrder.user_id, 'PAYOS_WEBHOOK_SUCCESS', {
+      orderId: currentOrder.id,
+      oldStatus: currentOrder.status,
+      newStatus,
+      amount: payload.data.amount
+    }, 'success')
 
-      if (orderData?.user_id) {
-        // Call send-email function for order confirmation
+    // 6. Trigger notifications
+    if (newStatus === 'paid') {
+      if (currentOrder.user_id) {
         supabase.functions
           .invoke('send-email', {
             body: {
               type: 'order-confirmation',
-              userId: orderData.user_id,
+              userId: currentOrder.user_id,
               orderCode: payload.data.orderCode,
               amount: payload.data.amount,
             },
@@ -125,9 +172,10 @@ serve(async (req) => {
     }
 
     return new Response(
-      JSON.stringify({ success: true, status: orderStatus }),
+      JSON.stringify({ success: true, status: newStatus }),
       { headers: { 'Content-Type': 'application/json' } }
     )
+
   } catch (error) {
     console.error('Webhook processing error:', error)
     return new Response(
@@ -136,3 +184,25 @@ serve(async (req) => {
     )
   }
 })
+
+// Helper to log to audit_logs table
+async function logAudit(supabase: any, userId: string | null, action: string, payload: any, severity: string) {
+  try {
+    // If we don't have a user_id (e.g. failed signature), we might log with a system user or just null
+    // Assuming audit_logs table allows null user_id or we use a specific system UUID if needed.
+    // Based on migration, user_id is nullable? Let's check migration again.
+    // Migration: user_id UUID REFERENCES auth.users(id) ON DELETE CASCADE
+    // It does not say NOT NULL, so it should be nullable.
+
+    await supabase.from('audit_logs').insert({
+      user_id: userId,
+      action: action,
+      payload: { ...payload, severity },
+      user_agent: 'PayOS-Webhook-Service',
+      ip_address: '0.0.0.0' // We don't have easy access to IP in this context without specific headers
+    })
+  } catch (err) {
+    console.error('Failed to write audit log:', err)
+    // Don't block the webhook response for audit logging failure
+  }
+}
