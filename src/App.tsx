@@ -28,6 +28,7 @@ const MarketingTools = lazy(() => import('./pages/MarketingTools'));
 const Admin = lazy(() => import('./pages/Admin'));
 const TestPage = lazy(() => import('./pages/TestPage'));
 const DebuggerPage = lazy(() => import('./pages/DebuggerPage'));
+const SystemStatus = lazy(() => import('./pages/SystemStatus'));
 const AgentDashboard = lazy(() => import('./pages/AgentDashboard'));
 const CheckoutPage = lazy(() => import('./pages/Checkout/CheckoutPage').then(m => ({ default: m.CheckoutPage })));
 const OrderSuccess = lazy(() => import('./components/checkout/OrderSuccess').then(m => ({ default: m.OrderSuccess })));
@@ -171,6 +172,7 @@ const App: React.FC = () => {
           {/* ============================================================ */}
           <Route path="/test" element={<TestPage />} />
           <Route path="/debugger" element={<DebuggerPage />} />
+          <Route path="/system-status" element={<Suspense fallback={<div className="flex items-center justify-center h-screen bg-zinc-950"><div className="animate-spin rounded-full h-12 w-12 border-b-2 border-emerald-500"></div></div>}><SystemStatus /></Suspense>} />
 
           {/* ============================================================ */}
           {/* CATCH-ALL: Unknown routes redirect to home */}
