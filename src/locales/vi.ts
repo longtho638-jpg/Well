@@ -4,6 +4,24 @@
  */
 
 export const vi = {
+    pwa: {
+    install: {
+      title: "Cài đặt WellNexus",
+      description: "Cài đặt ứng dụng để có trải nghiệm tốt hơn với chế độ offline và tốc độ nhanh hơn.",
+      install: "Cài đặt",
+      dismiss: "Để sau"
+    },
+    update: {
+      title: "Có phiên bản mới",
+      description: "Phiên bản mới của WellNexus đã sẵn sàng. Cập nhật ngay để có tính năng mới nhất.",
+      update: "Cập nhật",
+      dismiss: "Để sau"
+    },
+    offline: {
+      title: "Bạn đang offline",
+      description: "Vui lòng kiểm tra kết nối internet của bạn."
+    }
+  },
   common: {
     loading: "Đang tải...",
     error: "Có lỗi xảy ra",
@@ -40,7 +58,11 @@ export const vi = {
     you: "[MISSING] you"
   },
   nav: {
-    dashboard: "Trang chủ",
+    home: "Trang chủ",
+    commission_wallet: "Ví hoa hồng",
+    orders: "Đơn hàng",
+    profile: "Hồ sơ",
+    dashboard: "Bảng điều khiển",
     network: "Mạng lưới",
     products: "Sản Phẩm",
     partner: "Partner",

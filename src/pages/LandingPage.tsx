@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, lazy, Suspense } from 'react';
 import { useTranslation } from '../hooks';
 import { motion } from 'framer-motion';
 import {
@@ -14,7 +14,6 @@ import { useNavigate } from 'react-router-dom';
 import { useStore } from '../store';
 import { useCartStore } from '../store/cartStore';
 import { FeaturedProducts } from '../components/landing/FeaturedProducts';
-import { CartDrawer } from '../components/marketplace/CartDrawer';
 import { Product } from '../types';
 import {
   SocialProofTicker,
@@ -22,7 +21,6 @@ import {
   TrustBadges,
   TRUST_BADGES,
 } from '../components/HeroEnhancements';
-import { ExitIntentPopup } from '../components/marketing/ExitIntentPopup';
 import { ScrollProgress } from '../components/EastAsiaBrand';
 import { ZenDivider, AwardsBar } from '../components/EastAsiaBrand';
 import {
@@ -31,6 +29,12 @@ import {
 } from '../components/PremiumNavigation';
 import LandingHeroSection from '../components/landing/landing-hero-section';
 import LandingRoadmapSection from '../components/landing/landing-roadmap-section';
+import { SEOHead } from '../components/seo/seo-head';
+import { WebSiteSchema, OrganizationSchema } from '../components/seo/structured-data';
+import { seoConfig } from '../config/seo-config';
+
+const CartDrawer = lazy(() => import('../components/marketplace/CartDrawer').then(m => ({ default: m.CartDrawer })));
+const ExitIntentPopup = lazy(() => import('../components/marketing/ExitIntentPopup').then(m => ({ default: m.ExitIntentPopup })));
 
 // Import roadmap stages data builder
 const getRoadmapStages = (t: (key: string) => string) => [
@@ -233,6 +237,15 @@ export default function LandingPage() {
 
   return (
     <div className="min-h-screen bg-zinc-950 overflow-x-hidden selection:bg-emerald-900 selection:text-emerald-100">
+      <SEOHead
+        title={seoConfig['/'].title}
+        description={seoConfig['/'].description}
+        keywords={seoConfig['/'].keywords}
+        ogImage={seoConfig['/'].ogImage}
+        canonical="https://wellnexus.vn/"
+      />
+      <WebSiteSchema />
+      <OrganizationSchema />
       <ScrollProgress />
       <PremiumHeader />
 
@@ -265,18 +278,22 @@ export default function LandingPage() {
 
       <PremiumFooter />
 
-      <CartDrawer
-        isOpen={isCartOpen}
-        onClose={() => setIsCartOpen(false)}
-        items={cartItems}
-        total={cartTotal}
-        itemCount={cartItemCount}
-        onUpdateQuantity={updateQuantity}
-        onRemove={removeFromCart}
-      />
+      <Suspense fallback={null}>
+        <CartDrawer
+          isOpen={isCartOpen}
+          onClose={() => setIsCartOpen(false)}
+          items={cartItems}
+          total={cartTotal}
+          itemCount={cartItemCount}
+          onUpdateQuantity={updateQuantity}
+          onRemove={removeFromCart}
+        />
+      </Suspense>
 
       {/* Exit Intent Popup - Phase 9: LCCO */}
-      <ExitIntentPopup />
+      <Suspense fallback={null}>
+        <ExitIntentPopup />
+      </Suspense>
     </div>
   );
 }

@@ -1,47 +1,26 @@
 /**
  * Forgot Password Page
- * Allows users to request a password reset email
+ * Allows users to request a password reset email.
+ * Logic handled by useForgotPassword.ts.
  */
 
-import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Mail, ArrowRight, Loader2, AlertCircle, CheckCircle, ArrowLeft } from 'lucide-react';
 import { GridPattern } from '../components/ui/Aura';
 import { useTranslation } from '@/hooks';
-import { supabase } from '@/lib/supabase';
+import { useForgotPassword } from '../hooks/useForgotPassword';
 
 export default function ForgotPasswordPage() {
     const { t } = useTranslation();
-    const [email, setEmail] = useState('');
-    const [loading, setLoading] = useState(false);
-    const [error, setError] = useState('');
-    const [success, setSuccess] = useState(false);
-
-    const handleSubmit = async (e: React.FormEvent) => {
-        e.preventDefault();
-        setError('');
-        setLoading(true);
-
-        try {
-            const { error: resetError } = await supabase.auth.resetPasswordForEmail(email, {
-                redirectTo: `${window.location.origin}/reset-password`,
-            });
-
-            if (resetError) {
-                console.error('Error sending reset password email:', resetError);
-                setError(t('auth.forgotPassword.errorMessage'));
-                return;
-            }
-
-            setSuccess(true);
-        } catch (err) {
-            console.error('Unexpected error in forgot password flow:', err);
-            setError(t('auth.forgotPassword.errorMessage'));
-        } finally {
-            setLoading(false);
-        }
-    };
+    const {
+        register,
+        handleSubmit,
+        errors,
+        serverError,
+        loading,
+        success,
+    } = useForgotPassword();
 
     return (
         <div className="min-h-screen bg-slate-950 flex items-center justify-center p-6 relative overflow-hidden">
@@ -101,9 +80,9 @@ export default function ForgotPasswordPage() {
                     </AnimatePresence>
 
                     <form onSubmit={handleSubmit} className="space-y-6">
-                        {/* Error Message */}
+                        {/* Server Error Message */}
                         <AnimatePresence>
-                            {error && (
+                            {serverError && (
                                 <motion.div
                                     initial={{ opacity: 0, y: -10 }}
                                     animate={{ opacity: 1, y: 0 }}
@@ -111,7 +90,7 @@ export default function ForgotPasswordPage() {
                                     className="flex items-start gap-3 p-4 bg-red-500/10 border border-red-500/30 rounded-xl text-red-300"
                                 >
                                     <AlertCircle className="w-5 h-5 flex-shrink-0 mt-0.5" />
-                                    <p className="text-sm">{error}</p>
+                                    <p className="text-sm">{serverError}</p>
                                 </motion.div>
                             )}
                         </AnimatePresence>
@@ -125,20 +104,21 @@ export default function ForgotPasswordPage() {
                                 <Mail className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-500" />
                                 <input
                                     type="email"
-                                    value={email}
-                                    onChange={(e) => setEmail(e.target.value)}
+                                    {...register('email')}
                                     placeholder={t('auth.forgotPassword.emailPlaceholder')}
                                     className="w-full pl-12 pr-4 py-3.5 bg-slate-950/50 border border-slate-800 rounded-xl text-white placeholder-slate-500 focus:outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/20 transition-all"
-                                    required
                                     disabled={loading}
                                 />
                             </div>
+                            {errors.email && (
+                                <p className="text-xs text-red-400 ml-1 mt-1">{errors.email.message}</p>
+                            )}
                         </div>
 
                         {/* Submit Button */}
                         <motion.button
                             type="submit"
-                            disabled={loading || !email}
+                            disabled={loading}
                             whileHover={{ scale: loading ? 1 : 1.02 }}
                             whileTap={{ scale: loading ? 1 : 0.98 }}
                             className="w-full py-3.5 bg-gradient-to-r from-emerald-500 to-teal-500 text-white rounded-xl font-semibold shadow-lg shadow-emerald-500/20 hover:shadow-emerald-500/30 transition-all disabled:opacity-50 disabled:cursor-not-allowed relative overflow-hidden group"

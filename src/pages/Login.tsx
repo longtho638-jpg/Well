@@ -18,18 +18,14 @@ import { useTranslation } from '@/hooks';
 export default function Login() {
     const { t } = useTranslation();
     const {
-        email,
-        setEmail,
-        password,
-        setPassword,
-        error,
+        register,
+        handleSubmit,
+        errors,
+        serverError,
         loading,
         showPassword,
         setShowPassword,
-        rememberMe,
-        setRememberMe,
         success,
-        handleSubmit
     } = useLogin();
 
     return (
@@ -83,14 +79,14 @@ export default function Login() {
                         )}
                     </AnimatePresence>
 
-                    {error && (
+                    {serverError && (
                         <motion.div
                             initial={{ opacity: 0, height: 0 }}
                             animate={{ opacity: 1, height: 'auto' }}
                             className="bg-red-500/10 border border-red-500/20 rounded-2xl p-4 flex items-start gap-3 mb-6"
                         >
                             <AlertCircle className="w-5 h-5 text-red-500 flex-shrink0 mt-0.5" />
-                            <p className="text-sm text-red-200">{error}</p>
+                            <p className="text-sm text-red-200">{serverError}</p>
                         </motion.div>
                     )}
 
@@ -103,15 +99,15 @@ export default function Login() {
                                 <Mail className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-500 group-focus-within:text-teal-400 transition-colors" />
                                 <input
                                     id="login-email"
-                                    name="email"
                                     type="email"
-                                    value={email}
-                                    onChange={(e) => setEmail(e.target.value)}
-                                    required
+                                    {...register('email')}
                                     placeholder="user@example.com"
                                     className="w-full bg-slate-950/50 border border-slate-700/50 text-white rounded-2xl py-3.5 pl-12 pr-4 focus:outline-none focus:ring-2 focus:ring-teal-500/40 focus:border-teal-500/50 transition-all placeholder:text-slate-600"
                                 />
                             </div>
+                            {errors.email && (
+                                <p className="text-xs text-red-400 ml-1 mt-1">{errors.email.message}</p>
+                            )}
                         </div>
 
                         <div className="space-y-2">
@@ -127,11 +123,8 @@ export default function Login() {
                                 <Lock className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-500 group-focus-within:text-teal-400 transition-colors" />
                                 <input
                                     id="login-password"
-                                    name="password"
                                     type={showPassword ? 'text' : 'password'}
-                                    value={password}
-                                    onChange={(e) => setPassword(e.target.value)}
-                                    required
+                                    {...register('password')}
                                     placeholder="••••••••"
                                     className="w-full bg-slate-950/50 border border-slate-700/50 text-white rounded-2xl py-3.5 pl-12 pr-12 focus:outline-none focus:ring-2 focus:ring-teal-500/40 focus:border-teal-500/50 transition-all placeholder:text-slate-600"
                                 />
@@ -143,20 +136,19 @@ export default function Login() {
                                     {showPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
                                 </button>
                             </div>
+                            {errors.password && (
+                                <p className="text-xs text-red-400 ml-1 mt-1">{errors.password.message}</p>
+                            )}
                         </div>
 
                         <div className="flex items-center gap-2 select-none">
-                            <button
-                                type="button"
-                                onClick={() => setRememberMe(!rememberMe)}
-                                className={`w-5 h-5 rounded-lg border flex items-center justify-center transition-all ${rememberMe
-                                    ? 'bg-teal-500 border-teal-500 shadow-lg shadow-teal-500/20'
-                                    : 'border-slate-700 hover:border-slate-600'
-                                    }`}
-                            >
-                                {rememberMe && <CheckCircle className="w-3.5 h-3.5 text-white" />}
-                            </button>
-                            <span className="text-xs text-slate-400">{t('auth.login.rememberMe')}</span>
+                            <input
+                                id="login-remember"
+                                type="checkbox"
+                                {...register('rememberMe')}
+                                className="w-5 h-5 rounded-lg border border-slate-700 bg-transparent checked:bg-teal-500 checked:border-teal-500 focus:ring-0 focus:ring-offset-0 cursor-pointer accent-teal-500"
+                            />
+                            <label htmlFor="login-remember" className="text-xs text-slate-400 cursor-pointer">{t('auth.login.rememberMe')}</label>
                         </div>
 
                         <div className="space-y-3 pt-2">

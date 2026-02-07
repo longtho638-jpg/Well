@@ -4,6 +4,24 @@
  */
 
 export const en = {
+    pwa: {
+    install: {
+      title: "Install WellNexus",
+      description: "Install our app for a better experience with offline access and faster loading.",
+      install: "Install",
+      dismiss: "Later"
+    },
+    update: {
+      title: "New Version Available",
+      description: "A new version of WellNexus is available. Update now to get the latest features.",
+      update: "Update Now",
+      dismiss: "Later"
+    },
+    offline: {
+      title: "You are offline",
+      description: "Please check your internet connection."
+    }
+  },
   common: {
     loading: "Loading...",
     error: "An error occurred",
@@ -40,6 +58,10 @@ export const en = {
     you: "[MISSING] you"
   },
   nav: {
+    home: "Home",
+    commission_wallet: "Commission Wallet",
+    orders: "Orders",
+    profile: "Profile",
     dashboard: "Dashboard",
     network: "Network",
     products: "Products",

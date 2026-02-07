@@ -1,14 +1,14 @@
 import React, { lazy, Suspense } from 'react';
 import { Routes, Route, Navigate } from 'react-router-dom';
 import { AppLayout } from './components/AppLayout';
-import LandingPage from './pages/LandingPage';
-import Login from './pages/Login';
-import Signup from './pages/Signup';
-import ConfirmEmail from './pages/confirm-email';
 import { AdminRoute } from './components/AdminRoute';
 
 // Code splitting: Lazy load pages for better performance
 // Named exports need special handling
+const LandingPage = lazy(() => import('./pages/LandingPage'));
+const Login = lazy(() => import('./pages/Login'));
+const Signup = lazy(() => import('./pages/Signup'));
+const ConfirmEmail = lazy(() => import('./pages/confirm-email'));
 const ForgotPasswordPage = lazy(() => import('./pages/forgot-password-page'));
 const ResetPasswordPage = lazy(() => import('./pages/reset-password-page'));
 const Dashboard = lazy(() => import('./pages/Dashboard').then(m => ({ default: m.Dashboard })));
@@ -50,11 +50,13 @@ import { ToastProvider } from './components/ui/Toast';
 import { CursorGlow } from './components/CursorGlow';
 import { useTranslation } from '@/hooks';
 import { useAuth } from './hooks/useAuth';
-import { InstallPrompt } from './components/pwa/install-prompt-component';
+import { useAutoLogout } from './hooks/useAutoLogout';
+import { PWAInstallPrompt } from './components/pwa-install-prompt';
 
 const App: React.FC = () => {
   const { t } = useTranslation();
   useAuth(); // Initialize authentication check
+  useAutoLogout(); // Auto-logout after 30 min inactivity
   const { isAuthenticated, isInitialized } = useStore();
 
   if (import.meta.env.DEV) {
@@ -73,15 +75,15 @@ const App: React.FC = () => {
     <ThemeProvider>
       <ToastProvider>
         <CursorGlow />
-        <InstallPrompt />
+        <PWAInstallPrompt />
         <Routes>
           {/* ============================================================ */}
           {/* PUBLIC ROUTES: Landing, Auth & Venture Vision */}
           {/* ============================================================ */}
-          <Route path="/" element={<LandingPage />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/signup" element={<Signup />} />
-          <Route path="/confirm-email" element={<ConfirmEmail />} />
+          <Route path="/" element={<Suspense fallback={<div className="flex items-center justify-center h-screen bg-zinc-950"><div className="animate-spin rounded-full h-12 w-12 border-b-2 border-emerald-500"></div></div>}><LandingPage /></Suspense>} />
+          <Route path="/login" element={<Suspense fallback={<div className="flex items-center justify-center h-screen bg-zinc-950"><div className="animate-spin rounded-full h-12 w-12 border-b-2 border-emerald-500"></div></div>}><Login /></Suspense>} />
+          <Route path="/signup" element={<Suspense fallback={<div className="flex items-center justify-center h-screen bg-zinc-950"><div className="animate-spin rounded-full h-12 w-12 border-b-2 border-emerald-500"></div></div>}><Signup /></Suspense>} />
+          <Route path="/confirm-email" element={<Suspense fallback={<div className="flex items-center justify-center h-screen bg-zinc-950"><div className="animate-spin rounded-full h-12 w-12 border-b-2 border-emerald-500"></div></div>}><ConfirmEmail /></Suspense>} />
           <Route path="/forgot-password" element={<ForgotPasswordPage />} />
           <Route path="/reset-password" element={<ResetPasswordPage />} />
           <Route path="/venture" element={<Suspense fallback={<div className="flex items-center justify-center h-screen bg-zinc-950"><div className="animate-spin rounded-full h-12 w-12 border-b-2 border-emerald-500"></div></div>}><VenturePage /></Suspense>} />

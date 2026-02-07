@@ -1,106 +1,73 @@
-import { useState, useCallback, useMemo } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useState, useMemo } from 'react';
+import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
 import { authLogger } from '@/utils/logger';
 import { useTranslation } from '@/hooks';
 import { supabase } from '@/lib/supabase';
 import { validatePassword, PasswordValidation } from '@/utils/password-validation';
 import { sendWelcomeEmail } from '@/services/email-service';
+import { signupSchema, SignupFormValues } from '@/lib/schemas/auth';
 
 export function useSignup() {
-    const [formData, setFormData] = useState({
-        name: '',
-        email: '',
-        password: '',
-        confirmPassword: ''
-    });
-    const [error, setError] = useState('');
-    const [loading, setLoading] = useState(false);
-    const [touchedPassword, setTouchedPassword] = useState(false);
     const [signupSuccess, setSignupSuccess] = useState(false);
 
     const { t } = useTranslation();
-    const navigate = useNavigate();
 
-    // Memoize password validation to avoid unnecessary recalculations
+    const form = useForm<SignupFormValues>({
+        resolver: zodResolver(signupSchema),
+        defaultValues: {
+            name: '',
+            email: '',
+            password: '',
+            confirmPassword: '',
+        },
+        mode: 'onTouched',
+    });
+
+    const watchedPassword = form.watch('password');
+
     const passwordValidation: PasswordValidation = useMemo(() => {
-        return validatePassword(formData.password);
-    }, [formData.password]);
+        return validatePassword(watchedPassword ?? '');
+    }, [watchedPassword]);
 
-    const handleChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
-        const { name, value } = e.target;
-
-        if (name === 'password') {
-            setTouchedPassword(true);
-        }
-
-        setFormData(prev => ({
-            ...prev,
-            [name]: value
-        }));
-    }, []);
-
-    const handleSubmit = useCallback(async (e: React.FormEvent) => {
-        e.preventDefault();
-        setLoading(true);
-        setError('');
-
-        // Strict Password Validation
-        const validation = validatePassword(formData.password);
-        if (!validation.isValid) {
-            setError(t(validation.errors[0]) || 'Password does not meet requirements');
-            setLoading(false);
-            return;
-        }
-
-        if (formData.password !== formData.confirmPassword) {
-            setError(t('errors.passwordsDoNotMatch'));
-            setLoading(false);
-            return;
-        }
-
+    const onSubmit = async (data: SignupFormValues) => {
         try {
             const { error: signUpError } = await supabase.auth.signUp({
-                email: formData.email,
-                password: formData.password,
+                email: data.email,
+                password: data.password,
                 options: {
                     data: {
-                        name: formData.name
+                        name: data.name,
                     },
-                    // Email confirmation required
-                    emailRedirectTo: `${window.location.origin}/confirm-email`
-                }
+                    emailRedirectTo: `${window.location.origin}/confirm-email`,
+                },
             });
 
             if (signUpError) throw signUpError;
 
-            authLogger.info('Signup successful for:', formData.email);
+            authLogger.info('Signup successful for:', data.email);
 
             // Send welcome email (fire-and-forget — don't block signup success UX)
-            sendWelcomeEmail(formData.email, {
-                userName: formData.name,
-                userEmail: formData.email,
+            sendWelcomeEmail(data.email, {
+                userName: data.name,
+                userEmail: data.email,
             }).catch((err) => authLogger.error('Welcome email failed', err));
 
             // Show success state - user needs to confirm email
             setSignupSuccess(true);
-            // Don't auto-navigate - show confirmation message
         } catch (e) {
             const err = e as Error;
             authLogger.error('Signup failed', err);
-            setError(err.message || t('errors.signupFailed'));
-        } finally {
-            setLoading(false);
+            form.setError('root', {
+                message: err.message || t('errors.signupFailed'),
+            });
         }
-    }, [formData, navigate, t]);
+    };
 
     return {
-        formData,
-        error,
-        loading,
+        form,
         passwordValidation,
-        touchedPassword,
         signupSuccess,
-        handleChange,
-        handleSubmit
+        onSubmit,
     };
 }

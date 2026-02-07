@@ -1,97 +1,30 @@
 /**
  * Reset Password Page
- * Allows users to set a new password using the reset token from email
+ * Allows users to set a new password using the reset token from email.
+ * Logic handled by useResetPassword.ts.
  */
 
-import React, { useState, useEffect } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Lock, ArrowRight, Loader2, AlertCircle, CheckCircle, Eye, EyeOff } from 'lucide-react';
 import { GridPattern } from '../components/ui/Aura';
 import { useTranslation } from '@/hooks';
-import { supabase } from '@/lib/supabase';
+import { useResetPassword } from '../hooks/useResetPassword';
 
 export default function ResetPasswordPage() {
     const { t } = useTranslation();
-    const navigate = useNavigate();
-    const [newPassword, setNewPassword] = useState('');
-    const [confirmPassword, setConfirmPassword] = useState('');
-    const [showPassword, setShowPassword] = useState(false);
-    const [showConfirmPassword, setShowConfirmPassword] = useState(false);
-    const [loading, setLoading] = useState(false);
-    const [error, setError] = useState('');
-    const [success, setSuccess] = useState(false);
-
-    // Check if user has valid recovery token
-    useEffect(() => {
-        const checkSession = async () => {
-            const { data: { session } } = await supabase.auth.getSession();
-            if (!session) {
-                // No session means invalid/expired token
-                setError('Invalid or expired reset link. Please request a new one.');
-            }
-        };
-        checkSession();
-    }, []);
-
-    const validatePassword = (password: string): boolean => {
-        const minLength = 8;
-        const hasUpperCase = /[A-Z]/.test(password);
-        const hasLowerCase = /[a-z]/.test(password);
-        const hasNumber = /\d/.test(password);
-        const hasSpecial = /[!@#$%^&*(),.?":{}|<>]/.test(password);
-
-        return (
-            password.length >= minLength &&
-            hasUpperCase &&
-            hasLowerCase &&
-            hasNumber &&
-            hasSpecial
-        );
-    };
-
-    const handleSubmit = async (e: React.FormEvent) => {
-        e.preventDefault();
-        setError('');
-
-        // Validate password match
-        if (newPassword !== confirmPassword) {
-            setError(t('auth.resetPassword.passwordMismatch'));
-            return;
-        }
-
-        // Validate password strength
-        if (!validatePassword(newPassword)) {
-            setError(t('auth.resetPassword.weakPassword'));
-            return;
-        }
-
-        setLoading(true);
-
-        try {
-            const { error: updateError } = await supabase.auth.updateUser({
-                password: newPassword
-            });
-
-            if (updateError) {
-                console.error('Error updating password:', updateError);
-                setError(t('auth.resetPassword.errorMessage'));
-                return;
-            }
-
-            setSuccess(true);
-
-            // Redirect to login after 2 seconds
-            setTimeout(() => {
-                navigate('/login');
-            }, 2000);
-        } catch (err) {
-            console.error('Unexpected error in reset password flow:', err);
-            setError(t('auth.resetPassword.errorMessage'));
-        } finally {
-            setLoading(false);
-        }
-    };
+    const {
+        register,
+        handleSubmit,
+        errors,
+        serverError,
+        loading,
+        success,
+        showPassword,
+        setShowPassword,
+        showConfirmPassword,
+        setShowConfirmPassword,
+    } = useResetPassword();
 
     return (
         <div className="min-h-screen bg-slate-950 flex items-center justify-center p-6 relative overflow-hidden">
@@ -145,9 +78,9 @@ export default function ResetPasswordPage() {
                     </AnimatePresence>
 
                     <form onSubmit={handleSubmit} className="space-y-6">
-                        {/* Error Message */}
+                        {/* Server Error Message */}
                         <AnimatePresence>
-                            {error && (
+                            {serverError && (
                                 <motion.div
                                     initial={{ opacity: 0, y: -10 }}
                                     animate={{ opacity: 1, y: 0 }}
@@ -155,7 +88,7 @@ export default function ResetPasswordPage() {
                                     className="flex items-start gap-3 p-4 bg-red-500/10 border border-red-500/30 rounded-xl text-red-300"
                                 >
                                     <AlertCircle className="w-5 h-5 flex-shrink-0 mt-0.5" />
-                                    <p className="text-sm">{error}</p>
+                                    <p className="text-sm">{serverError}</p>
                                 </motion.div>
                             )}
                         </AnimatePresence>
@@ -169,11 +102,9 @@ export default function ResetPasswordPage() {
                                 <Lock className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-500" />
                                 <input
                                     type={showPassword ? 'text' : 'password'}
-                                    value={newPassword}
-                                    onChange={(e) => setNewPassword(e.target.value)}
+                                    {...register('password')}
                                     placeholder={t('auth.resetPassword.newPasswordPlaceholder')}
                                     className="w-full pl-12 pr-12 py-3.5 bg-slate-950/50 border border-slate-800 rounded-xl text-white placeholder-slate-500 focus:outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/20 transition-all"
-                                    required
                                     disabled={loading}
                                 />
                                 <button
@@ -184,6 +115,9 @@ export default function ResetPasswordPage() {
                                     {showPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
                                 </button>
                             </div>
+                            {errors.password && (
+                                <p className="text-xs text-red-400 ml-1 mt-1">{errors.password.message}</p>
+                            )}
                         </div>
 
                         {/* Confirm Password Input */}
@@ -195,11 +129,9 @@ export default function ResetPasswordPage() {
                                 <Lock className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-500" />
                                 <input
                                     type={showConfirmPassword ? 'text' : 'password'}
-                                    value={confirmPassword}
-                                    onChange={(e) => setConfirmPassword(e.target.value)}
+                                    {...register('confirmPassword')}
                                     placeholder={t('auth.resetPassword.confirmPasswordPlaceholder')}
                                     className="w-full pl-12 pr-12 py-3.5 bg-slate-950/50 border border-slate-800 rounded-xl text-white placeholder-slate-500 focus:outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/20 transition-all"
-                                    required
                                     disabled={loading}
                                 />
                                 <button
@@ -210,6 +142,9 @@ export default function ResetPasswordPage() {
                                     {showConfirmPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
                                 </button>
                             </div>
+                            {errors.confirmPassword && (
+                                <p className="text-xs text-red-400 ml-1 mt-1">{errors.confirmPassword.message}</p>
+                            )}
                         </div>
 
                         {/* Password Requirements */}
@@ -227,7 +162,7 @@ export default function ResetPasswordPage() {
                         {/* Submit Button */}
                         <motion.button
                             type="submit"
-                            disabled={loading || !newPassword || !confirmPassword}
+                            disabled={loading}
                             whileHover={{ scale: loading ? 1 : 1.02 }}
                             whileTap={{ scale: loading ? 1 : 0.98 }}
                             className="w-full py-3.5 bg-gradient-to-r from-emerald-500 to-teal-500 text-white rounded-xl font-semibold shadow-lg shadow-emerald-500/20 hover:shadow-emerald-500/30 transition-all disabled:opacity-50 disabled:cursor-not-allowed relative overflow-hidden group"
