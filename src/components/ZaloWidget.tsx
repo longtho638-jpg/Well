@@ -15,7 +15,7 @@ export const ZaloWidget: React.FC = () => {
   return (
     <motion.button
       onClick={handleZaloClick}
-      className="fixed bottom-24 right-4 z-50 w-14 h-14 bg-blue-600 hover:bg-blue-700 text-white rounded-full shadow-lg hover:shadow-xl flex items-center justify-center transition-all duration-300 animate-pulse hover:animate-none"
+      className="fixed bottom-24 right-4 z-50 w-14 h-14 bg-blue-600 hover:bg-blue-700 text-white rounded-full shadow-lg hover:shadow-xl flex items-center justify-center transition-all duration-300 ring-4 ring-blue-400/30 animate-pulse hover:animate-none hover:ring-blue-500/50"
       whileHover={{ scale: 1.1 }}
       whileTap={{ scale: 0.95 }}
       initial={{ opacity: 0, scale: 0 }}

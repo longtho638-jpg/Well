@@ -22,6 +22,7 @@ import {
   TrustBadges,
   TRUST_BADGES,
 } from '../components/HeroEnhancements';
+import { ExitIntentPopup } from '../components/marketing/ExitIntentPopup';
 import { ScrollProgress } from '../components/EastAsiaBrand';
 import { ZenDivider, AwardsBar } from '../components/EastAsiaBrand';
 import {
@@ -273,6 +274,9 @@ export default function LandingPage() {
         onUpdateQuantity={updateQuantity}
         onRemove={removeFromCart}
       />
+
+      {/* Exit Intent Popup - Phase 9: LCCO */}
+      <ExitIntentPopup />
     </div>
   );
 }

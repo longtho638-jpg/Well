@@ -15,11 +15,15 @@ interface ThemeProviderProps {
 }
 
 export function ThemeProvider({ children }: ThemeProviderProps) {
-  // Initialize theme from localStorage or default to 'light'
+  // Initialize theme from localStorage or system preference
   const [theme, setThemeState] = useState<Theme>(() => {
     if (typeof window !== 'undefined') {
       const savedTheme = localStorage.getItem('wellnexus-theme') as Theme;
-      return savedTheme || 'light';
+      if (savedTheme) return savedTheme;
+
+      // Fallback to system preference
+      const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+      return prefersDark ? 'dark' : 'light';
     }
     return 'light';
   });
