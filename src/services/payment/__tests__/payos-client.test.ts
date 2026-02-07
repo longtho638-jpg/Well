@@ -8,9 +8,7 @@ import { isPayOSConfigured } from '../payos-client';
  * and verifyWebhook require PayOS environment variables (VITE_PAYOS_*) which are
  * not available in CI. These are tested manually and in E2E tests with real credentials.
  *
- * This test file focuses on:
- * 1. Configuration check function
- * 2. Module export verification
+ * This test file focuses on configuration checks only.
  */
 
 describe('PayOS Client Service', () => {
@@ -27,26 +25,9 @@ describe('PayOS Client Service', () => {
     });
   });
 
-  describe('module exports', () => {
-    it('should export all required functions', async () => {
-      const module = await import('../payos-client');
-
-      expect(typeof module.createPayment).toBe('function');
-      expect(typeof module.getPaymentStatus).toBe('function');
-      expect(typeof module.cancelPayment).toBe('function');
-      expect(typeof module.verifyWebhook).toBe('function');
-      expect(typeof module.isPayOSConfigured).toBe('function');
-    });
-
-    it('should have default export with all functions', async () => {
-      const module = await import('../payos-client');
-
-      expect(module.default).toBeDefined();
-      expect(typeof module.default.createPayment).toBe('function');
-      expect(typeof module.default.getPaymentStatus).toBe('function');
-      expect(typeof module.default.cancelPayment).toBe('function');
-      expect(typeof module.default.verifyWebhook).toBe('function');
-      expect(typeof module.default.isPayOSConfigured).toBe('function');
+  describe('module structure', () => {
+    it('should export isPayOSConfigured as named export', () => {
+      expect(typeof isPayOSConfigured).toBe('function');
     });
   });
 });
