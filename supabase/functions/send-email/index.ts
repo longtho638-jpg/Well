@@ -3,6 +3,9 @@ import { generateWelcomeEmail } from "./templates/welcome-email-template.ts";
 import { generateOrderConfirmationEmail } from "./templates/order-confirmation-email-template.ts";
 import { generateCommissionEarnedEmail } from "./templates/commission-earned-email-template.ts";
 import { generateRankUpgradeEmail } from "./templates/rank-upgrade-celebration-email-template.ts";
+import { generateWithdrawalApprovedEmail } from "./templates/withdrawal-approved-email-template.ts";
+import { generateWithdrawalRejectedEmail } from "./templates/withdrawal-rejected-email-template.ts";
+import { generateWithdrawalPendingEmail } from "./templates/withdrawal-pending-email-template.ts";
 
 // Resend API endpoint
 const RESEND_API_ENDPOINT = "https://api.resend.com/emails";
@@ -16,7 +19,7 @@ interface EmailRequest {
   to: string | string[];
   subject: string;
   html?: string; // Optional if using template
-  templateType?: 'welcome' | 'order-confirmation' | 'commission-earned' | 'rank-upgrade';
+  templateType?: 'welcome' | 'order-confirmation' | 'commission-earned' | 'rank-upgrade' | 'withdrawal-approved' | 'withdrawal-rejected' | 'withdrawal-pending';
   data?: any; // Template data
   from?: string;
   replyTo?: string;
@@ -54,6 +57,15 @@ serve(async (req) => {
           break;
         case 'rank-upgrade':
           emailHtml = generateRankUpgradeEmail(data);
+          break;
+        case 'withdrawal-approved':
+          emailHtml = generateWithdrawalApprovedEmail(data);
+          break;
+        case 'withdrawal-rejected':
+          emailHtml = generateWithdrawalRejectedEmail(data);
+          break;
+        case 'withdrawal-pending':
+          emailHtml = generateWithdrawalPendingEmail(data);
           break;
         default:
           return new Response(

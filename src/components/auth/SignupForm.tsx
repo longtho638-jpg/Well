@@ -1,6 +1,6 @@
 import React from 'react';
-import { motion } from 'framer-motion';
-import { Mail, Lock, User, ArrowRight, Loader2, AlertCircle } from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { Mail, Lock, User, ArrowRight, Loader2, AlertCircle, CheckCircle } from 'lucide-react';
 import { useSignup } from '@/hooks/useSignup';
 import { useTranslation } from '@/hooks';
 import { PasswordStrengthMeter } from './PasswordStrengthMeter';
@@ -13,12 +13,44 @@ export const SignupForm: React.FC = () => {
         loading,
         passwordValidation,
         touchedPassword,
+        signupSuccess,
         handleChange,
         handleSubmit
     } = useSignup();
 
     return (
-        <div className="bg-slate-900/40 backdrop-blur-2xl border border-white/5 rounded-[2.5rem] p-10 shadow-[0_32px_64px_-16px_rgba(0,0,0,0.5)]">
+        <div className="bg-slate-900/40 backdrop-blur-2xl border border-white/5 rounded-[2.5rem] p-10 shadow-[0_32px_64px_-16px_rgba(0,0,0,0.5)] relative">
+            {/* Success Overlay */}
+            <AnimatePresence>
+                {signupSuccess && (
+                    <motion.div
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        className="absolute inset-0 z-50 bg-slate-950/90 backdrop-blur-md rounded-[2.5rem] flex flex-col items-center justify-center text-white p-8"
+                    >
+                        <motion.div
+                            initial={{ scale: 0.5, opacity: 0 }}
+                            animate={{ scale: 1, opacity: 1 }}
+                            transition={{ type: "spring", damping: 12 }}
+                            className="w-16 h-16 bg-emerald-500 rounded-full flex items-center justify-center mb-4"
+                        >
+                            <CheckCircle className="w-8 h-8 text-white" />
+                        </motion.div>
+                        <h3 className="text-2xl font-bold mb-2">Check Your Email!</h3>
+                        <p className="text-slate-300 text-center text-sm max-w-sm">
+                            We've sent a confirmation link to <span className="text-teal-400 font-bold">{formData.email}</span>.
+                            Click the link to activate your account.
+                        </p>
+                        <div className="mt-6 text-xs text-slate-400 text-center">
+                            <p>Didn't receive it? Check your spam folder or</p>
+                            <button className="text-teal-400 hover:text-teal-300 underline mt-1">
+                                resend confirmation email
+                            </button>
+                        </div>
+                    </motion.div>
+                )}
+            </AnimatePresence>
+
             {error && (
                 <motion.div
                     initial={{ opacity: 0, height: 0 }}

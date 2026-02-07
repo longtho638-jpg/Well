@@ -1,0 +1,161 @@
+# Page snapshot
+
+```yaml
+- generic [ref=e3]:
+  - navigation "Main navigation" [ref=e5]:
+    - button "WellNexus home" [ref=e6] [cursor=pointer]:
+      - generic [ref=e7]: W
+      - generic [ref=e8]:
+        - heading "WellNexus" [level=1] [ref=e9]
+        - paragraph [ref=e10]: Social Commerce
+    - navigation "Primary navigation" [ref=e11]:
+      - button "Navigate to Dashboard" [ref=e12] [cursor=pointer]:
+        - img [ref=e13]
+        - generic [ref=e18]: Dashboard
+      - button "Navigate to Marketplace" [ref=e19] [cursor=pointer]:
+        - img [ref=e20]
+        - generic [ref=e23]: Marketplace
+      - button "Navigate to Wallet" [ref=e24] [cursor=pointer]:
+        - img [ref=e25]
+        - generic [ref=e28]: Wallet
+      - button "Navigate to Leaderboard" [ref=e29] [cursor=pointer]:
+        - img [ref=e30]
+        - generic [ref=e36]: Leaderboard
+        - generic [ref=e37]: HOT
+      - button "Navigate to Marketing Tools" [ref=e38] [cursor=pointer]:
+        - img [ref=e39]
+        - generic [ref=e42]: Marketing Tools
+        - generic [ref=e43]: NEW
+      - button "Navigate to Agent Dashboard" [ref=e44] [cursor=pointer]:
+        - img [ref=e45]
+        - generic [ref=e47]: Agent Dashboard
+      - button "Navigate to Health Check" [ref=e48] [cursor=pointer]:
+        - img [ref=e49]
+        - generic [ref=e51]: Health Check
+      - button "Navigate to Health Coach" [ref=e52] [cursor=pointer]:
+        - img [ref=e53]
+        - generic [ref=e56]: Health Coach
+        - generic [ref=e57]: AI
+      - button "Navigate to AI Copilot" [ref=e58] [cursor=pointer]:
+        - img [ref=e59]
+        - generic [ref=e62]: AI Copilot
+        - generic [ref=e63]: AI
+      - button "Navigate to Team" [ref=e64] [cursor=pointer]:
+        - img [ref=e65]
+        - generic [ref=e70]: Team
+      - button "Navigate to Network" [ref=e71] [cursor=pointer]:
+        - img [ref=e72]
+        - generic [ref=e77]: Network
+      - button "Navigate to Withdrawal" [ref=e78] [cursor=pointer]:
+        - img [ref=e79]
+        - generic [ref=e82]: Withdrawal
+      - button "Navigate to Referral" [ref=e83] [cursor=pointer]:
+        - img [ref=e84]
+        - generic [ref=e90]: Referral
+      - button "Navigate to Settings" [ref=e91] [cursor=pointer]:
+        - img [ref=e92]
+        - generic [ref=e95]: Settings
+      - button "Navigate to Admin" [ref=e96] [cursor=pointer]:
+        - img [ref=e97]
+        - generic [ref=e99]: Admin
+        - generic [ref=e100]: ADMIN
+    - generic [ref=e103]:
+      - generic [ref=e104]:
+        - generic [ref=e105]:
+          - img [ref=e106]
+          - text: The Coach
+        - generic [ref=e109]: Day 3/30
+      - button "Get personalized AI advice" [ref=e110] [cursor=pointer]:
+        - img [ref=e111]
+        - text: Get AI Advice
+    - button "Switch to dark mode" [ref=e115] [cursor=pointer]:
+      - generic [ref=e116]:
+        - img [ref=e118]
+        - generic [ref=e124]: Light Mode
+    - generic [ref=e128]:
+      - img "Dev User's profile picture" [ref=e129]
+      - generic [ref=e130]:
+        - paragraph [ref=e131]: Dev User
+        - paragraph [ref=e132]: "3"
+      - button "Logout" [ref=e133] [cursor=pointer]:
+        - img [ref=e134]
+  - generic [ref=e137]:
+    - banner [ref=e138]:
+      - generic [ref=e140]:
+        - img [ref=e141]
+        - textbox "Search" [ref=e144]
+      - generic [ref=e145]:
+        - button "Switch to dark mode" [ref=e146] [cursor=pointer]:
+          - img [ref=e148]
+          - img [ref=e151]
+        - button [ref=e154] [cursor=pointer]:
+          - img [ref=e155]
+        - generic [ref=e160] [cursor=pointer]:
+          - generic [ref=e161]:
+            - paragraph [ref=e162]: Dev User
+            - paragraph [ref=e163]: "3"
+          - img "Profile" [ref=e167]
+    - main [ref=e169]:
+      - generic [ref=e171]:
+        - generic [ref=e173]:
+          - heading "Withdrawal" [level=1] [ref=e174]:
+            - img [ref=e175]
+            - text: Withdrawal
+          - paragraph [ref=e178]: Securely withdraw your earnings to your bank account
+        - generic [ref=e180]:
+          - generic [ref=e181]:
+            - paragraph [ref=e182]: Available Balance
+            - heading "5.000.000 đ" [level=2] [ref=e183]
+            - generic [ref=e184]:
+              - img [ref=e185]
+              - generic [ref=e187]: "Minimum withdrawal: 2,000,000 đ"
+          - generic [ref=e189]:
+            - img [ref=e190]
+            - generic [ref=e192]:
+              - paragraph [ref=e193]: Withdrawal Policy
+              - paragraph [ref=e194]: Withdrawals are processed within 24-48 hours. Please ensure your bank account name matches your KYC identity.
+        - generic [ref=e195]:
+          - generic [ref=e198]:
+            - generic [ref=e199]:
+              - img [ref=e201]
+              - generic [ref=e204]:
+                - heading "withdrawal.requestTitle" [level=3] [ref=e205]
+                - paragraph [ref=e206]: withdrawal.requestSubtitle
+            - generic [ref=e207]:
+              - generic [ref=e208]:
+                - generic [ref=e209]: withdrawal.amount (VND)
+                - generic [ref=e210]:
+                  - spinbutton "withdrawal.amount (VND)" [active] [ref=e211]: "200000"
+                  - button "MAX" [ref=e212] [cursor=pointer]
+                - paragraph [ref=e213]:
+                  - generic [ref=e214]: "Min: 2.000.000 đ"
+                  - generic [ref=e215]: "Available: 5.000.000 đ"
+              - generic [ref=e216]:
+                - generic [ref=e217]: withdrawal.bankName
+                - button "withdrawal.bankName" [ref=e218] [cursor=pointer]:
+                  - generic [ref=e219]:
+                    - img [ref=e221]
+                    - generic [ref=e225]: withdrawal.selectBank
+                  - img [ref=e226]
+              - generic [ref=e228]:
+                - generic [ref=e229]: withdrawal.accountNumber
+                - textbox "withdrawal.accountNumber" [ref=e230]:
+                  - /placeholder: e.g. 1903...
+              - generic [ref=e231]:
+                - generic [ref=e232]: withdrawal.accountName
+                - textbox "withdrawal.accountName" [ref=e233]: DEV USER
+                - paragraph [ref=e234]:
+                  - img [ref=e235]
+                  - text: withdrawal.nameMatchNote
+              - button "withdrawal.submitButton" [ref=e238] [cursor=pointer]:
+                - text: withdrawal.submitButton
+                - img [ref=e239]
+          - generic [ref=e242]:
+            - generic [ref=e243]:
+              - heading "withdrawal.historyTitle" [level=3] [ref=e244]
+              - button [ref=e245] [cursor=pointer]:
+                - img [ref=e246]
+            - generic [ref=e252]:
+              - img [ref=e253]
+              - paragraph [ref=e256]: No transactions yet
+```

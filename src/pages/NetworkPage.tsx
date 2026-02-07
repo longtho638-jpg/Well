@@ -1,19 +1,22 @@
 import React, { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
-import { Users, Share2, Search, Filter, Loader2, AlertCircle } from 'lucide-react';
+import { Users, Share2, Loader2, FileJson, FileSpreadsheet } from 'lucide-react';
 import { useTranslation } from '../hooks';
-import { referralService, NetworkNode } from '../services/referral-service';
+import { referralService, NetworkNode, ReferralTreeData } from '../services/referral-service';
 import { NetworkTreeDesktop } from '../components/network/network-tree-desktop';
 import { NetworkListMobile } from '../components/network/network-list-mobile';
 import { useStore } from '../store';
+import { exportNetworkTreeJSON, exportNetworkTreeCSV } from '@/utils/network-tree-export-utilities';
 
 const NetworkPage: React.FC = () => {
   const { t } = useTranslation();
   const { user } = useStore();
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
-  const [treeData, setTreeData] = useState<any>(null); // D3 format
+  const [_error, setError] = useState<string | null>(null);
+  const [treeData, setTreeData] = useState<ReferralTreeData | null>(null); // D3 format
   const [flatData, setFlatData] = useState<NetworkNode | null>(null); // Flat/Recursive format
+  const [isExportingJSON, setIsExportingJSON] = useState(false);
+  const [isExportingCSV, setIsExportingCSV] = useState(false);
   const [stats, setStats] = useState({
     totalDownlines: 0,
     f1Count: 0,
@@ -50,6 +53,34 @@ const NetworkPage: React.FC = () => {
     }
   }, [user?.id]);
 
+  const handleExportJSON = () => {
+    if (!flatData) return;
+    setIsExportingJSON(true);
+    try {
+      // Cast to compatible type (email field may not exist)
+      const exportData = flatData as NetworkNode;
+      exportNetworkTreeJSON(exportData);
+    } catch (error) {
+      console.error('Failed to export JSON:', error);
+    } finally {
+      setIsExportingJSON(false);
+    }
+  };
+
+  const handleExportCSV = () => {
+    if (!flatData) return;
+    setIsExportingCSV(true);
+    try {
+      // Cast to compatible type (email field may not exist)
+      const exportData = flatData as NetworkNode;
+      exportNetworkTreeCSV(exportData);
+    } catch (error) {
+      console.error('Failed to export CSV:', error);
+    } finally {
+      setIsExportingCSV(false);
+    }
+  };
+
   if (loading) {
     return (
       <div className="flex items-center justify-center min-h-screen">
@@ -73,6 +104,30 @@ const NetworkPage: React.FC = () => {
         </div>
 
         <div className="flex items-center gap-3">
+          <button
+            onClick={handleExportJSON}
+            disabled={isExportingJSON || !flatData}
+            className="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-amber-500 to-orange-600 hover:from-amber-600 hover:to-orange-700 disabled:from-gray-400 disabled:to-gray-500 text-white font-semibold rounded-lg shadow-lg shadow-amber-900/20 transition-all transform active:scale-95 disabled:cursor-not-allowed disabled:transform-none"
+          >
+            {isExportingJSON ? (
+              <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
+            ) : (
+              <FileJson className="w-4 h-4" />
+            )}
+            <span className="text-sm font-bold">Xuất JSON</span>
+          </button>
+          <button
+            onClick={handleExportCSV}
+            disabled={isExportingCSV || !flatData}
+            className="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-amber-500 to-orange-600 hover:from-amber-600 hover:to-orange-700 disabled:from-gray-400 disabled:to-gray-500 text-white font-semibold rounded-lg shadow-lg shadow-amber-900/20 transition-all transform active:scale-95 disabled:cursor-not-allowed disabled:transform-none"
+          >
+            {isExportingCSV ? (
+              <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
+            ) : (
+              <FileSpreadsheet className="w-4 h-4" />
+            )}
+            <span className="text-sm font-bold">Xuất CSV</span>
+          </button>
           <button className="flex items-center gap-2 px-4 py-2 bg-emerald-500/10 text-emerald-400 rounded-xl hover:bg-emerald-500/20 transition-colors border border-emerald-500/20">
             <Share2 className="w-4 h-4" />
             <span className="text-sm font-bold">Invite Member</span>
@@ -135,7 +190,14 @@ const NetworkPage: React.FC = () => {
   );
 };
 
-const StatsCard = ({ label, value, icon, color }: any) => (
+interface StatsCardProps {
+  label: string;
+  value: string | number;
+  icon: React.ReactNode;
+  color: string;
+}
+
+const StatsCard = ({ label, value, icon, color }: StatsCardProps) => (
   <motion.div
     whileHover={{ y: -2 }}
     className={`p-4 rounded-2xl border backdrop-blur-md ${color}`}

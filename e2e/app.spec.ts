@@ -34,6 +34,12 @@ test.describe('Authentication Flow', () => {
 
 test.describe('Dashboard', () => {
     test.beforeEach(async ({ page }) => {
+        // Mock authentication state in localStorage before navigation
+        await page.addInitScript(() => {
+            localStorage.setItem('wellnexus_mock_session', 'true');
+            localStorage.setItem('wellnexus_mock_email', 'demo@example.com');
+        });
+
         // Go directly to dashboard (skip auth for now)
         await page.goto('/dashboard');
         // Wait for any content to load
@@ -61,6 +67,14 @@ test.describe('Dashboard', () => {
 });
 
 test.describe('Marketplace', () => {
+    test.beforeEach(async ({ page }) => {
+         // Mock authentication state in localStorage before navigation
+         await page.addInitScript(() => {
+            localStorage.setItem('wellnexus_mock_session', 'true');
+            localStorage.setItem('wellnexus_mock_email', 'demo@example.com');
+        });
+    });
+
     test('should display marketplace page', async ({ page }) => {
         await page.goto('/marketplace');
         await page.waitForLoadState('networkidle', { timeout: 10000 }).catch(() => {});
@@ -79,6 +93,14 @@ test.describe('Marketplace', () => {
 });
 
 test.describe('Navigation', () => {
+    test.beforeEach(async ({ page }) => {
+         // Mock authentication state in localStorage before navigation
+         await page.addInitScript(() => {
+            localStorage.setItem('wellnexus_mock_session', 'true');
+            localStorage.setItem('wellnexus_mock_email', 'demo@example.com');
+        });
+    });
+
     test('should have working sidebar', async ({ page }) => {
         await page.goto('/dashboard');
         const sidebar = page.locator('[data-testid="sidebar"]');
@@ -96,6 +118,14 @@ test.describe('Navigation', () => {
 });
 
 test.describe('Performance', () => {
+    test.beforeEach(async ({ page }) => {
+         // Mock authentication state in localStorage before navigation
+         await page.addInitScript(() => {
+            localStorage.setItem('wellnexus_mock_session', 'true');
+            localStorage.setItem('wellnexus_mock_email', 'demo@example.com');
+        });
+    });
+
     test('should load dashboard under 6 seconds', async ({ page }) => {
         const start = Date.now();
         await page.goto('/dashboard');

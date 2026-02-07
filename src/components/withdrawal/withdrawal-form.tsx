@@ -61,8 +61,9 @@ export const WithdrawalForm: React.FC<WithdrawalFormProps> = ({ onSuccess }) => 
       await fetchUserFromDB();
 
       if (onSuccess) onSuccess();
-    } catch (error: any) {
-      showToast(error.message || t('withdrawal.errorMessage') || 'Failed to submit withdrawal request', 'error');
+    } catch (error) {
+      const message = error instanceof Error ? error.message : (t('withdrawal.errorMessage') || 'Failed to submit withdrawal request');
+      showToast(message, 'error');
     } finally {
       setLoading(false);
     }
@@ -132,6 +133,7 @@ export const WithdrawalForm: React.FC<WithdrawalFormProps> = ({ onSuccess }) => 
                 value={field.value}
                 onChange={field.onChange}
                 error={errors.bankName?.message}
+                id="bankName"
               />
             )}
           />

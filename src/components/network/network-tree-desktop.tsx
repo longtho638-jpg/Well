@@ -3,16 +3,17 @@ import Tree from 'react-d3-tree';
 import { NodeCard } from './node-card';
 import { useTheme } from '../../context/ThemeContext';
 import { ZoomIn, ZoomOut, Move } from 'lucide-react';
+import { ReferralTreeData } from '../../services/referral-service';
 
 interface NetworkTreeDesktopProps {
-  data: any;
+  data: ReferralTreeData;
 }
 
 export const NetworkTreeDesktop: React.FC<NetworkTreeDesktopProps> = ({ data }) => {
   const containerRef = useRef<HTMLDivElement>(null);
   const [dimensions, setDimensions] = useState({ width: 0, height: 0 });
   const [translate, setTranslate] = useState({ x: 0, y: 0 });
-  const { theme } = useTheme();
+  const { theme: _theme } = useTheme();
 
   // Handle resize
   useEffect(() => {

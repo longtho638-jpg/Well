@@ -8,7 +8,7 @@ import { exportToCSV, CSVColumn } from './csv-export-utility';
 export interface NetworkNode {
   id: string;
   name: string;
-  email: string;
+  email?: string;
   level: number;
   rank?: string;
   totalSales?: number;
@@ -18,11 +18,25 @@ export interface NetworkNode {
   parentId?: string;
 }
 
+interface FlattenedNode {
+  id: string;
+  name: string;
+  email?: string;
+  level: number;
+  rank: string;
+  totalSales: number;
+  commissionEarned: number;
+  joinedAt: string;
+  parentId: string;
+  childrenCount: number;
+  depth: number;
+}
+
 /**
  * Flatten network tree to array for CSV export
  */
-function flattenNetworkTree(node: NetworkNode, depth: number = 0): any[] {
-  const result: any[] = [];
+function flattenNetworkTree(node: NetworkNode, depth: number = 0): FlattenedNode[] {
+  const result: FlattenedNode[] = [];
 
   // Add current node
   result.push({

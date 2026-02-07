@@ -6,13 +6,15 @@
 export interface CSVColumn {
   key: string;
   header: string;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   formatter?: (value: any) => string;
 }
 
 /**
  * Convert data to CSV format
  */
-export function convertToCSV(data: any[], columns: CSVColumn[]): string {
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export function convertToCSV(data: Record<string, any>[], columns: CSVColumn[]): string {
   // Create header row
   const headers = columns.map(col => col.header).join(',');
 
@@ -69,7 +71,8 @@ export function downloadCSV(csv: string, filename: string): void {
 /**
  * Export data to CSV and download
  */
-export function exportToCSV(data: any[], columns: CSVColumn[], filename: string): void {
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export function exportToCSV(data: Record<string, any>[], columns: CSVColumn[], filename: string): void {
   const csv = convertToCSV(data, columns);
   downloadCSV(csv, filename);
 }

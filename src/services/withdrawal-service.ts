@@ -5,6 +5,8 @@
 
 import { supabase } from '@/lib/supabase';
 import { uiLogger } from '@/utils/logger';
+import { emailService } from './email-service';
+import { logWithdrawalApproval, logWithdrawalRejection } from './audit-log-service';
 
 export interface BankInfo {
   bankName: string;
@@ -48,7 +50,35 @@ export const withdrawalService = {
         throw new Error(error.message || 'Failed to create withdrawal request');
       }
 
-      return data; // Returns request ID
+      const requestId = data; // Returns request ID
+
+      // Send pending email notification
+      try {
+        const { data: { user } } = await supabase.auth.getUser();
+        if (user?.email) {
+          const { data: userData } = await supabase
+            .from('users')
+            .select('name')
+            .eq('id', user.id)
+            .single();
+
+          const userName = userData?.name || 'User';
+
+          await emailService.sendWithdrawalPendingEmail(
+            user.email,
+            userName,
+            amount,
+            requestId,
+            bankInfo.bankName,
+            bankInfo.accountNumber
+          );
+        }
+      } catch (emailError) {
+        // Don't fail the whole operation if email fails
+        uiLogger.error('Failed to send pending email', emailError);
+      }
+
+      return requestId;
     } catch (error) {
       const err = error as Error;
       uiLogger.error('Withdrawal request error', err);
@@ -173,6 +203,24 @@ export const withdrawalService = {
     notes?: string
   ): Promise<void> {
     try {
+      // Get withdrawal details before processing
+      const withdrawal = await this.getWithdrawalById(requestId);
+      if (!withdrawal) {
+        throw new Error('Withdrawal request not found');
+      }
+
+      // Get user details for email
+      const { data: userData, error: userError } = await supabase
+        .from('users')
+        .select('name, email, pending_cashback')
+        .eq('id', withdrawal.user_id)
+        .single();
+
+      if (userError) {
+        uiLogger.error('Failed to fetch user data', userError);
+      }
+
+      // Process withdrawal via database function
       const { error } = await supabase.rpc('process_withdrawal_request', {
         p_request_id: requestId,
         p_action: action,
@@ -182,6 +230,46 @@ export const withdrawalService = {
       if (error) {
         uiLogger.error('Process withdrawal failed', error);
         throw new Error(error.message || 'Failed to process withdrawal');
+      }
+
+      // Send email notification if user data is available
+      if (userData?.email) {
+        const userName = userData.name || 'User';
+        const userEmail = userData.email;
+
+        if (action === 'approve') {
+          // Log approval to audit trail
+          await logWithdrawalApproval(requestId, withdrawal.amount, withdrawal.user_id);
+
+          // Send approval email
+          await emailService.sendWithdrawalApprovedEmail(
+            userEmail,
+            userName,
+            withdrawal.amount,
+            requestId,
+            withdrawal.bank_name,
+            withdrawal.bank_account_number
+          );
+        } else if (action === 'reject') {
+          // Log rejection to audit trail
+          await logWithdrawalRejection(
+            requestId,
+            withdrawal.amount,
+            withdrawal.user_id,
+            notes || 'Không đủ điều kiện rút tiền tại thời điểm này'
+          );
+
+          // Send rejection email
+          const currentBalance = userData.pending_cashback || 0;
+          await emailService.sendWithdrawalRejectedEmail(
+            userEmail,
+            userName,
+            withdrawal.amount,
+            requestId,
+            notes || 'Không đủ điều kiện rút tiền tại thời điểm này',
+            currentBalance
+          );
+        }
       }
     } catch (error) {
       uiLogger.error('Withdrawal processing error', error);

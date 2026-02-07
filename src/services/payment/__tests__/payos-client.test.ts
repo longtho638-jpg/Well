@@ -4,11 +4,11 @@ import { isPayOSConfigured } from '../payos-client';
 /**
  * PayOS Client Service Tests
  *
- * Note: Full integration tests for createPayment, getPaymentStatus, cancelPayment,
- * and verifyWebhook require PayOS environment variables (VITE_PAYOS_*) which are
- * not available in CI. These are tested manually and in E2E tests with real credentials.
+ * Note: PayOS operations now use Supabase Edge Functions for security.
+ * All payment credentials are stored server-side in Supabase Vault.
+ * Integration tests require a configured Supabase project with Edge Functions deployed.
  *
- * This test file focuses on configuration checks only.
+ * This test file focuses on client-side configuration checks only.
  */
 
 describe('PayOS Client Service', () => {
@@ -18,10 +18,10 @@ describe('PayOS Client Service', () => {
       expect(typeof result).toBe('boolean');
     });
 
-    it('should return false when env vars are not set', () => {
-      // In test environment without VITE_PAYOS_* vars, should return false
+    it('should always return true (server-side configuration)', () => {
+      // With Edge Functions, configuration is always server-side
       const result = isPayOSConfigured();
-      expect(result).toBe(false);
+      expect(result).toBe(true);
     });
   });
 

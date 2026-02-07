@@ -68,14 +68,14 @@ self.addEventListener('push', (event) => {
     const data = event.data?.json() || {
         title: 'WellNexus',
         body: 'Bạn có thông báo mới',
-        icon: '/icons/icon-192x192.png',
+        icon: '/pwa-192x192.png',
     };
 
     event.waitUntil(
         self.registration.showNotification(data.title, {
             body: data.body,
-            icon: data.icon || '/icons/icon-192x192.png',
-            badge: '/icons/icon-72x72.png',
+            icon: data.icon || '/pwa-192x192.png',
+            badge: '/pwa-badge-72x72.png',
             vibrate: [100, 50, 100],
             data: data.url || '/',
         })

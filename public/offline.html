@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Offline - WellNexus</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+      background: linear-gradient(135deg, #0F172A 0%, #1E293B 100%);
+      color: #E2E8F0;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-center;
+      padding: 20px;
+    }
+
+    .container {
+      text-align: center;
+      max-width: 500px;
+    }
+
+    .icon {
+      width: 120px;
+      height: 120px;
+      margin: 0 auto 30px;
+      background: linear-gradient(135deg, #F59E0B 0%, #D97706 100%);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-center;
+      box-shadow: 0 20px 60px rgba(245, 158, 11, 0.3);
+    }
+
+    .icon svg {
+      width: 60px;
+      height: 60px;
+      stroke: white;
+      stroke-width: 2;
+      fill: none;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+
+    h1 {
+      font-size: 32px;
+      font-weight: 700;
+      margin-bottom: 16px;
+      color: #FFFFFF;
+    }
+
+    p {
+      font-size: 18px;
+      color: #CBD5E1;
+      margin-bottom: 32px;
+      line-height: 1.6;
+    }
+
+    .button {
+      display: inline-block;
+      padding: 14px 32px;
+      background: linear-gradient(135deg, #F59E0B 0%, #D97706 100%);
+      color: white;
+      text-decoration: none;
+      border-radius: 12px;
+      font-weight: 600;
+      font-size: 16px;
+      box-shadow: 0 10px 30px rgba(245, 158, 11, 0.3);
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+
+    .button:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 15px 40px rgba(245, 158, 11, 0.4);
+    }
+
+    .button:active {
+      transform: translateY(0);
+    }
+
+    .features {
+      margin-top: 48px;
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 16px;
+    }
+
+    .feature {
+      background: rgba(255, 255, 255, 0.05);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 12px;
+      padding: 16px;
+      text-align: left;
+    }
+
+    .feature-title {
+      font-size: 14px;
+      font-weight: 600;
+      color: #FBBF24;
+      margin-bottom: 6px;
+    }
+
+    .feature-desc {
+      font-size: 13px;
+      color: #94A3B8;
+      margin: 0;
+    }
+
+    @media (max-width: 640px) {
+      h1 {
+        font-size: 24px;
+      }
+
+      p {
+        font-size: 16px;
+      }
+
+      .icon {
+        width: 100px;
+        height: 100px;
+      }
+
+      .icon svg {
+        width: 50px;
+        height: 50px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="icon">
+      <svg viewBox="0 0 24 24">
+        <path d="M12 2L2 7l10 5 10-5-10-5z"></path>
+        <path d="M2 17l10 5 10-5M2 12l10 5 10-5"></path>
+      </svg>
+    </div>
+
+    <h1>You're Offline</h1>
+    <p>It looks like you've lost your internet connection. Some features may not be available right now.</p>
+
+    <a href="/" class="button" onclick="window.location.reload(); return false;">
+      Try Again
+    </a>
+
+    <div class="features">
+      <div class="feature">
+        <div class="feature-title">✓ Cached Content</div>
+        <div class="feature-desc">Previously viewed pages are still available</div>
+      </div>
+      <div class="feature">
+        <div class="feature-title">⏳ Syncing Later</div>
+        <div class="feature-desc">Your changes will sync when you're back online</div>
+      </div>
+      <div class="feature">
+        <div class="feature-title">📱 PWA Benefits</div>
+        <div class="feature-desc">Install our app for better offline support</div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

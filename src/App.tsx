@@ -49,15 +49,31 @@ import { ThemeProvider } from './context/ThemeContext';
 import { ToastProvider } from './components/ui/Toast';
 import { CursorGlow } from './components/CursorGlow';
 import { useTranslation } from '@/hooks';
+import { useAuth } from './hooks/useAuth';
+import { InstallPrompt } from './components/pwa/install-prompt-component';
 
 const App: React.FC = () => {
-    const { t } = useTranslation();
-  const { isAuthenticated } = useStore();
+  const { t } = useTranslation();
+  useAuth(); // Initialize authentication check
+  const { isAuthenticated, isInitialized } = useStore();
+
+  if (import.meta.env.DEV) {
+    console.log('[App] Render state:', { isAuthenticated, isInitialized, pathname: window.location.pathname });
+  }
+
+  if (!isInitialized) {
+    return (
+      <div className="flex items-center justify-center h-screen bg-zinc-950">
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-emerald-500"></div>
+      </div>
+    );
+  }
 
   return (
     <ThemeProvider>
       <ToastProvider>
         <CursorGlow />
+        <InstallPrompt />
         <Routes>
           {/* ============================================================ */}
           {/* PUBLIC ROUTES: Landing, Auth & Venture Vision */}

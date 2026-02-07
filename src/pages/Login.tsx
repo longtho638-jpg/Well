@@ -96,12 +96,14 @@ export default function Login() {
 
                     <form onSubmit={handleSubmit} className="space-y-6">
                         <div className="space-y-2">
-                            <label className="text-sm font-semibold text-slate-300 ml-1">
+                            <label htmlFor="login-email" className="text-sm font-semibold text-slate-300 ml-1">
                                 {t('auth.login.email')}
                             </label>
                             <div className="relative group">
                                 <Mail className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-500 group-focus-within:text-teal-400 transition-colors" />
                                 <input
+                                    id="login-email"
+                                    name="email"
                                     type="email"
                                     value={email}
                                     onChange={(e) => setEmail(e.target.value)}
@@ -114,7 +116,7 @@ export default function Login() {
 
                         <div className="space-y-2">
                             <div className="flex items-center justify-between ml-1">
-                                <label className="text-sm font-semibold text-slate-300">
+                                <label htmlFor="login-password" className="text-sm font-semibold text-slate-300">
                                     {t('auth.login.password')}
                                 </label>
                                 <Link to="/forgot-password" className="text-xs text-teal-400 hover:text-teal-300 transition-colors">
@@ -124,6 +126,8 @@ export default function Login() {
                             <div className="relative group">
                                 <Lock className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-500 group-focus-within:text-teal-400 transition-colors" />
                                 <input
+                                    id="login-password"
+                                    name="password"
                                     type={showPassword ? 'text' : 'password'}
                                     value={password}
                                     onChange={(e) => setPassword(e.target.value)}

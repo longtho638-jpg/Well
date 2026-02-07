@@ -6,6 +6,7 @@ import { authLogger } from '@/utils/logger';
 
 // Demo email for testing (works even in production)
 const DEMO_EMAIL = 'demo@example.com';
+const TEST_EMAIL = 'testuser@wellnexus.vn';
 
 // Mock user for development/demo mode - matches User type exactly
 const MOCK_USER: User = {
@@ -39,24 +40,42 @@ const MOCK_USER: User = {
 };
 
 export function useAuth() {
-  const { setUser, setIsAuthenticated, fetchRealData, fetchUserFromDB } = useStore();
+  const { setUser, setIsAuthenticated, setInitialized, fetchRealData, fetchUserFromDB } = useStore();
 
   useEffect(() => {
-    // Skip Supabase auth if not configured (dev mode)
-    if (!isSupabaseConfigured()) {
-      authLogger.debug('Dev mode - Supabase not configured, skipping auth listener');
+    // 1. Check for mock session first (allows E2E tests to bypass Supabase even if configured)
+    const hasMockSession = localStorage.getItem('wellnexus_mock_session') === 'true';
+
+    if (hasMockSession) {
+      authLogger.info('Restoring mock session from localStorage');
+      const storedEmail = localStorage.getItem('wellnexus_mock_email');
+      const userToRestore = storedEmail === DEMO_EMAIL
+        ? { ...MOCK_USER, email: DEMO_EMAIL }
+        : MOCK_USER;
+
+      setUser(userToRestore);
+      setIsAuthenticated(true);
+      setInitialized(true);
       return;
     }
 
-    // Check active session on mount
-    supabase.auth.getSession().then(({ data: { session } }) => {
+    // 2. Skip Supabase auth if not configured (dev mode)
+    if (!isSupabaseConfigured()) {
+      authLogger.debug('Dev mode - Supabase not configured, and no mock session found');
+      setInitialized(true);
+      return;
+    }
+
+    // 3. Check active session on mount
+    supabase.auth.getSession().then(async ({ data: { session } }) => {
       if (session?.user) {
         // Fetch full user data from database using store action
-        fetchUserFromDB().then(() => {
-             // Load other real data from Supabase after login
-             fetchRealData();
-        });
+        await fetchUserFromDB();
+        // Load other real data from Supabase after login
+        fetchRealData();
       }
+    }).finally(() => {
+      setInitialized(true);
     });
 
     // Listen for auth state changes
@@ -77,24 +96,36 @@ export function useAuth() {
     );
 
     return () => subscription.unsubscribe();
-  }, [fetchRealData, fetchUserFromDB, setIsAuthenticated, setUser]);
+  }, [fetchRealData, fetchUserFromDB, setIsAuthenticated, setUser, setInitialized]);
 
   return {
     signIn: async (email: string, password: string) => {
       // DEMO MODE: Allow demo login ONLY in development
-      if (import.meta.env.DEV && email.toLowerCase() === DEMO_EMAIL) {
+      if (import.meta.env.DEV && (email.toLowerCase() === DEMO_EMAIL || email.toLowerCase() === TEST_EMAIL)) {
         authLogger.info('Demo mode - logging in as demo user');
-        setUser({ ...MOCK_USER, email: DEMO_EMAIL });
+        const user = { ...MOCK_USER, email: email.toLowerCase() };
+        setUser(user);
         setIsAuthenticated(true);
-        return { data: { user: MOCK_USER, session: { access_token: 'demo-token' } }, error: null };
+
+        // Persist mock session
+        localStorage.setItem('wellnexus_mock_session', 'true');
+        localStorage.setItem('wellnexus_mock_email', email.toLowerCase());
+
+        return { data: { user, session: { access_token: 'demo-token' } }, error: null };
       }
 
       // DEV MODE: Return mock success when Supabase not configured
       if (!isSupabaseConfigured()) {
         authLogger.debug('Dev mode - using mock login for:', email);
-        setUser({ ...MOCK_USER, email });
+        const user = { ...MOCK_USER, email };
+        setUser(user);
         setIsAuthenticated(true);
-        return { data: { user: MOCK_USER, session: { access_token: 'mock-token' } }, error: null };
+
+        // Persist mock session
+        localStorage.setItem('wellnexus_mock_session', 'true');
+        localStorage.setItem('wellnexus_mock_email', email);
+
+        return { data: { user, session: { access_token: 'mock-token' } }, error: null };
       }
       return supabase.auth.signInWithPassword({ email, password });
     },
@@ -118,19 +149,29 @@ export function useAuth() {
             id: data.user.id,
             email,
             name,
-            rank: 'Member',
+            role_id: 8, // CTV rank (default for new users)
           },
         ]);
 
         if (insertError) {
              authLogger.error("Failed to create user record", insertError);
-             // Note: We don't throw here to allow auth to succeed, but user might be incomplete
+             // CRITICAL: Throw error to prevent orphaned auth accounts
+             throw new Error(`Failed to create user profile: ${insertError.message}`);
         }
       }
 
       return data;
     },
 
-    signOut: () => supabase.auth.signOut(),
+    signOut: async () => {
+      if (!isSupabaseConfigured()) {
+        localStorage.removeItem('wellnexus_mock_session');
+        localStorage.removeItem('wellnexus_mock_email');
+        setIsAuthenticated(false);
+        setUser(null);
+        return { error: null };
+      }
+      return supabase.auth.signOut();
+    },
   };
 }

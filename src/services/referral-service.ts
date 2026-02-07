@@ -31,6 +31,20 @@ export interface ReferralTreeData {
   children?: ReferralTreeData[];
 }
 
+interface SupabaseDownlineRow {
+  id?: string;
+  user_id?: string;
+  name?: string;
+  rank?: string;
+  level?: number;
+  total_sales?: number;
+  personal_sales?: number;
+  avatar_url?: string;
+  created_at?: string;
+  active_downlines?: number;
+  parent_id?: string | null;
+}
+
 export const referralService = {
   /**
    * Get user's downline tree (F1-F7)
@@ -72,7 +86,7 @@ export const referralService = {
   /**
    * Transform flat array to hierarchical tree structure
    */
-  transformToHierarchy(flatData: any[]): NetworkNode | null {
+  transformToHierarchy(flatData: SupabaseDownlineRow[]): NetworkNode | null {
     if (!flatData || flatData.length === 0) return null;
 
     const nodeMap = new Map<string, NetworkNode>();
@@ -81,9 +95,9 @@ export const referralService = {
     // First pass: create all nodes
     flatData.forEach((item) => {
       const node: NetworkNode = {
-        id: item.id || item.user_id,
+        id: item.id || item.user_id || '',
         name: item.name || 'Unknown',
-        rank: item.rank || 'member',
+        rank: (item.rank as NetworkNode['rank']) || 'member',
         level: item.level || 1,
         totalSales: item.total_sales || 0,
         personalSales: item.personal_sales || 0,
@@ -106,7 +120,7 @@ export const referralService = {
     flatData.forEach((item) => {
       if (item.parent_id) {
         const parent = nodeMap.get(item.parent_id);
-        const child = nodeMap.get(item.id || item.user_id);
+        const child = nodeMap.get(item.id || item.user_id || '');
         if (parent && child) {
           parent.children?.push(child);
         }

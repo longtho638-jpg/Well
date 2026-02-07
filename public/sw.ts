@@ -135,8 +135,8 @@ self.addEventListener('push', (event: PushEvent) => {
     event.waitUntil(
         self.registration.showNotification(data.title, {
             body: data.body,
-            icon: '/icons/icon-192x192.png',
-            badge: '/icons/badge-72x72.png',
+            icon: '/pwa-192x192.png',
+            badge: '/pwa-badge-72x72.png',
         })
     );
 });

@@ -42,6 +42,7 @@ export const vi = {
   // Navigation
   nav: {
     dashboard: 'Trang chủ',
+    network: 'Mạng lưới',
     products: 'Sản Phẩm',
     partner: 'Partner',
     ventureDescription: 'Gia nhập đội ngũ 200+ Co-Founders',
@@ -63,6 +64,7 @@ export const vi = {
     aboutUs: 'Về Chúng Tôi',
     careers: 'Tuyển Dụng',
     ventureProgram: 'Chương Trình Venture',
+    withdrawal: 'Rút tiền',
   },
 
   // Landing Page - AST Migration Keys
@@ -387,10 +389,13 @@ export const vi = {
     // Withdrawal
     withdrawal: {
       title: 'Rút tiền',
+      requestTitle: 'Yêu cầu rút tiền',
       subtitle: 'Chuyển SHOP Token về tài khoản ngân hàng',
-      amount: 'Số tiền muốn rút',
+      requestSubtitle: 'Chuyển tiền an toàn về tài khoản ngân hàng của bạn',
+      amount: 'Số tiền (VND)',
       bankAccount: 'Tài khoản ngân hàng',
       bankName: 'Tên ngân hàng',
+      selectBank: 'Chọn ngân hàng',
       accountNumber: 'Số tài khoản',
       accountName: 'Tên chủ tài khoản',
       fee: 'Phí giao dịch',
@@ -400,7 +405,17 @@ export const vi = {
       maxWithdrawal: 'Rút tối đa {amount}',
       processingTime: 'Thời gian xử lý: 1-3 ngày làm việc',
       withdrawNow: 'Rút ngay',
+      submitButton: 'Gửi yêu cầu',
       withdrawSuccess: 'Yêu cầu rút tiền thành công!',
+      historyTitle: 'Lịch sử rút tiền',
+      nameMatchNote: 'Tên phải trùng với tài liệu KYC của bạn',
+      minAmountError: 'Số tiền rút tối thiểu là {amount} đ',
+      insufficientBalance: 'Số dư không đủ',
+      bankRequired: 'Vui lòng chọn ngân hàng',
+      accountNumberRequired: 'Số tài khoản không hợp lệ',
+      accountNameRequired: 'Vui lòng nhập tên chủ tài khoản',
+      successMessage: 'Gửi yêu cầu rút tiền thành công',
+      errorMessage: 'Gửi yêu cầu rút tiền thất bại',
     },
     // Merged keys
     '12': '12%',

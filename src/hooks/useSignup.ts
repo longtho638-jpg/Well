@@ -4,7 +4,7 @@ import { authLogger } from '@/utils/logger';
 import { useTranslation } from '@/hooks';
 import { supabase } from '@/lib/supabase';
 import { validatePassword, PasswordValidation } from '@/utils/password-validation';
-import { sendWelcomeEmail } from '@/services/email-service-client-side-trigger';
+import { sendWelcomeEmail } from '@/services/email-service';
 
 export function useSignup() {
     const [formData, setFormData] = useState({

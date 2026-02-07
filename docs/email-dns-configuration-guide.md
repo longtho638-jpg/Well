@@ -172,7 +172,7 @@ from: 'WellNexus <noreply@wellnexus.vn>',
 
 **Redeploy Edge Function:**
 ```bash
-supabase functions deploy send-email --project-ref zumgrvmwmpstsigefuau
+supabase functions deploy send-email --project-ref jcbahdioqoepvoliplqy
 ```
 
 ---
@@ -182,7 +182,7 @@ supabase functions deploy send-email --project-ref zumgrvmwmpstsigefuau
 1. **Send Test Email**
    ```bash
    curl -X POST \
-     https://zumgrvmwmpstsigefuau.supabase.co/functions/v1/send-email \
+     https://jcbahdioqoepvoliplqy.supabase.co/functions/v1/send-email \
      -H "Content-Type: application/json" \
      -H "Authorization: Bearer [ANON_KEY]" \
      -d '{

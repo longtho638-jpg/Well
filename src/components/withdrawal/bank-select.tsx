@@ -26,20 +26,22 @@ interface BankSelectProps {
   value: string;
   onChange: (value: string) => void;
   error?: string;
+  id?: string;
 }
 
-export const BankSelect: React.FC<BankSelectProps> = ({ value, onChange, error }) => {
+export const BankSelect: React.FC<BankSelectProps> = ({ value, onChange, error, id }) => {
   const { t } = useTranslation();
   const [isOpen, setIsOpen] = React.useState(false);
   const selectedBank = VN_BANKS.find(b => b.name === value);
 
   return (
     <div className="relative">
-      <label className="block text-sm font-medium text-zinc-400 mb-1.5">
+      <label htmlFor={id} className="block text-sm font-medium text-zinc-400 mb-1.5">
         {t('withdrawal.bankName') || 'Bank Name'}
       </label>
 
       <button
+        id={id}
         type="button"
         onClick={() => setIsOpen(!isOpen)}
         className={`w-full flex items-center justify-between p-3 rounded-xl border transition-all ${
@@ -81,10 +83,13 @@ export const BankSelect: React.FC<BankSelectProps> = ({ value, onChange, error }
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: 10 }}
             className="absolute z-50 w-full mt-2 bg-zinc-900 border border-white/10 rounded-xl shadow-xl overflow-hidden max-h-60 overflow-y-auto"
+            role="listbox"
           >
             {VN_BANKS.map((bank) => (
               <button
                 key={bank.id}
+                role="option"
+                aria-selected={value === bank.name}
                 type="button"
                 onClick={() => {
                   onChange(bank.name);

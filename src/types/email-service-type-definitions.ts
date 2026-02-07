@@ -7,7 +7,10 @@ export type EmailTemplateType =
   | 'welcome'
   | 'order-confirmation'
   | 'commission-earned'
-  | 'rank-upgrade';
+  | 'rank-upgrade'
+  | 'withdrawal-approved'
+  | 'withdrawal-rejected'
+  | 'withdrawal-pending';
 
 export interface WelcomeEmailData {
   userName: string;
@@ -51,11 +54,24 @@ export interface RankUpgradeEmailData {
   teamVolume?: string;
 }
 
+export interface WithdrawalEmailData {
+  userName: string;
+  amount: string;
+  requestId: string;
+  bankName?: string;
+  accountNumber?: string;
+  estimatedArrival?: string;
+  estimatedReviewTime?: string;
+  rejectionReason?: string;
+  currentBalance?: string;
+}
+
 export type EmailData =
   | WelcomeEmailData
   | OrderConfirmationEmailData
   | CommissionEarnedEmailData
-  | RankUpgradeEmailData;
+  | RankUpgradeEmailData
+  | WithdrawalEmailData;
 
 export interface SendEmailRequest {
   to: string | string[];

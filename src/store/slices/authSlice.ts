@@ -14,6 +14,7 @@ import { enrichUserWithWealthMetrics } from '@/utils/business/wealthEngine';
 
 export interface AuthState {
     isAuthenticated: boolean;
+    isInitialized: boolean;
     user: User;
 }
 
@@ -22,6 +23,7 @@ export interface AuthActions {
     logout: () => Promise<void>;
     setUser: (user: User | null) => void;
     setIsAuthenticated: (isAuth: boolean) => void;
+    setInitialized: (isInitialized: boolean) => void;
     fetchUserFromDB: () => Promise<void>;
 }
 
@@ -71,6 +73,7 @@ export const createAuthSlice: StateCreator<
 > = (set) => ({
     // Initial State
     isAuthenticated: false,
+    isInitialized: false,
     user: createEmptyUser(),
 
     // Actions
@@ -100,6 +103,7 @@ export const createAuthSlice: StateCreator<
     },
 
     setIsAuthenticated: (isAuth) => set({ isAuthenticated: isAuth }),
+    setInitialized: (isInitialized) => set({ isInitialized }),
 
     fetchUserFromDB: async () => {
         const { data: { session } } = await supabase.auth.getSession();

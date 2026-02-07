@@ -6,8 +6,9 @@ import { RequestsTable } from '@/components/withdrawals/requests-table';
 import { ActionModal } from '@/components/withdrawals/action-modal';
 import { WithdrawalStats } from '@/components/withdrawals/withdrawal-stats';
 import { Button } from '@/components/ui/Button';
-import { Loader2, RefreshCw } from 'lucide-react';
+import { Loader2, RefreshCw, Download } from 'lucide-react';
 import { toast } from 'sonner'; // Assuming sonner is used, or console if not available. Will check context.
+import { exportToCSV, CSVColumn } from '@/utils/csv-export-utility';
 
 // Simple Tabs implementation since we might not have shadcn Tabs
 const Tabs = ({
@@ -58,6 +59,7 @@ export default function WithdrawalsPage() {
   const [selectedRequest, setSelectedRequest] = useState<WithdrawalRequest | null>(null);
   const [modalAction, setModalAction] = useState<'approve' | 'reject' | 'complete' | null>(null);
   const [isProcessing, setIsProcessing] = useState(false);
+  const [isExporting, setIsExporting] = useState(false);
 
   const queryClient = useQueryClient();
 
@@ -137,6 +139,52 @@ export default function WithdrawalsPage() {
     }
   };
 
+  const handleExportCSV = () => {
+    setIsExporting(true);
+    try {
+      // Define CSV columns
+      const columns: CSVColumn[] = [
+        { key: 'id', header: 'Request ID', formatter: (id) => id.slice(0, 8) },
+        { key: 'user', header: 'User', formatter: (user) => user?.name || user?.email || 'N/A' },
+        {
+          key: 'amount',
+          header: 'Amount (VND)',
+          formatter: (amount) => new Intl.NumberFormat('vi-VN').format(amount)
+        },
+        { key: 'bank_name', header: 'Bank' },
+        { key: 'bank_account_number', header: 'Account Number' },
+        { key: 'bank_account_name', header: 'Account Name' },
+        { key: 'status', header: 'Status' },
+        {
+          key: 'requested_at',
+          header: 'Request Date',
+          formatter: (date) => new Date(date).toLocaleString('vi-VN')
+        },
+        {
+          key: 'processed_at',
+          header: 'Processed Date',
+          formatter: (date) => date ? new Date(date).toLocaleString('vi-VN') : 'N/A'
+        },
+        { key: 'processed_by', header: 'Processed By', formatter: (v) => v || 'N/A' },
+        { key: 'notes', header: 'Notes', formatter: (v) => v || '' },
+      ];
+
+      // Generate filename with timestamp
+      const timestamp = new Date().toISOString().split('T')[0];
+      const filename = `withdrawals-export-${timestamp}.csv`;
+
+      // Export data
+      exportToCSV(filteredWithdrawals, columns, filename);
+
+      toast.success(`Exported ${filteredWithdrawals.length} withdrawal records`);
+    } catch (error) {
+      console.error('Export failed:', error);
+      toast.error('Failed to export CSV');
+    } finally {
+      setIsExporting(false);
+    }
+  };
+
   return (
     <div className="space-y-6 p-6">
       <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
@@ -148,15 +196,30 @@ export default function WithdrawalsPage() {
             Manage and process distributor withdrawal requests
           </p>
         </div>
-        <Button
-          variant="outline"
-          size="sm"
-          onClick={() => refetch()}
-          disabled={isLoading}
-        >
-          <RefreshCw className={`mr-2 h-4 w-4 ${isLoading ? 'animate-spin' : ''}`} />
-          Refresh
-        </Button>
+        <div className="flex gap-2">
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={handleExportCSV}
+            disabled={isExporting || filteredWithdrawals.length === 0}
+          >
+            {isExporting ? (
+              <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+            ) : (
+              <Download className="mr-2 h-4 w-4" />
+            )}
+            Export CSV
+          </Button>
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={() => refetch()}
+            disabled={isLoading}
+          >
+            <RefreshCw className={`mr-2 h-4 w-4 ${isLoading ? 'animate-spin' : ''}`} />
+            Refresh
+          </Button>
+        </div>
       </div>
 
       <WithdrawalStats

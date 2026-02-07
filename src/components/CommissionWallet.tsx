@@ -1,16 +1,18 @@
 import React, { useState } from 'react';
-import { Wallet, ShieldAlert, Download, ArrowDownLeft, Info, Sparkles, TrendingUp } from 'lucide-react';
+import { Wallet, ShieldAlert, Download, ArrowDownLeft, Info, Sparkles, TrendingUp, FileText } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { formatVND } from '../utils/format';
 import { calculatePIT } from '../utils/tax';
 import { useStore } from '../store';
 import { WithdrawalModal } from './WithdrawalModal';
 import { useTranslation } from '@/hooks';
+import { useCommissionPDFReport } from '@/hooks/use-commission-pdf-report-generator';
 
 const CommissionWallet: React.FC = () => {
     const { t } = useTranslation();
-  const { transactions } = useStore();
+  const { transactions, user } = useStore();
   const [isWithdrawalModalOpen, setIsWithdrawalModalOpen] = useState(false);
+  const { generatePDF, isGenerating } = useCommissionPDFReport();
 
   const processedTransactions = transactions.map(t => {
     const { taxAmount, isTaxable } = calculatePIT(t.amount);
@@ -20,6 +22,47 @@ const CommissionWallet: React.FC = () => {
   const totalGross = processedTransactions.reduce((sum, t) => sum + t.amount, 0);
   const totalTax = processedTransactions.reduce((sum, t) => sum + t.taxDeducted, 0);
   const totalNet = totalGross - totalTax;
+
+  const handleExportPDF = async () => {
+    const now = new Date();
+    const monthName = now.toLocaleString('vi-VN', { month: 'long', year: 'numeric' });
+
+    // Convert transactions to commission items
+    const commissions = processedTransactions.map(tx => ({
+      date: tx.date,
+      type: (tx.type.toLowerCase().includes('direct') ? 'direct' : 'sponsor') as 'direct' | 'sponsor',
+      amount: tx.amount,
+      orderId: tx.id,
+      fromUser: tx.type,
+    }));
+
+    const totalDirect = commissions
+      .filter(c => c.type === 'direct')
+      .reduce((sum, c) => sum + c.amount, 0);
+
+    const totalSponsor = commissions
+      .filter(c => c.type === 'sponsor')
+      .reduce((sum, c) => sum + c.amount, 0);
+
+    const reportData = {
+      userName: user?.name || 'User',
+      userEmail: user?.email || '',
+      month: monthName,
+      startDate: new Date(now.getFullYear(), now.getMonth(), 1).toISOString().split('T')[0],
+      endDate: now.toISOString().split('T')[0],
+      commissions,
+      totalDirect,
+      totalSponsor,
+      totalEarned: totalGross,
+      currentBalance: totalNet,
+    };
+
+    try {
+      await generatePDF(reportData);
+    } catch (error) {
+      console.error('Failed to generate PDF:', error);
+    }
+  };
 
   const handleExportCSV = () => {
     // Create CSV header
@@ -107,12 +150,33 @@ const CommissionWallet: React.FC = () => {
       <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.2 }} className="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-gray-100 dark:border-slate-700 overflow-hidden">
         <div className="p-6 border-b border-gray-100 dark:border-slate-700 flex justify-between items-center">
           <h3 className="font-bold text-gray-800 dark:text-slate-100">{t('commissionwallet.earnings_history')}</h3>
-          <button
-            onClick={handleExportCSV}
-            className="text-sm text-brand-primary dark:text-teal-400 font-medium flex items-center gap-1 hover:underline"
-            aria-label="Export earnings statement as CSV"
-          >
-            <Download className="w-4 h-4" /> {t('commissionwallet.export_statement')}</button>
+          <div className="flex items-center gap-3">
+            <button
+              onClick={handleExportCSV}
+              className="text-sm text-brand-primary dark:text-teal-400 font-medium flex items-center gap-1 hover:underline"
+              aria-label="Export earnings statement as CSV"
+            >
+              <Download className="w-4 h-4" /> {t('commissionwallet.export_statement')}
+            </button>
+            <button
+              onClick={handleExportPDF}
+              disabled={isGenerating}
+              className="relative bg-gradient-to-r from-amber-500 to-orange-600 hover:from-amber-600 hover:to-orange-700 disabled:from-gray-400 disabled:to-gray-500 text-white font-semibold py-2 px-4 rounded-lg shadow-lg shadow-amber-900/20 transition-all transform active:scale-95 disabled:cursor-not-allowed disabled:transform-none flex items-center gap-2"
+              aria-label="Export commission report as PDF"
+            >
+              {isGenerating ? (
+                <>
+                  <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
+                  <span>Đang tạo...</span>
+                </>
+              ) : (
+                <>
+                  <FileText className="w-4 h-4" />
+                  <span>Xuất PDF</span>
+                </>
+              )}
+            </button>
+          </div>
         </div>
         <div className="overflow-x-auto">
           <table className="w-full text-sm text-left">

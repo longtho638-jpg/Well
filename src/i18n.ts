@@ -16,11 +16,17 @@ i18n
   .init({
     debug: true, // Enable debug mode for development
     fallbackLng: 'vi', // Default fallback language
+    load: 'languageOnly', // Load 'en' instead of 'en-US'
     interpolation: {
       escapeValue: false, // not needed for react as it escapes by default
     },
+    supportedLngs: ['en', 'vi'],
+    nonExplicitSupportedLngs: true, // Allow en-US to match en
     resources: {
       en: {
+        translation: en
+      },
+      'en-US': {
         translation: en
       },
       vi: {
