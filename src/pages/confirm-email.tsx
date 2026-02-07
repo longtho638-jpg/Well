@@ -24,44 +24,63 @@ export default function ConfirmEmail() {
     useEffect(() => {
         const confirmEmail = async () => {
             try {
-                // Get tokens from URL (Supabase sends these)
-                const token = searchParams.get('token');
+                // Strategy 1: Check query params (token_hash + type) — Supabase email link format
+                const tokenHash = searchParams.get('token_hash');
                 const type = searchParams.get('type');
 
-                if (!token || type !== 'signup') {
-                    setState('error');
-                    setErrorMessage('Invalid confirmation link');
+                if (tokenHash && type === 'signup') {
+                    const { error } = await supabase.auth.verifyOtp({
+                        token_hash: tokenHash,
+                        type: 'signup',
+                    });
+
+                    if (error) {
+                        if (error.message.includes('already been confirmed') || error.message.includes('already registered')) {
+                            setState('already_confirmed');
+                        } else {
+                            authLogger.error('Email confirmation failed', error);
+                            setState('error');
+                            setErrorMessage(error.message);
+                        }
+                    } else {
+                        setState('success');
+                        setTimeout(() => navigate('/login'), 2000);
+                    }
                     return;
                 }
 
-                // Verify the token with Supabase
-                const { error } = await supabase.auth.verifyOtp({
-                    token_hash: token,
-                    type: 'signup',
-                });
-
-                if (error) {
-                    if (error.message.includes('already been confirmed')) {
-                        setState('already_confirmed');
-                    } else {
-                        authLogger.error('Email confirmation failed', error);
-                        setState('error');
-                        setErrorMessage(error.message);
+                // Strategy 2: Check hash fragment — Supabase implicit/PKCE flow
+                const hash = window.location.hash;
+                if (hash && hash.includes('access_token')) {
+                    // Supabase JS client auto-processes hash fragments on page load
+                    // Wait for the auth state change
+                    const { data: { session } } = await supabase.auth.getSession();
+                    if (session) {
+                        setState('success');
+                        setTimeout(() => navigate('/login'), 2000);
+                        return;
                     }
-                } else {
-                    setState('success');
-                    // Redirect to login after 2 seconds
-                    setTimeout(() => navigate('/login'), 2000);
                 }
+
+                // Strategy 3: Check if already has a valid session (e.g., magic link clicked)
+                const { data: { session: existingSession } } = await supabase.auth.getSession();
+                if (existingSession) {
+                    setState('already_confirmed');
+                    return;
+                }
+
+                // No valid token found
+                setState('error');
+                setErrorMessage(t('auth.confirmEmail.invalidLink') || 'Invalid confirmation link');
             } catch (err) {
                 authLogger.error('Confirmation error', err);
                 setState('error');
-                setErrorMessage('An unexpected error occurred');
+                setErrorMessage(t('auth.confirmEmail.unexpectedError') || 'An unexpected error occurred');
             }
         };
 
         confirmEmail();
-    }, [searchParams, navigate]);
+    }, [searchParams, navigate, t]);
 
     return (
         <div className="min-h-screen bg-slate-950 flex items-center justify-center p-6 relative overflow-hidden">

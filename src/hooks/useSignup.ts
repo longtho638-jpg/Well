@@ -4,6 +4,7 @@ import { authLogger } from '@/utils/logger';
 import { useTranslation } from '@/hooks';
 import { supabase } from '@/lib/supabase';
 import { validatePassword, PasswordValidation } from '@/utils/password-validation';
+import { sendWelcomeEmail } from '@/services/email-service-client-side-trigger';
 
 export function useSignup() {
     const [formData, setFormData] = useState({
@@ -15,6 +16,7 @@ export function useSignup() {
     const [error, setError] = useState('');
     const [loading, setLoading] = useState(false);
     const [touchedPassword, setTouchedPassword] = useState(false);
+    const [signupSuccess, setSignupSuccess] = useState(false);
 
     const { t } = useTranslation();
     const navigate = useNavigate();
@@ -63,7 +65,9 @@ export function useSignup() {
                 options: {
                     data: {
                         name: formData.name
-                    }
+                    },
+                    // Email confirmation required
+                    emailRedirectTo: `${window.location.origin}/confirm-email`
                 }
             });
 
@@ -71,8 +75,15 @@ export function useSignup() {
 
             authLogger.info('Signup successful for:', formData.email);
 
-            // Artificial delay for UX transitions
-            setTimeout(() => navigate('/dashboard'), 500);
+            // Send welcome email (fire-and-forget — don't block signup success UX)
+            sendWelcomeEmail(formData.email, {
+                userName: formData.name,
+                userEmail: formData.email,
+            }).catch((err) => authLogger.error('Welcome email failed', err));
+
+            // Show success state - user needs to confirm email
+            setSignupSuccess(true);
+            // Don't auto-navigate - show confirmation message
         } catch (e) {
             const err = e as Error;
             authLogger.error('Signup failed', err);
@@ -88,6 +99,7 @@ export function useSignup() {
         loading,
         passwordValidation,
         touchedPassword,
+        signupSuccess,
         handleChange,
         handleSubmit
     };
