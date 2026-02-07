@@ -42,6 +42,7 @@ export const en = {
     // Navigation
     nav: {
         dashboard: 'Dashboard',
+        network: 'Network',
         products: 'Products',
         partner: 'Partner',
         ventureDescription: 'Join the team of 200+ Co-Founders',
@@ -63,6 +64,7 @@ export const en = {
         aboutUs: 'About Us',
         careers: 'Careers',
         ventureProgram: 'Venture Program',
+        withdrawal: 'Withdrawal',
     },
 
     eastasiabrand: {
@@ -401,10 +403,13 @@ export const en = {
 
         withdrawal: {
             title: 'Withdraw',
+            requestTitle: 'Request Withdrawal',
             subtitle: 'Transfer SHOP Token to bank account',
-            amount: 'Amount to withdraw',
+            requestSubtitle: 'Secure transfer to your bank account',
+            amount: 'Amount (VND)',
             bankAccount: 'Bank Account',
             bankName: 'Bank Name',
+            selectBank: 'Select a bank',
             accountNumber: 'Account Number',
             accountName: 'Account Holder Name',
             fee: 'Transaction Fee',
@@ -414,7 +419,17 @@ export const en = {
             maxWithdrawal: 'Maximum withdrawal {amount}',
             processingTime: 'Processing time: 1-3 business days',
             withdrawNow: 'Withdraw Now',
+            submitButton: 'Submit Withdrawal',
             withdrawSuccess: 'Withdrawal request successful!',
+            historyTitle: 'Withdrawal History',
+            nameMatchNote: 'Name must match your KYC document',
+            minAmountError: 'Minimum withdrawal is {amount} đ',
+            insufficientBalance: 'Insufficient balance',
+            bankRequired: 'Bank name is required',
+            accountNumberRequired: 'Valid account number is required',
+            accountNameRequired: 'Account holder name is required',
+            successMessage: 'Withdrawal request submitted successfully',
+            errorMessage: 'Failed to submit withdrawal request',
         }
     },
 
@@ -1541,6 +1556,18 @@ export const en = {
                         ipo: 'IPO preparation',
                         holdings: 'Holdings structure',
                         expansion: 'SEA expansion',
+                    }
+                },
+                metropolis: {
+                    name: 'METROPOLIS',
+                    description: 'Global Expansion & Franchise',
+                    mission: 'Conquer international markets',
+                    status: 'Future Vision',
+                    benefits: {
+                        franchise: 'Global Franchise model',
+                        global: 'Expansion to 10+ countries',
+                        diversified: 'Diversified product portfolio',
+                        legacy: 'Build lasting legacy',
                     }
                 }
             }
