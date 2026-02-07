@@ -28,7 +28,7 @@ vi.mock('@/components/ui/Toast', () => ({
 
 // Mock BankSelect component to avoid complexity with Select component
 vi.mock('../bank-select', () => ({
-  BankSelect: ({ value, onChange, error }: any) => (
+  BankSelect: ({ value, onChange, error }: { value: string; onChange: (value: string) => void; error?: string }) => (
     <div>
       <input
         data-testid="bank-select"

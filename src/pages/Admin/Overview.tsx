@@ -32,8 +32,39 @@ import { useTranslation } from '@/hooks';
 // SUB-COMPONENTS
 // ============================================================
 
-const MetricCard: React.FC<{ label: string; value: string; trend: string; icon: React.ElementType; color: string }> = ({ label, value, trend, icon: Icon, color }) => (
-  <div className="bg-white dark:bg-zinc-900 border border-zinc-100 dark:border-white/5 p-8 rounded-[2.5rem] shadow-sm relative overflow-hidden group">
+const Counter: React.FC<{ value: number; format?: (val: number) => string }> = ({ value, format }) => {
+  const [count, setCount] = React.useState(0);
+
+  React.useEffect(() => {
+    const duration = 2000;
+    const steps = 60;
+    const increment = value / steps;
+    let current = 0;
+
+    const timer = setInterval(() => {
+      current += increment;
+      if (current >= value) {
+        setCount(value);
+        clearInterval(timer);
+      } else {
+        setCount(Math.floor(current));
+      }
+    }, duration / steps);
+
+    return () => clearInterval(timer);
+  }, [value]);
+
+  return <>{format ? format(count) : count}</>;
+};
+
+const MetricCard: React.FC<{ label: string; value: string; numericValue?: number; trend: string; icon: React.ElementType; color: string; index: number }> = ({ label, value, numericValue, trend, icon: Icon, color, index }) => (
+  <motion.div
+    initial={{ opacity: 0, y: 20 }}
+    animate={{ opacity: 1, y: 0 }}
+    transition={{ delay: index * 0.1, duration: 0.5 }}
+    whileHover={{ y: -8, scale: 1.02 }}
+    className="bg-white dark:bg-zinc-900 border border-zinc-100 dark:border-white/5 p-8 rounded-[2.5rem] shadow-sm relative overflow-hidden group"
+  >
     <div className="absolute top-0 right-0 p-8 opacity-5 group-hover:scale-110 transition-transform duration-500">
       <Icon size={120} />
     </div>
@@ -45,14 +76,16 @@ const MetricCard: React.FC<{ label: string; value: string; trend: string; icon: 
         <span className="text-[10px] font-black uppercase tracking-[0.2em] text-zinc-500">{label}</span>
       </div>
       <div className="space-y-1">
-        <p className="text-3xl font-black text-zinc-900 dark:text-white tracking-tighter">{value}</p>
+        <p className="text-3xl font-black text-zinc-900 dark:text-white tracking-tighter">
+          {numericValue !== undefined ? <Counter value={numericValue} format={(val) => value.replace(/[\d,.]+/, val.toLocaleString('vi-VN'))} /> : value}
+        </p>
         <div className="flex items-center gap-1.5 text-emerald-500 text-[10px] font-black uppercase tracking-widest">
           <TrendingUp size={12} />
           {trend}
         </div>
       </div>
     </div>
-  </div>
+  </motion.div>
 );
 
 const AIActionItem: React.FC<{ action: AIAction; onAction: (id: string, decision: 'approve' | 'reject') => void }> = ({ action, onAction }) => {
@@ -147,10 +180,10 @@ const Overview: React.FC = () => {
 
       {/* Strategic Metrics */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-        <MetricCard label="Global GMV" value={formatVND(metrics.totalRevenue)} trend="+18.4% WoW" icon={Activity} color="bg-blue-500/10 text-blue-500 border-blue-500/20" />
-        <MetricCard label="Active Bee Force" value={metrics.activePartners.toString()} trend="+12 New nodes" icon={Users} color="bg-indigo-500/10 text-indigo-500 border-indigo-500/20" />
-        <MetricCard label="AI Signal Pending" value={aiActions.length.toString()} trend="Action required" icon={Bot} color="bg-rose-500/10 text-rose-500 border-rose-500/20" />
-        <MetricCard label="Ecosystem SLA" value={`${metrics.systemHealth}%`} trend="Operational" icon={CheckCircle2} color="bg-emerald-500/10 text-emerald-500 border-emerald-500/20" />
+        <MetricCard label="Global GMV" value={formatVND(metrics.totalRevenue)} numericValue={metrics.totalRevenue} trend="+18.4% WoW" icon={Activity} color="bg-blue-500/10 text-blue-500 border-blue-500/20" index={0} />
+        <MetricCard label="Active Bee Force" value={metrics.activePartners.toString()} numericValue={metrics.activePartners} trend="+12 New nodes" icon={Users} color="bg-indigo-500/10 text-indigo-500 border-indigo-500/20" index={1} />
+        <MetricCard label="AI Signal Pending" value={aiActions.length.toString()} numericValue={aiActions.length} trend="Action required" icon={Bot} color="bg-rose-500/10 text-rose-500 border-rose-500/20" index={2} />
+        <MetricCard label="Ecosystem SLA" value={`${metrics.systemHealth}%`} numericValue={metrics.systemHealth} trend="Operational" icon={CheckCircle2} color="bg-emerald-500/10 text-emerald-500 border-emerald-500/20" index={3} />
       </div>
 
       {/* Main Orchestration Grid */}
@@ -210,7 +243,7 @@ const Overview: React.FC = () => {
                       <stop offset="95%" stopColor="#00575A" stopOpacity={0} />
                     </linearGradient>
                   </defs>
-                  <Area type="monotone" dataKey="revenue" stroke="#2DD4BF" strokeWidth={4} fill="url(#glow)" />
+                  <Area type="monotone" dataKey="revenue" stroke="#2DD4BF" strokeWidth={4} fill="url(#glow)" isAnimationActive={true} animationDuration={1500} />
                 </AreaChart>
               </ResponsiveContainer>
             </div>

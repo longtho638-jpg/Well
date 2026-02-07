@@ -2,14 +2,28 @@ import React from 'react';
 import { NetworkNode } from '../../services/referral-service';
 import { User, Trophy, Star, Shield, Users } from 'lucide-react';
 
+interface NodeDatum {
+  name: string;
+  attributes?: {
+    rank?: string;
+    avatar?: string;
+    totalSales?: number;
+    [key: string]: string | number | boolean | undefined;
+  };
+  children?: NodeDatum[];
+  __rd3t?: {
+    collapsed?: boolean;
+  };
+}
+
 interface NodeCardProps {
-  nodeDatum: any; // react-d3-tree type is generic
+  nodeDatum: NodeDatum;
   toggleNode: () => void;
 }
 
 export const NodeCard: React.FC<NodeCardProps> = ({ nodeDatum, toggleNode }) => {
   const attributes = nodeDatum.attributes || {};
-  const isExpanded = nodeDatum.__rd3t.collapsed === false;
+  const isExpanded = nodeDatum.__rd3t?.collapsed === false;
   const hasChildren = nodeDatum.children && nodeDatum.children.length > 0;
 
   // Rank badge configuration
@@ -56,9 +70,9 @@ export const NodeCard: React.FC<NodeCardProps> = ({ nodeDatum, toggleNode }) => 
               <span className={`text-[10px] uppercase font-bold px-1.5 py-0.5 rounded ${rankConfig.bg} ${rankConfig.color}`}>
                 {attributes.rank || 'Member'}
               </span>
-              {attributes.totalSales > 0 && (
+              {(attributes.totalSales ?? 0) > 0 && (
                 <span className="text-[10px] text-zinc-400 font-medium">
-                  {new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND', maximumFractionDigits: 0 }).format(attributes.totalSales)}
+                  {new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND', maximumFractionDigits: 0 }).format(attributes.totalSales ?? 0)}
                 </span>
               )}
             </div>

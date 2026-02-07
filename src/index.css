@@ -1,11 +1,13 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Outfit:wght@500;700;800&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 @layer base {
   :root {
-    --font-display: 'Manrope', system-ui, -apple-system, sans-serif;
-    --font-body: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+    --font-display: 'Outfit', system-ui, -apple-system, sans-serif;
+    --font-body: 'Inter', system-ui, -apple-system, sans-serif;
 
     /* Typography Scale - Consistent font weights for Vietnamese */
     --font-weight-normal: 400;
@@ -375,6 +377,15 @@
     .text-gradient-gold {
       @apply bg-clip-text text-transparent bg-gradient-to-r from-yellow-400 via-orange-500 to-yellow-400 bg-300% animate-gradient;
     }
+  }
+
+  /* Warm Gradient - Aura Elite */
+  .bg-gradient-aura {
+    @apply bg-gradient-to-br from-amber-50 via-orange-50 to-rose-50;
+  }
+
+  .dark .bg-gradient-aura {
+    @apply bg-gradient-to-br from-zinc-900 via-slate-900 to-neutral-900;
   }
 
   /* Animations */

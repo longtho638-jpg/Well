@@ -6,8 +6,7 @@
 export interface CSVColumn {
   key: string;
   header: string;
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  formatter?: (value: any) => string;
+  formatter?: (value: string | number | boolean | null | undefined) => string;
 }
 
 /**

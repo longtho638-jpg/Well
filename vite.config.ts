@@ -111,21 +111,29 @@ export default defineConfig({
       output: {
         manualChunks(id) {
           if (id.includes('node_modules')) {
+            // Core vendor chunk (React ecosystem)
             if (id.includes('react') || id.includes('react-dom') || id.includes('react-router')) {
-              return 'vendor-react';
+              return 'vendor';
             }
-            if (id.includes('i18next') || id.includes('react-i18next')) {
-              return 'vendor-i18n';
-            }
-            if (id.includes('lucide-react')) {
-              return 'vendor-icons';
-            }
-            // Recharts removed - circular dependency breaks when isolated
+            // UI chunk (Animation)
             if (id.includes('framer-motion')) {
-              return 'vendor-motion';
+              return 'ui';
             }
+            // Charts chunk (Recharts + dependencies)
+            if (id.includes('recharts')) {
+              return 'charts';
+            }
+            // Utils chunk (i18n, common utilities)
+            if (id.includes('i18next') || id.includes('react-i18next') || id.includes('zod') || id.includes('react-hook-form')) {
+              return 'utils';
+            }
+            // Icons chunk
+            if (id.includes('lucide-react')) {
+              return 'icons';
+            }
+            // Supabase chunk
             if (id.includes('@supabase')) {
-              return 'vendor-supabase';
+              return 'supabase';
             }
           }
         },

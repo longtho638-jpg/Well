@@ -9,34 +9,71 @@ interface OrderStatsProps {
     estimatedCommission: number;
 }
 
+const Counter: React.FC<{ value: number; format?: (val: number) => string }> = ({ value, format }) => {
+    const [count, setCount] = React.useState(0);
+
+    React.useEffect(() => {
+        const duration = 2000;
+        const steps = 60;
+        const increment = value / steps;
+        let current = 0;
+
+        const timer = setInterval(() => {
+            current += increment;
+            if (current >= value) {
+                setCount(value);
+                clearInterval(timer);
+            } else {
+                setCount(Math.floor(current));
+            }
+        }, duration / steps);
+
+        return () => clearInterval(timer);
+    }, [value]);
+
+    return <>{format ? format(count) : count}</>;
+};
+
 export const OrderStats: React.FC<OrderStatsProps> = ({ count, totalValue, estimatedCommission }) => {
+    const stats = [
+        {
+            label: 'Đang chờ duyệt',
+            value: count,
+            displayValue: count.toString(),
+            sub: 'Cần xử lý ngay',
+            icon: Package,
+            color: 'amber'
+        },
+        {
+            label: 'Tổng giá trị',
+            value: totalValue,
+            displayValue: formatVND(totalValue),
+            sub: 'Doanh thu chờ đối soát',
+            icon: TrendingUp,
+            color: 'blue'
+        },
+        {
+            label: 'Hoa hồng dự tính',
+            value: estimatedCommission,
+            displayValue: formatVND(estimatedCommission),
+            sub: 'Dựa trên chiết khấu hệ thống',
+            icon: HandCoins,
+            color: 'emerald'
+        }
+    ];
+
     return (
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12">
-            {[
-                {
-                    label: 'Đang chờ duyệt',
-                    value: count.toString(),
-                    sub: 'Cần xử lý ngay',
-                    icon: Package,
-                    color: 'amber'
-                },
-                {
-                    label: 'Tổng giá trị',
-                    value: formatVND(totalValue),
-                    sub: 'Doanh thu chờ đối soát',
-                    icon: TrendingUp,
-                    color: 'blue'
-                },
-                {
-                    label: 'Hoa hồng dự tính',
-                    value: formatVND(estimatedCommission),
-                    sub: 'Dựa trên chiết khấu hệ thống',
-                    icon: HandCoins,
-                    color: 'emerald'
-                }
-            ].map((stat, idx) => (
+        <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12"
+        >
+            {stats.map((stat, idx) => (
                 <motion.div
                     key={idx}
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: idx * 0.1, duration: 0.5 }}
                     whileHover={{ y: -8, scale: 1.02 }}
                     className={`bg-zinc-900 border border-white/5 rounded-[2.5rem] p-8 shadow-2xl relative overflow-hidden group transition-all duration-500 hover:border-${stat.color}-500/30`}
                 >
@@ -45,22 +82,29 @@ export const OrderStats: React.FC<OrderStatsProps> = ({ count, totalValue, estim
                     </div>
 
                     <div className="relative z-10 space-y-4">
-                        <div className="flex items-center gap-3">
+                        <motion.div
+                            className="flex items-center gap-3"
+                            whileHover={{ scale: 1.05 }}
+                            transition={{ type: "spring", stiffness: 300 }}
+                        >
                             <div className={`p-2.5 rounded-xl bg-${stat.color}-500/10 text-${stat.color}-500 border border-${stat.color}-500/20 shadow-xl`}>
                                 <stat.icon size={18} />
                             </div>
                             <span className="text-[10px] font-black uppercase tracking-[0.3em] text-zinc-500 italic">{stat.label}</span>
-                        </div>
+                        </motion.div>
 
                         <div>
                             <div className={`text-4xl font-black text-white tracking-tighter italic`}>
-                                {stat.value}
+                                <Counter
+                                    value={stat.value}
+                                    format={(val) => stat.displayValue.replace(/[\d,.]+/, val.toLocaleString('vi-VN'))}
+                                />
                             </div>
                             <p className="text-[10px] font-black text-zinc-600 uppercase tracking-widest mt-2">{stat.sub}</p>
                         </div>
                     </div>
                 </motion.div>
             ))}
-        </div>
+        </motion.div>
     );
 };

@@ -90,7 +90,7 @@ export function exportNetworkTreeCSV(rootNode: NetworkNode, filename?: string): 
 
   // Define CSV columns
   const columns: CSVColumn[] = [
-    { key: 'id', header: 'User ID', formatter: (id: string) => id.slice(0, 8) },
+    { key: 'id', header: 'User ID', formatter: (id: string | number | boolean | null | undefined) => typeof id === 'string' ? id.slice(0, 8) : '' },
     { key: 'name', header: 'Name' },
     { key: 'email', header: 'Email' },
     { key: 'level', header: 'Network Level (F1-F7)' },
@@ -99,19 +99,19 @@ export function exportNetworkTreeCSV(rootNode: NetworkNode, filename?: string): 
     {
       key: 'totalSales',
       header: 'Total Sales (VND)',
-      formatter: (amount: number) => new Intl.NumberFormat('vi-VN').format(amount || 0)
+      formatter: (amount: string | number | boolean | null | undefined) => typeof amount === 'number' ? new Intl.NumberFormat('vi-VN').format(amount || 0) : '0'
     },
     {
       key: 'commissionEarned',
       header: 'Commission Earned (VND)',
-      formatter: (amount: number) => new Intl.NumberFormat('vi-VN').format(amount || 0)
+      formatter: (amount: string | number | boolean | null | undefined) => typeof amount === 'number' ? new Intl.NumberFormat('vi-VN').format(amount || 0) : '0'
     },
     {
       key: 'joinedAt',
       header: 'Joined Date',
-      formatter: (date: string) => date !== 'N/A' ? new Date(date).toLocaleDateString('vi-VN') : 'N/A'
+      formatter: (date: string | number | boolean | null | undefined) => typeof date === 'string' && date !== 'N/A' ? new Date(date).toLocaleDateString('vi-VN') : 'N/A'
     },
-    { key: 'parentId', header: 'Parent ID', formatter: (id: string) => id ? id.slice(0, 8) : 'Root' },
+    { key: 'parentId', header: 'Parent ID', formatter: (id: string | number | boolean | null | undefined) => typeof id === 'string' && id ? id.slice(0, 8) : 'Root' },
     { key: 'childrenCount', header: 'Direct Referrals' },
   ];
 
