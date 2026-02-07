@@ -1538,6 +1538,10 @@ export const vi = {
             special: 'Ít nhất 1 ký tự đặc biệt',
         }
     },
+    confirmEmail: {
+      invalidLink: 'Liên kết xác thực không hợp lệ hoặc đã hết hạn.',
+      unexpectedError: 'Đã xảy ra lỗi không mong muốn. Vui lòng thử lại.'
+    },
     // Merged keys
     demo: 'Demo',
   },

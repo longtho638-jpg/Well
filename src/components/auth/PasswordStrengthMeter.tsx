@@ -21,7 +21,13 @@ export const PasswordStrengthMeter: React.FC<PasswordStrengthMeterProps> = ({
     const width = `${Math.max(5, score)}%`;
     const colorClass = getStrengthColor(strength);
 
-    const strengthLabel = t(`auth.password.strength.${strength}`);
+    const strengthLabelMap: Record<string, string> = {
+        weak: t('auth.password.strength.weak'),
+        fair: t('auth.password.strength.fair'),
+        good: t('auth.password.strength.good'),
+        strong: t('auth.password.strength.strong'),
+    };
+    const strengthLabel = strengthLabelMap[strength];
 
     return (
         <div className="space-y-3 mt-2">

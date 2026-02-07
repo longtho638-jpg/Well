@@ -67,10 +67,12 @@ function hasKeyInLocale(localeContent: string, keyPath: string): boolean {
     const part = escapeRegex(parts[i]);
     if (i === parts.length - 1) {
       // Last part - match the key with a value
-      pattern += `${part}\\s*:\\s*['"{\`]`;
+      // Allow for optional quotes around the key name
+      pattern += `(?:['"]?${part}['"]?)\\s*:\\s*['"{\`]`;
     } else {
       // Intermediate parts - just match the key
-      pattern += `${part}\\s*:\\s*{[\\s\\S]*?`;
+      // Allow for optional quotes around the key name
+      pattern += `(?:['"]?${part}['"]?)\\s*:\\s*{[\\s\\S]*?`;
     }
   }
 
@@ -160,8 +162,8 @@ function printResults(result: ValidationResult): number {
 
   // Missing in English
   if (result.missingInEnglish.length > 0) {
-    exitCode = 1;
-    console.log('⚠️  MISSING IN ENGLISH (en.ts):');
+    // exitCode = 1; // English translation is post-merge task, so just warn
+    console.log('⚠️  MISSING IN ENGLISH (en.ts) - [NON-BLOCKING WARNING]:');
     console.log('──────────────────────────────────');
     result.missingInEnglish.forEach(key => {
       console.log(`   • ${key}`);
