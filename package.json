@@ -12,7 +12,13 @@
     "test:run": "vitest run",
     "test:coverage": "vitest run --coverage",
     "lint": "eslint src",
-    "i18n:validate": "tsx scripts/validate-i18n-translation-keys-completeness.ts"
+    "i18n:validate": "node scripts/validate-i18n-keys.mjs",
+    "i18n:extract": "node scripts/extract-translation-keys.mjs",
+    "i18n:check": "node scripts/check-locale-coverage.mjs",
+    "i18n:sync": "node scripts/sync-i18n-keys.mjs",
+    "prebuild": "npm run i18n:validate",
+    "pretest": "npm run i18n:validate",
+    "prepare": "husky install"
   },
   "dependencies": {
     "@hookform/resolvers": "^5.2.2",
@@ -76,6 +82,7 @@
     "vitest": "^4.0.18",
     "workbox-cli": "^7.4.0",
     "workbox-webpack-plugin": "^7.4.0",
-    "workbox-window": "^7.4.0"
+    "workbox-window": "^7.4.0",
+    "husky": "^8.0.0"
   }
 }
