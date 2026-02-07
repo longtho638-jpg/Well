@@ -93,7 +93,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ onMobileClose }) => {
         }}
         aria-label="WellNexus home"
       >
-        <div className="w-10 h-10 bg-zinc-900 rounded-xl flex items-center justify-center text-emerald-400 font-bold shadow-lg border border-zinc-800 flex-shrink-0">W</div>
+        <div className="w-10 h-10 bg-zinc-800 dark:bg-zinc-900 rounded-xl flex items-center justify-center text-emerald-400 font-bold shadow-lg border border-zinc-200 dark:border-zinc-800 flex-shrink-0">W</div>
         <div>
           <h1 className="font-bold text-xl text-zinc-900 dark:text-zinc-100 leading-none">{t('sidebar.wellnexus')}</h1>
           <p className="text-[10px] text-zinc-500 dark:text-zinc-400 uppercase tracking-widest font-semibold mt-1">{t('sidebar.social_commerce')}</p>
@@ -110,16 +110,16 @@ export const Sidebar: React.FC<SidebarProps> = ({ onMobileClose }) => {
               key={item.path}
               onClick={() => handleNav(item.path)}
               className={`w-full flex items-center gap-3 px-4 py-3.5 rounded-xl text-sm font-medium transition-all duration-200 group ${isActive
-                ? 'bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 shadow-lg shadow-emerald-500/5'
-                : 'text-zinc-400 hover:bg-zinc-900 hover:text-zinc-100'
+                ? 'bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20 shadow-lg shadow-emerald-500/5'
+                : 'text-zinc-500 dark:text-zinc-400 hover:bg-zinc-100 dark:hover:bg-zinc-900 hover:text-zinc-800 dark:hover:text-zinc-100'
                 }`}
               aria-current={isActive ? 'page' : undefined}
               aria-label={`Navigate to ${item.label}`}
             >
-              <Icon className={`w-5 h-5 transition-colors ${isActive ? 'text-emerald-400' : 'text-zinc-400 group-hover:text-zinc-300'}`} aria-hidden="true" />
+              <Icon className={`w-5 h-5 transition-colors ${isActive ? 'text-emerald-600 dark:text-emerald-400' : 'text-zinc-400 dark:text-zinc-400 group-hover:text-zinc-600 dark:group-hover:text-zinc-300'}`} aria-hidden="true" />
               <span className="flex-1 text-left">{item.label}</span>
               {item.badge && (
-                <span className={`text-xs px-2 py-0.5 rounded-full font-bold ${isActive ? 'bg-emerald-500/20 text-emerald-300' : 'bg-zinc-800 text-zinc-400'
+                <span className={`text-xs px-2 py-0.5 rounded-full font-bold ${isActive ? 'bg-emerald-500/20 text-emerald-600 dark:text-emerald-300' : 'bg-zinc-100 dark:bg-zinc-800 text-zinc-500 dark:text-zinc-400'
                   }`}>
                   {item.badge}
                 </span>
@@ -130,14 +130,14 @@ export const Sidebar: React.FC<SidebarProps> = ({ onMobileClose }) => {
       </nav>
 
       <div className="p-4">
-        <div className="bg-zinc-900 border border-zinc-800 rounded-2xl p-5 relative overflow-hidden shadow-xl group">
+        <div className="bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-2xl p-5 relative overflow-hidden shadow-xl group">
           <div className="absolute top-0 right-0 w-32 h-32 bg-emerald-500/10 rounded-full blur-2xl -mr-10 -mt-10 pointer-events-none"></div>
 
           <div className="relative z-10">
             <div className="flex justify-between items-center mb-4">
-              <div className="flex items-center gap-2 text-zinc-100 font-bold text-sm">
+              <div className="flex items-center gap-2 text-zinc-800 dark:text-zinc-100 font-bold text-sm">
                 <Bot className="w-4 h-4 text-emerald-400" /> {t('sidebar.the_coach')}</div>
-              <span className="text-[10px] font-bold bg-zinc-800 text-zinc-400 px-2 py-1 rounded-full border border-zinc-700">{t('sidebar.day_3_30')}</span>
+              <span className="text-[10px] font-bold bg-zinc-100 dark:bg-zinc-800 text-zinc-500 dark:text-zinc-400 px-2 py-1 rounded-full border border-zinc-200 dark:border-zinc-700">{t('sidebar.day_3_30')}</span>
             </div>
 
             <div className="space-y-2 mb-4">
@@ -145,7 +145,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ onMobileClose }) => {
                 <div key={q.id} className="flex items-start gap-2 text-xs">
                   {q.isCompleted ? <CheckCircle2 className="w-4 h-4 text-emerald-500 shrink-0" /> : <Circle className="w-4 h-4 text-zinc-600 shrink-0" />}
                   <div className="flex-1">
-                    <p className={`font-medium ${q.isCompleted ? 'text-zinc-400 line-through' : 'text-zinc-300'}`}>{q.title}</p>
+                    <p className={`font-medium ${q.isCompleted ? 'text-zinc-400 line-through' : 'text-zinc-700 dark:text-zinc-300'}`}>{q.title}</p>
                   </div>
                   <span className="text-[10px] font-bold text-emerald-400 bg-emerald-500/10 px-1.5 py-0.5 rounded">+{q.xp}{t('sidebar.xp')}</span>
                 </div>
@@ -157,7 +157,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ onMobileClose }) => {
                 <motion.div
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
-                  className="bg-zinc-800 rounded-lg p-3 text-xs text-zinc-300 italic border border-zinc-700 mb-2"
+                  className="bg-zinc-100 dark:bg-zinc-800 rounded-lg p-3 text-xs text-zinc-600 dark:text-zinc-300 italic border border-zinc-200 dark:border-zinc-700 mb-2"
                   role="status"
                   aria-live="polite"
                 >

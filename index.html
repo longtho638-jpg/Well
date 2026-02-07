@@ -21,8 +21,29 @@
   <link href="https://api.fontshare.com/v2/css?f[]=clash-display@600,700&display=swap" rel="stylesheet">
   <!-- Font preload removed - Plus Jakarta Sans not used -->
 
-  <meta name="theme-color" content="#0F172A">
-  <meta name="color-scheme" content="dark">
+  <meta name="theme-color" content="#0F172A" id="meta-theme-color">
+  <meta name="color-scheme" content="dark light">
+
+  <!-- FOUC Prevention: Apply theme class before React hydration -->
+  <script>
+    (function() {
+      try {
+        var theme = localStorage.getItem('wellnexus-theme');
+        if (!theme) {
+          theme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+        }
+        if (theme === 'dark') {
+          document.documentElement.classList.add('dark');
+          document.querySelector('#meta-theme-color').setAttribute('content', '#0F172A');
+        } else {
+          document.documentElement.classList.remove('dark');
+          document.querySelector('#meta-theme-color').setAttribute('content', '#F3F4F6');
+        }
+      } catch (e) {
+        document.documentElement.classList.add('dark');
+      }
+    })();
+  </script>
 
   <title>WellNexus 2.0: Agentic HealthFi OS | Social Commerce Platform</title>
 

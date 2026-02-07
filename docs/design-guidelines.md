@@ -837,6 +837,62 @@ p {
 
 ---
 
+## Theme System (Dark/Light Mode)
+
+### Architecture
+
+- **Strategy**: Tailwind CSS `darkMode: 'class'` on `<html>` element
+- **Context**: `ThemeProvider` in `src/context/ThemeContext.tsx`
+- **Toggle**: `ThemeToggle` component at `src/components/ui/ThemeToggle.tsx`
+- **Persistence**: `localStorage` key `wellnexus-theme`
+- **Default**: System preference, fallback to `dark` (Aura Elite primary mode)
+
+### FOUC Prevention
+
+Inline `<script>` in `index.html` applies theme class before React hydration:
+```html
+<script>
+  (function() {
+    var theme = localStorage.getItem('wellnexus-theme');
+    if (!theme) theme = matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+    if (theme === 'dark') document.documentElement.classList.add('dark');
+  })();
+</script>
+```
+
+### CSS Custom Properties
+
+Theme tokens live in `src/index.css` under `:root` (light) and `.dark` (dark):
+
+| Token | Light | Dark |
+|---|---|---|
+| `--color-bg-primary` | `#F3F4F6` | `#0F172A` |
+| `--color-surface` | `#FFFFFF` | `#1E293B` |
+| `--color-surface-glass` | `rgba(255,255,255,0.70)` | `rgba(255,255,255,0.05)` |
+| `--color-text-primary` | `#1F2937` | `#F1F5F9` |
+| `--color-text-secondary` | `#4B5563` | `#CBD5E1` |
+| `--color-brand-primary` | `#00575A` (deep teal) | `#2DD4BF` (teal-400) |
+
+### Usage Guidelines
+
+1. **Always use `dark:` variants** when adding background, text, or border colors
+2. **Test both modes** after any UI change
+3. **Glassmorphism** works in both modes via `glass-pearl` utility class
+4. **Sidebar, header, cards** must maintain legibility in both modes
+5. **ThemeToggle** uses `role="switch"` + `aria-checked` for accessibility
+6. **System preference listener** follows OS theme when user has no explicit preference
+
+### Light Mode Design
+
+Light mode retains Aura Elite identity with:
+- Warm gradients: `from-amber-50 via-orange-50 to-rose-50`
+- Glass surfaces: `bg-white/70 backdrop-blur-xl`
+- Teal brand accents on white/gray backgrounds
+- Softer shadows and borders
+
+---
+
 ## Version History
 
+- **v1.1.0** (2026-02-07): Added dual-theme system (Dark/Light), FOUC prevention, CSS custom properties, accessibility improvements, prefers-reduced-motion support
 - **v1.0.0** (2026-02-07): Initial Aura Elite design system for WellNexus Admin Dashboard
