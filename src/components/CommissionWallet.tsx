@@ -59,8 +59,7 @@ const CommissionWallet: React.FC = () => {
 
     try {
       await generatePDF(reportData);
-    } catch (error) {
-      console.error('Failed to generate PDF:', error);
+    } catch {
     }
   };
 

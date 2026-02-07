@@ -41,7 +41,6 @@ const NetworkPage: React.FC = () => {
           setTreeData(d3Data);
         }
       } catch (err) {
-        console.error(err);
         setError('Failed to load network data');
       } finally {
         setLoading(false);
@@ -60,8 +59,7 @@ const NetworkPage: React.FC = () => {
       // Cast to compatible type (email field may not exist)
       const exportData = flatData as NetworkNode;
       exportNetworkTreeJSON(exportData);
-    } catch (error) {
-      console.error('Failed to export JSON:', error);
+    } catch (_error) {
     } finally {
       setIsExportingJSON(false);
     }
@@ -74,8 +72,7 @@ const NetworkPage: React.FC = () => {
       // Cast to compatible type (email field may not exist)
       const exportData = flatData as NetworkNode;
       exportNetworkTreeCSV(exportData);
-    } catch (error) {
-      console.error('Failed to export CSV:', error);
+    } catch (_error) {
     } finally {
       setIsExportingCSV(false);
     }

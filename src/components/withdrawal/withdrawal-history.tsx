@@ -15,8 +15,7 @@ export const WithdrawalHistory: React.FC = () => {
     try {
       const data = await withdrawalService.getUserWithdrawals();
       setRequests(data);
-    } catch (error) {
-      console.error('Failed to load withdrawal history', error);
+    } catch {
     } finally {
       setLoading(false);
     }

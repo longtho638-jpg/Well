@@ -77,7 +77,6 @@ export async function createPayment(request: CreatePaymentRequest): Promise<Paym
             // Other fields will be populated by PayOS webhook/status check
         } as PaymentResponse;
     } catch (error) {
-        console.error('PayOS create payment error:', error);
         throw error;
     }
 }
@@ -97,7 +96,6 @@ export async function getPaymentStatus(orderCode: number): Promise<PaymentStatus
 
         return data as PaymentStatus;
     } catch (error) {
-        console.error('PayOS get payment status error:', error);
         throw error;
     }
 }
@@ -120,7 +118,6 @@ export async function cancelPayment(
 
         return data as PaymentStatus;
     } catch (error) {
-        console.error('PayOS cancel payment error:', error);
         throw error;
     }
 }
@@ -138,7 +135,6 @@ export function isPayOSConfigured(): boolean {
  * This function is deprecated and kept for backward compatibility
  */
 export async function verifyWebhook(webhookBody: { data?: Record<string, unknown>; signature?: string }): Promise<Record<string, unknown>> {
-    console.warn('verifyWebhook is deprecated - webhook verification now handled server-side');
     return webhookBody.data || {};
 }
 

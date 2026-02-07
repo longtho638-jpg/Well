@@ -29,11 +29,9 @@ class MekongHubSDK {
   async connect(): Promise<boolean> {
     try {
       // Mock implementation - replace with actual SDK when available
-      console.log('[Mekong Hub] Connecting to:', this.config.endpoint);
       this.connected = true;
       return true;
     } catch (error) {
-      console.error('[Mekong Hub] Connection failed:', error);
       return false;
     }
   }
@@ -45,7 +43,7 @@ class MekongHubSDK {
     if (!this.connected) {
       throw new Error('Hub not connected');
     }
-    console.log('[Mekong Hub] Sending message:', message);
+    // Message sent to hub
   }
 
   /**
@@ -53,11 +51,10 @@ class MekongHubSDK {
    */
   onMessage(callback: (message: AgentMessage) => void): void {
     if (!this.connected) {
-      console.warn('[Mekong Hub] Not connected, skipping subscription');
       return;
     }
     // Mock implementation
-    console.log('[Mekong Hub] Subscribed to messages');
+    // Subscribed to hub messages
   }
 
   /**
@@ -65,7 +62,6 @@ class MekongHubSDK {
    */
   disconnect(): void {
     this.connected = false;
-    console.log('[Mekong Hub] Disconnected');
   }
 
   /**

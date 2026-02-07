@@ -47,8 +47,7 @@ export function QRPaymentModal({
                     onFailure('Payment was cancelled');
                     clearInterval(interval);
                 }
-            } catch (error) {
-                console.error('Failed to check payment status:', error);
+            } catch {
             } finally {
                 setIsChecking(false);
             }

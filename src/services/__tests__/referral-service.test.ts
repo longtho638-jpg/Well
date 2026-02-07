@@ -100,8 +100,8 @@ describe('ReferralService', () => {
         { id: 'user-123', name: 'Root', level: 1, parent_id: null },
       ];
 
-      (supabase.auth.getUser as any).mockResolvedValue({ data: { user: mockUser } });
-      (supabase.rpc as any).mockResolvedValue({ data: mockData, error: null });
+      vi.mocked(supabase.auth.getUser).mockResolvedValue({ data: { user: mockUser } } as never);
+      vi.mocked(supabase.rpc).mockResolvedValue({ data: mockData, error: null } as never);
 
       const result = await referralService.getDownlineTree();
 
@@ -114,8 +114,8 @@ describe('ReferralService', () => {
 
     it('should throw error if RPC fails', async () => {
         const mockUser = { id: 'user-123' };
-        (supabase.auth.getUser as any).mockResolvedValue({ data: { user: mockUser } });
-        (supabase.rpc as any).mockResolvedValue({ data: null, error: { message: 'RPC Error' } });
+        vi.mocked(supabase.auth.getUser).mockResolvedValue({ data: { user: mockUser } } as never);
+        vi.mocked(supabase.rpc).mockResolvedValue({ data: null, error: { message: 'RPC Error' } } as never);
 
         await expect(referralService.getDownlineTree()).rejects.toThrow('RPC Error');
     });

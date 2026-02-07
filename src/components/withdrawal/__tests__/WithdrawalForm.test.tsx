@@ -50,8 +50,8 @@ describe('WithdrawalForm', () => {
 
   beforeEach(() => {
     vi.clearAllMocks();
-    (useToast as any).mockReturnValue({ showToast: mockShowToast });
-    (storeModule.useStore as any).mockReturnValue({
+    vi.mocked(useToast).mockReturnValue({ showToast: mockShowToast } as never);
+    vi.mocked(storeModule.useStore).mockReturnValue({
       user: mockUser,
       fetchUserFromDB: mockFetchUserFromDB,
     });

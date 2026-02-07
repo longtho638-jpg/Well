@@ -26,7 +26,6 @@ export async function sendEmail(request: SendEmailRequest): Promise<SendEmailRes
     });
 
     if (error) {
-      console.error('[EmailService] Error sending email:', error);
       return {
         success: false,
         error: error.message,
@@ -36,7 +35,6 @@ export async function sendEmail(request: SendEmailRequest): Promise<SendEmailRes
 
     return data as SendEmailResponse;
   } catch (err) {
-    console.error('[EmailService] Failed to send email:', err);
     return {
       success: false,
       error: err instanceof Error ? err.message : 'Unknown error',

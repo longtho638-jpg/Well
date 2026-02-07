@@ -11,7 +11,7 @@ export function usePWAUpdate() {
       setNeedRefresh(true);
     },
     onOfflineReady() {
-      console.log('App ready to work offline');
+      // App ready to work offline
     },
   });
 

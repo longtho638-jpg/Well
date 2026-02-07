@@ -58,9 +58,7 @@ export const InstallPrompt: React.FC = () => {
     const { outcome } = await deferredPrompt.userChoice;
 
     if (outcome === 'accepted') {
-      console.log('[A2HS] User accepted install prompt');
-    } else {
-      console.log('[A2HS] User dismissed install prompt');
+      // User accepted install prompt
     }
 
     // Clear prompt

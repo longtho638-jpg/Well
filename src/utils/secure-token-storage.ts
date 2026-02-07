@@ -161,8 +161,7 @@ class SecureTokenStorage {
 
       const encrypted = this.encryptSimple(value);
       sessionStorage.setItem(this.getKey(key), encrypted);
-    } catch (e) {
-      console.warn('Failed to save to session storage', e);
+    } catch {
     }
   }
 

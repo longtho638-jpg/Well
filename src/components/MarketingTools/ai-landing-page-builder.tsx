@@ -63,8 +63,7 @@ export default function AiLandingPageBuilder({
     try {
       const newPage = await onCreateLandingPage(selectedTemplate, portraitUrl || undefined);
       setGeneratedLandingPage(newPage);
-    } catch (error) {
-      console.error('Failed to generate landing page', error);
+    } catch {
     } finally {
       setIsGeneratingBio(false);
     }

@@ -60,10 +60,6 @@ const App: React.FC = () => {
   useAutoLogout(); // Auto-logout after 30 min inactivity
   const { isAuthenticated, isInitialized } = useStore();
 
-  if (import.meta.env.DEV) {
-    console.log('[App] Render state:', { isAuthenticated, isInitialized, pathname: window.location.pathname });
-  }
-
   if (!isInitialized) {
     return (
       <div className="flex items-center justify-center h-screen bg-zinc-950">
