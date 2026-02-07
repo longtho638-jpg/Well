@@ -41,13 +41,12 @@ export function useAutoLogout() {
     const events = ['mousedown', 'keydown', 'scroll', 'touchstart', 'mousemove'];
 
     // Throttled event handler
-    let timeoutId: NodeJS.Timeout;
+    let timeoutId: ReturnType<typeof setTimeout> | undefined;
     const handleActivity = () => {
       if (!timeoutId) {
         updateActivity();
         timeoutId = setTimeout(() => {
-          // @ts-ignore
-          timeoutId = null;
+          timeoutId = undefined;
         }, 1000); // Throttle updates to once per second
       }
     };

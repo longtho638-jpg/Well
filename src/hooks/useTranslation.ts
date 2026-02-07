@@ -13,7 +13,6 @@ type TranslationFunction = (
  * Provides a standard interface for translations across the platform.
  */
 export function useTranslation() {
-  // @ts-ignore - Bypass infinite type instantiation
   const { t: i18nT, i18n } = useI18nTranslation();
 
   // Normalize language code
@@ -25,7 +24,7 @@ export function useTranslation() {
 
   // Explicitly cast t to a simple function signature to bypass strict i18next type checks
   const t: TranslationFunction = (key: string, options?: TOptions | string): string => {
-    // @ts-ignore - We intentionally allow dynamic keys (string) while i18next expects strict keys
+    // @ts-expect-error - Dynamic string keys intentionally bypass i18next's strict key types
     return i18nT(key, options as TOptions) as string;
   };
 
@@ -36,7 +35,7 @@ export function useTranslation() {
  * Legacy standalone translate function
  */
 export function translate(key: string, variables?: Record<string, unknown>): string {
-  // @ts-ignore
+  // @ts-expect-error - Dynamic string key bypasses i18next strict key constraint
   return i18next.t(key, variables) as string;
 }
 

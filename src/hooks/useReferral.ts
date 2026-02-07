@@ -58,18 +58,18 @@ export const useReferral = () => {
                     // Map RPC data
                     const mappedReferrals: Referral[] = treeData.map((u: ReferralTreeNode) => ({
                         id: u.id,
-                        referrerId: u.sponsor_id || user.id, // Best guess if RPC doesn't return parent
+                        referrerId: u.sponsor_id || user.id,
                         referredUserId: u.id,
                         referredName: u.name,
                         referredEmail: u.email,
                         rank: u.rank || 'Member',
                         createdAt: u.created_at,
-                        status: 'active', // Default for now, or fetch from RPC if added
+                        status: 'active' as const,
                         avatar: u.avatar_url,
-                        level: u.level, // Real level from RPC
+                        level: u.level,
                         totalRevenue: u.total_sales || 0,
                         referralBonus: 0,
-                    } as unknown as Referral));
+                    }));
 
                     setReferrals(mappedReferrals);
                     return; // Success, exit
@@ -94,14 +94,14 @@ export const useReferral = () => {
                     referredUserId: u.id,
                     referredName: u.name,
                     referredEmail: u.email,
-                    rank: u.rank || 'Member', // Extra field, might need casting if strict
-                    createdAt: u.created_at, // Correct field name
-                    status: u.kyc_status ? 'active' : 'pending',
-                    avatar: u.avatar_url, // Extra field
+                    rank: u.rank || 'Member',
+                    createdAt: u.created_at,
+                    status: u.kyc_status ? 'active' as const : 'pending' as const,
+                    avatar: u.avatar_url,
                     level: 1,
                     totalRevenue: u.total_sales || 0,
-                    referralBonus: 0, 
-                } as unknown as Referral)); // Cast to avoid strict excess property checks for UI fields
+                    referralBonus: 0,
+                }));
 
                 setReferrals(mappedReferrals);
             } catch (err) {

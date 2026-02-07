@@ -1,15 +1,15 @@
 import { Link, useLocation } from 'react-router-dom';
 import { BreadcrumbSchema } from './structured-data';
-import { useTranslation } from 'react-i18next';
+import { useTranslation } from '@/hooks';
 
 const routeNames: Record<string, string> = {
-  '/': 'home',
-  '/dashboard': 'dashboard',
-  '/dashboard/marketplace': 'marketplace',
-  '/dashboard/wallet': 'commission_wallet',
-  '/dashboard/orders': 'orders',
-  '/dashboard/profile': 'profile',
-  '/admin': 'admin',
+  '/': 'nav.home',
+  '/dashboard': 'nav.dashboard',
+  '/dashboard/marketplace': 'nav.marketplace',
+  '/dashboard/wallet': 'nav.commission_wallet',
+  '/dashboard/orders': 'nav.orders',
+  '/dashboard/profile': 'nav.profile',
+  '/admin': 'nav.admin',
 };
 
 export function Breadcrumbs() {
@@ -27,7 +27,7 @@ export function Breadcrumbs() {
     // Check if we have a translation, otherwise capitalize segment
     const routeKey = routeNames[currentPath];
     const name = routeKey
-      ? t(`nav.${routeKey}` as any)
+      ? t(routeKey)
       : segment.charAt(0).toUpperCase() + segment.slice(1);
 
     breadcrumbItems.push({

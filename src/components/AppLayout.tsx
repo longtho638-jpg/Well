@@ -80,7 +80,8 @@ export const AppLayout: React.FC = () => {
           <div className="flex items-center gap-4">
             <button
               onClick={() => setIsMobileMenuOpen(true)}
-              className="p-2 -ml-2 text-gray-500 hover:bg-gray-100 dark:hover:bg-slate-700 rounded-lg md:hidden transition-colors"
+              className="p-2.5 -ml-2 text-gray-500 hover:bg-gray-100 dark:hover:bg-slate-700 rounded-lg md:hidden transition-colors touch-manipulation"
+              aria-label="Open menu"
             >
               <Menu className="w-6 h-6" />
             </button>
@@ -98,7 +99,7 @@ export const AppLayout: React.FC = () => {
 
           <div className="flex items-center gap-3 sm:gap-4">
             <ThemeToggle />
-            <button className="p-2 text-gray-500 hover:bg-gray-100 dark:hover:bg-slate-700 rounded-xl relative transition-colors">
+            <button className="p-2.5 text-gray-500 hover:bg-gray-100 dark:hover:bg-slate-700 rounded-xl relative transition-colors touch-manipulation" aria-label="Notifications">
               <Bell className="w-5 h-5" />
               <span className="absolute top-2 right-2 w-2 h-2 bg-red-500 rounded-full border-2 border-white dark:border-slate-800 animate-pulse"></span>
             </button>
@@ -130,7 +131,7 @@ export const AppLayout: React.FC = () => {
         </header>
 
         {/* Scrollable Content - Using key to force re-render on route change */}
-        <main className="flex-1 overflow-y-auto p-4 sm:p-6 lg:p-8 pb-20 md:pb-8 scroll-smooth bg-gradient-to-br from-gray-50 to-white dark:from-slate-900 dark:to-slate-800">
+        <main className="flex-1 overflow-y-auto p-4 sm:p-6 lg:p-8 pb-24 md:pb-8 scroll-smooth bg-gradient-to-br from-gray-50 to-white dark:from-slate-900 dark:to-slate-800">
           <motion.div
             key={location.pathname}
             className="max-w-7xl mx-auto"

@@ -166,8 +166,8 @@ export function AgencyOSDemo() {
                                 : `🚀 ${t('agencyosdemo.all_commands')}`}
                         </h2>
                         <div className="grid grid-cols-1 gap-3">
-                            {(Object.entries(commandsByCategory) as unknown as [AgencyOSCategory, ReadonlyArray<AgencyOSCommand>][]).map(([cat, commands]) =>
-                                commands.map((cmd) => (
+                            {(Object.keys(commandsByCategory) as AgencyOSCategory[]).map((cat) =>
+                                commandsByCategory[cat].map((cmd) => (
                                     <button
                                         key={cmd.command}
                                         onClick={() => runDemoCommand(cmd.command)}
@@ -176,12 +176,12 @@ export function AgencyOSDemo() {
                                         <div className="flex items-start justify-between">
                                             <div className="flex-1">
                                                 <div className="flex items-center gap-2 mb-1">
-                                                    <span className="text-lg">{CATEGORY_ICONS[cat as AgencyOSCategory]}</span>
+                                                    <span className="text-lg">{CATEGORY_ICONS[cat]}</span>
                                                     <code className="text-cyan-400 font-mono text-sm font-medium">
                                                         {cmd.command}
                                                     </code>
                                                     <span className="text-xs text-gray-500 bg-gray-800 px-2 py-0.5 rounded">
-                                                        {CATEGORY_LABELS[cat as AgencyOSCategory]}
+                                                        {CATEGORY_LABELS[cat]}
                                                     </span>
                                                 </div>
                                                 <p className="text-gray-400 text-sm">{t(cmd.i18nKey)}</p>

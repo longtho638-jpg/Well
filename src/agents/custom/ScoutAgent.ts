@@ -120,7 +120,7 @@ export class ScoutAgent extends BaseAgent {
 
                 case 'mapDependencies': {
                     const deps = await this.analyzeDependencies(action.query);
-                    result = deps as unknown as Record<string, unknown>;
+                    result = { ...deps };
                     break;
                 }
 

@@ -185,6 +185,8 @@ export interface Referral {
   firstPurchaseAt?: string;
   totalRevenue: number;
   referralBonus: number;
+  rank?: string;
+  avatar?: string;
 }
 
 export interface ReferralStats {

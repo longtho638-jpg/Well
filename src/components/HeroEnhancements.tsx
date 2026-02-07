@@ -72,7 +72,7 @@ export function AnimatedCounter({
         >
             <div className="flex items-center justify-center gap-2 mb-2">
                 {icon}
-                <span className="text-4xl md:text-5xl font-black text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 to-cyan-400">
+                <span className="text-2xl sm:text-4xl md:text-5xl font-black text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 to-cyan-400">
                     {prefix}{formatNumber(count)}{suffix}
                 </span>
             </div>
@@ -151,7 +151,7 @@ export function SocialProofTicker({ items }: SocialProofTickerProps) {
 
     return (
         <motion.div
-            className="fixed bottom-6 left-6 z-50"
+            className="fixed bottom-20 sm:bottom-6 left-4 sm:left-6 z-40 max-w-[calc(100vw-2rem)] sm:max-w-sm"
             initial={{ opacity: 0, x: -20 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ delay: 2 }}
@@ -216,7 +216,7 @@ export function TestimonialsCarousel({ testimonials }: TestimonialsProps) {
                 >
                     {testimonials.map((testimonial, index) => (
                         <div key={index} className="w-full flex-shrink-0 px-4">
-                            <div className="bg-zinc-900/50 border border-zinc-800 rounded-3xl p-8 md:p-12 text-center">
+                            <div className="bg-zinc-900/50 border border-zinc-800 rounded-3xl p-6 sm:p-8 md:p-12 text-center">
                                 {/* Stars */}
                                 <div className="flex justify-center gap-1 mb-6">
                                     {Array.from({ length: 5 }).map((_, i) => (
@@ -252,15 +252,18 @@ export function TestimonialsCarousel({ testimonials }: TestimonialsProps) {
                 </motion.div>
             </div>
 
-            {/* Dots */}
+            {/* Dots - with adequate touch targets */}
             <div className="flex justify-center gap-2 mt-6">
                 {testimonials.map((_, index) => (
                     <button
                         key={index}
                         onClick={() => setCurrent(index)}
-                        className={`w-2 h-2 rounded-full transition-all ${index === current ? 'bg-emerald-500 w-6' : 'bg-zinc-700'
-                            }`}
-                    />
+                        className="p-2 -m-1 touch-manipulation"
+                        aria-label={`Go to testimonial ${index + 1}`}
+                    >
+                        <span className={`block rounded-full transition-all ${index === current ? 'bg-emerald-500 w-6 h-2' : 'bg-zinc-700 w-2 h-2'
+                            }`} />
+                    </button>
                 ))}
             </div>
         </div>

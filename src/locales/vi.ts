@@ -2809,5 +2809,19 @@ export const vi = {
     nameMatchNote: "[MISSING] nameMatchNote",
     submitButton: "[MISSING] submitButton",
     historyTitle: "[MISSING] historyTitle"
+  },
+  exitIntent: {
+    headline: "Khoan! Đừng bỏ lỡ cơ hội",
+    subheadline: "Mở khóa quyền lợi Pro độc quyền và tham gia cùng 1,243+ nhà phân phối thành công đang xây dựng thu nhập bền vững với WellNexus.",
+    benefits: {
+      aiCoaching: "AI huấn luyện kinh doanh thông minh",
+      passiveIncome: "Tiềm năng thu nhập thụ động",
+      zeroRisk: "Không rủi ro tồn kho",
+      premiumProducts: "Danh mục sản phẩm cao cấp"
+    },
+    cta: "Đăng ký ngay - Suất có hạn",
+    urgency: "Chỉ còn 157 suất trong khu vực của bạn",
+    noThanks: "Để sau, cảm ơn",
+    closeLabel: "Đóng popup"
   }
 };

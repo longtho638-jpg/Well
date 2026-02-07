@@ -2,7 +2,7 @@ import { uiLogger } from '@/utils/logger';
 import React, { Component, ReactNode, ErrorInfo } from 'react';
 import analytics from '@/lib/analytics';
 import * as Sentry from '@sentry/react';
-import i18next from 'i18next';
+import { translate } from '@/hooks/useTranslation';
 
 interface Props {
     children: ReactNode;
@@ -49,8 +49,7 @@ export class ErrorBoundary extends Component<Props, State> {
     }
 
     render() {
-        // @ts-ignore
-        const t = (key) => i18next.t(key);
+        const t = translate;
 
         if (this.state.hasError) {
             // Custom fallback UI

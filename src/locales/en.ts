@@ -2184,5 +2184,19 @@ export const en = {
   portfoliosection: {
     growth: "[MISSING] growth",
     arr: "[MISSING] arr"
+  },
+  exitIntent: {
+    headline: "Wait! Don't Leave Yet",
+    subheadline: "Unlock exclusive Pro benefits and join 1,243+ successful distributors building wealth with WellNexus.",
+    benefits: {
+      aiCoaching: "AI-powered business coaching",
+      passiveIncome: "Passive income potential",
+      zeroRisk: "Zero inventory risk",
+      premiumProducts: "Premium product portfolio"
+    },
+    cta: "Register Now - Limited Slots",
+    urgency: "Only 157 slots remaining in your area",
+    noThanks: "No thanks, maybe later",
+    closeLabel: "Close popup"
   }
 };
