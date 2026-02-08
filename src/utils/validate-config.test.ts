@@ -44,12 +44,15 @@ describe('validateConfig', () => {
     expect(console.error).toHaveBeenCalled();
   });
 
-  it('should throw in production if keys are missing', () => {
+  it('should return invalid state and log error in production if keys are missing', () => {
      const mockEnv = {
       PROD: true, // Production mode
       // Missing keys
     };
 
-    expect(() => validateConfig(mockEnv)).toThrow(/Critical: Missing configuration/);
+    const result = validateConfig(mockEnv);
+    expect(result.isValid).toBe(false);
+    expect(result.missingKeys.length).toBeGreaterThan(0);
+    expect(console.error).toHaveBeenCalled();
   });
 });
