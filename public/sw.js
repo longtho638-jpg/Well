@@ -12,7 +12,10 @@ self.addEventListener('activate', (event) => {
     ).then(() => self.registration.unregister())
      .then(() => self.clients.matchAll())
      .then((clients) => {
-       clients.forEach((client) => client.navigate(client.url));
+       clients.forEach((client) => {
+         // client.navigate() is NOT supported in Safari/WebKit — use postMessage instead
+         client.postMessage({ type: 'SW_CLEANUP_COMPLETE' });
+       });
      })
   );
 });

@@ -5,6 +5,7 @@
 
 import React, { useState, useEffect, useRef } from 'react';
 import { motion, useMotionValue, useSpring, useTransform } from 'framer-motion';
+import { isSafari } from '@/utils/browser-detect';
 
 // ============================================================================
 // 3D TILT CARD
@@ -260,6 +261,13 @@ export function ScrollCounter({ end, prefix = '', suffix = '', className = '' }:
 // ============================================================================
 
 export function MorphingBlob({ className = '' }: { className?: string }) {
+    // Safari: render static blob without blur animation to prevent GPU compositor crash
+    if (isSafari()) {
+        return (
+            <div className={`absolute rounded-full opacity-20 ${className}`} />
+        );
+    }
+
     return (
         <motion.div
             className={`absolute rounded-full blur-3xl opacity-30 ${className}`}

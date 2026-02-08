@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
+import { isSafari } from '@/utils/browser-detect';
 
 export const CursorGlow: React.FC = () => {
   const [position, setPosition] = useState({ x: 0, y: 0 });
@@ -12,6 +13,9 @@ export const CursorGlow: React.FC = () => {
     window.addEventListener('mousemove', handleMouseMove);
     return () => window.removeEventListener('mousemove', handleMouseMove);
   }, []);
+
+  // Safari's WebKit compositor crashes with large blur + infinite transform animations
+  if (isSafari()) return null;
 
   return (
     <motion.div

@@ -41,6 +41,12 @@ if (import.meta.env.PROD) {
 
   // Unregister stale Service Workers and clear caches (VitePWA is disabled)
   if ('serviceWorker' in navigator) {
+    // Listen for cleanup completion from sw.js (Safari-safe — no client.navigate())
+    navigator.serviceWorker.addEventListener('message', (event) => {
+      if (event.data?.type === 'SW_CLEANUP_COMPLETE') {
+        window.location.reload();
+      }
+    });
     navigator.serviceWorker.getRegistrations().then((registrations) => {
       registrations.forEach((reg) => reg.unregister());
     });
