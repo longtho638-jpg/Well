@@ -1921,7 +1921,8 @@ export const vi = {
   chatsidebar: {
     c_c_cu_c_h_i_tho_i: "Các cuộc hội thoại",
     l_ch_s: "Lịch sử",
-    t_o_cu_c_h_i_tho_i_m_i: "Tạo cuộc hội thoại mới"
+    t_o_cu_c_h_i_tho_i_m_i: "Tạo cuộc hội thoại mới",
+    no_history: "Chưa có lịch sử trò chuyện"
   },
   cms: {
     action: "Hành Động",
@@ -1980,7 +1981,8 @@ export const vi = {
     th_ng_tin_t_v_n: "Thông tin tư vấn",
     tu_i: "tuổi",
     tu_i_1: "tuổi",
-    v_n_ch_nh: "Vấn đề chính"
+    v_n_ch_nh: "Vấn đề chính",
+    no_patient_data: "Chưa có dữ liệu bệnh nhân"
   },
   copilotcoaching: {
     coaching_tips: "Coaching Tips",

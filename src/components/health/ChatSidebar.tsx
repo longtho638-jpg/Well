@@ -32,11 +32,12 @@ const MOCK_CHAT_HISTORY: ChatHistory[] = [
 ];
 
 interface ChatSidebarProps {
+    chatHistory?: ChatHistory[];
     selectedId: string | null;
     onSelect: (id: string) => void;
 }
 
-export const ChatSidebar: React.FC<ChatSidebarProps> = ({ selectedId, onSelect }) => {
+export const ChatSidebar: React.FC<ChatSidebarProps> = ({ chatHistory = import.meta.env.DEV ? MOCK_CHAT_HISTORY : [], selectedId, onSelect }) => {
     const { t } = useTranslation();
     return (
         <motion.div
@@ -60,7 +61,12 @@ export const ChatSidebar: React.FC<ChatSidebarProps> = ({ selectedId, onSelect }
             </div>
 
             <div className="flex-1 overflow-y-auto p-4 space-y-2">
-                {MOCK_CHAT_HISTORY.map((chat) => (
+                {chatHistory.length === 0 ? (
+                    <div className="text-center py-8 text-zinc-500">
+                        <MessageSquare className="w-8 h-8 mx-auto mb-2 opacity-40" />
+                        <p className="text-sm">{t('chatsidebar.no_history') || 'No chat history'}</p>
+                    </div>
+                ) : chatHistory.map((chat) => (
                     <motion.button
                         key={chat.id}
                         whileHover={{ scale: 1.02 }}

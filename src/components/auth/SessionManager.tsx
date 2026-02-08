@@ -78,7 +78,7 @@ const DeviceIcon: React.FC<{ device: Session['device'] }> = ({ device }) => {
 };
 
 export function SessionManager({
-    sessions = MOCK_SESSIONS,
+    sessions = import.meta.env.DEV ? MOCK_SESSIONS : [],
     onRevokeSession,
     onRevokeAllOthers,
 }: SessionManagerProps) {

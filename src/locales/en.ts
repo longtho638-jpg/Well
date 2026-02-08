@@ -1833,7 +1833,8 @@ export const en = {
   chatsidebar: {
     l_ch_s: "[MISSING] l ch s",
     c_c_cu_c_h_i_tho_i: "[MISSING] c c cu c h i tho i",
-    t_o_cu_c_h_i_tho_i_m_i: "[MISSING] t o cu c h i tho i m i"
+    t_o_cu_c_h_i_tho_i_m_i: "[MISSING] t o cu c h i tho i m i",
+    no_history: "No chat history"
   },
   contextsidebar: {
     "15": "[MISSING] 15",
@@ -1847,7 +1848,8 @@ export const en = {
     i_m_s_c_kh_e: "[MISSING] i m s c kh e",
     i_m_s_t_t_ti_p_t_c_duy_tr: "[MISSING] i m s t t ti p t c duy tr",
     t_v_n_ho_n_th_nh: "[MISSING] t v n ho n th nh",
-    c_i_thi_n_s_c_kh_e: "[MISSING] c i thi n s c kh e"
+    c_i_thi_n_s_c_kh_e: "[MISSING] c i thi n s c kh e",
+    no_patient_data: "No patient data available"
   },
   airecommendation: {
     "240": "[MISSING] 240",

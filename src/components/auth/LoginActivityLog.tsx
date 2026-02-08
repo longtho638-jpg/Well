@@ -130,7 +130,7 @@ const formatTimestamp = (isoString: string): string => {
 };
 
 export function LoginActivityLog({
-    attempts = MOCK_ATTEMPTS,
+    attempts = import.meta.env.DEV ? MOCK_ATTEMPTS : [],
     onExport,
 }: LoginActivityLogProps) {
     const { t } = useTranslation();
