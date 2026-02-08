@@ -5,6 +5,9 @@
   "framework": "vite",
   "cleanUrls": true,
   "trailingSlash": false,
+  "rewrites": [
+    { "source": "/((?!api|assets|sw\\.js|manifest\\.json|favicon\\.ico|robots\\.txt|sitemap\\.xml).*)", "destination": "/index.html" }
+  ],
   "headers": [
     {
       "source": "/(.*)",
