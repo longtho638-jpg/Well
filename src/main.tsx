@@ -12,7 +12,7 @@ import './index.css';
 import { validateConfig } from './utils/validate-config';
 
 // Validate configuration before starting the app
-validateConfig();
+const configState = validateConfig();
 
 // Initialize Sentry error tracking (production only)
 initSentry();
@@ -54,16 +54,75 @@ if (import.meta.env.PROD) {
 const rootElement = document.getElementById('root');
 if (!rootElement) throw new Error('Failed to find the root element');
 
-ReactDOM.createRoot(rootElement).render(
-  <React.StrictMode>
-    <HelmetProvider>
-      <ErrorBoundary>
-        <LanguageProvider>
-          <BrowserRouter>
-            <App />
-          </BrowserRouter>
-        </LanguageProvider>
-      </ErrorBoundary>
-    </HelmetProvider>
-  </React.StrictMode>
-);
+if (!configState.isValid) {
+  // Render minimal config error UI without depending on i18n or other providers
+  ReactDOM.createRoot(rootElement).render(
+    <div style={{
+      minHeight: '100vh',
+      background: 'linear-gradient(135deg, #111827, #1f2937, #111827)',
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+      padding: '2rem',
+      fontFamily: 'system-ui, -apple-system, sans-serif',
+    }}>
+      <div style={{
+        maxWidth: '28rem',
+        width: '100%',
+        background: 'rgba(31,41,55,0.5)',
+        backdropFilter: 'blur(8px)',
+        borderRadius: '0.75rem',
+        padding: '2rem',
+        border: '1px solid rgba(239,68,68,0.5)',
+        textAlign: 'center',
+      }}>
+        <div style={{ fontSize: '3.5rem', marginBottom: '1rem' }}>&#9888;&#65039;</div>
+        <h1 style={{ fontSize: '1.5rem', fontWeight: 700, color: '#fff', marginBottom: '0.5rem' }}>
+          Configuration Error
+        </h1>
+        <p style={{ color: '#9ca3af', marginBottom: '1.5rem' }}>
+          The application is missing required environment variables.
+          Please contact the administrator.
+        </p>
+        {!import.meta.env.PROD && (
+          <details style={{ textAlign: 'left', background: '#111827', borderRadius: '0.5rem', padding: '1rem', marginBottom: '1rem' }}>
+            <summary style={{ cursor: 'pointer', color: '#f87171', fontFamily: 'monospace', fontSize: '0.875rem', marginBottom: '0.5rem' }}>
+              Missing keys (dev only)
+            </summary>
+            <pre style={{ fontSize: '0.75rem', color: '#d1d5db', overflow: 'auto', whiteSpace: 'pre-wrap' }}>
+              {configState.missingKeys.join('\n')}
+            </pre>
+          </details>
+        )}
+        <button
+          onClick={() => window.location.reload()}
+          style={{
+            padding: '0.75rem 1.5rem',
+            background: 'linear-gradient(to right, #06b6d4, #3b82f6)',
+            color: '#fff',
+            border: 'none',
+            borderRadius: '0.5rem',
+            fontWeight: 500,
+            cursor: 'pointer',
+          }}
+        >
+          Reload Page
+        </button>
+      </div>
+    </div>
+  );
+} else {
+  ReactDOM.createRoot(rootElement).render(
+    <React.StrictMode>
+      <HelmetProvider>
+        <ErrorBoundary>
+          <LanguageProvider>
+            <BrowserRouter>
+              <App />
+            </BrowserRouter>
+          </LanguageProvider>
+        </ErrorBoundary>
+      </HelmetProvider>
+    </React.StrictMode>
+  );
+}

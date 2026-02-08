@@ -43,16 +43,7 @@ Please create a .env file in the project root with these values.
 =================================================================
     `;
 
-    // In production, we want to fail hard so we don't deploy broken apps
-    // or run with exposed/missing credentials.
-    // In development, we warn but might allow partial running if developers are mocking things.
-    // However, the instruction says "implement fail-fast", implying we should likely throw.
-
-    if (env.PROD) {
-       throw new Error(`Critical: Missing configuration. Check console for details. ${missingKeys.join(', ')}`);
-    } else {
-       console.error(errorMessage);
-    }
+    console.error(errorMessage);
 
     return { isValid: false, missingKeys };
   }
