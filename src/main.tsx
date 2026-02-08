@@ -39,15 +39,16 @@ if (import.meta.env.PROD) {
   script.src = '/_vercel/insights/script.js';
   document.head.appendChild(script);
 
-  // Register Service Worker
+  // Unregister stale Service Workers and clear caches (VitePWA is disabled)
   if ('serviceWorker' in navigator) {
-    navigator.serviceWorker.register('/sw.js')
-      .then(() => {
-        // SW registered successfully
-      })
-      .catch(() => {
-        // SW registration failed
+    navigator.serviceWorker.getRegistrations().then((registrations) => {
+      registrations.forEach((reg) => reg.unregister());
+    });
+    if ('caches' in window) {
+      caches.keys().then((names) => {
+        names.forEach((name) => caches.delete(name));
       });
+    }
   }
 }
 
