@@ -202,10 +202,8 @@ export default defineConfig({
             if (id.includes('framer-motion')) {
               return 'ui';
             }
-            // Charts chunk (Recharts + dependencies)
-            if (id.includes('recharts')) {
-              return 'charts';
-            }
+            // Recharts: let Vite handle naturally via lazy() boundaries
+            // Manual chunking caused TDZ errors from circular d3 deps
             // Utils chunk (i18n, common utilities)
             if (id.includes('i18next') || id.includes('react-i18next') || id.includes('zod') || id.includes('react-hook-form')) {
               return 'utils';
