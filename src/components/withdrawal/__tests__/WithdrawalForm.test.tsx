@@ -45,7 +45,7 @@ describe('WithdrawalForm', () => {
   const mockFetchUserFromDB = vi.fn();
   const mockUser = {
     name: 'Test User',
-    shopBalance: 5000000, // 5M VND
+    pendingCashback: 5000000, // 5M VND
   };
 
   beforeEach(() => {
