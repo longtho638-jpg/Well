@@ -26,7 +26,7 @@ export const WithdrawalForm: React.FC<WithdrawalFormProps> = ({ onSuccess }) => 
   const schema = z.object({
     amount: z.number()
       .min(MIN_WITHDRAWAL, t('withdrawal.minAmountError') || `Minimum withdrawal is ${new Intl.NumberFormat('vi-VN').format(MIN_WITHDRAWAL)} đ`)
-      .max(user?.shopBalance || 0, t('withdrawal.insufficientBalance') || 'Insufficient balance'),
+      .max(user?.pendingCashback || 0, t('withdrawal.insufficientBalance') || 'Insufficient balance'),
     bankName: z.string().min(1, t('withdrawal.bankRequired') || 'Bank name is required'),
     accountNumber: z.string().min(5, t('withdrawal.accountNumberRequired') || 'Valid account number is required'),
     accountName: z.string().min(2, t('withdrawal.accountNameRequired') || 'Account holder name is required'),
@@ -68,7 +68,7 @@ export const WithdrawalForm: React.FC<WithdrawalFormProps> = ({ onSuccess }) => 
   };
 
   const setMaxAmount = () => {
-    setValue('amount', user?.shopBalance || 0);
+    setValue('amount', user?.pendingCashback || 0);
   };
 
   return (
@@ -117,7 +117,7 @@ export const WithdrawalForm: React.FC<WithdrawalFormProps> = ({ onSuccess }) => 
             ) : (
               <p className="mt-1 text-xs text-zinc-500 flex justify-between">
                 <span>Min: {new Intl.NumberFormat('vi-VN').format(MIN_WITHDRAWAL)} đ</span>
-                <span>Available: {new Intl.NumberFormat('vi-VN').format(user?.shopBalance || 0)} đ</span>
+                <span>Available: {new Intl.NumberFormat('vi-VN').format(user?.pendingCashback || 0)} đ</span>
               </p>
             )}
           </div>
@@ -186,9 +186,9 @@ export const WithdrawalForm: React.FC<WithdrawalFormProps> = ({ onSuccess }) => 
             whileHover={{ scale: 1.02 }}
             whileTap={{ scale: 0.98 }}
             type="submit"
-            disabled={loading || (user?.shopBalance || 0) < MIN_WITHDRAWAL}
+            disabled={loading || (user?.pendingCashback || 0) < MIN_WITHDRAWAL}
             className={`w-full py-3.5 rounded-xl font-bold text-sm flex items-center justify-center gap-2 shadow-lg transition-all ${
-              loading || (user?.shopBalance || 0) < MIN_WITHDRAWAL
+              loading || (user?.pendingCashback || 0) < MIN_WITHDRAWAL
                 ? 'bg-zinc-800 text-zinc-500 cursor-not-allowed'
                 : 'bg-gradient-to-r from-emerald-500 to-emerald-600 text-white hover:shadow-emerald-500/25'
             }`}

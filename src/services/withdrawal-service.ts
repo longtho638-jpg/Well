@@ -154,14 +154,18 @@ export const withdrawalService = {
       const { data: { user } } = await supabase.auth.getUser();
       if (!user) throw new ValidationError('User not authenticated');
 
-      const { error: refundError } = await supabase.rpc('sql', {
-        query: `
-          UPDATE users
-          SET pending_cashback = COALESCE(pending_cashback, 0) + $1
-          WHERE id = $2
-        `,
-        params: [withdrawal.amount, user.id]
-      });
+      const { data: userData, error: readError } = await supabase
+        .from('users')
+        .select('pending_cashback')
+        .eq('id', user.id)
+        .single();
+
+      if (readError) throw fromSupabaseError(readError);
+
+      const { error: refundError } = await supabase
+        .from('users')
+        .update({ pending_cashback: (userData.pending_cashback || 0) + withdrawal.amount })
+        .eq('id', user.id);
 
       if (refundError) throw fromSupabaseError(refundError);
 

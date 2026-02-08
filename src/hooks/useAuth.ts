@@ -144,12 +144,16 @@ export function useAuth() {
 
       // 2. Create user record in users table
       if (data.user) {
+        // Capture sponsor from referral link (/ref/:id → sessionStorage)
+        const sponsorId = sessionStorage.getItem('wellnexus_sponsor_id');
+
         const { error: insertError } = await supabase.from('users').insert([
           {
             id: data.user.id,
             email,
             name,
             role_id: 8, // CTV rank (default for new users)
+            ...(sponsorId ? { sponsor_id: sponsorId } : {}),
           },
         ]);
 
@@ -158,6 +162,9 @@ export function useAuth() {
              // CRITICAL: Throw error to prevent orphaned auth accounts
              throw new Error(`Failed to create user profile: ${insertError.message}`);
         }
+
+        // Clear sponsor from sessionStorage after successful signup
+        sessionStorage.removeItem('wellnexus_sponsor_id');
       }
 
       return data;

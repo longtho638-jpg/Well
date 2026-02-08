@@ -10,6 +10,7 @@ const LandingPage = lazy(() => import('./pages/LandingPage'));
 const Login = lazy(() => import('./pages/Login'));
 const Signup = lazy(() => import('./pages/Signup'));
 const ConfirmEmail = lazy(() => import('./pages/confirm-email'));
+const ReferralRedirect = lazy(() => import('./pages/referral-redirect'));
 const ForgotPasswordPage = lazy(() => import('./pages/forgot-password-page'));
 const ResetPasswordPage = lazy(() => import('./pages/reset-password-page'));
 const Dashboard = lazy(() => import('./pages/Dashboard').then(m => ({ default: m.Dashboard })));
@@ -103,6 +104,7 @@ const App: React.FC = () => {
           <Route path="/confirm-email" element={<Suspense fallback={PageSpinner}><ConfirmEmail /></Suspense>} />
           <Route path="/forgot-password" element={<ForgotPasswordPage />} />
           <Route path="/reset-password" element={<ResetPasswordPage />} />
+          <Route path="/ref/:referralId" element={<Suspense fallback={PageSpinner}><ReferralRedirect /></Suspense>} />
           <Route path="/venture" element={<Suspense fallback={PageSpinner}><VenturePage /></Suspense>} />
 
           {/* ============================================================ */}

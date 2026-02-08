@@ -48,12 +48,16 @@ export function useSignup() {
             // Create user record in public.users table
             // (fetchUserFromDB queries this table after email confirmation)
             if (signUpData?.user) {
+                // Capture sponsor from referral link (/ref/:id → sessionStorage)
+                const sponsorId = sessionStorage.getItem('wellnexus_sponsor_id');
+
                 const { error: insertError } = await supabase.from('users').insert([
                     {
                         id: signUpData.user.id,
                         email: data.email,
                         name: data.name,
                         role_id: 8,
+                        ...(sponsorId ? { sponsor_id: sponsorId } : {}),
                     },
                 ]);
 
@@ -70,6 +74,9 @@ export function useSignup() {
                 userName: data.name,
                 userEmail: data.email,
             }).catch((err) => authLogger.error('Welcome email failed', err));
+
+            // Clear sponsor from sessionStorage after successful signup
+            sessionStorage.removeItem('wellnexus_sponsor_id');
 
             // Show success state - user needs to confirm email
             setSignupSuccess(true);
