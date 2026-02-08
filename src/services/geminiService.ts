@@ -1,5 +1,6 @@
 import { agentRegistry } from '@/agents';
 import { aiLogger } from '@/utils/logger';
+import { ServiceError } from '@/utils/errors';
 import { User, UserRank } from '@/types';
 
 /**
@@ -18,7 +19,7 @@ export const getCoachAdvice = async (
     const agent = agentRegistry.get('Gemini Coach');
     if (!agent) {
       aiLogger.warn('Gemini Coach Agent not found, falling back to legacy behavior');
-      throw new Error("Agent not found");
+      throw new ServiceError("Agent not found");
     }
 
     // Construct user object to match Agent interface

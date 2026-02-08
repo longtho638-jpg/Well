@@ -5,6 +5,7 @@
 
 import { supabase } from '@/lib/supabase';
 import { uiLogger } from '@/utils/logger';
+import { ValidationError } from '@/utils/errors';
 
 // VAPID public key - set this in production
 // Generate keys with: npx web-push generate-vapid-keys
@@ -57,7 +58,7 @@ export function getNotificationPermission(): NotificationPermission {
  */
 export async function requestNotificationPermission(): Promise<NotificationPermission> {
   if (!('Notification' in window)) {
-    throw new Error('This browser does not support notifications');
+    throw new ValidationError('This browser does not support notifications');
   }
 
   const permission = await Notification.requestPermission();
@@ -72,7 +73,7 @@ export async function subscribeToPushNotifications(): Promise<PushSubscriptionDa
   try {
     // Check browser support
     if (!isPushNotificationSupported()) {
-      throw new Error('Push notifications are not supported');
+      throw new ValidationError('Push notifications are not supported');
     }
 
     // Request permission
@@ -91,7 +92,7 @@ export async function subscribeToPushNotifications(): Promise<PushSubscriptionDa
     if (!subscription) {
       // Create new subscription
       if (!VAPID_PUBLIC_KEY) {
-        throw new Error('VAPID public key not configured');
+        throw new ValidationError('VAPID public key not configured');
       }
 
       const convertedVapidKey = urlBase64ToUint8Array(VAPID_PUBLIC_KEY);
@@ -193,11 +194,11 @@ export async function isPushSubscribed(): Promise<boolean> {
  */
 export async function showTestNotification(title: string, body: string): Promise<void> {
   if (!('Notification' in window)) {
-    throw new Error('Notifications not supported');
+    throw new ValidationError('Notifications not supported');
   }
 
   if (Notification.permission !== 'granted') {
-    throw new Error('Notification permission not granted');
+    throw new ValidationError('Notification permission not granted');
   }
 
   const registration = await navigator.serviceWorker.ready;

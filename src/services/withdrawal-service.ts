@@ -5,6 +5,7 @@
 
 import { supabase } from '@/lib/supabase';
 import { uiLogger } from '@/utils/logger';
+import { PaymentError, ValidationError, fromSupabaseError, getErrorMessage } from '@/utils/errors';
 import { emailService } from './email-service';
 import { logWithdrawalApproval, logWithdrawalRejection } from './audit-log-service';
 
@@ -47,7 +48,7 @@ export const withdrawalService = {
 
       if (error) {
         uiLogger.error('Create withdrawal request failed', error);
-        throw new Error(error.message || 'Failed to create withdrawal request');
+        throw new PaymentError(error.message || 'Failed to create withdrawal request', { operation: 'createWithdrawal' });
       }
 
       const requestId = data; // Returns request ID
@@ -80,7 +81,7 @@ export const withdrawalService = {
 
       return requestId;
     } catch (error) {
-      const err = error as Error;
+      const err = error instanceof Error ? error : fromSupabaseError(error as { message: string; code?: string });
       uiLogger.error('Withdrawal request error', err);
       throw err;
     }
@@ -134,11 +135,11 @@ export const withdrawalService = {
       const withdrawal = await this.getWithdrawalById(id);
 
       if (!withdrawal) {
-        throw new Error('Withdrawal request not found');
+        throw new ValidationError('Withdrawal request not found');
       }
 
       if (withdrawal.status !== 'pending') {
-        throw new Error(`Cannot cancel withdrawal with status: ${withdrawal.status}`);
+        throw new ValidationError(`Cannot cancel withdrawal with status: ${withdrawal.status}`);
       }
 
       // Update status to cancelled
@@ -147,11 +148,11 @@ export const withdrawalService = {
         .update({ status: 'cancelled' })
         .eq('id', id);
 
-      if (updateError) throw updateError;
+      if (updateError) throw fromSupabaseError(updateError);
 
       // Refund amount to user's pending_cashback
       const { data: { user } } = await supabase.auth.getUser();
-      if (!user) throw new Error('User not authenticated');
+      if (!user) throw new ValidationError('User not authenticated');
 
       const { error: refundError } = await supabase.rpc('sql', {
         query: `
@@ -162,7 +163,7 @@ export const withdrawalService = {
         params: [withdrawal.amount, user.id]
       });
 
-      if (refundError) throw refundError;
+      if (refundError) throw fromSupabaseError(refundError);
 
     } catch (error) {
       uiLogger.error('Cancel withdrawal failed', error);
@@ -185,7 +186,7 @@ export const withdrawalService = {
 
       const { data, error } = await query.order('created_at', { ascending: false });
 
-      if (error) throw error;
+      if (error) throw fromSupabaseError(error);
 
       return data || [];
     } catch (error) {
@@ -206,7 +207,7 @@ export const withdrawalService = {
       // Get withdrawal details before processing
       const withdrawal = await this.getWithdrawalById(requestId);
       if (!withdrawal) {
-        throw new Error('Withdrawal request not found');
+        throw new ValidationError('Withdrawal request not found');
       }
 
       // Get user details for email
@@ -229,7 +230,7 @@ export const withdrawalService = {
 
       if (error) {
         uiLogger.error('Process withdrawal failed', error);
-        throw new Error(error.message || 'Failed to process withdrawal');
+        throw new PaymentError(error.message || 'Failed to process withdrawal', { requestId, action });
       }
 
       // Send email notification if user data is available
@@ -290,7 +291,7 @@ export const withdrawalService = {
         })
         .eq('id', requestId);
 
-      if (error) throw error;
+      if (error) throw fromSupabaseError(error);
     } catch (error) {
       uiLogger.error('Complete withdrawal failed', error);
       throw error;

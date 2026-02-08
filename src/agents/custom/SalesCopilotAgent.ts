@@ -144,27 +144,25 @@ export class SalesCopilotAgent extends BaseAgent {
    * Helper to call Gemini Edge Function
    */
   private async callGemini(prompt: string, history: Array<{ role: string; content: string }> = [], modelName: string = 'gemini-pro'): Promise<string> {
-    try {
+    return this.executeWithRecovery(
+      async () => {
         const { data, error } = await supabase.functions.invoke('gemini-chat', {
             body: { prompt, history, modelName }
         });
 
         if (error) {
-            aiLogger.warn('Gemini Edge Function returned error', error);
             throw new Error(`Gemini Edge Function Error: ${error.message}`);
         }
 
         if (!data || !data.text) {
              if (data && data.error) throw new Error(data.error);
-             aiLogger.warn('Gemini Edge Function returned empty response');
              throw new Error('Gemini Edge Function returned empty response');
         }
 
         return data.text;
-    } catch (err) {
-        aiLogger.error('Call Gemini Failed', err);
-        throw err;
-    }
+      },
+      { actionName: 'callGemini', maxAttempts: 2 }
+    );
   }
 
   /**

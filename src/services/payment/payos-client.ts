@@ -7,6 +7,8 @@
  */
 
 import { supabase } from '@/lib/supabase';
+import { PaymentError } from '@/utils/errors';
+import { paymentBreaker } from '@/utils/circuit-breaker';
 
 export interface PaymentItem {
     name: string;
@@ -54,7 +56,7 @@ export interface CreatePaymentRequest {
  * Create a new payment request via secure Edge Function
  */
 export async function createPayment(request: CreatePaymentRequest): Promise<PaymentResponse> {
-    try {
+    return paymentBreaker.execute(async () => {
         const { data, error } = await supabase.functions.invoke('payos-create-payment', {
             body: {
                 orderCode: request.orderCode,
@@ -67,37 +69,31 @@ export async function createPayment(request: CreatePaymentRequest): Promise<Paym
         });
 
         if (error) {
-            throw new Error(`Payment creation failed: ${error.message}`);
+            throw new PaymentError(`Payment creation failed: ${error.message}`, { orderCode: request.orderCode });
         }
 
-        // Return payment response matching expected interface
         return {
             checkoutUrl: data.checkoutUrl,
             orderCode: data.orderCode,
-            // Other fields will be populated by PayOS webhook/status check
         } as PaymentResponse;
-    } catch (error) {
-        throw error;
-    }
+    });
 }
 
 /**
  * Check payment status via secure Edge Function proxy
  */
 export async function getPaymentStatus(orderCode: number): Promise<PaymentStatus> {
-    try {
+    return paymentBreaker.execute(async () => {
         const { data, error } = await supabase.functions.invoke('payos-get-payment', {
             body: { orderCode },
         });
 
         if (error) {
-            throw new Error(`Payment status check failed: ${error.message}`);
+            throw new PaymentError(`Payment status check failed: ${error.message}`, { orderCode });
         }
 
         return data as PaymentStatus;
-    } catch (error) {
-        throw error;
-    }
+    });
 }
 
 /**
@@ -107,19 +103,17 @@ export async function cancelPayment(
     orderCode: number,
     cancellationReason: string = 'User cancelled'
 ): Promise<PaymentStatus> {
-    try {
+    return paymentBreaker.execute(async () => {
         const { data, error } = await supabase.functions.invoke('payos-cancel-payment', {
             body: { orderCode, cancellationReason },
         });
 
         if (error) {
-            throw new Error(`Payment cancellation failed: ${error.message}`);
+            throw new PaymentError(`Payment cancellation failed: ${error.message}`, { orderCode });
         }
 
         return data as PaymentStatus;
-    } catch (error) {
-        throw error;
-    }
+    });
 }
 
 /**

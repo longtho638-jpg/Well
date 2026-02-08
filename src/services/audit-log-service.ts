@@ -5,6 +5,7 @@
 
 import { supabase } from '@/lib/supabase';
 import { uiLogger } from '@/utils/logger';
+import { fromSupabaseError } from '@/utils/errors';
 
 export type AuditAction = 
   | 'withdrawal_approved'
@@ -216,7 +217,7 @@ export async function getAuditLogs(
 
     if (error) {
       uiLogger.error('Failed to fetch audit logs', error);
-      throw error;
+      throw fromSupabaseError(error);
     }
 
     return data || [];
@@ -250,7 +251,7 @@ export async function getAuditLogStats(
 
     if (error) {
       uiLogger.error('Failed to fetch audit log stats', error);
-      throw error;
+      throw fromSupabaseError(error);
     }
 
     // Count by action type

@@ -5,6 +5,7 @@
 
 import { supabase } from '@/lib/supabase';
 import { uiLogger } from '@/utils/logger';
+import { AuthError, fromSupabaseError } from '@/utils/errors';
 
 export interface NetworkNode {
   id: string;
@@ -58,7 +59,7 @@ export const referralService = {
         const {
           data: { user },
         } = await supabase.auth.getUser();
-        if (!user) throw new Error('User not authenticated');
+        if (!user) throw new AuthError('User not authenticated');
         targetUserId = user.id;
       }
 
@@ -68,7 +69,7 @@ export const referralService = {
 
       if (error) {
         uiLogger.error('Get downline tree failed', error);
-        throw new Error(error.message || 'Failed to fetch downline tree');
+        throw fromSupabaseError(error);
       }
 
       // Transform flat RPC response to hierarchical structure
@@ -170,7 +171,7 @@ export const referralService = {
         const {
           data: { user },
         } = await supabase.auth.getUser();
-        if (!user) throw new Error('User not authenticated');
+        if (!user) throw new AuthError('User not authenticated');
         targetUserId = user.id;
       }
 
@@ -217,7 +218,7 @@ export const referralService = {
       const {
         data: { user },
       } = await supabase.auth.getUser();
-      if (!user) throw new Error('User not authenticated');
+      if (!user) throw new AuthError('User not authenticated');
 
       const { data, error } = await supabase
         .from('users')

@@ -1,6 +1,7 @@
 import { supabase } from '@/lib/supabase';
 import { UserRank } from '@/types';
 import { adminLogger } from '@/utils/logger';
+import { fromSupabaseError } from '@/utils/errors';
 
 export interface Partner {
     id: string;
@@ -45,7 +46,7 @@ export const partnerService = {
                 .select('*')
                 .order('created_at', { ascending: false });
 
-            if (error) throw error;
+            if (error) throw fromSupabaseError(error);
 
             return (data || []).map((user: SupabaseUserRecord) => ({
                 id: user.id,
@@ -80,7 +81,7 @@ export const partnerService = {
                 .update(updates)
                 .eq('id', id);
 
-            if (error) throw error;
+            if (error) throw fromSupabaseError(error);
             adminLogger.info(`Updated partner ${id}`, updates);
         } catch (error) {
             adminLogger.error(`Failed to update partner ${id}`, error);

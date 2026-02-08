@@ -149,28 +149,25 @@ export class GeminiCoachAgent extends BaseAgent {
    * Helper to call Gemini Edge Function
    */
   private async callGemini(prompt: string, modelName: string = 'gemini-2.0-flash-exp'): Promise<string> {
-    try {
+    return this.executeWithRecovery(
+      async () => {
         const { data, error } = await supabase.functions.invoke('gemini-chat', {
             body: { prompt, modelName }
         });
 
         if (error) {
-            agentLogger.warn('Gemini Edge Function returned error', error);
             throw new Error(`Gemini Edge Function Error: ${error.message}`);
         }
 
         if (!data || !data.text) {
-             // Check if it's a specific error from the function
              if (data && data.error) throw new Error(data.error);
-             agentLogger.warn('Gemini Edge Function returned empty response');
              throw new Error('Gemini Edge Function returned empty response');
         }
 
         return data.text;
-    } catch (err) {
-        agentLogger.error('Call Gemini Failed', err);
-        throw err;
-    }
+      },
+      { actionName: 'callGemini', maxAttempts: 2 }
+    );
   }
 
   /**

@@ -1,5 +1,6 @@
 import { ObjectionType, ObjectionTemplate } from "@/types";
 import { aiLogger } from "@/utils/logger";
+import { ServiceError } from "@/utils/errors";
 import { agentRegistry } from "@/agents";
 import type { SalesCopilotResult } from "@/agents/custom/SalesCopilotAgent";
 
@@ -137,7 +138,7 @@ export async function generateCopilotResponse(
   try {
     const agent = agentRegistry.get('Sales Copilot');
     if (!agent) {
-       throw new Error("Sales Copilot Agent not found");
+       throw new ServiceError("Sales Copilot Agent not found");
     }
 
     const result = await agent.execute({
@@ -188,7 +189,7 @@ export async function generateSalesScript(
 ): Promise<string> {
   try {
     const agent = agentRegistry.get('Sales Copilot');
-    if (!agent) throw new Error("Sales Copilot Agent not found");
+    if (!agent) throw new ServiceError("Sales Copilot Agent not found");
 
     const result = await agent.execute({
       action: 'generateSalesScript',
@@ -232,7 +233,7 @@ export async function getCopilotCoaching(
 ): Promise<string> {
   try {
     const agent = agentRegistry.get('Sales Copilot');
-    if (!agent) throw new Error("Sales Copilot Agent not found");
+    if (!agent) throw new ServiceError("Sales Copilot Agent not found");
 
     const result = await agent.execute({
       action: 'analyzeConversation',

@@ -1,5 +1,7 @@
 import { AgentDefinition, AgentLog, AgentKPI } from '@/types/agentic';
 import { agentLogger } from '@/utils/logger';
+import { AgentError, getErrorMessage } from '@/utils/errors';
+import { retry } from '@/utils/async';
 
 /**
  * Abstract base class for all agents in the Agentic OS.
@@ -93,5 +95,41 @@ export abstract class BaseAgent {
    */
   clearLogs(): void {
     this.logs = [];
+  }
+
+  /**
+   * Execute an async operation with retry and structured error recovery.
+   * Use this in subclasses for external API calls (Gemini, Supabase, etc.).
+   */
+  protected async executeWithRecovery<T>(
+    operation: () => Promise<T>,
+    options: {
+      actionName: string;
+      maxAttempts?: number;
+      fallback?: () => T;
+    }
+  ): Promise<T> {
+    try {
+      return await retry(operation, {
+        maxAttempts: options.maxAttempts ?? 2,
+        delay: 1000,
+        backoff: 2,
+        onRetry: (attempt, error) => {
+          agentLogger.warn(
+            `[${this.definition.agent_name}] Retry ${attempt} for ${options.actionName}: ${error.message}`
+          );
+        },
+      });
+    } catch (error) {
+      agentLogger.error(
+        `[${this.definition.agent_name}] ${options.actionName} failed after retries`,
+        error
+      );
+      if (options.fallback) return options.fallback();
+      throw new AgentError(
+        `${this.definition.agent_name}: ${options.actionName} failed — ${getErrorMessage(error)}`,
+        { agent: this.definition.agent_name, action: options.actionName }
+      );
+    }
   }
 }

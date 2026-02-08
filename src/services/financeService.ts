@@ -1,5 +1,6 @@
 import { supabase, isSupabaseConfigured } from '@/lib/supabase';
 import { adminLogger } from '@/utils/logger';
+import { fromSupabaseError } from '@/utils/errors';
 
 export interface Transaction {
     id: string;
@@ -125,6 +126,6 @@ export const financeService = {
             .update({ status })
             .eq('id', id);
 
-        if (error) throw error;
+        if (error) throw fromSupabaseError(error);
     }
 };

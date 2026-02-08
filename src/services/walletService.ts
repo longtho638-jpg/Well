@@ -1,6 +1,7 @@
 import { supabase } from '@/lib/supabase';
 import { Transaction } from '../types';
 import { createLogger } from '../utils/logger';
+import { fromSupabaseError } from '../utils/errors';
 
 const walletLogger = createLogger('WalletService');
 
@@ -44,7 +45,7 @@ export const walletService = {
             return null;
         } catch (error) {
             walletLogger.error('Error fetching wallet:', error);
-            throw error;
+            throw error instanceof Error ? error : fromSupabaseError(error as { message: string; code?: string });
         }
     },
 
@@ -79,7 +80,7 @@ export const walletService = {
             }));
         } catch (error) {
             walletLogger.error('Error fetching transactions:', error);
-            throw error;
+            throw error instanceof Error ? error : fromSupabaseError(error as { message: string; code?: string });
         }
     },
 
