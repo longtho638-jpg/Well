@@ -36,6 +36,13 @@ function secureCompare(a: string, b: string): boolean {
 }
 
 serve(async (req) => {
+  // Handle GET requests for PayOS webhook URL verification
+  if (req.method === 'GET') {
+    return new Response(JSON.stringify({ success: true }), {
+      headers: { 'Content-Type': 'application/json' },
+    })
+  }
+
   const supabase = createClient(
     Deno.env.get('SUPABASE_URL') ?? '',
     Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') ?? ''
