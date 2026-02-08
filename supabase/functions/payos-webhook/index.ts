@@ -192,6 +192,26 @@ serve(async (req) => {
             .catch((err) => console.error('Email send failed:', err))
         }
       }
+
+      // 7. Trigger commission distribution via agent-reward
+      if (currentOrder.user_id) {
+        const webhookSecret = Deno.env.get('WEBHOOK_SECRET')
+        supabase.functions
+          .invoke('agent-reward', {
+            body: {
+              record: {
+                id: currentOrder.id,
+                user_id: currentOrder.user_id,
+                total_vnd: payload.data.amount,
+                status: 'completed',
+              },
+              old_record: { status: 'pending' },
+            },
+            ...(webhookSecret ? { headers: { 'x-webhook-secret': webhookSecret } } : {}),
+          })
+          .then(() => console.log(`Commission distributed for order ${currentOrder.id}`))
+          .catch((err) => console.error('Commission distribution failed:', err))
+      }
     }
 
     return new Response(

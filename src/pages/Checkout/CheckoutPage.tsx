@@ -41,11 +41,12 @@ export const CheckoutPage: React.FC = () => {
 
         try {
             if (paymentMethod === 'payos') {
-                // Generate a numeric order code (safe for JS numbers, unique enough for demo)
-                // Format: YYMMDD + 4 random digits
-                const datePrefix = new Date().toISOString().slice(2, 10).replace(/-/g, ''); // 240203
-                const randomSuffix = Math.floor(1000 + Math.random() * 9000); // 1000-9999
-                const orderCode = Number(`${datePrefix}${randomSuffix}`);
+                // Generate a numeric order code using timestamp for uniqueness
+                // Format: last 6 digits of epoch ms + 4 random digits = 10 digits
+                // Unique per millisecond, ~16 minute wrap cycle, combined with random suffix
+                const tsPart = String(Date.now()).slice(-6);
+                const randomSuffix = Math.floor(1000 + Math.random() * 9000);
+                const orderCode = Number(`${tsPart}${randomSuffix}`);
 
                 // Create PayOS Payment Link
                 const response = await createPayment({
