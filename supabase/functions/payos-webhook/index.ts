@@ -155,19 +155,42 @@ serve(async (req) => {
       amount: payload.data.amount
     }, 'success')
 
-    // 6. Trigger notifications
+    // 6. Trigger order confirmation email on successful payment
     if (newStatus === 'paid') {
       if (currentOrder.user_id) {
-        supabase.functions
-          .invoke('send-email', {
-            body: {
-              type: 'order-confirmation',
-              userId: currentOrder.user_id,
-              orderCode: payload.data.orderCode,
-              amount: payload.data.amount,
-            },
-          })
-          .catch((err) => console.error('Email send failed:', err))
+        // Fetch user email/name and order items for the email template
+        const [userResult, itemsResult] = await Promise.all([
+          supabase.from('users').select('email, full_name').eq('id', currentOrder.user_id).single(),
+          supabase.from('order_items')
+            .select('product_name, quantity, unit_price')
+            .eq('order_id', currentOrder.id),
+        ])
+
+        const user = userResult.data
+        const items = itemsResult.data || []
+
+        if (user?.email) {
+          supabase.functions
+            .invoke('send-email', {
+              body: {
+                to: user.email,
+                subject: `✅ Đơn hàng #${payload.data.orderCode} đã được xác nhận!`,
+                templateType: 'order-confirmation',
+                data: {
+                  userName: user.full_name || 'Bạn',
+                  orderId: String(payload.data.orderCode),
+                  orderDate: new Date().toLocaleDateString('vi-VN'),
+                  totalAmount: `${payload.data.amount.toLocaleString('vi-VN')} VND`,
+                  items: items.map((i: any) => ({
+                    name: i.product_name,
+                    quantity: i.quantity,
+                    price: `${(i.unit_price || 0).toLocaleString('vi-VN')} VND`,
+                  })),
+                },
+              },
+            })
+            .catch((err) => console.error('Email send failed:', err))
+        }
       }
     }
 

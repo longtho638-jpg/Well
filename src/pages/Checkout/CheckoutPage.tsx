@@ -6,6 +6,7 @@ import { GuestForm } from '../../components/checkout/GuestForm';
 import { GuestInfoValues } from '../../utils/validation/checkoutSchema';
 import { ArrowLeft, CreditCard, Loader2, QrCode, Banknote } from 'lucide-react';
 import { orderService } from '../../services/orderService';
+import { sendOrderConfirmationEmail } from '../../services/email-service';
 import { useToast } from '../../components/ui/Toast';
 import { uiLogger } from '../../utils/logger';
 import { OrderPayload, PaymentMethod } from '../../types/checkout';
@@ -98,7 +99,23 @@ export const CheckoutPage: React.FC = () => {
                 orderCode: orderCode
             };
 
-            await orderService.createOrder(payload);
+            const orderId = await orderService.createOrder(payload);
+
+            // Fire-and-forget order confirmation email
+            if (guestData.email) {
+                sendOrderConfirmationEmail(guestData.email, {
+                    userName: guestData.fullName,
+                    orderId,
+                    orderDate: new Date().toLocaleDateString('vi-VN'),
+                    totalAmount: new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(cartTotal),
+                    items: cartItems.map(item => ({
+                        name: item.product.name,
+                        quantity: item.quantity,
+                        price: new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(item.product.price),
+                    })),
+                    shippingAddress: `${guestData.address.street}, ${guestData.address.ward}, ${guestData.address.district}, ${guestData.address.city}`,
+                }).catch(err => uiLogger.error('Order confirmation email failed:', err));
+            }
 
             clearCart();
             showToast(t('checkout.success'), 'success');
