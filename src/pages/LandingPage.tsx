@@ -1,14 +1,10 @@
 import { useState, useEffect, lazy, Suspense } from 'react';
 import { useTranslation } from '../hooks';
-import { motion } from 'framer-motion';
 import {
   Sprout,
   TreeDeciduous,
   Trees,
   Building2,
-  Target,
-  Globe,
-  ChevronRight,
 } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { useStore } from '../store';

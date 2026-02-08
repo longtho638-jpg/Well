@@ -60,6 +60,7 @@ const CommissionWalletInner: React.FC = () => {
     try {
       await generatePDF(reportData);
     } catch {
+      // PDF generation failed, non-critical
     }
   };
 

@@ -34,7 +34,7 @@ export const WithdrawalForm: React.FC<WithdrawalFormProps> = ({ onSuccess }) => 
 
   type WithdrawalFormData = z.infer<typeof schema>;
 
-  const { control, handleSubmit, formState: { errors }, watch, setValue } = useForm<WithdrawalFormData>({
+  const { control, handleSubmit, formState: { errors }, setValue } = useForm<WithdrawalFormData>({
     resolver: zodResolver(schema),
     defaultValues: {
       amount: MIN_WITHDRAWAL,
@@ -43,8 +43,6 @@ export const WithdrawalForm: React.FC<WithdrawalFormProps> = ({ onSuccess }) => 
       accountName: user?.name?.toUpperCase() || '',
     }
   });
-
-  const amount = watch('amount');
 
   const onSubmit = async (data: WithdrawalFormData) => {
     setLoading(true);

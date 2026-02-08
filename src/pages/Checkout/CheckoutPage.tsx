@@ -133,7 +133,7 @@ export const CheckoutPage: React.FC = () => {
             try {
                 await processOrder(pendingGuestInfo, 'payos', orderCode);
                 setShowPaymentModal(false);
-            } catch (error) {
+            } catch {
                 // Error handling already in processOrder
                 setIsSubmitting(false);
             }

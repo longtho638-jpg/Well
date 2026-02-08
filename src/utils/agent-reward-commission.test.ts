@@ -48,7 +48,16 @@ function calculatePoints(orderTotal: number, policy = DEFAULT_POLICY): number {
 }
 
 // Mirrors fetchPolicyConfig mapping from DB → POLICY structure
-function mapDbConfigToPolicy(dbConfig: Record<string, any>) {
+interface DbPolicyConfig {
+    beeAgentPolicy?: {
+        ctvCommission?: number;
+        startupCommission?: number;
+        sponsorBonus?: number;
+        rankUpThreshold?: number;
+    };
+}
+
+function mapDbConfigToPolicy(dbConfig: DbPolicyConfig) {
     return {
         RANKS: DEFAULT_POLICY.RANKS,
         COMMISSION_RATES: {
@@ -233,7 +242,7 @@ describe('Agent Reward Commission Distribution', () => {
         });
 
         it('no sponsor = no F1 bonus', () => {
-            const orderTotal = 1_000_000;
+            const _orderTotal = 1_000_000;
             // When buyer has no sponsor_id, agent-reward skips F1 bonus entirely
             const sponsorBonus = 0; // No sponsor_id means no bonus
             expect(sponsorBonus).toBe(0);

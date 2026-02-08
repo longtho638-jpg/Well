@@ -1,12 +1,10 @@
 import React, { useState, useMemo } from 'react';
 import { useStore } from '@/store';
-import { useTranslation } from '@/hooks';
 import WalletPortfolioHeroSection from '@/components/Wallet/wallet-portfolio-hero-section';
 import WalletTokenBalanceCard from '@/components/Wallet/wallet-token-balance-card';
 import WalletTransactionHistoryTable from '@/components/Wallet/wallet-transaction-history-table';
 
 const WalletPage: React.FC = () => {
-  const { t } = useTranslation();
   const { user, transactions } = useStore();
   const [hideBalance, setHideBalance] = useState(false);
 

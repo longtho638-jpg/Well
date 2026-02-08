@@ -8,7 +8,7 @@ import {
   CheckCircle2,
 } from 'lucide-react';
 import { useTranslation } from '@/hooks';
-import { TeamMember, AtRiskMember } from '@/types';
+import { AtRiskMember } from '@/types';
 
 interface Props {
   atRiskMembers: AtRiskMember[];

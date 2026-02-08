@@ -162,6 +162,7 @@ class SecureTokenStorage {
       const encrypted = this.encryptSimple(value);
       sessionStorage.setItem(this.getKey(key), encrypted);
     } catch {
+      // sessionStorage unavailable, skip backup
     }
   }
 

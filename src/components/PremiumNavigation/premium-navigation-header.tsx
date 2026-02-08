@@ -16,7 +16,6 @@ import { motion } from 'framer-motion';
 import { Menu, X, ShoppingBag, Sparkles, Crown, Gem } from 'lucide-react';
 import { useStore } from '@/store';
 import { useTranslation } from '@/hooks';
-import { User } from '@/types';
 import Logo from './Logo';
 import DesktopNav from './DesktopNav';
 import AuthSection from './AuthSection';

@@ -64,6 +64,7 @@ export default function AiLandingPageBuilder({
       const newPage = await onCreateLandingPage(selectedTemplate, portraitUrl || undefined);
       setGeneratedLandingPage(newPage);
     } catch {
+      // generation failed, handled by finally
     } finally {
       setIsGeneratingBio(false);
     }

@@ -31,7 +31,7 @@ class MekongHubSDK {
       // Mock implementation - replace with actual SDK when available
       this.connected = true;
       return true;
-    } catch (error) {
+    } catch {
       return false;
     }
   }
@@ -39,7 +39,7 @@ class MekongHubSDK {
   /**
    * Send message to hub
    */
-  async sendMessage(message: AgentMessage): Promise<void> {
+  async sendMessage(_message: AgentMessage): Promise<void> {
     if (!this.connected) {
       throw new Error('Hub not connected');
     }
@@ -49,7 +49,7 @@ class MekongHubSDK {
   /**
    * Subscribe to hub events
    */
-  onMessage(callback: (message: AgentMessage) => void): void {
+  onMessage(_callback: (message: AgentMessage) => void): void {
     if (!this.connected) {
       return;
     }

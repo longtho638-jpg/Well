@@ -48,6 +48,7 @@ export function QRPaymentModal({
                     clearInterval(interval);
                 }
             } catch {
+                // status check failed, will retry on next interval
             } finally {
                 setIsChecking(false);
             }

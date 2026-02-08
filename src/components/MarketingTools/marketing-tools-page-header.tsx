@@ -1,8 +1,6 @@
 import React from 'react';
-import { motion } from 'framer-motion';
 import { Sparkles, Gift, FileText, QrCode } from 'lucide-react';
 import { useTranslation } from '@/hooks';
-import { GiftCard, ContentTemplate } from '@/components/MarketingTools';
 
 interface Props {
   giftCardsCount: number;

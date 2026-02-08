@@ -1,7 +1,6 @@
 import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { useStore } from '@/store';
-import { useTranslation } from '@/hooks';
 import { ParticleBackground } from '@/components/ParticleBackground';
 import { CursorGlow } from '@/components/CursorGlow';
 import LeaderboardHeaderStats from '@/components/Leaderboard/leaderboard-header-stats';

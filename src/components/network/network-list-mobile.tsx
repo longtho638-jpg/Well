@@ -76,7 +76,7 @@ const NodeItem: React.FC<{ node: NetworkNode; level: number }> = ({ node, level 
             exit={{ height: 0, opacity: 0 }}
             className="overflow-hidden pl-4 border-l border-zinc-800 ml-4"
           >
-            {node.children!.map((child) => (
+            {node.children?.map((child) => (
               <NodeItem key={child.id} node={child} level={level + 1} />
             ))}
           </motion.div>

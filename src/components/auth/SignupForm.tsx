@@ -75,7 +75,7 @@ export const SignupForm: React.FC = () => {
                         />
                     </div>
                     {errors.name && (
-                        <p className="text-xs text-rose-400 ml-1">{t(errors.name.message!)}</p>
+                        <p className="text-xs text-rose-400 ml-1">{t(errors.name.message ?? '')}</p>
                     )}
                 </div>
 
@@ -92,7 +92,7 @@ export const SignupForm: React.FC = () => {
                         />
                     </div>
                     {errors.email && (
-                        <p className="text-xs text-rose-400 ml-1">{t(errors.email.message!)}</p>
+                        <p className="text-xs text-rose-400 ml-1">{t(errors.email.message ?? '')}</p>
                     )}
                 </div>
 
@@ -117,7 +117,7 @@ export const SignupForm: React.FC = () => {
                             />
                         )}
                         {errors.password && !watchedPassword && (
-                            <p className="text-xs text-rose-400 ml-1">{t(errors.password.message!)}</p>
+                            <p className="text-xs text-rose-400 ml-1">{t(errors.password.message ?? '')}</p>
                         )}
                     </div>
 
@@ -134,7 +134,7 @@ export const SignupForm: React.FC = () => {
                             />
                         </div>
                         {errors.confirmPassword && (
-                            <p className="text-xs text-rose-400 ml-1">{t(errors.confirmPassword.message!)}</p>
+                            <p className="text-xs text-rose-400 ml-1">{t(errors.confirmPassword.message ?? '')}</p>
                         )}
                     </div>
                 </div>

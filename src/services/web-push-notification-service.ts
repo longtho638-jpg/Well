@@ -106,10 +106,10 @@ export async function subscribeToPushNotifications(): Promise<PushSubscriptionDa
     // Convert subscription to JSON
     const subscriptionJSON = subscription.toJSON();
     const subscriptionData: PushSubscriptionData = {
-      endpoint: subscriptionJSON.endpoint!,
+      endpoint: subscriptionJSON.endpoint ?? '',
       keys: {
-        p256dh: subscriptionJSON.keys!.p256dh!,
-        auth: subscriptionJSON.keys!.auth!,
+        p256dh: subscriptionJSON.keys?.p256dh ?? '',
+        auth: subscriptionJSON.keys?.auth ?? '',
       },
     };
 

@@ -183,7 +183,7 @@ describe('QRPaymentModal Component', () => {
     );
 
     const closeButton = screen.getByTestId('icon-close').parentElement;
-    fireEvent.click(closeButton!);
+    if (closeButton) fireEvent.click(closeButton);
 
     expect(window.confirm).toHaveBeenCalledWith('checkout.payment.confirm_close');
     expect(mockOnClose).toHaveBeenCalled();
@@ -202,8 +202,8 @@ describe('QRPaymentModal Component', () => {
       />
     );
 
-    const closeButton = screen.getByTestId('icon-close').parentElement;
-    fireEvent.click(closeButton!);
+    const closeBtn = screen.getByTestId('icon-close').parentElement;
+    if (closeBtn) fireEvent.click(closeBtn);
 
     expect(window.confirm).toHaveBeenCalled();
     expect(mockOnClose).not.toHaveBeenCalled();

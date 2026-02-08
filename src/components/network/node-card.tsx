@@ -1,6 +1,5 @@
 import React from 'react';
-import { NetworkNode } from '../../services/referral-service';
-import { User, Trophy, Star, Shield, Users } from 'lucide-react';
+import { User, Trophy, Star, Shield } from 'lucide-react';
 
 interface NodeDatum {
   name: string;

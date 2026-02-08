@@ -5,7 +5,7 @@
 
 import { supabase } from '@/lib/supabase';
 import { uiLogger } from '@/utils/logger';
-import { PaymentError, ValidationError, fromSupabaseError, getErrorMessage } from '@/utils/errors';
+import { PaymentError, ValidationError, fromSupabaseError } from '@/utils/errors';
 import { emailService } from './email-service';
 import { logWithdrawalApproval, logWithdrawalRejection } from './audit-log-service';
 
