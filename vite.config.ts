@@ -3,6 +3,11 @@ import react from '@vitejs/plugin-react'
 import { VitePWA } from 'vite-plugin-pwa'
 
 export default defineConfig({
+  // Safari 14+ compatibility — without this, Vite defaults to 'esnext' which
+  // emits ES2022+ syntax that Safari cannot parse, causing production crash
+  esbuild: {
+    target: 'es2020',
+  },
   plugins: [
     react(),
     // VitePWA({
@@ -190,6 +195,7 @@ export default defineConfig({
     },
   },
   build: {
+    target: ['es2020', 'safari14', 'chrome87', 'firefox78'],
     rollupOptions: {
       output: {
         manualChunks(id) {
