@@ -22,16 +22,19 @@ export default function ConfirmEmail() {
     const { t } = useTranslation();
 
     useEffect(() => {
+        let timeoutId: ReturnType<typeof setTimeout> | null = null;
+        let authSubscription: { unsubscribe: () => void } | null = null;
+
         const confirmEmail = async () => {
             try {
                 // Strategy 1: Check query params (token_hash + type) — Supabase email link format
                 const tokenHash = searchParams.get('token_hash');
                 const type = searchParams.get('type');
 
-                if (tokenHash && type === 'signup') {
+                if (tokenHash && (type === 'signup' || type === 'email')) {
                     const { error } = await supabase.auth.verifyOtp({
                         token_hash: tokenHash,
-                        type: 'signup',
+                        type: type as 'signup' | 'email',
                     });
 
                     if (error) {
@@ -49,20 +52,46 @@ export default function ConfirmEmail() {
                     return;
                 }
 
-                // Strategy 2: Check hash fragment — Supabase implicit/PKCE flow
+                // Strategy 2: Hash fragment (implicit flow) or PKCE code param
+                // Supabase client with detectSessionInUrl: true processes these automatically,
+                // but there's a race condition — use onAuthStateChange for reliable detection
                 const hash = window.location.hash;
-                if (hash && hash.includes('access_token')) {
-                    // Supabase JS client auto-processes hash fragments on page load
-                    // Wait for the auth state change
+                const code = searchParams.get('code');
+
+                if ((hash && hash.includes('access_token')) || code) {
+                    const { data: { subscription } } = supabase.auth.onAuthStateChange(
+                        (event, session) => {
+                            if (event === 'SIGNED_IN' && session) {
+                                subscription.unsubscribe();
+                                if (timeoutId) clearTimeout(timeoutId);
+                                setState('success');
+                                setTimeout(() => navigate('/login'), 2000);
+                            }
+                        }
+                    );
+                    authSubscription = subscription;
+
+                    // Check if Supabase already processed the URL before the listener was set up
                     const { data: { session } } = await supabase.auth.getSession();
                     if (session) {
+                        subscription.unsubscribe();
+                        authSubscription = null;
                         setState('success');
                         setTimeout(() => navigate('/login'), 2000);
                         return;
                     }
+
+                    // Timeout after 10s if session never establishes
+                    timeoutId = setTimeout(() => {
+                        subscription.unsubscribe();
+                        authSubscription = null;
+                        setState('error');
+                        setErrorMessage('Confirmation timed out. Please try again.');
+                    }, 10000);
+                    return;
                 }
 
-                // Strategy 3: Check if already has a valid session (e.g., magic link clicked)
+                // Strategy 3: No URL tokens — check for existing session (e.g., already confirmed)
                 const { data: { session: existingSession } } = await supabase.auth.getSession();
                 if (existingSession) {
                     setState('already_confirmed');
@@ -80,6 +109,11 @@ export default function ConfirmEmail() {
         };
 
         confirmEmail();
+
+        return () => {
+            if (timeoutId) clearTimeout(timeoutId);
+            if (authSubscription) authSubscription.unsubscribe();
+        };
     }, [searchParams, navigate, t]);
 
     return (

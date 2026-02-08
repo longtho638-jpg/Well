@@ -32,7 +32,7 @@ export function useSignup() {
 
     const onSubmit = async (data: SignupFormValues) => {
         try {
-            const { error: signUpError } = await supabase.auth.signUp({
+            const { data: signUpData, error: signUpError } = await supabase.auth.signUp({
                 email: data.email,
                 password: data.password,
                 options: {
@@ -44,6 +44,24 @@ export function useSignup() {
             });
 
             if (signUpError) throw signUpError;
+
+            // Create user record in public.users table
+            // (fetchUserFromDB queries this table after email confirmation)
+            if (signUpData?.user) {
+                const { error: insertError } = await supabase.from('users').insert([
+                    {
+                        id: signUpData.user.id,
+                        email: data.email,
+                        name: data.name,
+                        role_id: 8,
+                    },
+                ]);
+
+                if (insertError) {
+                    authLogger.error('Failed to create user record', insertError);
+                    throw new Error(`Failed to create user profile: ${insertError.message}`);
+                }
+            }
 
             authLogger.info('Signup successful for:', data.email);
 
