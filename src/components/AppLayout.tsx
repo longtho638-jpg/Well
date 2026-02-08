@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Outlet, useLocation, useNavigate } from 'react-router-dom';
 import { Menu, Bell, Search } from 'lucide-react';
 import { Sidebar } from './Sidebar';
+import { ErrorBoundary } from './ErrorBoundary';
 import { ThemeToggle } from './ui/ThemeToggle';
 import { MobileBottomNav } from './MobileBottomNav';
 import { ZaloWidget } from './ZaloWidget';
@@ -42,6 +43,13 @@ export const AppLayout: React.FC = () => {
 
   return (
     <div className="flex h-screen bg-gray-50 dark:bg-slate-900 transition-colors font-sans text-gray-900 dark:text-slate-100 overflow-hidden">
+      {/* Skip to main content link for keyboard/screen reader users */}
+      <a
+        href="#main-content"
+        className="sr-only focus:not-sr-only focus:absolute focus:z-[100] focus:top-2 focus:left-2 focus:px-4 focus:py-2 focus:bg-primary focus:text-white focus:rounded-lg focus:shadow-lg"
+      >
+        Skip to main content
+      </a>
       {/* ================================================================ */}
       {/* DESKTOP SIDEBAR - Fixed left, always visible on md+ screens */}
       {/* ================================================================ */}
@@ -131,16 +139,23 @@ export const AppLayout: React.FC = () => {
         </header>
 
         {/* Scrollable Content - Using key to force re-render on route change */}
-        <main className="flex-1 overflow-y-auto p-4 sm:p-6 lg:p-8 pb-24 md:pb-8 scroll-smooth bg-gradient-to-br from-gray-50 to-white dark:from-slate-900 dark:to-slate-800">
-          <motion.div
-            key={location.pathname}
-            className="max-w-7xl mx-auto"
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.4, ease: "easeOut" }}
-          >
-            <Outlet />
-          </motion.div>
+        <main
+          id="main-content"
+          role="main"
+          aria-label="Page content"
+          className="flex-1 overflow-y-auto p-4 sm:p-6 lg:p-8 pb-24 md:pb-8 scroll-smooth bg-gradient-to-br from-gray-50 to-white dark:from-slate-900 dark:to-slate-800"
+        >
+          <ErrorBoundary>
+            <motion.div
+              key={location.pathname}
+              className="max-w-7xl mx-auto"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.4, ease: "easeOut" }}
+            >
+              <Outlet />
+            </motion.div>
+          </ErrorBoundary>
         </main>
       </div>
 

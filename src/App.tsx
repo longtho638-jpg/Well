@@ -2,6 +2,7 @@ import React, { lazy, Suspense } from 'react';
 import { Routes, Route, Navigate } from 'react-router-dom';
 import { AppLayout } from './components/AppLayout';
 import { AdminRoute } from './components/AdminRoute';
+import { ErrorBoundary } from './components/ErrorBoundary';
 
 // Code splitting: Lazy load pages for better performance
 // Named exports need special handling
@@ -54,6 +55,25 @@ import { useAuth } from './hooks/useAuth';
 import { useAutoLogout } from './hooks/useAutoLogout';
 import { PWAInstallPrompt } from './components/pwa-install-prompt';
 
+// Reusable Suspense fallbacks — eliminates 25+ duplicate inline spinners
+const PageSpinner = (
+  <div className="flex items-center justify-center h-screen bg-zinc-950">
+    <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-emerald-500" />
+  </div>
+);
+
+const SectionSpinner = (
+  <div className="flex items-center justify-center h-96">
+    <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#00575A]" />
+  </div>
+);
+
+const AdminSpinner = (
+  <div className="flex items-center justify-center h-screen">
+    <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#00575A]" />
+  </div>
+);
+
 const App: React.FC = () => {
   const { t } = useTranslation();
   useAuth(); // Initialize authentication check
@@ -63,7 +83,7 @@ const App: React.FC = () => {
   if (!isInitialized) {
     return (
       <div className="flex items-center justify-center h-screen bg-zinc-950">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-emerald-500"></div>
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-emerald-500" />
       </div>
     );
   }
@@ -77,32 +97,32 @@ const App: React.FC = () => {
           {/* ============================================================ */}
           {/* PUBLIC ROUTES: Landing, Auth & Venture Vision */}
           {/* ============================================================ */}
-          <Route path="/" element={<Suspense fallback={<div className="flex items-center justify-center h-screen bg-zinc-950"><div className="animate-spin rounded-full h-12 w-12 border-b-2 border-emerald-500"></div></div>}><LandingPage /></Suspense>} />
-          <Route path="/login" element={<Suspense fallback={<div className="flex items-center justify-center h-screen bg-zinc-950"><div className="animate-spin rounded-full h-12 w-12 border-b-2 border-emerald-500"></div></div>}><Login /></Suspense>} />
-          <Route path="/signup" element={<Suspense fallback={<div className="flex items-center justify-center h-screen bg-zinc-950"><div className="animate-spin rounded-full h-12 w-12 border-b-2 border-emerald-500"></div></div>}><Signup /></Suspense>} />
-          <Route path="/confirm-email" element={<Suspense fallback={<div className="flex items-center justify-center h-screen bg-zinc-950"><div className="animate-spin rounded-full h-12 w-12 border-b-2 border-emerald-500"></div></div>}><ConfirmEmail /></Suspense>} />
+          <Route path="/" element={<Suspense fallback={PageSpinner}><LandingPage /></Suspense>} />
+          <Route path="/login" element={<Suspense fallback={PageSpinner}><Login /></Suspense>} />
+          <Route path="/signup" element={<Suspense fallback={PageSpinner}><Signup /></Suspense>} />
+          <Route path="/confirm-email" element={<Suspense fallback={PageSpinner}><ConfirmEmail /></Suspense>} />
           <Route path="/forgot-password" element={<ForgotPasswordPage />} />
           <Route path="/reset-password" element={<ResetPasswordPage />} />
-          <Route path="/venture" element={<Suspense fallback={<div className="flex items-center justify-center h-screen bg-zinc-950"><div className="animate-spin rounded-full h-12 w-12 border-b-2 border-emerald-500"></div></div>}><VenturePage /></Suspense>} />
+          <Route path="/venture" element={<Suspense fallback={PageSpinner}><VenturePage /></Suspense>} />
 
           {/* ============================================================ */}
           {/* CHECKOUT ROUTES */}
           {/* ============================================================ */}
-          <Route path="/checkout" element={<Suspense fallback={<div className="flex items-center justify-center h-screen"><div className="animate-spin rounded-full h-12 w-12 border-b-2 border-teal-500"></div></div>}><CheckoutPage /></Suspense>} />
+          <Route path="/checkout" element={<Suspense fallback={AdminSpinner}><CheckoutPage /></Suspense>} />
           <Route path="/checkout/success" element={<OrderSuccess />} />
 
           {/* ============================================================ */}
           {/* ADMIN ROUTES: Mission Control with Nested Routes (Protected) */}
           {/* ============================================================ */}
-          <Route path="/admin" element={<AdminRoute><Suspense fallback={<div className="flex items-center justify-center h-screen bg-zinc-950"><div className="animate-spin rounded-full h-12 w-12 border-b-2 border-emerald-500"></div></div>}><Admin /></Suspense></AdminRoute>}>
-            <Route index element={<Suspense fallback={<div className="flex items-center justify-center h-screen"><div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#00575A]"></div></div>}><Overview /></Suspense>} />
-            <Route path="cms" element={<Suspense fallback={<div className="flex items-center justify-center h-screen"><div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#00575A]"></div></div>}><CMS /></Suspense>} />
-            <Route path="partners" element={<Suspense fallback={<div className="flex items-center justify-center h-screen"><div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#00575A]"></div></div>}><Partners /></Suspense>} />
-            <Route path="finance" element={<Suspense fallback={<div className="flex items-center justify-center h-screen"><div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#00575A]"></div></div>}><Finance /></Suspense>} />
-            <Route path="policy-engine" element={<Suspense fallback={<div className="flex items-center justify-center h-screen"><div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#00575A]"></div></div>}><PolicyEngine /></Suspense>} />
-            <Route path="orders" element={<Suspense fallback={<div className="flex items-center justify-center h-screen"><div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#00575A]"></div></div>}><OrderManagement /></Suspense>} />
-            <Route path="products" element={<Suspense fallback={<div className="flex items-center justify-center h-screen"><div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#00575A]"></div></div>}><AdminProducts /></Suspense>} />
-            <Route path="audit-log" element={<Suspense fallback={<div className="flex items-center justify-center h-screen"><div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#00575A]"></div></div>}><AuditLog /></Suspense>} />
+          <Route path="/admin" element={<AdminRoute><ErrorBoundary><Suspense fallback={PageSpinner}><Admin /></Suspense></ErrorBoundary></AdminRoute>}>
+            <Route index element={<Suspense fallback={AdminSpinner}><Overview /></Suspense>} />
+            <Route path="cms" element={<Suspense fallback={AdminSpinner}><CMS /></Suspense>} />
+            <Route path="partners" element={<Suspense fallback={AdminSpinner}><Partners /></Suspense>} />
+            <Route path="finance" element={<Suspense fallback={AdminSpinner}><Finance /></Suspense>} />
+            <Route path="policy-engine" element={<Suspense fallback={AdminSpinner}><PolicyEngine /></Suspense>} />
+            <Route path="orders" element={<Suspense fallback={AdminSpinner}><OrderManagement /></Suspense>} />
+            <Route path="products" element={<Suspense fallback={AdminSpinner}><AdminProducts /></Suspense>} />
+            <Route path="audit-log" element={<Suspense fallback={AdminSpinner}><AuditLog /></Suspense>} />
           </Route>
 
           {/* ============================================================ */}
@@ -113,26 +133,28 @@ const App: React.FC = () => {
             path="/dashboard"
             element={
               isAuthenticated ? (
-                <Suspense fallback={<div className="flex items-center justify-center h-screen bg-gradient-to-br from-gray-50 to-white dark:from-slate-900 dark:to-slate-800"><div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#00575A]"></div></div>}>
-                  <AppLayout />
-                </Suspense>
+                <ErrorBoundary>
+                  <Suspense fallback={AdminSpinner}>
+                    <AppLayout />
+                  </Suspense>
+                </ErrorBoundary>
               ) : (
                 <Navigate to="/" replace />
               )
             }
           >
             {/* Dashboard Home */}
-            <Route index element={<Suspense fallback={<div className="flex items-center justify-center h-96"><div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#00575A]"></div></div>}><Dashboard /></Suspense>} />
+            <Route index element={<Suspense fallback={SectionSpinner}><Dashboard /></Suspense>} />
 
             {/* Marketplace & Products */}
-            <Route path="marketplace" element={<Suspense fallback={<div className="flex items-center justify-center h-96"><div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#00575A]"></div></div>}><Marketplace /></Suspense>} />
-            <Route path="product/:id" element={<Suspense fallback={<div className="flex items-center justify-center h-96"><div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#00575A]"></div></div>}><ProductDetail /></Suspense>} />
+            <Route path="marketplace" element={<Suspense fallback={SectionSpinner}><Marketplace /></Suspense>} />
+            <Route path="product/:id" element={<Suspense fallback={SectionSpinner}><ProductDetail /></Suspense>} />
 
             {/* Commission Wallet */}
             <Route
               path="wallet"
               element={
-                <Suspense fallback={<div className="flex items-center justify-center h-96"><div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#00575A]"></div></div>}>
+                <Suspense fallback={SectionSpinner}>
                   <div className="space-y-6">
                     <h2 className="text-2xl md:text-3xl font-bold text-[#1F2937]">{t('app.commission_wallet')}</h2>
                     <CommissionWallet />
@@ -142,18 +164,18 @@ const App: React.FC = () => {
             />
 
             {/* Phase 2: Growth Features */}
-            <Route path="copilot" element={<Suspense fallback={<div className="flex items-center justify-center h-96"><div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#00575A]"></div></div>}><CopilotPage /></Suspense>} />
-            <Route path="team" element={<Suspense fallback={<div className="flex items-center justify-center h-96"><div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#00575A]"></div></div>}><LeaderDashboard /></Suspense>} />
-            <Route path="referral" element={<Suspense fallback={<div className="flex items-center justify-center h-96"><div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#00575A]"></div></div>}><ReferralPage /></Suspense>} />
-            <Route path="network" element={<Suspense fallback={<div className="flex items-center justify-center h-96"><div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#00575A]"></div></div>}><NetworkPage /></Suspense>} />
-            <Route path="withdrawal" element={<Suspense fallback={<div className="flex items-center justify-center h-96"><div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#00575A]"></div></div>}><WithdrawalPage /></Suspense>} />
-            <Route path="health-coach" element={<Suspense fallback={<div className="flex items-center justify-center h-96"><div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#00575A]"></div></div>}><HealthCoach /></Suspense>} />
-            <Route path="health-check" element={<Suspense fallback={<div className="flex items-center justify-center h-96"><div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#00575A]"></div></div>}><HealthCheck /></Suspense>} />
-            <Route path="leaderboard" element={<Suspense fallback={<div className="flex items-center justify-center h-96"><div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#00575A]"></div></div>}><Leaderboard /></Suspense>} />
-            <Route path="marketing-tools" element={<Suspense fallback={<div className="flex items-center justify-center h-96"><div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#00575A]"></div></div>}><MarketingTools /></Suspense>} />
-            <Route path="agents" element={<Suspense fallback={<div className="flex items-center justify-center h-96"><div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#00575A]"></div></div>}><AgentDashboard /></Suspense>} />
-            <Route path="settings" element={<Suspense fallback={<div className="flex items-center justify-center h-96"><div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#00575A]"></div></div>}><SettingsPage /></Suspense>} />
-            <Route path="profile" element={<Suspense fallback={<div className="flex items-center justify-center h-96"><div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#00575A]"></div></div>}><ProfilePage /></Suspense>} />
+            <Route path="copilot" element={<Suspense fallback={SectionSpinner}><CopilotPage /></Suspense>} />
+            <Route path="team" element={<Suspense fallback={SectionSpinner}><LeaderDashboard /></Suspense>} />
+            <Route path="referral" element={<Suspense fallback={SectionSpinner}><ReferralPage /></Suspense>} />
+            <Route path="network" element={<Suspense fallback={SectionSpinner}><NetworkPage /></Suspense>} />
+            <Route path="withdrawal" element={<Suspense fallback={SectionSpinner}><WithdrawalPage /></Suspense>} />
+            <Route path="health-coach" element={<Suspense fallback={SectionSpinner}><HealthCoach /></Suspense>} />
+            <Route path="health-check" element={<Suspense fallback={SectionSpinner}><HealthCheck /></Suspense>} />
+            <Route path="leaderboard" element={<Suspense fallback={SectionSpinner}><Leaderboard /></Suspense>} />
+            <Route path="marketing-tools" element={<Suspense fallback={SectionSpinner}><MarketingTools /></Suspense>} />
+            <Route path="agents" element={<Suspense fallback={SectionSpinner}><AgentDashboard /></Suspense>} />
+            <Route path="settings" element={<Suspense fallback={SectionSpinner}><SettingsPage /></Suspense>} />
+            <Route path="profile" element={<Suspense fallback={SectionSpinner}><ProfilePage /></Suspense>} />
           </Route>
 
           {/* ============================================================ */}
@@ -168,7 +190,7 @@ const App: React.FC = () => {
           {/* ============================================================ */}
           <Route path="/test" element={<TestPage />} />
           <Route path="/debugger" element={<DebuggerPage />} />
-          <Route path="/system-status" element={<Suspense fallback={<div className="flex items-center justify-center h-screen bg-zinc-950"><div className="animate-spin rounded-full h-12 w-12 border-b-2 border-emerald-500"></div></div>}><SystemStatus /></Suspense>} />
+          <Route path="/system-status" element={<Suspense fallback={PageSpinner}><SystemStatus /></Suspense>} />
 
           {/* ============================================================ */}
           {/* CATCH-ALL: Unknown routes redirect to home */}

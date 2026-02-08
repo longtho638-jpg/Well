@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 import { Wallet, ShieldAlert, Download, ArrowDownLeft, Info, Sparkles, TrendingUp, FileText } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { formatVND } from '../utils/format';
@@ -8,19 +8,19 @@ import { WithdrawalModal } from './WithdrawalModal';
 import { useTranslation } from '@/hooks';
 import { useCommissionPDFReport } from '@/hooks/use-commission-pdf-report-generator';
 
-const CommissionWallet: React.FC = () => {
+const CommissionWalletInner: React.FC = () => {
     const { t } = useTranslation();
   const { transactions, user } = useStore();
   const [isWithdrawalModalOpen, setIsWithdrawalModalOpen] = useState(false);
   const { generatePDF, isGenerating } = useCommissionPDFReport();
 
-  const processedTransactions = transactions.map(t => {
-    const { taxAmount, isTaxable } = calculatePIT(t.amount);
-    return { ...t, taxDeducted: taxAmount, isTaxable };
-  });
+  const processedTransactions = useMemo(() => transactions.map(tx => {
+    const { taxAmount, isTaxable } = calculatePIT(tx.amount);
+    return { ...tx, taxDeducted: taxAmount, isTaxable };
+  }), [transactions]);
 
-  const totalGross = processedTransactions.reduce((sum, t) => sum + t.amount, 0);
-  const totalTax = processedTransactions.reduce((sum, t) => sum + t.taxDeducted, 0);
+  const totalGross = useMemo(() => processedTransactions.reduce((sum, tx) => sum + tx.amount, 0), [processedTransactions]);
+  const totalTax = useMemo(() => processedTransactions.reduce((sum, tx) => sum + tx.taxDeducted, 0), [processedTransactions]);
   const totalNet = totalGross - totalTax;
 
   const handleExportPDF = async () => {
@@ -267,4 +267,5 @@ const CommissionWallet: React.FC = () => {
   );
 };
 
+const CommissionWallet = React.memo(CommissionWalletInner);
 export default CommissionWallet;

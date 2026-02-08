@@ -1,19 +1,18 @@
-import { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 import { useStore } from '@/store';
 import { useTranslation } from '@/hooks';
 import WalletPortfolioHeroSection from '@/components/Wallet/wallet-portfolio-hero-section';
 import WalletTokenBalanceCard from '@/components/Wallet/wallet-token-balance-card';
 import WalletTransactionHistoryTable from '@/components/Wallet/wallet-transaction-history-table';
 
-export const Wallet: React.FC = () => {
+const WalletPage: React.FC = () => {
   const { t } = useTranslation();
   const { user, transactions } = useStore();
   const [hideBalance, setHideBalance] = useState(false);
 
-  // Calculate total balances
   const totalShopBalance = user.shopBalance;
-  const totalGrowBalance = user.growBalance + user.stakedGrowBalance;
-  const totalPortfolioVND = totalShopBalance / 1000 + (totalGrowBalance * 50000); // GROW @ 50k VND
+  const totalGrowBalance = useMemo(() => user.growBalance + user.stakedGrowBalance, [user.growBalance, user.stakedGrowBalance]);
+  const totalPortfolioVND = useMemo(() => totalShopBalance / 1000 + (totalGrowBalance * 50000), [totalShopBalance, totalGrowBalance]);
 
   return (
     <div className="min-h-screen bg-zinc-50 dark:bg-zinc-950 p-6 transition-colors duration-300">
@@ -52,3 +51,5 @@ export const Wallet: React.FC = () => {
     </div>
   );
 };
+
+export const Wallet = React.memo(WalletPage);
