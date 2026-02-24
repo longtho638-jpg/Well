@@ -1,13 +1,13 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { Wallet, TrendingUp, ShieldAlert, Check, X, Loader2, ArrowUpRight, ArrowDownLeft } from 'lucide-react';
-import { Transaction } from '@/services/financeService';
+import { FinanceTransaction } from '@/services/financeService';
 import { formatVND } from '@/utils/format';
 import { FraudBadge } from './FraudBadge';
 import { useTranslation } from '@/hooks';
 
 interface TransactionCardProps {
-    transaction: Transaction;
+    transaction: FinanceTransaction;
     onApprove: () => void;
     onReject: () => void;
     loading?: boolean;

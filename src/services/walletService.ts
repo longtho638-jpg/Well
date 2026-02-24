@@ -1,5 +1,5 @@
 import { supabase } from '@/lib/supabase';
-import { Transaction } from '../types';
+import { Transaction, TransactionType } from '../types';
 import { createLogger } from '../utils/logger';
 import { fromSupabaseError } from '../utils/errors';
 
@@ -10,6 +10,25 @@ export interface WalletData {
     totalEarnings: number;
     pendingPayout: number;
     taxWithheldTotal: number;
+}
+
+interface SupabaseUserWallet {
+    shop_balance: number | null;
+    pending_cashback: number | null;
+}
+
+interface SupabaseTransaction {
+    id: string;
+    user_id: string;
+    date?: string;
+    created_at: string;
+    amount: number;
+    type: string;
+    status: 'pending' | 'completed' | 'failed';
+    tax_deducted: number | null;
+    hash: string | null;
+    currency: 'SHOP' | 'GROW' | null;
+    metadata: Record<string, unknown> | null;
 }
 
 /**
@@ -30,7 +49,7 @@ export const walletService = {
                 .from('users')
                 .select('shop_balance, pending_cashback')
                 .eq('id', userId)
-                .single();
+                .single<SupabaseUserWallet>();
 
             if (error) throw error;
 
@@ -62,7 +81,8 @@ export const walletService = {
                 .select('*')
                 .eq('user_id', userId)
                 .order('created_at', { ascending: false })
-                .limit(limitCount);
+                .limit(limitCount)
+                .returns<SupabaseTransaction[]>();
 
             if (error) throw error;
 
@@ -71,12 +91,12 @@ export const walletService = {
                 userId: t.user_id,
                 date: t.date || new Date(t.created_at).toISOString().split('T')[0],
                 amount: t.amount,
-                type: t.type,
+                type: t.type as TransactionType, // Cast string from DB to Enum type
                 status: t.status,
                 taxDeducted: t.tax_deducted || 0,
                 hash: t.hash || '',
                 currency: t.currency || 'SHOP',
-                metadata: t.metadata || {}
+                metadata: (t.metadata as Record<string, string | number | boolean | undefined>) || {}
             }));
         } catch (error) {
             walletLogger.error('Error fetching transactions:', error);
@@ -105,13 +125,15 @@ export const walletService = {
                     filter: `id=eq.${userId}`
                 },
                 (payload) => {
-                    const newData = payload.new as { shop_balance?: number; pending_cashback?: number };
-                    onUpdate({
-                        balance: newData.shop_balance || 0,
-                        totalEarnings: (newData.shop_balance || 0) + (newData.pending_cashback || 0),
-                        pendingPayout: newData.pending_cashback || 0,
-                        taxWithheldTotal: 0
-                    });
+                    const newData = payload.new as unknown as SupabaseUserWallet;
+                    if (newData) {
+                        onUpdate({
+                            balance: newData.shop_balance || 0,
+                            totalEarnings: (newData.shop_balance || 0) + (newData.pending_cashback || 0),
+                            pendingPayout: newData.pending_cashback || 0,
+                            taxWithheldTotal: 0
+                        });
+                    }
                 }
             )
             .subscribe((status) => {

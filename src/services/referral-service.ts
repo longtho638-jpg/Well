@@ -6,11 +6,12 @@
 import { supabase } from '@/lib/supabase';
 import { uiLogger } from '@/utils/logger';
 import { AuthError, fromSupabaseError } from '@/utils/errors';
+import { UserRank } from '@/types';
 
 export interface NetworkNode {
   id: string;
   name: string;
-  rank: 'member' | 'silver' | 'gold' | 'diamond';
+  rank: 'member' | 'silver' | 'gold' | 'diamond' | string; // Relaxed to allow string for now, but should ideally match specific ranks
   level: number; // F1, F2, etc.
   totalSales: number;
   personalSales: number;
@@ -33,17 +34,25 @@ export interface ReferralTreeData {
 }
 
 interface SupabaseDownlineRow {
-  id?: string;
-  user_id?: string;
-  name?: string;
-  rank?: string;
-  level?: number;
-  total_sales?: number;
-  personal_sales?: number;
-  avatar_url?: string;
-  created_at?: string;
-  active_downlines?: number;
-  parent_id?: string | null;
+  id: string;
+  user_id: string;
+  name: string;
+  rank: string; // The RPC seems to return rank name as string
+  level: number;
+  total_sales: number;
+  personal_sales: number;
+  avatar_url: string | null;
+  created_at: string;
+  active_downlines: number;
+  parent_id: string | null;
+}
+
+interface ReferralStats {
+  totalDownlines: number;
+  f1Count: number;
+  f2Count: number;
+  totalTeamSales: number;
+  activeMembers: number;
 }
 
 export const referralService = {
@@ -73,11 +82,11 @@ export const referralService = {
       }
 
       // Transform flat RPC response to hierarchical structure
-      if (!data || data.length === 0) {
+      if (!data || (data as unknown[]).length === 0) {
         return null;
       }
 
-      return this.transformToHierarchy(data);
+      return this.transformToHierarchy(data as unknown as SupabaseDownlineRow[]);
     } catch (error) {
       uiLogger.error('Downline tree error', error);
       throw error;
@@ -98,13 +107,13 @@ export const referralService = {
       const node: NetworkNode = {
         id: item.id || item.user_id || '',
         name: item.name || 'Unknown',
-        rank: (item.rank as NetworkNode['rank']) || 'member',
+        rank: item.rank || 'member',
         level: item.level || 1,
         totalSales: item.total_sales || 0,
         personalSales: item.personal_sales || 0,
         children: [],
         attributes: {
-          avatar: item.avatar_url,
+          avatar: item.avatar_url || undefined,
           joinedDate: item.created_at,
           activeDownlines: item.active_downlines || 0,
         },
@@ -123,7 +132,9 @@ export const referralService = {
         const parent = nodeMap.get(item.parent_id);
         const child = nodeMap.get(item.id || item.user_id || '');
         if (parent && child) {
-          parent.children?.push(child);
+            // Ensure children array is initialized (though it is in first pass)
+            if (!parent.children) parent.children = [];
+            parent.children.push(child);
         }
       }
     });
@@ -158,13 +169,7 @@ export const referralService = {
   /**
    * Get referral statistics for user
    */
-  async getReferralStats(userId?: string): Promise<{
-    totalDownlines: number;
-    f1Count: number;
-    f2Count: number;
-    totalTeamSales: number;
-    activeMembers: number;
-  }> {
+  async getReferralStats(userId?: string): Promise<ReferralStats> {
     try {
       let targetUserId = userId;
       if (!targetUserId) {
@@ -191,7 +196,7 @@ export const referralService = {
         };
       }
 
-      return data || {
+      return (data as unknown as ReferralStats) || {
         totalDownlines: 0,
         f1Count: 0,
         f2Count: 0,
@@ -231,7 +236,8 @@ export const referralService = {
       return (data || []).map((item) => ({
         id: item.id,
         name: item.name || 'Unknown',
-        rank: item.rank || 'member',
+        // Assuming user.rank is a number (UserRank enum), we cast to string or handle it
+        rank: String(item.rank) || 'member',
         level: 1,
         totalSales: item.total_sales || 0,
         personalSales: item.personal_sales || 0,
@@ -263,7 +269,7 @@ export const referralService = {
       options: {
         data: {
           name: params.name,
-          role_id: params.roleId ?? 8,
+          role_id: params.roleId ?? UserRank.CTV, // Default to CTV (Collaborator)
           sponsor_id: params.sponsorId,
           phone: params.phone,
         },

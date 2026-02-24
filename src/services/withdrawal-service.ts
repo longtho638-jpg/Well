@@ -24,10 +24,34 @@ export interface WithdrawalRequest {
   bank_account_number: string;
   bank_account_name: string;
   requested_at: string;
+  created_at: string;
   processed_at?: string;
   processed_by?: string;
   rejection_reason?: string;
   notes?: string;
+  user?: {
+    name: string;
+    email: string;
+  };
+}
+
+// Interface matching DB schema
+interface SupabaseWithdrawalRow {
+  id: string;
+  user_id: string;
+  amount: number;
+  status: string;
+  bank_name: string;
+  bank_account_number: string;
+  bank_account_name: string;
+  created_at: string;
+  updated_at: string;
+  notes: string | null;
+  // Join fields
+  user?: {
+    name: string;
+    email: string;
+  } | null;
 }
 
 export const withdrawalService = {
@@ -44,14 +68,14 @@ export const withdrawalService = {
         p_bank_name: bankInfo.bankName,
         p_bank_account_number: bankInfo.accountNumber,
         p_bank_account_name: bankInfo.accountName,
-      });
+      }); // rpc returns 'any' usually, assuming string ID
 
       if (error) {
         uiLogger.error('Create withdrawal request failed', error);
         throw new PaymentError(error.message || 'Failed to create withdrawal request', { operation: 'createWithdrawal' });
       }
 
-      const requestId = data; // Returns request ID
+      const requestId = data as string; // Returns request ID
 
       // Send pending email notification
       try {
@@ -95,11 +119,23 @@ export const withdrawalService = {
       const { data, error } = await supabase
         .from('withdrawal_requests')
         .select('*')
-        .order('created_at', { ascending: false });
+        .order('created_at', { ascending: false })
+        .returns<SupabaseWithdrawalRow[]>();
 
       if (error) throw error;
 
-      return data || [];
+      return (data || []).map(row => ({
+        id: row.id,
+        user_id: row.user_id,
+        amount: row.amount,
+        status: row.status as WithdrawalRequest['status'],
+        bank_name: row.bank_name,
+        bank_account_number: row.bank_account_number,
+        bank_account_name: row.bank_account_name,
+        requested_at: row.created_at, // Mapping created_at to requested_at
+        created_at: row.created_at,
+        notes: row.notes || undefined,
+      }));
     } catch (error) {
       uiLogger.error('Fetch withdrawals failed', error);
       throw error;
@@ -115,11 +151,24 @@ export const withdrawalService = {
         .from('withdrawal_requests')
         .select('*')
         .eq('id', id)
-        .single();
+        .single<SupabaseWithdrawalRow>();
 
       if (error) throw error;
 
-      return data;
+      if (!data) return null;
+
+      return {
+        id: data.id,
+        user_id: data.user_id,
+        amount: data.amount,
+        status: data.status as WithdrawalRequest['status'],
+        bank_name: data.bank_name,
+        bank_account_number: data.bank_account_number,
+        bank_account_name: data.bank_account_name,
+        requested_at: data.created_at,
+        created_at: data.created_at,
+        notes: data.notes || undefined,
+      };
     } catch (error) {
       uiLogger.error('Fetch withdrawal failed', error);
       return null;
@@ -191,11 +240,25 @@ export const withdrawalService = {
         query = query.eq('status', status);
       }
 
-      const { data, error } = await query.order('created_at', { ascending: false });
+      const { data, error } = await query
+        .order('created_at', { ascending: false })
+        .returns<SupabaseWithdrawalRow[]>();
 
       if (error) throw fromSupabaseError(error);
 
-      return data || [];
+      return (data || []).map(row => ({
+        id: row.id,
+        user_id: row.user_id,
+        amount: row.amount,
+        status: row.status as WithdrawalRequest['status'],
+        bank_name: row.bank_name,
+        bank_account_number: row.bank_account_number,
+        bank_account_name: row.bank_account_name,
+        requested_at: row.created_at,
+        created_at: row.created_at,
+        notes: row.notes || undefined,
+        user: row.user || undefined,
+      }));
     } catch (error) {
       uiLogger.error('Fetch all withdrawals failed', error);
       throw error;

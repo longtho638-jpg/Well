@@ -2,7 +2,7 @@ import { supabase, isSupabaseConfigured } from '@/lib/supabase';
 import { adminLogger } from '@/utils/logger';
 import { fromSupabaseError } from '@/utils/errors';
 
-export interface Transaction {
+export interface FinanceTransaction {
     id: string;
     type: 'revenue' | 'payout';
     partnerId: string;
@@ -17,7 +17,18 @@ export interface Transaction {
     reason?: string;
 }
 
-const mockTransactions: Transaction[] = [
+interface SupabaseTransactionRow {
+    id: string;
+    user_id: string;
+    amount: number;
+    status: string;
+    type: string;
+    created_at: string;
+    tax_amount: number | null;
+    net_amount: number | null;
+}
+
+const mockTransactions: FinanceTransaction[] = [
     {
         id: 'R001',
         type: 'revenue',
@@ -60,7 +71,7 @@ const mockTransactions: Transaction[] = [
 ];
 
 export const financeService = {
-    async getTransactions(): Promise<Transaction[]> {
+    async getTransactions(): Promise<FinanceTransaction[]> {
         if (!isSupabaseConfigured()) {
             return mockTransactions;
         }
@@ -79,31 +90,42 @@ export const financeService = {
                     net_amount
                 `)
                 .order('created_at', { ascending: false })
-                .limit(50);
+                .limit(50)
+                .returns<SupabaseTransactionRow[]>();
 
             if (error) throw error;
 
-            const formattedTransactions: Transaction[] = await Promise.all(
-                (data || []).map(async (tx) => {
-                    const { data: userData } = await supabase
-                        .from('users')
-                        .select('name')
-                        .eq('id', tx.user_id)
-                        .single();
+            const formattedTransactions: FinanceTransaction[] = await Promise.all(
+                (data || []).map(async (tx): Promise<FinanceTransaction> => {
+                    let partnerName = 'Unknown';
+                    try {
+                        const { data: userData, error: userError } = await supabase
+                            .from('users')
+                            .select('name')
+                            .eq('id', tx.user_id)
+                            .single();
+
+                        if (!userError && userData) {
+                            partnerName = userData.name;
+                        }
+                    } catch (err) {
+                        // User might not exist or other error, fallback to 'Unknown'
+                        adminLogger.warn(`Failed to fetch user name for transaction ${tx.id}`, err);
+                    }
 
                     return {
                         id: tx.id,
                         type: tx.type === 'sale' ? 'revenue' : 'payout',
                         partnerId: tx.user_id,
-                        partnerName: userData?.name || 'Unknown',
+                        partnerName: partnerName,
                         amount: tx.amount,
                         gross: tx.amount,
                         tax: tx.tax_amount || tx.amount * 0.1,
                         net: tx.net_amount || tx.amount * 0.9,
-                        status: tx.status === 'pending' ? 'Pending'
+                        status: (tx.status === 'pending' ? 'Pending'
                             : tx.status === 'completed' ? 'Completed'
                                 : tx.status === 'approved' ? 'Approved'
-                                    : 'Rejected',
+                                    : 'Rejected') as FinanceTransaction['status'],
                         fraudScore: 0, // Fraud scoring handled server-side; not available client-side
                         timestamp: new Date(tx.created_at).toLocaleString('vi-VN'),
                         reason: tx.type === 'sale' ? 'Product Sale' : 'Commission Withdrawal',

@@ -12,6 +12,9 @@ export function calculateStakingReward(
   apy: number,
   days: number
 ): number {
+  if (amount < 0 || apy < 0 || days < 0) return 0;
+  if (isNaN(amount) || isNaN(apy) || isNaN(days)) return 0;
+
   const dailyRate = apy / 365;
   const reward = amount * dailyRate * days;
   return Number(reward.toFixed(4));
@@ -24,6 +27,10 @@ export function calculateStakingReward(
  * @returns Formatted string with currency symbol
  */
 export function formatToken(amount: number, type: TokenType): string {
+  if (isNaN(amount) || !isFinite(amount)) {
+    return type === 'SHOP' ? '0 ₫' : '0 Token';
+  }
+
   const formatted = amount.toLocaleString('en-US', {
     minimumFractionDigits: 2,
     maximumFractionDigits: 4,

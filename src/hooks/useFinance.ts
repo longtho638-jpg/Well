@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback, useMemo } from 'react';
-import { financeService, Transaction } from '@/services/financeService';
+import { financeService, FinanceTransaction } from '@/services/financeService';
 import { useToast } from '@/components/ui/Toast';
 import { adminLogger } from '@/utils/logger';
 
@@ -11,7 +11,7 @@ export interface FinanceStats {
 
 export function useFinance() {
     const [activeTab, setActiveTab] = useState<'revenue' | 'payout'>('payout');
-    const [transactions, setTransactions] = useState<Transaction[]>([]);
+    const [transactions, setTransactions] = useState<FinanceTransaction[]>([]);
     const [filterRisk, setFilterRisk] = useState<'all' | 'safe' | 'risky'>('all');
     const [loading, setLoading] = useState(true);
     const [actionLoading, setActionLoading] = useState<string | null>(null);
