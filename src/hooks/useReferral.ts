@@ -26,10 +26,10 @@ export const useReferral = () => {
     const [selectedTab, setSelectedTab] = useState<'overview' | 'network'>('overview');
     const [showQRCode, setShowQRCode] = useState(false);
 
-    const referralUrl = useMemo(() =>
-        `https://${user.referralLink || `wellnexus.vn/ref/${user.id}`}`,
-        [user.referralLink, user.id]
-    );
+    const referralUrl = useMemo(() => {
+        const link = user.referralLink || `wellnexus.vn/ref/${user.id}`;
+        return link.startsWith('http') ? link : `https://${link}`;
+    }, [user.referralLink, user.id]);
 
     // Use extracted hook
     const { 

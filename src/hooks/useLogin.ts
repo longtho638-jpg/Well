@@ -57,12 +57,14 @@ export const useLogin = () => {
         setServerError('');
 
         try {
-            const timeoutPromise = new Promise((_, reject) =>
-                setTimeout(() => reject(new Error('TIMEOUT')), 30000)
-            );
+            let timeoutId: ReturnType<typeof setTimeout>;
+            const timeoutPromise = new Promise((_, reject) => {
+                timeoutId = setTimeout(() => reject(new Error('TIMEOUT')), 30000);
+            });
 
             const signInPromise = signIn(data.email, data.password);
             const result = await Promise.race([signInPromise, timeoutPromise]) as { error?: Error };
+            clearTimeout(timeoutId!);
 
             if (result?.error) throw result.error;
 

@@ -3,7 +3,7 @@
  * Phase 11: Auth and Media
  */
 
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useRef, useEffect } from 'react';
 
 // ============================================================================
 // COPY TO CLIPBOARD
@@ -62,12 +62,18 @@ interface UseCopyResult {
 
 export function useCopy(resetDelay = 2000): UseCopyResult {
     const [copied, setCopied] = useState(false);
+    const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+    useEffect(() => () => {
+        if (timerRef.current) clearTimeout(timerRef.current);
+    }, []);
 
     const copy = useCallback(async (text: string) => {
         const success = await copyToClipboard(text);
         if (success) {
             setCopied(true);
-            setTimeout(() => setCopied(false), resetDelay);
+            if (timerRef.current) clearTimeout(timerRef.current);
+            timerRef.current = setTimeout(() => setCopied(false), resetDelay);
         }
         return success;
     }, [resetDelay]);

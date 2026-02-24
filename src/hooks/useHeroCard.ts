@@ -1,4 +1,4 @@
-import { useState, useCallback, useMemo } from 'react';
+import { useState, useCallback, useMemo, useEffect, useRef } from 'react';
 import { User } from '@/types';
 import { uiLogger } from '@/utils/logger';
 import { useTranslation } from './useTranslation';
@@ -6,6 +6,8 @@ import { useTranslation } from './useTranslation';
 export function useHeroCard(user: User) {
     const { t } = useTranslation();
     const [copied, setCopied] = useState(false);
+    const mountedRef = useRef(true);
+    useEffect(() => () => { mountedRef.current = false; }, []);
 
     // Gamification Logic: Founder Club Quest
     const TARGET_VOLUME = 100000000; // 100M VND
@@ -26,8 +28,12 @@ export function useHeroCard(user: User) {
     const handleCopyLink = useCallback(async () => {
         try {
             await navigator.clipboard.writeText(referralLink);
+            if (!mountedRef.current) return;
             setCopied(true);
-            setTimeout(() => setCopied(false), 2000);
+            const timer = setTimeout(() => {
+                if (mountedRef.current) setCopied(false);
+            }, 2000);
+            return () => clearTimeout(timer);
         } catch (err) {
             uiLogger.error('Failed to copy', err);
             // Fallback for non-secure contexts if needed

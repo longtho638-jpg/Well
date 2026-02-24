@@ -55,10 +55,12 @@ export function useMarketplace() {
 
     // AI Logic
     useEffect(() => {
+        if (products.length === 0) return;
+        let cancelled = false;
         const triggerAi = async () => {
-            if (products.length === 0) return;
             setLoadingAi(true);
             await new Promise(r => setTimeout(r, 1200));
+            if (cancelled) return;
 
             const suggested = products.find(p => p.commissionRate >= 0.25);
             if (suggested) {
@@ -73,6 +75,7 @@ export function useMarketplace() {
             setLoadingAi(false);
         };
         triggerAi();
+        return () => { cancelled = true; };
     }, [products, t]);
 
     // Cart Actions Wrappers

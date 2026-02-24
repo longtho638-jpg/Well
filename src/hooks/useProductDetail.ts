@@ -1,4 +1,4 @@
-import { useState, useCallback, useMemo } from 'react';
+import { useState, useCallback, useMemo, useEffect, useRef } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useStore } from '../store';
 import { checkCompliance } from '../services/geminiService';
@@ -9,13 +9,18 @@ export type ProductDetailTab = 'benefits' | 'ingredients' | 'usage';
 export function useProductDetail() {
     const { id } = useParams<{ id: string }>();
     const navigate = useNavigate();
-    const { products, simulateOrder } = useStore();
+    const { products, simulateOrder, user } = useStore();
     const { showToast } = useToast();
 
     const product = useMemo(() => products.find(p => p.id === id), [products, id]);
     const [activeTab, setActiveTab] = useState<ProductDetailTab>('benefits');
     const [isBuying, setIsBuying] = useState(false);
     const [showSuccess, setShowSuccess] = useState(false);
+
+    const mountedRef = useRef(true);
+    useEffect(() => {
+        return () => { mountedRef.current = false; };
+    }, []);
 
     const handleBuy = useCallback(async () => {
         if (!product || product.stock <= 0) return;
@@ -25,20 +30,24 @@ export function useProductDetail() {
         await new Promise(resolve => setTimeout(resolve, 800));
         await simulateOrder(product.id);
 
+        if (!mountedRef.current) return;
         setIsBuying(false);
         setShowSuccess(true);
-        setTimeout(() => setShowSuccess(false), 2000);
+        const timer = setTimeout(() => {
+            if (mountedRef.current) setShowSuccess(false);
+        }, 2000);
+        return () => clearTimeout(timer);
     }, [product, simulateOrder]);
 
     const handleShare = useCallback(() => {
         if (!product) return;
-        // Mock share functionality
-        const shareUrl = `wellnexus.vn/ref/VN-888/product/${product.id}`;
+        const userRef = user?.id ? `ref/${user.id}/` : '';
+        const shareUrl = `wellnexus.vn/${userRef}product/${product.id}`;
         navigator.clipboard.writeText(shareUrl).then(() => {
             showToast(`Link copied: ${shareUrl}`, 'success');
         });
         checkCompliance(product.description);
-    }, [product, showToast]);
+    }, [product, user, showToast]);
 
     const commissionAmount = useMemo(() => {
         if (!product) return 0;
