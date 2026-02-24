@@ -36,11 +36,25 @@ function secureCompare(a: string, b: string): boolean {
 }
 
 serve(async (req) => {
+  // SECURITY: Verify Webhook Secret (mandatory for POST requests)
+  const secret = req.headers.get("x-webhook-secret");
+  const expectedSecret = Deno.env.get("WEBHOOK_SECRET");
+
+  if (!expectedSecret) {
+    console.error("[Security] WEBHOOK_SECRET is not configured");
+    return new Response("Server configuration error", { status: 500 });
+  }
+
   // Handle GET requests for PayOS webhook URL verification
   if (req.method === 'GET') {
     return new Response(JSON.stringify({ success: true }), {
       headers: { 'Content-Type': 'application/json' },
     })
+  }
+
+  if (secret !== expectedSecret) {
+    console.error("[Security] Invalid Webhook Secret");
+    return new Response("Unauthorized", { status: 401 });
   }
 
   const supabase = createClient(

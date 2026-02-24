@@ -39,7 +39,7 @@ export function QRPaymentModal({
                 const statusResponse = await getPaymentStatus(paymentData.orderCode);
 
                 if (statusResponse.status === 'PAID') {
-                    setStatus('processing');
+                    setStatus('success');
                     clearInterval(interval);
                     onSuccess(paymentData.orderCode);
                 } else if (statusResponse.status === 'CANCELLED') {
