@@ -38,9 +38,12 @@ export function useCommissionPDFReport() {
       document.body.removeChild(link);
       URL.revokeObjectURL(url);
     } catch (err) {
-      const error = err as Error;
-      setError(error.message || 'Failed to generate PDF');
-      throw error;
+      let errorMessage = 'Failed to generate PDF';
+      if (err instanceof Error) {
+        errorMessage = err.message || errorMessage;
+      }
+      setError(errorMessage);
+      throw err;
     } finally {
       setIsGenerating(false);
     }

@@ -4,19 +4,9 @@
  */
 
 import { exportToCSV, CSVColumn } from './csv-export-utility';
+import type { NetworkNode } from '../services/referral-service';
 
-export interface NetworkNode {
-  id: string;
-  name: string;
-  email?: string;
-  level: number;
-  rank?: string;
-  totalSales?: number;
-  commissionEarned?: number;
-  children?: NetworkNode[];
-  joinedAt?: string;
-  parentId?: string;
-}
+export type { NetworkNode };
 
 interface FlattenedNode {
   [key: string]: unknown;
@@ -36,20 +26,20 @@ interface FlattenedNode {
 /**
  * Flatten network tree to array for CSV export
  */
-function flattenNetworkTree(node: NetworkNode, depth: number = 0): FlattenedNode[] {
+function flattenNetworkTree(node: NetworkNode, depth: number = 0, parentId: string = ''): FlattenedNode[] {
   const result: FlattenedNode[] = [];
 
   // Add current node
   result.push({
     id: node.id,
     name: node.name,
-    email: node.email,
+    email: 'N/A', // Email not available in NetworkNode
     level: node.level || depth,
-    rank: node.rank || 'Distributor',
+    rank: node.rank || 'member',
     totalSales: node.totalSales || 0,
-    commissionEarned: node.commissionEarned || 0,
-    joinedAt: node.joinedAt || 'N/A',
-    parentId: node.parentId || '',
+    commissionEarned: 0, // Commission not available in NetworkNode
+    joinedAt: node.attributes?.joinedDate || 'N/A',
+    parentId: parentId,
     childrenCount: node.children?.length || 0,
     depth,
   });
@@ -57,7 +47,7 @@ function flattenNetworkTree(node: NetworkNode, depth: number = 0): FlattenedNode
   // Recursively add children
   if (node.children && node.children.length > 0) {
     for (const child of node.children) {
-      result.push(...flattenNetworkTree(child, depth + 1));
+      result.push(...flattenNetworkTree(child, depth + 1, node.id));
     }
   }
 
