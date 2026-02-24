@@ -8,7 +8,8 @@ export const CartSummary: React.FC = () => {
     const { t } = useTranslation();
     const items = useCartStore(state => state.items);
     const removeFromCart = useCartStore(state => state.removeFromCart);
-    const total = useCartStore(state => state.getTotal());
+    const getTotal = useCartStore(state => state.getTotal);
+    const total = getTotal();
 
     if (items.length === 0) {
         return (

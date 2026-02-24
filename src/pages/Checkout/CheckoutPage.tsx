@@ -19,7 +19,8 @@ export const CheckoutPage: React.FC = () => {
     const { t } = useTranslation();
     const { showToast } = useToast();
     const cartItems = useCartStore(state => state.items);
-    const cartTotal = useCartStore(state => state.getTotal());
+    const getTotal = useCartStore(state => state.getTotal);
+    const cartTotal = getTotal();
     const clearCart = useCartStore(state => state.clearCart);
     const [isSubmitting, setIsSubmitting] = useState(false);
 
