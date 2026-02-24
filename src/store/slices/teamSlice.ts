@@ -12,6 +12,19 @@ import { teamLogger } from '../../utils/logger';
 // TREE NODE TYPE
 // ============================================================================
 
+// Raw Supabase row shape for downline user data
+interface SupabaseUserRow {
+    id: string;
+    full_name?: string;
+    email?: string;
+    rank_id?: number | string;
+    total_sales?: number;
+    team_volume?: number;
+    avatar_url?: string;
+    created_at?: string;
+    sponsor_id?: string;
+}
+
 export interface TreeNode {
     id: string;
     name: string;
@@ -100,7 +113,7 @@ export const createTeamSlice: StateCreator<
             const nodeMap = new Map();
 
             // First pass: Create all nodes
-            data.forEach((user: any) => {
+            data.forEach((user: SupabaseUserRow) => {
                 nodeMap.set(user.id, {
                     id: user.id,
                     name: user.full_name || user.email || 'Unknown',
@@ -116,7 +129,7 @@ export const createTeamSlice: StateCreator<
 
             // Second pass: Build hierarchy
             const roots: TreeNode[] = [];
-            data.forEach((user: any) => {
+            data.forEach((user: SupabaseUserRow) => {
                 const node = nodeMap.get(user.id);
                 // If this node's sponsor is the original requested user, it's a root (F1)
                 if (user.sponsor_id === userId) {

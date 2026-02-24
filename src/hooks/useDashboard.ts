@@ -24,6 +24,20 @@ import {
 } from 'lucide-react';
 import { formatVND, formatNumber } from '@/utils/format';
 
+// Raw transaction row shape returned from Supabase/store
+interface RawTransaction {
+    id?: string;
+    type?: string;
+    status?: string;
+    amount?: number;
+    description?: string;
+    created_at?: string;
+    metadata?: {
+        buyer_name?: string;
+        [key: string]: string | number | boolean | undefined;
+    };
+}
+
 export interface LiveActivity {
     id: string;
     type: 'reward' | 'order' | 'rank_up' | 'withdrawal' | 'referral';
@@ -57,7 +71,7 @@ export function useDashboard() {
         if (!transactions) return;
 
         // Map actual transactions to LiveActivity format
-        const recentTxs = transactions.slice(0, 10).map((tx: any) => {
+        const recentTxs = transactions.slice(0, 10).map((tx: RawTransaction) => {
             let icon = Coins;
             let color = 'text-gray-600';
             let bgColor = 'bg-gray-50 dark:bg-gray-900/20';
@@ -114,7 +128,7 @@ export function useDashboard() {
         let directSum = 0;
         let teamSum = 0;
 
-        transactions.forEach((tx: any) => {
+        transactions.forEach((tx: RawTransaction) => {
             if (tx.status === 'completed') {
                 if (tx.type === 'direct_commission') directSum += Number(tx.amount) || 0;
                 if (tx.type === 'team_commission') teamSum += Number(tx.amount) || 0;
