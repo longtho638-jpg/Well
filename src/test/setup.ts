@@ -37,6 +37,20 @@ console.warn = (...args) => {
   originalWarn(...args);
 };
 
+// Suppress React 18 act() warnings from Vitest/jsdom async state updates in renderHook
+// This is a known compatibility issue: https://github.com/testing-library/react-testing-library/issues/1382
+const originalError = console.error;
+console.error = (...args) => {
+  if (
+    typeof args[0] === 'string' &&
+    (args[0].includes('not wrapped in act(') ||
+     args[0].includes('not configured to support act('))
+  ) {
+    return;
+  }
+  originalError(...args);
+};
+
 // Cleanup after each test
 afterEach(() => {
   cleanup();
