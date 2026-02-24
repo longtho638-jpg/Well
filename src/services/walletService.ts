@@ -36,8 +36,8 @@ export const walletService = {
 
             if (data) {
                 return {
-                    balance: data.shop_balance || 0,
-                    totalEarnings: 0, // Calculated field, might need separate query if not stored
+                    balance: data.pending_cashback || 0,  // Commission goes to pending_cashback
+                    totalEarnings: 0,
                     pendingPayout: 0,
                     taxWithheldTotal: 0
                 } as WalletData;
@@ -105,9 +105,9 @@ export const walletService = {
                     filter: `id=eq.${userId}`
                 },
                 (payload) => {
-                    const newData = payload.new as { shop_balance?: number };
+                    const newData = payload.new as { shop_balance?: number; pending_cashback?: number };
                     onUpdate({
-                        balance: newData.shop_balance || 0,
+                        balance: newData.pending_cashback || 0,  // Commission goes to pending_cashback
                         totalEarnings: 0,
                         pendingPayout: 0,
                         taxWithheldTotal: 0

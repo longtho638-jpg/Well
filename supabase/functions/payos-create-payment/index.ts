@@ -44,6 +44,22 @@ serve(async (req) => {
     // 2. Parse request body
     const body: PaymentRequest = await req.json()
 
+    // Validate amount (PayOS minimum is 1000 VND)
+    if (!body.amount || body.amount < 1000) {
+      return new Response(
+        JSON.stringify({ error: `Invalid amount: ${body.amount}. Minimum is 1000 VND.` }),
+        { status: 400, headers: { 'Content-Type': 'application/json' } }
+      )
+    }
+
+    // Validate required fields
+    if (!body.orderCode || !body.description || !body.returnUrl || !body.cancelUrl) {
+      return new Response(
+        JSON.stringify({ error: 'Missing required payment fields: orderCode, description, returnUrl, cancelUrl' }),
+        { status: 400, headers: { 'Content-Type': 'application/json' } }
+      )
+    }
+
     // 3. Get PayOS credentials from Vault
     const payosClientId = Deno.env.get('PAYOS_CLIENT_ID')
     const payosApiKey = Deno.env.get('PAYOS_API_KEY')

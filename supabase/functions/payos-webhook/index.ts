@@ -138,8 +138,9 @@ serve(async (req) => {
       )
     }
 
-    // 5. Update order status
-    const { error: updateError } = await supabase
+    // 5. Atomic update: only update if still in 'pending' state (prevents race condition)
+    // If two webhooks fire simultaneously, only one will match the .eq('status', 'pending') filter
+    const { data: updatedOrder, error: updateError } = await supabase
       .from('orders')
       .update({
         status: newStatus,
@@ -147,11 +148,17 @@ serve(async (req) => {
         updated_at: new Date().toISOString(),
       })
       .eq('id', currentOrder.id)
+      .eq('status', 'pending') // Atomic guard: only update if still pending
+      .select('id, status')
+      .single()
 
-    if (updateError) {
-      console.error('Database update error:', updateError)
-      await logAudit(supabase, currentOrder.user_id, 'PAYOS_WEBHOOK_ERROR', { error: updateError.message, orderId: currentOrder.id }, 'error')
-      throw new Error(`Failed to update order: ${updateError.message}`)
+    if (updateError || !updatedOrder) {
+      // If no row was updated, order was already finalized by a concurrent request
+      console.log(`Order ${currentOrder.order_code} was already finalized by concurrent request. Ignoring.`)
+      return new Response(
+        JSON.stringify({ success: true, status: 'already_finalized', message: 'Concurrent webhook already processed' }),
+        { headers: { 'Content-Type': 'application/json' } }
+      )
     }
 
     // Log success

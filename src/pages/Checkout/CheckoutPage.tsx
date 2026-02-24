@@ -129,14 +129,15 @@ export const CheckoutPage: React.FC = () => {
     };
 
     const handlePaymentSuccess = async (orderCode: number) => {
-        if (pendingGuestInfo) {
-            try {
-                await processOrder(pendingGuestInfo, 'payos', orderCode);
-                setShowPaymentModal(false);
-            } catch {
-                // Error handling already in processOrder
-                setIsSubmitting(false);
-            }
+        if (!pendingGuestInfo) return;
+        const guestInfo = pendingGuestInfo;
+        setPendingGuestInfo(null); // Clear immediately to prevent double-order
+        try {
+            await processOrder(guestInfo, 'payos', orderCode);
+            setShowPaymentModal(false);
+        } catch {
+            // Error handling already in processOrder
+            setIsSubmitting(false);
         }
     };
 
@@ -262,6 +263,7 @@ export const CheckoutPage: React.FC = () => {
                 onClose={() => {
                     setShowPaymentModal(false);
                     setIsSubmitting(false);
+                    setPendingGuestInfo(null); // Clear to prevent double-order on resubmit
                 }}
                 paymentData={paymentData}
                 onSuccess={handlePaymentSuccess}

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 import { useForm, Controller } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
@@ -22,15 +22,15 @@ export const WithdrawalForm: React.FC<WithdrawalFormProps> = ({ onSuccess }) => 
   const { showToast } = useToast();
   const [loading, setLoading] = useState(false);
 
-  // Validation Schema
-  const schema = z.object({
+  // Validation Schema — useMemo so it rebuilds when balance changes (avoids stale max cap)
+  const schema = useMemo(() => z.object({
     amount: z.number()
       .min(MIN_WITHDRAWAL, t('withdrawal.minAmountError') || `Minimum withdrawal is ${new Intl.NumberFormat('vi-VN').format(MIN_WITHDRAWAL)} đ`)
       .max(user?.pendingCashback || 0, t('withdrawal.insufficientBalance') || 'Insufficient balance'),
     bankName: z.string().min(1, t('withdrawal.bankRequired') || 'Bank name is required'),
     accountNumber: z.string().min(5, t('withdrawal.accountNumberRequired') || 'Valid account number is required'),
     accountName: z.string().min(2, t('withdrawal.accountNameRequired') || 'Account holder name is required'),
-  });
+  }), [user?.pendingCashback, t]);
 
   type WithdrawalFormData = z.infer<typeof schema>;
 
@@ -41,7 +41,7 @@ export const WithdrawalForm: React.FC<WithdrawalFormProps> = ({ onSuccess }) => 
       bankName: '',
       accountNumber: '',
       accountName: user?.name?.toUpperCase() || '',
-    }
+    },
   });
 
   const onSubmit = async (data: WithdrawalFormData) => {

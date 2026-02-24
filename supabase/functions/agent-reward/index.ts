@@ -113,6 +113,23 @@ serve(async (req) => {
         const userId = record.user_id;
         const orderTotal = Number(record.total_vnd);
 
+        // IDEMPOTENCY GUARD: Check if commission already paid for this order
+        const { data: existingCommission } = await supabase
+            .from("transactions")
+            .select("id")
+            .eq("user_id", userId)
+            .eq("type", "direct_commission")
+            .like("description", `%${orderId}%`)
+            .limit(1)
+            .single();
+
+        if (existingCommission) {
+            console.warn(`[TheBee] Commission already paid for order ${orderId}. Skipping duplicate.`);
+            return new Response(JSON.stringify({ success: true, message: "Already processed" }), {
+                headers: { "Content-Type": "application/json" },
+            });
+        }
+
         console.log(`[TheBee] Processing Order: ${orderId} - Total: ${orderTotal}`);
 
         // 3. Lấy thông tin người mua (Buyer) và Người bảo trợ (Sponsor)
@@ -160,7 +177,7 @@ serve(async (req) => {
         try {
             const { data: userData } = await supabase
                 .from('users')
-                .select('email, full_name, pending_balance')
+                .select('email, full_name, pending_cashback')
                 .eq('id', userId)
                 .single();
 
@@ -175,7 +192,7 @@ serve(async (req) => {
                             commissionAmount: `${directCommission.toLocaleString('vi-VN')} VND`,
                             commissionType: 'direct',
                             orderId: orderId,
-                            currentBalance: `${(userData.pending_balance || 0).toLocaleString('vi-VN')} VND`,
+                            currentBalance: `${(userData.pending_cashback || 0).toLocaleString('vi-VN')} VND`,
                             commissionRate: `${(directRate * 100).toFixed(0)}%`
                         }
                     }
@@ -240,7 +257,7 @@ serve(async (req) => {
                     try {
                         const { data: sponsorData } = await supabase
                             .from('users')
-                            .select('email, full_name, pending_balance')
+                            .select('email, full_name, pending_cashback')
                             .eq('id', sponsor.id)
                             .single();
 
@@ -262,7 +279,7 @@ serve(async (req) => {
                                         commissionType: 'sponsor',
                                         orderId: orderId,
                                         fromUserName: buyerData?.full_name || 'Thành viên F1',
-                                        currentBalance: `${(sponsorData.pending_balance || 0).toLocaleString('vi-VN')} VND`,
+                                        currentBalance: `${(sponsorData.pending_cashback || 0).toLocaleString('vi-VN')} VND`,
                                         commissionRate: '8%'
                                     }
                                 }
