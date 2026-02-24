@@ -33,10 +33,10 @@ export function useHeroCard(user: User) {
             const timer = setTimeout(() => {
                 if (mountedRef.current) setCopied(false);
             }, 2000);
-            return () => clearTimeout(timer);
+            // Cleanup handled by mountedRef guard above — no need to return cleanup fn
+            // (returning from useCallback is unused and causes TS7030)
         } catch (err) {
             uiLogger.error('Failed to copy', err);
-            // Fallback for non-secure contexts if needed
         }
     }, [referralLink]);
 
