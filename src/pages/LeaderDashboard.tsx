@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, lazy, Suspense } from 'react';
 import { motion } from 'framer-motion';
 import {
   Users,
@@ -11,7 +11,7 @@ import {
   Brain,
   Zap,
 } from 'lucide-react';
-import NetworkTree from '@/components/NetworkTree';
+const NetworkTree = lazy(() => import('@/components/NetworkTree'));
 import { StatCard, TeamTable, PerformanceChart } from '@/components/LeaderDashboard';
 import LeaderboardTop3PerformersPodium from '@/components/LeaderDashboard/leaderboard-top-3-performers-podium';
 import InsightsRiskOverviewCards from '@/components/LeaderDashboard/insights-risk-overview-cards';
@@ -29,7 +29,7 @@ import { useToast } from '@/components/ui/Toast';
  * - Insights: AI-powered risk analysis, at-risk members
  * - Tree: Network tree visualization
  */
-export default function LeaderDashboard() {
+function LeaderDashboard() {
   const { t } = useTranslation();
   const { showToast } = useToast();
   const { teamInsights, teamMembers, teamMetrics, sendReminder, sendGift } = useStore();
@@ -314,9 +314,13 @@ export default function LeaderDashboard() {
           animate={{ opacity: 1 }}
           className="space-y-6"
         >
-          <NetworkTree />
+          <Suspense fallback={<div className="flex items-center justify-center h-64 text-zinc-400">Đang tải sơ đồ...</div>}>
+            <NetworkTree />
+          </Suspense>
         </motion.div>
       )}
     </div>
   );
 }
+
+export default React.memo(LeaderDashboard);

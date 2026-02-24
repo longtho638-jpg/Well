@@ -204,6 +204,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ onMobileClose }) => {
           <img
             src={user.avatarUrl}
             alt={`${user.name}'s profile picture`}
+            loading="lazy"
             className="w-10 h-10 rounded-full border border-zinc-700 shadow-sm object-cover"
           />
           <div className="flex-1 min-w-0">

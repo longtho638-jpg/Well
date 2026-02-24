@@ -42,6 +42,7 @@ export const TreeNodeComponent: React.FC<TreeNodeProps> = memo(({ node, level, o
                             <img
                                 src={node.avatarUrl || `https://ui-avatars.com/api/?name=${encodeURIComponent(node.name)}&background=random`}
                                 alt={node.name}
+                                loading="lazy"
                                 className="w-12 h-12 rounded-full border-2 border-white/10"
                             />
                             <div className="absolute -bottom-1 -right-1 bg-zinc-900 rounded-full p-0.5">

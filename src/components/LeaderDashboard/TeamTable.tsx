@@ -125,6 +125,7 @@ export default function TeamTable({
                       <img
                         src={member.avatarUrl}
                         alt={member.name}
+                        loading="lazy"
                         className="w-10 h-10 rounded-full ring-2 ring-white/20"
                       />
                       <div>
