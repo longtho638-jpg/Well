@@ -86,7 +86,7 @@ export const createTeamSlice: StateCreator<
     [],
     [],
     TeamSlice
-> = (set, get) => ({
+> = () => ({
     teamMembers: [],
     teamMetrics: defaultTeamMetrics,
     teamInsights: defaultTeamInsights,

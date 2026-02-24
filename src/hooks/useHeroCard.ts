@@ -30,7 +30,7 @@ export function useHeroCard(user: User) {
             await navigator.clipboard.writeText(referralLink);
             if (!mountedRef.current) return;
             setCopied(true);
-            const timer = setTimeout(() => {
+            setTimeout(() => {
                 if (mountedRef.current) setCopied(false);
             }, 2000);
             // Cleanup handled by mountedRef guard above — no need to return cleanup fn

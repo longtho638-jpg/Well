@@ -25,10 +25,6 @@ export const CopilotMessageList: React.FC<CopilotMessageListProps> = ({
 
     useEffect(() => {
         scrollToBottom();
-        return () => {
-            // Cancel any pending smooth scroll on unmount
-            messagesEndRef.current?.scrollIntoView({ behavior: 'instant' });
-        };
     }, [messages, isLoading]);
 
     return (
