@@ -177,6 +177,21 @@ describe('Async Utilities', () => {
       expect(fn).toHaveBeenCalledTimes(1);
       expect(results).toEqual(['result', 'result', 'result']);
     });
+
+    it('should handle errors correctly', async () => {
+      const error = new Error('fail');
+      const fn = vi.fn().mockRejectedValue(error);
+      const debounced = debounceAsync(fn, 100);
+
+      const p1 = debounced();
+      const p2 = debounced();
+
+      await vi.advanceTimersByTimeAsync(100);
+
+      await expect(p1).rejects.toThrow('fail');
+      await expect(p2).rejects.toThrow('fail');
+      expect(fn).toHaveBeenCalledTimes(1);
+    });
   });
 
   describe('poll', () => {
