@@ -14,8 +14,10 @@ export const QuickActionsCard: React.FC = () => {
   const { showToast } = useToast();
 
   const handleSendGiftCard = () => {
-    // Mock logic for SEED phase
-    const code = 'GIFT-' + Math.random().toString(36).substr(2, 6).toUpperCase();
+    // Use crypto.getRandomValues for unpredictable gift codes (Math.random is predictable)
+    const array = new Uint8Array(4);
+    crypto.getRandomValues(array);
+    const code = 'GIFT-' + Array.from(array, b => b.toString(36)).join('').toUpperCase().slice(0, 6);
     navigator.clipboard.writeText(code);
     showToast(t('quickactionscard.gift_card_created', { code }), 'success');
   };

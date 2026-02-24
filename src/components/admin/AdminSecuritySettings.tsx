@@ -9,7 +9,7 @@
  * - Session management
  */
 
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
     Shield,
@@ -151,6 +151,11 @@ export function AdminSecuritySettings() {
             setLoading2FA(false);
         }
     };
+
+    // Stable QR pattern - generated once per component mount, not on every render
+    const qrPattern = useMemo(() =>
+        Array.from({ length: 36 }, () => Math.random() > 0.5),
+    []);
 
     const complete2FASetup = async () => {
         setLoading2FA(true);
@@ -350,7 +355,7 @@ export function AdminSecuritySettings() {
                             <div className="bg-white p-4 rounded-xl mb-6 mx-auto w-48 h-48 flex items-center justify-center">
                                 <div className="w-40 h-40 bg-zinc-200 rounded grid grid-cols-6 gap-0.5 p-2">
                                     {[...Array(36)].map((_, i) => (
-                                        <div key={i} className={`${Math.random() > 0.5 ? 'bg-zinc-900' : 'bg-white'}`} />
+                                        <div key={i} className={`${qrPattern[i] ? 'bg-zinc-900' : 'bg-white'}`} />
                                     ))}
                                 </div>
                             </div>

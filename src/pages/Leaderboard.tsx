@@ -21,6 +21,10 @@ interface LeaderboardEntry {
   isCurrentUser?: boolean;
 }
 
+// Seeded variance per person index — stable across renders (deterministic)
+const SHOP_VARIANCE = Array.from({ length: 15 }, (_, i) => 0.9 + ((i * 17 + 7) % 20) / 100);
+const GROW_VARIANCE = Array.from({ length: 15 }, (_, i) => 0.9 + ((i * 13 + 3) % 20) / 100);
+
 // Mock leaderboard data
 const generateMockLeaderboard = (currentUserId: string): LeaderboardEntry[] => {
   const names = [
@@ -46,8 +50,8 @@ const generateMockLeaderboard = (currentUserId: string): LeaderboardEntry[] => {
     userId: `user-${index + 1}`,
     name: person.name,
     avatarUrl: person.avatar,
-    shopTokens: Math.floor((150000000 - index * 8000000) * (0.9 + Math.random() * 0.2)),
-    growTokens: Math.floor((5000 - index * 200) * (0.9 + Math.random() * 0.2)),
+    shopTokens: Math.floor((150000000 - index * 8000000) * SHOP_VARIANCE[index]),
+    growTokens: Math.floor((5000 - index * 200) * GROW_VARIANCE[index]),
     isCurrentUser: false,
   }));
 

@@ -74,11 +74,12 @@ export const orderService = {
 
     /**
      * Fetch all pending 'sale' transactions with user details
+     * Uses Supabase foreign key join to avoid N+1 query pattern
      */
     async getPendingOrders(): Promise<PendingOrder[]> {
         const { data, error } = await supabase
             .from('transactions')
-            .select('id, user_id, amount, created_at, payment_proof_url, currency, status, type')
+            .select('id, user_id, amount, created_at, payment_proof_url, currency, status, type, user:users(name, email)')
             .eq('status', 'pending')
             .eq('type', 'sale')
             .order('created_at', { ascending: false });
@@ -88,24 +89,13 @@ export const orderService = {
             throw error;
         }
 
-        // Fetch user details for each order sequentially to avoid heavy joins on client
-        // In a high-traffic production env, this would be a single RPC or View
-        const ordersWithUsers = await Promise.all(
-            (data || []).map(async (order) => {
-                const { data: userData } = await supabase
-                    .from('users')
-                    .select('name, email')
-                    .eq('id', order.user_id)
-                    .single();
-
-                return {
-                    ...order,
-                    user: userData || { name: 'Unknown', email: '' }
-                };
-            })
-        );
-
-        return ordersWithUsers;
+        return (data || []).map((order) => {
+            const userRaw = order.user;
+            const user = Array.isArray(userRaw)
+                ? (userRaw[0] as { name: string; email: string } | undefined) ?? { name: 'Unknown', email: '' }
+                : (userRaw as { name: string; email: string } | null) ?? { name: 'Unknown', email: '' };
+            return { ...order, user };
+        });
     },
 
     /**
