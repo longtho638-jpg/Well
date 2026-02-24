@@ -126,7 +126,7 @@ export const createAuthSlice: StateCreator<
                 totalSales: data.total_sales || 0,
                 teamVolume: data.team_volume || 0,
                 shopBalance: data.shop_balance || 0,
-                growBalance: data.grow_balance || data.pending_cashback || 0,
+                growBalance: data.grow_balance || 0,
                 pendingCashback: data.pending_cashback || 0,
                 pointBalance: data.point_balance || 0,
                 stakedGrowBalance: data.staked_grow_balance || 0,

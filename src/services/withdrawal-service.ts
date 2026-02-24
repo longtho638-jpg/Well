@@ -142,32 +142,35 @@ export const withdrawalService = {
         throw new ValidationError(`Cannot cancel withdrawal with status: ${withdrawal.status}`);
       }
 
-      // Update status to cancelled
-      const { error: updateError } = await supabase
-        .from('withdrawal_requests')
-        .update({ status: 'cancelled' })
-        .eq('id', id);
-
-      if (updateError) throw fromSupabaseError(updateError);
-
-      // Refund amount to user's pending_cashback
+      // Atomic cancel + refund via RPC to prevent race condition
+      // (read-then-write on pending_cashback would cause lost updates under concurrent cancels)
       const { data: { user } } = await supabase.auth.getUser();
       if (!user) throw new ValidationError('User not authenticated');
 
-      const { data: userData, error: readError } = await supabase
-        .from('users')
-        .select('pending_cashback')
-        .eq('id', user.id)
-        .single();
+      const { error: cancelError } = await supabase.rpc('cancel_withdrawal_request', {
+        p_request_id: id,
+        p_user_id: user.id,
+      });
 
-      if (readError) throw fromSupabaseError(readError);
+      if (cancelError) {
+        // Fallback: non-atomic path if RPC not available
+        uiLogger.error('cancel_withdrawal_request RPC failed, using fallback', cancelError);
 
-      const { error: refundError } = await supabase
-        .from('users')
-        .update({ pending_cashback: (userData.pending_cashback || 0) + withdrawal.amount })
-        .eq('id', user.id);
+        const { error: updateError } = await supabase
+          .from('withdrawal_requests')
+          .update({ status: 'cancelled' })
+          .eq('id', id)
+          .eq('status', 'pending'); // Guard: only cancel if still pending
 
-      if (refundError) throw fromSupabaseError(refundError);
+        if (updateError) throw fromSupabaseError(updateError);
+
+        const { error: refundError } = await supabase.rpc('increment_pending_balance', {
+          x_user_id: user.id,
+          x_amount: withdrawal.amount,
+        });
+
+        if (refundError) throw fromSupabaseError(refundError);
+      }
 
     } catch (error) {
       uiLogger.error('Cancel withdrawal failed', error);

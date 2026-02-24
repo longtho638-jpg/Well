@@ -184,6 +184,7 @@ serve(async (req) => {
         const items = itemsResult.data || []
 
         if (user?.email) {
+          // Fire-and-forget with explicit catch — do not block webhook response
           supabase.functions
             .invoke('send-email', {
               body: {

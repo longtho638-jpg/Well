@@ -114,16 +114,16 @@ serve(async (req) => {
         const orderTotal = Number(record.total_vnd);
 
         // IDEMPOTENCY GUARD: Check if commission already paid for this order
-        const { data: existingCommission } = await supabase
+        // Use .limit(1) without .single() to avoid PGRST116 when multiple rows exist
+        const { data: existingCommissions } = await supabase
             .from("transactions")
             .select("id")
             .eq("user_id", userId)
             .eq("type", "direct_commission")
             .like("description", `%${orderId}%`)
-            .limit(1)
-            .single();
+            .limit(1);
 
-        if (existingCommission) {
+        if (existingCommissions && existingCommissions.length > 0) {
             console.warn(`[TheBee] Commission already paid for order ${orderId}. Skipping duplicate.`);
             return new Response(JSON.stringify({ success: true, message: "Already processed" }), {
                 headers: { "Content-Type": "application/json" },
