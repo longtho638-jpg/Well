@@ -2698,7 +2698,8 @@ export const vi = {
     sync: "Đồng bộ:",
     projectionSimulator: "Mô phỏng dự báo",
     realTime: "Thời gian thực",
-    policyChangesAreCryptographicallySigned: "Thay đổi chính sách được ký bảo mật"
+    policyChangesAreCryptographicallySigned: "Thay đổi chính sách được ký bảo mật",
+    saveSuccess: "Lưu cấu hình chính sách thành công"
   },
   healthcheck: {
     "100": "100%",

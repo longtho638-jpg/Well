@@ -116,13 +116,23 @@ export function usePolicyEngine() {
         const simProfit = simGMV - simTotalPayout - fixedCost;
         const profitMargin = simGMV > 0 ? (simProfit / simGMV) * 100 : 0;
 
+        // Strategic Metrics (Elite Protocol)
+        // 1.5% conversion rate from Partner to Vendor (Elite Protocol Target: 3/200)
+        const strategicCandidates = Math.floor(simPartners * 0.015);
+
+        // SaaS Revenue: 20% of GMV from Vendors.
+        // Assuming Vendors generate whiteLabelGMV on average.
+        const projectedSaaSRevenue = strategicCandidates * whiteLabelGMV * 0.20;
+
         return {
             simGMV,
             simTotalPayout,
             simProfit,
-            profitMargin
+            profitMargin,
+            strategicCandidates,
+            projectedSaaSRevenue
         };
-    }, [simPartners, simAOV, fixedCost, totalPayoutPercent]);
+    }, [simPartners, simAOV, fixedCost, totalPayoutPercent, whiteLabelGMV]);
 
     return {
         loading,

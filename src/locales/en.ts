@@ -2097,7 +2097,8 @@ export const en = {
     sync: "[MISSING] sync",
     projectionSimulator: "[MISSING] projectionSimulator",
     realTime: "[MISSING] realTime",
-    policyChangesAreCryptographicallySigned: "[MISSING] policyChangesAreCryptographicallySigned"
+    policyChangesAreCryptographicallySigned: "Policy Changes Are Cryptographically Signed",
+    saveSuccess: "Policy Configuration Saved Successfully"
   },
   admin: {
     nav: {

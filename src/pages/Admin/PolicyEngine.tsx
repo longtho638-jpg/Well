@@ -20,9 +20,11 @@ import { SimulationPanel } from '@/components/admin/policy/SimulationPanel';
 // Shared
 import { AuraBadge } from '@/components/ui/Aura';
 import { useTranslation } from '@/hooks';
+import { useToast } from '@/components/ui/Toast';
 
 const PolicyEngine: React.FC = () => {
     const { t } = useTranslation();
+    const { showToast } = useToast();
   const {
     loading,
     saving,
@@ -38,7 +40,7 @@ const PolicyEngine: React.FC = () => {
   const onSave = async () => {
     const success = await handleSave();
     if (success) {
-      // toast.success('✅ Policy Configuration Saved Successfully!');
+      showToast(t('policyEngine.saveSuccess'), 'success');
     }
   };
 

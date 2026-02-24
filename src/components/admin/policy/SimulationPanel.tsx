@@ -15,6 +15,8 @@ interface SimulationPanelProps {
         simTotalPayout: number;
         simProfit: number;
         profitMargin: number;
+        strategicCandidates: number;
+        projectedSaaSRevenue: number;
     };
 }
 
@@ -30,6 +32,17 @@ export const SimulationPanel: React.FC<SimulationPanelProps> = ({ simulation }) 
                 <TrendingUp size={24} /> {t('simulationpanel.vc_simulation_engine')}</h3>
 
             <div className="space-y-10">
+                {/* Elite Protocol Strategic Metrics */}
+                <div className="grid grid-cols-2 gap-4 border-b border-white/5 pb-8">
+                    <div>
+                        <p className="text-[10px] font-black uppercase tracking-widest text-emerald-500 mb-1">Elite Candidates</p>
+                        <p className="text-2xl font-black text-white">{simulation.strategicCandidates} <span className="text-sm text-zinc-500">Vendors</span></p>
+                    </div>
+                    <div>
+                        <p className="text-[10px] font-black uppercase tracking-widest text-blue-500 mb-1">Proj. SaaS Revenue</p>
+                        <p className="text-2xl font-black text-white">{formatVND(simulation.projectedSaaSRevenue)}</p>
+                    </div>
+                </div>
                 <div className="space-y-4">
                     <div className="flex justify-between items-end">
                         <label className="text-[10px] font-black uppercase tracking-widest text-zinc-500">{t('simulationpanel.active_distribution_node')}</label>
