@@ -41,12 +41,12 @@ export const CheckoutPage: React.FC = () => {
 
         try {
             if (paymentMethod === 'payos') {
-                // Generate a numeric order code using timestamp for uniqueness
-                // Format: last 6 digits of epoch ms + 4 random digits = 10 digits
-                // Unique per millisecond, ~16 minute wrap cycle, combined with random suffix
-                const tsPart = String(Date.now()).slice(-6);
-                const randomSuffix = Math.floor(1000 + Math.random() * 9000);
-                const orderCode = Number(`${tsPart}${randomSuffix}`);
+                // Generate a safe numeric order code within PostgreSQL int4 range (max 2,147,483,647)
+                // Use: last 7 digits of epoch seconds + 3 random digits = max ~9,999,999,999 → cap to safe range
+                const epochSec = Math.floor(Date.now() / 1000); // seconds, not ms
+                const tsPart = epochSec % 100000; // 5 digits max (0-99999)
+                const randomSuffix = Math.floor(100 + Math.random() * 900); // 3 digits (100-999)
+                const orderCode = Number(`${tsPart}${randomSuffix}`); // max 99999999 — safely within int4
 
                 // Create PayOS Payment Link
                 const response = await createPayment({

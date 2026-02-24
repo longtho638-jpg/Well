@@ -104,7 +104,7 @@ export const financeService = {
                             : tx.status === 'completed' ? 'Completed'
                                 : tx.status === 'approved' ? 'Approved'
                                     : 'Rejected',
-                        fraudScore: Math.floor(Math.random() * 30), // Simulated
+                        fraudScore: 0, // Fraud scoring handled server-side; not available client-side
                         timestamp: new Date(tx.created_at).toLocaleString('vi-VN'),
                         reason: tx.type === 'sale' ? 'Product Sale' : 'Commission Withdrawal',
                     };

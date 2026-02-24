@@ -36,9 +36,9 @@ export const walletService = {
 
             if (data) {
                 return {
-                    balance: data.pending_cashback || 0,  // Commission goes to pending_cashback
-                    totalEarnings: 0,
-                    pendingPayout: 0,
+                    balance: data.shop_balance || 0,       // Withdrawable balance = shop_balance
+                    totalEarnings: (data.shop_balance || 0) + (data.pending_cashback || 0),
+                    pendingPayout: data.pending_cashback || 0, // Pending commission not yet settled
                     taxWithheldTotal: 0
                 } as WalletData;
             }
@@ -107,9 +107,9 @@ export const walletService = {
                 (payload) => {
                     const newData = payload.new as { shop_balance?: number; pending_cashback?: number };
                     onUpdate({
-                        balance: newData.pending_cashback || 0,  // Commission goes to pending_cashback
-                        totalEarnings: 0,
-                        pendingPayout: 0,
+                        balance: newData.shop_balance || 0,
+                        totalEarnings: (newData.shop_balance || 0) + (newData.pending_cashback || 0),
+                        pendingPayout: newData.pending_cashback || 0,
                         taxWithheldTotal: 0
                     });
                 }
