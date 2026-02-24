@@ -4,8 +4,7 @@
  */
 
 import { useState } from 'react';
-import { pdf } from '@react-pdf/renderer';
-import { createCommissionReportDocument, type CommissionReportData } from '@/components/reports/commission-report-pdf-generator';
+import type { CommissionReportData } from '@/components/reports/commission-report-pdf-generator';
 
 export function useCommissionPDFReport() {
   const [isGenerating, setIsGenerating] = useState(false);
@@ -16,6 +15,10 @@ export function useCommissionPDFReport() {
     setError(null);
 
     try {
+      // Dynamic import to reduce bundle size (saves ~1.5MB on initial load)
+      const { pdf } = await import('@react-pdf/renderer');
+      const { createCommissionReportDocument } = await import('@/components/reports/commission-report-pdf-generator');
+
       // Create PDF blob
       const pdfDocument = createCommissionReportDocument(data);
       const blob = await pdf(pdfDocument).toBlob();

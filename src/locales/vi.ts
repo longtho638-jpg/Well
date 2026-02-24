@@ -4,7 +4,7 @@
  */
 
 export const vi = {
-    pwa: {
+  pwa: {
     install: {
       title: "Cài đặt WellNexus",
       description: "Cài đặt ứng dụng để có trải nghiệm tốt hơn với chế độ offline và tốc độ nhanh hơn.",
@@ -30,6 +30,7 @@ export const vi = {
     save: "Lưu",
     cancel: "Hủy",
     close: "Đóng",
+    delete: "Xóa",
     confirm: "Xác nhận",
     back: "Quay lại",
     next: "Tiếp theo",
@@ -85,7 +86,20 @@ export const vi = {
     aboutUs: "Về Chúng Tôi",
     careers: "Tuyển Dụng",
     ventureProgram: "Chương Trình Venture",
-    withdrawal: "Rút tiền"
+    withdrawal: "Rút tiền",
+    agentDashboard: "Bảng điều khiển Agent",
+    openMenu: "Mở menu",
+    notifications: "Thông báo",
+    skipToContent: "Chuyển đến nội dung chính",
+    pageContent: "Nội dung trang",
+    mainNavigation: "Điều hướng chính",
+    primaryNavigation: "Điều hướng chính",
+    wellnexusHome: "Trang chủ WellNexus",
+    navigateTo: "Đi đến {{label}}",
+    switchToLight: "Chuyển sang giao diện sáng",
+    switchToDark: "Chuyển sang giao diện tối",
+    rankLabel: "Hạng: {{rank}}",
+    profilePicture: "Ảnh đại diện"
   },
   landingpage: {
     ultimate_level_wellness: "ULTIMATE LEVEL WELLNESS",
@@ -1307,7 +1321,10 @@ export const vi = {
       loginButton: "Đăng nhập",
       noAccount: "Chưa có tài khoản?",
       signUp: "Đăng ký ngay",
-      demo: "Đăng nhập demo"
+      demo: "Đăng nhập demo",
+      backToHome: "Về trang chủ WellNexus",
+      showPassword: "Hiện mật khẩu",
+      hidePassword: "Ẩn mật khẩu"
     },
     register: {
       title: "Đăng ký",
@@ -1752,7 +1769,10 @@ export const vi = {
     the_coach: "Huấn Luyện Viên",
     day_3_30: "Ngày 3/30",
     xp: "XP",
-    get_ai_advice: "Nhận Tư Vấn AI"
+    get_ai_advice: "Nhận Tư Vấn AI",
+    coachFallback: "Hãy tập trung chia sẻ giá trị hôm nay. Doanh số sẽ theo sau!",
+    getAiAdviceLabel: "Nhận tư vấn từ huấn luyện viên AI",
+    questList: "Danh sách nhiệm vụ"
   },
   liveactivitiesticker: {
     recent: "Gần đây: ",
@@ -1784,6 +1804,7 @@ export const vi = {
     dashboard: "Bảng điều khiển",
     ng_xu_t: "Đăng xuất",
     b_t_u_ngay: "Bắt đầu ngay",
+    mobileNavigation: "Menu điều hướng di động",
     newsletter: "Bản tin",
     nh_n_th_ng_tin: "Nhận thông tin ",
     c_quy_n: "độc quyền",
@@ -1793,9 +1814,9 @@ export const vi = {
     wellnexus_1: "WellNexus",
     social_commerce_2_0_1: "Social Commerce 2.0",
     h_sinh_th_i_social_commerce_t: "Hệ sinh thái Social Commerce tiên tiến nhất Việt Nam",
-    hello_wellnexus_vn: "hello@wellnexus.vn",
-    "84_901_234_567": "+84 901 234 567",
-    q1_tp_hcm_vietnam: "Q1, TP. HCM, Vietnam",
+    hello_wellnexus_vn: "wellnexusvn@gmail.com",
+    "84_901_234_567": "0918 876 586",
+    q1_tp_hcm_vietnam: "286 Nguyễn Xuyển, Thanh Liệt, Hà Nội",
     email_placeholder: "email@example.com",
     wellnexus_all_rights_reserved: "WellNexus. All rights reserved.",
     made_with_in_vietnam: "Made with ❤️ in Vietnam",
@@ -2825,5 +2846,10 @@ export const vi = {
     urgency: "Chỉ còn 157 suất trong khu vực của bạn",
     noThanks: "Để sau, cảm ơn",
     closeLabel: "Đóng popup"
+  },
+  notfound: {
+    title: "404 - Không tìm thấy trang",
+    description: "Rất tiếc, trang bạn đang tìm kiếm không tồn tại hoặc đã bị di chuyển.",
+    back_home: "Quay lại trang chủ"
   }
 };

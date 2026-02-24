@@ -272,7 +272,7 @@ const CMS: React.FC = () => {
                         </div>
                       </div>
                     </div>
-                    <button className="p-4 bg-zinc-100 dark:bg-zinc-800 rounded-2xl text-zinc-400 hover:text-zinc-900 dark:hover:text-white transition-all"><Edit2 size={18} /></button>
+                    <button aria-label="Edit template" className="p-4 bg-zinc-100 dark:bg-zinc-800 rounded-2xl text-zinc-400 hover:text-zinc-900 dark:hover:text-white transition-all"><Edit2 size={18} /></button>
                   </div>
                 </div>
               ))}

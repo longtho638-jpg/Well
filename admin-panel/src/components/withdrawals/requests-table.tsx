@@ -74,26 +74,6 @@ export function RequestsTable({
       header: 'Status',
       cell: ({ row }) => {
         const status = row.getValue('status') as string;
-        let variant: 'default' | 'secondary' | 'destructive' | 'outline' | 'success' | 'warning' = 'default';
-
-        // Map status to badge variant
-        switch (status) {
-          case 'pending':
-            variant = 'warning' as any; // Assuming we might add warning variant or use default style override
-            break;
-          case 'approved':
-            variant = 'success' as any;
-            break;
-          case 'completed':
-            variant = 'default'; // Blueish usually
-            break;
-          case 'rejected':
-            variant = 'destructive';
-            break;
-          case 'cancelled':
-            variant = 'secondary';
-            break;
-        }
 
         // Custom styling for badges since we might not have all variants in the Badge component
         const getBadgeStyle = (s: string) => {

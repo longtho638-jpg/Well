@@ -200,28 +200,45 @@ export default defineConfig({
       output: {
         manualChunks(id) {
           if (id.includes('node_modules')) {
-            // Core vendor chunk (React ecosystem)
-            if (id.includes('react') || id.includes('react-dom') || id.includes('react-router')) {
-              return 'vendor';
+            // React core — precise matching to avoid catching react-hook-form, react-i18next, etc.
+            if (
+              id.includes('node_modules/react/') ||
+              id.includes('node_modules/react-dom/') ||
+              id.includes('node_modules/react-router-dom/') ||
+              id.includes('node_modules/react-router/') ||
+              id.includes('node_modules/scheduler/') ||
+              id.includes('node_modules/@remix-run/')
+            ) {
+              return 'react-vendor';
             }
-            // UI chunk (Animation)
-            if (id.includes('framer-motion')) {
-              return 'ui';
-            }
-            // Recharts: let Vite handle naturally via lazy() boundaries
-            // Manual chunking caused TDZ errors from circular d3 deps
-            // Utils chunk (i18n, common utilities)
-            if (id.includes('i18next') || id.includes('react-i18next') || id.includes('zod') || id.includes('react-hook-form')) {
-              return 'utils';
-            }
-            // Icons chunk
-            if (id.includes('lucide-react')) {
-              return 'icons';
-            }
-            // Supabase chunk
-            if (id.includes('@supabase')) {
-              return 'supabase';
-            }
+            // Animation
+            if (id.includes('framer-motion')) return 'animation';
+            // Supabase
+            if (id.includes('@supabase')) return 'supabase';
+            // Icons
+            if (id.includes('lucide-react')) return 'icons';
+            // i18n
+            if (id.includes('i18next')) return 'i18n';
+            // Forms
+            if (id.includes('zod') || id.includes('react-hook-form') || id.includes('@hookform')) return 'forms';
+            // State management
+            if (id.includes('zustand')) return 'state';
+            // PDF generation (heavy — @react-pdf includes pdfkit, fontkit, etc.)
+            if (id.includes('@react-pdf') || id.includes('pdfkit') || id.includes('fontkit')) return 'pdf';
+            // Sentry (Monitoring)
+            if (id.includes('@sentry')) return 'sentry';
+            // DOMPurify (Sanitization)
+            if (id.includes('dompurify')) return 'dompurify';
+            // Workbox (PWA)
+            if (id.includes('workbox')) return 'workbox';
+
+            // Recharts + d3: DO NOT manually chunk — TDZ bug from circular d3 deps (2026-02-08)
+            // Vite handles naturally via lazy() boundaries
+            if (id.includes('recharts') || id.includes('d3-') || id.includes('victory')) return undefined;
+
+            // Catch-all: Let Vite handle the rest automatically
+            // Do NOT force a 'deps' bucket which creates monoliths
+            return undefined;
           }
         },
       },

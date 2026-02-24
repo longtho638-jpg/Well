@@ -22,6 +22,7 @@ import { RedemptionZone } from '@/components/marketplace/RedemptionZone';
 import { SEOHead } from '@/components/seo/seo-head';
 import { Breadcrumbs } from '@/components/seo/breadcrumbs';
 import { seoConfig } from '@/config/seo-config';
+import { useToast } from '@/components/ui/Toast';
 
 // Lazy Loaded Components
 const QuickPurchaseModal = lazy(() => import('@/components/marketplace/QuickPurchaseModal').then(m => ({ default: m.QuickPurchaseModal })));
@@ -29,6 +30,7 @@ const CartDrawer = lazy(() => import('@/components/marketplace/CartDrawer').then
 
 export const Marketplace: React.FC = () => {
   const [showQuickBuy, setShowQuickBuy] = React.useState(false);
+  const { showToast } = useToast();
   const {
     // State
     user,
@@ -179,10 +181,10 @@ export const Marketplace: React.FC = () => {
                 onRedeem={async (id) => {
                   try {
                     await redeemItem(id);
-                    alert(t('success.purchaseSuccess'));
+                    showToast(t('success.purchaseSuccess'), 'success');
                   } catch (e) {
                     const err = e as Error;
-                    alert(err.message);
+                    showToast(err.message, 'error');
                   }
                 }}
               />

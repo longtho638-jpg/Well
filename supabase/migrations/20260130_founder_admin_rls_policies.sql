@@ -13,7 +13,7 @@ BEGIN
     AND (role = 'founder' OR role = 'super_admin')
   );
 END;
-$$ LANGUAGE plpgsql SECURITY DEFINER;
+$$ LANGUAGE plpgsql SECURITY DEFINER SET search_path = public;
 
 -- 2. Create/Ensure tables exist (based on src/types.ts)
 

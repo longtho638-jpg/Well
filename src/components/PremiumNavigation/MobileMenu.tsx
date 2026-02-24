@@ -52,7 +52,7 @@ export default function MobileMenu({ isOpen, navItems, isAuthenticated, user, on
             transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
             className="absolute inset-0 bg-zinc-950/98 backdrop-blur-2xl pt-24 px-6"
           >
-            <nav className="flex flex-col gap-2">
+            <nav className="flex flex-col gap-2" aria-label={t('premiumnavigation.mobileNavigation')}>
               {navItems.map((item) => (
                 <div key={item.label}>
                   {item.href ? (
@@ -121,14 +121,15 @@ export default function MobileMenu({ isOpen, navItems, isAuthenticated, user, on
                       to="/dashboard"
                       className="flex items-center gap-3 px-4 py-4 text-lg font-medium text-white"
                     >
-                      <LayoutDashboard className="w-5 h-5" />
+                      <LayoutDashboard className="w-5 h-5" aria-hidden="true" />
                       {t('premiumnavigation.dashboard')}
                     </Link>
                     <button
                       onClick={onLogout}
                       className="flex items-center gap-3 px-4 py-4 text-lg font-medium text-red-400 w-full"
+                      aria-label={t('premiumnavigation.ng_xu_t')}
                     >
-                      <LogOut className="w-5 h-5" />
+                      <LogOut className="w-5 h-5" aria-hidden="true" />
                       {t('premiumnavigation.ng_xu_t')}
                     </button>
                   </>
@@ -137,7 +138,7 @@ export default function MobileMenu({ isOpen, navItems, isAuthenticated, user, on
                     to="/login"
                     className="flex items-center justify-center gap-3 px-6 py-4 text-lg font-bold text-black bg-gradient-to-r from-emerald-500 to-cyan-500 rounded-xl"
                   >
-                    <Zap className="w-5 h-5" />
+                    <Zap className="w-5 h-5" aria-hidden="true" />
                     {t('premiumnavigation.b_t_u_ngay')}
                   </Link>
                 )}

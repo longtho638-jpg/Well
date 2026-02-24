@@ -36,6 +36,7 @@ const CheckoutPage = lazy(() => import('./pages/Checkout/CheckoutPage').then(m =
 const OrderSuccess = lazy(() => import('./components/checkout/OrderSuccess').then(m => ({ default: m.OrderSuccess })));
 const SettingsPage = lazy(() => import('./pages/SettingsPage'));
 const ProfilePage = lazy(() => import('./pages/ProfilePage'));
+const NotFoundPage = lazy(() => import('./pages/NotFoundPage'));
 
 // Code splitting: Lazy load Admin pages for better performance
 const Overview = lazy(() => import('./pages/Admin/Overview'));
@@ -75,6 +76,15 @@ const AdminSpinner = (
   </div>
 );
 
+// Wraps lazy components with ErrorBoundary + Suspense for chunk-load crash protection
+const SafePage: React.FC<{ fallback?: React.ReactNode; children: React.ReactNode }> = ({ fallback = PageSpinner, children }) => (
+  <ErrorBoundary>
+    <Suspense fallback={fallback}>
+      {children}
+    </Suspense>
+  </ErrorBoundary>
+);
+
 const App: React.FC = () => {
   const { t } = useTranslation();
   useAuth(); // Initialize authentication check
@@ -98,33 +108,33 @@ const App: React.FC = () => {
           {/* ============================================================ */}
           {/* PUBLIC ROUTES: Landing, Auth & Venture Vision */}
           {/* ============================================================ */}
-          <Route path="/" element={<Suspense fallback={PageSpinner}><LandingPage /></Suspense>} />
-          <Route path="/login" element={<Suspense fallback={PageSpinner}><Login /></Suspense>} />
-          <Route path="/signup" element={<Suspense fallback={PageSpinner}><Signup /></Suspense>} />
-          <Route path="/confirm-email" element={<Suspense fallback={PageSpinner}><ConfirmEmail /></Suspense>} />
-          <Route path="/forgot-password" element={<ForgotPasswordPage />} />
-          <Route path="/reset-password" element={<ResetPasswordPage />} />
-          <Route path="/ref/:referralId" element={<Suspense fallback={PageSpinner}><ReferralRedirect /></Suspense>} />
-          <Route path="/venture" element={<Suspense fallback={PageSpinner}><VenturePage /></Suspense>} />
+          <Route path="/" element={<SafePage><LandingPage /></SafePage>} />
+          <Route path="/login" element={<SafePage><Login /></SafePage>} />
+          <Route path="/signup" element={<SafePage><Signup /></SafePage>} />
+          <Route path="/confirm-email" element={<SafePage><ConfirmEmail /></SafePage>} />
+          <Route path="/forgot-password" element={<SafePage><ForgotPasswordPage /></SafePage>} />
+          <Route path="/reset-password" element={<SafePage><ResetPasswordPage /></SafePage>} />
+          <Route path="/ref/:referralId" element={<SafePage><ReferralRedirect /></SafePage>} />
+          <Route path="/venture" element={<SafePage><VenturePage /></SafePage>} />
 
           {/* ============================================================ */}
           {/* CHECKOUT ROUTES */}
           {/* ============================================================ */}
-          <Route path="/checkout" element={<Suspense fallback={AdminSpinner}><CheckoutPage /></Suspense>} />
-          <Route path="/checkout/success" element={<OrderSuccess />} />
+          <Route path="/checkout" element={<SafePage fallback={AdminSpinner}><CheckoutPage /></SafePage>} />
+          <Route path="/checkout/success" element={<SafePage><OrderSuccess /></SafePage>} />
 
           {/* ============================================================ */}
           {/* ADMIN ROUTES: Mission Control with Nested Routes (Protected) */}
           {/* ============================================================ */}
-          <Route path="/admin" element={<AdminRoute><ErrorBoundary><Suspense fallback={PageSpinner}><Admin /></Suspense></ErrorBoundary></AdminRoute>}>
-            <Route index element={<Suspense fallback={AdminSpinner}><Overview /></Suspense>} />
-            <Route path="cms" element={<Suspense fallback={AdminSpinner}><CMS /></Suspense>} />
-            <Route path="partners" element={<Suspense fallback={AdminSpinner}><Partners /></Suspense>} />
-            <Route path="finance" element={<Suspense fallback={AdminSpinner}><Finance /></Suspense>} />
-            <Route path="policy-engine" element={<Suspense fallback={AdminSpinner}><PolicyEngine /></Suspense>} />
-            <Route path="orders" element={<Suspense fallback={AdminSpinner}><OrderManagement /></Suspense>} />
-            <Route path="products" element={<Suspense fallback={AdminSpinner}><AdminProducts /></Suspense>} />
-            <Route path="audit-log" element={<Suspense fallback={AdminSpinner}><AuditLog /></Suspense>} />
+          <Route path="/admin" element={<AdminRoute><SafePage><Admin /></SafePage></AdminRoute>}>
+            <Route index element={<SafePage fallback={AdminSpinner}><Overview /></SafePage>} />
+            <Route path="cms" element={<SafePage fallback={AdminSpinner}><CMS /></SafePage>} />
+            <Route path="partners" element={<SafePage fallback={AdminSpinner}><Partners /></SafePage>} />
+            <Route path="finance" element={<SafePage fallback={AdminSpinner}><Finance /></SafePage>} />
+            <Route path="policy-engine" element={<SafePage fallback={AdminSpinner}><PolicyEngine /></SafePage>} />
+            <Route path="orders" element={<SafePage fallback={AdminSpinner}><OrderManagement /></SafePage>} />
+            <Route path="products" element={<SafePage fallback={AdminSpinner}><AdminProducts /></SafePage>} />
+            <Route path="audit-log" element={<SafePage fallback={AdminSpinner}><AuditLog /></SafePage>} />
           </Route>
 
           {/* ============================================================ */}
@@ -135,49 +145,47 @@ const App: React.FC = () => {
             path="/dashboard"
             element={
               isAuthenticated ? (
-                <ErrorBoundary>
-                  <Suspense fallback={AdminSpinner}>
-                    <AppLayout />
-                  </Suspense>
-                </ErrorBoundary>
+                <SafePage fallback={AdminSpinner}>
+                  <AppLayout />
+                </SafePage>
               ) : (
                 <Navigate to="/" replace />
               )
             }
           >
             {/* Dashboard Home */}
-            <Route index element={<Suspense fallback={SectionSpinner}><Dashboard /></Suspense>} />
+            <Route index element={<SafePage fallback={SectionSpinner}><Dashboard /></SafePage>} />
 
             {/* Marketplace & Products */}
-            <Route path="marketplace" element={<Suspense fallback={SectionSpinner}><Marketplace /></Suspense>} />
-            <Route path="product/:id" element={<Suspense fallback={SectionSpinner}><ProductDetail /></Suspense>} />
+            <Route path="marketplace" element={<SafePage fallback={SectionSpinner}><Marketplace /></SafePage>} />
+            <Route path="product/:id" element={<SafePage fallback={SectionSpinner}><ProductDetail /></SafePage>} />
 
             {/* Commission Wallet */}
             <Route
               path="wallet"
               element={
-                <Suspense fallback={SectionSpinner}>
+                <SafePage fallback={SectionSpinner}>
                   <div className="space-y-6">
                     <h2 className="text-2xl md:text-3xl font-bold text-[#1F2937]">{t('app.commission_wallet')}</h2>
                     <CommissionWallet />
                   </div>
-                </Suspense>
+                </SafePage>
               }
             />
 
             {/* Phase 2: Growth Features */}
-            <Route path="copilot" element={<Suspense fallback={SectionSpinner}><CopilotPage /></Suspense>} />
-            <Route path="team" element={<Suspense fallback={SectionSpinner}><LeaderDashboard /></Suspense>} />
-            <Route path="referral" element={<Suspense fallback={SectionSpinner}><ReferralPage /></Suspense>} />
-            <Route path="network" element={<Suspense fallback={SectionSpinner}><NetworkPage /></Suspense>} />
-            <Route path="withdrawal" element={<Suspense fallback={SectionSpinner}><WithdrawalPage /></Suspense>} />
-            <Route path="health-coach" element={<Suspense fallback={SectionSpinner}><HealthCoach /></Suspense>} />
-            <Route path="health-check" element={<Suspense fallback={SectionSpinner}><HealthCheck /></Suspense>} />
-            <Route path="leaderboard" element={<Suspense fallback={SectionSpinner}><Leaderboard /></Suspense>} />
-            <Route path="marketing-tools" element={<Suspense fallback={SectionSpinner}><MarketingTools /></Suspense>} />
-            <Route path="agents" element={<Suspense fallback={SectionSpinner}><AgentDashboard /></Suspense>} />
-            <Route path="settings" element={<Suspense fallback={SectionSpinner}><SettingsPage /></Suspense>} />
-            <Route path="profile" element={<Suspense fallback={SectionSpinner}><ProfilePage /></Suspense>} />
+            <Route path="copilot" element={<SafePage fallback={SectionSpinner}><CopilotPage /></SafePage>} />
+            <Route path="team" element={<SafePage fallback={SectionSpinner}><LeaderDashboard /></SafePage>} />
+            <Route path="referral" element={<SafePage fallback={SectionSpinner}><ReferralPage /></SafePage>} />
+            <Route path="network" element={<SafePage fallback={SectionSpinner}><NetworkPage /></SafePage>} />
+            <Route path="withdrawal" element={<SafePage fallback={SectionSpinner}><WithdrawalPage /></SafePage>} />
+            <Route path="health-coach" element={<SafePage fallback={SectionSpinner}><HealthCoach /></SafePage>} />
+            <Route path="health-check" element={<SafePage fallback={SectionSpinner}><HealthCheck /></SafePage>} />
+            <Route path="leaderboard" element={<SafePage fallback={SectionSpinner}><Leaderboard /></SafePage>} />
+            <Route path="marketing-tools" element={<SafePage fallback={SectionSpinner}><MarketingTools /></SafePage>} />
+            <Route path="agents" element={<SafePage fallback={SectionSpinner}><AgentDashboard /></SafePage>} />
+            <Route path="settings" element={<SafePage fallback={SectionSpinner}><SettingsPage /></SafePage>} />
+            <Route path="profile" element={<SafePage fallback={SectionSpinner}><ProfilePage /></SafePage>} />
           </Route>
 
           {/* ============================================================ */}
@@ -190,14 +198,14 @@ const App: React.FC = () => {
           {/* ============================================================ */}
           {/* DIAGNOSTIC ROUTES */}
           {/* ============================================================ */}
-          <Route path="/test" element={<TestPage />} />
-          <Route path="/debugger" element={<DebuggerPage />} />
-          <Route path="/system-status" element={<Suspense fallback={PageSpinner}><SystemStatus /></Suspense>} />
+          <Route path="/test" element={<ErrorBoundary><TestPage /></ErrorBoundary>} />
+          <Route path="/debugger" element={<ErrorBoundary><DebuggerPage /></ErrorBoundary>} />
+          <Route path="/system-status" element={<SafePage><SystemStatus /></SafePage>} />
 
           {/* ============================================================ */}
-          {/* CATCH-ALL: Unknown routes redirect to home */}
+          {/* CATCH-ALL: Unknown routes show 404 page */}
           {/* ============================================================ */}
-          <Route path="*" element={<Navigate to="/" replace />} />
+          <Route path="*" element={<SafePage><NotFoundPage /></SafePage>} />
         </Routes>
       </ToastProvider>
     </ThemeProvider>

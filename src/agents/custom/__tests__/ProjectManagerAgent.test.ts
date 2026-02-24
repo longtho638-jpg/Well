@@ -1,5 +1,5 @@
 import { describe, it, expect, beforeEach } from 'vitest';
-import { ProjectManagerAgent, ProjectReport, WorkflowPlan, ProgressMetrics, BlockerList } from '@/agents/custom/ProjectManagerAgent';
+import { ProjectManagerAgent, ProjectReport, WorkflowPlan, ProgressMetrics, BlockerList, ProjectManagerAction } from '@/agents/custom/ProjectManagerAgent';
 
 /**
  * Project Manager Agent Tests
@@ -160,10 +160,9 @@ describe('Project Manager Agent', () => {
 
     describe('Error Handling', () => {
         it('should handle unknown actions gracefully', async () => {
-            // @ts-ignore - Explicitly testing invalid action
             const result = await agent.execute({
                 action: 'unknownAction'
-            } as unknown as { action: 'generateReport' }); // Cast to valid type to bypass TS check for test
+            } as unknown as ProjectManagerAction);
 
             expect(result.success).toBe(false);
             expect(result.error).toBeDefined();

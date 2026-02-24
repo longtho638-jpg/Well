@@ -24,9 +24,13 @@ async function main() {
     // 1. Tạo User Test
     const email = `test_probe_${Date.now()}@example.com`;
     console.log(`\n1️⃣  Tạo User Test: ${email}`);
+    if (!process.env.TEST_USER_PASSWORD) {
+        console.error("❌ Missing TEST_USER_PASSWORD env var");
+        process.exit(1);
+    }
     const { data: { user }, error: userError } = await supabase.auth.admin.createUser({
         email,
-        password: process.env.TEST_USER_PASSWORD || 'password123',
+        password: process.env.TEST_USER_PASSWORD,
         email_confirm: true
     });
 

@@ -233,6 +233,9 @@ export default function LandingPage() {
 
   return (
     <div className="min-h-screen bg-zinc-950 overflow-x-hidden selection:bg-emerald-900 selection:text-emerald-100">
+      <a href="#main-content" className="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-[100] focus:px-4 focus:py-2 focus:bg-emerald-600 focus:text-white focus:rounded-lg focus:outline-none">
+        {t('nav.skipToContent')}
+      </a>
       <SEOHead
         title={seoConfig['/'].title}
         description={seoConfig['/'].description}
@@ -245,6 +248,7 @@ export default function LandingPage() {
       <ScrollProgress />
       <PremiumHeader />
 
+      <main id="main-content" role="main">
       {/* Hero Section - Extracted Component */}
       <LandingHeroSection
         content={CONTENT}
@@ -273,6 +277,7 @@ export default function LandingPage() {
       />
 
       <PremiumFooter />
+      </main>
 
       <Suspense fallback={null}>
         <CartDrawer

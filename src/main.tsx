@@ -1,3 +1,6 @@
+// Safari polyfills — MUST be first import (modules are hoisted in ESM)
+import './utils/safari-compat-polyfills';
+
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import { BrowserRouter } from 'react-router-dom';

@@ -114,7 +114,7 @@ export const BankSelect: React.FC<BankSelectProps> = ({ value, onChange, error, 
 
       {/* Backdrop to close dropdown */}
       {isOpen && (
-        <div className="fixed inset-0 z-40" onClick={() => setIsOpen(false)} />
+        <div className="fixed inset-0 z-40" aria-hidden="true" onClick={() => setIsOpen(false)} />
       )}
     </div>
   );

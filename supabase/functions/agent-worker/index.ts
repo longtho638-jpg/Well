@@ -12,11 +12,14 @@ Deno.serve(async (req) => {
   // 1. Worker nhận tín hiệu (Cron hoặc Webhook gọi định kỳ)
   // Trong thực tế, ta dùng pg_net hoặc cron để gọi function này mỗi giây
 
-  // 2. Lấy 100 jobs pending
+  // 2. Lấy 100 jobs (pending HOẶC processing quá 10 phút)
+  // Tính thời điểm 10 phút trước
+  const tenMinsAgo = new Date(Date.now() - 10 * 60 * 1000).toISOString()
+
   const { data: jobs, error } = await supabase
     .from('agent_jobs')
     .select('*')
-    .eq('status', 'pending')
+    .or(`status.eq.pending,and(status.eq.processing,updated_at.lt.${tenMinsAgo})`)
     .limit(100)
 
   if (!jobs || jobs.length === 0) {

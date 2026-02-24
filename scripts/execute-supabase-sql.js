@@ -9,7 +9,7 @@ const fs = require('fs');
 const path = require('path');
 
 // Configuration
-const SUPABASE_URL = 'https://zumgrvmwmpstsigefuau.supabase.co';
+const SUPABASE_URL = process.env.VITE_SUPABASE_URL || 'https://zumgrvmwmpstsigefuau.supabase.co';
 const SUPABASE_SERVICE_ROLE_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY;
 
 if (!SUPABASE_SERVICE_ROLE_KEY) {

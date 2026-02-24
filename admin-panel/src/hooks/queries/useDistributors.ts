@@ -1,6 +1,6 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { distributorService } from '../../services/distributorService';
-import { PaginationParams } from '../../types';
+import { PaginationParams, Distributor } from '../../types';
 
 export const useDistributors = (params: PaginationParams) => {
   return useQuery({
@@ -22,7 +22,7 @@ export const useUpdateDistributor = () => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: ({ id, updates }: { id: string; updates: any }) =>
+    mutationFn: ({ id, updates }: { id: string; updates: Partial<Distributor> }) =>
       distributorService.updateDistributor(id, updates),
     onSuccess: (data) => {
       queryClient.invalidateQueries({ queryKey: ['distributors'] });

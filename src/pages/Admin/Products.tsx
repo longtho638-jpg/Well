@@ -98,7 +98,7 @@ const AdminProducts: React.FC = () => {
                     <p className="text-zinc-500 font-medium text-lg">{t('products.inventory_management_dttt_st')}</p>
                 </div>
                 <div className="flex items-center gap-3">
-                    <button onClick={refresh} className="p-4 bg-white dark:bg-zinc-900 border border-zinc-100 dark:border-white/5 rounded-2xl shadow-sm text-zinc-500">
+                    <button onClick={refresh} aria-label="Refresh products" className="p-4 bg-white dark:bg-zinc-900 border border-zinc-100 dark:border-white/5 rounded-2xl shadow-sm text-zinc-500">
                         <RefreshCw size={20} className={loading ? 'animate-spin' : ''} />
                     </button>
                     <button
@@ -247,7 +247,7 @@ const AdminProducts: React.FC = () => {
                                             ) : (
                                                 <>
                                                     <button onClick={() => onEdit(p)} className="flex-1 bg-zinc-100 dark:bg-zinc-800 text-zinc-900 dark:text-white py-3 rounded-2xl font-black uppercase tracking-widest text-[10px] border border-zinc-200 dark:border-white/5 hover:bg-zinc-200 transition-all">{t('products.edit_config')}</button>
-                                                    <button onClick={() => handleDelete(p.id, p.name)} className="p-3 bg-rose-500/5 text-rose-500 hover:bg-rose-500/10 rounded-2xl transition-all border border-rose-500/10"><Trash2 size={16} /></button>
+                                                    <button onClick={() => handleDelete(p.id, p.name)} aria-label={t('common.delete')} className="p-3 bg-rose-500/5 text-rose-500 hover:bg-rose-500/10 rounded-2xl transition-all border border-rose-500/10"><Trash2 size={16} /></button>
                                                 </>
                                             )}
                                         </div>

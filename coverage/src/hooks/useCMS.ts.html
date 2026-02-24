@@ -23,16 +23,16 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">4.68% </span>
+                <span class="strong">4.61% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>3/64</span>
+                <span class='fraction'>3/65</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>0/20</span>
+                <span class='fraction'>0/28</span>
             </div>
         
             
@@ -44,9 +44,9 @@
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">5.88% </span>
+                <span class="strong">5.76% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>3/51</span>
+                <span class='fraction'>3/52</span>
             </div>
         
             
@@ -204,7 +204,9 @@
 <a name='L139'></a><a href='#L139'>139</a>
 <a name='L140'></a><a href='#L140'>140</a>
 <a name='L141'></a><a href='#L141'>141</a>
-<a name='L142'></a><a href='#L142'>142</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<a name='L142'></a><a href='#L142'>142</a>
+<a name='L143'></a><a href='#L143'>143</a>
+<a name='L144'></a><a href='#L144'>144</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -322,6 +324,8 @@
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -397,9 +401,9 @@ const MOCK_TEMPLATES: NotificationTemplate[] = [
 export function <span class="fstat-no" title="function not covered" >useCMS() {</span>
     const { showToast <span class="cstat-no" title="statement not covered" >} = useToast();</span>
     const [activeTab, setActiveTab<span class="cstat-no" title="statement not covered" >] = useState&lt;'banners' | 'announcements' | 'templates'&gt;('banners');</span>
-    const [banners, setBanners<span class="cstat-no" title="statement not covered" >] = useState&lt;Banner[]&gt;(MOCK_BANNERS);</span>
-    const [announcements, setAnnouncements<span class="cstat-no" title="statement not covered" >] = useState&lt;Announcement[]&gt;(MOCK_ANNOUNCEMENTS);</span>
-    const [templates, setTemplates<span class="cstat-no" title="statement not covered" >] = useState&lt;NotificationTemplate[]&gt;(MOCK_TEMPLATES);</span>
+    const [banners, setBanners<span class="cstat-no" title="statement not covered" >] = useState&lt;Banner[]&gt;(import.meta.env.DEV ? MOCK_BANNERS : []);</span>
+    const [announcements, setAnnouncements<span class="cstat-no" title="statement not covered" >] = useState&lt;Announcement[]&gt;(import.meta.env.DEV ? MOCK_ANNOUNCEMENTS : []);</span>
+    const [templates, setTemplates<span class="cstat-no" title="statement not covered" >] = useState&lt;NotificationTemplate[]&gt;(import.meta.env.DEV ? MOCK_TEMPLATES : []);</span>
     const [searchQuery, setSearchQuery<span class="cstat-no" title="statement not covered" >] = useState('');</span>
     const [editingBanner, setEditingBanner<span class="cstat-no" title="statement not covered" >] = useState&lt;Banner | null&gt;(null);</span>
     const [editingAnnouncement, setEditingAnnouncement<span class="cstat-no" title="statement not covered" >] = useState&lt;Announcement | null&gt;(null);</span>
@@ -460,9 +464,11 @@ export function <span class="fstat-no" title="function not covered" >useCMS() {<
     }), [banners, announcements]);
 &nbsp;
     const <span class="cstat-no" title="statement not covered" >refresh = useCallback(<span class="fstat-no" title="function not covered" >() =&gt; {</span></span>
-<span class="cstat-no" title="statement not covered" >        setBanners(MOCK_BANNERS);</span>
-<span class="cstat-no" title="statement not covered" >        setAnnouncements(MOCK_ANNOUNCEMENTS);</span>
-<span class="cstat-no" title="statement not covered" >        setTemplates(MOCK_TEMPLATES);</span>
+<span class="cstat-no" title="statement not covered" >        if (import.meta.env.DEV) {</span>
+<span class="cstat-no" title="statement not covered" >            setBanners(MOCK_BANNERS);</span>
+<span class="cstat-no" title="statement not covered" >            setAnnouncements(MOCK_ANNOUNCEMENTS);</span>
+<span class="cstat-no" title="statement not covered" >            setTemplates(MOCK_TEMPLATES);</span>
+        }
 <span class="cstat-no" title="statement not covered" >        showToast('Content refreshed', 'success');</span>
     }, [showToast]);
 &nbsp;
@@ -493,7 +499,7 @@ export function <span class="fstat-no" title="function not covered" >useCMS() {<
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2026-02-03T03:59:24.446Z
+                at 2026-02-11T19:18:53.439Z
             </div>
         <script src="../../prettify.js"></script>
         <script>

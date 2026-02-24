@@ -124,7 +124,7 @@ export function AuditLog() {
                     <p className="text-zinc-500 font-medium text-lg">{t('auditlog.immutable_ledger_of_administra')}</p>
                 </div>
                 <div className="flex items-center gap-3">
-                    <button onClick={refresh} className="p-4 bg-white dark:bg-zinc-900 border border-zinc-100 dark:border-white/5 rounded-2xl shadow-sm text-zinc-500">
+                    <button onClick={refresh} aria-label="Refresh audit log" className="p-4 bg-white dark:bg-zinc-900 border border-zinc-100 dark:border-white/5 rounded-2xl shadow-sm text-zinc-500">
                         <RefreshCw size={20} className={loading ? 'animate-spin' : ''} />
                     </button>
                     <button

@@ -8,9 +8,10 @@ dotenv.config({ path: path.resolve(__dirname, '../.env') });
 
 const supabaseUrl = process.env.VITE_SUPABASE_URL;
 const supabaseKey = process.env.VITE_SUPABASE_SERVICE_ROLE_KEY || process.env.SERVICE_ROLE_KEY;
+const testUserPassword = process.env.TEST_USER_PASSWORD;
 
-if (!supabaseUrl || !supabaseKey) {
-    console.error('Missing Supabase credentials');
+if (!supabaseUrl || !supabaseKey || !testUserPassword) {
+    console.error('Missing Supabase credentials or TEST_USER_PASSWORD');
     process.exit(1);
 }
 
@@ -23,7 +24,7 @@ async function verifyBee2Logic() {
     const email = `bee2_test_${Date.now()}@example.com`;
     const { data: user, error: userError } = await supabase.auth.signUp({
         email,
-        password: process.env.TEST_USER_PASSWORD || 'password123',
+        password: process.env.TEST_USER_PASSWORD,
         options: {
             data: {
                 name: 'Bee Tester',

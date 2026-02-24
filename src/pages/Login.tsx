@@ -29,7 +29,7 @@ export default function Login() {
     } = useLogin();
 
     return (
-        <div className="min-h-screen bg-slate-950 flex items-center justify-center p-6 relative overflow-hidden">
+        <main className="min-h-screen bg-slate-950 flex items-center justify-center p-6 relative overflow-hidden" aria-labelledby="login-heading">
             <GridPattern className="opacity-20" />
 
             {/* Ambient Glows */}
@@ -43,7 +43,7 @@ export default function Login() {
                 className="w-full max-w-md relative z-10"
             >
                 <div className="text-center mb-8">
-                    <Link to="/" className="inline-block mb-6 group">
+                    <Link to="/" className="inline-block mb-6 group" aria-label={t('auth.login.backToHome')}>
                         <motion.div
                             whileHover={{ scale: 1.05 }}
                             whileTap={{ scale: 0.95 }}
@@ -52,7 +52,7 @@ export default function Login() {
                             W
                         </motion.div>
                     </Link>
-                    <h1 className="text-3xl font-display font-bold text-white mb-2 tracking-tight">{t('auth.login.title')}</h1>
+                    <h1 id="login-heading" className="text-3xl font-display font-bold text-white mb-2 tracking-tight">{t('auth.login.title')}</h1>
                     <p className="text-slate-400">{t('auth.login.subtitle')}</p>
                 </div>
 
@@ -84,8 +84,9 @@ export default function Login() {
                             initial={{ opacity: 0, height: 0 }}
                             animate={{ opacity: 1, height: 'auto' }}
                             className="bg-red-500/10 border border-red-500/20 rounded-2xl p-4 flex items-start gap-3 mb-6"
+                            role="alert"
                         >
-                            <AlertCircle className="w-5 h-5 text-red-500 flex-shrink0 mt-0.5" />
+                            <AlertCircle className="w-5 h-5 text-red-500 flex-shrink0 mt-0.5" aria-hidden="true" />
                             <p className="text-sm text-red-200">{serverError}</p>
                         </motion.div>
                     )}
@@ -132,8 +133,9 @@ export default function Login() {
                                     type="button"
                                     onClick={() => setShowPassword(!showPassword)}
                                     className="absolute right-4 top-1/2 -translate-y-1/2 text-slate-500 hover:text-slate-200 transition-colors"
+                                    aria-label={showPassword ? t('auth.login.hidePassword') : t('auth.login.showPassword')}
                                 >
-                                    {showPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
+                                    {showPassword ? <EyeOff className="w-5 h-5" aria-hidden="true" /> : <Eye className="w-5 h-5" aria-hidden="true" />}
                                 </button>
                             </div>
                             {errors.password && (
@@ -180,6 +182,6 @@ export default function Login() {
                     </Link>
                 </p>
             </motion.div>
-        </div>
+        </main>
     );
 }

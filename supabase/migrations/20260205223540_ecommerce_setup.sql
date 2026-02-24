@@ -79,7 +79,6 @@ $$ LANGUAGE SQL STABLE;
 
 -- Grant execute permission
 GRANT EXECUTE ON FUNCTION get_downline_tree(UUID) TO authenticated;
-GRANT EXECUTE ON FUNCTION get_downline_tree(UUID) TO anon;
 
 -- ============================================================================
 -- 2. COMMISSION DISTRIBUTION FUNCTION
@@ -304,7 +303,7 @@ BEGIN
 
   RETURN v_request_id;
 END;
-$$ LANGUAGE plpgsql SECURITY DEFINER;
+$$ LANGUAGE plpgsql SECURITY DEFINER SET search_path = public;
 
 -- Grant execute permission
 GRANT EXECUTE ON FUNCTION create_withdrawal_request(BIGINT, TEXT, TEXT, TEXT) TO authenticated;
@@ -383,7 +382,7 @@ BEGIN
     RAISE EXCEPTION 'Invalid action. Use "approve" or "reject"';
   END IF;
 END;
-$$ LANGUAGE plpgsql SECURITY DEFINER;
+$$ LANGUAGE plpgsql SECURITY DEFINER SET search_path = public;
 
 -- Grant execute permission to admins only
 GRANT EXECUTE ON FUNCTION process_withdrawal_request(UUID, TEXT, TEXT) TO authenticated;

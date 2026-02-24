@@ -4,7 +4,7 @@
  */
 
 export const en = {
-    pwa: {
+  pwa: {
     install: {
       title: "Install WellNexus",
       description: "Install our app for a better experience with offline access and faster loading.",
@@ -54,6 +54,7 @@ export const en = {
       daisu: "Ambassador",
       ctv: "Collaborator"
     },
+    delete: "Delete",
     pending: "[MISSING] pending",
     you: "[MISSING] you"
   },
@@ -85,7 +86,20 @@ export const en = {
     aboutUs: "About Us",
     careers: "Careers",
     ventureProgram: "Venture Program",
-    withdrawal: "Withdrawal"
+    withdrawal: "Withdrawal",
+    agentDashboard: "Agent Dashboard",
+    openMenu: "Open menu",
+    notifications: "Notifications",
+    skipToContent: "Skip to main content",
+    pageContent: "Page content",
+    mainNavigation: "Main navigation",
+    primaryNavigation: "Primary navigation",
+    wellnexusHome: "WellNexus home",
+    navigateTo: "Navigate to {{label}}",
+    switchToLight: "Switch to light mode",
+    switchToDark: "Switch to dark mode",
+    rankLabel: "Rank: {{rank}}",
+    profilePicture: "Profile picture"
   },
   landingpage: {
     ultimate_level_wellness: "ULTIMATE LEVEL WELLNESS",
@@ -205,7 +219,10 @@ export const en = {
       loginButton: "Sign In",
       noAccount: "Don't have an account?",
       signUp: "Sign Up",
-      or: "Or"
+      or: "Or",
+      backToHome: "Back to WellNexus home",
+      showPassword: "Show password",
+      hidePassword: "Hide password"
     },
     signup: {
       title: "Create Account",
@@ -912,11 +929,11 @@ export const en = {
     b_t_u: "[MISSING] b t u"
   },
   errorboundary: {
-    oops_something_went_wrong: "[MISSING] oops something went wrong",
-    we_ve_encountered_an_unexpecte: "[MISSING] we ve encountered an unexpecte",
-    error_details_dev_only: "[MISSING] error details dev only",
-    reload_page: "[MISSING] reload page",
-    go_home: "[MISSING] go home"
+    oops_something_went_wrong: "Oops! Something went wrong",
+    we_ve_encountered_an_unexpecte: "We've encountered an unexpected error. Please try again.",
+    error_details_dev_only: "Error Details (Developer Only)",
+    reload_page: "Reload Page",
+    go_home: "Go Home"
   },
   healthCheck: {
     consultationTitle: "[MISSING] consultationTitle",
@@ -1312,9 +1329,9 @@ export const en = {
     wellnexus_1: "[MISSING] wellnexus 1",
     social_commerce_2_0_1: "[MISSING] social commerce 2 0 1",
     h_sinh_th_i_social_commerce_t: "[MISSING] h sinh th i social commerce t",
-    hello_wellnexus_vn: "[MISSING] hello wellnexus vn",
-    "84_901_234_567": "[MISSING] 84 901 234 567",
-    q1_tp_hcm_vietnam: "[MISSING] q1 tp hcm vietnam",
+    hello_wellnexus_vn: "wellnexusvn@gmail.com",
+    "84_901_234_567": "0918 876 586",
+    q1_tp_hcm_vietnam: "286 Nguyễn Xuyển, Thanh Liệt, Hà Nội",
     wellnexus: "[MISSING] wellnexus",
     social_commerce_2_0: "[MISSING] social commerce 2 0",
     hot: "[MISSING] hot",
@@ -1322,6 +1339,7 @@ export const en = {
     dashboard: "[MISSING] dashboard",
     ng_xu_t: "[MISSING] ng xu t",
     b_t_u_ngay: "[MISSING] b t u ngay",
+    mobileNavigation: "Mobile navigation menu",
     newsletter: "[MISSING] newsletter",
     nh_n_th_ng_tin: "[MISSING] nh n th ng tin",
     c_quy_n: "[MISSING] c quy n",
@@ -1397,7 +1415,10 @@ export const en = {
     the_coach: "[MISSING] the coach",
     day_3_30: "[MISSING] day 3 30",
     xp: "[MISSING] xp",
-    get_ai_advice: "[MISSING] get ai advice"
+    get_ai_advice: "[MISSING] get ai advice",
+    coachFallback: "Focus on sharing value today. Sales will follow!",
+    getAiAdviceLabel: "Get personalized AI advice",
+    questList: "Quest list"
   },
   venture: {
     footer: {
@@ -2200,5 +2221,10 @@ export const en = {
     urgency: "Only 157 slots remaining in your area",
     noThanks: "No thanks, maybe later",
     closeLabel: "Close popup"
+  },
+  notfound: {
+    title: "404 - Page Not Found",
+    description: "Sorry, the page you are looking for does not exist or has been moved.",
+    back_home: "Back to Home"
   }
 };

@@ -2,6 +2,7 @@ import { useState, useCallback, useMemo } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useStore } from '../store';
 import { checkCompliance } from '../services/geminiService';
+import { useToast } from '@/components/ui/Toast';
 
 export type ProductDetailTab = 'benefits' | 'ingredients' | 'usage';
 
@@ -9,6 +10,7 @@ export function useProductDetail() {
     const { id } = useParams<{ id: string }>();
     const navigate = useNavigate();
     const { products, simulateOrder } = useStore();
+    const { showToast } = useToast();
 
     const product = useMemo(() => products.find(p => p.id === id), [products, id]);
     const [activeTab, setActiveTab] = useState<ProductDetailTab>('benefits');
@@ -33,10 +35,10 @@ export function useProductDetail() {
         // Mock share functionality
         const shareUrl = `wellnexus.vn/ref/VN-888/product/${product.id}`;
         navigator.clipboard.writeText(shareUrl).then(() => {
-            alert(`Link copied: ${shareUrl}`);
+            showToast(`Link copied: ${shareUrl}`, 'success');
         });
         checkCompliance(product.description);
-    }, [product]);
+    }, [product, showToast]);
 
     const commissionAmount = useMemo(() => {
         if (!product) return 0;

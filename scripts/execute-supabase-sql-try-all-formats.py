@@ -26,24 +26,36 @@ print(f"📊 Size: {len(sql_content)} chars")
 print("")
 
 # Try multiple connection formats
+db_password = os.environ.get('SUPABASE_DB_PASSWORD')
+if not db_password:
+    print("❌ SUPABASE_DB_PASSWORD environment variable is required")
+    sys.exit(1)
+
+db_user = os.environ.get('SUPABASE_DB_USER')
+db_host = os.environ.get('SUPABASE_DB_HOST')
+
+if not db_user or not db_host:
+    print("❌ SUPABASE_DB_USER and SUPABASE_DB_HOST environment variables are required")
+    sys.exit(1)
+
 connection_strings = [
     # Format 1: Connection pooler with full URI
-    "postgresql://postgres.zumgrvmwmpstsigefuau:gz0t2vZvoSINAltJ@aws-0-ap-southeast-1.pooler.supabase.com:6543/postgres?sslmode=require",
+    f"postgresql://{db_user}:{db_password}@{db_host}:6543/postgres?sslmode=require",
 
-    # Format 2: Try without prefix in username
-    "postgresql://postgres:gz0t2vZvoSINAltJ@aws-0-ap-southeast-1.pooler.supabase.com:6543/postgres?sslmode=require",
+    # Format 2: Try without prefix in username (if user provided full string)
+    f"postgresql://postgres:{db_password}@{db_host}:6543/postgres?sslmode=require",
 
     # Format 3: Session mode pooler
-    "postgresql://postgres.zumgrvmwmpstsigefuau:gz0t2vZvoSINAltJ@aws-0-ap-southeast-1.pooler.supabase.com:5432/postgres?sslmode=require",
+    f"postgresql://{db_user}:{db_password}@{db_host}:5432/postgres?sslmode=require",
 
-    # Format 4: Try db hostname (if it resolves)
-    "postgresql://postgres:gz0t2vZvoSINAltJ@db.zumgrvmwmpstsigefuau.supabase.co:5432/postgres?sslmode=require",
+    # Format 4: Direct connection
+    f"postgresql://postgres:{db_password}@db.{db_host.split('.')[0]}.supabase.co:5432/postgres?sslmode=require",
 ]
 
 for i, conn_str in enumerate(connection_strings, 1):
     try:
         # Hide password in output
-        display_str = conn_str.replace('gz0t2vZvoSINAltJ', '***')
+        display_str = conn_str.replace(db_password, '***')
         print(f"🔧 Attempt {i}/4: {display_str[:80]}...")
 
         conn = psycopg2.connect(conn_str)

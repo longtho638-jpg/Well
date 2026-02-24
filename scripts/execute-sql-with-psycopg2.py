@@ -14,13 +14,18 @@ except ImportError:
     print("Install: pip3 install psycopg2-binary")
     sys.exit(1)
 
-# Database configuration - Use connection pooler port 6543 (Transaction Mode)
+# Database configuration
+db_password = os.environ.get('SUPABASE_DB_PASSWORD')
+if not os.environ.get('SUPABASE_DB_HOST') or not os.environ.get('SUPABASE_DB_USER') or not db_password:
+    print("❌ ERROR: SUPABASE_DB_HOST, SUPABASE_DB_USER and SUPABASE_DB_PASSWORD environment variables are required")
+    sys.exit(1)
+
 DB_CONFIG = {
-    'host': 'aws-0-ap-southeast-1.pooler.supabase.com',
-    'port': 6543,
-    'database': 'postgres',
-    'user': 'postgres.zumgrvmwmpstsigefuau',
-    'password': 'gz0t2vZvoSINAltJ',
+    'host': os.environ.get('SUPABASE_DB_HOST'),
+    'port': int(os.environ.get('SUPABASE_DB_PORT', 6543)),
+    'database': os.environ.get('SUPABASE_DB_NAME', 'postgres'),
+    'user': os.environ.get('SUPABASE_DB_USER'),
+    'password': db_password,
     'sslmode': 'require'
 }
 

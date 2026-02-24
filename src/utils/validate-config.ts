@@ -1,3 +1,7 @@
+import { createLogger } from './logger';
+
+const configLogger = createLogger('Config');
+
 export interface ConfigState {
   isValid: boolean;
   missingKeys: string[];
@@ -43,7 +47,7 @@ Please create a .env file in the project root with these values.
 =================================================================
     `;
 
-    console.error(errorMessage);
+    configLogger.error(errorMessage);
 
     return { isValid: false, missingKeys };
   }

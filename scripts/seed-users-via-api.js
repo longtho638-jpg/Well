@@ -1,8 +1,13 @@
 import { createClient } from '@supabase/supabase-js';
 
 // Configuration from .env.local (hardcoded for this script execution based on previous reads)
-const SUPABASE_URL = 'https://jcbahdioqoepvoliplqy.supabase.co';
+const SUPABASE_URL = process.env.VITE_SUPABASE_URL;
 // Using the service role key we found earlier
+if (!SUPABASE_URL) {
+  console.error('❌ ERROR: VITE_SUPABASE_URL environment variable is required');
+  process.exit(1);
+}
+
 const SERVICE_ROLE_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY || process.argv[2];
 
 if (!SERVICE_ROLE_KEY) {
@@ -19,20 +24,25 @@ const supabase = createClient(SUPABASE_URL, SERVICE_ROLE_KEY, {
 
 const users = [
   {
-    email: 'admin@wellnexus.vn',
-    password: 'AdminPassword123!',
+    email: process.env.ADMIN_EMAIL,
+    password: process.env.ADMIN_PASSWORD,
     email_confirm: true,
     user_metadata: { full_name: 'Admin User' },
     app_metadata: { provider: 'email', providers: ['email'], role: 'admin' }
   },
   {
     email: 'testuser@wellnexus.vn',
-    password: 'TestPassword123!',
+    password: process.env.TEST_USER_PASSWORD,
     email_confirm: true,
     user_metadata: { full_name: 'Test User' },
     app_metadata: { provider: 'email', providers: ['email'] }
   }
 ];
+
+if (!process.env.ADMIN_PASSWORD || !process.env.TEST_USER_PASSWORD || !process.env.ADMIN_EMAIL) {
+  console.error('❌ ERROR: ADMIN_EMAIL, ADMIN_PASSWORD and TEST_USER_PASSWORD environment variables are required');
+  process.exit(1);
+}
 
 async function seedUsers() {
   console.log(`🌱 Seeding users to ${SUPABASE_URL}...`);

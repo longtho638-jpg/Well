@@ -51,13 +51,13 @@ export default function FooterContent({ footerLinks }: FooterContentProps) {
 
           {/* Contact */}
           <div className="space-y-4">
-            <a href="mailto:hello@wellnexus.vn" className="flex items-center gap-3 text-zinc-400 hover:text-emerald-400 transition-colors group">
+            <a href="mailto:wellnexusvn@gmail.com" className="flex items-center gap-3 text-zinc-400 hover:text-emerald-400 transition-colors group">
               <div className="w-10 h-10 rounded-lg bg-zinc-800/50 border border-zinc-700/50 flex items-center justify-center group-hover:bg-emerald-500/10 group-hover:border-emerald-500/30 transition-colors">
                 <Mail className="w-4 h-4" />
               </div>
               <span className="text-sm">{t('premiumnavigation.hello_wellnexus_vn')}</span>
             </a>
-            <a href="tel:+84901234567" className="flex items-center gap-3 text-zinc-400 hover:text-emerald-400 transition-colors group">
+            <a href="tel:+84918876586" className="flex items-center gap-3 text-zinc-400 hover:text-emerald-400 transition-colors group">
               <div className="w-10 h-10 rounded-lg bg-zinc-800/50 border border-zinc-700/50 flex items-center justify-center group-hover:bg-emerald-500/10 group-hover:border-emerald-500/30 transition-colors">
                 <Phone className="w-4 h-4" />
               </div>

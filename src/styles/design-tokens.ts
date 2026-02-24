@@ -137,7 +137,6 @@ export function getColor(path: string): string {
     if (value && typeof value === 'object' && key in value) {
       value = value[key];
     } else {
-      // console.warn(`Color path not found: ${path}`);
       return '#000000';
     }
   }

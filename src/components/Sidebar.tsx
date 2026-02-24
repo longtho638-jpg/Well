@@ -39,7 +39,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ onMobileClose }) => {
     { path: '/dashboard/wallet', label: t('nav.wallet'), icon: Wallet },
     { path: '/dashboard/leaderboard', label: t('nav.leaderboard'), icon: Trophy, badge: 'HOT' },
     { path: '/dashboard/marketing-tools', label: t('nav.marketingTools'), icon: Megaphone, badge: 'NEW' },
-    { path: '/dashboard/agents', label: 'Agent Dashboard', icon: Activity },
+    { path: '/dashboard/agents', label: t('nav.agentDashboard'), icon: Activity },
     { path: '/dashboard/health-check', label: t('nav.healthCheck'), icon: Heart },
     { path: '/dashboard/health-coach', label: t('nav.healthCoach'), icon: Sparkles, badge: 'AI' },
     { path: '/dashboard/copilot', label: t('nav.copilot'), icon: Bot, badge: 'AI' },
@@ -69,7 +69,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ onMobileClose }) => {
       const text = await getCoachAdvice(user.name, user.totalSales, pending);
       setAdvice(text);
     } catch {
-      setAdvice("Focus on sharing value today. Sales will follow!");
+      setAdvice(t('sidebar.coachFallback'));
     }
     setLoading(false);
   };
@@ -78,20 +78,20 @@ export const Sidebar: React.FC<SidebarProps> = ({ onMobileClose }) => {
     <aside
       className="bg-zinc-50 dark:bg-zinc-950 border-r border-zinc-200 dark:border-zinc-800 flex flex-col h-screen overflow-y-auto transition-colors"
       role="navigation"
-      aria-label="Main navigation"
+      aria-label={t('nav.mainNavigation')}
     >
       <div
         className="p-6 flex items-center gap-3 cursor-pointer"
         onClick={() => handleNav('/dashboard')}
         role="button"
         tabIndex={0}
-        onKeyPress={(e) => {
+        onKeyDown={(e) => {
           if (e.key === 'Enter' || e.key === ' ') {
             e.preventDefault();
             handleNav('/dashboard');
           }
         }}
-        aria-label="WellNexus home"
+        aria-label={t('nav.wellnexusHome')}
       >
         <div className="w-10 h-10 bg-zinc-800 dark:bg-zinc-900 rounded-xl flex items-center justify-center text-emerald-400 font-bold shadow-lg border border-zinc-200 dark:border-zinc-800 flex-shrink-0">W</div>
         <div>
@@ -100,7 +100,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ onMobileClose }) => {
         </div>
       </div>
 
-      <nav className="flex-1 px-4 space-y-1 py-4" aria-label="Primary navigation">
+      <nav className="flex-1 px-4 space-y-1 py-4" aria-label={t('nav.primaryNavigation')}>
         {menuItems.map((item) => {
           const Icon = item.icon;
           const isActive = location.pathname === item.path || (item.matches && item.matches.some(m => location.pathname.startsWith(m)));
@@ -114,7 +114,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ onMobileClose }) => {
                 : 'text-zinc-500 dark:text-zinc-400 hover:bg-zinc-100 dark:hover:bg-zinc-900 hover:text-zinc-800 dark:hover:text-zinc-100'
                 }`}
               aria-current={isActive ? 'page' : undefined}
-              aria-label={`Navigate to ${item.label}`}
+              aria-label={t('nav.navigateTo', { label: item.label })}
             >
               <Icon className={`w-5 h-5 transition-colors ${isActive ? 'text-emerald-600 dark:text-emerald-400' : 'text-zinc-400 dark:text-zinc-400 group-hover:text-zinc-600 dark:group-hover:text-zinc-300'}`} aria-hidden="true" />
               <span className="flex-1 text-left">{item.label}</span>
@@ -140,17 +140,17 @@ export const Sidebar: React.FC<SidebarProps> = ({ onMobileClose }) => {
               <span className="text-[10px] font-bold bg-zinc-100 dark:bg-zinc-800 text-zinc-500 dark:text-zinc-400 px-2 py-1 rounded-full border border-zinc-200 dark:border-zinc-700">{t('sidebar.day_3_30')}</span>
             </div>
 
-            <div className="space-y-2 mb-4">
+            <ul className="space-y-2 mb-4" aria-label={t('sidebar.questList')}>
               {quests.map((q) => (
-                <div key={q.id} className="flex items-start gap-2 text-xs">
-                  {q.isCompleted ? <CheckCircle2 className="w-4 h-4 text-emerald-500 shrink-0" /> : <Circle className="w-4 h-4 text-zinc-600 shrink-0" />}
+                <li key={q.id} className="flex items-start gap-2 text-xs">
+                  {q.isCompleted ? <CheckCircle2 className="w-4 h-4 text-emerald-500 shrink-0" aria-hidden="true" /> : <Circle className="w-4 h-4 text-zinc-600 shrink-0" aria-hidden="true" />}
                   <div className="flex-1">
                     <p className={`font-medium ${q.isCompleted ? 'text-zinc-400 line-through' : 'text-zinc-700 dark:text-zinc-300'}`}>{q.title}</p>
                   </div>
                   <span className="text-[10px] font-bold text-emerald-400 bg-emerald-500/10 px-1.5 py-0.5 rounded">+{q.xp}{t('sidebar.xp')}</span>
-                </div>
+                </li>
               ))}
-            </div>
+            </ul>
 
             <AnimatePresence mode='wait'>
               {advice ? (
@@ -168,7 +168,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ onMobileClose }) => {
                   onClick={handleAdvice}
                   disabled={loading}
                   className="w-full py-2.5 bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs rounded-lg flex items-center justify-center gap-2 transition-all duration-200 shadow-lg shadow-emerald-500/20 hover:shadow-emerald-500/30"
-                  aria-label={loading ? t('common.loading') : 'Get personalized AI advice'}
+                  aria-label={loading ? t('common.loading') : t('sidebar.getAiAdviceLabel')}
                 >
                   {loading ? <Sparkles className="w-3 h-3 animate-spin" aria-hidden="true" /> : <Sparkles className="w-3 h-3" aria-hidden="true" />} {t('sidebar.get_ai_advice')}</button>
               )}
@@ -181,7 +181,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ onMobileClose }) => {
         <button
           onClick={toggleTheme}
           className="w-full flex items-center justify-between px-4 py-3 rounded-xl bg-zinc-900/50 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-all group"
-          aria-label={theme === 'dark' ? "Switch to light mode" : "Switch to dark mode"}
+          aria-label={theme === 'dark' ? t('nav.switchToLight') : t('nav.switchToDark')}
         >
           <div className="flex items-center gap-3">
             <div className={`p-1.5 rounded-lg ${theme === 'dark' ? 'bg-zinc-800 text-zinc-400' : 'bg-amber-100 text-amber-600'}`}>
@@ -208,7 +208,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ onMobileClose }) => {
           />
           <div className="flex-1 min-w-0">
             <p className="text-sm font-bold text-zinc-900 dark:text-zinc-100 truncate">{user.name}</p>
-            <p className="text-xs text-emerald-400 font-medium" aria-label={`Rank: ${user.rank}`}>{user.rank}</p>
+            <p className="text-xs text-emerald-400 font-medium" aria-label={t('nav.rankLabel', { rank: user.rank })}>{user.rank}</p>
           </div>
           <button
             onClick={handleLogout}

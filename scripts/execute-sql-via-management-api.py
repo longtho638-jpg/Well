@@ -11,8 +11,12 @@ import urllib.request
 import urllib.error
 
 # Configuration
-SUPABASE_URL = "https://zumgrvmwmpstsigefuau.supabase.co"
-SERVICE_ROLE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inp1bWdydm13bXBzdHNpZ2VmdWF1Iiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc2MzAzMTIwOCwiZXhwIjoyMDc4NjA3MjA4fQ.tWjDTqi_ZUg2tbqJ3j9Ns2WKQgHZnh3k3CVKUf7Xzto"
+SUPABASE_URL = os.environ.get("VITE_SUPABASE_URL", "https://zumgrvmwmpstsigefuau.supabase.co")
+SERVICE_ROLE_KEY = os.environ.get("SUPABASE_SERVICE_ROLE_KEY")
+
+if not SERVICE_ROLE_KEY:
+    print("❌ ERROR: SUPABASE_SERVICE_ROLE_KEY environment variable is required")
+    sys.exit(1)
 
 sql_file = sys.argv[1] if len(sys.argv) > 1 else None
 if not sql_file or not os.path.exists(sql_file):

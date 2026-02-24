@@ -38,7 +38,7 @@ BEGIN
     VALUES (user_uuid, amount_add, NOW());
   END IF;
 END;
-$$ LANGUAGE plpgsql SECURITY DEFINER;
+$$ LANGUAGE plpgsql SECURITY DEFINER SET search_path = public;
 
 -- Create RPC function: increment_wallet_point (Atomic increment for points)
 CREATE OR REPLACE FUNCTION increment_wallet_point(user_uuid UUID, amount_add BIGINT)
@@ -55,7 +55,7 @@ BEGIN
     VALUES (user_uuid, amount_add, NOW());
   END IF;
 END;
-$$ LANGUAGE plpgsql SECURITY DEFINER;
+$$ LANGUAGE plpgsql SECURITY DEFINER SET search_path = public;
 
 -- Add metadata column to transactions for tracking
 ALTER TABLE transactions ADD COLUMN IF NOT EXISTS metadata JSONB;

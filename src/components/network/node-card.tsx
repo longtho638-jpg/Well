@@ -45,6 +45,15 @@ export const NodeCard: React.FC<NodeCardProps> = ({ nodeDatum, toggleNode }) => 
   return (
     <foreignObject x="-100" y="-40" width="200" height="80">
       <div
+        role="button"
+        tabIndex={0}
+        aria-expanded={isExpanded}
+        onKeyDown={(e) => {
+          if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault();
+            toggleNode();
+          }
+        }}
         onClick={toggleNode}
         className={`
           relative w-full h-full rounded-xl border backdrop-blur-md transition-all duration-300 cursor-pointer overflow-hidden

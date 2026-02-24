@@ -7,17 +7,22 @@
  * Prerequisites:
  * - npm install playwright
  * - Admin email confirmed in Supabase
- * - Password: WellNexus@2026!
+ * - Password: [REDACTED]
  *
  * Usage: node scripts/test-admin-login-and-verify-redirect.js
  */
 
 const { chromium } = require('playwright');
 
-const ADMIN_EMAIL = 'doanhnhancaotuan@gmail.com';
-const ADMIN_PASSWORD = 'WellNexus@2026!';
-const LOGIN_URL = 'https://wellnexus.vn/login';
-const ADMIN_DASHBOARD_URL = 'https://wellnexus.vn/admin';
+const ADMIN_EMAIL = process.env.ADMIN_EMAIL;
+const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD;
+const LOGIN_URL = process.env.LOGIN_URL || 'https://wellnexus.vn/login';
+const ADMIN_DASHBOARD_URL = process.env.ADMIN_DASHBOARD_URL || 'https://wellnexus.vn/admin';
+
+if (!ADMIN_EMAIL || !ADMIN_PASSWORD) {
+  console.error('❌ ERROR: ADMIN_EMAIL and ADMIN_PASSWORD environment variables are required');
+  process.exit(1);
+}
 
 (async () => {
   console.log('🔐 Admin Login Test');
@@ -105,7 +110,7 @@ const ADMIN_DASHBOARD_URL = 'https://wellnexus.vn/admin';
         console.log('❌ FAILED: Redirected to /dashboard instead of /admin\n');
         console.log('Issue: User logged in but NOT detected as admin');
         console.log('Check: VITE_ADMIN_EMAILS env var in production\n');
-        console.log('Expected: VITE_ADMIN_EMAILS=doanhnhancaotuan@gmail.com,billwill.mentor@gmail.com\n');
+        console.log('Expected: VITE_ADMIN_EMAILS=[REDACTED]\n');
 
         await page.screenshot({
           path: 'failed-dashboard-redirect.png',

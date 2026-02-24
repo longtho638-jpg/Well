@@ -23,9 +23,9 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">3.77% </span>
+                <span class="strong">4.08% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>2/53</span>
+                <span class='fraction'>2/49</span>
             </div>
         
             
@@ -37,16 +37,16 @@
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">11.11% </span>
+                <span class="strong">10% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>1/9</span>
+                <span class='fraction'>1/10</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">4.08% </span>
+                <span class="strong">4.44% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>2/49</span>
+                <span class='fraction'>2/45</span>
             </div>
         
             
@@ -313,10 +313,7 @@
 <a name='L248'></a><a href='#L248'>248</a>
 <a name='L249'></a><a href='#L249'>249</a>
 <a name='L250'></a><a href='#L250'>250</a>
-<a name='L251'></a><a href='#L251'>251</a>
-<a name='L252'></a><a href='#L252'>252</a>
-<a name='L253'></a><a href='#L253'>253</a>
-<a name='L254'></a><a href='#L254'>254</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<a name='L251'></a><a href='#L251'>251</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -468,26 +465,23 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -720,28 +714,25 @@ export class GeminiCoachAgent extends BaseAgent {
    * Helper to call Gemini Edge Function
    */
   private async <span class="fstat-no" title="function not covered" >callGemini(p</span>rompt: string, modelName: string = <span class="branch-0 cbranch-no" title="branch not covered" >'gemini-2.0-flash-exp'): Promise&lt;string&gt; {</span>
-<span class="cstat-no" title="statement not covered" >    try {</span>
+<span class="cstat-no" title="statement not covered" >    return this.executeWithRecovery(</span>
+<span class="fstat-no" title="function not covered" >      async () =&gt; {</span>
         const { data, error } = <span class="cstat-no" title="statement not covered" >await supabase.functions.invoke('gemini-chat', {</span>
             body: { prompt, modelName }
         });
 &nbsp;
 <span class="cstat-no" title="statement not covered" >        if (error) {</span>
-<span class="cstat-no" title="statement not covered" >            agentLogger.warn('Gemini Edge Function returned error', error);</span>
 <span class="cstat-no" title="statement not covered" >            throw new Error(`Gemini Edge Function Error: ${error.message}`);</span>
         }
 &nbsp;
 <span class="cstat-no" title="statement not covered" >        if (!data || !data.text) {</span>
-             // Check if it's a specific error from the function
 <span class="cstat-no" title="statement not covered" >             if (data &amp;&amp; data.error) <span class="cstat-no" title="statement not covered" >throw new Error(data.error);</span></span>
-<span class="cstat-no" title="statement not covered" >             agentLogger.warn('Gemini Edge Function returned empty response');</span>
 <span class="cstat-no" title="statement not covered" >             throw new Error('Gemini Edge Function returned empty response');</span>
         }
 &nbsp;
 <span class="cstat-no" title="statement not covered" >        return data.text;</span>
-    } catch (err) {
-<span class="cstat-no" title="statement not covered" >        agentLogger.error('Call Gemini Failed', err);</span>
-<span class="cstat-no" title="statement not covered" >        throw err;</span>
-    }
+      },
+      { actionName: 'callGemini', maxAttempts: 2 }
+    );
   }
 &nbsp;
   /**
@@ -829,7 +820,7 @@ Trả lời bằng tiếng Việt, giọng điệu thân thiện và động vi�
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2026-02-03T03:59:24.446Z
+                at 2026-02-11T19:18:53.439Z
             </div>
         <script src="../../../prettify.js"></script>
         <script>

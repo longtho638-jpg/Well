@@ -23,8 +23,17 @@ const NodeItem: React.FC<{ node: NetworkNode; level: number }> = ({ node, level 
   return (
     <div className="w-full">
       <div
+        role="button"
+        tabIndex={0}
+        aria-expanded={isOpen}
+        onKeyDown={(e) => {
+          if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault();
+            hasChildren && setIsOpen(!isOpen);
+          }
+        }}
         className={`
-          flex items-center justify-between p-3 rounded-xl mb-2
+          flex items-center justify-between p-3 rounded-xl mb-2 cursor-pointer
           ${level === 0 ? 'bg-emerald-500/10 border border-emerald-500/20' : 'bg-white/5 border border-white/5'}
         `}
         onClick={() => hasChildren && setIsOpen(!isOpen)}

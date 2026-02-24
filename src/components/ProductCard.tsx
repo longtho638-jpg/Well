@@ -7,6 +7,7 @@ import { formatVND } from '../utils/format';
 import { useStore } from '../store';
 import { useNavigate } from 'react-router-dom';
 import { useTranslation } from '@/hooks';
+import { useToast } from '@/components/ui/Toast';
 
 interface Props {
   product: Product;
@@ -16,6 +17,7 @@ const ProductCard: React.FC<Props> = ({ product }) => {
     const { t } = useTranslation();
   const { simulateOrder } = useStore();
   const navigate = useNavigate();
+  const { showToast } = useToast();
   const [isBuying, setIsBuying] = useState(false);
   const [showSuccess, setShowSuccess] = useState(false);
 
@@ -38,11 +40,11 @@ const ProductCard: React.FC<Props> = ({ product }) => {
 
     try {
       await navigator.clipboard.writeText(shareUrl);
-      alert('Link copied to clipboard!');
+      showToast('Link copied to clipboard!', 'success');
     } catch (err) {
       // Fallback for older browsers
       uiLogger.error('Failed to copy', err);
-      alert(`Share this link: ${shareUrl}`);
+      showToast(`Share this link: ${shareUrl}`, 'info');
     }
   };
 

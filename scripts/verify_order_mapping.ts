@@ -10,9 +10,10 @@ dotenv.config({ path: resolve(__dirname, '../.env') });
 
 const SUPABASE_URL = process.env.VITE_SUPABASE_URL || '';
 const SERVICE_ROLE_KEY = process.env.SERVICE_ROLE_KEY || '';
+const TEST_USER_PASSWORD = process.env.TEST_USER_PASSWORD;
 
-if (!SUPABASE_URL || !SERVICE_ROLE_KEY) {
-    console.error("❌ Missing Supabase credentials in .env");
+if (!SUPABASE_URL || !SERVICE_ROLE_KEY || !TEST_USER_PASSWORD) {
+    console.error("❌ Missing Supabase credentials (URL, KEY, or TEST_USER_PASSWORD) in .env");
     process.exit(1);
 }
 
@@ -25,7 +26,7 @@ async function main() {
     const email = `mapping_test_${Date.now()}@example.com`;
     const { data: { user }, error: userError } = await supabase.auth.admin.createUser({
         email,
-        password: process.env.TEST_USER_PASSWORD || 'password123',
+        password: process.env.TEST_USER_PASSWORD,
         email_confirm: true
     });
     if (userError) { console.error(userError); return; }

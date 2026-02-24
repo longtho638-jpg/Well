@@ -29,11 +29,11 @@ export const QuickActionsCard: React.FC = () => {
       }).catch(() => {
         // Fallback to clipboard
         navigator.clipboard.writeText(healthCheckLink);
-        alert(t('quickactionscard.link_copied'));
+        showToast(t('quickactionscard.link_copied'), 'success');
       });
     } else {
       navigator.clipboard.writeText(healthCheckLink);
-      alert(t('quickactionscard.link_copied'));
+      showToast(t('quickactionscard.link_copied'), 'success');
     }
   };
 
@@ -56,13 +56,13 @@ export const QuickActionsCard: React.FC = () => {
         // User cancelled or error occurred, fallback to clipboard
         if (error.name !== 'AbortError') {
           navigator.clipboard.writeText(achievementText + '\n\n' + shareData.url);
-          alert(t('quickactionscard.achievement_copied'));
+          showToast(t('quickactionscard.achievement_copied'), 'success');
         }
       });
     } else {
       // Fallback to clipboard for browsers that don't support Web Share API
       navigator.clipboard.writeText(achievementText + '\n\n' + shareData.url);
-      alert(t('quickactionscard.achievement_copied'));
+      showToast(t('quickactionscard.achievement_copied'), 'success');
     }
   };
 

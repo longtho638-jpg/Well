@@ -3,19 +3,19 @@ import path from 'path';
 import { createClient } from '@supabase/supabase-js';
 
 // Configuration from .env.local
-const SUPABASE_URL = 'https://jcbahdioqoepvoliplqy.supabase.co';
-const SERVICE_ROLE_KEY = process.argv[3] || process.env.SUPABASE_SERVICE_ROLE_KEY;
+const SUPABASE_URL = process.env.VITE_SUPABASE_URL || 'https://jcbahdioqoepvoliplqy.supabase.co';
+const SERVICE_ROLE_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY;
 
 if (!SERVICE_ROLE_KEY) {
-  console.error('❌ ERROR: SERVICE_ROLE_KEY required');
-  console.error('Usage: node scripts/execute-supabase-sql-via-client.js <sql-file> <service-role-key>');
+  console.error('❌ ERROR: SUPABASE_SERVICE_ROLE_KEY environment variable is required');
+  console.error('Usage: node scripts/execute-supabase-sql-via-client.js <sql-file>');
   process.exit(1);
 }
 
 const sqlFilePath = process.argv[2];
 if (!sqlFilePath) {
   console.error('❌ ERROR: SQL file path required');
-  console.error('Usage: node scripts/execute-supabase-sql-via-client.js <sql-file> <service-role-key>');
+  console.error('Usage: node scripts/execute-supabase-sql-via-client.js <sql-file>');
   process.exit(1);
 }
 

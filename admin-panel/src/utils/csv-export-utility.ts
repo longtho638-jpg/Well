@@ -3,16 +3,16 @@
  * Generate and download CSV files from data
  */
 
-export interface CSVColumn {
+export interface CSVColumn<T = any> {
   key: string;
   header: string;
-  formatter?: (value: any) => string;
+  formatter?: (value: unknown) => string;
 }
 
 /**
  * Convert data to CSV format
  */
-export function convertToCSV(data: any[], columns: CSVColumn[]): string {
+export function convertToCSV<T extends Record<string, any>>(data: T[], columns: CSVColumn<T>[]): string {
   // Create header row
   const headers = columns.map(col => col.header).join(',');
 
@@ -69,7 +69,7 @@ export function downloadCSV(csv: string, filename: string): void {
 /**
  * Export data to CSV and download
  */
-export function exportToCSV(data: any[], columns: CSVColumn[], filename: string): void {
+export function exportToCSV<T extends Record<string, any>>(data: T[], columns: CSVColumn<T>[], filename: string): void {
   const csv = convertToCSV(data, columns);
   downloadCSV(csv, filename);
 }
