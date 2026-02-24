@@ -6,13 +6,9 @@ Disallow: /admin/
 Disallow: /dashboard/
 Allow: /dashboard/marketplace
 Disallow: /api/
-Disallow: /*.json$
 
 # Sitemap
 Sitemap: https://wellnexus.vn/sitemap.xml
-
-# Crawl delay (optional, for heavy crawlers)
-Crawl-delay: 1
 
 # Specific bots
 User-agent: Googlebot
@@ -21,7 +17,7 @@ Allow: /
 User-agent: Bingbot
 Allow: /
 
-# Block bad bots
+# Block aggressive crawlers
 User-agent: AhrefsBot
 Disallow: /
 

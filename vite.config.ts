@@ -18,6 +18,9 @@ export default defineConfig({
   },
   build: {
     target: ['es2020', 'safari14', 'chrome87', 'firefox78'],
+    // PDF chunk is intentionally large (react-pdf/pdfkit) — suppress warning
+    chunkSizeWarningLimit: 1600,
+    // Workbox chunk no longer used — remove dead reference
     rollupOptions: {
       output: {
         manualChunks(id) {
@@ -51,8 +54,6 @@ export default defineConfig({
             if (id.includes('@sentry')) return 'sentry';
             // DOMPurify (Sanitization)
             if (id.includes('dompurify')) return 'dompurify';
-            // Workbox (PWA)
-            if (id.includes('workbox')) return 'workbox';
 
             // Recharts + d3: DO NOT manually chunk — TDZ bug from circular d3 deps (2026-02-08)
             // Vite handles naturally via lazy() boundaries
