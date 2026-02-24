@@ -93,7 +93,7 @@ export const orderService = {
             const userRaw = order.user;
             const user = Array.isArray(userRaw)
                 ? (userRaw[0] as { name: string; email: string } | undefined) ?? { name: 'Unknown', email: '' }
-                : (userRaw as { name: string; email: string } | null) ?? { name: 'Unknown', email: '' };
+                : (userRaw as unknown as { name: string; email: string } | null) ?? { name: 'Unknown', email: '' };
             return { ...order, user };
         });
     },
