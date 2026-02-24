@@ -1,6 +1,7 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { useAuthStore } from './authStore';
 import { supabase } from '../lib/supabase';
+import { authLogger } from '../lib/logger';
 
 // Mock Supabase client
 vi.mock('../lib/supabase', () => ({
@@ -11,6 +12,16 @@ vi.mock('../lib/supabase', () => ({
       signInWithPassword: vi.fn(),
       signOut: vi.fn(),
     },
+  },
+}));
+
+// Mock logger to avoid console output during tests
+vi.mock('../lib/logger', () => ({
+  authLogger: {
+    error: vi.fn(),
+    info: vi.fn(),
+    warn: vi.fn(),
+    debug: vi.fn(),
   },
 }));
 
@@ -161,14 +172,12 @@ describe('authStore', () => {
   });
 
   it('should handle auth initialization error', async () => {
-    const consoleSpy = vi.spyOn(console, 'error').mockImplementation(() => {});
     (supabase.auth.getSession as any).mockRejectedValue(new Error('Auth error'));
 
     await useAuthStore.getState().initialize();
 
     const state = useAuthStore.getState();
     expect(state.isLoading).toBe(false);
-    expect(consoleSpy).toHaveBeenCalledWith('Auth initialization failed:', expect.any(Error));
-    consoleSpy.mockRestore();
+    expect(authLogger.error).toHaveBeenCalledWith('Auth initialization failed:', expect.any(Error));
   });
 });

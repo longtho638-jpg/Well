@@ -7,8 +7,9 @@ import { ActionModal } from '@/components/withdrawals/action-modal';
 import { WithdrawalStats } from '@/components/withdrawals/withdrawal-stats';
 import { Button } from '@/components/ui/Button';
 import { Loader2, RefreshCw, Download } from 'lucide-react';
-import { toast } from 'sonner'; // Assuming sonner is used, or console if not available. Will check context.
+import { toast } from 'sonner';
 import { exportToCSV, CSVColumn } from '@/utils/csv-export-utility';
+import { withdrawalsLogger } from '@/lib/logger';
 
 // Simple Tabs implementation since we might not have shadcn Tabs
 const Tabs = ({
@@ -132,7 +133,7 @@ export default function WithdrawalsPage() {
       setSelectedRequest(null);
       setModalAction(null);
     } catch (error) {
-      console.error('Action failed:', error);
+      withdrawalsLogger.error('Action failed:', error);
       toast.error(`Failed to ${modalAction} request`);
     } finally {
       setIsProcessing(false);
@@ -144,12 +145,12 @@ export default function WithdrawalsPage() {
     try {
       // Define CSV columns
       const columns: CSVColumn[] = [
-        { key: 'id', header: 'Request ID', formatter: (id) => id.slice(0, 8) },
-        { key: 'user', header: 'User', formatter: (user) => user?.name || user?.email || 'N/A' },
+        { key: 'id', header: 'Request ID', formatter: (id) => (id as string).slice(0, 8) },
+        { key: 'user', header: 'User', formatter: (user) => (user as any)?.name || (user as any)?.email || 'N/A' },
         {
           key: 'amount',
           header: 'Amount (VND)',
-          formatter: (amount) => new Intl.NumberFormat('vi-VN').format(amount)
+          formatter: (amount) => new Intl.NumberFormat('vi-VN').format(amount as number)
         },
         { key: 'bank_name', header: 'Bank' },
         { key: 'bank_account_number', header: 'Account Number' },
@@ -158,15 +159,15 @@ export default function WithdrawalsPage() {
         {
           key: 'requested_at',
           header: 'Request Date',
-          formatter: (date) => new Date(date).toLocaleString('vi-VN')
+          formatter: (date) => new Date(date as string).toLocaleString('vi-VN')
         },
         {
           key: 'processed_at',
           header: 'Processed Date',
-          formatter: (date) => date ? new Date(date).toLocaleString('vi-VN') : 'N/A'
+          formatter: (date) => date ? new Date(date as string).toLocaleString('vi-VN') : 'N/A'
         },
-        { key: 'processed_by', header: 'Processed By', formatter: (v) => v || 'N/A' },
-        { key: 'notes', header: 'Notes', formatter: (v) => v || '' },
+        { key: 'processed_by', header: 'Processed By', formatter: (v) => (v as string) || 'N/A' },
+        { key: 'notes', header: 'Notes', formatter: (v) => (v as string) || '' },
       ];
 
       // Generate filename with timestamp
@@ -178,7 +179,7 @@ export default function WithdrawalsPage() {
 
       toast.success(`Exported ${filteredWithdrawals.length} withdrawal records`);
     } catch (error) {
-      console.error('Export failed:', error);
+      withdrawalsLogger.error('Export failed:', error);
       toast.error('Failed to export CSV');
     } finally {
       setIsExporting(false);

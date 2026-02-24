@@ -1,6 +1,7 @@
 import { create } from 'zustand';
 import { Session, User } from '@supabase/supabase-js';
 import { supabase } from '../lib/supabase';
+import { authLogger } from '../lib/logger';
 
 interface AuthState {
   session: Session | null;
@@ -49,7 +50,7 @@ export const useAuthStore = create<AuthState>((set, get) => ({
       });
 
     } catch (error) {
-      console.error('Auth initialization failed:', error);
+      authLogger.error('Auth initialization failed:', error);
     } finally {
       set({ isLoading: false });
     }

@@ -1,0 +1,102 @@
+/**
+ * Structured Logger Utility (Admin Panel)
+ *
+ * Features:
+ * - Environment-aware (dev vs prod)
+ * - Namespace prefixes for easy filtering
+ * - Structured log levels
+ * - Console suppression in production
+ */
+
+type LogLevel = 'debug' | 'info' | 'warn' | 'error';
+
+interface LoggerOptions {
+    namespace: string;
+    enabled?: boolean;
+}
+
+const IS_DEV = import.meta.env.DEV;
+const LOG_COLORS: Record<LogLevel, string> = {
+    debug: '#9ca3af',  // gray
+    info: '#10b981',   // emerald
+    warn: '#f59e0b',   // amber
+    error: '#ef4444',  // red
+};
+
+class Logger {
+    private namespace: string;
+    private enabled: boolean;
+
+    constructor(options: LoggerOptions) {
+        this.namespace = options.namespace;
+        this.enabled = options.enabled ?? IS_DEV;
+    }
+
+    private formatPrefix(): string {
+        const timestamp = new Date().toISOString().slice(11, 19);
+        return `[${timestamp}] [${this.namespace}]`;
+    }
+
+    private log(level: LogLevel, message: string, ...args: unknown[]): void {
+        // In production, we might want to allow logging but suppress debug/info unless explicitly enabled
+        // The original implementation suppressed everything if not enabled (which defaults to IS_DEV)
+
+        // However, for critical errors, we usually want them in production too (e.g. sent to Sentry or console.error)
+        // The original implementation had:
+        /*
+        if (!this.enabled) return;
+        ...
+        if (IS_DEV) { ... } else { if (level === 'warn' || level === 'error') ... }
+        */
+
+       // I will stick to the original implementation logic for consistency
+
+        const prefix = this.formatPrefix();
+        const color = LOG_COLORS[level];
+        const logFn = console[level] || console.log; // eslint-disable-line no-console
+
+        if (IS_DEV) {
+             if (!this.enabled) return;
+            logFn(
+                `%c${prefix}%c ${message}`,
+                `color: ${color}; font-weight: bold`,
+                'color: inherit',
+                ...args
+            );
+        } else {
+            // In production, only log warnings and errors
+            if (level === 'warn' || level === 'error') {
+                logFn(`${prefix} ${message}`, ...args);
+            }
+        }
+    }
+
+    debug(message: string, ...args: unknown[]): void {
+        this.log('debug', message, ...args);
+    }
+
+    info(message: string, ...args: unknown[]): void {
+        this.log('info', message, ...args);
+    }
+
+    warn(message: string, ...args: unknown[]): void {
+        this.log('warn', message, ...args);
+    }
+
+    error(message: string, ...args: unknown[]): void {
+        this.log('error', message, ...args);
+    }
+}
+
+// Pre-configured loggers for different modules
+export const createLogger = (namespace: string): Logger => new Logger({ namespace });
+
+// Common namespaced loggers for Admin Panel
+export const authLogger = createLogger('Auth');
+export const usersLogger = createLogger('Users');
+export const ordersLogger = createLogger('Orders');
+export const withdrawalsLogger = createLogger('Withdrawals');
+export const systemLogger = createLogger('System');
+export const uiLogger = createLogger('UI');
+
+export { Logger };

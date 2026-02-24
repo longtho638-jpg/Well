@@ -23,6 +23,16 @@ vi.mock('../../stores/authStore', () => ({
   useAuthStore: vi.fn(),
 }));
 
+// Mock logger
+vi.mock('../../lib/logger', () => ({
+  authLogger: {
+    error: vi.fn(),
+    info: vi.fn(),
+    warn: vi.fn(),
+    debug: vi.fn(),
+  },
+}));
+
 describe('LoginPage', () => {
   const mockInitialize = vi.fn();
 

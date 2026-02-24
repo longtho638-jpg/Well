@@ -8,6 +8,7 @@ import { Button } from '../../components/ui/Button';
 import { PaginationParams, User } from '../../types';
 import { SortingState } from '@tanstack/react-table';
 import { UserDialog } from './UserDialog';
+import { usersLogger } from '../../lib/logger';
 
 export default function UsersPage() {
   const [pagination, setPagination] = useState({ pageIndex: 0, pageSize: 10 });
@@ -40,7 +41,7 @@ export default function UsersPage() {
 
   const handleDelete = (user: User) => {
     // Implement delete logic or open confirmation dialog
-    console.log('Delete user:', user);
+    usersLogger.info('Delete user request:', user);
   };
 
   const columns = useMemo(() => getColumns({ onEdit: handleEdit, onDelete: handleDelete }), []);

@@ -1,8 +1,9 @@
 import { QueryClient, MutationCache, QueryCache } from '@tanstack/react-query';
+import { systemLogger } from './logger';
 
 const handleError = (error: unknown) => {
   // In a real app, use a Toast notification here
-  console.error('Global Query Error:', error);
+  systemLogger.error('Global Query Error:', error);
 };
 
 export const queryClient = new QueryClient({

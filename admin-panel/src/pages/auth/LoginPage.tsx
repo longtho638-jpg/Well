@@ -6,6 +6,7 @@ import { Input } from '../../components/ui/Input';
 import { GlassCard } from '../../components/ui/GlassCard';
 import { ShieldCheck, Mail, Lock, AlertCircle } from 'lucide-react';
 import { useAuthStore } from '../../stores/authStore';
+import { authLogger } from '../../lib/logger';
 
 export function LoginPage() {
   const [email, setEmail] = useState('');
@@ -42,7 +43,7 @@ export function LoginPage() {
          navigate('/');
       }
     } catch (err: any) {
-      console.error(err);
+      authLogger.error('Login failed', err);
       setError(err.message || 'Failed to sign in');
     } finally {
       setLoading(false);

@@ -1,4 +1,5 @@
 import { supabase } from '@/lib/supabase';
+import { withdrawalsLogger } from '@/lib/logger';
 
 export interface BankInfo {
   bankName: string;
@@ -45,7 +46,7 @@ export const withdrawalService = {
 
       return data || [];
     } catch (error) {
-      console.error('Fetch all withdrawals failed', error);
+      withdrawalsLogger.error('Fetch all withdrawals failed', error);
       throw error;
     }
   },
@@ -66,11 +67,11 @@ export const withdrawalService = {
       });
 
       if (error) {
-        console.error('Process withdrawal failed', error);
+        withdrawalsLogger.error('Process withdrawal failed', error);
         throw new Error(error.message || 'Failed to process withdrawal');
       }
     } catch (error) {
-      console.error('Withdrawal processing error', error);
+      withdrawalsLogger.error('Withdrawal processing error', error);
       throw error;
     }
   },
@@ -90,7 +91,7 @@ export const withdrawalService = {
 
       if (error) throw error;
     } catch (error) {
-      console.error('Complete withdrawal failed', error);
+      withdrawalsLogger.error('Complete withdrawal failed', error);
       throw error;
     }
   },
@@ -146,7 +147,7 @@ export const withdrawalService = {
 
       return stats;
     } catch (error) {
-      console.error('Fetch withdrawal stats failed', error);
+      withdrawalsLogger.error('Fetch withdrawal stats failed', error);
       throw error;
     }
   }

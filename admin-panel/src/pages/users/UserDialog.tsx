@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import {
   Dialog,
@@ -12,6 +12,7 @@ import { Button } from '../../components/ui/Button';
 import { Input } from '../../components/ui/Input';
 import { User } from '../../types';
 import { useUpdateUser } from '../../hooks/queries/useUsers';
+import { usersLogger } from '../../lib/logger';
 
 // Simple Select component wrapper or native select for now to avoid complexity
 // In a real app we'd use Select primitive from Radix
@@ -33,7 +34,7 @@ export function UserDialog({ open, onOpenChange, user }: UserDialogProps) {
   const { register, handleSubmit, reset, setValue } = useForm<UserFormData>();
   const updateUser = useUpdateUser();
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (user) {
       setValue('full_name', user.full_name || '');
       setValue('email', user.email);
@@ -54,7 +55,7 @@ export function UserDialog({ open, onOpenChange, user }: UserDialogProps) {
       });
       onOpenChange(false);
     } catch (error) {
-      console.error('Failed to update user', error);
+      usersLogger.error('Failed to update user', error);
     }
   };
 
