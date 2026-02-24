@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useState, useEffect, useMemo, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { X, Heart, ShoppingBag, Clock, Star, ArrowRight, Check } from 'lucide-react';
 import { useStore } from '@/store';
@@ -23,6 +23,14 @@ export const QuickPurchaseModal: React.FC<QuickPurchaseModalProps> = ({ isOpen, 
   const [activeTab, setActiveTab] = useState<TabType>('recent');
   const [favorites, setFavorites] = useState<string[]>([]);
   const [processingId, setProcessingId] = useState<string | null>(null);
+  const processingTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  // Cleanup timers on unmount
+  useEffect(() => {
+    return () => {
+      if (processingTimerRef.current) clearTimeout(processingTimerRef.current);
+    };
+  }, []);
 
   // Load favorites from localStorage
   useEffect(() => {
@@ -80,7 +88,8 @@ export const QuickPurchaseModal: React.FC<QuickPurchaseModalProps> = ({ isOpen, 
       await simulateOrder(product.id);
       // Optional: Navigate to wallet or show toast?
       // For "Quick Purchase", staying in context is usually better, maybe show success state then close.
-      setTimeout(() => {
+      if (processingTimerRef.current) clearTimeout(processingTimerRef.current);
+      processingTimerRef.current = setTimeout(() => {
         setProcessingId(null);
         // onClose(); // Optional: close on success
       }, 1000);

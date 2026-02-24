@@ -8,7 +8,7 @@
  * - Ability to revoke sessions
  */
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
     Monitor,
@@ -87,10 +87,19 @@ export function SessionManager({
     const [revoking, setRevoking] = useState<string | null>(null);
     const [revokingAll, setRevokingAll] = useState(false);
     const [success, setSuccess] = useState<string | null>(null);
+    const successTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
     useEffect(() => {
         setLocalSessions(sessions);
     }, [sessions]);
+
+    useEffect(() => {
+        return () => {
+            if (successTimerRef.current) {
+                clearTimeout(successTimerRef.current);
+            }
+        };
+    }, []);
 
     const handleRevoke = async (sessionId: string) => {
         setRevoking(sessionId);
@@ -101,7 +110,8 @@ export function SessionManager({
             // Optimistically remove from UI
             setLocalSessions(prev => prev.filter(s => s.id !== sessionId));
             setSuccess(t('sessionmanager.revoked_success'));
-            setTimeout(() => setSuccess(null), 3000);
+            if (successTimerRef.current) clearTimeout(successTimerRef.current);
+            successTimerRef.current = setTimeout(() => setSuccess(null), 3000);
         } catch (error) {
             authLogger.error('Failed to revoke session', error);
         } finally {
@@ -118,7 +128,8 @@ export function SessionManager({
             // Keep only current session
             setLocalSessions(prev => prev.filter(s => s.isCurrent));
             setSuccess(t('sessionmanager.revoked_all_success'));
-            setTimeout(() => setSuccess(null), 3000);
+            if (successTimerRef.current) clearTimeout(successTimerRef.current);
+            successTimerRef.current = setTimeout(() => setSuccess(null), 3000);
         } catch (error) {
             authLogger.error('Failed to revoke sessions', error);
         } finally {

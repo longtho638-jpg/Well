@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { motion } from 'framer-motion';
 import { Copy, Check, Lightbulb } from 'lucide-react';
 import { CopilotMessage, ObjectionType } from '@/types';
@@ -49,11 +49,19 @@ export const CopilotMessageItem: React.FC<CopilotMessageItemProps> = React.memo(
     const { t } = useTranslation();
     const { showToast } = useToast();
     const [copied, setCopied] = useState(false);
+    const copiedTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+    useEffect(() => {
+        return () => {
+            if (copiedTimerRef.current) clearTimeout(copiedTimerRef.current);
+        };
+    }, []);
 
     const handleCopy = (text: string) => {
         navigator.clipboard.writeText(text);
         setCopied(true);
-        setTimeout(() => setCopied(false), 2000);
+        if (copiedTimerRef.current) clearTimeout(copiedTimerRef.current);
+        copiedTimerRef.current = setTimeout(() => setCopied(false), 2000);
         showToast('Copied to clipboard', 'success');
     };
 
