@@ -17,6 +17,7 @@
         "categories:seo": ["error", {"minScore": 0.8}],
         "csp-xss": ["warn", {}],
         "errors-in-console": ["warn", {}],
+        "inspector-issues": ["warn", {}],
         "landmark-one-main": ["warn", {}],
         "total-byte-weight": ["warn", {}],
         "unused-css-rules": ["warn", {}],
