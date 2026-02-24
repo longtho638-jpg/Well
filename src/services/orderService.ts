@@ -110,16 +110,25 @@ export const orderService = {
 
     /**
      * Update order status (Approve/Reject)
+     * State machine: only 'pending' orders can transition to 'completed' or 'cancelled'
      */
     async updateOrderStatus(orderId: string, status: 'completed' | 'cancelled'): Promise<void> {
-        const { error } = await supabase
+        // Atomic state machine guard: only update if currently 'pending'
+        // Prevents completed→cancelled or cancelled→completed invalid transitions
+        const { error, count } = await supabase
             .from('transactions')
             .update({ status })
-            .eq('id', orderId);
+            .eq('id', orderId)
+            .eq('status', 'pending') // Guard: reject transition from any non-pending state
+            .select('id', { count: 'exact', head: true });
 
         if (error) {
             adminLogger.error(`Failed to update order ${orderId} status to ${status}`, error);
             throw error;
+        }
+
+        if (count === 0) {
+            throw new Error(`Order ${orderId} is not in pending state and cannot be transitioned to ${status}`);
         }
     }
 };

@@ -10,15 +10,22 @@ interface AdminRouteProps {
 
 /**
  * AdminRoute - Protects admin routes from unauthorized access
- * 
+ *
  * Security checks:
- * 1. User must be authenticated
- * 2. User must have admin role
- * 
+ * 1. Auth must be initialized (prevents redirect flash on page reload)
+ * 2. User must be authenticated
+ * 3. User must have admin role
+ *
  * If checks fail, redirects to appropriate page
  */
 export function AdminRoute({ children }: AdminRouteProps) {
-    const { user, isAuthenticated } = useStore();
+    const { user, isAuthenticated, isInitialized } = useStore();
+
+    // Check 0: Wait for auth initialization to prevent redirect flash on reload
+    // Without this, a logged-in admin gets redirected to / before session is restored
+    if (!isInitialized) {
+        return null; // App.tsx already shows global spinner while !isInitialized
+    }
 
     // Check 1: Must be authenticated
     if (!isAuthenticated) {

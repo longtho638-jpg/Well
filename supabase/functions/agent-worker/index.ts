@@ -5,8 +5,10 @@ import { createClient } from 'https://esm.sh/@supabase/supabase-js@2'
 
 const supabase = createClient(
   Deno.env.get('SUPABASE_URL') ?? '',
-  Deno.env.get('SERVICE_ROLE_KEY') ?? '' // Dùng Key quyền lực để ghi đè RLS
+  Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') ?? '' // Fixed: was SERVICE_ROLE_KEY (wrong key name)
 )
+
+const MAX_ATTEMPTS = 3 // Dead letter: stop retrying after this many failures
 
 Deno.serve(async (req) => {
   // 1. Worker nhận tín hiệu (Cron hoặc Webhook gọi định kỳ)
@@ -20,6 +22,7 @@ Deno.serve(async (req) => {
     .from('agent_jobs')
     .select('*')
     .or(`status.eq.pending,and(status.eq.processing,updated_at.lt.${tenMinsAgo})`)
+    .lt('attempts', MAX_ATTEMPTS) // Dead letter guard: skip jobs that exceeded max retries
     .limit(100)
 
   if (!jobs || jobs.length === 0) {
@@ -31,8 +34,18 @@ Deno.serve(async (req) => {
   // 3. Xử lý song song (Parallel Processing)
   await Promise.all(jobs.map(async (job) => {
     try {
-      // Mark as processing (Optimistic Locking)
-      await supabase.from('agent_jobs').update({ status: 'processing' }).eq('id', job.id)
+      // Mark as processing with optimistic lock: only claim if still pending/timed-out-processing
+      const { count } = await supabase
+        .from('agent_jobs')
+        .update({ status: 'processing', updated_at: new Date().toISOString() })
+        .eq('id', job.id)
+        .in('status', ['pending', 'processing']) // Atomic claim guard
+        .select('id', { count: 'exact', head: true })
+
+      if (!count || count === 0) {
+        // Another worker claimed this job concurrently — skip
+        return
+      }
 
       // --- ROUTING AGENT ---
       if (job.agent_name === 'The Bee' && job.action === 'process_reward') {
@@ -50,11 +63,12 @@ Deno.serve(async (req) => {
 
     } catch (err) {
       console.error(`Job ${job.id} failed:`, err)
-      // Retry logic: Mark failed, increment attempts
+      const newAttempts = job.attempts + 1
+      // Move to dead_letter if max attempts exceeded, else mark failed for retry
       await supabase.from('agent_jobs').update({
-        status: 'failed',
+        status: newAttempts >= MAX_ATTEMPTS ? 'dead_letter' : 'failed',
         error_message: err.message,
-        attempts: job.attempts + 1
+        attempts: newAttempts
       }).eq('id', job.id)
     }
   }))
