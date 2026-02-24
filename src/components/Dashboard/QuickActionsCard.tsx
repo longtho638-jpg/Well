@@ -5,6 +5,7 @@ import { useStore } from '@/store';
 import { useTranslation } from '@/hooks';
 import { formatVND } from '@/utils/format';
 import { useToast } from '@/components/ui/Toast';
+import { APP_CONFIG } from '@/utils/constants';
 
 export const QuickActionsCard: React.FC = () => {
   const { t } = useTranslation();
@@ -20,7 +21,7 @@ export const QuickActionsCard: React.FC = () => {
   };
 
   const handleShareHealthCheck = () => {
-    const healthCheckLink = 'https://wellnexus.app/health-check';
+    const healthCheckLink = `${APP_CONFIG.url}/health-check`;
     if (navigator.share) {
       navigator.share({
         title: 'WellNexus Health Check',
@@ -48,7 +49,7 @@ export const QuickActionsCard: React.FC = () => {
     const shareData = {
       title: t('quickactionscard.achievement_title'),
       text: achievementText,
-      url: user.referralLink || 'https://wellnexus.app',
+      url: user.referralLink || APP_CONFIG.url,
     };
 
     if (navigator.share) {

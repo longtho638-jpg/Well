@@ -3,6 +3,10 @@
  * Phase 8: Data and Components
  */
 
+import { createLogger } from './logger';
+
+const logger = createLogger('cache');
+
 // ============================================================================
 // IN-MEMORY CACHE
 // ============================================================================
@@ -165,7 +169,10 @@ export async function swr<T>(
             // Return stale data while revalidating
             fetcher().then(data => {
                 swrCache.set(key, { data, fetchedAt: Date.now() });
-            }).catch(() => { });
+            }).catch((err: unknown) => {
+                // Background revalidation failure — log but do not propagate (stale data still returned)
+                logger.warn('[cache] SWR background revalidation failed', { key, err });
+            });
 
             return { data: entry.data, isValidating: true, error: null };
         }
