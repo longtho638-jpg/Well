@@ -3,7 +3,7 @@ import { motion } from 'framer-motion';
 import { UserPlus, X, Loader2 } from 'lucide-react';
 import { useTranslation } from '@/hooks';
 import { useToast } from '@/components/ui/Toast';
-import { supabase } from '@/lib/supabase';
+import { referralService } from '@/services/referral-service';
 import { uiLogger } from '@/utils/logger';
 
 interface AddMemberModalProps {
@@ -30,19 +30,14 @@ export const AddMemberModal: React.FC<AddMemberModalProps> = ({ sponsorId, spons
         setLoading(true);
 
         try {
-            const { error: authError } = await supabase.auth.signUp({
+            await referralService.addMember({
+                name: formData.name,
                 email: formData.email,
                 password: formData.password,
-                options: {
-                    data: {
-                        name: formData.name,
-                        role_id: formData.role_id,
-                        sponsor_id: sponsorId
-                    }
-                }
+                phone: formData.phone,
+                roleId: formData.role_id,
+                sponsorId,
             });
-
-            if (authError) throw authError;
 
             showToast(t('networktree.toast.added_success', { name: formData.name }), 'success');
             onSuccess();

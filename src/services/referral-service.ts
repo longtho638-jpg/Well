@@ -245,6 +245,32 @@ export const referralService = {
       throw error;
     }
   },
+  /**
+   * Add a new member under a sponsor
+   * Centralizes supabase.auth.signUp so components don't call it directly
+   */
+  async addMember(params: {
+    name: string;
+    email: string;
+    password: string;
+    phone?: string;
+    roleId?: number;
+    sponsorId: string;
+  }): Promise<void> {
+    const { error } = await supabase.auth.signUp({
+      email: params.email,
+      password: params.password,
+      options: {
+        data: {
+          name: params.name,
+          role_id: params.roleId ?? 8,
+          sponsor_id: params.sponsorId,
+          phone: params.phone,
+        },
+      },
+    });
+    if (error) throw error;
+  },
 };
 
 export default referralService;
