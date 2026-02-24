@@ -120,5 +120,5 @@ async function runTheBee(payload: BeePayload, supabase: SupabaseClient) {
     p_source_tx: transaction_id
   })
 
-  if (error) throw new Error(error.message)
+  if (error) throw new Error(error.message ?? 'distribute_reward RPC failed')
 }

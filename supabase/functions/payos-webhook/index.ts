@@ -20,6 +20,12 @@ interface WebhookData {
   virtualAccountNumber?: string
 }
 
+interface OrderItem {
+  product_name: string
+  quantity: number
+  unit_price?: number
+}
+
 interface WebhookPayload {
   data: WebhookData
   signature: string
@@ -210,7 +216,7 @@ serve(async (req) => {
                   orderId: String(payload.data.orderCode),
                   orderDate: new Date().toLocaleDateString('vi-VN'),
                   totalAmount: `${payload.data.amount.toLocaleString('vi-VN')} VND`,
-                  items: items.map((i: any) => ({
+                  items: items.map((i: OrderItem) => ({
                     name: i.product_name,
                     quantity: i.quantity,
                     price: `${(i.unit_price || 0).toLocaleString('vi-VN')} VND`,
@@ -258,7 +264,7 @@ serve(async (req) => {
 })
 
 // Helper to log to audit_logs table
-async function logAudit(supabase: any, userId: string | null, action: string, payload: any, severity: string) {
+async function logAudit(supabase: ReturnType<typeof createClient>, userId: string | null, action: string, payload: Record<string, unknown>, severity: string) {
   try {
     // If we don't have a user_id (e.g. failed signature), we might log with a system user or just null
     // Assuming audit_logs table allows null user_id or we use a specific system UUID if needed.
