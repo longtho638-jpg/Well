@@ -141,8 +141,6 @@ export const AppLayout: React.FC = () => {
         {/* Scrollable Content - Using key to force re-render on route change */}
         <main
           id="main-content"
-          role="main"
-          aria-label="Page content"
           className="flex-1 overflow-y-auto p-4 sm:p-6 lg:p-8 pb-24 md:pb-8 scroll-smooth bg-gradient-to-br from-gray-50 to-white dark:from-slate-900 dark:to-slate-800"
         >
           <ErrorBoundary>
