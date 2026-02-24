@@ -100,7 +100,7 @@ export function SessionManager({
             }
             // Optimistically remove from UI
             setLocalSessions(prev => prev.filter(s => s.id !== sessionId));
-            setSuccess(`Session revoked successfully`);
+            setSuccess(t('sessionmanager.revoked_success'));
             setTimeout(() => setSuccess(null), 3000);
         } catch (error) {
             authLogger.error('Failed to revoke session', error);
@@ -117,7 +117,7 @@ export function SessionManager({
             }
             // Keep only current session
             setLocalSessions(prev => prev.filter(s => s.isCurrent));
-            setSuccess('All other sessions revoked');
+            setSuccess(t('sessionmanager.revoked_all_success'));
             setTimeout(() => setSuccess(null), 3000);
         } catch (error) {
             authLogger.error('Failed to revoke sessions', error);
@@ -152,7 +152,7 @@ export function SessionManager({
                         {revokingAll ? (
                             <Loader2 className="w-4 h-4 animate-spin" />
                         ) : (
-                            'Sign out all other devices'
+                            t('sessionmanager.sign_out_all_others')
                         )}
                     </button>
                 )}

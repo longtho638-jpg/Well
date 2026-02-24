@@ -1749,14 +1749,31 @@ export const en = {
     no_login_attempts_found: "[MISSING] no login attempts found"
   },
   sessionmanager: {
-    active_sessions: "[MISSING] active sessions",
-    device: "[MISSING] device",
-    connected: "[MISSING] connected",
-    this_device: "[MISSING] this device",
-    active_now: "[MISSING] active now",
-    last_active: "[MISSING] last active",
-    security_note: "[MISSING] security note",
-    if_you_don_t_recognize_a_sessi: "[MISSING] if you don t recognize a sessi"
+    active_sessions: "Active Sessions",
+    device: "Device",
+    connected: "Connected",
+    this_device: "This Device",
+    active_now: "Active Now",
+    last_active: "Last Active: ",
+    security_note: "Security Note",
+    if_you_don_t_recognize_a_sessi: "If you don't recognize a session, revoke it immediately.",
+    revoked_success: "Session revoked successfully",
+    revoked_all_success: "All other sessions revoked",
+    sign_out_all_others: "Sign out all other devices"
+  },
+  profilepage: {
+    personal_information: "Personal Information",
+    account_status: "Account Status",
+    full_name: "Full Name",
+    email_address: "Email Address",
+    phone_number: "Phone Number",
+    date_of_birth: "Date of Birth",
+    address: "Address",
+    kyc_verified: "Identity Verified",
+    email_verified: "Email Verified",
+    security_strength: "Security Strength",
+    edit: "Edit",
+    joined: "Joined"
   },
   cart: {
     empty: "[MISSING] empty",

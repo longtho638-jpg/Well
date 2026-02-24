@@ -2448,7 +2448,24 @@ export const vi = {
     if_you_don_t_recognize_a_sessi: "Nếu bạn không nhận ra phiên nào, hãy thu hồi ngay lập tức.",
     last_active: "Hoạt Động Lần Cuối",
     security_note: "Lưu Ý Bảo Mật",
-    this_device: "Thiết Bị Này"
+    this_device: "Thiết Bị Này",
+    revoked_success: "Phiên đã được thu hồi thành công",
+    revoked_all_success: "Tất cả phiên khác đã được thu hồi",
+    sign_out_all_others: "Đăng xuất tất cả thiết bị khác"
+  },
+  profilepage: {
+    personal_information: "Thông Tin Cá Nhân",
+    account_status: "Trạng Thái Tài Khoản",
+    full_name: "Họ và Tên",
+    email_address: "Địa Chỉ Email",
+    phone_number: "Số Điện Thoại",
+    date_of_birth: "Ngày Sinh",
+    address: "Địa Chỉ",
+    kyc_verified: "Đã Xác Minh Danh Tính",
+    email_verified: "Email Đã Xác Minh",
+    security_strength: "Độ Mạnh Bảo Mật",
+    edit: "Chỉnh Sửa",
+    joined: "Tham Gia"
   },
   sharebuttons: {
     email: "Email",

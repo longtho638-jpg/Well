@@ -2,9 +2,11 @@ import React from 'react';
 import { useStore } from '@/store';
 import { User, Mail, Phone, MapPin, Shield, Calendar, Award } from 'lucide-react';
 import { motion } from 'framer-motion';
+import { useTranslation } from '@/hooks';
 
 export default function ProfilePage() {
   const { user } = useStore();
+  const { t } = useTranslation();
 
   return (
     <div className="space-y-6 pb-20">
@@ -38,11 +40,11 @@ export default function ProfilePage() {
             <div className="flex flex-wrap justify-center md:justify-start gap-4">
               <div className="flex items-center gap-2 text-sm text-zinc-600 dark:text-zinc-300 bg-zinc-100 dark:bg-zinc-800 px-3 py-1.5 rounded-lg">
                 <Award className="w-4 h-4 text-amber-500" />
-                <span>Joined: {new Date().toLocaleDateString()}</span>
+                <span>{t('profilepage.joined')}: {new Date().toLocaleDateString()}</span>
               </div>
               <div className="flex items-center gap-2 text-sm text-zinc-600 dark:text-zinc-300 bg-zinc-100 dark:bg-zinc-800 px-3 py-1.5 rounded-lg">
                 <Shield className="w-4 h-4 text-blue-500" />
-                <span>KYC Verified</span>
+                <span>{t('profilepage.kyc_verified')}</span>
               </div>
             </div>
           </div>
@@ -60,16 +62,16 @@ export default function ProfilePage() {
           <div className="flex items-center justify-between mb-6">
             <h2 className="text-xl font-bold text-zinc-900 dark:text-white flex items-center gap-2">
               <User className="w-5 h-5 text-emerald-500" />
-              Personal Information
+              {t('profilepage.personal_information')}
             </h2>
             <button className="text-sm text-emerald-600 hover:text-emerald-500 font-medium">
-              Edit
+              {t('profilepage.edit')}
             </button>
           </div>
 
           <div className="grid md:grid-cols-2 gap-6">
             <div className="space-y-1">
-              <label className="text-xs text-zinc-500 uppercase font-semibold">Full Name</label>
+              <label className="text-xs text-zinc-500 uppercase font-semibold">{t('profilepage.full_name')}</label>
               <div className="p-3 bg-zinc-50 dark:bg-zinc-800/50 rounded-xl text-zinc-900 dark:text-zinc-100 font-medium border border-zinc-200 dark:border-zinc-800 flex items-center gap-3">
                 <User className="w-4 h-4 text-zinc-400" />
                 {user.name}
@@ -77,7 +79,7 @@ export default function ProfilePage() {
             </div>
 
             <div className="space-y-1">
-              <label className="text-xs text-zinc-500 uppercase font-semibold">Email Address</label>
+              <label className="text-xs text-zinc-500 uppercase font-semibold">{t('profilepage.email_address')}</label>
               <div className="p-3 bg-zinc-50 dark:bg-zinc-800/50 rounded-xl text-zinc-900 dark:text-zinc-100 font-medium border border-zinc-200 dark:border-zinc-800 flex items-center gap-3">
                 <Mail className="w-4 h-4 text-zinc-400" />
                 {user.email}
@@ -85,7 +87,7 @@ export default function ProfilePage() {
             </div>
 
             <div className="space-y-1">
-              <label className="text-xs text-zinc-500 uppercase font-semibold">Phone Number</label>
+              <label className="text-xs text-zinc-500 uppercase font-semibold">{t('profilepage.phone_number')}</label>
               <div className="p-3 bg-zinc-50 dark:bg-zinc-800/50 rounded-xl text-zinc-900 dark:text-zinc-100 font-medium border border-zinc-200 dark:border-zinc-800 flex items-center gap-3">
                 <Phone className="w-4 h-4 text-zinc-400" />
                 +84 90 123 4567
@@ -93,7 +95,7 @@ export default function ProfilePage() {
             </div>
 
             <div className="space-y-1">
-              <label className="text-xs text-zinc-500 uppercase font-semibold">Date of Birth</label>
+              <label className="text-xs text-zinc-500 uppercase font-semibold">{t('profilepage.date_of_birth')}</label>
               <div className="p-3 bg-zinc-50 dark:bg-zinc-800/50 rounded-xl text-zinc-900 dark:text-zinc-100 font-medium border border-zinc-200 dark:border-zinc-800 flex items-center gap-3">
                 <Calendar className="w-4 h-4 text-zinc-400" />
                 01/01/1990
@@ -102,7 +104,7 @@ export default function ProfilePage() {
           </div>
 
           <div className="mt-6 space-y-1">
-            <label className="text-xs text-zinc-500 uppercase font-semibold">Address</label>
+            <label className="text-xs text-zinc-500 uppercase font-semibold">{t('profilepage.address')}</label>
             <div className="p-3 bg-zinc-50 dark:bg-zinc-800/50 rounded-xl text-zinc-900 dark:text-zinc-100 font-medium border border-zinc-200 dark:border-zinc-800 flex items-center gap-3">
               <MapPin className="w-4 h-4 text-zinc-400" />
               123 Nguyen Hue Street, District 1, Ho Chi Minh City, Vietnam
@@ -119,14 +121,14 @@ export default function ProfilePage() {
         >
           <h2 className="text-xl font-bold text-zinc-900 dark:text-white flex items-center gap-2 mb-6">
             <Shield className="w-5 h-5 text-blue-500" />
-            Account Status
+            {t('profilepage.account_status')}
           </h2>
 
           <div className="space-y-4">
             <div className="flex items-center justify-between p-3 bg-green-50 dark:bg-green-900/10 border border-green-200 dark:border-green-900/30 rounded-xl">
               <div className="flex items-center gap-3">
                 <div className="w-2 h-2 bg-green-500 rounded-full" />
-                <span className="text-sm font-medium text-green-700 dark:text-green-400">Identity Verified</span>
+                <span className="text-sm font-medium text-green-700 dark:text-green-400">{t('profilepage.kyc_verified')}</span>
               </div>
               <Shield className="w-4 h-4 text-green-600 dark:text-green-400" />
             </div>
@@ -134,13 +136,13 @@ export default function ProfilePage() {
             <div className="flex items-center justify-between p-3 bg-blue-50 dark:bg-blue-900/10 border border-blue-200 dark:border-blue-900/30 rounded-xl">
               <div className="flex items-center gap-3">
                 <div className="w-2 h-2 bg-blue-500 rounded-full" />
-                <span className="text-sm font-medium text-blue-700 dark:text-blue-400">Email Verified</span>
+                <span className="text-sm font-medium text-blue-700 dark:text-blue-400">{t('profilepage.email_verified')}</span>
               </div>
               <Mail className="w-4 h-4 text-blue-600 dark:text-blue-400" />
             </div>
 
             <div className="mt-6 pt-6 border-t border-zinc-200 dark:border-zinc-800">
-              <h3 className="text-sm font-semibold text-zinc-900 dark:text-white mb-2">Security Strength</h3>
+              <h3 className="text-sm font-semibold text-zinc-900 dark:text-white mb-2">{t('profilepage.security_strength')}</h3>
               <div className="w-full bg-zinc-100 dark:bg-zinc-800 rounded-full h-2 mb-2">
                 <div className="bg-emerald-500 h-2 rounded-full w-[85%]" />
               </div>
