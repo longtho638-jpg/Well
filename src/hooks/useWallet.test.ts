@@ -6,6 +6,7 @@ import { vi, describe, it, expect, beforeEach, Mock } from 'vitest';
 vi.mock('../services/walletService', () => ({
   walletService: {
     getTransactions: vi.fn(),
+    getWallet: vi.fn(),
     subscribeToWallet: vi.fn().mockReturnValue(() => {}),
     requestPayout: vi.fn(),
   },
@@ -28,16 +29,16 @@ describe('useWallet', () => {
   });
 
   it('should initialize with loading state', () => {
+    (walletService.getTransactions as Mock).mockResolvedValue([]);
+    (walletService.getWallet as Mock).mockResolvedValue(mockWallet);
     const { result } = renderHook(() => useWallet('user-1'));
     expect(result.current.loading).toBe(true);
   });
 
   it('should load transactions and subscribe to wallet updates', async () => {
     (walletService.getTransactions as Mock).mockResolvedValue(mockTransactions);
-    (walletService.subscribeToWallet as Mock).mockImplementation((uid: string, onData: (data: WalletData) => void) => {
-      onData(mockWallet);
-      return vi.fn(); // unsubscribe
-    });
+    (walletService.getWallet as Mock).mockResolvedValue(mockWallet);
+    (walletService.subscribeToWallet as Mock).mockReturnValue(vi.fn());
 
     const { result } = renderHook(() => useWallet('user-1'));
 
@@ -53,6 +54,7 @@ describe('useWallet', () => {
 
   it('should handle errors when loading transactions', async () => {
     (walletService.getTransactions as Mock).mockRejectedValue(new Error('Fetch failed'));
+    (walletService.getWallet as Mock).mockResolvedValue(mockWallet);
     (walletService.subscribeToWallet as Mock).mockReturnValue(vi.fn());
 
     const { result } = renderHook(() => useWallet('user-1'));
@@ -64,10 +66,8 @@ describe('useWallet', () => {
 
   it('should request payout successfully', async () => {
     (walletService.getTransactions as Mock).mockResolvedValue(mockTransactions);
-    (walletService.subscribeToWallet as Mock).mockImplementation((uid: string, onData: (data: WalletData) => void) => {
-      onData(mockWallet); // balance 1000
-      return vi.fn();
-    });
+    (walletService.getWallet as Mock).mockResolvedValue(mockWallet); // balance 1000
+    (walletService.subscribeToWallet as Mock).mockReturnValue(vi.fn());
     (walletService.requestPayout as Mock).mockResolvedValue(true);
 
     const { result } = renderHook(() => useWallet('user-1'));
@@ -86,10 +86,8 @@ describe('useWallet', () => {
 
   it('should fail payout if invalid amount or insufficient balance', async () => {
     (walletService.getTransactions as Mock).mockResolvedValue(mockTransactions);
-    (walletService.subscribeToWallet as Mock).mockImplementation((uid: string, onData: (data: WalletData) => void) => {
-      onData({ ...mockWallet, balance: 100 });
-      return vi.fn();
-    });
+    (walletService.getWallet as Mock).mockResolvedValue({ ...mockWallet, balance: 100 });
+    (walletService.subscribeToWallet as Mock).mockReturnValue(vi.fn());
 
     const { result } = renderHook(() => useWallet('user-1'));
 

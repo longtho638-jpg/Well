@@ -114,16 +114,16 @@ describe('walletSlice', () => {
   });
 
   it('should withdraw shop tokens correctly', async () => {
-    const useStore = createTestStore();
+    const useStore = createTestStore({ shopBalance: 5000000 });
     const { withdrawShopTokens } = useStore.getState();
 
-    await withdrawShopTokens(200);
+    await withdrawShopTokens(2000000);
 
     const state = useStore.getState();
-    expect(state.user.shopBalance).toBe(1800);
+    expect(state.user.shopBalance).toBe(3000000);
     expect(state.transactions).toHaveLength(1);
-    expect(state.transactions[0].amount).toBe(200);
-    expect(state.transactions[0].taxDeducted).toBe(20); // 10% from mock
+    expect(state.transactions[0].amount).toBe(2000000);
+    expect(state.transactions[0].taxDeducted).toBe(200000); // 10% from mock
   });
 
   it('should simulate order correctly', async () => {
