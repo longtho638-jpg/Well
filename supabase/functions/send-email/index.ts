@@ -1,4 +1,5 @@
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
+import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
 import { generateWelcomeEmail } from "./templates/welcome-email-template.ts";
 import { generateOrderConfirmationEmail } from "./templates/order-confirmation-email-template.ts";
 import { generateCommissionEarnedEmail } from "./templates/commission-earned-email-template.ts";
@@ -20,7 +21,7 @@ interface EmailRequest {
   subject: string;
   html?: string; // Optional if using template
   templateType?: 'welcome' | 'order-confirmation' | 'commission-earned' | 'rank-upgrade' | 'withdrawal-approved' | 'withdrawal-rejected' | 'withdrawal-pending';
-  data?: any; // Template data
+  data?: Record<string, unknown>;
   from?: string;
   replyTo?: string;
 }
@@ -29,6 +30,33 @@ serve(async (req) => {
   // Handle CORS preflight
   if (req.method === 'OPTIONS') {
     return new Response('ok', { headers: corsHeaders });
+  }
+
+  // Require service role key OR authenticated user (internal calls only)
+  const authHeader = req.headers.get('Authorization');
+  const serviceKey = req.headers.get('x-service-key');
+  const expectedServiceKey = Deno.env.get('INTERNAL_SERVICE_KEY');
+
+  // Allow if valid service key (internal server-to-server call)
+  const hasValidServiceKey = expectedServiceKey && serviceKey === expectedServiceKey;
+
+  // Allow if authenticated Supabase user (logged-in user triggering email)
+  let isAuthenticatedUser = false;
+  if (!hasValidServiceKey && authHeader) {
+    const supabase = createClient(
+      Deno.env.get('SUPABASE_URL') ?? '',
+      Deno.env.get('SUPABASE_ANON_KEY') ?? '',
+      { global: { headers: { Authorization: authHeader } } }
+    );
+    const { data: { user } } = await supabase.auth.getUser();
+    isAuthenticatedUser = !!user;
+  }
+
+  if (!hasValidServiceKey && !isAuthenticatedUser) {
+    return new Response(
+      JSON.stringify({ error: 'Unauthorized' }),
+      { status: 401, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+    );
   }
 
   try {

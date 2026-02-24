@@ -1,5 +1,5 @@
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
-import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
+import { createClient, SupabaseClient } from "https://esm.sh/@supabase/supabase-js@2";
 
 // --- POLICY ENGINE v3.0: DYNAMIC CONFIGURATION ---
 // Policies are now fetched from the database in real-time.
@@ -41,7 +41,7 @@ const DEFAULT_POLICY = {
  * Fetch policy configuration from database
  * Falls back to default values if fetch fails
  */
-async function fetchPolicyConfig(supabase: any) {
+async function fetchPolicyConfig(supabase: SupabaseClient) {
     try {
         const { data, error } = await supabase
             .from('policy_config')
@@ -77,11 +77,16 @@ async function fetchPolicyConfig(supabase: any) {
 
 serve(async (req) => {
     try {
-        // SECURITY: Verify Webhook Secret
+        // SECURITY: Verify Webhook Secret (mandatory — reject if not configured)
         const secret = req.headers.get("x-webhook-secret");
         const expectedSecret = Deno.env.get("WEBHOOK_SECRET");
-        
-        if (expectedSecret && secret !== expectedSecret) {
+
+        if (!expectedSecret) {
+            console.error("[Security] WEBHOOK_SECRET is not configured");
+            return new Response("Server configuration error", { status: 500 });
+        }
+
+        if (secret !== expectedSecret) {
             console.error("[Security] Invalid Webhook Secret");
             return new Response("Unauthorized", { status: 401 });
         }
@@ -298,11 +303,22 @@ serve(async (req) => {
 
         // --- LOGIC 4: KIỂM TRA THĂNG CẤP (RANK UP) - ADMIN 3.1: DYNAMIC ---
         //Check ALL possible rank upgrades based on dynamic policy
-        const rankUpgrades = (POLICY.rankUpgrades || []) as any[];
+        interface RankUpgrade {
+            fromRank: number;
+            name: string;
+            conditions: {
+                salesRequired?: number;
+                teamVolumeRequired?: number;
+                directDownlinesRequired?: number;
+                minDownlineRank?: number;
+            };
+            toRank: number;
+        }
+        const rankUpgrades = (POLICY.rankUpgrades || []) as RankUpgrade[];
 
         // Find applicable upgrade for current user rank
         const applicableUpgrade = rankUpgrades.find(
-            (upgrade: any) => upgrade.fromRank === buyerRoleId
+            (upgrade) => upgrade.fromRank === buyerRoleId
         );
 
         if (applicableUpgrade) {
@@ -315,7 +331,7 @@ serve(async (req) => {
                 .eq('user_id', userId)
                 .eq('status', 'completed');
 
-            const lifetimeSales = orders?.reduce((sum: number, o: any) => sum + Number(o.total_vnd), 0) || 0;
+            const lifetimeSales = orders?.reduce((sum: number, o: { total_vnd: string | number }) => sum + Number(o.total_vnd), 0) || 0;
 
             // Get user's team volume
             const { data: userData } = await supabase
@@ -338,7 +354,7 @@ serve(async (req) => {
             let meetsDownlineRankRequirement = true;
             if (applicableUpgrade.conditions.minDownlineRank) {
                 const qualifiedDownlines = downlines?.filter(
-                    (d: any) => d.role_id <= applicableUpgrade.conditions.minDownlineRank
+                    (d: { id: string; role_id: number }) => d.role_id <= applicableUpgrade.conditions.minDownlineRank!
                 ) || [];
                 meetsDownlineRankRequirement = qualifiedDownlines.length >= (applicableUpgrade.conditions.directDownlinesRequired || 0);
             }

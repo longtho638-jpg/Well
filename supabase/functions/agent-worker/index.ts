@@ -11,6 +11,26 @@ const supabase = createClient(
 const MAX_ATTEMPTS = 3 // Dead letter: stop retrying after this many failures
 
 Deno.serve(async (req) => {
+  // SECURITY: Require internal service key — this worker must only be called by cron/pg_net
+  const serviceKey = req.headers.get('x-service-key')
+  const expectedServiceKey = Deno.env.get('INTERNAL_SERVICE_KEY')
+
+  if (!expectedServiceKey) {
+    console.error('[Security] INTERNAL_SERVICE_KEY not configured')
+    return new Response(JSON.stringify({ error: 'Server configuration error' }), {
+      status: 500,
+      headers: { 'Content-Type': 'application/json' }
+    })
+  }
+
+  if (serviceKey !== expectedServiceKey) {
+    console.error('[Security] Invalid service key')
+    return new Response(JSON.stringify({ error: 'Unauthorized' }), {
+      status: 401,
+      headers: { 'Content-Type': 'application/json' }
+    })
+  }
+
   // 1. Worker nhận tín hiệu (Cron hoặc Webhook gọi định kỳ)
   // Trong thực tế, ta dùng pg_net hoặc cron để gọi function này mỗi giây
 
@@ -77,7 +97,13 @@ Deno.serve(async (req) => {
 })
 
 // --- AGENT LOGIC: THE BEE ---
-async function runTheBee(payload: any) {
+interface BeePayload {
+  user_id: string;
+  amount: number;
+  transaction_id: string;
+}
+
+async function runTheBee(payload: BeePayload) {
   const { user_id, amount, transaction_id } = payload
 
   // 1. Delegate Logic to Database (Bee 2.0)
