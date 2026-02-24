@@ -34,6 +34,14 @@ serve(async (req) => {
     // 2. Parse request body
     const body: CancelPaymentRequest = await req.json()
 
+    // Validate required field
+    if (!body.orderCode || typeof body.orderCode !== 'number' || body.orderCode <= 0) {
+      return new Response(
+        JSON.stringify({ error: 'Missing or invalid orderCode' }),
+        { status: 400, headers: { 'Content-Type': 'application/json' } }
+      )
+    }
+
     // 3. Verify user owns this order (RLS check)
     const { data: orderData, error: orderError } = await supabase
       .from('orders')

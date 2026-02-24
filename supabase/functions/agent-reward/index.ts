@@ -449,6 +449,7 @@ serve(async (req) => {
 
     } catch (error) {
         console.error("[TheBee Error]:", error);
-        return new Response(JSON.stringify({ error: error.message }), { status: 500 });
+        const errMsg = error instanceof Error ? error.message : String(error);
+        return new Response(JSON.stringify({ error: errMsg }), { status: 500 });
     }
 });

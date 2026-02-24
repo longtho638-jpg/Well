@@ -1,12 +1,7 @@
 // Supabase Edge Function: The Core Agent Worker
 // Deno Runtime - High Performance, Low Latency
 
-import { createClient } from 'https://esm.sh/@supabase/supabase-js@2'
-
-const supabase = createClient(
-  Deno.env.get('SUPABASE_URL') ?? '',
-  Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') ?? '' // Fixed: was SERVICE_ROLE_KEY (wrong key name)
-)
+import { createClient, SupabaseClient } from 'https://esm.sh/@supabase/supabase-js@2'
 
 const MAX_ATTEMPTS = 3 // Dead letter: stop retrying after this many failures
 
@@ -30,6 +25,12 @@ Deno.serve(async (req) => {
       headers: { 'Content-Type': 'application/json' }
     })
   }
+
+  // Khởi tạo client trong request handler để đảm bảo env vars luôn được đọc đúng lúc
+  const supabase = createClient(
+    Deno.env.get('SUPABASE_URL') ?? '',
+    Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') ?? ''
+  )
 
   // 1. Worker nhận tín hiệu (Cron hoặc Webhook gọi định kỳ)
   // Trong thực tế, ta dùng pg_net hoặc cron để gọi function này mỗi giây
@@ -69,7 +70,7 @@ Deno.serve(async (req) => {
 
       // --- ROUTING AGENT ---
       if (job.agent_name === 'The Bee' && job.action === 'process_reward') {
-        await runTheBee(job.payload)
+        await runTheBee(job.payload, supabase)
       }
       // ---------------------
 
@@ -84,10 +85,11 @@ Deno.serve(async (req) => {
     } catch (err) {
       console.error(`Job ${job.id} failed:`, err)
       const newAttempts = job.attempts + 1
+      const errMsg = err instanceof Error ? err.message : String(err)
       // Move to dead_letter if max attempts exceeded, else mark failed for retry
       await supabase.from('agent_jobs').update({
         status: newAttempts >= MAX_ATTEMPTS ? 'dead_letter' : 'failed',
-        error_message: err.message,
+        error_message: errMsg,
         attempts: newAttempts
       }).eq('id', job.id)
     }
@@ -103,7 +105,7 @@ interface BeePayload {
   transaction_id: string;
 }
 
-async function runTheBee(payload: BeePayload) {
+async function runTheBee(payload: BeePayload, supabase: SupabaseClient) {
   const { user_id, amount, transaction_id } = payload
 
   // 1. Delegate Logic to Database (Bee 2.0)
