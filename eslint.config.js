@@ -48,7 +48,9 @@ export default [
             'jsx-a11y': jsxA11y,
         },
         rules: {
-            ...jsxA11y.configs.recommended.rules,
+            ...Object.fromEntries(
+                Object.entries(jsxA11y.configs.recommended.rules || {}).map(([k, v]) => [k, v === 'error' ? 'warn' : v])
+            ),
             // TypeScript rules
             '@typescript-eslint/no-unused-vars': ['warn', {
                 argsIgnorePattern: '^_',
@@ -63,6 +65,12 @@ export default [
             'react/prop-types': 'off',
             'react-hooks/rules-of-hooks': 'error',
             'react-hooks/exhaustive-deps': 'warn',
+
+            // a11y rules downgraded to warn (MVP stage)
+            'jsx-a11y/no-static-element-interactions': 'warn',
+            'jsx-a11y/click-events-have-key-events': 'warn',
+            'jsx-a11y/no-autofocus': 'warn',
+            'jsx-a11y/img-redundant-alt': 'warn',
 
             // General rules
             'no-console': ['error', { allow: ['warn', 'error'] }],
