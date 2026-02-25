@@ -15,8 +15,6 @@ interface SimulationPanelProps {
         simTotalPayout: number;
         simProfit: number;
         profitMargin: number;
-        strategicCandidates: number;
-        projectedSaaSRevenue: number;
     };
 }
 
@@ -59,25 +57,6 @@ export const SimulationPanel: React.FC<SimulationPanelProps> = ({ simulation }) 
                     <div className="flex justify-between items-center">
                         <span className="text-xs font-bold text-zinc-400">{t('simulationpanel.system_payout')}</span>
                         <span className="text-xl font-black text-rose-500 tracking-tighter">-{formatVND(simulation.simTotalPayout)}</span>
-                    </div>
-
-                    {/* Strategic Forecast Section */}
-                    <div className="mt-4 pt-4 border-t border-white/5 space-y-4">
-                        <h4 className="text-[10px] font-black text-indigo-400 uppercase tracking-widest flex items-center gap-2">
-                            {t('simulationpanel.strategic_forecast')}
-                        </h4>
-
-                        <div className="grid grid-cols-2 gap-4">
-                            <div className="p-4 bg-indigo-500/10 rounded-2xl border border-indigo-500/20">
-                                <label className="text-[10px] font-black uppercase tracking-widest text-indigo-300 block mb-2">{t('simulationpanel.strategic_candidates')}</label>
-                                <span className="text-xl font-black text-white">{simulation.strategicCandidates}</span>
-                            </div>
-                            <div className="p-4 bg-indigo-500/10 rounded-2xl border border-indigo-500/20">
-                                <label className="text-[10px] font-black uppercase tracking-widest text-indigo-300 block mb-2">{t('simulationpanel.projected_saas_revenue')}</label>
-                                <span className="text-xl font-black text-white">{formatVND(simulation.projectedSaaSRevenue)}</span>
-                                <p className="text-[8px] text-zinc-500 mt-1">{t('simulationpanel.saas_revenue_formula')}</p>
-                            </div>
-                        </div>
                     </div>
 
                     <div className="mt-8 p-6 bg-emerald-500/10 rounded-3xl border border-emerald-500/20 relative group overflow-hidden">
