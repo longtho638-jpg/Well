@@ -1,29 +1,77 @@
-import { useState, useEffect, useCallback, useMemo } from 'react';
+import { useState, useMemo, useEffect } from 'react';
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { productService, Product, NewProductDto } from '@/services/productService';
 import { useToast } from '@/components/ui/Toast';
 
 export function useProducts() {
     const { showToast } = useToast();
-    const [products, setProducts] = useState<Product[]>([]);
-    const [loading, setLoading] = useState(true);
-    const [actionLoading, setActionLoading] = useState<string | null>(null);
+    const queryClient = useQueryClient();
     const [searchQuery, setSearchQuery] = useState('');
+    const [actionLoadingId, setActionLoadingId] = useState<string | null>(null);
 
-    const fetchProducts = useCallback(async () => {
-        setLoading(true);
-        try {
-            const data = await productService.getProducts();
-            setProducts(data);
-        } catch {
-            showToast('Failed to load products', 'error');
-        } finally {
-            setLoading(false);
-        }
-    }, [showToast]);
+    const { data: products = [], isLoading: loading, error, refetch } = useQuery({
+        queryKey: ['products'],
+        queryFn: productService.getProducts,
+        staleTime: 1000 * 60 * 5, // 5 minutes
+    });
 
+    // Handle fetch error side effect
     useEffect(() => {
-        fetchProducts();
-    }, [fetchProducts]);
+        if (error) {
+            showToast('Failed to load products', 'error');
+        }
+    }, [error, showToast]);
+
+    const updateMutation = useMutation({
+        mutationFn: ({ id, updates }: { id: string; updates: Partial<Product> }) => productService.updateProduct(id, updates),
+        onMutate: (variables) => {
+            setActionLoadingId(variables.id);
+        },
+        onSuccess: () => {
+             showToast('Product updated', 'success');
+             queryClient.invalidateQueries({ queryKey: ['products'] });
+        },
+        onError: () => {
+            showToast('Failed to update', 'error');
+        },
+        onSettled: () => {
+            setActionLoadingId(null);
+        }
+    });
+
+    const createMutation = useMutation({
+        mutationFn: (dto: NewProductDto) => productService.createProduct(dto),
+        onMutate: () => {
+            setActionLoadingId('new');
+        },
+        onSuccess: () => {
+            showToast('Product created', 'success');
+            queryClient.invalidateQueries({ queryKey: ['products'] });
+        },
+         onError: () => {
+            showToast('Failed to create', 'error');
+        },
+        onSettled: () => {
+            setActionLoadingId(null);
+        }
+    });
+
+    const deleteMutation = useMutation({
+        mutationFn: (id: string) => productService.deleteProduct(id),
+        onMutate: (id) => {
+             setActionLoadingId(id);
+        },
+        onSuccess: () => {
+            showToast('Product deleted', 'info');
+            queryClient.invalidateQueries({ queryKey: ['products'] });
+        },
+        onError: () => {
+            showToast('Failed to delete', 'error');
+        },
+        onSettled: () => {
+            setActionLoadingId(null);
+        }
+    });
 
     const filteredProducts = useMemo(() => {
         const query = searchQuery.toLowerCase();
@@ -40,58 +88,41 @@ export function useProducts() {
     }), [products]);
 
     const handleUpdate = async (id: string, updates: Partial<Product>) => {
-        setActionLoading(id);
         try {
-            await productService.updateProduct(id, updates);
-            setProducts(prev => prev.map(p => p.id === id ? { ...p, ...updates } : p));
-            showToast('Product updated', 'success');
+            await updateMutation.mutateAsync({ id, updates });
             return true;
         } catch {
-            showToast('Failed to update', 'error');
             return false;
-        } finally {
-            setActionLoading(null);
         }
     };
 
     const handleCreate = async (dto: NewProductDto) => {
-        setActionLoading('new');
         try {
-            await productService.createProduct(dto);
-            showToast('Product created', 'success');
-            fetchProducts();
-            return true;
+             await createMutation.mutateAsync(dto);
+             return true;
         } catch {
-            showToast('Failed to create', 'error');
             return false;
-        } finally {
-            setActionLoading(null);
         }
     };
 
     const handleDelete = async (id: string, name: string) => {
-        if (!confirm(`Delete "${name}"?`)) return;
-        setActionLoading(id);
-        try {
-            await productService.deleteProduct(id);
-            setProducts(prev => prev.filter(p => p.id !== id));
-            showToast('Product deleted', 'info');
-        } catch {
-            showToast('Failed to delete', 'error');
-        } finally {
-            setActionLoading(null);
-        }
+         if (!confirm(`Delete "${name}"?`)) return;
+         try {
+             await deleteMutation.mutateAsync(id);
+         } catch {
+             // error handled in mutation
+         }
     };
 
     return {
         products,
         loading,
-        actionLoading,
+        actionLoading: actionLoadingId,
         searchQuery,
         setSearchQuery,
         filteredProducts,
         stats,
-        refresh: fetchProducts,
+        refresh: refetch,
         handleUpdate,
         handleCreate,
         handleDelete
