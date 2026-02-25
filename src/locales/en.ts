@@ -1734,7 +1734,11 @@ export const en = {
     projected_gmv: "[MISSING] projected gmv",
     system_payout: "[MISSING] system payout",
     projected_ebitda: "[MISSING] projected ebitda",
-    margin: "[MISSING] margin"
+    margin: "[MISSING] margin",
+    strategic_forecast: "Strategic Forecast",
+    strategic_candidates: "Strategic Candidates",
+    projected_saas_revenue: "Projected SaaS Revenue",
+    partners: "Partners"
   },
   loginactivitylog: {
     login_activity: "[MISSING] login activity",
