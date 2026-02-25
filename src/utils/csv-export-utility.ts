@@ -6,20 +6,21 @@
 export interface CSVColumn {
   key: string;
   header: string;
-  formatter?: (value: unknown) => string;
+  formatter?: (value: any) => string;
 }
 
 /**
  * Convert data to CSV format
  */
-export function convertToCSV(data: Record<string, unknown>[], columns: CSVColumn[]): string {
+export function convertToCSV<T>(data: T[], columns: CSVColumn[]): string {
   // Create header row
   const headers = columns.map(col => col.header).join(',');
 
   // Create data rows
   const rows = data.map(item => {
     return columns.map(col => {
-      let value = item[col.key];
+      // access property safely
+      let value = (item as any)[col.key];
 
       // Apply formatter if provided
       if (col.formatter) {
@@ -69,7 +70,7 @@ export function downloadCSV(csv: string, filename: string): void {
 /**
  * Export data to CSV and download
  */
-export function exportToCSV(data: Record<string, unknown>[], columns: CSVColumn[], filename: string): void {
+export function exportToCSV<T>(data: T[], columns: CSVColumn[], filename: string): void {
   const csv = convertToCSV(data, columns);
   downloadCSV(csv, filename);
 }

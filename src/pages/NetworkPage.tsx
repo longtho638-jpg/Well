@@ -56,9 +56,7 @@ const NetworkPage: React.FC = () => {
     if (!flatData) return;
     setIsExportingJSON(true);
     try {
-      // Cast to compatible type (email field may not exist)
-      const exportData = flatData as NetworkNode;
-      exportNetworkTreeJSON(exportData);
+      exportNetworkTreeJSON(flatData);
     } catch {
       // export failed, non-critical
     } finally {
@@ -70,9 +68,7 @@ const NetworkPage: React.FC = () => {
     if (!flatData) return;
     setIsExportingCSV(true);
     try {
-      // Cast to compatible type (email field may not exist)
-      const exportData = flatData as NetworkNode;
-      exportNetworkTreeCSV(exportData);
+      exportNetworkTreeCSV(flatData);
     } catch {
       // export failed, non-critical
     } finally {

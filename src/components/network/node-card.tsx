@@ -1,14 +1,8 @@
 import React from 'react';
 import { User, Trophy, Star, Shield } from 'lucide-react';
+import type { ReferralTreeData } from '../../services/referral-service';
 
-interface NodeDatum {
-  name: string;
-  attributes?: {
-    rank?: string;
-    avatar?: string;
-    totalSales?: number;
-    [key: string]: string | number | boolean | undefined;
-  };
+interface NodeDatum extends Omit<ReferralTreeData, 'children'> {
   children?: NodeDatum[];
   __rd3t?: {
     collapsed?: boolean;
