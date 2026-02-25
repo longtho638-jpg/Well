@@ -1393,13 +1393,13 @@ export const vi = {
   },
   landing: {
     hero: {
-      title: "Xây dựng sự nghiệp",
+      title: "Thu Nhập 12 Triệu/Tháng",
       badge: "Hành Trình Thịnh Vượng",
-      badge_ultimate: "ĐỈNH CAO SỨC KHỎE",
-      headlineAccent: "Với WellNexus",
-      subtitle: "Nền tảng kinh doanh thông minh kết hợp AI, Tokenomics và cộng đồng",
-      cta: "Bắt đầu ngay",
-      learnMore: "Tìm hiểu thêm"
+      badge_ultimate: "157 Slot Còn Lại Hôm Nay",
+      headlineAccent: "Bắt Đầu Thu Nhập Thụ Động",
+      subtitle: "1,243 đối tác đang kiếm trung bình 12,450,000₫/tháng với AI coaching — không cần vốn tồn kho.",
+      cta: "Nhận Slot Của Tôi",
+      learnMore: "Xem Lộ Trình"
     },
     bento: {
       ai_coach: {
@@ -1576,6 +1576,26 @@ export const vi = {
           description: "Đi đầu trong thị trường $12B, mở rộng sang 4 quốc gia SEA"
         }
       }
+    },
+    stickyCta: {
+      label: "157 suất còn lại — Đăng ký ngay hôm nay",
+      cta: "Nhận Slot Của Tôi"
+    },
+    faq: {
+      title: "Câu hỏi thường gặp",
+      subtitle: "Giải đáp những băn khoăn phổ biến nhất",
+      q1: "Tôi có cần bỏ vốn hay mua hàng tồn kho không?",
+      a1: "Không. WellNexus không yêu cầu mua hàng tồn kho bắt buộc. Bạn chỉ cần đăng ký tài khoản và bắt đầu giới thiệu — mọi đơn hàng đều được xử lý và giao thẳng cho khách.",
+      q2: "Thu nhập có thực sự ổn định không hay chỉ là quảng cáo?",
+      a2: "1,243 đối tác đang hoạt động với mức thu nhập trung bình 12,450,000₫/tháng — số liệu được cập nhật theo thời gian thực từ hệ thống. Hoa hồng được tính tự động và rút về tài khoản ngân hàng mỗi tuần.",
+      q3: "Nếu tôi không có kinh nghiệm kinh doanh thì có làm được không?",
+      a3: "Hoàn toàn được. AI Coach của WellNexus hướng dẫn từng bước — từ cách tiếp cận khách hàng, xây dựng mạng lưới, đến tối ưu doanh số. 68% đối tác hiện tại bắt đầu hoàn toàn không có kinh nghiệm."
+    },
+    trust: {
+      noInventory: "Không tồn kho",
+      freeToJoin: "Gia nhập miễn phí",
+      certified: "Sản phẩm chứng nhận",
+      community: "1,243+ đối tác"
     }
   },
   errors: {

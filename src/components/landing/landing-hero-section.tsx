@@ -57,6 +57,7 @@ interface Props {
   content: HeroContent;
   heroStats: HeroStat[];
   onJoin: () => void;
+  onLearnMore?: () => void;
   t: (key: string) => string;
 }
 
@@ -64,6 +65,7 @@ export default function LandingHeroSection({
   content,
   heroStats,
   onJoin,
+  onLearnMore,
   t,
 }: Props) {
   return (
@@ -130,15 +132,33 @@ export default function LandingHeroSection({
             <button onClick={onJoin} className="btn-aura w-full sm:w-auto">
               {content.hero.primaryCta}
             </button>
-            <button className="btn-aura-outline w-full sm:w-auto">
+            <button className="btn-aura-outline w-full sm:w-auto" onClick={onLearnMore}>
               {content.hero.secondaryCta}
             </button>
           </motion.div>
         </div>
 
-        {/* Bento Grid Showcase */}
+        {/* Bento Grid Showcase — benefit-first: income proof leads */}
         <BentoGrid>
+          {/* Card 1: Income Proof — colSpan 2, benefit-first */}
           <BentoCard colSpan={2} className="p-6 md:p-8 min-h-[250px] md:min-h-[300px] flex flex-col justify-between bg-zinc-900/40">
+            <div>
+              <div className="w-12 h-12 rounded-full bg-violet-500/10 flex items-center justify-center mb-4 border border-violet-500/20">
+                <TrendingUp className="w-6 h-6 text-violet-400" />
+              </div>
+              <h3 className="text-2xl font-bold text-white mb-2">{t('landing.bento.passive_income.title')}</h3>
+              <p className="text-zinc-400 mb-6">{t('landing.bento.passive_income.description')}</p>
+            </div>
+            <div>
+              <div className="text-5xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-violet-400 to-pink-400">
+                {t('landing.bento.passive_income.amount')}
+              </div>
+              <div className="text-sm text-zinc-500 mt-1">{t('landing.bento.passive_income.label')}</div>
+            </div>
+          </BentoCard>
+
+          {/* Card 2: AI Coach */}
+          <BentoCard colSpan={1} className="p-6 md:p-8 min-h-[250px] md:min-h-[300px] flex flex-col justify-between bg-zinc-900/40">
             <div>
               <div className="w-12 h-12 rounded-full bg-cyan-500/10 flex items-center justify-center mb-4 border border-cyan-500/20">
                 <Sparkles className="w-6 h-6 text-cyan-400" />
@@ -146,23 +166,12 @@ export default function LandingHeroSection({
               <h3 className="text-2xl font-bold text-white mb-2">{t('landing.bento.ai_coach.title')}</h3>
               <p className="text-zinc-400">{t('landing.bento.ai_coach.description')}</p>
             </div>
-            <div className="mt-8 w-full h-32 bg-gradient-to-r from-cyan-500/10 to-transparent rounded-xl border border-white/5 relative overflow-hidden">
+            <div className="mt-6 w-full h-20 bg-gradient-to-r from-cyan-500/10 to-transparent rounded-xl border border-white/5 relative overflow-hidden">
               <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-20"></div>
             </div>
           </BentoCard>
 
-          <BentoCard colSpan={1} className="p-6 md:p-8 min-h-[250px] md:min-h-[300px] bg-zinc-900/40">
-            <div className="w-12 h-12 rounded-full bg-violet-500/10 flex items-center justify-center mb-4 border border-violet-500/20">
-              <TrendingUp className="w-6 h-6 text-violet-400" />
-            </div>
-            <h3 className="text-2xl font-bold text-white mb-2">{t('landing.bento.passive_income.title')}</h3>
-            <p className="text-zinc-400 mb-8">{t('landing.bento.passive_income.description')}</p>
-            <div className="text-4xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-violet-400 to-pink-400">
-              {t('landing.bento.passive_income.amount')}
-            </div>
-            <div className="text-sm text-zinc-500 mt-1">{t('landing.bento.passive_income.label')}</div>
-          </BentoCard>
-
+          {/* Card 3: Community */}
           <BentoCard colSpan={1} className="p-6 md:p-8 min-h-[250px] md:min-h-[300px] bg-zinc-900/40">
             <div className="w-12 h-12 rounded-full bg-pink-500/10 flex items-center justify-center mb-4 border border-pink-500/20">
               <Users className="w-6 h-6 text-pink-400" />
@@ -171,6 +180,7 @@ export default function LandingHeroSection({
             <p className="text-zinc-400">{t('landing.bento.community.description')}</p>
           </BentoCard>
 
+          {/* Card 4: Global */}
           <BentoCard colSpan={2} className="p-6 md:p-8 min-h-[300px] bg-zinc-900/40 flex flex-col sm:flex-row items-center justify-between gap-4">
             <div className="max-w-md">
               <h3 className="text-2xl font-bold text-white mb-2">{t('landing.bento.global.title')}</h3>

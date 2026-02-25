@@ -25,6 +25,8 @@ import {
 } from '../components/PremiumNavigation';
 import LandingHeroSection from '../components/landing/landing-hero-section';
 import LandingRoadmapSection from '../components/landing/landing-roadmap-section';
+import { ObjectionFaqTrustSection } from '../components/marketing/objection-faq-trust-section';
+import { StickyCtaBar } from '../components/marketing/sticky-cta-bar';
 import { SEOHead } from '../components/seo/seo-head';
 import { WebSiteSchema, OrganizationSchema } from '../components/seo/structured-data';
 import { seoConfig } from '../config/seo-config';
@@ -154,6 +156,10 @@ export default function LandingPage() {
     navigate('/venture');
   };
 
+  const handleLearnMore = () => {
+    document.getElementById('roadmap')?.scrollIntoView({ behavior: 'smooth' });
+  };
+
   const handleVisionClick = () => {
     window.open('https://wellnexus.vn/venture', '_blank');
   };
@@ -166,11 +172,11 @@ export default function LandingPage() {
   ];
 
   const SOCIAL_PROOF_ITEMS = [
-    { name: 'Minh Anh', action: t('landing.socialProof.actions.joined'), time: t('landing.socialProof.times.min2') },
-    { name: 'Hoàng Nam', action: t('landing.socialProof.actions.silver'), time: t('landing.socialProof.times.min5') },
-    { name: 'Thanh Hà', action: t('landing.socialProof.actions.withdraw'), time: t('landing.socialProof.times.min8') },
-    { name: 'Tuấn Anh', action: t('landing.socialProof.actions.team'), time: t('landing.socialProof.times.min12') },
-    { name: 'Ngọc Linh', action: t('landing.socialProof.actions.order'), time: t('landing.socialProof.times.min15') },
+    { name: 'Minh Anh', action: t('landing.socialProof.actions.joined'), time: t('landing.socialProof.times.min2'), avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=MinhAnh&backgroundColor=b6e3f4' },
+    { name: 'Hoàng Nam', action: t('landing.socialProof.actions.silver'), time: t('landing.socialProof.times.min5'), avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=HoangNam&backgroundColor=c0aede' },
+    { name: 'Thanh Hà', action: t('landing.socialProof.actions.withdraw'), time: t('landing.socialProof.times.min8'), avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=ThanhHa&backgroundColor=ffd5dc' },
+    { name: 'Tuấn Anh', action: t('landing.socialProof.actions.team'), time: t('landing.socialProof.times.min12'), avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=TuanAnh&backgroundColor=d1f4d9' },
+    { name: 'Ngọc Linh', action: t('landing.socialProof.actions.order'), time: t('landing.socialProof.times.min15'), avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=NgocLinh&backgroundColor=ffebd8' },
   ];
 
   const TESTIMONIALS = [
@@ -179,18 +185,21 @@ export default function LandingPage() {
       role: t('landing.testimonials.items.item1.role'),
       content: t('landing.testimonials.items.item1.content'),
       rating: 5,
+      avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=NguyenMinhAnh&backgroundColor=b6e3f4',
     },
     {
       name: t('landing.testimonials.items.item2.name'),
       role: t('landing.testimonials.items.item2.role'),
       content: t('landing.testimonials.items.item2.content'),
       rating: 5,
+      avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=TranHoangNam&backgroundColor=c0aede',
     },
     {
       name: t('landing.testimonials.items.item3.name'),
       role: t('landing.testimonials.items.item3.role'),
       content: t('landing.testimonials.items.item3.content'),
       rating: 5,
+      avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=LeThanhHa&backgroundColor=ffd5dc',
     },
   ];
 
@@ -254,6 +263,7 @@ export default function LandingPage() {
         content={CONTENT}
         heroStats={HERO_STATS}
         onJoin={handleJoin}
+        onLearnMore={handleLearnMore}
         t={t}
       />
 
@@ -270,6 +280,8 @@ export default function LandingPage() {
       <ZenDivider />
       <TestimonialsCarousel testimonials={TESTIMONIALS} />
       <SocialProofTicker items={SOCIAL_PROOF_ITEMS} />
+
+      <ObjectionFaqTrustSection />
 
       <FeaturedProducts
         products={products}
@@ -295,6 +307,9 @@ export default function LandingPage() {
       <Suspense fallback={null}>
         <ExitIntentPopup />
       </Suspense>
+
+      {/* Sticky CTA Bar - CRO Phase 05: mobile thumb zone */}
+      <StickyCtaBar />
     </div>
   );
 }

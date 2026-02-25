@@ -297,12 +297,12 @@ export const en = {
   landing: {
     hero: {
       badge: "VENTURE BUILDER PLATFORM",
-      title: "Build Your Health Empire",
-      subtitle: "AI-Powered MLM for Wellness",
-      cta: "Start Building",
-      learnMore: "Learn More",
-      badge_ultimate: "[MISSING] badge ultimate",
-      headlineAccent: "[MISSING] headlineAccent"
+      title: "Earn $500/Month",
+      subtitle: "1,243 partners earning an average of $500/month with AI coaching — zero inventory risk.",
+      cta: "Get My Slot",
+      learnMore: "View Roadmap",
+      badge_ultimate: "157 Slots Remaining Today",
+      headlineAccent: "Start Passive Income"
     },
     features: {
       sectionBadge: "Core Features",
@@ -506,6 +506,26 @@ export const en = {
         min12: "[MISSING] min12",
         min15: "[MISSING] min15"
       }
+    },
+    stickyCta: {
+      label: "157 slots remaining — Register today",
+      cta: "Get My Slot"
+    },
+    faq: {
+      title: "Frequently Asked Questions",
+      subtitle: "Answers to the most common concerns",
+      q1: "Do I need to buy inventory or invest capital?",
+      a1: "No. WellNexus requires zero mandatory inventory purchase. Simply register and start referring — all orders are processed and shipped directly to customers.",
+      q2: "Is the income real and stable, or just marketing?",
+      a2: "1,243 active partners earn an average of $500/month — figures updated in real-time from the system. Commissions are calculated automatically and withdrawn to your bank account weekly.",
+      q3: "Can I succeed with zero business experience?",
+      a3: "Absolutely. WellNexus AI Coach guides you step by step — from approaching customers to building your network and optimizing sales. 68% of current partners started with zero experience."
+    },
+    trust: {
+      noInventory: "Zero Inventory",
+      freeToJoin: "Free to Join",
+      certified: "Certified Products",
+      community: "1,243+ Partners"
     }
   },
   network: {
@@ -2228,6 +2248,26 @@ export const en = {
   portfoliosection: {
     growth: "[MISSING] growth",
     arr: "[MISSING] arr"
+  },
+  stickyCta: {
+    label: "157 slots remaining — Register today",
+    cta: "Get My Slot"
+  },
+  faq: {
+    title: "Frequently Asked Questions",
+    subtitle: "Answers to the most common concerns",
+    q1: "Do I need to buy inventory or invest capital?",
+    a1: "No. WellNexus requires zero mandatory inventory purchase. Simply register and start referring — all orders are processed and shipped directly to customers.",
+    q2: "Is the income real and stable, or just marketing?",
+    a2: "1,243 active partners earn an average of $500/month — figures updated in real-time from the system. Commissions are calculated automatically and withdrawn to your bank account weekly.",
+    q3: "Can I succeed with zero business experience?",
+    a3: "Absolutely. WellNexus AI Coach guides you step by step — from approaching customers to building your network and optimizing sales. 68% of current partners started with zero experience."
+  },
+  trust: {
+    noInventory: "Zero Inventory",
+    freeToJoin: "Free to Join",
+    certified: "Certified Products",
+    community: "1,243+ Partners"
   },
   exitIntent: {
     headline: "Wait! Don't Leave Yet",
