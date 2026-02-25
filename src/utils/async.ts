@@ -175,17 +175,23 @@ export function debounceAsync<T extends (...args: Parameters<T>) => Promise<Retu
     delay: number
 ): (...args: Parameters<T>) => Promise<ReturnType<T>> {
     let timeoutId: ReturnType<typeof setTimeout> | null = null;
-    let pendingResolve: ((value: ReturnType<T>) => void) | null = null;
+    let pendingResolves: { resolve: (value: ReturnType<T>) => void; reject: (reason?: unknown) => void }[] = [];
 
     return (...args: Parameters<T>): Promise<ReturnType<T>> => {
         if (timeoutId) clearTimeout(timeoutId);
 
-        return new Promise((resolve) => {
-            pendingResolve = resolve;
+        return new Promise((resolve, reject) => {
+            pendingResolves.push({ resolve, reject });
 
             timeoutId = setTimeout(async () => {
-                const result = await fn(...args);
-                pendingResolve?.(result);
+                try {
+                    const result = await fn(...args);
+                    pendingResolves.forEach(({ resolve }) => resolve(result));
+                } catch (error) {
+                    pendingResolves.forEach(({ reject }) => reject(error));
+                } finally {
+                    pendingResolves = [];
+                }
             }, delay);
         });
     };

@@ -57,3 +57,4 @@ scripts/confirm-admin-email-via-supabase-api.sh
 admin-dashboard-verified.png
 failed-*.png
 test-error.png
+coverage/
