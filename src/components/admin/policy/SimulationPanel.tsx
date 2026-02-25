@@ -15,6 +15,8 @@ interface SimulationPanelProps {
         simTotalPayout: number;
         simProfit: number;
         profitMargin: number;
+        strategicCandidates?: number;
+        projectedSaaSRevenue?: number;
     };
 }
 
@@ -75,6 +77,21 @@ export const SimulationPanel: React.FC<SimulationPanelProps> = ({ simulation }) 
                         </div>
                     </div>
                 </div>
+
+                {/* Strategic Forecast Section */}
+                {(simulation.strategicCandidates !== undefined && simulation.projectedSaaSRevenue !== undefined) && (
+                    <div className="space-y-4 border-t border-white/5 pt-8">
+                        <h4 className="text-[10px] font-black uppercase tracking-widest text-indigo-400 mb-4">{t('simulationpanel.strategic_forecast')}</h4>
+                        <div className="flex justify-between items-center group">
+                            <span className="text-xs font-bold text-zinc-400">{t('simulationpanel.strategic_candidates')} <span className="text-[10px] text-zinc-600">(1.5%)</span></span>
+                            <span className="text-xl font-black text-indigo-300 tracking-tighter">{simulation.strategicCandidates.toLocaleString()} {t('simulationpanel.partners')}</span>
+                        </div>
+                        <div className="flex justify-between items-center group">
+                            <span className="text-xs font-bold text-zinc-400">{t('simulationpanel.projected_saas_revenue')}</span>
+                            <span className="text-xl font-black text-indigo-400 tracking-tighter">{formatVND(simulation.projectedSaaSRevenue)}</span>
+                        </div>
+                    </div>
+                )}
             </div>
         </div>
     );
