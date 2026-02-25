@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useId } from 'react';
 import { ChevronDown, AlertCircle } from 'lucide-react';
 
 interface SelectOption {
@@ -24,7 +24,8 @@ export const Select: React.FC<SelectProps> = ({
   className = '',
   ...props
 }) => {
-  const selectId = id || `select-${label?.toLowerCase().replace(/\s+/g, '-')}`;
+  const generatedId = useId();
+  const selectId = id || generatedId;
 
   return (
     <div className="w-full">

@@ -54,4 +54,19 @@ describe('Button', () => {
     rerender(<Button size="lg">Large</Button>);
     expect(screen.getByRole('button')).toHaveClass('text-base');
   });
+
+  it('warns about missing aria-label for icon-only buttons', () => {
+    const consoleSpy = vi.spyOn(console, 'warn').mockImplementation(() => {});
+    const TestIcon = () => <span>Icon</span>;
+    render(<Button icon={<TestIcon />} />);
+
+    expect(consoleSpy).toHaveBeenCalledWith(expect.stringContaining('requires children or an aria-label'));
+    consoleSpy.mockRestore();
+  });
+
+  it('applies aria-label correctly', () => {
+    const TestIcon = () => <span>Icon</span>;
+    render(<Button icon={<TestIcon />} aria-label="Menu" />);
+    expect(screen.getByLabelText('Menu')).toBeInTheDocument();
+  });
 });
