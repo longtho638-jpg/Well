@@ -24,27 +24,31 @@ function findSourceFiles(dir, files = []) {
 }
 
 /**
- * Extract all t('key') calls from file content
+ * Extract all t('key') calls from file content.
+ * Uses incremental newline counting instead of substring+split to avoid OOM.
  */
 function extractKeysFromContent(content, filePath) {
-  const keys = [];
-
-  // Match: t('key.path') or t("key.path")
-  // Captures: t('key'), t("key"), t(`key`)
-  // We need to be careful about not capturing things that look like t() but aren't
-  // But for now, simple regex is usually enough for standard codebases
   const tFunctionPattern = /\bt\s*\(\s*(['"`])([^'"`]+)\1\s*\)/g;
 
+  const seen = new Map(); // key -> { key, file, line }
+  let lastIndex = 0;
+  let currentLine = 1;
   let match;
+
   while ((match = tFunctionPattern.exec(content)) !== null) {
-    keys.push({
-      key: match[2],
-      file: filePath,
-      line: content.substring(0, match.index).split('\n').length,
-    });
+    // Count newlines only in the slice since last match — O(n) total, not O(n^2)
+    for (let i = lastIndex; i < match.index; i++) {
+      if (content[i] === '\n') currentLine++;
+    }
+    lastIndex = match.index;
+
+    const key = match[2];
+    if (!seen.has(key)) {
+      seen.set(key, { key, file: filePath, line: currentLine });
+    }
   }
 
-  return keys;
+  return Array.from(seen.values());
 }
 
 /**
@@ -52,32 +56,19 @@ function extractKeysFromContent(content, filePath) {
  */
 export function extractAllTranslationKeys(srcDir = 'src') {
   const files = findSourceFiles(srcDir);
-  const allKeys = [];
+  const globalSeen = new Map(); // deduplicate across all files
 
   for (const file of files) {
     const content = readFileSync(file, 'utf-8');
     const keys = extractKeysFromContent(content, file);
-    allKeys.push(...keys);
-  }
-
-  // Deduplicate by key name (keep first occurrence for reference)
-  // Actually, keeping all occurrences might be noisy, but keeping just one is enough for validation
-  // However, if we want to show ALL usages of a missing key, we might want to keep them.
-  // The plan says "Deduplicate by key name", but the check coverage might want to know where it's used.
-  // Let's return unique keys but maybe strictly unique strings?
-  // The plan's implementation returns unique objects based on key name.
-
-  const uniqueKeys = [];
-  const seen = new Set();
-
-  for (const item of allKeys) {
-    if (!seen.has(item.key)) {
-      seen.add(item.key);
-      uniqueKeys.push(item);
+    for (const item of keys) {
+      if (!globalSeen.has(item.key)) {
+        globalSeen.set(item.key, item);
+      }
     }
   }
 
-  return uniqueKeys;
+  return Array.from(globalSeen.values());
 }
 
 // CLI usage
