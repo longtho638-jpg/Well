@@ -32,40 +32,23 @@ export function useSignup() {
 
     const onSubmit = async (data: SignupFormValues) => {
         try {
-            const { data: signUpData, error: signUpError } = await supabase.auth.signUp({
+            // Capture sponsor from referral link (/ref/:id → sessionStorage)
+            const sponsorId = sessionStorage.getItem('wellnexus_sponsor_id');
+
+            const { error: signUpError } = await supabase.auth.signUp({
                 email: data.email,
                 password: data.password,
                 options: {
                     data: {
                         name: data.name,
+                        role_id: 8, // Default to CTV/Member
+                        ...(sponsorId ? { sponsor_id: sponsorId } : {}),
                     },
                     emailRedirectTo: `${window.location.origin}/confirm-email`,
                 },
             });
 
             if (signUpError) throw signUpError;
-
-            // Create user record in public.users table
-            // (fetchUserFromDB queries this table after email confirmation)
-            if (signUpData?.user) {
-                // Capture sponsor from referral link (/ref/:id → sessionStorage)
-                const sponsorId = sessionStorage.getItem('wellnexus_sponsor_id');
-
-                const { error: insertError } = await supabase.from('users').insert([
-                    {
-                        id: signUpData.user.id,
-                        email: data.email,
-                        name: data.name,
-                        role_id: 8,
-                        ...(sponsorId ? { sponsor_id: sponsorId } : {}),
-                    },
-                ]);
-
-                if (insertError) {
-                    authLogger.error('Failed to create user record', insertError);
-                    throw new Error(`Failed to create user profile: ${insertError.message}`);
-                }
-            }
 
             authLogger.info('Signup successful for:', data.email);
 
