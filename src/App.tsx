@@ -59,20 +59,23 @@ import { PWAInstallPrompt } from './components/pwa-install-prompt';
 
 // Reusable Suspense fallbacks — eliminates 25+ duplicate inline spinners
 const PageSpinner = (
-  <div className="flex items-center justify-center h-screen bg-zinc-950">
-    <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-emerald-500" />
+  <div className="flex items-center justify-center h-screen bg-zinc-950" role="status">
+    <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-emerald-500" aria-hidden="true" />
+    <span className="sr-only">Loading...</span>
   </div>
 );
 
 const SectionSpinner = (
-  <div className="flex items-center justify-center h-96">
-    <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#00575A]" />
+  <div className="flex items-center justify-center h-96" role="status">
+    <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#00575A]" aria-hidden="true" />
+    <span className="sr-only">Loading...</span>
   </div>
 );
 
 const AdminSpinner = (
-  <div className="flex items-center justify-center h-screen">
-    <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#00575A]" />
+  <div className="flex items-center justify-center h-screen" role="status">
+    <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#00575A]" aria-hidden="true" />
+    <span className="sr-only">Loading...</span>
   </div>
 );
 
@@ -93,8 +96,9 @@ const App: React.FC = () => {
 
   if (!isInitialized) {
     return (
-      <div className="flex items-center justify-center h-screen bg-zinc-950">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-emerald-500" />
+      <div className="flex items-center justify-center h-screen bg-zinc-950" role="status">
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-emerald-500" aria-hidden="true" />
+        <span className="sr-only">Loading...</span>
       </div>
     );
   }

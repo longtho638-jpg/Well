@@ -7,7 +7,7 @@ interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   size?: 'sm' | 'md' | 'lg';
   isLoading?: boolean;
   icon?: ReactNode;
-  children: ReactNode;
+  children?: ReactNode; // Make children optional for icon-only buttons
 }
 
 export const Button: FC<ButtonProps> = ({
@@ -20,7 +20,7 @@ export const Button: FC<ButtonProps> = ({
   className = '',
   ...props
 }) => {
-    const { t } = useTranslation();
+  const { t } = useTranslation();
   const baseStyles = 'inline-flex items-center justify-center gap-2 font-bold rounded-xl transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed focus:outline-none focus:ring-2 focus:ring-offset-2';
 
   const variantStyles = {
@@ -36,6 +36,11 @@ export const Button: FC<ButtonProps> = ({
     md: 'px-4 py-2.5 text-sm',
     lg: 'px-6 py-3.5 text-base',
   };
+
+  // Development warning for accessibility
+  if (import.meta.env.DEV && !children && !props['aria-label'] && !props['aria-labelledby']) {
+    console.warn('Button component requires children or an aria-label for accessibility.');
+  }
 
   return (
     <button

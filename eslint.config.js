@@ -3,6 +3,7 @@ import typescript from '@typescript-eslint/eslint-plugin';
 import tsParser from '@typescript-eslint/parser';
 import reactPlugin from 'eslint-plugin-react';
 import reactHooksPlugin from 'eslint-plugin-react-hooks';
+import jsxA11y from 'eslint-plugin-jsx-a11y';
 import globals from 'globals';
 
 export default [
@@ -44,8 +45,10 @@ export default [
             '@typescript-eslint': typescript,
             'react': reactPlugin,
             'react-hooks': reactHooksPlugin,
+            'jsx-a11y': jsxA11y,
         },
         rules: {
+            ...jsxA11y.configs.recommended.rules,
             // TypeScript rules
             '@typescript-eslint/no-unused-vars': ['warn', {
                 argsIgnorePattern: '^_',
