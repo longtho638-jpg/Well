@@ -67,4 +67,8 @@ export default defineConfig({
       },
     },
   },
+  preview: {
+    port: 4173,
+    host: true, // Listen on all addresses, including LAN and public addresses
+  },
 })
