@@ -18,27 +18,25 @@ interface PaymentRequest {
 
 serve(async (req) => {
   try {
-    // 1. Verify authentication
+    // 1. Optionally get authenticated user (guest checkout allowed)
     const authHeader = req.headers.get('Authorization')
-    if (!authHeader) {
-      return new Response(
-        JSON.stringify({ error: 'Unauthorized' }),
-        { status: 401, headers: { 'Content-Type': 'application/json' } }
-      )
-    }
 
-    const supabase = createClient(
+    // Use service role for DB writes (bypasses RLS), anon key for auth lookup
+    const supabaseAdmin = createClient(
       Deno.env.get('SUPABASE_URL') ?? '',
-      Deno.env.get('SUPABASE_ANON_KEY') ?? '',
-      { global: { headers: { Authorization: authHeader } } }
+      Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') ?? '',
     )
 
-    const { data: { user }, error: authError } = await supabase.auth.getUser()
-    if (authError || !user) {
-      return new Response(
-        JSON.stringify({ error: 'Unauthorized' }),
-        { status: 401, headers: { 'Content-Type': 'application/json' } }
+    // Try to identify user if auth header present, but don't block guests
+    let userId: string | null = null
+    if (authHeader) {
+      const supabaseUser = createClient(
+        Deno.env.get('SUPABASE_URL') ?? '',
+        Deno.env.get('SUPABASE_ANON_KEY') ?? '',
+        { global: { headers: { Authorization: authHeader } } }
       )
+      const { data: { user } } = await supabaseUser.auth.getUser()
+      userId = user?.id ?? null
     }
 
     // 2. Parse request body
@@ -114,9 +112,9 @@ serve(async (req) => {
 
     const paymentData = await payosResponse.json()
 
-    // 6. Store order in database (with RLS enabled)
-    const { error: dbError } = await supabase.from('orders').insert({
-      user_id: user.id,
+    // 6. Store order in database (service role bypasses RLS)
+    const { error: dbError } = await supabaseAdmin.from('orders').insert({
+      user_id: userId,
       order_code: body.orderCode,
       amount: body.amount,
       status: 'pending',
