@@ -98,7 +98,7 @@ const AdminProducts: React.FC = () => {
                     <p className="text-zinc-500 font-medium text-lg">{t('products.inventory_management_dttt_st')}</p>
                 </div>
                 <div className="flex items-center gap-3">
-                    <button onClick={refresh} aria-label="Refresh products" className="p-4 bg-white dark:bg-zinc-900 border border-zinc-100 dark:border-white/5 rounded-2xl shadow-sm text-zinc-500">
+                    <button onClick={() => refresh()} aria-label="Refresh products" className="p-4 bg-white dark:bg-zinc-900 border border-zinc-100 dark:border-white/5 rounded-2xl shadow-sm text-zinc-500">
                         <RefreshCw size={20} className={loading ? 'animate-spin' : ''} />
                     </button>
                     <button
