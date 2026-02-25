@@ -11,13 +11,13 @@ describe('GlassCard', () => {
   it('applies gradient class', () => {
     render(<GlassCard gradient data-testid="card" />);
     const card = screen.getByTestId('card');
-    expect(card).toHaveClass('dark:bg-gradient-to-br');
+    expect(card).toHaveClass('bg-gradient-to-br');
   });
 
   it('applies hover effect class', () => {
     render(<GlassCard hoverEffect data-testid="card" />);
     const card = screen.getByTestId('card');
-    expect(card).toHaveClass('hover:shadow-lg');
+    expect(card).toHaveClass('hover:shadow-xl');
   });
 
   it('forwards refs', () => {

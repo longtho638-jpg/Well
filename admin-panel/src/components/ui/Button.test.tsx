@@ -30,10 +30,10 @@ describe('Button', () => {
 
   it('applies variant classes', () => {
     const { rerender } = render(<Button variant="danger">Delete</Button>);
-    expect(screen.getByRole('button')).toHaveClass('bg-red-500');
+    expect(screen.getByRole('button')).toHaveClass('from-red-500');
 
     rerender(<Button variant="outline">Cancel</Button>);
-    expect(screen.getByRole('button')).toHaveClass('border-slate-200');
+    expect(screen.getByRole('button')).toHaveClass('border-white/20');
   });
 
   it('applies size classes', () => {
