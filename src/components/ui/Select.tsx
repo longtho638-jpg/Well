@@ -1,4 +1,4 @@
-import React, { useId } from 'react';
+import React, { useId, forwardRef } from 'react';
 import { ChevronDown, AlertCircle } from 'lucide-react';
 
 interface SelectOption {
@@ -14,7 +14,7 @@ interface SelectProps extends React.SelectHTMLAttributes<HTMLSelectElement> {
   icon?: React.ReactNode;
 }
 
-export const Select: React.FC<SelectProps> = ({
+export const Select = forwardRef<HTMLSelectElement, SelectProps>(({
   label,
   options,
   error,
@@ -23,9 +23,11 @@ export const Select: React.FC<SelectProps> = ({
   id,
   className = '',
   ...props
-}) => {
+}, ref) => {
   const generatedId = useId();
   const selectId = id || generatedId;
+  const errorId = `${selectId}-error`;
+  const helperId = `${selectId}-helper`;
 
   return (
     <div className="w-full">
@@ -47,6 +49,7 @@ export const Select: React.FC<SelectProps> = ({
         )}
 
         <select
+          ref={ref}
           id={selectId}
           className={`
             w-full px-4 py-2.5 rounded-lg border appearance-none
@@ -62,12 +65,12 @@ export const Select: React.FC<SelectProps> = ({
             transition-colors
             ${className}
           `}
-          aria-invalid={error ? 'true' : 'false'}
+          aria-invalid={!!error}
           aria-describedby={
             error
-              ? `${selectId}-error`
+              ? errorId
               : helperText
-              ? `${selectId}-helper`
+              ? helperId
               : undefined
           }
           {...props}
@@ -87,7 +90,7 @@ export const Select: React.FC<SelectProps> = ({
 
       {error && (
         <p
-          id={`${selectId}-error`}
+          id={errorId}
           className="mt-1.5 text-sm text-red-600 flex items-center gap-1"
           role="alert"
         >
@@ -97,7 +100,7 @@ export const Select: React.FC<SelectProps> = ({
 
       {helperText && !error && (
         <p
-          id={`${selectId}-helper`}
+          id={helperId}
           className="mt-1.5 text-sm text-gray-500 dark:text-zinc-500"
         >
           {helperText}
@@ -105,4 +108,6 @@ export const Select: React.FC<SelectProps> = ({
       )}
     </div>
   );
-};
+});
+
+Select.displayName = 'Select';

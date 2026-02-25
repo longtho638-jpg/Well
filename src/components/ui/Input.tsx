@@ -1,4 +1,4 @@
-import React, { useId } from 'react';
+import React, { useId, forwardRef } from 'react';
 import { AlertCircle } from 'lucide-react';
 
 interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
@@ -8,7 +8,7 @@ interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
   icon?: React.ReactNode;
 }
 
-export const Input: React.FC<InputProps> = ({
+export const Input = forwardRef<HTMLInputElement, InputProps>(({
   label,
   error,
   helperText,
@@ -16,9 +16,11 @@ export const Input: React.FC<InputProps> = ({
   id,
   className = '',
   ...props
-}) => {
+}, ref) => {
   const generatedId = useId();
   const inputId = id || generatedId;
+  const errorId = `${inputId}-error`;
+  const helperId = `${inputId}-helper`;
 
   return (
     <div className="w-full">
@@ -40,6 +42,7 @@ export const Input: React.FC<InputProps> = ({
         )}
 
         <input
+          ref={ref}
           id={inputId}
           className={`
             w-full px-4 py-2.5 rounded-lg border
@@ -54,12 +57,12 @@ export const Input: React.FC<InputProps> = ({
             transition-colors
             ${className}
           `}
-          aria-invalid={error ? 'true' : 'false'}
+          aria-invalid={!!error}
           aria-describedby={
             error
-              ? `${inputId}-error`
+              ? errorId
               : helperText
-              ? `${inputId}-helper`
+              ? helperId
               : undefined
           }
           {...props}
@@ -74,7 +77,7 @@ export const Input: React.FC<InputProps> = ({
 
       {error && (
         <p
-          id={`${inputId}-error`}
+          id={errorId}
           className="mt-1.5 text-sm text-red-600 flex items-center gap-1"
           role="alert"
         >
@@ -84,7 +87,7 @@ export const Input: React.FC<InputProps> = ({
 
       {helperText && !error && (
         <p
-          id={`${inputId}-helper`}
+          id={helperId}
           className="mt-1.5 text-sm text-gray-500"
         >
           {helperText}
@@ -92,4 +95,6 @@ export const Input: React.FC<InputProps> = ({
       )}
     </div>
   );
-};
+});
+
+Input.displayName = 'Input';

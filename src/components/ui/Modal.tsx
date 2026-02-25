@@ -1,4 +1,5 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, forwardRef, useCallback } from 'react';
+import { createPortal } from 'react-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { X } from 'lucide-react';
 
@@ -11,15 +12,31 @@ interface ModalProps {
   showCloseButton?: boolean;
 }
 
-export const Modal: React.FC<ModalProps> = ({
+export const Modal = forwardRef<HTMLDivElement, ModalProps>(({
   isOpen,
   onClose,
   title,
   children,
   maxWidth = 'md',
   showCloseButton = true,
-}) => {
+}, ref) => {
   const modalRef = useRef<HTMLDivElement>(null);
+
+  // Use a callback ref to merge internal and external refs
+  const setRefs = useCallback(
+    (node: HTMLDivElement | null) => {
+      // Update internal ref
+      modalRef.current = node;
+
+      // Update forwarded ref
+      if (typeof ref === 'function') {
+        ref(node);
+      } else if (ref) {
+        ref.current = node;
+      }
+    },
+    [ref]
+  );
 
   // Handle escape key
   useEffect(() => {
@@ -47,6 +64,8 @@ export const Modal: React.FC<ModalProps> = ({
       const focusableElements = modalRef.current.querySelectorAll(
         'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
       );
+      if (focusableElements.length === 0) return;
+
       const firstElement = focusableElements[0] as HTMLElement;
       const lastElement = focusableElements[focusableElements.length - 1] as HTMLElement;
 
@@ -83,7 +102,7 @@ export const Modal: React.FC<ModalProps> = ({
     xl: 'max-w-xl',
   };
 
-  return (
+  const modalContent = (
     <AnimatePresence>
       {isOpen && (
         <div
@@ -105,7 +124,7 @@ export const Modal: React.FC<ModalProps> = ({
 
           {/* Modal Content */}
           <motion.div
-            ref={modalRef}
+            ref={setRefs}
             initial={{ opacity: 0, scale: 0.95, y: 20 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.95, y: 20 }}
@@ -140,4 +159,9 @@ export const Modal: React.FC<ModalProps> = ({
       )}
     </AnimatePresence>
   );
-};
+
+  if (typeof document === 'undefined') return null;
+  return createPortal(modalContent, document.body);
+});
+
+Modal.displayName = 'Modal';

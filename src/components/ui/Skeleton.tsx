@@ -32,7 +32,7 @@ export function Skeleton({
 
   if (variant === 'text' && lines > 1) {
     return (
-      <div className={`space-y-2 ${className}`}>
+      <div className={`space-y-2 ${className}`} aria-hidden="true">
         {Array.from({ length: lines }).map((_, i) => (
           <motion.div
             key={i}
@@ -54,6 +54,7 @@ export function Skeleton({
       initial={{ opacity: 0.5 }}
       animate={{ opacity: [0.5, 1, 0.5] }}
       transition={{ duration: 1.5, repeat: Infinity }}
+      aria-hidden="true"
     />
   );
 }
@@ -61,7 +62,7 @@ export function Skeleton({
 // Page-level skeleton for lazy loading fallback
 export function PageSkeleton() {
   return (
-    <div className="space-y-6 p-6">
+    <div className="space-y-6 p-6" aria-hidden="true">
       {/* Header skeleton */}
       <div className="flex items-center justify-between">
         <Skeleton variant="text" width="200px" height="32px" />
@@ -89,7 +90,7 @@ export function PageSkeleton() {
 // Card skeleton
 export function CardSkeleton() {
   return (
-    <div className="bg-white dark:bg-slate-800 rounded-xl p-4 space-y-3">
+    <div className="bg-white dark:bg-slate-800 rounded-xl p-4 space-y-3" aria-hidden="true">
       <Skeleton variant="rectangular" height="120px" />
       <Skeleton variant="text" width="80%" />
       <Skeleton variant="text" width="60%" />

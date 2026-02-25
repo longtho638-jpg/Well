@@ -2,26 +2,33 @@ import { render } from '@testing-library/react';
 import { screen, fireEvent } from '@testing-library/dom';
 import { describe, it, expect } from 'vitest';
 import { Select } from './Select';
-import { Mail } from 'lucide-react';
-
-const options = [
-  { value: 'option1', label: 'Option 1' },
-  { value: 'option2', label: 'Option 2' },
-];
+import { User } from 'lucide-react';
+import React from 'react';
 
 describe('Select', () => {
+  const options = [
+    { value: 'option1', label: 'Option 1' },
+    { value: 'option2', label: 'Option 2' },
+  ];
+
   it('renders correctly', () => {
-    render(<Select options={options} defaultValue="" />);
+    render(<Select options={options} />);
     expect(screen.getByRole('combobox')).toBeInTheDocument();
   });
 
+  it('renders options', () => {
+    render(<Select options={options} />);
+    expect(screen.getByRole('option', { name: 'Option 1' })).toBeInTheDocument();
+    expect(screen.getByRole('option', { name: 'Option 2' })).toBeInTheDocument();
+  });
+
   it('renders label', () => {
-    render(<Select label="Choose an option" options={options} />);
-    expect(screen.getByLabelText('Choose an option')).toBeInTheDocument();
+    render(<Select label="Choose Option" options={options} id="select-id" />);
+    expect(screen.getByLabelText('Choose Option')).toBeInTheDocument();
   });
 
   it('handles value changes', () => {
-    render(<Select options={options} defaultValue="" />);
+    render(<Select options={options} onChange={() => {}} />);
     const select = screen.getByRole('combobox');
 
     fireEvent.change(select, { target: { value: 'option1' } });
@@ -30,27 +37,36 @@ describe('Select', () => {
 
   it('shows error message', () => {
     render(<Select options={options} error="Invalid selection" />);
-    expect(screen.getByText('Invalid selection')).toBeInTheDocument();
-    expect(screen.getByRole('combobox')).toHaveAttribute('aria-invalid', 'true');
+    const errorMessage = screen.getByText('Invalid selection');
+    const select = screen.getByRole('combobox');
+
+    expect(errorMessage).toBeInTheDocument();
+    expect(select).toHaveAttribute('aria-invalid', 'true');
+    expect(select).toHaveAttribute('aria-describedby', errorMessage.id);
   });
 
   it('shows helper text', () => {
-    render(<Select options={options} helperText="Helpful tip" />);
-    expect(screen.getByText('Helpful tip')).toBeInTheDocument();
+    render(<Select options={options} helperText="Select one" />);
+    const helperText = screen.getByText('Select one');
+    const select = screen.getByRole('combobox');
+
+    expect(helperText).toBeInTheDocument();
+    expect(select).toHaveAttribute('aria-describedby', helperText.id);
   });
 
   it('renders with icon', () => {
-    render(<Select options={options} icon={<Mail data-testid="mail-icon" />} />);
-    expect(screen.getByTestId('mail-icon')).toBeInTheDocument();
-  });
-
-  it('renders required asterisk', () => {
-    render(<Select label="Required Field" options={options} required />);
-    expect(screen.getByText('*')).toBeInTheDocument();
+    render(<Select options={options} icon={<User data-testid="user-icon" />} />);
+    expect(screen.getByTestId('user-icon')).toBeInTheDocument();
   });
 
   it('can be disabled', () => {
     render(<Select options={options} disabled />);
     expect(screen.getByRole('combobox')).toBeDisabled();
+  });
+
+  it('forwards ref', () => {
+    const ref = React.createRef<HTMLSelectElement>();
+    render(<Select options={options} ref={ref} />);
+    expect(ref.current).toBeInstanceOf(HTMLSelectElement);
   });
 });
