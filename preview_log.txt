@@ -1,6 +1,0 @@
-
-> wellnexus-mvp@1.0.0-seed preview
-> vite preview
-
-  ➜  Local:   http://localhost:4173/
-  ➜  Network: use --host to expose
