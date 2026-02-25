@@ -189,6 +189,29 @@ serve(async (req) => {
       amount: payload.data.amount
     }, 'success')
 
+    // 6a. Sync to transactions table (single source of truth for business logic)
+    // This ensures commission/history logic works even if frontend closes before processOrder runs
+    if (newStatus === 'paid') {
+      const { data: existingTx } = await supabase
+        .from('transactions')
+        .select('id')
+        .eq('reference_id', currentOrder.id)
+        .eq('type', 'sale')
+        .limit(1)
+
+      if (!existingTx || existingTx.length === 0) {
+        await supabase.from('transactions').insert({
+          user_id: currentOrder.user_id,
+          amount: payload.data.amount,
+          type: 'sale',
+          status: 'completed',
+          description: `PayOS đơn hàng #${payload.data.orderCode}`,
+          reference_id: currentOrder.id,
+          created_at: new Date().toISOString(),
+        }).catch((err: Error) => console.error('Failed to sync transaction:', err))
+      }
+    }
+
     // 6. Trigger order confirmation email on successful payment
     if (newStatus === 'paid') {
       if (currentOrder.user_id) {

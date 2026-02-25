@@ -118,6 +118,14 @@ serve(async (req) => {
         const userId = record.user_id;
         const orderTotal = Number(record.total_vnd);
 
+        // Guest orders (user_id = null) skip commission — no profile to reward
+        if (!userId) {
+            console.log(`[TheBee] Skipping guest order ${orderId} — no user_id`);
+            return new Response(JSON.stringify({ success: true, message: "Guest order — skipped" }), {
+                headers: { "Content-Type": "application/json" },
+            });
+        }
+
         // IDEMPOTENCY GUARD: Check if commission already paid for this order
         // Use .limit(1) without .single() to avoid PGRST116 when multiple rows exist
         const { data: existingCommissions } = await supabase
@@ -147,8 +155,10 @@ serve(async (req) => {
             .single();
 
         if (profileError || !buyer) {
-            console.error("Buyer profile error:", profileError);
-            throw new Error("Buyer profile not found");
+            console.warn(`[TheBee] Buyer profile not found for user ${userId} — skipping commission`);
+            return new Response(JSON.stringify({ success: true, message: "Profile not ready — skipped" }), {
+                headers: { "Content-Type": "application/json" },
+            });
         }
 
         // --- LOGIC 1: TÍNH HOA HỒNG TRỰC TIẾP (DIRECT SALES) ---
