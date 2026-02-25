@@ -2492,7 +2492,10 @@ export const vi = {
     projected_gmv: "GMV Dự Kiến",
     system_payout: "Chi Trả Hệ Thống",
     target_aov: "AOV Mục Tiêu",
-    vc_simulation_engine: "Công Cụ Mô Phỏng VC"
+    vc_simulation_engine: "Công Cụ Mô Phỏng VC",
+    strategic_forecast: "Dự Báo Chiến Lược",
+    strategic_candidates: "Ứng Viên Chiến Lược",
+    projected_saas_revenue: "Doanh Thu SaaS Dự Kiến"
   },
   statsgrid: {
     "10_pit": "10% PIT",

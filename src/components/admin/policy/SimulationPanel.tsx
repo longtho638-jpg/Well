@@ -1,5 +1,5 @@
 import React from 'react';
-import { TrendingUp, BarChart3 } from 'lucide-react';
+import { TrendingUp, BarChart3, Target } from 'lucide-react';
 import { formatVND } from '@/utils/format';
 import { useTranslation } from '@/hooks';
 
@@ -15,6 +15,8 @@ interface SimulationPanelProps {
         simTotalPayout: number;
         simProfit: number;
         profitMargin: number;
+        strategicCandidates: number;
+        projectedSaaSRevenue: number;
     };
 }
 
@@ -46,6 +48,21 @@ export const SimulationPanel: React.FC<SimulationPanelProps> = ({ simulation }) 
                     <div className="p-4 bg-white/5 rounded-2xl border border-white/5">
                         <label className="text-[10px] font-black uppercase tracking-widest text-zinc-500 block mb-2">{t('simulationpanel.monthly_fixed')}</label>
                         <input type="number" value={simulation.fixedCost} onChange={(e) => simulation.setFixedCost(Number(e.target.value))} className="bg-transparent text-xl font-black text-white w-full border-b border-white/10 focus:border-teal-500 outline-none" />
+                    </div>
+                </div>
+
+                <div className="bg-white/5 rounded-2xl p-6 border border-white/5 space-y-4">
+                    <div className="flex items-center gap-2 mb-2">
+                        <Target size={16} className="text-[#FFBF00]" />
+                        <h4 className="text-[10px] font-black uppercase tracking-widest text-zinc-400">{t('simulationpanel.strategic_forecast')}</h4>
+                    </div>
+                    <div className="flex justify-between items-center border-b border-white/5 pb-3">
+                        <span className="text-xs font-bold text-zinc-400">{t('simulationpanel.strategic_candidates')}</span>
+                        <span className="text-lg font-black text-white">{simulation.strategicCandidates.toLocaleString()}</span>
+                    </div>
+                    <div className="flex justify-between items-center pt-1">
+                        <span className="text-xs font-bold text-zinc-400">{t('simulationpanel.projected_saas_revenue')}</span>
+                        <span className="text-lg font-black text-emerald-400">{formatVND(simulation.projectedSaaSRevenue)}</span>
                     </div>
                 </div>
 
