@@ -2,6 +2,10 @@ import { useState, useEffect, useCallback, useMemo } from 'react';
 import { policyService, PolicyConfig, RankUpgrade } from '@/services/policyService';
 import { adminLogger } from '@/utils/logger';
 
+// The Elite Protocol Constants
+const STRATEGIC_CANDIDATE_RATIO = 0.015; // 1.5% of partners
+const SAAS_REVENUE_RATIO = 0.20; // 20% of White Label GMV
+
 export function usePolicyEngine() {
     const [loading, setLoading] = useState(true);
     const [saving, setSaving] = useState(false);
@@ -116,13 +120,19 @@ export function usePolicyEngine() {
         const simProfit = simGMV - simTotalPayout - fixedCost;
         const profitMargin = simGMV > 0 ? (simProfit / simGMV) * 100 : 0;
 
+        // Strategic: The Elite Protocol Metrics
+        const strategicCandidates = Math.floor(simPartners * STRATEGIC_CANDIDATE_RATIO);
+        const projectedSaaSRevenue = strategicCandidates * (whiteLabelGMV * SAAS_REVENUE_RATIO);
+
         return {
             simGMV,
             simTotalPayout,
             simProfit,
-            profitMargin
+            profitMargin,
+            strategicCandidates,
+            projectedSaaSRevenue
         };
-    }, [simPartners, simAOV, fixedCost, totalPayoutPercent]);
+    }, [simPartners, simAOV, fixedCost, totalPayoutPercent, whiteLabelGMV]);
 
     return {
         loading,

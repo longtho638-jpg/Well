@@ -15,6 +15,8 @@ interface SimulationPanelProps {
         simTotalPayout: number;
         simProfit: number;
         profitMargin: number;
+        strategicCandidates: number;
+        projectedSaaSRevenue: number;
     };
 }
 
@@ -71,6 +73,23 @@ export const SimulationPanel: React.FC<SimulationPanelProps> = ({ simulation }) 
                             <div className="text-right">
                                 <p className="text-[10px] font-black uppercase tracking-widest text-zinc-500 mb-2">{t('simulationpanel.margin')}</p>
                                 <span className="text-xl font-black text-white italic">{simulation.profitMargin.toFixed(1)}%</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div className="mt-4 p-6 bg-amber-500/10 rounded-3xl border border-amber-500/20 relative group overflow-hidden">
+                        <div className="absolute inset-0 bg-amber-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                        <div className="relative z-10 space-y-4">
+                            <div className="flex justify-between items-center border-b border-amber-500/10 pb-2 mb-2">
+                                <p className="text-[10px] font-black uppercase tracking-widest text-amber-500">The Elite Protocol</p>
+                            </div>
+                            <div className="flex justify-between items-center">
+                                <span className="text-xs font-bold text-zinc-400">Strategic Candidates (1.5%)</span>
+                                <span className="text-xl font-black text-white">{simulation.strategicCandidates}</span>
+                            </div>
+                            <div className="flex justify-between items-center">
+                                <span className="text-xs font-bold text-zinc-400">Proj. SaaS Revenue</span>
+                                <span className="text-xl font-black text-amber-400">{formatVND(simulation.projectedSaaSRevenue)}</span>
                             </div>
                         </div>
                     </div>
