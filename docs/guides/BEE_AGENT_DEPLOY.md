@@ -32,13 +32,13 @@
 supabase login
 
 # Link project
-supabase link --project-ref zumgrvmwmpstsigefuau
+supabase link --project-ref jcbahdioqoepvoliplqy
 
 # Deploy function
 supabase functions deploy agent-reward --no-verify-jwt
 
 # Get function URL (will be like):
-# https://zumgrvmwmpstsigefuau.supabase.co/functions/v1/agent-reward
+# https://jcbahdioqoepvoliplqy.supabase.co/functions/v1/agent-reward
 ```
 
 ### 3. Set Environment Variables
@@ -46,7 +46,7 @@ supabase functions deploy agent-reward --no-verify-jwt
 In Supabase Dashboard > Edge Functions > agent-reward > Settings:
 
 ```
-SUPABASE_URL=https://zumgrvmwmpstsigefuau.supabase.co
+SUPABASE_URL=https://jcbahdioqoepvoliplqy.supabase.co
 SUPABASE_SERVICE_ROLE_KEY=[your-service-role-key]
 ```
 
@@ -61,7 +61,7 @@ Events: UPDATE
 Conditions: status = 'completed' AND old_record.status != 'completed'
 HTTP Request:
   Method: POST
-  URL: https://zumgrvmwmpstsigefuau.supabase.co/functions/v1/agent-reward
+  URL: https://jcbahdioqoepvoliplqy.supabase.co/functions/v1/agent-reward
   HTTP Headers: 
     Content-Type: application/json
     Authorization: Bearer [anon-key]

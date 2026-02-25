@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Zap, ShoppingBag, UserPlus, Star, Trophy, Activity, TrendingDown, Gift, type LucideIcon } from 'lucide-react';
+import { Zap, ShoppingBag, UserPlus, Star, Trophy, Activity, TrendingDown, type LucideIcon } from 'lucide-react';
 import { useTranslation } from '@/hooks';
 
 // Types - Unified with useDashboard.ts
@@ -50,7 +50,7 @@ export const LiveActivitiesTicker: React.FC<LiveActivitiesTickerProps> = ({ acti
                         <Zap size={16} className="text-emerald-400" />
                     </div>
                     <div>
-                        <h3 className="font-bold text-white text-sm">{t('dashboard.liveActivities')}</h3>
+                        <h3 className="font-bold text-white text-sm">{t('dashboard.liveActivities.title')}</h3>
                         <div className="flex items-center gap-2 text-[10px] font-medium text-zinc-500 uppercase tracking-wider">
                             <span className="relative flex h-2 w-2">
                               <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
@@ -84,16 +84,16 @@ export const LiveActivitiesTicker: React.FC<LiveActivitiesTickerProps> = ({ acti
                                 <div className="flex-1 min-w-0">
                                     <div className="flex items-center justify-between mb-0.5">
                                         <p className="text-xs font-bold text-white truncate">
-                                            {activity.userName || activity.user} <span className="text-zinc-500 font-normal ml-1">in {activity.location || 'Vietnam'}</span>
+                                            {activity.userName || activity.user} <span className="text-zinc-500 font-normal ml-1">{t('liveActivities.in')} {activity.location || t('common.location.vietnam')}</span>
                                         </p>
-                                        <span className="text-[10px] text-zinc-500 font-mono">Just now</span>
+                                        <span className="text-[10px] text-zinc-500 font-mono">{t('liveActivities.just_now')}</span>
                                     </div>
                                     <p className="text-[11px] text-zinc-400 truncate">{activity.message || activity.detail}</p>
                                 </div>
                                 {activity.amount && activity.amount > 0 && (
                                     <div className="text-right shrink-0">
                                         <div className="text-xs font-bold text-emerald-400">+{activity.amount.toLocaleString()}</div>
-                                        <div className="text-[9px] text-zinc-600 uppercase">VND</div>
+                                        <div className="text-[9px] text-zinc-600 uppercase">{t('liveActivities.vnd')}</div>
                                     </div>
                                 )}
                             </motion.div>

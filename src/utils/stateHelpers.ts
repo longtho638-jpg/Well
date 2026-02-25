@@ -3,8 +3,7 @@
  * Phase 7: Developer Experience
  */
 
-import { create, StateCreator } from 'zustand';
-import { persist, devtools } from 'zustand/middleware';
+import { StateCreator } from 'zustand';
 import { storeLogger } from './logger';
 
 // ============================================================================

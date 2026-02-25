@@ -12,14 +12,14 @@ export enum UserRank {
 }
 
 export const RANK_NAMES = {
-  [UserRank.THIEN_LONG]: 'Thiên Long',
-  [UserRank.PHUONG_HOANG]: 'Phượng Hoàng',
-  [UserRank.DAI_SU_DIAMOND]: 'Đại Sứ Diamond',
-  [UserRank.DAI_SU_GOLD]: 'Đại Sứ Gold',
-  [UserRank.DAI_SU_SILVER]: 'Đại Sứ Silver',
-  [UserRank.DAI_SU]: 'Đại Sứ',
-  [UserRank.KHOI_NGHIEP]: 'Khởi Nghiệp',
-  [UserRank.CTV]: 'Cộng Tác Viên',
+  [UserRank.THIEN_LONG]: 'ranks.thien_long',
+  [UserRank.PHUONG_HOANG]: 'ranks.phuong_hoang',
+  [UserRank.DAI_SU_DIAMOND]: 'ranks.dai_su_diamond',
+  [UserRank.DAI_SU_GOLD]: 'ranks.dai_su_gold',
+  [UserRank.DAI_SU_SILVER]: 'ranks.dai_su_silver',
+  [UserRank.DAI_SU]: 'ranks.dai_su',
+  [UserRank.KHOI_NGHIEP]: 'ranks.khoi_nghiep',
+  [UserRank.CTV]: 'ranks.ctv',
 } as const;
 
 export type TransactionType = 'Direct Sale' | 'Team Volume Bonus' | 'Withdrawal';
@@ -185,6 +185,8 @@ export interface Referral {
   firstPurchaseAt?: string;
   totalRevenue: number;
   referralBonus: number;
+  rank?: string;
+  avatar?: string;
 }
 
 export interface ReferralStats {

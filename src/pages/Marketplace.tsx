@@ -19,6 +19,10 @@ import { MarketplaceFilters } from '@/components/marketplace/MarketplaceFilters'
 import { AIRecommendation } from '@/components/marketplace/AIRecommendation';
 import { ProductGrid } from '@/components/marketplace/ProductGrid';
 import { RedemptionZone } from '@/components/marketplace/RedemptionZone';
+import { SEOHead } from '@/components/seo/seo-head';
+import { Breadcrumbs } from '@/components/seo/breadcrumbs';
+import { seoConfig } from '@/config/seo-config';
+import { useToast } from '@/components/ui/Toast';
 
 // Lazy Loaded Components
 const QuickPurchaseModal = lazy(() => import('@/components/marketplace/QuickPurchaseModal').then(m => ({ default: m.QuickPurchaseModal })));
@@ -26,6 +30,7 @@ const CartDrawer = lazy(() => import('@/components/marketplace/CartDrawer').then
 
 export const Marketplace: React.FC = () => {
   const [showQuickBuy, setShowQuickBuy] = React.useState(false);
+  const { showToast } = useToast();
   const {
     // State
     user,
@@ -61,11 +66,22 @@ export const Marketplace: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-zinc-50 dark:bg-zinc-950 relative overflow-hidden transition-colors duration-500">
+      <SEOHead
+        title={seoConfig['/dashboard/marketplace'].title}
+        description={seoConfig['/dashboard/marketplace'].description}
+        keywords={seoConfig['/dashboard/marketplace'].keywords}
+        ogImage={seoConfig['/dashboard/marketplace'].ogImage}
+        canonical="https://wellnexus.vn/dashboard/marketplace"
+      />
       <GridPattern />
 
       {/* Navigation & Mode Toggle */}
       <div className="sticky top-0 z-40 bg-white/80 dark:bg-zinc-950/80 backdrop-blur-2xl border-b border-zinc-200 dark:border-white/10 p-4">
-        <div className="max-w-7xl mx-auto flex gap-4">
+        <div className="max-w-7xl mx-auto flex flex-col gap-4">
+          <div className="w-full">
+            <Breadcrumbs />
+          </div>
+          <div className="flex gap-4">
           <button
             onClick={() => setShowRedemption(false)}
             className={`flex-1 px-8 py-5 rounded-2xl font-black text-xs uppercase tracking-widest transition-all duration-500 flex items-center justify-center gap-3 ${!showRedemption
@@ -88,6 +104,7 @@ export const Marketplace: React.FC = () => {
             {t('wallet.staking.rewards')}
           </button>
         </div>
+      </div>
       </div>
 
       <div className="relative z-10 max-w-7xl mx-auto px-6 py-12">
@@ -141,7 +158,7 @@ export const Marketplace: React.FC = () => {
                   products={products}
                   recommendedIds={aiSuggestion?.productIds || []}
                   onAddToCart={addToCart}
-                  onViewDetail={(id) => { /* Detail view transition logic here */ }}
+                  onViewDetail={(_id) => { /* Detail view transition logic here */ }}
                 />
 
                 {products.length === 0 && (
@@ -164,10 +181,10 @@ export const Marketplace: React.FC = () => {
                 onRedeem={async (id) => {
                   try {
                     await redeemItem(id);
-                    alert(t('success.purchaseSuccess'));
+                    showToast(t('success.purchaseSuccess'), 'success');
                   } catch (e) {
                     const err = e as Error;
-                    alert(err.message);
+                    showToast(err.message, 'error');
                   }
                 }}
               />

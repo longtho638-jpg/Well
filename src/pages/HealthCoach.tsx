@@ -71,7 +71,7 @@ export default function HealthCoach() {
                 <Sparkles className="w-5 h-5 text-emerald-400 animate-pulse" />
               </h1>
               <p className="text-zinc-500 dark:text-zinc-400 text-sm">
-                {isTyping ? 'Đang phân tích và tư vấn...' : t('healthCoach.subtitle')}
+                {isTyping ? t('healthCoach.analyzing') : t('healthCoach.subtitle')}
               </p>
             </div>
           </div>

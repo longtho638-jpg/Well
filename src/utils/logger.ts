@@ -33,7 +33,7 @@ class Logger {
         this.enabled = options.enabled ?? IS_DEV;
     }
 
-    private formatPrefix(level: LogLevel): string {
+    private formatPrefix(): string {
         const timestamp = new Date().toISOString().slice(11, 19);
         return `[${timestamp}] [${this.namespace}]`;
     }
@@ -41,9 +41,9 @@ class Logger {
     private log(level: LogLevel, message: string, ...args: unknown[]): void {
         if (!this.enabled) return;
 
-        const prefix = this.formatPrefix(level);
+        const prefix = this.formatPrefix();
         const color = LOG_COLORS[level];
-        const logFn = console[level] || console.log;
+        const logFn = console[level] || console.log; // eslint-disable-line no-console
 
         if (IS_DEV) {
             logFn(

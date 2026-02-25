@@ -1,6 +1,5 @@
 import { agentRegistry } from '@/agents';
-import { BaseAgent } from '@/agents/core/BaseAgent';
-import { Activity, AlertCircle, CheckCircle2, Clock, Zap, TrendingUp } from 'lucide-react';
+import { Activity, AlertCircle, CheckCircle2, Zap, TrendingUp } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { useTranslation } from '@/hooks';
 
@@ -132,7 +131,6 @@ export function AgentDashboard() {
                                 <div className="space-y-2 pt-2">
                                     <p className="text-xs font-semibold text-gray-700 uppercase tracking-wide">{t('agentdashboard.performance')}</p>
                                     {agent.kpis.slice(0, 3).map((kpi, i) => {
-                                        const { t } = useTranslation();
                                         const progress = Math.min((kpi.current / kpi.target) * 100, 100);
                                         return (
                                             <div key={i} className="space-y-1">

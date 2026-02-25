@@ -162,7 +162,7 @@ describe('AgencyOSAgent', () => {
     describe('error handling', () => {
         it('should handle unknown actions', async () => {
             const result = await agent.execute({
-                action: 'unknownAction' as any,
+                action: 'unknownAction' as 'executeCommand', // Cast to valid string literal to bypass TS
             }) as { error: string };
 
             expect(result.error).toContain('Unknown action');

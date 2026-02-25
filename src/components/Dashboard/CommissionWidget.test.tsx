@@ -1,5 +1,5 @@
 import { render } from '@testing-library/react';
-import { screen, fireEvent, waitFor } from '@testing-library/dom';
+import { screen } from '@testing-library/dom';
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { CommissionWidget } from './CommissionWidget';
 import { BrowserRouter } from 'react-router-dom';
@@ -37,17 +37,23 @@ describe('CommissionWidget', () => {
     }
   ];
 
+  const mockUser = {
+    shopBalance: 2500000
+  };
+
   beforeEach(() => {
     vi.clearAllMocks();
 
     interface StoreState {
       transactions: typeof mockTransactions;
+      user: typeof mockUser;
     }
 
     // Mock useStore implementation to handle selectors
     (storeModule.useStore as unknown as ReturnType<typeof vi.fn>).mockImplementation((selector: (state: StoreState) => unknown) => {
       const state = {
-        transactions: mockTransactions
+        transactions: mockTransactions,
+        user: mockUser
       };
       // Check if selector is a function (standard Zustand usage)
       if (typeof selector === 'function') {
@@ -91,10 +97,23 @@ describe('CommissionWidget', () => {
     // Note: 1.500.000 contains 500.000, so we must be careful.
     // However, getAllByText returns all matches. As long as it finds them, it passes.
     // To be more precise, we could check for exact text matching including symbol
-    const teamVolumeElements = screen.getAllByText((content, element) => {
+    const teamVolumeElements = screen.getAllByText((content) => {
       return content.includes('500.000');
     });
     expect(teamVolumeElements.length).toBeGreaterThan(0);
+  });
+
+  it('displays available balance correctly', () => {
+    render(
+      <BrowserRouter>
+        <CommissionWidget />
+      </BrowserRouter>
+    );
+
+    expect(screen.getByText('dashboard.commission.availableBalance')).toBeInTheDocument();
+    // 2.500.000
+    const balanceElements = screen.getAllByText(/2\.500\.000/);
+    expect(balanceElements.length).toBeGreaterThan(0);
   });
 
   it('navigates to wallet on withdraw click', () => {

@@ -12,10 +12,7 @@ import {
     createQuestSlice, QuestSlice,
     createTeamSlice, TeamSlice,
     createAgentSlice, AgentSlice,
-    createUISlice, UISlice,
-    AuthActions,
-    WalletActions,
-    TeamActions
+    createUISlice, UISlice
 } from './slices';
 import { storeLogger } from '../utils/logger';
 import { supabase } from '../lib/supabase';
@@ -75,7 +72,7 @@ export const useStore = create<AppState>((set, get, ...a) => ({
      * Fetch products from Supabase
      */
     fetchProducts: async () => {
-        const { data, error } = await supabase
+        const { data } = await supabase
             .from('products')
             .select('*')
             .order('sales_count', { ascending: false });
@@ -106,7 +103,7 @@ export const useStore = create<AppState>((set, get, ...a) => ({
         const { data: { session } } = await supabase.auth.getSession();
         if (!session?.user) return;
 
-        const { data, error } = await supabase
+        const { data } = await supabase
             .from('transactions')
             .select('*')
             .eq('user_id', session.user.id)

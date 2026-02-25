@@ -1,11 +1,13 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Outfit:wght@500;700;800&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 @layer base {
   :root {
-    --font-display: 'Manrope', system-ui, -apple-system, sans-serif;
-    --font-body: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+    --font-display: 'Outfit', system-ui, -apple-system, sans-serif;
+    --font-body: 'Inter', system-ui, -apple-system, sans-serif;
 
     /* Typography Scale - Consistent font weights for Vietnamese */
     --font-weight-normal: 400;
@@ -29,6 +31,46 @@
     --text-7xl: 72px;
     --text-8xl: 96px;
     --text-9xl: 128px;
+
+    /* ================================================================ */
+    /* THEME TOKENS - Light Mode (default)                              */
+    /* ================================================================ */
+    --color-bg-primary: #F3F4F6;
+    --color-bg-secondary: #FFFFFF;
+    --color-surface: #FFFFFF;
+    --color-surface-glass: rgba(255, 255, 255, 0.70);
+    --color-surface-hover: rgba(0, 0, 0, 0.04);
+    --color-border: rgba(0, 0, 0, 0.08);
+    --color-border-strong: rgba(0, 0, 0, 0.12);
+    --color-text-primary: #1F2937;
+    --color-text-secondary: #4B5563;
+    --color-text-muted: #9CA3AF;
+    --color-brand-primary: #00575A;
+    --color-brand-accent: #FFBF00;
+    --color-accent-glow: rgba(0, 87, 90, 0.15);
+    --color-overlay: rgba(0, 0, 0, 0.5);
+    color-scheme: light;
+  }
+
+  .dark {
+    /* ================================================================ */
+    /* THEME TOKENS - Dark Mode (Aura Elite)                            */
+    /* ================================================================ */
+    --color-bg-primary: #0F172A;
+    --color-bg-secondary: #1E293B;
+    --color-surface: #1E293B;
+    --color-surface-glass: rgba(255, 255, 255, 0.05);
+    --color-surface-hover: rgba(255, 255, 255, 0.08);
+    --color-border: rgba(255, 255, 255, 0.10);
+    --color-border-strong: rgba(255, 255, 255, 0.15);
+    --color-text-primary: #F1F5F9;
+    --color-text-secondary: #CBD5E1;
+    --color-text-muted: #94A3B8;
+    --color-brand-primary: #2DD4BF;
+    --color-brand-accent: #FFBF00;
+    --color-accent-glow: rgba(45, 212, 191, 0.15);
+    --color-overlay: rgba(0, 0, 0, 0.7);
+    color-scheme: dark;
   }
 
   /* ================================================================ */
@@ -316,87 +358,111 @@
     display: none;
   }
 
-  /* ================================================================ */
-  /* GOD TIER UTILITIES - 10x WOW FACTOR */
-  /* ================================================================ */
-
-  @layer components {
-
-    /* Glassmorphism */
-    .glass-pearl {
-      @apply bg-white/70 backdrop-blur-xl border border-white/40 shadow-xl shadow-indigo-500/10;
-    }
-
-    .dark .glass-pearl {
-      @apply bg-zinc-900/70 border-zinc-700/50 shadow-black/50;
-    }
-
-    .glass-void {
-      @apply bg-black/40 backdrop-blur-2xl border border-white/10 shadow-2xl shadow-black/50;
-    }
-
-    /* Text Glow */
-    .text-glow {
-      text-shadow: 0 0 20px rgba(255, 255, 255, 0.5);
-    }
-
-    .text-glow-brand {
-      text-shadow: 0 0 20px rgba(0, 87, 90, 0.3);
-    }
-
-    .dark .text-glow-brand {
-      text-shadow: 0 0 20px rgba(45, 212, 191, 0.5);
-    }
-
-    /* 3D Tilt & Lift */
-    .hover-lift {
-      @apply transition-all duration-300 ease-out hover:-translate-y-1 hover:shadow-2xl hover:shadow-indigo-500/20;
-    }
-
-    .dark .hover-lift {
-      @apply hover:shadow-teal-500/10;
-    }
-
-    /* Liquid Button Animation */
-    .btn-liquid {
-      @apply relative overflow-hidden transition-all duration-300;
-    }
-
-    .btn-liquid::after {
-      content: '';
-      @apply absolute inset-0 bg-white/20 translate-x-[-100%] skew-x-[-15deg] transition-transform duration-500;
-    }
-
-    .btn-liquid:hover::after {
-      @apply translate-x-[100%];
-    }
-
-    /* Gradient Text */
-    .text-gradient-gold {
-      @apply bg-clip-text text-transparent bg-gradient-to-r from-yellow-400 via-orange-500 to-yellow-400 bg-300% animate-gradient;
-    }
+  /* Warm Gradient - Aura Elite */
+  .bg-gradient-aura {
+    @apply bg-gradient-to-br from-amber-50 via-orange-50 to-rose-50;
   }
 
-  /* Animations */
-  @keyframes gradient {
-    0% {
-      background-position: 0% 50%;
-    }
-
-    50% {
-      background-position: 100% 50%;
-    }
-
-    100% {
-      background-position: 0% 50%;
-    }
+  .dark .bg-gradient-aura {
+    @apply bg-gradient-to-br from-zinc-900 via-slate-900 to-neutral-900;
   }
 
   .animate-gradient {
     animation: gradient 6s ease infinite;
   }
 
-  .bg-300% {
+  .bg-300\% {
     background-size: 300% 300%;
+  }
+}
+
+/* ================================================================ */
+/* GOD TIER COMPONENTS                                              */
+/* ================================================================ */
+@layer components {
+
+  /* Glassmorphism */
+  .glass-pearl {
+    @apply bg-white/70 backdrop-blur-xl border border-white/40 shadow-xl shadow-indigo-500/10;
+  }
+
+  .dark .glass-pearl {
+    @apply bg-zinc-900/70 border-zinc-700/50 shadow-black/50;
+  }
+
+  .glass-void {
+    @apply bg-black/40 backdrop-blur-2xl border border-white/10 shadow-2xl shadow-black/50;
+  }
+
+  /* Text Glow */
+  .text-glow {
+    text-shadow: 0 0 20px rgba(255, 255, 255, 0.5);
+  }
+
+  .text-glow-brand {
+    text-shadow: 0 0 20px rgba(0, 87, 90, 0.3);
+  }
+
+  .dark .text-glow-brand {
+    text-shadow: 0 0 20px rgba(45, 212, 191, 0.5);
+  }
+
+  /* 3D Tilt & Lift */
+  .hover-lift {
+    @apply transition-all duration-300 ease-out hover:-translate-y-1 hover:shadow-2xl hover:shadow-indigo-500/20;
+  }
+
+  .dark .hover-lift {
+    @apply hover:shadow-teal-500/10;
+  }
+
+  /* Liquid Button Animation */
+  .btn-liquid {
+    @apply relative overflow-hidden transition-all duration-300;
+  }
+
+  .btn-liquid::after {
+    content: '';
+    @apply absolute inset-0 bg-white/20 translate-x-[-100%] skew-x-[-15deg] transition-transform duration-500;
+  }
+
+  .btn-liquid:hover::after {
+    @apply translate-x-[100%];
+  }
+
+  /* Gradient Text */
+  .text-gradient-gold {
+    @apply bg-clip-text text-transparent bg-gradient-to-r from-yellow-400 via-orange-500 to-yellow-400;
+    background-size: 300% 300%;
+    animation: gradient 6s ease infinite;
+  }
+}
+
+/* Animations */
+@keyframes gradient {
+  0% {
+    background-position: 0% 50%;
+  }
+
+  50% {
+    background-position: 100% 50%;
+  }
+
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+/* ================================================================ */
+/* ACCESSIBILITY: Respect reduced motion preferences                */
+/* ================================================================ */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
   }
 }

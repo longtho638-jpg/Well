@@ -3,7 +3,7 @@
  * Enterprise-grade state visualization with high-fidelity telemetry and Wealth OS components.
  */
 
-import React, { useMemo } from 'react';
+import React, { useMemo, lazy, Suspense } from 'react';
 import { motion } from 'framer-motion';
 import { Zap } from 'lucide-react';
 
@@ -12,7 +12,6 @@ import { useDashboard } from '@/hooks/useDashboard';
 
 // Shared Components
 import { HeroCard } from '../components/Dashboard/HeroCard';
-import { RevenueChart } from '../components/Dashboard/RevenueChart';
 import { TopProducts } from '../components/Dashboard/TopProducts';
 import { QuickActionsCard } from '../components/Dashboard/QuickActionsCard';
 import { DailyQuestHub } from '../components/Dashboard/DailyQuestHub';
@@ -21,16 +20,16 @@ import { ParticleBackground } from '@/components/ParticleBackground';
 import { CursorGlow } from '@/components/CursorGlow';
 import { BentoGrid, BentoCard, AuraBadge, GridPattern, AuraBadgeColor } from '@/components/ui/Aura';
 
-// Aura Elite Modular Components
-import { LiveActivitiesTicker } from '../components/Dashboard/LiveActivitiesTicker';
-import { ValuationCard } from '../components/Dashboard/ValuationCard';
-import { CommissionWidget } from '../components/Dashboard/CommissionWidget';
-import { RevenueBreakdown } from '../components/Dashboard/RevenueBreakdown';
-import { RecentActivityList } from '../components/Dashboard/RecentActivityList';
-import { AchievementGrid } from '../components/Dashboard/AchievementGrid';
+// Aura Elite Modular Components — lazy loaded (below the fold / heavy)
+const RevenueChart = lazy(() => import('../components/Dashboard/RevenueChart').then(m => ({ default: m.RevenueChart })));
+const LiveActivitiesTicker = lazy(() => import('../components/Dashboard/LiveActivitiesTicker').then(m => ({ default: m.LiveActivitiesTicker })));
+const ValuationCard = lazy(() => import('../components/Dashboard/ValuationCard').then(m => ({ default: m.ValuationCard })));
+const CommissionWidget = lazy(() => import('../components/Dashboard/CommissionWidget').then(m => ({ default: m.CommissionWidget })));
+const RevenueBreakdown = lazy(() => import('../components/Dashboard/RevenueBreakdown').then(m => ({ default: m.RevenueBreakdown })));
+const RecentActivityList = lazy(() => import('../components/Dashboard/RecentActivityList').then(m => ({ default: m.RecentActivityList })));
+const AchievementGrid = lazy(() => import('../components/Dashboard/AchievementGrid').then(m => ({ default: m.AchievementGrid })));
 import { Wallet, DollarSign, Users } from 'lucide-react';
 import { formatVND } from '@/utils/format';
-import { useTranslation } from '@/hooks';
 
 export const Dashboard: React.FC = () => {
     
@@ -48,10 +47,10 @@ export const Dashboard: React.FC = () => {
 
   // Optimization: Memoize stats array to prevent re-creation
   const kpiStats = useMemo(() => [
-    { label: 'Total Node Yield', val: walletStats.total, icon: Wallet, color: 'cyan' as AuraBadgeColor, growth: '+12.5%' },
-    { label: 'Liquid Capital', val: walletStats.available, icon: DollarSign, color: 'violet' as AuraBadgeColor, growth: '+8.2%' },
-    { label: 'Ecosystem Volume', val: walletStats.teamVolume, icon: Users, color: 'pink' as AuraBadgeColor, growth: '+22.1%' }
-  ], [walletStats]);
+    { label: t('dashboard.stats.totalNodeYield'), val: walletStats.total, icon: Wallet, color: 'cyan' as AuraBadgeColor, growth: '+12.5%' },
+    { label: t('dashboard.stats.liquidCapital'), val: walletStats.available, icon: DollarSign, color: 'violet' as AuraBadgeColor, growth: '+8.2%' },
+    { label: t('dashboard.stats.ecosystemVolume'), val: walletStats.teamVolume, icon: Users, color: 'pink' as AuraBadgeColor, growth: '+22.1%' }
+  ], [walletStats, t]);
 
   // Optimization: Memoize server time string
   const serverTime = useMemo(() => new Date().toLocaleTimeString('vi-VN', { hour: '2-digit', minute: '2-digit' }), []);
@@ -84,7 +83,7 @@ export const Dashboard: React.FC = () => {
                   {t('dashboard.title')}
                 </h2>
                 <p className="text-zinc-500 font-bold uppercase tracking-[0.2em] text-sm mt-1">
-                  <span className="text-emerald-500 italic">{t('dashboard.system_online')}</span> • {t('dashboard.welcome', { name: user.name.split(' ').pop() })}
+                  <span className="text-emerald-500 italic">{t('dashboard.system_online')}</span> • {t('dashboard.welcome', { name: (user?.name || '').split(' ').pop() || 'Partner' })}
                 </p>
               </div>
             </div>
@@ -106,7 +105,9 @@ export const Dashboard: React.FC = () => {
         <div className="grid grid-cols-1 xl:grid-cols-12 gap-8">
           <div className="xl:col-span-8 flex flex-col gap-8">
             <HeroCard user={user} />
-            <CommissionWidget />
+            <Suspense fallback={<div className="h-32 bg-zinc-900 rounded-2xl animate-pulse" />}>
+              <CommissionWidget />
+            </Suspense>
             <RankProgressBar
               currentRank={user.rank}
               accumulatedBonusRevenue={user.accumulatedBonusRevenue || 0}
@@ -136,7 +137,9 @@ export const Dashboard: React.FC = () => {
         </BentoGrid>
 
         {/* Centerpiece Valuation */}
-        <ValuationCard user={user} />
+        <Suspense fallback={<div className="h-48 bg-zinc-900 rounded-2xl animate-pulse" />}>
+          <ValuationCard user={user} />
+        </Suspense>
 
         {/* Daily Engagement Hub */}
         <DailyQuestHub />
@@ -145,16 +148,26 @@ export const Dashboard: React.FC = () => {
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
           <div className="lg:col-span-8 space-y-8">
             <div className="grid grid-cols-1 xl:grid-cols-2 gap-8">
-              <RevenueChart data={revenueData} />
-              <LiveActivitiesTicker activities={activities} />
+              <Suspense fallback={<div className="h-64 bg-zinc-900 rounded-2xl animate-pulse" />}>
+                <RevenueChart data={revenueData} />
+              </Suspense>
+              <Suspense fallback={<div className="h-64 bg-zinc-900 rounded-2xl animate-pulse" />}>
+                <LiveActivitiesTicker activities={activities} />
+              </Suspense>
             </div>
             <TopProducts products={products} />
           </div>
 
           <div className="lg:col-span-4 space-y-8">
-            <RevenueBreakdown data={revenueBreakdown} totalSales={user.totalSales} />
-            <RecentActivityList activities={recentActivities} />
-            <AchievementGrid achievements={achievements} />
+            <Suspense fallback={<div className="h-48 bg-zinc-900 rounded-2xl animate-pulse" />}>
+              <RevenueBreakdown data={revenueBreakdown} totalSales={user.totalSales} />
+            </Suspense>
+            <Suspense fallback={<div className="h-32 bg-zinc-900 rounded-2xl animate-pulse" />}>
+              <RecentActivityList activities={recentActivities} />
+            </Suspense>
+            <Suspense fallback={<div className="h-32 bg-zinc-900 rounded-2xl animate-pulse" />}>
+              <AchievementGrid achievements={achievements} />
+            </Suspense>
           </div>
         </div>
       </div>
@@ -162,4 +175,4 @@ export const Dashboard: React.FC = () => {
   );
 };
 
-export default Dashboard;
+export default React.memo(Dashboard);

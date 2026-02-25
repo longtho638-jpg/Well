@@ -108,9 +108,10 @@ export class ScoutExternalAgent extends BaseAgent {
                     result = await this.compareSolutions(action.query);
                     break;
 
-                default:
-                    const exhaustiveCheck: never = action;
+                default: {
+                    const _exhaustiveCheck: never = action;
                     throw new Error(`Unknown action: ${(action as { action: string }).action}`);
+                }
             }
 
             return { success: true, data: result };
@@ -123,17 +124,18 @@ export class ScoutExternalAgent extends BaseAgent {
     }
 
     private async performWebSearch(query: string, sources?: string[]): Promise<SearchResults> {
+        // NOTE: Stub implementation — replace with real web search API integration
         const resources = [
             {
                 title: `Official ${query} Documentation`,
-                url: 'https://example.com/docs',
+                url: `https://www.google.com/search?q=${encodeURIComponent(query + ' official docs')}`,
                 summary: 'Comprehensive guide and API reference',
                 relevance: 0.95,
                 source: 'official-docs',
             },
             {
                 title: `${query} Tutorial`,
-                url: 'https://tutorial.example.com',
+                url: `https://www.google.com/search?q=${encodeURIComponent(query + ' tutorial')}`,
                 summary: 'Step-by-step tutorial with examples',
                 relevance: 0.88,
                 source: 'tutorial',
@@ -148,15 +150,16 @@ export class ScoutExternalAgent extends BaseAgent {
         };
     }
 
-    private async findDocumentation(query: string): Promise<DocumentationResult> {
+    private async findDocumentation(_query: string): Promise<DocumentationResult> {
+        // NOTE: Stub implementation — replace with real documentation search
         return {
-            officialDocs: ['https://docs.example.com'],
-            tutorials: ['https://tutorial.example.com'],
-            apiReference: ['https://api.example.com/reference'],
+            officialDocs: [],
+            tutorials: [],
+            apiReference: [],
         };
     }
 
-    private async collectCodeExamples(query: string): Promise<CodeExamplesResult> {
+    private async collectCodeExamples(_query: string): Promise<CodeExamplesResult> {
         return {
             examples: [
                 {
@@ -170,7 +173,7 @@ export class ScoutExternalAgent extends BaseAgent {
         };
     }
 
-    private async compareSolutions(query: string): Promise<ComparisonResult> {
+    private async compareSolutions(_query: string): Promise<ComparisonResult> {
         return {
             comparison: {
                 optionA: { pros: ['Fast', 'Popular'], cons: ['Complex'] },

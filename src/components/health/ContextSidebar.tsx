@@ -19,8 +19,23 @@ const MOCK_PATIENT: PatientProfile = {
     healthScore: 68
 };
 
-export const ContextSidebar: React.FC = () => {
+interface ContextSidebarProps {
+    patient?: PatientProfile;
+}
+
+export const ContextSidebar: React.FC<ContextSidebarProps> = ({ patient = import.meta.env.DEV ? MOCK_PATIENT : undefined }) => {
     const { t } = useTranslation();
+
+    if (!patient) {
+        return (
+            <div className="w-96 bg-white dark:bg-zinc-900 border-l border-zinc-200 dark:border-zinc-800 p-6 flex items-center justify-center h-full">
+                <div className="text-center text-zinc-500">
+                    <User className="w-10 h-10 mx-auto mb-3 opacity-40" />
+                    <p className="text-sm">{t('contextsidebar.no_patient_data') || 'No patient data available'}</p>
+                </div>
+            </div>
+        );
+    }
 
     return (
         <motion.div
@@ -43,13 +58,13 @@ export const ContextSidebar: React.FC = () => {
                 <div className="space-y-4">
                     <div className="flex items-center justify-between py-3 border-b border-zinc-200 dark:border-zinc-700">
                         <span className="text-sm text-zinc-500 dark:text-zinc-400">{t('contextsidebar.tu_i')}</span>
-                        <span className="font-bold text-zinc-900 dark:text-zinc-100">{MOCK_PATIENT.age} {t('contextsidebar.tu_i_1')}</span>
+                        <span className="font-bold text-zinc-900 dark:text-zinc-100">{patient.age} {t('contextsidebar.tu_i_1')}</span>
                     </div>
 
                     <div>
                         <p className="text-sm text-zinc-500 dark:text-zinc-400 mb-2">{t('contextsidebar.v_n_ch_nh')}</p>
                         <div className="flex flex-wrap gap-2">
-                            {MOCK_PATIENT.mainConcerns.map((concern, idx) => (
+                            {patient.mainConcerns.map((concern, idx) => (
                                 <span
                                     key={idx}
                                     className="text-xs bg-red-50 text-red-600 px-3 py-1.5 rounded-full border border-red-200 font-medium"
@@ -60,7 +75,7 @@ export const ContextSidebar: React.FC = () => {
                         </div>
                         <p className="text-sm text-zinc-500 dark:text-zinc-400 mt-4 mb-2">{t('contextsidebar.l_ch_s_mua_h_ng')}</p>
                         <div className="space-y-2">
-                            {MOCK_PATIENT.purchaseHistory.map((item, idx) => (
+                            {patient.purchaseHistory.map((item, idx) => (
                                 <div
                                     key={idx}
                                     className="flex items-center gap-2 bg-emerald-500/10 p-2 rounded-lg border border-emerald-500/20"
@@ -75,7 +90,7 @@ export const ContextSidebar: React.FC = () => {
                     <div className="flex items-center justify-between py-3 border-t border-zinc-200 dark:border-zinc-700">
                         <span className="text-sm text-zinc-500 dark:text-zinc-400">{t('contextsidebar.l_n_t_v_n_g_n_nh_t')}</span>
                         <span className="text-xs font-semibold text-zinc-900 dark:text-zinc-100">
-                            {MOCK_PATIENT.lastVisit.toLocaleDateString('vi-VN')}
+                            {patient.lastVisit.toLocaleDateString('vi-VN')}
                         </span>
                     </div>
                 </div>
@@ -102,7 +117,7 @@ export const ContextSidebar: React.FC = () => {
                             />
                             <motion.circle
                                 initial={{ strokeDashoffset: 352 }}
-                                animate={{ strokeDashoffset: 352 - (352 * MOCK_PATIENT.healthScore) / 100 }}
+                                animate={{ strokeDashoffset: 352 - (352 * patient.healthScore) / 100 }}
                                 transition={{ duration: 1.5, ease: 'easeOut' }}
                                 cx="64"
                                 cy="64"
@@ -115,7 +130,7 @@ export const ContextSidebar: React.FC = () => {
                             />
                         </svg>
                         <div className="absolute inset-0 flex items-center justify-center">
-                            <span className="text-4xl font-bold">{MOCK_PATIENT.healthScore}</span>
+                            <span className="text-4xl font-bold">{patient.healthScore}</span>
                         </div>
                     </div>
                 </div>

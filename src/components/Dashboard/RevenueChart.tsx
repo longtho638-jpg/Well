@@ -72,7 +72,7 @@ export const RevenueChart: React.FC<Props> = ({ data }) => {
                 padding: '8px 12px'
             }}
             itemStyle={{ color: '#FFBF00', fontWeight: 600, fontSize: '13px' }}
-            formatter={(value: number) => [formatVND(value), "Revenue"]}
+            formatter={(value: number) => [formatVND(value), t('revenuechart.revenue')]}
             labelStyle={{ color: '#9CA3AF', marginBottom: '4px', fontSize: '11px', textTransform: 'uppercase', letterSpacing: '0.5px' }}
             cursor={{ stroke: '#00575A', strokeWidth: 1, strokeDasharray: '4 4' }}
           />

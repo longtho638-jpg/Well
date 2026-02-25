@@ -3,13 +3,13 @@
  * Phase 16: Keyboard and Gestures
  */
 
-import { useRef, useCallback, TouchEvent as ReactTouchEvent } from 'react';
+import React, { useRef, useCallback, TouchEvent as ReactTouchEvent } from 'react';
 
 // ============================================================================
 // SWIPE DETECTION
 // ============================================================================
 
-type SwipeDirection = 'left' | 'right' | 'up' | 'down';
+// type SwipeDirection = 'left' | 'right' | 'up' | 'down';
 
 interface SwipeHandlers {
     onSwipeLeft?: () => void;

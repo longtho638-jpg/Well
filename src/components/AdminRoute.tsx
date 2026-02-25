@@ -2,6 +2,7 @@ import { Navigate } from 'react-router-dom';
 import { useStore } from '@/store';
 import { ReactNode } from 'react';
 import { authLogger } from '@/utils/logger';
+import { isAdmin as checkIsAdmin } from '@/utils/admin-check';
 
 interface AdminRouteProps {
     children: ReactNode;
@@ -9,15 +10,22 @@ interface AdminRouteProps {
 
 /**
  * AdminRoute - Protects admin routes from unauthorized access
- * 
+ *
  * Security checks:
- * 1. User must be authenticated
- * 2. User must have admin role
- * 
+ * 1. Auth must be initialized (prevents redirect flash on page reload)
+ * 2. User must be authenticated
+ * 3. User must have admin role
+ *
  * If checks fail, redirects to appropriate page
  */
 export function AdminRoute({ children }: AdminRouteProps) {
-    const { user, isAuthenticated } = useStore();
+    const { user, isAuthenticated, isInitialized } = useStore();
+
+    // Check 0: Wait for auth initialization to prevent redirect flash on reload
+    // Without this, a logged-in admin gets redirected to / before session is restored
+    if (!isInitialized) {
+        return null; // App.tsx already shows global spinner while !isInitialized
+    }
 
     // Check 1: Must be authenticated
     if (!isAuthenticated) {
@@ -26,14 +34,7 @@ export function AdminRoute({ children }: AdminRouteProps) {
     }
 
     // Check 2: Must have admin role
-    // SECURITY: Production admin whitelist - NO demo accounts
-    const ADMIN_EMAILS = [
-        'longtho638@gmail.com',
-        'doanhnhancaotuan@gmail.com'
-        // NOTE: demo@wellnexus.vn REMOVED - real users are making purchases
-    ];
-
-    const isAdmin = ADMIN_EMAILS.includes(user?.email || '') ||
+    const isAdmin = checkIsAdmin(user?.email) ||
         user?.role === 'admin' ||
         user?.role === 'super_admin' ||
         user?.isAdmin === true;

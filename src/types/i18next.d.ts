@@ -1,8 +1,11 @@
 import 'i18next';
+import { en } from '../locales/en';
 
 declare module 'i18next' {
   interface CustomTypeOptions {
     defaultNS: 'translation';
-    resources: any; // Disable strict type checking for resources to avoid excessively deep recursion
+    resources: {
+      translation: typeof en;
+    };
   }
 }

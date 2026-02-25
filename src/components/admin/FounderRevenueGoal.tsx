@@ -15,15 +15,12 @@ import {
     Target,
     TrendingUp,
     TrendingDown,
-    Calendar,
-    DollarSign,
     Sparkles,
     ArrowRight,
     CheckCircle,
-    AlertTriangle,
     Rocket,
 } from 'lucide-react';
-import { useTranslation } from '@/hooks';
+import { useTranslation } from '@/hooks/useTranslation';
 
 // ============================================================
 // TYPES & CONSTANTS
@@ -31,14 +28,14 @@ import { useTranslation } from '@/hooks';
 
 const GOAL_USD = 1_000_000; // $1M USD
 const EXCHANGE_RATE = 25_000; // VND to USD
-const GOAL_VND = GOAL_USD * EXCHANGE_RATE; // 25 billion VND
+const _GOAL_VND = GOAL_USD * EXCHANGE_RATE; // 25 billion VND
 
 // Current progress (from actual data)
 const CURRENT_REVENUE_VND = 2_450_000_000; // 2.45B VND from dashboard
 const CURRENT_REVENUE_USD = CURRENT_REVENUE_VND / EXCHANGE_RATE;
 
 // Monthly targets for 2026
-const MONTHLY_TARGETS = [
+const _MONTHLY_TARGETS = [
     { month: 'T1', target: 50_000, actual: 98_000 }, // January - ahead!
     { month: 'T2', target: 60_000, actual: 0 },
     { month: 'T3', target: 70_000, actual: 0 },
@@ -123,7 +120,6 @@ const ProgressRing: React.FC<{ percentage: number }> = ({ percentage }) => {
 };
 
 const PriorityBadge: React.FC<{ priority: string }> = ({ priority }) => {
-    const { t } = useTranslation();
     const config = {
         high: 'bg-red-500/10 text-red-400 border-red-500/20',
         medium: 'bg-amber-500/10 text-amber-400 border-amber-500/20',
@@ -216,7 +212,6 @@ export function FounderRevenueGoal() {
             {/* Milestones */}
             <div className="grid grid-cols-4 gap-3 mb-6">
                 {[250_000, 500_000, 750_000, 1_000_000].map((milestone, i) => {
-                    const { t } = useTranslation();
                     const reached = CURRENT_REVENUE_USD >= milestone;
                     return (
                         <div

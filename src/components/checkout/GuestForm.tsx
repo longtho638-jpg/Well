@@ -1,15 +1,19 @@
 import React from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { guestInfoSchema, GuestInfoValues } from '../../utils/validation/checkoutSchema';
+import { createGuestInfoSchema, GuestInfoValues } from '../../utils/validation/checkoutSchema';
 import { User, Mail, Phone, MapPin, Map } from 'lucide-react';
+import { useTranslation } from '@/hooks';
 
 interface GuestFormProps {
     onSubmit: (data: GuestInfoValues) => void;
     isSubmitting?: boolean;
 }
 
-export const GuestForm: React.FC<GuestFormProps> = ({ onSubmit, isSubmitting = false }) => {
+export const GuestForm: React.FC<GuestFormProps> = ({ onSubmit, isSubmitting: _isSubmitting = false }) => {
+    const { t } = useTranslation();
+    const guestInfoSchema = createGuestInfoSchema(t);
+
     const {
         register,
         handleSubmit,
@@ -23,16 +27,16 @@ export const GuestForm: React.FC<GuestFormProps> = ({ onSubmit, isSubmitting = f
             <div className="bg-white dark:bg-zinc-900 rounded-3xl p-8 border border-zinc-200 dark:border-white/10">
                 <h3 className="text-xl font-bold mb-6 text-zinc-900 dark:text-white flex items-center gap-2">
                     <User size={20} className="text-teal-500" />
-                    Thông tin khách hàng
+                    {t('checkout.guestInfo')}
                 </h3>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div className="space-y-2">
-                        <label className="text-xs font-bold text-zinc-500 uppercase tracking-wider">Họ và tên</label>
+                        <label className="text-xs font-bold text-zinc-500 uppercase tracking-wider">{t('checkout.guestForm.fullName.label')}</label>
                         <div className="relative">
                             <input
                                 {...register('fullName')}
-                                placeholder="Nguyễn Văn A"
+                                placeholder={t('checkout.guestForm.fullName.placeholder')}
                                 className={`w-full bg-zinc-50 dark:bg-black/20 border ${errors.fullName ? 'border-rose-500' : 'border-zinc-200 dark:border-white/10'} rounded-xl px-4 py-3 pl-10 focus:outline-none focus:ring-2 focus:ring-teal-500/20 focus:border-teal-500 transition-all`}
                             />
                             <User size={16} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-zinc-400" />
@@ -41,11 +45,11 @@ export const GuestForm: React.FC<GuestFormProps> = ({ onSubmit, isSubmitting = f
                     </div>
 
                     <div className="space-y-2">
-                        <label className="text-xs font-bold text-zinc-500 uppercase tracking-wider">Số điện thoại</label>
+                        <label className="text-xs font-bold text-zinc-500 uppercase tracking-wider">{t('checkout.guestForm.phone.label')}</label>
                         <div className="relative">
                             <input
                                 {...register('phone')}
-                                placeholder="0901234567"
+                                placeholder={t('checkout.guestForm.phone.placeholder')}
                                 className={`w-full bg-zinc-50 dark:bg-black/20 border ${errors.phone ? 'border-rose-500' : 'border-zinc-200 dark:border-white/10'} rounded-xl px-4 py-3 pl-10 focus:outline-none focus:ring-2 focus:ring-teal-500/20 focus:border-teal-500 transition-all`}
                             />
                             <Phone size={16} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-zinc-400" />
@@ -54,11 +58,11 @@ export const GuestForm: React.FC<GuestFormProps> = ({ onSubmit, isSubmitting = f
                     </div>
 
                     <div className="space-y-2 md:col-span-2">
-                        <label className="text-xs font-bold text-zinc-500 uppercase tracking-wider">Email (Để nhận thông báo đơn hàng)</label>
+                        <label className="text-xs font-bold text-zinc-500 uppercase tracking-wider">{t('checkout.guestForm.email.label')}</label>
                         <div className="relative">
                             <input
                                 {...register('email')}
-                                placeholder="example@email.com"
+                                placeholder={t('checkout.guestForm.email.placeholder')}
                                 className={`w-full bg-zinc-50 dark:bg-black/20 border ${errors.email ? 'border-rose-500' : 'border-zinc-200 dark:border-white/10'} rounded-xl px-4 py-3 pl-10 focus:outline-none focus:ring-2 focus:ring-teal-500/20 focus:border-teal-500 transition-all`}
                             />
                             <Mail size={16} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-zinc-400" />
@@ -71,35 +75,35 @@ export const GuestForm: React.FC<GuestFormProps> = ({ onSubmit, isSubmitting = f
             <div className="bg-white dark:bg-zinc-900 rounded-3xl p-8 border border-zinc-200 dark:border-white/10">
                 <h3 className="text-xl font-bold mb-6 text-zinc-900 dark:text-white flex items-center gap-2">
                     <MapPin size={20} className="text-teal-500" />
-                    Địa chỉ giao hàng
+                    {t('checkout.shippingAddress')}
                 </h3>
 
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
                     <div className="space-y-2">
-                        <label className="text-xs font-bold text-zinc-500 uppercase tracking-wider">Tỉnh / Thành phố</label>
+                        <label className="text-xs font-bold text-zinc-500 uppercase tracking-wider">{t('checkout.guestForm.address.city.label')}</label>
                         <input
                             {...register('address.city')}
-                            placeholder="TP. Hồ Chí Minh"
+                            placeholder={t('checkout.guestForm.address.city.placeholder')}
                             className={`w-full bg-zinc-50 dark:bg-black/20 border ${errors.address?.city ? 'border-rose-500' : 'border-zinc-200 dark:border-white/10'} rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-teal-500/20 focus:border-teal-500 transition-all`}
                         />
                         {errors.address?.city && <p className="text-xs text-rose-500 font-medium">{errors.address.city.message}</p>}
                     </div>
 
                     <div className="space-y-2">
-                        <label className="text-xs font-bold text-zinc-500 uppercase tracking-wider">Quận / Huyện</label>
+                        <label className="text-xs font-bold text-zinc-500 uppercase tracking-wider">{t('checkout.guestForm.address.district.label')}</label>
                         <input
                             {...register('address.district')}
-                            placeholder="Quận 1"
+                            placeholder={t('checkout.guestForm.address.district.placeholder')}
                             className={`w-full bg-zinc-50 dark:bg-black/20 border ${errors.address?.district ? 'border-rose-500' : 'border-zinc-200 dark:border-white/10'} rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-teal-500/20 focus:border-teal-500 transition-all`}
                         />
                         {errors.address?.district && <p className="text-xs text-rose-500 font-medium">{errors.address.district.message}</p>}
                     </div>
 
                     <div className="space-y-2">
-                        <label className="text-xs font-bold text-zinc-500 uppercase tracking-wider">Phường / Xã</label>
+                        <label className="text-xs font-bold text-zinc-500 uppercase tracking-wider">{t('checkout.guestForm.address.ward.label')}</label>
                         <input
                             {...register('address.ward')}
-                            placeholder="Phường Bến Nghé"
+                            placeholder={t('checkout.guestForm.address.ward.placeholder')}
                             className={`w-full bg-zinc-50 dark:bg-black/20 border ${errors.address?.ward ? 'border-rose-500' : 'border-zinc-200 dark:border-white/10'} rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-teal-500/20 focus:border-teal-500 transition-all`}
                         />
                         {errors.address?.ward && <p className="text-xs text-rose-500 font-medium">{errors.address.ward.message}</p>}
@@ -107,11 +111,11 @@ export const GuestForm: React.FC<GuestFormProps> = ({ onSubmit, isSubmitting = f
                 </div>
 
                 <div className="space-y-2">
-                    <label className="text-xs font-bold text-zinc-500 uppercase tracking-wider">Địa chỉ chi tiết</label>
+                    <label className="text-xs font-bold text-zinc-500 uppercase tracking-wider">{t('checkout.guestForm.address.street.label')}</label>
                     <div className="relative">
                         <input
                             {...register('address.street')}
-                            placeholder="Số 123, Đường Nguyễn Huệ"
+                            placeholder={t('checkout.guestForm.address.street.placeholder')}
                             className={`w-full bg-zinc-50 dark:bg-black/20 border ${errors.address?.street ? 'border-rose-500' : 'border-zinc-200 dark:border-white/10'} rounded-xl px-4 py-3 pl-10 focus:outline-none focus:ring-2 focus:ring-teal-500/20 focus:border-teal-500 transition-all`}
                         />
                         <Map size={16} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-zinc-400" />
@@ -120,10 +124,10 @@ export const GuestForm: React.FC<GuestFormProps> = ({ onSubmit, isSubmitting = f
                 </div>
 
                 <div className="space-y-2 mt-6">
-                    <label className="text-xs font-bold text-zinc-500 uppercase tracking-wider">Ghi chú (Tùy chọn)</label>
+                    <label className="text-xs font-bold text-zinc-500 uppercase tracking-wider">{t('checkout.guestForm.note.label')}</label>
                     <textarea
                         {...register('note')}
-                        placeholder="Giao hàng trong giờ hành chính..."
+                        placeholder={t('checkout.guestForm.note.placeholder')}
                         rows={3}
                         className="w-full bg-zinc-50 dark:bg-black/20 border border-zinc-200 dark:border-white/10 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-teal-500/20 focus:border-teal-500 transition-all resize-none"
                     />

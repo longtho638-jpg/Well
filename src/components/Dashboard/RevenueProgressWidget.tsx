@@ -5,7 +5,7 @@
 
 import React from 'react';
 import { motion } from 'framer-motion';
-import { TrendingUp, Target, DollarSign, Users, ArrowUpRight, Sparkles, Globe } from 'lucide-react';
+import { TrendingUp, Target, DollarSign, Users, Sparkles, Globe } from 'lucide-react';
 import { formatVND } from '@/utils/format';
 import { useTranslation } from '@/hooks';
 
@@ -96,9 +96,9 @@ export const RevenueProgressWidget: React.FC<RevenueProgressProps> = ({
             {/* Micro KPI Matrix */}
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                 {[
-                    { icon: DollarSign, value: formatVND(avgOrderValue), label: 'Avg Unit Order', color: 'text-amber-500' },
-                    { icon: TrendingUp, value: ordersPerDay.toFixed(1), label: 'Daily Momentum', color: 'text-emerald-500' },
-                    { icon: Users, value: activeDistributors, label: 'Verified Partners', color: 'text-blue-500' },
+                    { icon: DollarSign, value: formatVND(avgOrderValue), label: t('revenueprogresswidget.avg_unit_order'), color: 'text-amber-500' },
+                    { icon: TrendingUp, value: ordersPerDay.toFixed(1), label: t('revenueprogresswidget.daily_momentum'), color: 'text-emerald-500' },
+                    { icon: Users, value: activeDistributors, label: t('revenueprogresswidget.verified_partners'), color: 'text-blue-500' },
                 ].map((kpi, idx) => (
                     <motion.div
                         key={idx}
@@ -129,8 +129,8 @@ export const RevenueProgressWidget: React.FC<RevenueProgressProps> = ({
                     </div>
                     <div className="bg-[#00575A]/20 px-6 py-3 rounded-2xl border border-teal-500/20 backdrop-blur-xl">
                         <p className="text-[10px] font-black text-teal-400 uppercase tracking-[0.2em]">
-                            {progress1M >= 100 ? '🎉 BENCHMARK ACHIEVED' :
-                                `${((TARGET_1M - monthlyRunRate) / currentGMV * 30).toFixed(0)} DAYS TO $1M BENCHMARK`}
+                            {progress1M >= 100 ? t('revenueprogresswidget.benchmark_achieved') :
+                                `${((TARGET_1M - monthlyRunRate) / currentGMV * 30).toFixed(0)} ${t('revenueprogresswidget.days_to_benchmark')}`}
                         </p>
                     </div>
                 </div>

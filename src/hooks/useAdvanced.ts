@@ -71,16 +71,20 @@ export function useInfiniteScroll(
     const observerRef = useRef<IntersectionObserver | null>(null);
     const targetRef = useRef<HTMLDivElement | null>(null);
 
+    const isLoadingRef = useRef(false);
+
     useEffect(() => {
         if (!hasMore) return;
 
         observerRef.current = new IntersectionObserver(
             async (entries) => {
-                if (entries[0].isIntersecting && !isLoading && hasMore) {
+                if (entries[0].isIntersecting && !isLoadingRef.current && hasMore) {
+                    isLoadingRef.current = true;
                     setIsLoading(true);
                     try {
                         await loadMore();
                     } finally {
+                        isLoadingRef.current = false;
                         setIsLoading(false);
                     }
                 }
@@ -95,7 +99,7 @@ export function useInfiniteScroll(
         return () => {
             observerRef.current?.disconnect();
         };
-    }, [loadMore, hasMore, isLoading, threshold, rootMargin]);
+    }, [loadMore, hasMore, threshold, rootMargin]);
 
     return { targetRef, isLoading };
 }

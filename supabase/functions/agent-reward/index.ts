@@ -1,5 +1,5 @@
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
-import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
+import { createClient, SupabaseClient } from "https://esm.sh/@supabase/supabase-js@2";
 
 // --- POLICY ENGINE v3.0: DYNAMIC CONFIGURATION ---
 // Policies are now fetched from the database in real-time.
@@ -41,7 +41,7 @@ const DEFAULT_POLICY = {
  * Fetch policy configuration from database
  * Falls back to default values if fetch fails
  */
-async function fetchPolicyConfig(supabase: any) {
+async function fetchPolicyConfig(supabase: SupabaseClient) {
     try {
         const { data, error } = await supabase
             .from('policy_config')
@@ -77,11 +77,16 @@ async function fetchPolicyConfig(supabase: any) {
 
 serve(async (req) => {
     try {
-        // SECURITY: Verify Webhook Secret
+        // SECURITY: Verify Webhook Secret (mandatory — reject if not configured)
         const secret = req.headers.get("x-webhook-secret");
         const expectedSecret = Deno.env.get("WEBHOOK_SECRET");
-        
-        if (expectedSecret && secret !== expectedSecret) {
+
+        if (!expectedSecret) {
+            console.error("[Security] WEBHOOK_SECRET is not configured");
+            return new Response("Server configuration error", { status: 500 });
+        }
+
+        if (secret !== expectedSecret) {
             console.error("[Security] Invalid Webhook Secret");
             return new Response("Unauthorized", { status: 401 });
         }
@@ -112,6 +117,23 @@ serve(async (req) => {
         const orderId = record.id;
         const userId = record.user_id;
         const orderTotal = Number(record.total_vnd);
+
+        // IDEMPOTENCY GUARD: Check if commission already paid for this order
+        // Use .limit(1) without .single() to avoid PGRST116 when multiple rows exist
+        const { data: existingCommissions } = await supabase
+            .from("transactions")
+            .select("id")
+            .eq("user_id", userId)
+            .eq("type", "direct_commission")
+            .like("description", `%${orderId}%`)
+            .limit(1);
+
+        if (existingCommissions && existingCommissions.length > 0) {
+            console.warn(`[TheBee] Commission already paid for order ${orderId}. Skipping duplicate.`);
+            return new Response(JSON.stringify({ success: true, message: "Already processed" }), {
+                headers: { "Content-Type": "application/json" },
+            });
+        }
 
         console.log(`[TheBee] Processing Order: ${orderId} - Total: ${orderTotal}`);
 
@@ -155,6 +177,36 @@ serve(async (req) => {
             x_user_id: userId,
             x_amount: directCommission
         });
+
+        // Send commission earned email (direct commission)
+        try {
+            const { data: userData } = await supabase
+                .from('users')
+                .select('email, full_name, pending_cashback')
+                .eq('id', userId)
+                .single();
+
+            if (userData?.email) {
+                await supabase.functions.invoke('send-email', {
+                    body: {
+                        to: userData.email,
+                        subject: `💰 Bạn vừa nhận ${(directCommission).toLocaleString('vi-VN')} VND hoa hồng!`,
+                        templateType: 'commission-earned',
+                        data: {
+                            userName: userData.full_name || 'Bạn',
+                            commissionAmount: `${directCommission.toLocaleString('vi-VN')} VND`,
+                            commissionType: 'direct',
+                            orderId: orderId,
+                            currentBalance: `${(userData.pending_cashback || 0).toLocaleString('vi-VN')} VND`,
+                            commissionRate: `${(directRate * 100).toFixed(0)}%`
+                        }
+                    }
+                });
+                console.log(`[Email] Direct commission email sent to ${userData.email}`);
+            }
+        } catch (emailError) {
+            console.error('[Email] Failed to send direct commission email:', emailError);
+        }
 
         // --- LOGIC 2: TÍNH ĐIỂM THƯỞNG (NEXUS POINTS) ---
         // Rule: 100k = 1 Point
@@ -205,6 +257,43 @@ serve(async (req) => {
                     });
 
                     console.log(`[Bonus] Paid ${f1Bonus} to Sponsor ${sponsor.id}`);
+
+                    // Send F1 bonus email to sponsor
+                    try {
+                        const { data: sponsorData } = await supabase
+                            .from('users')
+                            .select('email, full_name, pending_cashback')
+                            .eq('id', sponsor.id)
+                            .single();
+
+                        const { data: buyerData } = await supabase
+                            .from('users')
+                            .select('full_name')
+                            .eq('id', userId)
+                            .single();
+
+                        if (sponsorData?.email) {
+                            await supabase.functions.invoke('send-email', {
+                                body: {
+                                    to: sponsorData.email,
+                                    subject: `🎁 Thưởng F1: ${f1Bonus.toLocaleString('vi-VN')} VND từ ${buyerData?.full_name || 'thành viên'}`,
+                                    templateType: 'commission-earned',
+                                    data: {
+                                        userName: sponsorData.full_name || 'Bạn',
+                                        commissionAmount: `${f1Bonus.toLocaleString('vi-VN')} VND`,
+                                        commissionType: 'sponsor',
+                                        orderId: orderId,
+                                        fromUserName: buyerData?.full_name || 'Thành viên F1',
+                                        currentBalance: `${(sponsorData.pending_cashback || 0).toLocaleString('vi-VN')} VND`,
+                                        commissionRate: '8%'
+                                    }
+                                }
+                            });
+                            console.log(`[Email] F1 bonus email sent to ${sponsorData.email}`);
+                        }
+                    } catch (emailError) {
+                        console.error('[Email] Failed to send F1 bonus email:', emailError);
+                    }
                 } else {
                     console.log(`[Bonus] Sponsor ${sponsor.id} rank ${sponsorRoleId} too low for F1 bonus (Requires <= 6)`);
                 }
@@ -214,11 +303,22 @@ serve(async (req) => {
 
         // --- LOGIC 4: KIỂM TRA THĂNG CẤP (RANK UP) - ADMIN 3.1: DYNAMIC ---
         //Check ALL possible rank upgrades based on dynamic policy
-        const rankUpgrades = (POLICY.rankUpgrades || []) as any[];
+        interface RankUpgrade {
+            fromRank: number;
+            name: string;
+            conditions: {
+                salesRequired?: number;
+                teamVolumeRequired?: number;
+                directDownlinesRequired?: number;
+                minDownlineRank?: number;
+            };
+            toRank: number;
+        }
+        const rankUpgrades = (POLICY.rankUpgrades || []) as RankUpgrade[];
 
         // Find applicable upgrade for current user rank
         const applicableUpgrade = rankUpgrades.find(
-            (upgrade: any) => upgrade.fromRank === buyerRoleId
+            (upgrade) => upgrade.fromRank === buyerRoleId
         );
 
         if (applicableUpgrade) {
@@ -231,7 +331,7 @@ serve(async (req) => {
                 .eq('user_id', userId)
                 .eq('status', 'completed');
 
-            const lifetimeSales = orders?.reduce((sum: number, o: any) => sum + Number(o.total_vnd), 0) || 0;
+            const lifetimeSales = orders?.reduce((sum: number, o: { total_vnd: string | number }) => sum + Number(o.total_vnd), 0) || 0;
 
             // Get user's team volume
             const { data: userData } = await supabase
@@ -254,7 +354,7 @@ serve(async (req) => {
             let meetsDownlineRankRequirement = true;
             if (applicableUpgrade.conditions.minDownlineRank) {
                 const qualifiedDownlines = downlines?.filter(
-                    (d: any) => d.role_id <= applicableUpgrade.conditions.minDownlineRank
+                    (d: { id: string; role_id: number }) => d.role_id <= applicableUpgrade.conditions.minDownlineRank!
                 ) || [];
                 meetsDownlineRankRequirement = qualifiedDownlines.length >= (applicableUpgrade.conditions.directDownlinesRequired || 0);
             }
@@ -294,7 +394,49 @@ serve(async (req) => {
 
                 console.log(`[RankUp] ✅ User ${userId} upgraded: ${applicableUpgrade.name} (${buyerRoleId} → ${applicableUpgrade.toRank})`);
 
-                // TODO: Send congratulation email via Resend API
+                // Send rank upgrade celebration email
+                try {
+                    const oldRankName = rankNames[buyerRoleId as keyof typeof rankNames] || 'CTV';
+                    const newRankName = rankNames[applicableUpgrade.toRank as keyof typeof rankNames] || 'Unknown';
+
+                    const { data: userEmail } = await supabase
+                        .from('users')
+                        .select('email, full_name')
+                        .eq('id', userId)
+                        .single();
+
+                    if (userEmail?.email) {
+                        const emailPayload = {
+                            to: userEmail.email,
+                            subject: `🎉 Chúc mừng! Bạn đã thăng hạng lên ${newRankName}!`,
+                            userName: userEmail.full_name || 'Bạn',
+                            oldRank: oldRankName,
+                            newRank: newRankName,
+                            newRankId: applicableUpgrade.toRank,
+                            achievementDate: new Date().toLocaleDateString('vi-VN'),
+                            newCommissionRate: applicableUpgrade.toRank <= 7 ? '25%' : '21%',
+                            newBenefits: applicableUpgrade.toRank <= 6
+                                ? ['Nhận 8% thưởng quản lý F1', 'Ưu tiên hỗ trợ VIP', 'Tham gia chương trình đào tạo cao cấp']
+                                : ['Hoa hồng cao hơn', 'Công cụ hỗ trợ bán hàng'],
+                            lifetimeSales: lifetimeSales ? `${lifetimeSales.toLocaleString('vi-VN')} VND` : undefined,
+                            teamVolume: teamVolume ? `${teamVolume.toLocaleString('vi-VN')} VND` : undefined
+                        };
+
+                        await supabase.functions.invoke('send-email', {
+                            body: {
+                                to: emailPayload.to,
+                                subject: emailPayload.subject,
+                                templateType: 'rank-upgrade',
+                                data: emailPayload
+                            }
+                        });
+
+                        console.log(`[Email] Rank upgrade email sent to ${userEmail.email}`);
+                    }
+                } catch (emailError) {
+                    console.error('[Email] Failed to send rank upgrade email:', emailError);
+                    // Don't fail the whole request if email fails
+                }
             } else {
                 console.log(`[RankUp] User ${userId} not ready for upgrade yet`);
             }
@@ -307,6 +449,7 @@ serve(async (req) => {
 
     } catch (error) {
         console.error("[TheBee Error]:", error);
-        return new Response(JSON.stringify({ error: error.message }), { status: 500 });
+        const errMsg = error instanceof Error ? error.message : String(error);
+        return new Response(JSON.stringify({ error: errMsg }), { status: 500 });
     }
 });

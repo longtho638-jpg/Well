@@ -26,10 +26,10 @@ export const useReferral = () => {
     const [selectedTab, setSelectedTab] = useState<'overview' | 'network'>('overview');
     const [showQRCode, setShowQRCode] = useState(false);
 
-    const referralUrl = useMemo(() =>
-        `https://${user.referralLink || `wellnexus.vn/ref/${user.id}`}`,
-        [user.referralLink, user.id]
-    );
+    const referralUrl = useMemo(() => {
+        const link = user.referralLink || `wellnexus.vn/ref/${user.id}`;
+        return link.startsWith('http') ? link : `https://${link}`;
+    }, [user.referralLink, user.id]);
 
     // Use extracted hook
     const { 
@@ -41,7 +41,7 @@ export const useReferral = () => {
         generateQRCodeUrl 
     } = useSocialShare(referralUrl);
 
-    const qrCodeUrl = useMemo(() => generateQRCodeUrl(), [referralUrl]);
+    const qrCodeUrl = useMemo(() => generateQRCodeUrl(), [generateQRCodeUrl]);
 
     // Fetch Real Referrals from Supabase (Optimized F1-F7 Tree)
     useEffect(() => {
@@ -58,18 +58,18 @@ export const useReferral = () => {
                     // Map RPC data
                     const mappedReferrals: Referral[] = treeData.map((u: ReferralTreeNode) => ({
                         id: u.id,
-                        referrerId: u.sponsor_id || user.id, // Best guess if RPC doesn't return parent
+                        referrerId: u.sponsor_id || user.id,
                         referredUserId: u.id,
                         referredName: u.name,
                         referredEmail: u.email,
                         rank: u.rank || 'Member',
                         createdAt: u.created_at,
-                        status: 'active', // Default for now, or fetch from RPC if added
+                        status: 'active' as const,
                         avatar: u.avatar_url,
-                        level: u.level, // Real level from RPC
+                        level: u.level,
                         totalRevenue: u.total_sales || 0,
                         referralBonus: 0,
-                    } as unknown as Referral));
+                    }));
 
                     setReferrals(mappedReferrals);
                     return; // Success, exit
@@ -94,14 +94,14 @@ export const useReferral = () => {
                     referredUserId: u.id,
                     referredName: u.name,
                     referredEmail: u.email,
-                    rank: u.rank || 'Member', // Extra field, might need casting if strict
-                    createdAt: u.created_at, // Correct field name
-                    status: u.kyc_status ? 'active' : 'pending',
-                    avatar: u.avatar_url, // Extra field
+                    rank: u.rank || 'Member',
+                    createdAt: u.created_at,
+                    status: u.kyc_status ? 'active' as const : 'pending' as const,
+                    avatar: u.avatar_url,
                     level: 1,
                     totalRevenue: u.total_sales || 0,
-                    referralBonus: 0, 
-                } as unknown as Referral)); // Cast to avoid strict excess property checks for UI fields
+                    referralBonus: 0,
+                }));
 
                 setReferrals(mappedReferrals);
             } catch (err) {

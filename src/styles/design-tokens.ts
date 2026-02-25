@@ -65,8 +65,8 @@ export const designTokens = {
   // ===== TYPOGRAPHY =====
   typography: {
     fontFamily: {
-      display: '"Manrope", system-ui, -apple-system, sans-serif',
-      sans: '"Plus Jakarta Sans", system-ui, -apple-system, sans-serif',
+      display: '"Outfit", system-ui, -apple-system, sans-serif',
+      sans: '"Inter", system-ui, -apple-system, sans-serif',
     },
     fontSize: {
       xs: '12px',
@@ -137,7 +137,6 @@ export function getColor(path: string): string {
     if (value && typeof value === 'object' && key in value) {
       value = value[key];
     } else {
-      // console.warn(`Color path not found: ${path}`);
       return '#000000';
     }
   }

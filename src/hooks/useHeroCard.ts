@@ -1,9 +1,13 @@
-import { useState, useCallback, useMemo } from 'react';
+import { useState, useCallback, useMemo, useEffect, useRef } from 'react';
 import { User } from '@/types';
 import { uiLogger } from '@/utils/logger';
+import { useTranslation } from './useTranslation';
 
 export function useHeroCard(user: User) {
+    const { t } = useTranslation();
     const [copied, setCopied] = useState(false);
+    const mountedRef = useRef(true);
+    useEffect(() => () => { mountedRef.current = false; }, []);
 
     // Gamification Logic: Founder Club Quest
     const TARGET_VOLUME = 100000000; // 100M VND
@@ -24,11 +28,15 @@ export function useHeroCard(user: User) {
     const handleCopyLink = useCallback(async () => {
         try {
             await navigator.clipboard.writeText(referralLink);
+            if (!mountedRef.current) return;
             setCopied(true);
-            setTimeout(() => setCopied(false), 2000);
+            const timer = setTimeout(() => {
+                if (mountedRef.current) setCopied(false);
+            }, 2000);
+            // Cleanup handled by mountedRef guard above — no need to return cleanup fn
+            // (returning from useCallback is unused and causes TS7030)
         } catch (err) {
             uiLogger.error('Failed to copy', err);
-            // Fallback for non-secure contexts if needed
         }
     }, [referralLink]);
 
@@ -36,8 +44,8 @@ export function useHeroCard(user: User) {
         if (navigator.share) {
             try {
                 await navigator.share({
-                    title: 'Join WellNexus',
-                    text: 'Join me on WellNexus and start earning!',
+                    title: t('useHeroCard.share_title'),
+                    text: t('useHeroCard.share_text'),
                     url: referralLink,
                 });
             } catch (err) {
@@ -48,7 +56,7 @@ export function useHeroCard(user: User) {
         } else {
             handleCopyLink();
         }
-    }, [referralLink, handleCopyLink]);
+    }, [referralLink, handleCopyLink, t]);
 
     return {
         progressPercent,

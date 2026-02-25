@@ -19,6 +19,8 @@ import { ProductPricing } from '../components/product/ProductPricing';
 import { ProductActions } from '../components/product/ProductActions';
 import { ProductTabs } from '../components/product/ProductTabs';
 import { useTranslation } from '@/hooks';
+import { SEOHead } from '../components/seo/seo-head';
+import { ProductSchema } from '../components/seo/structured-data';
 
 export const ProductDetail: React.FC = () => {
     const { t } = useTranslation();
@@ -62,6 +64,18 @@ export const ProductDetail: React.FC = () => {
             animate={{ opacity: 1, y: 0 }}
             className="pb-32 max-w-7xl mx-auto px-6 lg:px-12 pt-8"
         >
+            <SEOHead
+                title={`${product.name} - WellNexus`}
+                description={product.description}
+                ogImage={product.imageUrl}
+            />
+            <ProductSchema
+                name={product.name}
+                description={product.description}
+                image={product.imageUrl}
+                price={product.price}
+                availability={product.stock > 0 ? 'InStock' : 'OutOfStock'}
+            />
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-6 mb-12">
                 <button
                     onClick={() => navigate('/marketplace')}

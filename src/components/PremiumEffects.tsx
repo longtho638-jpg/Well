@@ -4,13 +4,34 @@
  */
 
 import React, { useEffect, useRef, useState } from 'react';
-import { motion, useMotionValue, useSpring, useTransform } from 'framer-motion';
+import { motion, useMotionValue, useSpring } from 'framer-motion';
+import { isSafari } from '@/utils/browser-detect';
 
 // ============================================================================
 // ANIMATED GRADIENT BACKGROUND
 // ============================================================================
 
 export function AnimatedGradientBg() {
+    // Safari's WebKit compositor crashes with multiple large blur + transform animations
+    if (isSafari()) {
+        return (
+            <div className="absolute inset-0 overflow-hidden pointer-events-none">
+                <div
+                    className="absolute w-[800px] h-[800px] rounded-full opacity-20"
+                    style={{
+                        background: 'radial-gradient(circle, rgba(16, 185, 129, 0.3) 0%, transparent 70%)',
+                    }}
+                />
+                <div
+                    className="absolute right-0 top-1/4 w-[600px] h-[600px] rounded-full opacity-15"
+                    style={{
+                        background: 'radial-gradient(circle, rgba(99, 102, 241, 0.3) 0%, transparent 70%)',
+                    }}
+                />
+            </div>
+        );
+    }
+
     return (
         <div className="absolute inset-0 overflow-hidden pointer-events-none">
             {/* Animated gradient orbs */}
@@ -178,6 +199,9 @@ export function CursorGlow() {
         window.addEventListener('mousemove', moveCursor);
         return () => window.removeEventListener('mousemove', moveCursor);
     }, [cursorX, cursorY]);
+
+    // Safari's WebKit compositor crashes with large blur + mousemove animations
+    if (isSafari()) return null;
 
     return (
         <motion.div

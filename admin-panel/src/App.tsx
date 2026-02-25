@@ -11,6 +11,7 @@ import CustomersPage from './pages/customers/CustomersPage'
 import CustomerDetailPage from './pages/customers/CustomerDetailPage'
 import OrdersPage from './pages/orders/OrdersPage'
 import OrderDetailPage from './pages/orders/OrderDetailPage'
+import WithdrawalsPage from './pages/withdrawals/WithdrawalsPage'
 import DashboardPage from './pages/dashboard/DashboardPage'
 
 export default function App() {
@@ -34,6 +35,8 @@ export default function App() {
 
             <Route path="orders" element={<OrdersPage />} />
             <Route path="orders/:id" element={<OrderDetailPage />} />
+
+            <Route path="withdrawals" element={<WithdrawalsPage />} />
 
             <Route path="analytics" element={<DashboardPage />} />
             <Route path="settings" element={<div>Settings Module</div>} />

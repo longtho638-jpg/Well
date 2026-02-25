@@ -1,6 +1,8 @@
 import { ObjectionType, ObjectionTemplate } from "@/types";
 import { aiLogger } from "@/utils/logger";
+import { ServiceError } from "@/utils/errors";
 import { agentRegistry } from "@/agents";
+import type { SalesCopilotResult } from "@/agents/custom/SalesCopilotAgent";
 
 // Kept for backward compatibility if needed, though ideally accessed via agent
 export const OBJECTION_TEMPLATES: ObjectionTemplate[] = [
@@ -136,7 +138,7 @@ export async function generateCopilotResponse(
   try {
     const agent = agentRegistry.get('Sales Copilot');
     if (!agent) {
-       throw new Error("Sales Copilot Agent not found");
+       throw new ServiceError("Sales Copilot Agent not found");
     }
 
     const result = await agent.execute({
@@ -144,14 +146,18 @@ export async function generateCopilotResponse(
       message: userMessage,
       history: conversationHistory,
       productContext
-    }) as any;
+    }) as SalesCopilotResult;
 
-    if (result && !result.error) {
+    if (result && typeof result === 'object' && 'response' in result && !('error' in result)) {
        return result;
     }
 
     // Fallback if agent returns error structure
-    throw new Error(result?.error || "Agent execution failed");
+    let errorMessage = "Agent execution failed";
+    if (result && typeof result === 'object' && 'error' in result) {
+        errorMessage = (result as { error: string }).error;
+    }
+    throw new Error(errorMessage);
 
   } catch (error) {
     aiLogger.warn('Copilot Service Error', error);
@@ -183,17 +189,17 @@ export async function generateSalesScript(
 ): Promise<string> {
   try {
     const agent = agentRegistry.get('Sales Copilot');
-    if (!agent) throw new Error("Sales Copilot Agent not found");
+    if (!agent) throw new ServiceError("Sales Copilot Agent not found");
 
     const result = await agent.execute({
       action: 'generateSalesScript',
       productName,
       productDescription,
       customerProfile
-    }) as any;
+    }) as SalesCopilotResult;
 
     if (typeof result === 'string') return result;
-    if (result && result.error) throw new Error(result.error);
+    if (result && typeof result === 'object' && 'error' in result) throw new Error(result.error);
     return "Script đang được cập nhật...";
 
   } catch (error) {
@@ -227,15 +233,15 @@ export async function getCopilotCoaching(
 ): Promise<string> {
   try {
     const agent = agentRegistry.get('Sales Copilot');
-    if (!agent) throw new Error("Sales Copilot Agent not found");
+    if (!agent) throw new ServiceError("Sales Copilot Agent not found");
 
     const result = await agent.execute({
       action: 'analyzeConversation',
       history: conversationHistory
-    }) as any;
+    }) as SalesCopilotResult;
 
     if (typeof result === 'string') return result;
-    if (result && result.error) throw new Error(result.error);
+    if (result && typeof result === 'object' && 'error' in result) throw new Error(result.error);
     return "Phân tích đang được cập nhật...";
 
   } catch (error) {

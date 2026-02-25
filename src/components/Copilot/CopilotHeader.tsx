@@ -73,7 +73,7 @@ export const CopilotHeader: React.FC<CopilotHeaderProps> = React.memo(({
                             onClick={onGenerateScript}
                             disabled={isLoading}
                             className="px-3 py-2 bg-white dark:bg-zinc-800 hover:bg-zinc-100 dark:hover:bg-zinc-700 text-zinc-700 dark:text-white text-xs font-bold rounded-xl flex items-center gap-1.5 transition-all border border-zinc-200 dark:border-zinc-700 hover:border-zinc-300 dark:hover:border-zinc-600 disabled:opacity-50"
-                            title="Generate sales script"
+                            title={t('copilot.suggestions.script')}
                         >
                             <MessageSquare className="w-3.5 h-3.5" />
                             {t('copilotheader.script')}</button>
@@ -82,7 +82,7 @@ export const CopilotHeader: React.FC<CopilotHeaderProps> = React.memo(({
                         onClick={onGetCoaching}
                         disabled={isLoading || messageCount < 3}
                         className="px-3 py-2 bg-zinc-800 hover:bg-zinc-700 text-white text-xs font-bold rounded-xl flex items-center gap-1.5 transition-all border border-zinc-700 hover:border-zinc-600 disabled:opacity-50"
-                        title="Get coaching tips"
+                        title={t('copilotcoaching.coaching_tips')}
                     >
                         <TrendingUp className="w-3.5 h-3.5" />
                         {t('copilotheader.coach')}</button>

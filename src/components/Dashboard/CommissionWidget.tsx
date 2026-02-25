@@ -21,7 +21,10 @@ interface CommissionPeriod {
 export const CommissionWidget: React.FC = () => {
   const { t } = useTranslation();
   const navigate = useNavigate();
-  const transactions = useStore(state => state.transactions);
+  const { transactions, user } = useStore(state => ({
+    transactions: state.transactions,
+    user: state.user
+  }));
 
   // Calculate commission periods with memoization
   const periods = useMemo(() => {
@@ -130,16 +133,27 @@ export const CommissionWidget: React.FC = () => {
               </div>
             </div>
 
-            {/* Withdraw CTA */}
-            <motion.button
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-              onClick={() => navigate('/dashboard/wallet')}
-              className="px-4 py-2 bg-emerald-500 hover:bg-emerald-600 text-white rounded-xl text-sm font-bold transition-all flex items-center gap-2 shadow-lg shadow-emerald-500/20"
-            >
-              <Wallet className="w-4 h-4" />
-              {t('dashboard.commission.withdraw')}
-            </motion.button>
+            {/* Available Balance & Withdraw CTA */}
+            <div className="flex items-center gap-4">
+              <div className="text-right hidden sm:block">
+                <p className="text-[10px] text-zinc-400 font-bold uppercase tracking-widest">
+                  {t('dashboard.commission.availableBalance')}
+                </p>
+                <p className="text-xl font-black text-emerald-400">
+                  {formatVND(user?.shopBalance || 0)}
+                </p>
+              </div>
+
+              <motion.button
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                onClick={() => navigate('/dashboard/withdrawal')}
+                className="px-4 py-2 bg-emerald-500 hover:bg-emerald-600 text-white rounded-xl text-sm font-bold transition-all flex items-center gap-2 shadow-lg shadow-emerald-500/20"
+              >
+                <Wallet className="w-4 h-4" />
+                {t('dashboard.commission.withdraw')}
+              </motion.button>
+            </div>
           </div>
         </div>
 

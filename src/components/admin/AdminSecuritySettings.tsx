@@ -9,7 +9,7 @@
  * - Session management
  */
 
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
     Shield,
@@ -20,11 +20,7 @@ import {
     Globe,
     AlertTriangle,
     CheckCircle,
-    Lock,
-    Eye,
-    EyeOff,
     Loader2,
-    Settings,
     Calendar,
 } from 'lucide-react';
 import { useTranslation } from '@/hooks';
@@ -102,9 +98,9 @@ const INITIAL_SETTINGS: SecuritySettings = {
 const StatusBadge: React.FC<{ status: LoginActivity['status'] }> = ({ status }) => {
     const { t } = useTranslation();
     const config = {
-        success: { className: 'bg-emerald-500/10 text-emerald-400 border-emerald-500/20', label: 'Thành công' },
-        failed: { className: 'bg-red-500/10 text-red-400 border-red-500/20', label: 'Thất bại' },
-        blocked: { className: 'bg-amber-500/10 text-amber-400 border-amber-500/20', label: 'Chặn' },
+        success: { className: 'bg-emerald-500/10 text-emerald-400 border-emerald-500/20', label: t('common.success') },
+        failed: { className: 'bg-red-500/10 text-red-400 border-red-500/20', label: t('common.failed') },
+        blocked: { className: 'bg-amber-500/10 text-amber-400 border-amber-500/20', label: t('common.blocked') || 'Chặn' },
     };
     const { className, label } = config[status];
     return (
@@ -155,6 +151,11 @@ export function AdminSecuritySettings() {
             setLoading2FA(false);
         }
     };
+
+    // Stable QR pattern - generated once per component mount, not on every render
+    const qrPattern = useMemo(() =>
+        Array.from({ length: 36 }, () => Math.random() > 0.5),
+    []);
 
     const complete2FASetup = async () => {
         setLoading2FA(true);
@@ -209,8 +210,8 @@ export function AdminSecuritySettings() {
                                 <p className="font-medium text-zinc-100">{t('adminsecuritysettings.x_c_th_c_2_y_u_t')}</p>
                                 <p className="text-sm text-zinc-500">
                                     {settings.twoFactorEnabled
-                                        ? 'Đã bật - Tài khoản được bảo vệ'
-                                        : 'Thêm lớp bảo mật cho tài khoản'}
+                                        ? t('adminsecuritysettings.b_t_2fa_b_o_v')
+                                        : t('adminsecuritysettings.th_m_l_p_b_o_m_t')}
                                 </p>
                             </div>
                         </div>
@@ -354,7 +355,7 @@ export function AdminSecuritySettings() {
                             <div className="bg-white p-4 rounded-xl mb-6 mx-auto w-48 h-48 flex items-center justify-center">
                                 <div className="w-40 h-40 bg-zinc-200 rounded grid grid-cols-6 gap-0.5 p-2">
                                     {[...Array(36)].map((_, i) => (
-                                        <div key={i} className={`${Math.random() > 0.5 ? 'bg-zinc-900' : 'bg-white'}`} />
+                                        <div key={i} className={`${qrPattern[i] ? 'bg-zinc-900' : 'bg-white'}`} />
                                     ))}
                                 </div>
                             </div>

@@ -3,13 +3,11 @@
  * Phase 11: Auth and Media
  */
 
+import { secureTokenStorage } from './secure-token-storage';
+
 // ============================================================================
 // TOKEN MANAGEMENT
 // ============================================================================
-
-const TOKEN_KEY = 'wellnexus_auth_token';
-const REFRESH_TOKEN_KEY = 'wellnexus_refresh_token';
-const TOKEN_EXPIRY_KEY = 'wellnexus_token_expiry';
 
 export interface AuthTokens {
     accessToken: string;
@@ -18,35 +16,33 @@ export interface AuthTokens {
 }
 
 export function setTokens(tokens: AuthTokens): void {
-    localStorage.setItem(TOKEN_KEY, tokens.accessToken);
-    localStorage.setItem(REFRESH_TOKEN_KEY, tokens.refreshToken);
-    localStorage.setItem(TOKEN_EXPIRY_KEY, tokens.expiresAt.toString());
+    secureTokenStorage.setAccessToken(tokens.accessToken);
+    secureTokenStorage.setRefreshToken(tokens.refreshToken);
+    secureTokenStorage.setExpiresAt(tokens.expiresAt);
 }
 
 export function getAccessToken(): string | null {
-    return localStorage.getItem(TOKEN_KEY);
+    return secureTokenStorage.getAccessToken();
 }
 
 export function getRefreshToken(): string | null {
-    return localStorage.getItem(REFRESH_TOKEN_KEY);
+    return secureTokenStorage.getRefreshToken();
 }
 
 export function clearTokens(): void {
-    localStorage.removeItem(TOKEN_KEY);
-    localStorage.removeItem(REFRESH_TOKEN_KEY);
-    localStorage.removeItem(TOKEN_EXPIRY_KEY);
+    secureTokenStorage.clear();
 }
 
 export function isTokenExpired(): boolean {
-    const expiry = localStorage.getItem(TOKEN_EXPIRY_KEY);
+    const expiry = secureTokenStorage.getExpiresAt();
     if (!expiry) return true;
-    return Date.now() > parseInt(expiry, 10);
+    return Date.now() > expiry;
 }
 
 export function getTokenExpiresIn(): number {
-    const expiry = localStorage.getItem(TOKEN_EXPIRY_KEY);
+    const expiry = secureTokenStorage.getExpiresAt();
     if (!expiry) return 0;
-    return Math.max(0, parseInt(expiry, 10) - Date.now());
+    return Math.max(0, expiry - Date.now());
 }
 
 // ============================================================================

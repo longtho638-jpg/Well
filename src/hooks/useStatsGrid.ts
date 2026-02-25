@@ -1,9 +1,10 @@
 import { useMemo } from 'react';
 import { User } from '@/types';
 import { calculatePIT } from '@/utils/tax';
-import { TranslationKey } from './useTranslation';
+import { TranslationKey, useTranslation } from './useTranslation';
 
 export function useStatsGrid(user: User) {
+    const { t } = useTranslation();
     const estimatedBonus = useMemo(() => user.estimatedBonus || 0, [user.estimatedBonus]);
 
     const taxInfo = useMemo(() => {
@@ -33,6 +34,6 @@ export function useStatsGrid(user: User) {
         estimatedBonus,
         taxInfo,
         statsConfig,
-        nextPayoutDate: user.nextPayoutDate || 'TBD'
+        nextPayoutDate: user.nextPayoutDate || t('useStatsGrid.tbd')
     };
 }

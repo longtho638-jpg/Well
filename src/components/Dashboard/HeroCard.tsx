@@ -156,7 +156,7 @@ export const HeroCard: React.FC<Props> = ({ user }) => {
             onClick={handleShare}
             className="w-full bg-[#00575A] text-white font-black py-6 rounded-[1.5rem] text-[10px] uppercase tracking-[0.3em] transition-all hover:scale-[1.02] active:scale-[0.98] shadow-[0_20px_40px_-12px_rgba(0,87,90,0.4)] flex items-center justify-center gap-4 group/btn border border-teal-500/20"
           >
-            {copied ? 'ACCESS SECURED' : t('referral.link.share')}
+            {copied ? t('herocard.access_secured') : t('referral.link.share')}
             <ChevronRight size={20} className="group-hover/btn:translate-x-1.5 transition-transform" />
           </button>
         </div>

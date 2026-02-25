@@ -1,7 +1,7 @@
 import { agentLogger } from '@/utils/logger';
 import { useStore } from '@/store';
 import { agentRegistry } from '@/agents';
-import { AgentFunction, AgentLog, AgentKPI } from '@/types/agentic';
+import { AgentFunction } from '@/types/agentic';
 import { useCallback, useRef } from 'react';
 
 /**
@@ -17,7 +17,7 @@ export function useAgentOS() {
   // Simple in-memory cache for agent executions
   // Key: agentName + stringified input, Value: { data: Record<string, unknown>, timestamp: number }
   const cache = useRef<Map<string, { data: Record<string, unknown>; timestamp: number }>>(new Map());
-  const CACHE_DURATION = 60 * 1000; // 1 minute cache
+    const CACHE_DURATION = 60 * 1000; // 1 minute cache
 
   const executeAgent = useCallback(async (agentName: string, input: Record<string, unknown>, useCache = false) => {
     if (useCache) {
@@ -43,7 +43,7 @@ export function useAgentOS() {
       // Rethrow to allow caller to handle it, but log it standardized here
       throw error;
     }
-  }, [executeAgentStore]);
+  }, [executeAgentStore, CACHE_DURATION]);
 
   return {
     // Execute agent actions

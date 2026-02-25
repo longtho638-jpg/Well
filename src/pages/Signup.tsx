@@ -38,7 +38,7 @@ export default function Signup() {
                         className="inline-flex items-center gap-2 bg-teal-500/10 border border-teal-500/20 rounded-full px-4 py-1.5 mb-6"
                     >
                         <Sparkles className="w-3 h-3 text-teal-400" />
-                        <span className="text-[10px] font-black text-teal-300 uppercase tracking-[0.2em]">{t('signup.early_access_2_0')}</span>
+                        <span className="text-[10px] font-black text-teal-300 uppercase tracking-[0.2em]">{t('auth.register.earlyAccess')}</span>
                     </motion.div>
 
                     <h1 className="text-4xl font-black text-white mb-3 tracking-tighter uppercase italic">{t('auth.register.title')}</h1>

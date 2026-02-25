@@ -23,7 +23,7 @@ const OnboardingQuest: React.FC<Props> = ({ quests, user }) => {
     try {
         const text = await getCoachAdvice(user.name, user.totalSales, pending);
         setAdvice(text);
-    } catch (e) {
+    } catch {
         setAdvice("Keep sharing your positivity! The sales will follow.");
     }
     setLoading(false);

@@ -1,5 +1,5 @@
 import React, { useState, useMemo, useCallback } from 'react';
-import { Search, Command, ChevronRight, X, Loader2, AlertCircle } from 'lucide-react';
+import { Search, Command, ChevronRight, X, Loader2 } from 'lucide-react';
 import { AGENCYOS_COMMANDS, AgencyOSCategory } from '@/agents/custom/AgencyOSAgent';
 import { agentRegistry } from '@/agents';
 import { commandRateLimiter } from '@/lib/rate-limiter';
@@ -11,34 +11,34 @@ interface CommandPaletteProps {
     onClose: () => void;
 }
 
-const CATEGORY_ICONS: Record<AgencyOSCategory, string> = {
-    marketing: '📣',
-    sales: '💼',
-    finance: '💰',
-    operations: '⚙️',
-    strategy: '🎯',
-    agents: '🤖',
-};
-
-const CATEGORY_LABELS: Record<AgencyOSCategory, string> = {
-    marketing: 'Marketing',
-    sales: 'Sales',
-    finance: 'Finance',
-    operations: 'Operations',
-    strategy: 'Strategy (Binh Pháp)',
-    agents: 'AI Agents',
-};
-
 export function CommandPalette({ isOpen, onClose }: CommandPaletteProps) {
     const { t } = useTranslation();
+
+    const CATEGORY_ICONS: Record<AgencyOSCategory, string> = {
+        marketing: '📣',
+        sales: '💼',
+        finance: '💰',
+        operations: '⚙️',
+        strategy: '🎯',
+        agents: '🤖',
+    };
+
+    const CATEGORY_LABELS: Record<AgencyOSCategory, string> = {
+        marketing: t('agencyos.categories.marketing'),
+        sales: t('agencyos.categories.sales'),
+        finance: t('agencyos.categories.finance'),
+        operations: t('agencyos.categories.operations'),
+        strategy: t('agencyos.categories.strategy'),
+        agents: t('agencyos.categories.agents'),
+    };
+
     const [search, setSearch] = useState('');
     const [selectedCategory, setSelectedCategory] = useState<AgencyOSCategory | null>(null);
     const [isExecuting, setIsExecuting] = useState(false);
-    const [lastResult, setLastResult] = useState<any>(null);
+    const [lastResult, setLastResult] = useState<{ success: boolean; message?: string; output?: string; error?: string } | null>(null);
 
-    // Filter commands based on search and category
     const filteredCommands = useMemo(() => {
-        const results: Array<{ category: AgencyOSCategory; command: string; description: string }> = [];
+        const results: Array<{ category: AgencyOSCategory; command: string; description: string; i18nKey: string }> = [];
         const lowerSearch = search.toLowerCase();
 
         const categories = selectedCategory
@@ -142,7 +142,7 @@ export function CommandPalette({ isOpen, onClose }: CommandPaletteProps) {
                     <Command className="w-5 h-5 text-cyan-400" />
                     <input
                         type="text"
-                        placeholder="Type a command or search..."
+                        placeholder={t('common.search')}
                         value={search}
                         onChange={(e) => setSearch(e.target.value)}
                         className="flex-1 bg-transparent text-white placeholder-gray-500 outline-none text-lg"
@@ -207,7 +207,7 @@ export function CommandPalette({ isOpen, onClose }: CommandPaletteProps) {
                                                 </span>
                                             </div>
                                             <p className="text-gray-400 text-sm truncate">
-                                                {cmd.description}
+                                                {t(cmd.i18nKey)}
                                             </p>
                                         </div>
                                         <ChevronRight className="w-4 h-4 text-gray-600 group-hover:text-cyan-400 transition-colors" />

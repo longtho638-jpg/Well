@@ -12,6 +12,19 @@ import { teamLogger } from '../../utils/logger';
 // TREE NODE TYPE
 // ============================================================================
 
+// Raw Supabase row shape for downline user data
+interface SupabaseUserRow {
+    id: string;
+    full_name?: string;
+    email?: string;
+    rank_id?: number | string;
+    total_sales?: number;
+    team_volume?: number;
+    avatar_url?: string;
+    created_at?: string;
+    sponsor_id?: string;
+}
+
 export interface TreeNode {
     id: string;
     name: string;
@@ -85,33 +98,52 @@ export const createTeamSlice: StateCreator<
 
     fetchDownlineTree: async (userId: string): Promise<TreeNode[]> => {
         try {
+            // Using RPC to fetch the entire tree in one query (N+1 query fix)
             const { data, error } = await supabase
-                .from('users')
-                .select('id, name, role_id, total_sales, team_volume, avatar_url, created_at')
-                .eq('sponsor_id', userId);
+                .rpc('get_full_downline_tree', { p_user_id: userId, p_max_depth: 5 });
 
             if (error) {
-                teamLogger.error('fetchDownlineTree query failed', error);
+                teamLogger.error('fetchDownlineTree rpc failed', error);
                 return [];
             }
 
             if (!data || data.length === 0) return [];
 
-            const nodes = await Promise.all(
-                data.map(async (user) => ({
+            // Convert flat data array to hierarchical tree
+            const nodeMap = new Map();
+
+            // First pass: Create all nodes
+            data.forEach((user: SupabaseUserRow) => {
+                nodeMap.set(user.id, {
                     id: user.id,
-                    name: user.name || 'Unknown',
-                    rank: RANK_NAMES[user.role_id as UserRank] || 'CTV',
-                    roleId: user.role_id || 8,
+                    name: user.full_name || user.email || 'Unknown',
+                    rank: RANK_NAMES[Number(user.rank_id) as UserRank] || 'CTV',
+                    roleId: Number(user.rank_id) || 8,
                     sales: user.total_sales || 0,
                     teamVolume: user.team_volume || 0,
                     avatarUrl: user.avatar_url,
                     joinDate: user.created_at,
-                    children: await get().fetchDownlineTree(user.id)
-                }))
-            );
+                    children: []
+                });
+            });
 
-            return nodes;
+            // Second pass: Build hierarchy
+            const roots: TreeNode[] = [];
+            data.forEach((user: SupabaseUserRow) => {
+                const node = nodeMap.get(user.id);
+                // If this node's sponsor is the original requested user, it's a root (F1)
+                if (user.sponsor_id === userId) {
+                    roots.push(node);
+                } else {
+                    // Otherwise, attach it to its direct parent
+                    const parentNode = nodeMap.get(user.sponsor_id);
+                    if (parentNode) {
+                        parentNode.children.push(node);
+                    }
+                }
+            });
+
+            return roots;
         } catch (error) {
             teamLogger.error('fetchDownlineTree exception', error);
             return [];

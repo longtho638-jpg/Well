@@ -1,6 +1,7 @@
 import { supabase } from '@/lib/supabase';
 import { Transaction } from '../types';
 import { createLogger } from '../utils/logger';
+import { fromSupabaseError } from '../utils/errors';
 
 const walletLogger = createLogger('WalletService');
 
@@ -35,16 +36,16 @@ export const walletService = {
 
             if (data) {
                 return {
-                    balance: data.shop_balance || 0,
-                    totalEarnings: 0, // Calculated field, might need separate query if not stored
-                    pendingPayout: 0,
+                    balance: data.shop_balance || 0,       // Withdrawable balance = shop_balance
+                    totalEarnings: (data.shop_balance || 0) + (data.pending_cashback || 0),
+                    pendingPayout: data.pending_cashback || 0, // Pending commission not yet settled
                     taxWithheldTotal: 0
                 } as WalletData;
             }
             return null;
         } catch (error) {
             walletLogger.error('Error fetching wallet:', error);
-            throw error;
+            throw error instanceof Error ? error : fromSupabaseError(error as { message: string; code?: string });
         }
     },
 
@@ -79,7 +80,7 @@ export const walletService = {
             }));
         } catch (error) {
             walletLogger.error('Error fetching transactions:', error);
-            throw error;
+            throw error instanceof Error ? error : fromSupabaseError(error as { message: string; code?: string });
         }
     },
 
@@ -104,11 +105,11 @@ export const walletService = {
                     filter: `id=eq.${userId}`
                 },
                 (payload) => {
-                    const newData = payload.new as any;
+                    const newData = payload.new as { shop_balance?: number; pending_cashback?: number };
                     onUpdate({
                         balance: newData.shop_balance || 0,
-                        totalEarnings: 0,
-                        pendingPayout: 0,
+                        totalEarnings: (newData.shop_balance || 0) + (newData.pending_cashback || 0),
+                        pendingPayout: newData.pending_cashback || 0,
                         taxWithheldTotal: 0
                     });
                 }

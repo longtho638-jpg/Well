@@ -17,6 +17,28 @@ export default defineConfig({
       '**/.claude/**', // Playwright tests - run with `npx playwright test`
       '**/admin-panel/**', // Has its own test suite and React version
     ],
+    coverage: {
+      provider: 'v8',
+      reporter: ['text', 'json', 'html'],
+      exclude: [
+        '**/node_modules/**',
+        '**/dist/**',
+        '**/*.test.ts',
+        '**/*.test.tsx',
+        '**/test/**',
+        '**/tests/**',
+        '**/__tests__/**',
+        '**/chrome-devtools/**',
+        '**/admin-panel/**',
+        '**/.claude/**',
+      ],
+      thresholds: {
+        lines: 20,
+        functions: 15,
+        branches: 20,
+        statements: 20,
+      },
+    },
   },
   resolve: {
     alias: {

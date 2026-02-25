@@ -19,7 +19,6 @@ import {
     MapPin,
     AlertTriangle,
     Download,
-    Filter,
 } from 'lucide-react';
 import { useTranslation } from '@/hooks';
 
@@ -82,7 +81,6 @@ const MOCK_ATTEMPTS: LoginAttempt[] = [
 ];
 
 const StatusBadge: React.FC<{ status: LoginAttempt['status'] }> = ({ status }) => {
-    const { t } = useTranslation();
     const config = {
         success: {
             icon: CheckCircle,
@@ -132,7 +130,7 @@ const formatTimestamp = (isoString: string): string => {
 };
 
 export function LoginActivityLog({
-    attempts = MOCK_ATTEMPTS,
+    attempts = import.meta.env.DEV ? MOCK_ATTEMPTS : [],
     onExport,
 }: LoginActivityLogProps) {
     const { t } = useTranslation();

@@ -1,5 +1,6 @@
 import { supabase, isSupabaseConfigured } from '@/lib/supabase';
 import { adminLogger } from '@/utils/logger';
+import { fromSupabaseError } from '@/utils/errors';
 
 export interface Transaction {
     id: string;
@@ -103,7 +104,7 @@ export const financeService = {
                             : tx.status === 'completed' ? 'Completed'
                                 : tx.status === 'approved' ? 'Approved'
                                     : 'Rejected',
-                        fraudScore: Math.floor(Math.random() * 30), // Simulated
+                        fraudScore: 0, // Fraud scoring handled server-side; not available client-side
                         timestamp: new Date(tx.created_at).toLocaleString('vi-VN'),
                         reason: tx.type === 'sale' ? 'Product Sale' : 'Commission Withdrawal',
                     };
@@ -125,6 +126,6 @@ export const financeService = {
             .update({ status })
             .eq('id', id);
 
-        if (error) throw error;
+        if (error) throw fromSupabaseError(error);
     }
 };

@@ -22,17 +22,17 @@ export const MarketplaceFilters: React.FC<MarketplaceFiltersProps> = ({
 }) => {
     const { t } = useTranslation();
     const categories: { value: ProductCategory; label: string; icon: string }[] = [
-        { value: 'all', label: 'Tất cả sản phẩm', icon: '🎁' },
-        { value: 'health', label: 'Sức khỏe', icon: '💊' },
-        { value: 'wellness', label: 'Wellness', icon: '🌿' },
-        { value: 'supplement', label: 'Dinh dưỡng', icon: '🥗' },
+        { value: 'all', label: t('marketplacefilters.categories.all'), icon: '🎁' },
+        { value: 'health', label: t('marketplacefilters.categories.health'), icon: '💊' },
+        { value: 'wellness', label: t('marketplacefilters.categories.wellness'), icon: '🌿' },
+        { value: 'supplement', label: t('marketplacefilters.categories.nutrition'), icon: '🥗' },
     ];
 
     const prices: { value: PriceRange; label: string; range: string }[] = [
-        { value: 'all', label: 'Tất cả giá', range: '' },
-        { value: 'low', label: 'Dưới 5 triệu', range: '< 5M' },
-        { value: 'medium', label: '5 - 15 triệu', range: '5-15M' },
-        { value: 'high', label: 'Trên 15 triệu', range: '> 15M' },
+        { value: 'all', label: t('marketplacefilters.prices.all'), range: '' },
+        { value: 'low', label: t('marketplacefilters.prices.under5m'), range: '< 5M' },
+        { value: 'medium', label: t('marketplacefilters.prices.5to15m'), range: '5-15M' },
+        { value: 'high', label: t('marketplacefilters.prices.over15m'), range: '> 15M' },
     ];
 
     return (

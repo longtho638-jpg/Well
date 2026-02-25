@@ -7,26 +7,26 @@ export const ReferralRewardsList: React.FC = () => {
     const { t } = useTranslation();
     const rewards = [
         {
-            title: 'Activation Milestone',
-            desc: 'Instant liquidity on successful identity sync',
+            title: t('referral.rewards.activation.title'),
+            desc: t('referral.rewards.activation.desc'),
             value: '+50K',
-            sub: 'per node',
+            sub: t('referral.rewards.activation.sub'),
             icon: '🎁',
             color: 'from-emerald-400 to-emerald-600'
         },
         {
-            title: 'Revenue Override',
-            desc: 'Secondary yield on ecosystem commerce',
+            title: t('referral.rewards.revenue.title'),
+            desc: t('referral.rewards.revenue.desc'),
             value: '+10%',
-            sub: 'override',
+            sub: t('referral.rewards.revenue.sub'),
             icon: '💰',
             color: 'from-blue-400 to-blue-600'
         },
         {
-            title: 'Expansion Bonus',
-            desc: 'Achieved at 10 active sentinel nodes',
+            title: t('referral.rewards.expansion.title'),
+            desc: t('referral.rewards.expansion.desc'),
             value: '+1M',
-            sub: 'one-time',
+            sub: t('referral.rewards.expansion.sub'),
             icon: '🏆',
             color: 'from-amber-400 to-amber-600'
         }
@@ -39,8 +39,8 @@ export const ReferralRewardsList: React.FC = () => {
                     <Gift size={24} />
                 </div>
                 <div>
-                    <h3 className="text-2xl font-black text-white italic tracking-tighter uppercase">{t('referralrewardslist.yield_mechanics')}</h3>
-                    <p className="text-zinc-500 text-[10px] font-black uppercase tracking-widest italic">{t('referralrewardslist.incentive_algorithm')}</p>
+                    <h3 className="text-2xl font-black text-white italic tracking-tighter uppercase">{t('referral.rewards.yield_mechanics')}</h3>
+                    <p className="text-zinc-500 text-[10px] font-black uppercase tracking-widest italic">{t('referral.rewards.incentive_algorithm')}</p>
                 </div>
             </div>
 

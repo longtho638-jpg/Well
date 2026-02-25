@@ -3,6 +3,8 @@
  * Phase 14: Math and Random
  */
 
+const FORBIDDEN_KEYS = ['__proto__', 'constructor', 'prototype'];
+
 // ============================================================================
 // DEEP CLONE
 // ============================================================================
@@ -25,6 +27,8 @@ export function deepClone<T>(value: T): T {
 
     const cloned = {} as T;
     for (const key in value) {
+        if (FORBIDDEN_KEYS.includes(key)) continue;
+
         if (Object.prototype.hasOwnProperty.call(value, key)) {
             cloned[key] = deepClone(value[key]);
         }
@@ -76,6 +80,12 @@ export function deepGet<T = unknown>(
     defaultValue?: T
 ): T {
     const keys = path.split('.');
+
+    // Security check
+    if (keys.some(k => FORBIDDEN_KEYS.includes(k))) {
+        return defaultValue as T;
+    }
+
     let current: unknown = obj;
 
     for (const key of keys) {
@@ -97,6 +107,12 @@ export function deepSet<T extends Record<string, unknown>>(
     value: unknown
 ): T {
     const keys = path.split('.');
+
+    // Security check
+    if (keys.some(k => FORBIDDEN_KEYS.includes(k))) {
+        return obj;
+    }
+
     const clone = deepClone(obj);
 
     let current: Record<string, unknown> = clone;
@@ -149,6 +165,12 @@ export function unflatten(
 
     for (const key in obj) {
         const keys = key.split('.');
+
+        // Security check
+        if (keys.some(k => FORBIDDEN_KEYS.includes(k))) {
+            continue;
+        }
+
         let current = result;
 
         for (let i = 0; i < keys.length - 1; i++) {
@@ -185,7 +207,7 @@ export function diff(
     path = ''
 ): Diff[] {
     const diffs: Diff[] = [];
-    const allKeys = new Set([...Object.keys(oldObj), ...Object.keys(newObj)]);
+    const allKeys = Array.from(new Set([...Object.keys(oldObj), ...Object.keys(newObj)]));
 
     for (const key of allKeys) {
         const fullPath = path ? `${path}.${key}` : key;

@@ -93,7 +93,8 @@ export const CartDrawer: React.FC<CartDrawerProps> = ({
                                                 </h3>
                                                 <button
                                                     onClick={() => onRemove(item.product.id)}
-                                                    className="p-1.5 text-zinc-400 hover:text-rose-500 transition-colors"
+                                                    className="p-2 -mr-1 text-zinc-400 hover:text-rose-500 transition-colors touch-manipulation"
+                                                    aria-label={`Remove ${item.product.name}`}
                                                 >
                                                     <Trash2 size={16} />
                                                 </button>
@@ -105,14 +106,16 @@ export const CartDrawer: React.FC<CartDrawerProps> = ({
                                             <div className="flex items-center gap-1 bg-white dark:bg-zinc-900 p-1 rounded-xl border border-zinc-200 dark:border-white/10 w-fit">
                                                 <button
                                                     onClick={() => onUpdateQuantity(item.product.id, -1)}
-                                                    className="p-1.5 hover:bg-zinc-100 dark:hover:bg-white/5 rounded-lg text-zinc-500"
+                                                    className="p-2.5 hover:bg-zinc-100 dark:hover:bg-white/5 rounded-lg text-zinc-500 touch-manipulation"
+                                                    aria-label="Decrease quantity"
                                                 >
                                                     <Minus size={14} />
                                                 </button>
                                                 <span className="w-8 text-center font-black text-xs">{item.quantity}</span>
                                                 <button
                                                     onClick={() => onUpdateQuantity(item.product.id, 1)}
-                                                    className="p-1.5 hover:bg-zinc-100 dark:hover:bg-white/5 rounded-lg text-zinc-500"
+                                                    className="p-2.5 hover:bg-zinc-100 dark:hover:bg-white/5 rounded-lg text-zinc-500 touch-manipulation"
+                                                    aria-label="Increase quantity"
                                                 >
                                                     <Plus size={14} />
                                                 </button>

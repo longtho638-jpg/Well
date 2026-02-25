@@ -20,6 +20,11 @@ export const formatVND = (amount: number): string => {
 };
 
 /**
+ * Alias for formatVND for consistency
+ */
+export const formatCurrency = formatVND;
+
+/**
  * Format large numbers compactly (e.g., 1.5K, 2M)
  */
 export const formatCompact = (amount: number): string => {

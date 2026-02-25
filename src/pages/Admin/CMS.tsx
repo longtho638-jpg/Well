@@ -6,14 +6,6 @@
 import React from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
-  Save,
-  Eye,
-  FileText,
-  Image as ImageIcon,
-  Bell,
-  Megaphone,
-  Calendar,
-  Plus,
   Trash2,
   Edit2,
   CheckCircle,
@@ -23,12 +15,15 @@ import {
   Mail,
   Search,
   RefreshCw,
-  X,
   MessageSquare,
+  Plus,
+  ImageIcon,
+  Megaphone,
+  Bell,
 } from 'lucide-react';
 
 // Hooks & Types
-import { useCMS, Banner, Announcement, NotificationTemplate } from '@/hooks/useCMS';
+import { useCMS, Banner, Announcement } from '@/hooks/useCMS';
 import { useTranslation } from '@/hooks';
 
 // ============================================================
@@ -61,11 +56,10 @@ const TabButton: React.FC<{
 );
 
 const StatusBadge: React.FC<{ status: Banner['status'] | Announcement['status'] }> = ({ status }) => {
-    const { t } = useTranslation();
   const config = {
     active: { className: 'bg-emerald-500/10 text-emerald-500 border-emerald-500/20', label: 'LIVE' },
     draft: { className: 'bg-zinc-500/10 text-zinc-500 border-zinc-500/20', label: 'DRAFT' },
-    scheduled: { className: 'bg-indigo-500/10 text-indigo-500 border-indigo-500/20', label: 'QUEUE' },
+    scheduled: { className: "bg-indigo-500/10 text-indigo-500 border-indigo-500/20", label: "QUEUE" },
   };
   const { className, label } = config[status];
   return (
@@ -80,23 +74,19 @@ const StatusBadge: React.FC<{ status: Banner['status'] | Announcement['status'] 
 // ============================================================
 
 const CMS: React.FC = () => {
-    const { t } = useTranslation();
+  const { t } = useTranslation();
   const {
     activeTab,
     setActiveTab,
     filteredData,
     searchQuery,
     setSearchQuery,
-    editingBanner,
     setEditingBanner,
-    editingAnnouncement,
     setEditingAnnouncement,
     stats,
     refresh,
-    handleSaveBanner,
     handleDeleteBanner,
     handleToggleAnnouncementStatus,
-    handleSaveAnnouncement,
     handleDeleteAnnouncement,
     banners, announcements, templates
   } = useCMS();
@@ -282,7 +272,7 @@ const CMS: React.FC = () => {
                         </div>
                       </div>
                     </div>
-                    <button className="p-4 bg-zinc-100 dark:bg-zinc-800 rounded-2xl text-zinc-400 hover:text-zinc-900 dark:hover:text-white transition-all"><Edit2 size={18} /></button>
+                    <button aria-label="Edit template" className="p-4 bg-zinc-100 dark:bg-zinc-800 rounded-2xl text-zinc-400 hover:text-zinc-900 dark:hover:text-white transition-all"><Edit2 size={18} /></button>
                   </div>
                 </div>
               ))}

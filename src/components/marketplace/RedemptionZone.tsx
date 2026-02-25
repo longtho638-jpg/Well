@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
-import { Award, Zap, ChevronRight, Loader2 } from 'lucide-react';
+import { Award, Zap, Loader2 } from 'lucide-react';
 import { formatNumber } from '@/utils/format';
 import { useTranslation } from '@/hooks';
 
@@ -31,10 +31,10 @@ export const RedemptionZone: React.FC<RedemptionZoneProps> = ({
     const [redeemingId, setRedeemingId] = useState<string | null>(null);
 
     const categories: Array<{ id: 'all' | 'electronics' | 'travel' | 'education' | 'experience', label: string, icon: string }> = [
-        { id: 'all', label: 'Tất cả', icon: '🎁' },
-        { id: 'electronics', label: 'Công nghệ', icon: '📱' },
-        { id: 'travel', label: 'Du lịch', icon: '✈️' },
-        { id: 'education', label: 'Khóa học', icon: '📚' },
+        { id: 'all', label: t('redemptionzone.categories.all'), icon: '🎁' },
+        { id: 'electronics', label: t('redemptionzone.categories.tech'), icon: '📱' },
+        { id: 'travel', label: t('redemptionzone.categories.travel'), icon: '✈️' },
+        { id: 'education', label: t('redemptionzone.categories.courses'), icon: '📚' },
     ];
 
     const filteredItems = items.filter(i => selectedCategory === 'all' || i.category === selectedCategory);
@@ -89,7 +89,6 @@ export const RedemptionZone: React.FC<RedemptionZoneProps> = ({
             {/* Rewards Grid */}
             <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-8">
                 {filteredItems.map((item) => {
-                    const { t } = useTranslation();
                     const canAfford = userGrowBalance >= item.growCost;
                     const isProcessing = redeemingId === item.id;
 
@@ -120,7 +119,7 @@ export const RedemptionZone: React.FC<RedemptionZoneProps> = ({
                                         }`}
                                 >
                                     {isProcessing ? <Loader2 className="animate-spin" size={16} /> : <Zap size={16} />}
-                                    {canAfford ? 'Redeem Reward' : 'Not Enough Grow'}
+                                    {canAfford ? t('redemptionzone.redeem_reward') : t('redemptionzone.not_enough_grow')}
                                 </button>
                             </div>
                         </motion.div>

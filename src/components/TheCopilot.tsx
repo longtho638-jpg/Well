@@ -14,7 +14,7 @@ interface TheCopilotProps {
  * TheCopilot - Main container for the AI Sales Assistant
  * Refactored for better readability and performance.
  */
-export default function TheCopilot({ productContext, userName = "Bạn" }: TheCopilotProps) {
+export default function TheCopilot({ productContext, userName }: TheCopilotProps) {
   const {
     messages,
     input,

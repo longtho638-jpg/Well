@@ -34,7 +34,7 @@ export const debuggerEngine = {
     /**
      * Diagnose a production issue based on logs and context
      */
-    async diagnoseIssue(issue: string, context?: Record<string, unknown>): Promise<DiagnosisResult> {
+    async diagnoseIssue(issue: string, __context?: Record<string, unknown>): Promise<DiagnosisResult> {
         const type = this.detectIssueType(issue);
 
         return {
@@ -50,9 +50,9 @@ export const debuggerEngine = {
     /**
      * Profile performance issues
      */
-    async profilePerformance(context?: Record<string, unknown>): Promise<PerformanceProfile> {
+    async profilePerformance(__context?: Record<string, unknown>): Promise<PerformanceProfile> {
         return {
-            endpoint: (context?.endpoint as string) || '/api/products',
+            endpoint: (__context?.endpoint as string) || '/api/products',
             avgLatency: 250,
             p95Latency: 850,
             slowQueries: [

@@ -50,9 +50,9 @@ const MOCK_TEMPLATES: NotificationTemplate[] = [
 export function useCMS() {
     const { showToast } = useToast();
     const [activeTab, setActiveTab] = useState<'banners' | 'announcements' | 'templates'>('banners');
-    const [banners, setBanners] = useState<Banner[]>(MOCK_BANNERS);
-    const [announcements, setAnnouncements] = useState<Announcement[]>(MOCK_ANNOUNCEMENTS);
-    const [templates, setTemplates] = useState<NotificationTemplate[]>(MOCK_TEMPLATES);
+    const [banners, setBanners] = useState<Banner[]>(import.meta.env.DEV ? MOCK_BANNERS : []);
+    const [announcements, setAnnouncements] = useState<Announcement[]>(import.meta.env.DEV ? MOCK_ANNOUNCEMENTS : []);
+    const [templates, setTemplates] = useState<NotificationTemplate[]>(import.meta.env.DEV ? MOCK_TEMPLATES : []);
     const [searchQuery, setSearchQuery] = useState('');
     const [editingBanner, setEditingBanner] = useState<Banner | null>(null);
     const [editingAnnouncement, setEditingAnnouncement] = useState<Announcement | null>(null);
@@ -113,9 +113,11 @@ export function useCMS() {
     }), [banners, announcements]);
 
     const refresh = useCallback(() => {
-        setBanners(MOCK_BANNERS);
-        setAnnouncements(MOCK_ANNOUNCEMENTS);
-        setTemplates(MOCK_TEMPLATES);
+        if (import.meta.env.DEV) {
+            setBanners(MOCK_BANNERS);
+            setAnnouncements(MOCK_ANNOUNCEMENTS);
+            setTemplates(MOCK_TEMPLATES);
+        }
         showToast('Content refreshed', 'success');
     }, [showToast]);
 

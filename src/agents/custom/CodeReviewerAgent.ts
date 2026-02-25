@@ -107,13 +107,15 @@ export class CodeReviewerAgent extends BaseAgent {
                     result = await this.analyzeCodeArchitecture(action.files || []);
                     break;
 
-                case 'suggestFixes':
+                case 'suggestFixes': {
                     result = await this.generateFixSuggestions(action.files || []);
                     break;
+                }
 
-                default:
-                    const exhaustiveCheck: never = action;
+                default: {
+                    const _exhaustiveCheck: never = action;
                     throw new Error(`Unknown action: ${(action as { action: string }).action}`);
+                }
             }
 
             return { success: true, data: result };
@@ -179,7 +181,7 @@ export class CodeReviewerAgent extends BaseAgent {
         return { vulnerabilities };
     }
 
-    private async analyzeCodeArchitecture(files: string[]): Promise<ArchitectureAnalysis> {
+    private async analyzeCodeArchitecture(_files: string[]): Promise<ArchitectureAnalysis> {
         return {
             patterns: ['Repository Pattern', 'Service Layer'],
             issues: ['High coupling between components detected', 'Missing abstraction layers'],

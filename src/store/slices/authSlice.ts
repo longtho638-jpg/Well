@@ -14,6 +14,7 @@ import { enrichUserWithWealthMetrics } from '@/utils/business/wealthEngine';
 
 export interface AuthState {
     isAuthenticated: boolean;
+    isInitialized: boolean;
     user: User;
 }
 
@@ -22,6 +23,7 @@ export interface AuthActions {
     logout: () => Promise<void>;
     setUser: (user: User | null) => void;
     setIsAuthenticated: (isAuth: boolean) => void;
+    setInitialized: (isInitialized: boolean) => void;
     fetchUserFromDB: () => Promise<void>;
 }
 
@@ -68,9 +70,10 @@ export const createAuthSlice: StateCreator<
     [],
     [],
     AuthSlice
-> = (set, get) => ({
+> = (set) => ({
     // Initial State
     isAuthenticated: false,
+    isInitialized: false,
     user: createEmptyUser(),
 
     // Actions
@@ -100,12 +103,13 @@ export const createAuthSlice: StateCreator<
     },
 
     setIsAuthenticated: (isAuth) => set({ isAuthenticated: isAuth }),
+    setInitialized: (isInitialized) => set({ isInitialized }),
 
     fetchUserFromDB: async () => {
         const { data: { session } } = await supabase.auth.getSession();
         if (!session?.user) return;
 
-        const { data, error } = await supabase
+        const { data } = await supabase
             .from('users')
             .select('*')
             .eq('id', session.user.id)
@@ -122,7 +126,7 @@ export const createAuthSlice: StateCreator<
                 totalSales: data.total_sales || 0,
                 teamVolume: data.team_volume || 0,
                 shopBalance: data.shop_balance || 0,
-                growBalance: data.grow_balance || data.pending_cashback || 0,
+                growBalance: data.grow_balance || 0,
                 pendingCashback: data.pending_cashback || 0,
                 pointBalance: data.point_balance || 0,
                 stakedGrowBalance: data.staked_grow_balance || 0,

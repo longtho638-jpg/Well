@@ -3,7 +3,7 @@
  * Phase 10: Forms and Responsive
  */
 
-import { useState, useCallback, ChangeEvent, FormEvent } from 'react';
+import { useState, useEffect, useCallback, ChangeEvent, FormEvent } from 'react';
 
 // ============================================================================
 // USE FORM HOOK
@@ -163,10 +163,10 @@ export function getErrorMessage<T extends Record<string, unknown>>(
 export function useDebouncedValue<T>(value: T, delay: number = 300): T {
     const [debouncedValue, setDebouncedValue] = useState(value);
 
-    useState(() => {
+    useEffect(() => {
         const timer = setTimeout(() => setDebouncedValue(value), delay);
         return () => clearTimeout(timer);
-    });
+    }, [value, delay]);
 
     return debouncedValue;
 }

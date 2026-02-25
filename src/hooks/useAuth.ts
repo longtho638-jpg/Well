@@ -5,13 +5,14 @@ import { User, UserRank } from '@/types';
 import { authLogger } from '@/utils/logger';
 
 // Demo email for testing (works even in production)
-const DEMO_EMAIL = 'demo@wellnexus.vn';
+const DEMO_EMAIL = 'demo@example.com';
+const TEST_EMAIL = 'testuser@wellnexus.vn';
 
 // Mock user for development/demo mode - matches User type exactly
 const MOCK_USER: User = {
   id: 'mock-dev-user-001',
   name: 'Dev User',
-  email: 'dev@wellnexus.vn',
+  email: 'dev@example.com',
   rank: UserRank.DAI_SU_DIAMOND,
   roleId: 2,
   sponsorId: undefined,
@@ -39,96 +40,92 @@ const MOCK_USER: User = {
 };
 
 export function useAuth() {
-  const { setUser, setIsAuthenticated, fetchRealData } = useStore();
+  const { setUser, setIsAuthenticated, setInitialized, fetchRealData, fetchUserFromDB } = useStore();
 
   useEffect(() => {
-    // Skip Supabase auth if not configured (dev mode)
-    if (!isSupabaseConfigured()) {
-      authLogger.debug('Dev mode - Supabase not configured, skipping auth listener');
+    // 1. Check for mock session first (allows E2E tests to bypass Supabase even if configured)
+    const hasMockSession = localStorage.getItem('wellnexus_mock_session') === 'true';
+
+    if (hasMockSession) {
+      authLogger.info('Restoring mock session from localStorage');
+      const storedEmail = localStorage.getItem('wellnexus_mock_email');
+      const userToRestore = storedEmail === DEMO_EMAIL
+        ? { ...MOCK_USER, email: DEMO_EMAIL }
+        : MOCK_USER;
+
+      setUser(userToRestore);
+      setIsAuthenticated(true);
+      setInitialized(true);
       return;
     }
 
-    // Check active session on mount
-    supabase.auth.getSession().then(({ data: { session } }) => {
+    // 2. Skip Supabase auth if not configured (dev mode)
+    if (!isSupabaseConfigured()) {
+      authLogger.debug('Dev mode - Supabase not configured, and no mock session found');
+      setInitialized(true);
+      return;
+    }
+
+    // 3. Check active session on mount
+    supabase.auth.getSession().then(async ({ data: { session } }) => {
       if (session?.user) {
-        // Fetch full user data from database
-        fetchUserData(session.user.id);
+        // Fetch full user data from database using store action
+        await fetchUserFromDB();
+        // Load other real data from Supabase after login
+        fetchRealData();
       }
+    }).finally(() => {
+      setInitialized(true);
     });
 
     // Listen for auth state changes
     const { data: { subscription } } = supabase.auth.onAuthStateChange(
       async (event, session) => {
         if (event === 'SIGNED_IN' && session?.user) {
-          await fetchUserData(session.user.id);
+          await fetchUserFromDB();
+          fetchRealData();
         } else if (event === 'SIGNED_OUT') {
+          // Secure storage is cleared by Supabase client (via removeItem)
+          // But we ensure local state is reset
           setIsAuthenticated(false);
+          setUser(null);
+          // Optional: Force clear if needed, but Supabase adapter handles it
+          // secureTokenStorage.clear();
         }
       }
     );
 
     return () => subscription.unsubscribe();
-  }, []);
-
-  const fetchUserData = async (userId: string) => {
-    try {
-      const { data, error } = await supabase
-        .from('users')
-        .select('*')
-        .eq('id', userId)
-        .single();
-
-      if (error) throw error;
-
-      if (data) {
-        // Map Supabase user to app User type
-        const user: User = {
-          id: data.id,
-          name: data.name,
-          email: data.email,
-          rank: (data.role_id as UserRank) || UserRank.CTV,
-          roleId: data.role_id || 8,
-          sponsorId: data.sponsor_id,
-          totalSales: data.total_sales || 0,
-          teamVolume: data.team_volume || 0,
-          shopBalance: data.shop_balance || 0,
-          growBalance: data.pending_cashback || 0,
-          pendingCashback: data.pending_cashback || 0,
-          pointBalance: data.point_balance || 0,
-          stakedGrowBalance: data.staked_grow_balance || 0,
-          avatarUrl: data.avatar_url || '',
-          joinedAt: data.created_at || '',
-          kycStatus: true,
-          referralLink: `wellnexus.vn/ref/${data.id}`,
-        };
-
-        setUser(user);
-        setIsAuthenticated(true);
-
-        // Load real data from Supabase after login
-        fetchRealData();
-      }
-    } catch (error) {
-      authLogger.error('Error fetching user', error);
-    }
-  };
+  }, [fetchRealData, fetchUserFromDB, setIsAuthenticated, setUser, setInitialized]);
 
   return {
     signIn: async (email: string, password: string) => {
       // DEMO MODE: Allow demo login ONLY in development
-      if (import.meta.env.DEV && email.toLowerCase() === DEMO_EMAIL) {
+      if (import.meta.env.DEV && (email.toLowerCase() === DEMO_EMAIL || email.toLowerCase() === TEST_EMAIL)) {
         authLogger.info('Demo mode - logging in as demo user');
-        setUser({ ...MOCK_USER, email: DEMO_EMAIL });
+        const user = { ...MOCK_USER, email: email.toLowerCase() };
+        setUser(user);
         setIsAuthenticated(true);
-        return { data: { user: MOCK_USER, session: { access_token: 'demo-token' } }, error: null };
+
+        // Persist mock session
+        localStorage.setItem('wellnexus_mock_session', 'true');
+        localStorage.setItem('wellnexus_mock_email', email.toLowerCase());
+
+        return { data: { user, session: { access_token: 'demo-token' } }, error: null };
       }
 
       // DEV MODE: Return mock success when Supabase not configured
       if (!isSupabaseConfigured()) {
         authLogger.debug('Dev mode - using mock login for:', email);
-        setUser({ ...MOCK_USER, email });
+        const user = { ...MOCK_USER, email };
+        setUser(user);
         setIsAuthenticated(true);
-        return { data: { user: MOCK_USER, session: { access_token: 'mock-token' } }, error: null };
+
+        // Persist mock session
+        localStorage.setItem('wellnexus_mock_session', 'true');
+        localStorage.setItem('wellnexus_mock_email', email);
+
+        return { data: { user, session: { access_token: 'mock-token' } }, error: null };
       }
       return supabase.auth.signInWithPassword({ email, password });
     },
@@ -147,19 +144,41 @@ export function useAuth() {
 
       // 2. Create user record in users table
       if (data.user) {
-        await supabase.from('users').insert([
+        // Capture sponsor from referral link (/ref/:id → sessionStorage)
+        const sponsorId = sessionStorage.getItem('wellnexus_sponsor_id');
+
+        const { error: insertError } = await supabase.from('users').insert([
           {
             id: data.user.id,
             email,
             name,
-            rank: 'Member',
+            role_id: 8, // CTV rank (default for new users)
+            ...(sponsorId ? { sponsor_id: sponsorId } : {}),
           },
         ]);
+
+        if (insertError) {
+             authLogger.error("Failed to create user record", insertError);
+             // CRITICAL: Throw error to prevent orphaned auth accounts
+             throw new Error(`Failed to create user profile: ${insertError.message}`);
+        }
+
+        // Clear sponsor from sessionStorage after successful signup
+        sessionStorage.removeItem('wellnexus_sponsor_id');
       }
 
       return data;
     },
 
-    signOut: () => supabase.auth.signOut(),
+    signOut: async () => {
+      if (!isSupabaseConfigured()) {
+        localStorage.removeItem('wellnexus_mock_session');
+        localStorage.removeItem('wellnexus_mock_email');
+        setIsAuthenticated(false);
+        setUser(null);
+        return { error: null };
+      }
+      return supabase.auth.signOut();
+    },
   };
 }

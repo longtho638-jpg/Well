@@ -42,7 +42,7 @@ class EventBus<Events extends Record<string, unknown>> {
         if (!this.listeners.has(event)) {
             this.listeners.set(event, new Set());
         }
-        this.listeners.get(event)!.add(callback as EventCallback);
+        this.listeners.get(event)?.add(callback as EventCallback);
 
         return () => {
             this.listeners.get(event)?.delete(callback as EventCallback);
@@ -56,7 +56,7 @@ class EventBus<Events extends Record<string, unknown>> {
         if (!this.onceListeners.has(event)) {
             this.onceListeners.set(event, new Set());
         }
-        this.onceListeners.get(event)!.add(callback as EventCallback);
+        this.onceListeners.get(event)?.add(callback as EventCallback);
 
         return () => {
             this.onceListeners.get(event)?.delete(callback as EventCallback);

@@ -7,26 +7,19 @@ import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
     Package,
-    Edit2,
-    Save,
-    X,
-    DollarSign,
     Plus,
     Trash2,
     Search,
     RefreshCw,
     AlertTriangle,
     Image as ImageIcon,
-    Check,
-    Loader2,
     TrendingUp,
     ShieldCheck,
-    Info
 } from 'lucide-react';
 
 // Hooks & Services
 import { useProducts } from '@/hooks/useProducts';
-import { Product, NewProductDto } from '@/services/productService';
+import { Product } from '@/services/productService';
 import { formatVND } from '@/utils/format';
 import { useTranslation } from '@/hooks';
 
@@ -67,20 +60,17 @@ const AdminProducts: React.FC = () => {
     const { t } = useTranslation();
     const {
         loading,
-        actionLoading,
         searchQuery,
         setSearchQuery,
         filteredProducts,
         stats,
         refresh,
         handleUpdate,
-        handleCreate,
         handleDelete
     } = useProducts();
 
     const [editingId, setEditingId] = useState<string | null>(null);
     const [editForm, setEditForm] = useState<Partial<Product>>({});
-    const [showAddModal, setShowAddModal] = useState(false);
 
     const onEdit = (p: Product) => {
         setEditingId(p.id);
@@ -108,11 +98,10 @@ const AdminProducts: React.FC = () => {
                     <p className="text-zinc-500 font-medium text-lg">{t('products.inventory_management_dttt_st')}</p>
                 </div>
                 <div className="flex items-center gap-3">
-                    <button onClick={refresh} className="p-4 bg-white dark:bg-zinc-900 border border-zinc-100 dark:border-white/5 rounded-2xl shadow-sm text-zinc-500">
+                    <button onClick={refresh} aria-label="Refresh products" className="p-4 bg-white dark:bg-zinc-900 border border-zinc-100 dark:border-white/5 rounded-2xl shadow-sm text-zinc-500">
                         <RefreshCw size={20} className={loading ? 'animate-spin' : ''} />
                     </button>
                     <button
-                        onClick={() => setShowAddModal(true)}
                         className="flex items-center gap-3 bg-[#00575A] text-white px-8 py-4 rounded-2xl font-black uppercase tracking-widest hover:bg-[#004447] transition-all shadow-xl shadow-teal-500/20"
                     >
                         <Plus size={20} />
@@ -156,7 +145,6 @@ const AdminProducts: React.FC = () => {
             <div className="space-y-6">
                 <AnimatePresence mode="popLayout">
                     {filteredProducts.map((p) => {
-                        const { t } = useTranslation();
                         const isEditing = editingId === p.id;
                         const data = isEditing ? editForm as Product : p;
                         const memberComm = (data.bonus_revenue || 0) * 0.21;
@@ -259,7 +247,7 @@ const AdminProducts: React.FC = () => {
                                             ) : (
                                                 <>
                                                     <button onClick={() => onEdit(p)} className="flex-1 bg-zinc-100 dark:bg-zinc-800 text-zinc-900 dark:text-white py-3 rounded-2xl font-black uppercase tracking-widest text-[10px] border border-zinc-200 dark:border-white/5 hover:bg-zinc-200 transition-all">{t('products.edit_config')}</button>
-                                                    <button onClick={() => handleDelete(p.id, p.name)} className="p-3 bg-rose-500/5 text-rose-500 hover:bg-rose-500/10 rounded-2xl transition-all border border-rose-500/10"><Trash2 size={16} /></button>
+                                                    <button onClick={() => handleDelete(p.id, p.name)} aria-label={t('common.delete')} className="p-3 bg-rose-500/5 text-rose-500 hover:bg-rose-500/10 rounded-2xl transition-all border border-rose-500/10"><Trash2 size={16} /></button>
                                                 </>
                                             )}
                                         </div>

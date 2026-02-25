@@ -93,7 +93,7 @@ export const ROUTES = {
 // ============================================================================
 
 export const API = {
-    base: import.meta.env.VITE_API_URL || 'https://api.wellnexus.vn',
+    base: import.meta.env.VITE_API_URL || '',
 
     auth: {
         login: '/auth/login',

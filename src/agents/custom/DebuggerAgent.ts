@@ -98,9 +98,10 @@ export class DebuggerAgent extends BaseAgent {
                     result = await debuggerEngine.generateFixSuggestions(debuggerEngine.detectIssueType(action.issue));
                     break;
 
-                default:
-                    const exhaustiveCheck: never = action;
+                default: {
+                    const _exhaustiveCheck: never = action;
                     throw new Error(`Unknown action: ${(action as { action: string }).action}`);
+                }
             }
 
             // Telemetry

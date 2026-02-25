@@ -1,7 +1,8 @@
 import { uiLogger } from '@/utils/logger';
 import React, { Component, ReactNode, ErrorInfo } from 'react';
 import analytics from '@/lib/analytics';
-import i18next from 'i18next';
+import * as Sentry from '@sentry/react';
+import { translate } from '@/hooks/useTranslation';
 
 interface Props {
     children: ReactNode;
@@ -30,7 +31,15 @@ export class ErrorBoundary extends Component<Props, State> {
     componentDidCatch(error: Error, errorInfo: ErrorInfo) {
         uiLogger.error('ErrorBoundary caught error', { error, errorInfo });
 
-        // Track error with analytics
+        // Track error with Sentry (production monitoring)
+        Sentry.withScope((scope) => {
+            scope.setContext('react', {
+                componentStack: errorInfo.componentStack,
+            });
+            Sentry.captureException(error);
+        });
+
+        // Track error with analytics (internal tracking)
         analytics.trackError(error, {
             componentStack: errorInfo.componentStack,
             location: window.location.href,
@@ -40,8 +49,7 @@ export class ErrorBoundary extends Component<Props, State> {
     }
 
     render() {
-        // @ts-ignore
-        const t = (key) => i18next.t(key);
+        const t = translate;
 
         if (this.state.hasError) {
             // Custom fallback UI

@@ -1,60 +1,98 @@
-import { useState, useCallback } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { useAuth } from './useAuth';
+import { useState, useMemo } from 'react';
+import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
 import { authLogger } from '@/utils/logger';
+import { useTranslation } from '@/hooks';
+import { supabase } from '@/lib/supabase';
+import { validatePassword, PasswordValidation } from '@/utils/password-validation';
+import { sendWelcomeEmail } from '@/services/email-service';
+import { signupSchema, SignupFormValues } from '@/lib/schemas/auth';
 
 export function useSignup() {
-    const [formData, setFormData] = useState({
-        name: '',
-        email: '',
-        password: '',
-        confirmPassword: ''
+    const [signupSuccess, setSignupSuccess] = useState(false);
+
+    const { t } = useTranslation();
+
+    const form = useForm<SignupFormValues>({
+        resolver: zodResolver(signupSchema),
+        defaultValues: {
+            name: '',
+            email: '',
+            password: '',
+            confirmPassword: '',
+        },
+        mode: 'onTouched',
     });
-    const [error, setError] = useState('');
-    const [loading, setLoading] = useState(false);
 
-    const { signUp } = useAuth();
-    const navigate = useNavigate();
+    const watchedPassword = form.watch('password');
 
-    const handleChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
-        const { name, value } = e.target;
-        setFormData(prev => ({
-            ...prev,
-            [name]: value
-        }));
-    }, []);
+    const passwordValidation: PasswordValidation = useMemo(() => {
+        return validatePassword(watchedPassword ?? '');
+    }, [watchedPassword]);
 
-    const handleSubmit = useCallback(async (e: React.FormEvent) => {
-        e.preventDefault();
-        setLoading(true);
-        setError('');
-
-        if (formData.password !== formData.confirmPassword) {
-            setError('Mật khẩu nhập lại không khớp');
-            setLoading(false);
-            return;
-        }
-
+    const onSubmit = async (data: SignupFormValues) => {
         try {
-            await signUp(formData.email, formData.password, formData.name);
-            authLogger.info('Signup successful for:', formData.email);
+            const { data: signUpData, error: signUpError } = await supabase.auth.signUp({
+                email: data.email,
+                password: data.password,
+                options: {
+                    data: {
+                        name: data.name,
+                    },
+                    emailRedirectTo: `${window.location.origin}/confirm-email`,
+                },
+            });
 
-            // Artificial delay for UX transitions
-            setTimeout(() => navigate('/dashboard'), 500);
+            if (signUpError) throw signUpError;
+
+            // Create user record in public.users table
+            // (fetchUserFromDB queries this table after email confirmation)
+            if (signUpData?.user) {
+                // Capture sponsor from referral link (/ref/:id → sessionStorage)
+                const sponsorId = sessionStorage.getItem('wellnexus_sponsor_id');
+
+                const { error: insertError } = await supabase.from('users').insert([
+                    {
+                        id: signUpData.user.id,
+                        email: data.email,
+                        name: data.name,
+                        role_id: 8,
+                        ...(sponsorId ? { sponsor_id: sponsorId } : {}),
+                    },
+                ]);
+
+                if (insertError) {
+                    authLogger.error('Failed to create user record', insertError);
+                    throw new Error(`Failed to create user profile: ${insertError.message}`);
+                }
+            }
+
+            authLogger.info('Signup successful for:', data.email);
+
+            // Send welcome email (fire-and-forget — don't block signup success UX)
+            sendWelcomeEmail(data.email, {
+                userName: data.name,
+                userEmail: data.email,
+            }).catch((err) => authLogger.error('Welcome email failed', err));
+
+            // Clear sponsor from sessionStorage after successful signup
+            sessionStorage.removeItem('wellnexus_sponsor_id');
+
+            // Show success state - user needs to confirm email
+            setSignupSuccess(true);
         } catch (e) {
             const err = e as Error;
             authLogger.error('Signup failed', err);
-            setError(err.message || 'Đăng ký thất bại. Vui lòng thử lại.');
-        } finally {
-            setLoading(false);
+            form.setError('root', {
+                message: err.message || t('errors.signupFailed'),
+            });
         }
-    }, [formData, signUp, navigate]);
+    };
 
     return {
-        formData,
-        error,
-        loading,
-        handleChange,
-        handleSubmit
+        form,
+        passwordValidation,
+        signupSuccess,
+        onSubmit,
     };
 }

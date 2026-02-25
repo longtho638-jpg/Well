@@ -1,5 +1,6 @@
 import { supabase } from '@/lib/supabase';
 import { adminLogger } from '@/utils/logger';
+import { fromSupabaseError } from '@/utils/errors';
 
 export interface RankUpgrade {
     fromRank: number;
@@ -46,7 +47,7 @@ export const policyService = {
                 .eq('key', 'global_policy')
                 .single();
 
-            if (error) throw error;
+            if (error) throw fromSupabaseError(error);
             return data?.value as PolicyConfig;
         } catch (error) {
             adminLogger.error('Error fetching policy config', error);
@@ -71,6 +72,6 @@ export const policyService = {
             })
             .eq('key', 'global_policy');
 
-        if (error) throw error;
+        if (error) throw fromSupabaseError(error);
     }
 };

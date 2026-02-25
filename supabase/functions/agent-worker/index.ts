@@ -1,22 +1,49 @@
 // Supabase Edge Function: The Core Agent Worker
 // Deno Runtime - High Performance, Low Latency
 
-import { createClient } from 'https://esm.sh/@supabase/supabase-js@2'
+import { createClient, SupabaseClient } from 'https://esm.sh/@supabase/supabase-js@2'
 
-const supabase = createClient(
-  Deno.env.get('SUPABASE_URL') ?? '',
-  Deno.env.get('SERVICE_ROLE_KEY') ?? '' // Dùng Key quyền lực để ghi đè RLS
-)
+const MAX_ATTEMPTS = 3 // Dead letter: stop retrying after this many failures
 
 Deno.serve(async (req) => {
+  // SECURITY: Require internal service key — this worker must only be called by cron/pg_net
+  const serviceKey = req.headers.get('x-service-key')
+  const expectedServiceKey = Deno.env.get('INTERNAL_SERVICE_KEY')
+
+  if (!expectedServiceKey) {
+    console.error('[Security] INTERNAL_SERVICE_KEY not configured')
+    return new Response(JSON.stringify({ error: 'Server configuration error' }), {
+      status: 500,
+      headers: { 'Content-Type': 'application/json' }
+    })
+  }
+
+  if (serviceKey !== expectedServiceKey) {
+    console.error('[Security] Invalid service key')
+    return new Response(JSON.stringify({ error: 'Unauthorized' }), {
+      status: 401,
+      headers: { 'Content-Type': 'application/json' }
+    })
+  }
+
+  // Khởi tạo client trong request handler để đảm bảo env vars luôn được đọc đúng lúc
+  const supabase = createClient(
+    Deno.env.get('SUPABASE_URL') ?? '',
+    Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') ?? ''
+  )
+
   // 1. Worker nhận tín hiệu (Cron hoặc Webhook gọi định kỳ)
   // Trong thực tế, ta dùng pg_net hoặc cron để gọi function này mỗi giây
 
-  // 2. Lấy 100 jobs pending
+  // 2. Lấy 100 jobs (pending HOẶC processing quá 10 phút)
+  // Tính thời điểm 10 phút trước
+  const tenMinsAgo = new Date(Date.now() - 10 * 60 * 1000).toISOString()
+
   const { data: jobs, error } = await supabase
     .from('agent_jobs')
     .select('*')
-    .eq('status', 'pending')
+    .or(`status.eq.pending,and(status.eq.processing,updated_at.lt.${tenMinsAgo})`)
+    .lt('attempts', MAX_ATTEMPTS) // Dead letter guard: skip jobs that exceeded max retries
     .limit(100)
 
   if (!jobs || jobs.length === 0) {
@@ -28,12 +55,22 @@ Deno.serve(async (req) => {
   // 3. Xử lý song song (Parallel Processing)
   await Promise.all(jobs.map(async (job) => {
     try {
-      // Mark as processing (Optimistic Locking)
-      await supabase.from('agent_jobs').update({ status: 'processing' }).eq('id', job.id)
+      // Mark as processing with optimistic lock: only claim if still pending/timed-out-processing
+      const { count } = await supabase
+        .from('agent_jobs')
+        .update({ status: 'processing', updated_at: new Date().toISOString() })
+        .eq('id', job.id)
+        .in('status', ['pending', 'processing']) // Atomic claim guard
+        .select('id', { count: 'exact', head: true })
+
+      if (!count || count === 0) {
+        // Another worker claimed this job concurrently — skip
+        return
+      }
 
       // --- ROUTING AGENT ---
       if (job.agent_name === 'The Bee' && job.action === 'process_reward') {
-        await runTheBee(job.payload)
+        await runTheBee(job.payload, supabase)
       }
       // ---------------------
 
@@ -47,11 +84,13 @@ Deno.serve(async (req) => {
 
     } catch (err) {
       console.error(`Job ${job.id} failed:`, err)
-      // Retry logic: Mark failed, increment attempts
+      const newAttempts = job.attempts + 1
+      const errMsg = err instanceof Error ? err.message : String(err)
+      // Move to dead_letter if max attempts exceeded, else mark failed for retry
       await supabase.from('agent_jobs').update({
-        status: 'failed',
-        error_message: err.message,
-        attempts: job.attempts + 1
+        status: newAttempts >= MAX_ATTEMPTS ? 'dead_letter' : 'failed',
+        error_message: errMsg,
+        attempts: newAttempts
       }).eq('id', job.id)
     }
   }))
@@ -60,7 +99,13 @@ Deno.serve(async (req) => {
 })
 
 // --- AGENT LOGIC: THE BEE ---
-async function runTheBee(payload: any) {
+interface BeePayload {
+  user_id: string;
+  amount: number;
+  transaction_id: string;
+}
+
+async function runTheBee(payload: BeePayload, supabase: SupabaseClient) {
   const { user_id, amount, transaction_id } = payload
 
   // 1. Delegate Logic to Database (Bee 2.0)
@@ -75,5 +120,5 @@ async function runTheBee(payload: any) {
     p_source_tx: transaction_id
   })
 
-  if (error) throw new Error(error.message)
+  if (error) throw new Error(error.message ?? 'distribute_reward RPC failed')
 }

@@ -31,9 +31,9 @@ export default {
         }
       },
       fontFamily: {
-        // Dùng Manrope cho các tiêu đề với fallback stack mạnh cho Tiếng Việt
+        // Aura Elite: Outfit for headings with Vietnamese support
         display: [
-          '"Manrope"',
+          '"Outfit"',
           // Vietnamese-friendly fallbacks
           'system-ui',
           '-apple-system',
@@ -49,9 +49,9 @@ export default {
           '"Segoe UI Symbol"',
           '"Noto Color Emoji"'
         ],
-        // Dùng Plus Jakarta Sans cho nội dung với fallback stack mạnh
+        // Aura Elite: Inter for body text with Vietnamese support
         sans: [
-          '"Plus Jakarta Sans"',
+          '"Inter"',
           // Vietnamese-friendly fallbacks
           'system-ui',
           '-apple-system',
@@ -70,6 +70,26 @@ export default {
       },
       animation: {
         'pulse-slow': 'pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+        'gradient-shift': 'gradient-shift 8s ease infinite',
+        'float': 'float 6s ease-in-out infinite',
+        'shimmer': 'shimmer 2s linear infinite',
+      },
+      keyframes: {
+        'gradient-shift': {
+          '0%, 100%': { backgroundPosition: '0% 50%' },
+          '50%': { backgroundPosition: '100% 50%' },
+        },
+        'float': {
+          '0%, 100%': { transform: 'translateY(0px)' },
+          '50%': { transform: 'translateY(-20px)' },
+        },
+        'shimmer': {
+          '0%': { backgroundPosition: '-200% 0' },
+          '100%': { backgroundPosition: '200% 0' },
+        },
+      },
+      backgroundSize: {
+        '300%': '300% 300%',
       }
     },
   },

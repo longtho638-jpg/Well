@@ -46,12 +46,22 @@
 - **Customer CRM:** View customer purchase history and support details.
 - **Security:** Role-based access control (RBAC) for admin staff.
 
+#### G. Network & Finance (Distributor)
+- **Network Visualization:** Interactive tree graph to view downline hierarchy and performance (F1-F7).
+- **Commission Withdrawal:** Secure payout request system with bank account management and history tracking.
+
+#### F. Authentication & Security (Common)
+- **Password Recovery:** Secure forgot/reset password flow via email link.
+- **Password Strength:** Real-time strength validation and feedback during reset.
+- **Secure Storage:** Encrypted in-memory token management (no localStorage).
+
 ### 3. Non-Functional Requirements
 - **Performance:** Sub-second load times, smooth animations (60fps).
 - **Responsiveness:** Mobile-first design, fully functional on all device sizes.
 - **Localization:** Full support for Vietnamese (vi) and English (en).
 - **Accessibility:** WCAG AA compliance for core flows.
-- **Security:** Secure handling of user data and API keys.
+- **Observability:** Real-time error tracking (Sentry) and performance monitoring.
+- **Security:** Secure handling of user data, API keys, and HTTP headers (CSP, HSTS).
 
 ### 4. Technical Constraints
 - **Framework:** React 19 with TypeScript 5.7+.

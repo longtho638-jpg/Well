@@ -1,10 +1,25 @@
-# robots.txt for WellNexus
+# WellNexus - Robots.txt
+
 User-agent: *
 Allow: /
+Disallow: /admin/
+Disallow: /dashboard/
+Allow: /dashboard/marketplace
+Disallow: /api/
 
-# Sitemap location
+# Sitemap
 Sitemap: https://wellnexus.vn/sitemap.xml
 
-# Block sensitive paths (if any in future)
-Disallow: /admin
-Disallow: /api
+# Specific bots
+User-agent: Googlebot
+Allow: /
+
+User-agent: Bingbot
+Allow: /
+
+# Block aggressive crawlers
+User-agent: AhrefsBot
+Disallow: /
+
+User-agent: SemrushBot
+Disallow: /

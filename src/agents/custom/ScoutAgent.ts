@@ -120,7 +120,7 @@ export class ScoutAgent extends BaseAgent {
 
                 case 'mapDependencies': {
                     const deps = await this.analyzeDependencies(action.query);
-                    result = deps as unknown as Record<string, unknown>;
+                    result = { ...deps };
                     break;
                 }
 
@@ -209,7 +209,7 @@ export class ScoutAgent extends BaseAgent {
     /**
      * Discover implementation patterns
      */
-    private async discoverPatterns(query: string, scope?: string): Promise<Record<string, unknown>> {
+    private async discoverPatterns(query: string, _scope?: string): Promise<Record<string, unknown>> {
         const patterns: PatternMatch[] = [];
 
         // Simulate pattern discovery

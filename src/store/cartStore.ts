@@ -27,6 +27,16 @@ export const useCartStore = create<CartState>()(
             addToCart: (product, quantity = 1) => set((state) => {
                 const existingItem = state.items.find(item => item.product.id === product.id);
 
+                // Stock validation (if product has stock field)
+                if (product.stock !== undefined && product.stock !== null) {
+                    const currentCartQty = existingItem ? existingItem.quantity : 0;
+                    const newTotalQty = currentCartQty + quantity;
+
+                    if (newTotalQty > product.stock) {
+                        throw new Error(`Only ${product.stock} items available in stock`);
+                    }
+                }
+
                 if (existingItem) {
                     return {
                         items: state.items.map(item =>
@@ -46,13 +56,26 @@ export const useCartStore = create<CartState>()(
                 items: state.items.filter(item => item.product.id !== productId)
             })),
 
-            updateQuantity: (productId, quantity) => set((state) => ({
-                items: state.items.map(item =>
-                    item.product.id === productId
-                        ? { ...item, quantity: Math.max(1, quantity) }
-                        : item
-                )
-            })),
+            updateQuantity: (productId, quantity) => set((state) => {
+                const item = state.items.find(i => i.product.id === productId);
+
+                if (item) {
+                    // Stock validation
+                    if (item.product.stock !== undefined && item.product.stock !== null) {
+                        if (quantity > item.product.stock) {
+                            throw new Error(`Only ${item.product.stock} items available in stock`);
+                        }
+                    }
+                }
+
+                return {
+                    items: state.items.map(item =>
+                        item.product.id === productId
+                            ? { ...item, quantity: Math.max(1, quantity) }
+                            : item
+                    )
+                };
+            }),
 
             clearCart: () => set({ items: [] }),
 

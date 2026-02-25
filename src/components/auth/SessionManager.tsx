@@ -8,7 +8,7 @@
  * - Ability to revoke sessions
  */
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
     Monitor,
@@ -67,7 +67,6 @@ const MOCK_SESSIONS: Session[] = [
 ];
 
 const DeviceIcon: React.FC<{ device: Session['device'] }> = ({ device }) => {
-    const { t } = useTranslation();
     switch (device) {
         case 'mobile':
             return <Smartphone className="w-5 h-5" />;
@@ -79,7 +78,7 @@ const DeviceIcon: React.FC<{ device: Session['device'] }> = ({ device }) => {
 };
 
 export function SessionManager({
-    sessions = MOCK_SESSIONS,
+    sessions = import.meta.env.DEV ? MOCK_SESSIONS : [],
     onRevokeSession,
     onRevokeAllOthers,
 }: SessionManagerProps) {
@@ -88,10 +87,19 @@ export function SessionManager({
     const [revoking, setRevoking] = useState<string | null>(null);
     const [revokingAll, setRevokingAll] = useState(false);
     const [success, setSuccess] = useState<string | null>(null);
+    const successTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
     useEffect(() => {
         setLocalSessions(sessions);
     }, [sessions]);
+
+    useEffect(() => {
+        return () => {
+            if (successTimerRef.current) {
+                clearTimeout(successTimerRef.current);
+            }
+        };
+    }, []);
 
     const handleRevoke = async (sessionId: string) => {
         setRevoking(sessionId);
@@ -101,8 +109,9 @@ export function SessionManager({
             }
             // Optimistically remove from UI
             setLocalSessions(prev => prev.filter(s => s.id !== sessionId));
-            setSuccess(`Session revoked successfully`);
-            setTimeout(() => setSuccess(null), 3000);
+            setSuccess(t('sessionmanager.revoked_success'));
+            if (successTimerRef.current) clearTimeout(successTimerRef.current);
+            successTimerRef.current = setTimeout(() => setSuccess(null), 3000);
         } catch (error) {
             authLogger.error('Failed to revoke session', error);
         } finally {
@@ -118,8 +127,9 @@ export function SessionManager({
             }
             // Keep only current session
             setLocalSessions(prev => prev.filter(s => s.isCurrent));
-            setSuccess('All other sessions revoked');
-            setTimeout(() => setSuccess(null), 3000);
+            setSuccess(t('sessionmanager.revoked_all_success'));
+            if (successTimerRef.current) clearTimeout(successTimerRef.current);
+            successTimerRef.current = setTimeout(() => setSuccess(null), 3000);
         } catch (error) {
             authLogger.error('Failed to revoke sessions', error);
         } finally {
@@ -153,7 +163,7 @@ export function SessionManager({
                         {revokingAll ? (
                             <Loader2 className="w-4 h-4 animate-spin" />
                         ) : (
-                            'Sign out all other devices'
+                            t('sessionmanager.sign_out_all_others')
                         )}
                     </button>
                 )}

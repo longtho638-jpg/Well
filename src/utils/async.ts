@@ -140,8 +140,10 @@ class AsyncQueue {
     private async process(): Promise<void> {
         if (this.running >= this.concurrency || this.queue.length === 0) return;
 
+        const task = this.queue.shift();
+        if (!task) return;
+
         this.running++;
-        const task = this.queue.shift()!;
 
         try {
             await task();

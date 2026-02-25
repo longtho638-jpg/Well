@@ -21,7 +21,7 @@ export const ReferralQRCode: React.FC<ReferralQRCodeProps> = ({ qrCodeUrl, onDow
             <div className="w-12 h-12 bg-white text-zinc-950 rounded-2xl flex items-center justify-center">
                 <QrCode size={24} />
             </div>
-            <h3 className="text-2xl font-black text-white italic tracking-tighter uppercase">{t('referralqrcode.visual_id_key')}</h3>
+            <h3 className="text-2xl font-black text-white italic tracking-tighter uppercase">{t('referral.qrcode.visual_id_key')}</h3>
         </div>
 
         <div className="bg-white rounded-[2rem] p-8 shadow-2xl inline-block mb-10 group relative">
@@ -32,8 +32,8 @@ export const ReferralQRCode: React.FC<ReferralQRCodeProps> = ({ qrCodeUrl, onDow
                 className="w-64 h-64 mx-auto relative z-10"
             />
             <div className="mt-6 text-center relative z-10">
-                <p className="text-[10px] font-black text-zinc-950 uppercase tracking-[0.3em] mb-1 italic">{t('referralqrcode.wellnexus_network')}</p>
-                <p className="text-[8px] font-bold text-zinc-500 uppercase tracking-widest leading-none">{t('referralqrcode.scanning_initiates_sync')}</p>
+                <p className="text-[10px] font-black text-zinc-950 uppercase tracking-[0.3em] mb-1 italic">{t('referral.qrcode.wellnexus_network')}</p>
+                <p className="text-[8px] font-bold text-zinc-500 uppercase tracking-widest leading-none">{t('referral.qrcode.scanning_initiates_sync')}</p>
             </div>
         </div>
 
@@ -44,10 +44,10 @@ export const ReferralQRCode: React.FC<ReferralQRCodeProps> = ({ qrCodeUrl, onDow
             className="w-full py-5 bg-zinc-100 text-zinc-900 rounded-[1.5rem] font-black text-xs uppercase tracking-[0.3em] flex items-center justify-center gap-4 transition-all italic border-white shadow-xl"
         >
             <Download size={18} />
-            {t('referralqrcode.commit_to_local_storage')}</motion.button>
+            {t('referral.qrcode.commit_to_local_storage')}</motion.button>
 
         <p className="text-[9px] font-black text-zinc-500 uppercase tracking-[0.2em] mt-6 italic">
-            {t('referralqrcode.recommended_for_high_conversio')}</p>
+            {t('referral.qrcode.recommended_for_high_conversio')}</p>
     </motion.div>
 );
 };

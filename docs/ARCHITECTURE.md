@@ -7,21 +7,23 @@ WellNexus is built as a modern, scalable web application using a component-based
 ### Technology Stack
 
 **Frontend:**
-- React 18.2 with TypeScript
-- Vite 5.1 for build tooling
+- React 19.2.4 with TypeScript 5.9.3 (Strict Mode)
+- Vite 7.3.1 for build tooling
 - Tailwind CSS for styling
 - Framer Motion for animations
-- Zustand for state management
+- Zustand for state management (6 slices pattern)
+- i18next for internationalization (Vietnamese + English)
 
 **Backend Services:**
-- Firebase for authentication and database
-- Supabase for data management
-- Google Gemini AI for coaching features
+- Supabase (PRIMARY) -- Auth, PostgreSQL Database, Edge Functions, Realtime
+- Google Gemini AI for coaching features (via Edge Function)
+- PayOS for payment processing (via Edge Function)
+- Resend for transactional emails (via Edge Function)
 
 **Testing:**
-- Vitest for unit and integration tests
+- Vitest 4.x for unit and integration tests
 - Testing Library for component tests
-- 224+ tests with 100% pass rate
+- 307+ tests across 30 files with 100% pass rate
 
 ### Project Structure
 
@@ -35,10 +37,11 @@ Well/
 │   │   ├── Referral/    # Referral system components
 │   │   └── ...
 │   ├── pages/           # Route-level page components
-│   ├── services/        # External service integrations
-│   ├── hooks/           # Custom React hooks
-│   ├── utils/           # Utility functions
-│   ├── data/            # Mock data (MVP phase)
+│   ├── services/        # External service integrations (Supabase, PayOS, Gemini)
+│   ├── hooks/           # Custom React hooks (useAuth, useWallet, useAgentOS)
+│   ├── utils/           # Utility functions (commission, tokenomics, format)
+│   ├── store/           # Zustand store (6 slices: auth, wallet, team, agent, ui, cart)
+│   ├── locales/         # i18n translations (vi.ts, en.ts)
 │   ├── styles/          # Global styles and design tokens
 │   └── types.ts         # TypeScript type definitions
 ├── public/              # Static assets
@@ -59,7 +62,7 @@ A modular agent system for business automation:
 
 #### 2. State Management
 
-**Zustand Store** (`src/store.ts`):
+**Zustand Store** (`src/store/`):
 - Single source of truth for application state
 - User authentication state
 - Product catalog
@@ -83,9 +86,11 @@ A modular agent system for business automation:
 #### 4. Service Layer
 
 Abstraction layer for external services:
-- `geminiService.ts` - Google Gemini AI integration
-- `firebase.ts` - Firebase configuration
-- `api.ts` - API abstraction layer
+- `geminiService.ts` - Google Gemini AI integration (via Edge Function)
+- `supabase.ts` - Supabase client configuration
+- `payos-client.ts` - PayOS payment integration
+- `referral-service.ts` - Referral tree and downline management
+- `email-service-client-side-trigger.ts` - Email triggers via Edge Function
 - `copilotService.ts` - Sales assistant logic
 
 ### Data Flow
@@ -99,7 +104,7 @@ Custom Hook (optional)
     ↓
 Zustand Store / Service Layer
     ↓
-External API (Firebase/Gemini/Supabase)
+External API (Supabase Auth/DB/Edge Functions / Gemini)
     ↓
 State Update
     ↓
@@ -124,7 +129,8 @@ npm run build
 **Deployment:**
 - Platform: Vercel
 - Auto-deploy: On push to main branch
-- Build time: ~12-15 seconds
+- CI/CD: GitHub Actions (build + test + security audit)
+- Build time: ~3.2 seconds
 - Production URL: https://wellnexus.vn/
 
 ### Performance Optimizations
@@ -148,12 +154,15 @@ npm run build
 
 ### Security
 
-- Environment variables for sensitive data
+- Environment variables for sensitive data (server-side secrets via Supabase)
 - HTTPS enforced
-- Firebase security rules
-- Input validation
-- XSS protection (React built-in)
+- Supabase Row Level Security (RLS) on all tables
+- HMAC-SHA256 webhook verification (PayOS)
+- Input validation (zod, DOMPurify)
+- XSS protection (React built-in + DOMPurify)
 - SQL injection protection (Supabase parameterized queries)
+- CSP and HSTS headers via Vercel config
+- Secure in-memory token storage (no localStorage for sensitive tokens)
 
 ### Testing Strategy
 
@@ -176,10 +185,11 @@ npm run build
 
 ### Scalability Considerations
 
-**Current State (MVP):**
-- Mock data in `src/data/mockData.ts`
-- Firebase for backend
-- Suitable for initial user base
+**Current State:**
+- Supabase PostgreSQL database with RLS
+- Supabase Edge Functions for serverless API
+- 8 Edge Functions deployed (payment, email, AI, commission)
+- Suitable for growing user base
 
 **Future Growth:**
 - Replace mock data with API calls
@@ -212,10 +222,10 @@ npm run build
 
 ### Monitoring & Maintenance
 
-- Vercel analytics for performance
-- Error tracking via browser console
-- Build status via GitHub Actions (future)
-- User feedback collection
+- Sentry for error tracking (optional)
+- Vercel Analytics for performance (Core Web Vitals)
+- GitHub Actions CI/CD pipeline
+- Build status badges on README
 
 ### Technical Debt & Future Improvements
 

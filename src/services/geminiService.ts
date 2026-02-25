@@ -1,8 +1,7 @@
 import { agentRegistry } from '@/agents';
 import { aiLogger } from '@/utils/logger';
-
-// NOTE: In a real production app, engage a backend proxy to hide this key.
-// const genAI = new GoogleGenerativeAI(import.meta.env.VITE_GEMINI_API_KEY || 'demo-key'); // Removed direct usage
+import { ServiceError } from '@/utils/errors';
+import { User, UserRank } from '@/types';
 
 /**
  * Get personalized coaching advice from Gemini Agent
@@ -20,16 +19,26 @@ export const getCoachAdvice = async (
     const agent = agentRegistry.get('Gemini Coach');
     if (!agent) {
       aiLogger.warn('Gemini Coach Agent not found, falling back to legacy behavior');
-      throw new Error("Agent not found");
+      throw new ServiceError("Agent not found");
     }
 
     // Construct user object to match Agent interface
     const userMock = {
       name: userName,
       totalSales: salesData,
-      rank: 'Member', // Default for legacy compatibility
-      teamVolume: 0 // Default
-    };
+      rank: UserRank.CTV, // Default
+      teamVolume: 0, // Default
+      // Add missing required fields with defaults to satisfy type
+      id: 'legacy-user',
+      email: '',
+      roleId: 0,
+      avatarUrl: '',
+      joinedAt: new Date().toISOString(),
+      kycStatus: false,
+      shopBalance: 0,
+      growBalance: 0,
+      stakedGrowBalance: 0
+    } as unknown as User;
 
     const context = `Pending Tasks: ${pendingQuests.join(', ')}`;
 
@@ -55,18 +64,15 @@ export const getCoachAdvice = async (
  * @param text - Text to analyze
  * @returns Promise<boolean> True if compliant, false otherwise
  */
-export const checkCompliance = async (text: string): Promise<boolean> => {
+export const checkCompliance = async (__text: string): Promise<boolean> => {
   try {
-    // The new agent has checkTaxCompliance, but the old service signature returned boolean.
-    // We'll maintain the signature but maybe log the check via agent if relevant transaction data existed.
-    // Since the old service didn't really check anything, we keep it simple but acknowledge the agent existance.
     const agent = agentRegistry.get('Gemini Coach');
     if (agent) {
       // We could call agent.execute({ action: 'checkCompliance', ... }) if we had transaction object
       // For now, just return true as per original, but maybe log in future.
     }
     return true;
-  } catch (e) {
+  } catch {
     return true;
   }
 };

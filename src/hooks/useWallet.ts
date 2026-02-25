@@ -56,23 +56,55 @@ export function useWallet(userId: string | null): WalletState & WalletActions {
     }
 
     setLoading(true);
-    loadTransactions(userId);
+    let txsDone = false;
+    let walletDone = false;
+    let cancelled = false;
 
-    // Real-time telemetry subscription
+    const checkLoading = () => {
+      if (txsDone && walletDone && !cancelled) {
+        setLoading(false);
+      }
+    };
+
+    loadTransactions(userId).finally(() => {
+      txsDone = true;
+      checkLoading();
+    });
+
+    // Initial wallet fetch — subscription alone never fires on first load
+    walletService.getWallet(userId).then((data) => {
+      if (!cancelled) {
+        setWallet(data);
+        walletDone = true;
+        checkLoading();
+      }
+    }).catch((err: Error) => {
+      if (!cancelled) {
+        logger.error('Initial wallet fetch failed', err);
+        setError(err.message);
+        walletDone = true;
+        checkLoading();
+      }
+    });
+
+    // Real-time telemetry subscription for subsequent updates
     const unsubscribe = walletService.subscribeToWallet(
       userId,
       (data) => {
-        setWallet(data);
-        setLoading(false);
+        if (!cancelled) setWallet(data);
       },
       (err) => {
-        logger.error('Financial heartbeat failed', err);
-        setError(err.message);
-        setLoading(false);
+        if (!cancelled) {
+          logger.error('Financial heartbeat failed', err);
+          setError(err.message);
+        }
       }
     );
 
-    return () => unsubscribe();
+    return () => {
+      cancelled = true;
+      unsubscribe();
+    };
   }, [userId, loadTransactions]);
 
   const requestPayout = useCallback(async (amount: number) => {

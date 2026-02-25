@@ -113,7 +113,7 @@ export const VentureMarketMap: React.FC<VentureMarketMapProps> = ({ content, onJ
                                     <div className="text-4xl font-black text-white italic tracking-tighter group-hover:text-teal-400 transition-colors">
                                         {region.market}
                                     </div>
-                                    <div className="text-[9px] text-zinc-500 font-black uppercase tracking-widest italic mt-1">{t('venturemarketmap.total_addressable_market')}</div>
+                                    <div className="text-[9px] text-zinc-500 font-black uppercase tracking-widest italic mt-1">{t('venture.market.total_addressable_market')}</div>
                                 </div>
 
                                 <div className="flex items-center gap-3">
@@ -121,7 +121,7 @@ export const VentureMarketMap: React.FC<VentureMarketMapProps> = ({ content, onJ
                                     <span className="text-emerald-400 font-black text-xs font-mono">
                                         {region.growth}
                                     </span>
-                                    <span className="text-zinc-600 text-[9px] font-black uppercase tracking-widest italic">{t('venturemarketmap.velocity')}</span>
+                                    <span className="text-zinc-600 text-[9px] font-black uppercase tracking-widest italic">{t('venture.market.velocity')}</span>
                                 </div>
                             </motion.div>
                         ))}
@@ -141,7 +141,7 @@ export const VentureMarketMap: React.FC<VentureMarketMapProps> = ({ content, onJ
                         whileTap={{ scale: 0.98 }}
                     >
                         <Globe className="w-6 h-6" />
-                        {t('venturemarketmap.init_sea_expansion_protocol')}<ChevronRight className="w-6 h-6 group-hover:translate-x-1 transition-transform" />
+                        {t('venture.market.init_sea_expansion_protocol')}<ChevronRight className="w-6 h-6 group-hover:translate-x-1 transition-transform" />
                     </motion.button>
                 </motion.div>
             </div>

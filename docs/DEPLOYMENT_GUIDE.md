@@ -808,7 +808,7 @@ aws secretsmanager create-secret \
 
 ### Frontend Environment Variables
 
-In `.env.production`:
+In `.env.production` (or Vercel Project Settings):
 
 ```bash
 VITE_API_URL=https://api.wellnexus.vn/v1
@@ -820,6 +820,65 @@ VITE_SENTRY_DSN=https://xxx@sentry.io/xxx
 ---
 
 ## CI/CD Pipeline Setup
+
+### Current Implementation (2026-02-02)
+
+WellNexus uses **GitHub Actions** + **Vercel Git Integration** for automated CI/CD:
+
+#### Active Workflows
+
+**1. CI Pipeline** (`.github/workflows/ci.yml`)
+- Triggers: Push to main, Pull Requests
+- Status: ✅ Passing (1m25s average)
+- Steps:
+  - Checkout code
+  - Setup Node.js 20.x with npm cache
+  - Install dependencies (`npm ci`)
+  - **Security audit** (`npm audit --audit-level=high`)
+  - Run linter (`npm run lint`)
+  - Run tests (`npm test`)
+  - Build project (`npm run build`)
+  - Upload build artifacts (7-day retention)
+
+**2. Lighthouse CI** (`.github/workflows/lighthouse.yml`)
+- Triggers: Pull Requests only
+- Purpose: Performance auditing
+- Thresholds:
+  - Performance: 80%
+  - Accessibility: 90%
+  - Best Practices: 90%
+  - SEO: 90%
+
+**3. Vercel Auto-Deploy**
+- Platform: Vercel
+- Production URL: https://wellnexus.vn
+- Triggers: Every push to main branch
+- Build time: ~10 minutes (includes CDN warming)
+- Features:
+  - Automatic preview deployments for PRs
+  - CDN caching (HIT rate ~95%)
+  - HTTPS/HTTP2 enabled
+  - **Security headers** (HSTS, CSP, X-Frame-Options) configured via `vercel.json`
+  - **Sentry Source Maps** upload for error debugging
+
+#### Security Scanning
+
+**npm audit** - High severity vulnerabilities check
+- Runs on every CI build
+- Command: `npm audit --audit-level=high || true`
+- Non-blocking (continues on warnings)
+
+**Note:** CodeQL (GitHub Advanced Security) is disabled for private repositories. Use npm audit for basic dependency scanning.
+
+#### View Workflow Runs
+
+https://github.com/longtho638-jpg/Well/actions
+
+---
+
+### Legacy Reference: Full-Stack Deployment (Future)
+
+Below is the original AWS ECS deployment plan for Phase 2 (backend + infrastructure):
 
 ### GitHub Actions Workflow
 
@@ -1027,7 +1086,40 @@ aws cloudwatch put-metric-alarm \
 
 ### Application Performance Monitoring (APM)
 
-#### Sentry Integration
+#### Sentry Integration (Frontend)
+
+**Install Sentry SDK:**
+
+```bash
+npm install @sentry/react @sentry/browser
+```
+
+**Configure in frontend (`src/utils/sentry.ts`):**
+
+```typescript
+import * as Sentry from '@sentry/react';
+
+export function initSentry() {
+  if (import.meta.env.MODE !== 'production') return;
+
+  Sentry.init({
+    dsn: import.meta.env.VITE_SENTRY_DSN,
+    environment: import.meta.env.MODE,
+    integrations: [
+      Sentry.browserTracingIntegration(),
+      Sentry.replayIntegration(),
+    ],
+    tracesSampleRate: 1.0,
+    replaysSessionSampleRate: 0.1,
+    replaysOnErrorSampleRate: 1.0,
+  });
+}
+```
+
+**Environment Variable:**
+Ensure `VITE_SENTRY_DSN` is set in Vercel project settings.
+
+#### Sentry Integration (Backend)
 
 **Install Sentry SDK:**
 

@@ -3,7 +3,7 @@
  * Phase 13: Network and Colors
  */
 
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect } from 'react';
 
 // ============================================================================
 // ONLINE STATUS
@@ -92,7 +92,7 @@ export function useNetworkInfo(): NetworkInfo {
 // FETCH WRAPPER
 // ============================================================================
 
-interface FetchOptions extends RequestInit {
+interface FetchOptions extends Omit<RequestInit, 'signal'> {
     timeout?: number;
     retries?: number;
     retryDelay?: number;
@@ -114,7 +114,7 @@ export async function fetchWithRetry<T>(
             const response = await fetch(url, {
                 ...fetchOptions,
                 signal: controller.signal,
-            });
+            } as RequestInit);
 
             clearTimeout(timeoutId);
 

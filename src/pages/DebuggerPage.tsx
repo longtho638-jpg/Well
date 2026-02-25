@@ -5,7 +5,7 @@ import { useTranslation } from '@/hooks';
 const DebuggerPage: React.FC = () => {
     const { t } = useTranslation();
   const store = useStore();
-  const [windowInfo, setWindowInfo] = useState<any>({});
+  const [windowInfo, setWindowInfo] = useState<Record<string, string | number>>({});
 
   useEffect(() => {
     setWindowInfo({

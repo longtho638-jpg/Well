@@ -1,4 +1,4 @@
-import React, { useRef, useState, useEffect } from 'react';
+import React from 'react';
 import { motion, useMotionTemplate, useMotionValue } from 'framer-motion';
 
 // ===== BENTO GRID =====

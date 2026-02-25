@@ -105,9 +105,10 @@ export class ProjectManagerAgent extends BaseAgent {
                     result = await this.findBlockers();
                     break;
 
-                default:
-                    const exhaustiveCheck: never = action;
+                default: {
+                    const _exhaustiveCheck: never = action;
                     throw new Error(`Unknown action: ${(action as { action: string }).action}`);
+                }
             }
 
             return { success: true, data: result };

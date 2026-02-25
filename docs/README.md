@@ -1,18 +1,23 @@
 # WellNexus Documentation
 
-Welcome to the WellNexus documentation. This directory contains all technical documentation, guides, and business planning materials.
+**Last Updated:** 2026-02-11
+**Version:** 2.1.0
+
+Welcome to WellNexus technical documentation. This directory contains all architecture docs, deployment guides, business planning, and development standards.
 
 ## 📁 Directory Structure
 
 ```
 docs/
-├── architecture/          # System architecture & design
+├── architecture/          # System architecture & design patterns
 ├── business/              # Business plans & strategy
 ├── changelog/             # Version history & updates
 ├── design-system/         # UI/UX design guidelines
 ├── development/           # Development guides & analysis
-├── guides/                # User & deployment guides
+├── guides/                # Deployment & user guides
 ├── tasks/                 # Development task history
+├── wireframes/            # UI/UX wireframes
+├── *.md                   # Quick reference docs (root level)
 └── README.md              # This file
 ```
 

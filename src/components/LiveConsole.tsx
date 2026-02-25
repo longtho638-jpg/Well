@@ -3,9 +3,9 @@
  * Phase 4: Mission Control surveillance for VC/IPO readiness.
  */
 
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Terminal, Cpu, Wifi, Activity, ShieldCheck } from 'lucide-react';
+import { Terminal, Cpu, Wifi, ShieldCheck } from 'lucide-react';
 
 // Hooks
 import { useLiveConsole, LogEntry } from '@/hooks/useLiveConsole';
@@ -16,7 +16,6 @@ import { useTranslation } from '@/hooks';
 // ============================================================
 
 const LogLine: React.FC<{ log: LogEntry }> = ({ log }) => {
-    const { t } = useTranslation();
     const statusColors = {
         info: 'text-teal-400/80',
         success: 'text-emerald-400',
@@ -55,6 +54,12 @@ export const LiveConsole: React.FC = () => {
     const { t } = useTranslation();
     const { logs } = useLiveConsole();
     const scrollRef = useRef<HTMLDivElement>(null);
+    // Stable TX rate - updated every 5s to avoid re-render flicker
+    const [txRate, setTxRate] = useState(() => Math.floor(Math.random() * 9999));
+    useEffect(() => {
+        const interval = setInterval(() => setTxRate(Math.floor(Math.random() * 9999)), 5000);
+        return () => clearInterval(interval);
+    }, []);
 
     // Auto-scroll logic
     useEffect(() => {
@@ -119,7 +124,7 @@ export const LiveConsole: React.FC = () => {
             <div className="bg-teal-500/5 border-t border-teal-500/10 px-6 py-2 flex justify-between items-center text-[8px] font-black text-teal-500/30 uppercase tracking-[0.3em]">
                 {/* <div>BEE-AGENT CORE V4.2.0-STABLE</div> */}
                 <span>{t('liveconsole.bee_agent_core_v4_2_0_stable')}</span>
-                <span>{t('liveconsole.tx')}{Math.floor(Math.random() * 9999)} {t('liveconsole.bps')}</span>
+                <span>{t('liveconsole.tx')}{txRate} {t('liveconsole.bps')}</span>
             </div>
         </div>
     );

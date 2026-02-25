@@ -34,16 +34,16 @@ export const FeaturedProducts: React.FC<FeaturedProductsProps> = ({ products, on
   };
 
   return (
-    <section className="relative py-32 bg-zinc-950 overflow-hidden">
+    <section className="relative py-16 md:py-32 bg-zinc-950 overflow-hidden">
       {/* Background Decor */}
       <div className="absolute top-0 left-0 w-full h-full overflow-hidden pointer-events-none">
         <div className="absolute top-1/4 -right-64 w-[500px] h-[500px] bg-teal-500/10 rounded-full blur-[100px]" />
         <div className="absolute bottom-1/4 -left-64 w-[500px] h-[500px] bg-purple-500/10 rounded-full blur-[100px]" />
       </div>
 
-      <div className="relative max-w-7xl mx-auto px-6 lg:px-12">
+      <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-12">
         {/* Header */}
-        <div className="flex flex-col md:flex-row items-end justify-between mb-16 gap-6">
+        <div className="flex flex-col md:flex-row items-start md:items-end justify-between mb-10 md:mb-16 gap-4 md:gap-6">
           <motion.div
             initial={{ opacity: 0, x: -20 }}
             whileInView={{ opacity: 1, x: 0 }}
@@ -53,14 +53,14 @@ export const FeaturedProducts: React.FC<FeaturedProductsProps> = ({ products, on
             <div className="inline-flex items-center gap-2 bg-purple-500/10 border border-purple-500/20 rounded-full px-5 py-2 mb-6">
               <Sparkles className="w-4 h-4 text-purple-400" />
               <span className="text-sm font-bold text-purple-400 uppercase tracking-wider">
-                {t('landing.featured.badge') || 'Sản Phẩm Nổi Bật'}
+                {t('landing.featured.badge')}
               </span>
             </div>
-            <h2 className="text-4xl md:text-5xl font-black text-white mb-4">
-              {t('landing.featured.title') || 'Giải Pháp Sức Khỏe Toàn Diện'}
+            <h2 className="text-3xl sm:text-4xl md:text-5xl font-black text-white mb-4">
+              {t('landing.featured.title')}
             </h2>
             <p className="text-zinc-400 max-w-2xl text-lg">
-              {t('landing.featured.subtitle') || 'Được tin dùng bởi hơn 5,000+ khách hàng và chuyên gia y tế'}
+              {t('landing.featured.subtitle')}
             </p>
           </motion.div>
 
@@ -71,7 +71,7 @@ export const FeaturedProducts: React.FC<FeaturedProductsProps> = ({ products, on
             onClick={() => navigate('/marketplace')}
             className="group flex items-center gap-2 text-white font-bold bg-white/5 hover:bg-white/10 px-6 py-3 rounded-xl border border-white/10 hover:border-white/20 transition-all"
           >
-            {t('landing.featured.viewAll') || 'Xem tất cả sản phẩm'}
+            {t('landing.featured.viewAll')}
             <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
           </motion.button>
         </div>
@@ -82,7 +82,7 @@ export const FeaturedProducts: React.FC<FeaturedProductsProps> = ({ products, on
           initial="hidden"
           whileInView="show"
           viewport={{ once: true }}
-          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8"
+          className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 lg:gap-8"
         >
           {displayProducts.map((product) => (
             <motion.div
@@ -118,7 +118,7 @@ export const FeaturedProducts: React.FC<FeaturedProductsProps> = ({ products, on
                     className="w-full bg-white text-zinc-950 font-bold py-3 rounded-xl shadow-xl flex items-center justify-center gap-2 hover:bg-teal-50 transition-colors"
                   >
                     <ShoppingBag className="w-4 h-4" />
-                    {t('landing.featured.addToCart') || 'Thêm vào giỏ'}
+                    {t('landing.featured.addToCart')}
                   </button>
                 </div>
               </div>
@@ -134,12 +134,13 @@ export const FeaturedProducts: React.FC<FeaturedProductsProps> = ({ products, on
 
                 <div className="flex items-center justify-between pt-4 border-t border-white/5">
                   <div className="flex flex-col">
-                    <span className="text-xs text-zinc-500 uppercase tracking-wider font-bold">Giá bán</span>
+                    <span className="text-xs text-zinc-500 uppercase tracking-wider font-bold">{t('landing.featured.price')}</span>
                     <span className="text-xl font-bold text-white">{formatVND(product.price)}</span>
                   </div>
                   <button
                     onClick={() => onAddToCart(product)}
-                    className="w-10 h-10 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-white hover:bg-teal-500 hover:border-teal-500 transition-all md:hidden"
+                    className="w-11 h-11 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-white hover:bg-teal-500 hover:border-teal-500 transition-all md:hidden touch-manipulation"
+                    aria-label={t('landing.featured.addToCart')}
                   >
                     <ShoppingBag className="w-4 h-4" />
                   </button>

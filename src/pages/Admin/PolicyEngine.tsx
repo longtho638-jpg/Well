@@ -1,8 +1,6 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import {
-  Zap,
-  Save,
   ShieldCheck,
   RefreshCw,
   Cpu,
@@ -20,7 +18,7 @@ import { RankLadderSection } from '@/components/admin/policy/RankLadderSection';
 import { SimulationPanel } from '@/components/admin/policy/SimulationPanel';
 
 // Shared
-import { AuraBadge, BentoGrid } from '@/components/ui/Aura';
+import { AuraBadge } from '@/components/ui/Aura';
 import { useTranslation } from '@/hooks';
 
 const PolicyEngine: React.FC = () => {

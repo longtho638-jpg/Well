@@ -1,9 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import { Outlet, useLocation } from 'react-router-dom';
+import { Outlet, useLocation, useNavigate } from 'react-router-dom';
 import { Menu, Bell, Search } from 'lucide-react';
 import { Sidebar } from './Sidebar';
+import { ErrorBoundary } from './ErrorBoundary';
 import { ThemeToggle } from './ui/ThemeToggle';
-import { motion, AnimatePresence } from 'framer-motion';
+import { MobileBottomNav } from './MobileBottomNav';
+import { ZaloWidget } from './ZaloWidget';
+import { motion } from 'framer-motion';
 import { useStore } from '../store';
 import { useTranslation } from '../hooks';
 
@@ -16,6 +19,7 @@ export const AppLayout: React.FC = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const { user } = useStore();
   const location = useLocation();
+  const navigate = useNavigate();
 
   // Close mobile menu on escape key
   useEffect(() => {
@@ -39,10 +43,17 @@ export const AppLayout: React.FC = () => {
 
   return (
     <div className="flex h-screen bg-gray-50 dark:bg-slate-900 transition-colors font-sans text-gray-900 dark:text-slate-100 overflow-hidden">
+      {/* Skip to main content link for keyboard/screen reader users */}
+      <a
+        href="#main-content"
+        className="sr-only focus:not-sr-only focus:absolute focus:z-[100] focus:top-2 focus:left-2 focus:px-4 focus:py-2 focus:bg-primary focus:text-white focus:rounded-lg focus:shadow-lg"
+      >
+        Skip to main content
+      </a>
       {/* ================================================================ */}
       {/* DESKTOP SIDEBAR - Fixed left, always visible on md+ screens */}
       {/* ================================================================ */}
-      <div className="hidden md:block w-64 flex-shrink-0 bg-white dark:bg-slate-800 border-r border-gray-200 dark:border-slate-700 z-30">
+      <div className="hidden md:block w-64 flex-shrink-0 bg-white/70 dark:bg-slate-800/70 backdrop-blur-md border-r border-gray-100/50 dark:border-slate-700/50 z-30 shadow-lg shadow-primary/5">
         <Sidebar />
       </div>
 
@@ -73,11 +84,12 @@ export const AppLayout: React.FC = () => {
       <div className="flex-1 flex flex-col min-w-0 overflow-hidden">
 
         {/* Top Header - Sticky */}
-        <header className="sticky top-0 z-20 h-16 px-4 sm:px-6 bg-white/80 dark:bg-slate-800/80 backdrop-blur-xl border-b border-gray-200 dark:border-slate-700 flex items-center justify-between">
+        <header className="sticky top-0 z-40 w-full h-16 px-4 sm:px-6 backdrop-blur-md bg-white/70 border-b border-gray-100/50 dark:bg-slate-800/70 dark:border-slate-700/50 flex items-center justify-between shadow-sm">
           <div className="flex items-center gap-4">
             <button
               onClick={() => setIsMobileMenuOpen(true)}
-              className="p-2 -ml-2 text-gray-500 hover:bg-gray-100 dark:hover:bg-slate-700 rounded-lg md:hidden transition-colors"
+              className="p-2.5 -ml-2 text-gray-500 hover:bg-gray-100 dark:hover:bg-slate-700 rounded-lg md:hidden transition-colors touch-manipulation"
+              aria-label="Open menu"
             >
               <Menu className="w-6 h-6" />
             </button>
@@ -95,14 +107,17 @@ export const AppLayout: React.FC = () => {
 
           <div className="flex items-center gap-3 sm:gap-4">
             <ThemeToggle />
-            <button className="p-2 text-gray-500 hover:bg-gray-100 dark:hover:bg-slate-700 rounded-xl relative transition-colors">
+            <button className="p-2.5 text-gray-500 hover:bg-gray-100 dark:hover:bg-slate-700 rounded-xl relative transition-colors touch-manipulation" aria-label="Notifications">
               <Bell className="w-5 h-5" />
               <span className="absolute top-2 right-2 w-2 h-2 bg-red-500 rounded-full border-2 border-white dark:border-slate-800 animate-pulse"></span>
             </button>
 
             <div className="h-8 w-px bg-gray-200 dark:bg-slate-700 mx-1 hidden sm:block"></div>
 
-            <div className="flex items-center gap-3 pl-1 cursor-pointer hover:opacity-80 transition-opacity">
+            <div
+              className="flex items-center gap-3 pl-1 cursor-pointer hover:opacity-80 transition-opacity"
+              onClick={() => navigate('/dashboard/profile')}
+            >
               <div className="text-right hidden sm:block">
                 <p className="text-sm font-bold text-gray-900 dark:text-slate-100">{user.name}</p>
                 <p className="text-xs text-primary font-medium">{user.rank}</p>
@@ -124,12 +139,31 @@ export const AppLayout: React.FC = () => {
         </header>
 
         {/* Scrollable Content - Using key to force re-render on route change */}
-        <main className="flex-1 overflow-y-auto p-4 sm:p-6 lg:p-8 scroll-smooth bg-gradient-to-br from-gray-50 to-white dark:from-slate-900 dark:to-slate-800">
-          <div key={location.pathname} className="max-w-7xl mx-auto">
-            <Outlet />
-          </div>
+        <main
+          id="main-content"
+          role="main"
+          aria-label="Page content"
+          className="flex-1 overflow-y-auto p-4 sm:p-6 lg:p-8 pb-24 md:pb-8 scroll-smooth bg-gradient-to-br from-gray-50 to-white dark:from-slate-900 dark:to-slate-800"
+        >
+          <ErrorBoundary>
+            <motion.div
+              key={location.pathname}
+              className="max-w-7xl mx-auto"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.4, ease: "easeOut" }}
+            >
+              <Outlet />
+            </motion.div>
+          </ErrorBoundary>
         </main>
       </div>
+
+      {/* Mobile Bottom Navigation - Hidden on desktop */}
+      <MobileBottomNav />
+
+      {/* Zalo Widget - Visible on all devices */}
+      <ZaloWidget />
     </div>
   );
 };

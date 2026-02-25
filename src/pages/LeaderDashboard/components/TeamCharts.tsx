@@ -28,8 +28,8 @@ export function TeamCharts({ teamMembers }: TeamChartsProps) {
     ];
 
     const rankDistribution = [
-        { name: 'Đại Sứ', value: teamMembers.filter(m => m.rank === UserRank.DAI_SU).length, color: '#00575A' },
-        { name: 'CTV', value: teamMembers.filter(m => m.rank === UserRank.CTV).length, color: '#FFBF00' }
+        { name: t('common.rank.daisu'), value: teamMembers.filter(m => m.rank === UserRank.DAI_SU).length, color: '#00575A' },
+        { name: t('common.rank.ctv'), value: teamMembers.filter(m => m.rank === UserRank.CTV).length, color: '#FFBF00' }
     ];
 
     const tooltipStyle = {
@@ -52,7 +52,7 @@ export function TeamCharts({ teamMembers }: TeamChartsProps) {
                 <div className="relative bg-zinc-900/50 backdrop-blur-xl rounded-2xl p-6 border border-zinc-800">
                     <h3 className="font-bold text-white text-lg mb-4 flex items-center gap-2">
                         <Activity className="w-5 h-5 text-cyan-400" />
-                        {t('teamcharts.network_health')}</h3>
+                        {t('leaderdashboard.network_health')}</h3>
                     <ResponsiveContainer width="100%" height={250}>
                         <PieChart>
                             <Pie

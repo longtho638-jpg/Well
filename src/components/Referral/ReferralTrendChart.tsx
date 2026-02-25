@@ -22,8 +22,8 @@ export const ReferralTrendChart: React.FC<ReferralTrendChartProps> = ({ data }) 
                 <TrendingUp size={24} />
             </div>
             <div>
-                <h3 className="text-2xl font-black text-white italic tracking-tighter uppercase">{t('referraltrendchart.propagation_velocity')}</h3>
-                <p className="text-zinc-500 text-[10px] font-black uppercase tracking-widest italic">{t('referraltrendchart.growth_yield_trajectory')}</p>
+                <h3 className="text-2xl font-black text-white italic tracking-tighter uppercase">{t('referral.chart.propagation_velocity')}</h3>
+                <p className="text-zinc-500 text-[10px] font-black uppercase tracking-widest italic">{t('referral.chart.growth_yield_trajectory')}</p>
             </div>
         </div>
 
@@ -83,7 +83,7 @@ export const ReferralTrendChart: React.FC<ReferralTrendChartProps> = ({ data }) 
                         strokeWidth={4}
                         dot={{ r: 0 }}
                         activeDot={{ r: 6, fill: '#fff' }}
-                        name="Nodes"
+                        name={t('referral.chart.nodes')}
                     />
                     <Line
                         yAxisId="right"
@@ -93,7 +93,7 @@ export const ReferralTrendChart: React.FC<ReferralTrendChartProps> = ({ data }) 
                         strokeWidth={4}
                         dot={{ r: 0 }}
                         activeDot={{ r: 6, fill: '#fff' }}
-                        name="Yield"
+                        name={t('referral.chart.yield')}
                     />
                 </LineChart>
             </ResponsiveContainer>

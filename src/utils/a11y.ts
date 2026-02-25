@@ -3,7 +3,7 @@
  * Phase 6: Security + i18n + A11y
  */
 
-import { useEffect, useCallback, useRef } from 'react';
+import React, { useEffect, useCallback, useRef } from 'react';
 
 // ============================================================================
 // FOCUS MANAGEMENT

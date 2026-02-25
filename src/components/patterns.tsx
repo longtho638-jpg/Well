@@ -3,7 +3,9 @@
  * Phase 8: Data and Components
  */
 
-import React, { ReactNode, ComponentType, ErrorInfo, Suspense } from 'react';
+import React, { ReactNode, ComponentType, ErrorInfo } from 'react';
+import { createPortal } from 'react-dom';
+import { useTranslation } from '@/hooks';
 
 // ============================================================================
 // ERROR BOUNDARY
@@ -77,7 +79,6 @@ interface LoadingProps {
 }
 
 export function LoadingSpinner({ size = 'md', className = '' }: LoadingProps) {
-    const { t } = useTranslation();
     const sizeClasses = {
         sm: 'w-4 h-4',
         md: 'w-8 h-8',
@@ -92,7 +93,6 @@ export function LoadingSpinner({ size = 'md', className = '' }: LoadingProps) {
 }
 
 export function LoadingSkeleton({ className = '' }: { className?: string }) {
-    const { t } = useTranslation();
     return (
         <div className={`animate-pulse bg-gray-200 dark:bg-gray-700 rounded ${className}`} />
     );
@@ -134,13 +134,14 @@ interface AsyncProps<T> {
     children: (data: T) => ReactNode;
 }
 
+interface AsyncState<T> {
+    status: 'pending' | 'fulfilled' | 'rejected';
+    data?: T;
+    error?: Error;
+}
+
 export function Async<T>({ promise, loading, error, children }: AsyncProps<T>) {
-    const { t } = useTranslation();
-    const [state, setState] = React.useState<{
-        status: 'pending' | 'fulfilled' | 'rejected';
-        data?: T;
-        error?: Error;
-    }>({ status: 'pending' });
+    const [state, setState] = React.useState<AsyncState<T>>({ status: 'pending' });
 
     React.useEffect(() => {
         promise
@@ -153,18 +154,20 @@ export function Async<T>({ promise, loading, error, children }: AsyncProps<T>) {
     }
 
     if (state.status === 'rejected') {
-        return <>{error ? error(state.error!) : <DefaultErrorFallback error={state.error!} reset={() => { }} />}</>;
+        const err = state.error || new Error('Unknown error');
+        return <>{error ? error(err) : <DefaultErrorFallback error={err} reset={() => { }} />}</>;
     }
 
-    return <>{children(state.data!)}</>;
+    if (state.status === 'fulfilled' && state.data !== undefined) {
+         return <>{children(state.data)}</>;
+    }
+
+    return null;
 }
 
 // ============================================================================
 // PORTAL
 // ============================================================================
-
-import { createPortal } from 'react-dom';
-import { useTranslation } from '@/hooks';
 
 interface PortalProps {
     children: ReactNode;
@@ -188,7 +191,6 @@ export function withLoading<P extends object>(
     Component: ComponentType<P>,
     LoadingComponent: ComponentType = LoadingSpinner
 ) {
-    const { t } = useTranslation();
     return function WithLoadingComponent(props: P & { isLoading?: boolean }) {
         const { isLoading, ...rest } = props;
         if (isLoading) return <LoadingComponent />;
@@ -203,7 +205,6 @@ export function withErrorBoundary<P extends object>(
     Component: ComponentType<P>,
     fallback?: ErrorBoundaryProps['fallback']
 ) {
-    const { t } = useTranslation();
     return function WithErrorBoundaryComponent(props: P) {
         return (
             <ErrorBoundary fallback={fallback}>

@@ -18,7 +18,6 @@ interface Props {
 }
 
 const StatIcon: React.FC<{ icon: string; color: string }> = ({ icon, color }) => {
-    const { t } = useTranslation();
   const icons: Record<string, React.ElementType> = { TrendingUp, Users, CalendarClock };
   const Icon = icons[icon] || TrendingUp;
 

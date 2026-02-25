@@ -37,7 +37,7 @@ export const PRODUCTS: Product[] = [
 export const CURRENT_USER: User = {
   id: 'VN-888',
   name: 'Nguyen Van An',
-  email: 'an.nguyen@wellnexus.vn',
+  email: 'user@example.com',
   rank: UserRank.DAI_SU,
   roleId: 6, // Added roleId
   totalSales: 16000000,

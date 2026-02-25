@@ -107,7 +107,7 @@ export class AgencyOSAgent extends BaseAgent {
         command?: string;
         context?: Record<string, unknown>;
         category?: AgencyOSCategory;
-    }): Promise<CommandExecutionResult | { success: boolean; total: number; categories: Record<string, any> }> {
+    }): Promise<CommandExecutionResult | { success: boolean; total: number; categories: Record<string, unknown> }> {
         const { action, command, context, category } = input;
 
         const canProceed = await this.checkPolicies(action, input);

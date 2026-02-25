@@ -10,10 +10,10 @@ interface CopilotSuggestionsProps {
 export const CopilotSuggestions: React.FC<CopilotSuggestionsProps> = ({ onSelect }) => {
     const { t } = useTranslation();
     const suggestionChips = [
-        { icon: DollarSign, text: "Giá sản phẩm đắt quá!", color: "from-orange-500 to-red-500" },
-        { icon: AlertCircle, text: "Tôi chưa tin tưởng sản phẩm này", color: "from-red-500 to-pink-500" },
-        { icon: Users, text: "Sản phẩm bên X rẻ hơn", color: "from-purple-500 to-indigo-500" },
-        { icon: Zap, text: "Viết kịch bản bán hàng cho tôi", color: "from-cyan-500 to-blue-500" },
+        { icon: DollarSign, text: t('copilot.suggestions.price'), color: "from-orange-500 to-red-500" },
+        { icon: AlertCircle, text: t('copilot.suggestions.trust'), color: "from-red-500 to-pink-500" },
+        { icon: Users, text: t('copilot.suggestions.competitor'), color: "from-purple-500 to-indigo-500" },
+        { icon: Zap, text: t('copilot.suggestions.script'), color: "from-cyan-500 to-blue-500" },
     ];
 
     return (
@@ -25,7 +25,6 @@ export const CopilotSuggestions: React.FC<CopilotSuggestionsProps> = ({ onSelect
             <p className="text-zinc-400 text-xs font-medium">{t('copilotsuggestions.g_i_c_u_h_i')}</p>
             <div className="grid grid-cols-2 gap-2">
                 {suggestionChips.map((chip, index) => {
-                    const { t } = useTranslation();
                     const Icon = chip.icon;
                     return (
                         <motion.button

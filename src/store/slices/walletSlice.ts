@@ -107,9 +107,10 @@ export const createWalletSlice: StateCreator<
 
     withdrawShopTokens: async (amount) => {
         const state = get();
+        const MIN_WITHDRAWAL = 2000000; // 2M VND - mirrors withdrawal-service minimum
 
-        if (amount <= 0 || amount > state.user.shopBalance) {
-            throw new Error("Invalid withdrawal amount");
+        if (amount <= 0 || amount < MIN_WITHDRAWAL || amount > state.user.shopBalance) {
+            throw new Error(`Invalid withdrawal amount. Minimum is ${MIN_WITHDRAWAL.toLocaleString('vi-VN')} đ`);
         }
 
         const taxResult = calculatePIT(amount);
@@ -143,7 +144,9 @@ export const createWalletSlice: StateCreator<
 
         const bonusRevenue = product.bonusRevenue || (product.price * 0.5);
         const userRank = state.user.rank;
-        const commissionRate = (userRank === UserRank.KHOI_NGHIEP || userRank <= UserRank.DAI_SU) ? 0.25 : 0.21;
+        // Higher rank value = lower rank (KHOI_NGHIEP=7, CTV=8 are entry-level, get 25%)
+        // Lower rank value = higher rank (THIEN_LONG=1, PHUONG_HOANG=2 are top, get 21%)
+        const commissionRate = (userRank >= UserRank.KHOI_NGHIEP) ? 0.25 : 0.21;
         const commission = bonusRevenue * commissionRate;
 
         const now = new Date();

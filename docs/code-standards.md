@@ -24,11 +24,21 @@
 - **Imports:** Group imports: External -> Internal -> Types -> Styles. Use `@/` alias.
 
 ## TypeScript
-- **Strict Mode:** Enabled. Zero-tolerance policy for `any` types (enforced via active tech debt elimination).
+- **Strict Mode:** Enabled. Zero-tolerance policy for `any` types.
+- **Prohibited Patterns:**
+  - ❌ `: any` types (use proper interfaces/types)
+  - ❌ `as any` casts (use proper type assertions or `unknown`)
+  - ❌ `@ts-ignore` without justification
+- **Recommended Patterns:**
+  - ✅ Interface definitions for external data
+  - ✅ Union types for multiple possibilities
+  - ✅ Generic types for reusable logic
+  - ✅ Type guards for runtime checks
 - **Interfaces:**
   - **Shared:** `src/types.ts`
   - **Admin Specific:** `admin-panel/src/types/`
 - **Props:** Use `interface Props` or `type Props`.
+- **Verification:** `tsc --noEmit`, `npm run lint`, and tests must pass before commit.
 
 ## Accessibility (a11y)
 - **Standards:** WCAG 2.1 AA compliance.
@@ -37,11 +47,141 @@
 - **Keyboard Navigation:** Ensure all interactive elements are focusable and usable via keyboard.
 - **Testing:** Verify with screen readers and keyboard-only navigation.
 
+## Internationalization (i18n)
+- **Framework:** React i18next with `useTranslation` hook.
+- **Required Practice:** ALL user-facing strings MUST use the `t()` function.
+- **File Organization:**
+  - `src/locales/en.ts` - English translations (base language)
+  - `src/locales/vi.ts` - Vietnamese translations
+- **Key Naming Convention:**
+  - Use domain-based organization: `auth.*`, `dashboard.*`, `checkout.*`, etc.
+  - Use camelCase for key names: `agentDashboard`, `quickPurchase`
+  - NO keys starting with numbers (invalid JavaScript property names)
+- **Prohibited Patterns:**
+  - ❌ Hardcoded strings in JSX: `<button>Login</button>`
+  - ❌ String concatenation for dynamic text
+  - ❌ Duplicate top-level keys in locale files
+- **Recommended Patterns:**
+  - ✅ Use translation function: `<button>{t('auth.login')}</button>`
+  - ✅ Interpolation for dynamic values: `t('welcome', { name: user.name })`
+  - ✅ Organize by feature/page: `checkout.guestForm.email`, `dashboard.stats.revenue`
+- **Verification:** Build must pass with zero duplicate key errors.
+
+## Error Handling & Monitoring
+- **Framework:** Sentry (Production) + Console (Development)
+- **Global Error Boundary:** All uncaught exceptions are caught by `ErrorBoundary.tsx`.
+- **Explicit Error Capture:** Use `captureError` utility for handled exceptions that need tracking.
+  ```typescript
+  import { captureError } from '@/utils/sentry';
+
+  try {
+    await riskyOperation();
+  } catch (error) {
+    captureError(error as Error, { context: 'riskyOperation' });
+    // Handle UI feedback
+  }
+  ```
+- **User Context:** Automatically tracked when user logs in via `setUserContext`.
+- **Performance Tracing:** Automatic for routing and critical interactions.
+- **Prohibited:**
+  - ❌ `console.error` in production (use `captureError`)
+  - ❌ Swallowing errors without reporting
+  - ❌ Logging Sensitive PII (Personally Identifiable Information)
+
+## Security Best Practices
+- **API Key Security:**
+  - ❌ NEVER expose API keys in client code (no `VITE_*` environment variables for secrets)
+  - ✅ Use Supabase Edge Functions for server-side API calls
+  - ✅ Store secrets in Supabase Secrets or Vercel Environment Variables
+  - **Example:**
+    ```typescript
+    // ❌ BAD - Client-side API key
+    const apiKey = import.meta.env.VITE_GEMINI_API_KEY;
+
+    // ✅ GOOD - Proxy through Edge Function
+    const { data } = await supabase.functions.invoke('gemini-chat', {
+      body: { message }
+    });
+    ```
+- **Prototype Pollution Prevention:**
+  - ❌ Direct object key assignment without validation
+  - ✅ Validate keys against `FORBIDDEN_KEYS = ['__proto__', 'constructor', 'prototype']`
+  - **Location:** See `src/utils/deep.ts` for reference implementation
+  - **Example:**
+    ```typescript
+    // ✅ GOOD - Validate before assignment
+    if (FORBIDDEN_KEYS.includes(key)) continue;
+    ```
+- **Memory Leak Prevention:**
+  - ✅ Always cleanup side effects in useEffect return function
+  - ✅ Cancel animation frames: `cancelAnimationFrame(animationId)`
+  - ✅ Remove event listeners: `window.removeEventListener('resize', handler)`
+  - **Example:**
+    ```typescript
+    useEffect(() => {
+      const animationId = requestAnimationFrame(animate);
+      window.addEventListener('resize', handleResize);
+
+      return () => {
+        cancelAnimationFrame(animationId);
+        window.removeEventListener('resize', handleResize);
+      };
+    }, []);
+    ```
+- **Type Safety:**
+  - ❌ Non-null assertions (`element!`, `value!`) bypass null checks
+  - ✅ Proper null checks with explicit error handling
+  - **Example:**
+    ```typescript
+    // ❌ BAD - Bypasses null safety
+    const root = document.getElementById('root')!;
+
+    // ✅ GOOD - Proper null check
+    const root = document.getElementById('root');
+    if (!root) throw new Error('Root element not found');
+    ```
+- **Input Validation:**
+  - ✅ Use Zod schemas for form validation (see `src/utils/validation/checkoutSchema.ts`)
+  - ✅ Sanitize user input before rendering
+  - ✅ Validate API responses before processing
+  - ✅ **Authentication Tokens:**
+    - ❌ NEVER store access tokens in `localStorage` or `cookies` (vulnerable to XSS)
+    - ✅ Store access tokens in **In-Memory** storage (variables/Zustand)
+    - ✅ Use `sessionStorage` ONLY for encrypted non-sensitive fallbacks if strictly necessary
+  - ✅ **Password Policy:**
+    - ✅ Enforce NIST guidelines (length >= 8, complexity)
+    - ✅ Use `PasswordStrengthMeter` for visual feedback
+    - ✅ Validate on both client (UX) and server (Security)
+
 ## Testing
 - **Framework:** Vitest + React Testing Library.
-- **Requirement:** 100% pass rate.
-- **Scope:** Unit tests for utilities, Component tests for UI widgets.
-- **Mocking:** Mock external services (Gemini, Firebase) to ensure isolated tests.
+- **Requirements:**
+  - ✅ 100% pass rate (zero failing tests)
+  - ✅ Coverage thresholds: 70% lines, 70% functions
+  - ✅ All critical paths must have tests
+- **Scope:**
+  - Unit tests for utilities (`src/utils/*.test.ts`)
+  - Component tests for UI widgets (`src/components/*.test.tsx`)
+  - Integration tests for user flows (`src/__tests__/*-flow.integration.test.ts`)
+- **Mocking:** Mock external services (Gemini, Supabase) to ensure isolated tests.
+- **Coverage Configuration:**
+  ```typescript
+  // vitest.config.ts
+  coverage: {
+    provider: 'v8',
+    reporter: ['text', 'json', 'html'],
+    thresholds: {
+      lines: 70,
+      functions: 70,
+      branches: 70,
+      statements: 70
+    }
+  }
+  ```
+- **Pre-commit Verification:**
+  - `npm test` - All tests must pass
+  - `npm run build` - Build must succeed
+  - `tsc --noEmit` - TypeScript compilation must succeed
 
 ## Git Workflow
 - **Commits:** Conventional Commits format (`feat:`, `fix:`, `docs:`, `refactor:`).

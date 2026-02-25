@@ -1,8 +1,8 @@
 import { BaseAgent } from '../core/BaseAgent';
 import { AgentDefinition } from '@/types/agentic';
 import { User } from '@/types';
-import { GoogleGenerativeAI, GenerativeModel } from '@google/generative-ai';
 import { agentLogger } from '@/utils/logger';
+import { supabase } from '@/lib/supabase';
 
 /** Transaction input for compliance check */
 interface ComplianceTransaction {
@@ -11,15 +11,13 @@ interface ComplianceTransaction {
 }
 
 /** Coach execution result */
-type CoachResult = string | { error: string; fallback: string; action?: string };
+export type CoachResult = string | { error: string; fallback: string; action?: string };
 
 /**
  * AI Business Coach Agent powered by Google Gemini.
  * Provides personalized coaching and tax compliance checking.
  */
 export class GeminiCoachAgent extends BaseAgent {
-  private genAI: GoogleGenerativeAI;
-  private model: GenerativeModel;
 
   constructor() {
     const definition: AgentDefinition = {
@@ -37,7 +35,7 @@ export class GeminiCoachAgent extends BaseAgent {
         { source: 'user_context', dataType: 'user_input' },
       ],
       tools_and_systems: [
-        'Google Gemini API (gemini-2.0-flash)',
+        'Google Gemini API (via Edge Function)',
         'User Store',
         'Transaction Database',
       ],
@@ -92,15 +90,6 @@ export class GeminiCoachAgent extends BaseAgent {
     };
 
     super(definition);
-
-    // Initialize Gemini API
-    const apiKey = import.meta.env.VITE_GEMINI_API_KEY;
-    // Only warn in development - production uses fallback by design
-    if (!apiKey && import.meta.env.DEV) {
-      agentLogger.debug('GeminiCoachAgent - No API key, using fallback responses');
-    }
-    this.genAI = new GoogleGenerativeAI(apiKey || 'dummy-key');
-    this.model = this.genAI.getGenerativeModel({ model: 'gemini-2.0-flash-exp' });
   }
 
   /**
@@ -119,7 +108,7 @@ export class GeminiCoachAgent extends BaseAgent {
       let output: string;
 
       switch (action) {
-        case 'getCoachAdvice':
+        case 'getCoachAdvice': {
           if (!user) throw new Error('User required for coaching advice');
           output = await this.getCoachAdvice(user, context);
 
@@ -129,6 +118,7 @@ export class GeminiCoachAgent extends BaseAgent {
             kpi.current = (kpi.current || 0) + 1;
           }
           break;
+        }
 
         case 'checkCompliance':
           if (!transaction) throw new Error('Transaction required for compliance check');
@@ -156,22 +146,37 @@ export class GeminiCoachAgent extends BaseAgent {
   }
 
   /**
+   * Helper to call Gemini Edge Function
+   */
+  private async callGemini(prompt: string, modelName: string = 'gemini-2.0-flash-exp'): Promise<string> {
+    return this.executeWithRecovery(
+      async () => {
+        const { data, error } = await supabase.functions.invoke('gemini-chat', {
+            body: { prompt, modelName }
+        });
+
+        if (error) {
+            throw new Error(`Gemini Edge Function Error: ${error.message}`);
+        }
+
+        if (!data || !data.text) {
+             if (data && data.error) throw new Error(data.error);
+             throw new Error('Gemini Edge Function returned empty response');
+        }
+
+        return data.text;
+      },
+      { actionName: 'callGemini', maxAttempts: 2 }
+    );
+  }
+
+  /**
    * Generate personalized coaching advice for a user.
    */
   private async getCoachAdvice(user: User, context?: string): Promise<string> {
-    const apiKey = import.meta.env.VITE_GEMINI_API_KEY;
-
-    // Fallback if no API key
-    if (!apiKey) {
-      return this.getFallbackCoachingAdvice(user);
-    }
-
     try {
       const prompt = this.buildCoachingPrompt(user, context);
-      const result = await this.model.generateContent(prompt);
-      const advice = result.response.text();
-
-      return advice;
+      return await this.callGemini(prompt);
     } catch (error) {
       agentLogger.error('GeminiCoachAgent API Error', error);
       return this.getFallbackCoachingAdvice(user);
@@ -182,12 +187,6 @@ export class GeminiCoachAgent extends BaseAgent {
    * Check tax compliance for a transaction.
    */
   private async checkCompliance(transaction: ComplianceTransaction): Promise<string> {
-    const apiKey = import.meta.env.VITE_GEMINI_API_KEY;
-
-    if (!apiKey) {
-      return 'Compliance check unavailable without API key.';
-    }
-
     try {
       const prompt = `You are a tax compliance expert for Vietnam.
 Transaction: ${transaction.amount} VND, Type: ${transaction.type}
@@ -195,8 +194,7 @@ Reference: Vietnam Circular 111/2013/TT-BTC (10% PIT on income > 2M VND/month)
 
 Check if this transaction complies with Vietnam tax law. Be concise (2-3 sentences).`;
 
-      const result = await this.model.generateContent(prompt);
-      return result.response.text();
+      return await this.callGemini(prompt);
     } catch (error) {
       agentLogger.error('GeminiCoachAgent Compliance Check Error', error);
       return 'Unable to verify compliance at this time.';

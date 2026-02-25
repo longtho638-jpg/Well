@@ -39,7 +39,7 @@ export const VentureFooter: React.FC<VentureFooterProps> = ({ content }) => {
                                         {content.logo}
                                     </div>
                                     <div className="text-[10px] text-zinc-500 font-black uppercase tracking-widest italic leading-none">
-                                        {t('venturefooter.strategic_ecosystem_builder')}</div>
+                                        {t('venture.footer.strategic_ecosystem_builder')}</div>
                                 </div>
                             </div>
                             <p className="text-zinc-500 text-xl font-medium leading-relaxed max-w-2xl italic">
@@ -48,41 +48,44 @@ export const VentureFooter: React.FC<VentureFooterProps> = ({ content }) => {
                         </div>
 
                         <div className="flex items-center gap-6 mt-12">
-                            <SocialLink icon={Facebook} href={content.social.facebook} />
-                            <SocialLink icon={Instagram} href={content.social.instagram} />
-                            <SocialLink icon={Linkedin} href={content.social.linkedin} />
+                            <SocialLink icon={Facebook} href={content.social.facebook} label="Facebook" />
+                            <SocialLink icon={Instagram} href={content.social.instagram} label="Instagram" />
+                            <SocialLink icon={Linkedin} href={content.social.linkedin} label="LinkedIn" />
                         </div>
                     </div>
 
                     <div className="lg:col-span-4 space-y-10">
-                        <h3 className="text-xl font-black text-white italic tracking-tighter uppercase">
+                        <h2 className="text-xl font-black text-white italic tracking-tighter uppercase">
                             {content.newsletter.title}
-                        </h3>
+                        </h2>
                         <div className="relative group">
                             <input
                                 type="email"
+                                id="venture-newsletter-email"
+                                aria-label={content.newsletter.placeholder}
                                 placeholder={content.newsletter.placeholder}
                                 className="w-full bg-zinc-900 border border-white/5 px-8 py-5 rounded-2xl text-white placeholder-zinc-600 focus:outline-none focus:border-teal-500/50 focus:bg-zinc-800 transition-all font-mono text-sm"
                             />
                             <motion.button
                                 whileHover={{ x: 5 }}
+                                aria-label="Subscribe to newsletter"
                                 className="absolute right-4 top-1/2 -translate-y-1/2 w-10 h-10 bg-teal-500 rounded-xl flex items-center justify-center text-zinc-950 shadow-xl"
                             >
                                 <Mail size={18} />
                             </motion.button>
                         </div>
                         <p className="text-[10px] font-black text-zinc-600 uppercase tracking-widest leading-relaxed">
-                            {t('venturefooter.subscribe_for_exclusive_intake')}</p>
+                            {t('venture.footer.subscribe_for_exclusive_intake')}</p>
                     </div>
                 </div>
 
                 <div className="pt-16 border-t border-white/5 flex flex-col md:flex-row justify-between items-center gap-8">
-                    <div className="text-[10px] font-black text-zinc-600 uppercase tracking-widest italic">
+                    <div className="text-[10px] font-black text-zinc-500 uppercase tracking-widest italic">
                         {content.copyright}
                     </div>
                     <div className="flex items-center gap-10">
-                        <FooterLink label="Ecosystem Privacy" />
-                        <FooterLink label="Term Sheet Compliance" />
+                        <FooterLink label={t('venture.footer.privacy')} />
+                        <FooterLink label={t('venture.footer.terms')} />
                     </div>
                 </div>
             </div>
@@ -90,11 +93,12 @@ export const VentureFooter: React.FC<VentureFooterProps> = ({ content }) => {
     );
 };
 
-const SocialLink = ({ icon: Icon, href }: { icon: React.ElementType; href: string }) => (
+const SocialLink = ({ icon: Icon, href, label }: { icon: React.ElementType; href: string; label: string }) => (
     <motion.a
         href={href}
         target="_blank"
         rel="noopener noreferrer"
+        aria-label={label}
         whileHover={{ y: -5, scale: 1.1 }}
         className="w-14 h-14 rounded-2xl bg-zinc-900 border border-white/5 flex items-center justify-center hover:border-teal-500/30 transition-all shadow-xl"
     >

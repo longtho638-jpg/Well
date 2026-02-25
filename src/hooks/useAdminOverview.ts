@@ -31,7 +31,7 @@ export function useAdminOverview() {
         pendingOrders: 0,
         systemHealth: 99.9,
     });
-    const [aiActions, setAIActions] = useState<AIAction[]>(MOCK_ACTIONS);
+    const [aiActions, setAIActions] = useState<AIAction[]>(import.meta.env.DEV ? MOCK_ACTIONS : []);
     const [loading, setLoading] = useState(false);
 
     const fetchMetrics = useCallback(async () => {
@@ -61,7 +61,7 @@ export function useAdminOverview() {
         fetchMetrics();
     }, [fetchMetrics]);
 
-    const handleAction = useCallback((id: string, decision: 'approve' | 'reject') => {
+    const handleAction = useCallback((id: string, __decision: "approve" | "reject") => {
         setAIActions(prev => prev.filter(a => a.id !== id));
         // Logic for decision would be here
     }, []);

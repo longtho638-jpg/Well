@@ -726,6 +726,45 @@ export function SearchInput({ onSearch, placeholder }: SearchInputProps) {
 
 ---
 
+## PasswordStrengthMeter Component
+
+**Location:** `src/components/Auth/PasswordStrengthMeter.tsx`
+
+### API Reference
+
+```typescript
+interface PasswordStrengthMeterProps {
+  score: number;       // 0-4 score from zxcvbn or similar
+  feedback: string[];  // Array of feedback strings
+}
+```
+
+### Props
+
+| Prop | Type | Description |
+|------|------|-------------|
+| `score` | `number` | Strength score (0=Very Weak, 4=Very Strong) |
+| `feedback` | `string[]` | List of suggestions for improvement |
+
+### Features
+
+- **Visual Indicator:** Color-coded progress bar (Red -> Orange -> Yellow -> Green)
+- **Text Feedback:** Displays strength label and specific improvement suggestions
+- **Animations:** Smooth transitions for strength changes
+
+### Example
+
+```tsx
+import PasswordStrengthMeter from '@/components/Auth/PasswordStrengthMeter';
+
+<PasswordStrengthMeter
+  score={3}
+  feedback={['Add another word or two', 'Uncommon words are better']}
+/>
+```
+
+---
+
 ## Related Documentation
 
 - [DESIGN_SYSTEM.md](../../DESIGN_SYSTEM.md) - Main design system guide

@@ -16,7 +16,6 @@ import {
     CheckCircle2,
     Users,
     Package,
-    Clock,
     Crown,
     Target,
     Star,
@@ -24,6 +23,20 @@ import {
     type LucideIcon
 } from 'lucide-react';
 import { formatVND, formatNumber } from '@/utils/format';
+
+// Raw transaction row shape returned from Supabase/store
+interface RawTransaction {
+    id?: string;
+    type?: string;
+    status?: string;
+    amount?: number;
+    description?: string;
+    created_at?: string;
+    metadata?: {
+        buyer_name?: string;
+        [key: string]: string | number | boolean | undefined;
+    };
+}
 
 export interface LiveActivity {
     id: string;
@@ -54,97 +67,46 @@ export function useDashboard() {
     const { user, revenueData, products, transactions } = useStore();
     const [activities, setActivities] = useState<LiveActivity[]>([]);
 
-    const generateActivity = useCallback((): LiveActivity => {
-        const randomName = vietnameseNames[Math.floor(Math.random() * vietnameseNames.length)];
-        const activityTypes: Array<LiveActivity['type']> = ['reward', 'order', 'rank_up', 'withdrawal', 'referral'];
-        const randomType = activityTypes[Math.floor(Math.random() * activityTypes.length)];
-
-        const activityTemplates = {
-            reward: {
-                icon: Coins,
-                color: 'text-yellow-600',
-                bgColor: 'bg-yellow-50 dark:bg-yellow-900/20',
-                messages: [
-                    { key: 'dashboard.liveActivities.activities.earnedGrow', amount: Math.floor(Math.random() * 900) + 100 },
-                    { key: 'dashboard.liveActivities.activities.rewardedGrow', amount: Math.floor(Math.random() * 1500) + 500 },
-                    { key: 'dashboard.liveActivities.activities.teamBonusGrow', amount: Math.floor(Math.random() * 2000) + 800 }
-                ] as { key: TranslationKey; amount?: number }[]
-            },
-            order: {
-                icon: ShoppingBag,
-                color: 'text-green-600',
-                bgColor: 'bg-green-50 dark:bg-green-900/20',
-                messages: [
-                    { key: 'dashboard.liveActivities.activities.completedOrder', amount: Math.floor(Math.random() * 8000000) + 2000000 },
-                    { key: 'dashboard.liveActivities.activities.soldSuccess', amount: Math.floor(Math.random() * 15000000) + 5000000 },
-                    { key: 'dashboard.liveActivities.activities.finishedOrder', amount: Math.floor(Math.random() * 20000000) + 10000000 }
-                ] as { key: TranslationKey; amount?: number }[]
-            },
-            rank_up: {
-                icon: Award,
-                color: 'text-purple-600',
-                bgColor: 'bg-purple-50 dark:bg-purple-900/20',
-                messages: [
-                    { key: 'dashboard.liveActivities.activities.rankedUpGold' },
-                    { key: 'dashboard.liveActivities.activities.rankedUpPartner' },
-                    { key: 'dashboard.liveActivities.activities.rankedUpFounder' },
-                    { key: 'dashboard.liveActivities.activities.rankedUpSilver' }
-                ] as { key: TranslationKey; amount?: number }[]
-            },
-            withdrawal: {
-                icon: TrendingDown,
-                color: 'text-blue-600',
-                bgColor: 'bg-blue-50 dark:bg-blue-900/20',
-                messages: [
-                    { key: 'dashboard.liveActivities.activities.withdrew', amount: Math.floor(Math.random() * 30000000) + 10000000 },
-                    { key: 'dashboard.liveActivities.activities.transferredSuccess', amount: Math.floor(Math.random() * 50000000) + 20000000 }
-                ] as { key: TranslationKey; amount?: number }[]
-            },
-            referral: {
-                icon: Gift,
-                color: 'text-pink-600',
-                bgColor: 'bg-pink-50 dark:bg-pink-900/20',
-                messages: [
-                    { key: 'dashboard.liveActivities.activities.referredPartner' },
-                    { key: 'dashboard.liveActivities.activities.referralBonus', amount: Math.floor(Math.random() * 5000000) + 1000000 },
-                    { key: 'dashboard.liveActivities.activities.teamExpanded' }
-                ] as { key: TranslationKey; amount?: number }[]
-            }
-        };
-
-        const template = activityTemplates[randomType];
-        const randomMessage = template.messages[Math.floor(Math.random() * template.messages.length)];
-        let messageText = t(randomMessage.key);
-        const amount = 'amount' in randomMessage ? randomMessage.amount : undefined;
-
-        if (amount !== undefined) {
-            const formattedAmount = randomType === 'reward' ? formatNumber(amount) : formatVND(amount);
-            messageText = t(randomMessage.key, { amount: formattedAmount });
-        }
-
-        return {
-            id: `activity-${Date.now()}-${Math.random()}`,
-            type: randomType,
-            userName: randomName,
-            user: randomName, // Alias for compatibility
-            message: messageText,
-            detail: messageText, // Alias for compatibility
-            timestamp: new Date(),
-            icon: template.icon,
-            color: template.color,
-            bgColor: template.bgColor,
-            amount,
-            location: 'HCM' // Default location
-        };
-    }, [t]);
-
     useEffect(() => {
-        setActivities(Array.from({ length: 5 }, () => generateActivity()));
-        const interval = setInterval(() => {
-            setActivities(prev => [generateActivity(), ...prev].slice(0, 10));
-        }, Math.random() * 2000 + 3000);
-        return () => clearInterval(interval);
-    }, [generateActivity]);
+        if (!transactions) return;
+
+        // Map actual transactions to LiveActivity format
+        const recentTxs = transactions.slice(0, 10).map((tx: RawTransaction) => {
+            let icon = Coins;
+            let color = 'text-gray-600';
+            let bgColor = 'bg-gray-50 dark:bg-gray-900/20';
+            let type: LiveActivity['type'] = 'order';
+
+            if (tx.type === 'direct_commission' || tx.type === 'team_commission') {
+                type = 'reward';
+                icon = Award;
+                color = 'text-yellow-600';
+                bgColor = 'bg-yellow-50 dark:bg-yellow-900/20';
+            } else if (tx.type === 'withdrawal') {
+                type = 'withdrawal';
+                icon = TrendingDown;
+                color = 'text-blue-600';
+                bgColor = 'bg-blue-50 dark:bg-blue-900/20';
+            }
+
+            return {
+                id: tx.id || `activity-${Date.now()}-${Math.random()}`,
+                type,
+                userName: tx.metadata?.buyer_name || user.name || 'User',
+                user: tx.metadata?.buyer_name || user.name || 'User',
+                message: tx.description || t('dashboard.recentActivity.completedQuest'),
+                detail: tx.description || t('dashboard.recentActivity.completedQuest'),
+                timestamp: new Date(tx.created_at || Date.now()),
+                icon,
+                color,
+                bgColor,
+                amount: tx.amount,
+                location: 'VN'
+            };
+        });
+
+        setActivities(recentTxs);
+    }, [transactions, t, user.name]);
 
     const walletStats = useMemo(() => ({
         total: user.shopBalance + (user.estimatedBonus || 0),
@@ -153,11 +115,32 @@ export function useDashboard() {
         teamVolume: user.teamVolume || 0
     }), [user]);
 
-    const revenueBreakdown = useMemo(() => [
-        { name: t('dashboard.revenueBreakdown.directSales'), value: user.totalSales * 0.7, color: '#00575A' },
-        { name: t('dashboard.revenueBreakdown.teamBonus'), value: user.totalSales * 0.25, color: '#FFBF00' },
-        { name: t('dashboard.revenueBreakdown.referral'), value: user.totalSales * 0.05, color: '#22c55e' }
-    ], [user.totalSales, t]);
+    const revenueBreakdown = useMemo(() => {
+        if (!transactions || transactions.length === 0) {
+            return [
+                { name: t('dashboard.revenueBreakdown.directSales'), value: 0, color: '#00575A' },
+                { name: t('dashboard.revenueBreakdown.teamBonus'), value: 0, color: '#FFBF00' },
+                { name: t('dashboard.revenueBreakdown.referral'), value: 0, color: '#22c55e' }
+            ];
+        }
+
+        // Calculate actual sums from transactions
+        let directSum = 0;
+        let teamSum = 0;
+
+        transactions.forEach((tx: RawTransaction) => {
+            if (tx.status === 'completed') {
+                if (tx.type === 'direct_commission') directSum += Number(tx.amount) || 0;
+                if (tx.type === 'team_commission') teamSum += Number(tx.amount) || 0;
+            }
+        });
+
+        return [
+            { name: t('dashboard.revenueBreakdown.directSales'), value: directSum, color: '#00575A' },
+            { name: t('dashboard.revenueBreakdown.teamBonus'), value: teamSum, color: '#FFBF00' },
+            { name: t('dashboard.revenueBreakdown.referral'), value: 0, color: '#22c55e' } // Future spec
+        ];
+    }, [transactions, t]);
 
     const recentActivities = useMemo(() => [
         {

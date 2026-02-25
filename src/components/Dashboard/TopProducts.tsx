@@ -24,7 +24,7 @@ export const TopProducts: React.FC<Props> = ({ products }) => {
       <div className="space-y-6">
         {products.map((product) => (
             <div key={product.id} className="flex items-center gap-3">
-                <img src={product.imageUrl} alt={product.name} className="w-12 h-12 rounded-lg object-cover bg-gray-100 dark:bg-slate-700" />
+                <img src={product.imageUrl} alt={product.name} loading="lazy" className="w-12 h-12 rounded-lg object-cover bg-gray-100 dark:bg-slate-700" />
                 <div className="flex-1 min-w-0">
                     <div className="flex justify-between mb-1">
                         <p className="text-sm font-bold text-gray-800 dark:text-slate-100 truncate">{product.name}</p>

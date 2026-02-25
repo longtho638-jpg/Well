@@ -28,7 +28,6 @@ export function AnimatedCounter({
     label,
     icon,
 }: CounterProps) {
-    const { t } = useTranslation();
     const [count, setCount] = useState(0);
     const ref = useRef<HTMLDivElement>(null);
     const isInView = useInView(ref, { once: true, margin: '-100px' });
@@ -73,7 +72,7 @@ export function AnimatedCounter({
         >
             <div className="flex items-center justify-center gap-2 mb-2">
                 {icon}
-                <span className="text-4xl md:text-5xl font-black text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 to-cyan-400">
+                <span className="text-2xl sm:text-4xl md:text-5xl font-black text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 to-cyan-400">
                     {prefix}{formatNumber(count)}{suffix}
                 </span>
             </div>
@@ -98,7 +97,6 @@ interface HeroStatsProps {
 }
 
 export function HeroStats({ stats }: HeroStatsProps) {
-    const { t } = useTranslation();
     return (
         <motion.div
             className="w-full max-w-4xl mx-auto mt-16"
@@ -139,7 +137,6 @@ interface SocialProofTickerProps {
 }
 
 export function SocialProofTicker({ items }: SocialProofTickerProps) {
-    const { t } = useTranslation();
     const [currentIndex, setCurrentIndex] = useState(0);
 
     useEffect(() => {
@@ -154,7 +151,7 @@ export function SocialProofTicker({ items }: SocialProofTickerProps) {
 
     return (
         <motion.div
-            className="fixed bottom-6 left-6 z-50"
+            className="fixed bottom-20 sm:bottom-6 left-4 sm:left-6 z-40 max-w-[calc(100vw-2rem)] sm:max-w-sm"
             initial={{ opacity: 0, x: -20 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ delay: 2 }}
@@ -200,7 +197,6 @@ interface TestimonialsProps {
 }
 
 export function TestimonialsCarousel({ testimonials }: TestimonialsProps) {
-    const { t } = useTranslation();
     const [current, setCurrent] = useState(0);
 
     useEffect(() => {
@@ -220,7 +216,7 @@ export function TestimonialsCarousel({ testimonials }: TestimonialsProps) {
                 >
                     {testimonials.map((testimonial, index) => (
                         <div key={index} className="w-full flex-shrink-0 px-4">
-                            <div className="bg-zinc-900/50 border border-zinc-800 rounded-3xl p-8 md:p-12 text-center">
+                            <div className="bg-zinc-900/50 border border-zinc-800 rounded-3xl p-6 sm:p-8 md:p-12 text-center">
                                 {/* Stars */}
                                 <div className="flex justify-center gap-1 mb-6">
                                     {Array.from({ length: 5 }).map((_, i) => (
@@ -256,15 +252,18 @@ export function TestimonialsCarousel({ testimonials }: TestimonialsProps) {
                 </motion.div>
             </div>
 
-            {/* Dots */}
+            {/* Dots - with adequate touch targets */}
             <div className="flex justify-center gap-2 mt-6">
                 {testimonials.map((_, index) => (
                     <button
                         key={index}
                         onClick={() => setCurrent(index)}
-                        className={`w-2 h-2 rounded-full transition-all ${index === current ? 'bg-emerald-500 w-6' : 'bg-zinc-700'
-                            }`}
-                    />
+                        className="p-2 -m-1 touch-manipulation"
+                        aria-label={`Go to testimonial ${index + 1}`}
+                    >
+                        <span className={`block rounded-full transition-all ${index === current ? 'bg-emerald-500 w-6 h-2' : 'bg-zinc-700 w-2 h-2'
+                            }`} />
+                    </button>
                 ))}
             </div>
         </div>
@@ -310,42 +309,6 @@ export function TrustBadges({ badges }: TrustBadgesProps) {
 // ============================================================================
 // DATA FOR LANDING PAGE
 // ============================================================================
-
-export const HERO_STATS = [
-    { value: 1243, suffix: '+', label: 'Partners Active' },
-    { value: 5200000000, prefix: '₫', label: 'GMV Total' },
-    { value: 320, suffix: '%', label: 'Tăng trưởng YoY' },
-    { value: 157, label: 'Slots còn lại' },
-];
-
-export const SOCIAL_PROOF_ITEMS: ProofItem[] = [
-    { name: 'Minh Anh', action: 'vừa gia nhập Founders Club', time: '2 phút trước' },
-    { name: 'Hoàng Nam', action: 'đạt hạng Silver Partner', time: '5 phút trước' },
-    { name: 'Thanh Hà', action: 'rút hoa hồng ₫12,500,000', time: '8 phút trước' },
-    { name: 'Tuấn Anh', action: 'xây dựng team 15 người', time: '12 phút trước' },
-    { name: 'Ngọc Linh', action: 'đặt hàng ₫2,800,000', time: '15 phút trước' },
-];
-
-export const TESTIMONIALS: Testimonial[] = [
-    {
-        name: 'Nguyễn Minh Anh',
-        role: 'Gold Partner • TP.HCM',
-        content: 'Từ khi tham gia WellNexus, thu nhập của mình tăng 3 lần chỉ sau 6 tháng. Công nghệ AI giúp mình bán hàng hiệu quả hơn rất nhiều!',
-        rating: 5,
-    },
-    {
-        name: 'Trần Hoàng Nam',
-        role: 'Platinum Partner • Hà Nội',
-        content: 'Mô hình Social Commerce của WellNexus rất khác biệt. Mình có thể xây dựng đội ngũ và có thu nhập thụ động thực sự.',
-        rating: 5,
-    },
-    {
-        name: 'Lê Thanh Hà',
-        role: 'Diamond Partner • Đà Nẵng',
-        content: 'Team hỗ trợ rất tận tâm, sản phẩm chất lượng cao. Đây là cơ hội kinh doanh tốt nhất mình từng gặp!',
-        rating: 5,
-    },
-];
 
 export const TRUST_BADGES = [
     { name: 'VNPay' },

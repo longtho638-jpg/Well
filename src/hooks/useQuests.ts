@@ -1,8 +1,7 @@
-import { useState, useCallback, useMemo } from 'react';
+import { useState, useCallback, useMemo, useRef } from 'react';
 import { useStore } from '@/store';
 import { questService } from '@/services/questService';
 import { Quest } from '@/types';
-import { useTranslation } from '@/hooks';
 
 import { LucideIcon } from 'lucide-react';
 
@@ -17,12 +16,12 @@ export interface FullQuest extends Quest {
 }
 
 export function useQuests() {
-    const { t } = useTranslation();
     const quests = useStore(state => state.quests);
     const completeQuest = useStore(state => state.completeQuest);
 
     const [claimableIds, setClaimableIds] = useState<Set<string>>(new Set());
     const [flyingTokens, setFlyingTokens] = useState<Array<{ id: string; x: number; y: number }>>([]);
+    const timerRefs = useRef<ReturnType<typeof setTimeout>[]>([]);
 
     const fullQuests = useMemo(() => {
         return quests.map(q => {
@@ -47,9 +46,10 @@ export function useQuests() {
     const handleStartQuest = useCallback((questId: string, navigationPath?: string): boolean => {
         if (navigationPath) {
             // In a real app, this would redirect. Here we simulate completion readiness.
-            setTimeout(() => {
+            const timer = setTimeout(() => {
                 setClaimableIds(prev => new Set(prev).add(questId));
             }, 1500);
+            timerRefs.current.push(timer);
             return true;
         }
         return false;
