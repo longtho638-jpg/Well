@@ -116,13 +116,19 @@ export function usePolicyEngine() {
         const simProfit = simGMV - simTotalPayout - fixedCost;
         const profitMargin = simGMV > 0 ? (simProfit / simGMV) * 100 : 0;
 
+        // Strategic Forecast Metrics
+        const strategicCandidates = Math.floor(simPartners * 0.015);
+        const projectedSaaSRevenue = strategicCandidates * whiteLabelGMV * 0.20;
+
         return {
             simGMV,
             simTotalPayout,
             simProfit,
-            profitMargin
+            profitMargin,
+            strategicCandidates,
+            projectedSaaSRevenue
         };
-    }, [simPartners, simAOV, fixedCost, totalPayoutPercent]);
+    }, [simPartners, simAOV, fixedCost, totalPayoutPercent, whiteLabelGMV]);
 
     return {
         loading,
