@@ -2,6 +2,7 @@ import { render } from '@testing-library/react';
 import { screen, fireEvent } from '@testing-library/dom';
 import { describe, it, expect, vi } from 'vitest';
 import { Button } from './Button';
+import React from 'react';
 
 describe('Button', () => {
   it('renders children correctly', () => {
@@ -53,5 +54,12 @@ describe('Button', () => {
 
     rerender(<Button size="lg">Large</Button>);
     expect(screen.getByRole('button')).toHaveClass('text-base');
+  });
+
+  it('forwards ref', () => {
+    const ref = React.createRef<HTMLButtonElement>();
+    render(<Button ref={ref}>Ref Button</Button>);
+    expect(ref.current).toBeInstanceOf(HTMLButtonElement);
+    expect(ref.current).toHaveTextContent('Ref Button');
   });
 });

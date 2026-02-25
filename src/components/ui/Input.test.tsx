@@ -3,6 +3,7 @@ import { screen, fireEvent } from '@testing-library/dom';
 import { describe, it, expect } from 'vitest';
 import { Input } from './Input';
 import { Mail } from 'lucide-react';
+import React from 'react';
 
 describe('Input', () => {
   it('renders correctly', () => {
@@ -25,19 +26,31 @@ describe('Input', () => {
 
   it('shows error message', () => {
     render(<Input error="Invalid input" />);
-    expect(screen.getByText('Invalid input')).toBeInTheDocument();
-    expect(screen.getByRole('textbox')).toHaveAttribute('aria-invalid', 'true');
+    const errorMessage = screen.getByText('Invalid input');
+    const input = screen.getByRole('textbox');
+
+    expect(errorMessage).toBeInTheDocument();
+    expect(input).toHaveAttribute('aria-invalid', 'true');
+    expect(input).toHaveAttribute('aria-describedby', errorMessage.id);
   });
 
   it('shows helper text', () => {
     render(<Input helperText="Helpful tip" />);
-    expect(screen.getByText('Helpful tip')).toBeInTheDocument();
+    const helperText = screen.getByText('Helpful tip');
+    const input = screen.getByRole('textbox');
+
+    expect(helperText).toBeInTheDocument();
+    expect(input).toHaveAttribute('aria-describedby', helperText.id);
   });
 
   it('prioritizes error over helper text', () => {
     render(<Input error="Error" helperText="Helper" />);
-    expect(screen.getByText('Error')).toBeInTheDocument();
+    const errorMessage = screen.getByText('Error');
+    const input = screen.getByRole('textbox');
+
+    expect(errorMessage).toBeInTheDocument();
     expect(screen.queryByText('Helper')).not.toBeInTheDocument();
+    expect(input).toHaveAttribute('aria-describedby', errorMessage.id);
   });
 
   it('renders with icon', () => {
@@ -53,5 +66,11 @@ describe('Input', () => {
   it('can be disabled', () => {
     render(<Input disabled />);
     expect(screen.getByRole('textbox')).toBeDisabled();
+  });
+
+  it('forwards ref', () => {
+    const ref = React.createRef<HTMLInputElement>();
+    render(<Input ref={ref} />);
+    expect(ref.current).toBeInstanceOf(HTMLInputElement);
   });
 });

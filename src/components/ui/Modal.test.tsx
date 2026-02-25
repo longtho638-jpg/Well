@@ -58,4 +58,20 @@ describe('Modal', () => {
     render(<Modal {...defaultProps} showCloseButton={false} />);
     expect(screen.queryByLabelText('Close modal')).not.toBeInTheDocument();
   });
+
+  it('forwards ref', () => {
+    const ref = React.createRef<HTMLDivElement>();
+    render(<Modal {...defaultProps} ref={ref} />);
+    // The ref is attached to the motion.div which is the inner modal content
+    expect(ref.current).toBeInstanceOf(HTMLDivElement);
+    expect(ref.current).toHaveTextContent('Test Modal');
+  });
+
+  it('renders in the document body via portal', () => {
+    render(<Modal {...defaultProps} />);
+    const dialog = screen.getByRole('dialog');
+    // Since we use createPortal(..., document.body), the modal should be a direct child of body
+    // or at least not inside the testing-library container.
+    expect(dialog.parentElement).toBe(document.body);
+  });
 });
