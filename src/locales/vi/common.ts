@@ -1,0 +1,177 @@
+export const common = {
+pwa: {
+    install: {
+      title: "Cài đặt WellNexus",
+      description: "Cài đặt ứng dụng để có trải nghiệm tốt hơn với chế độ offline và tốc độ nhanh hơn.",
+      install: "Cài đặt",
+      dismiss: "Để sau"
+    },
+    update: {
+      title: "Có phiên bản mới",
+      description: "Phiên bản mới của WellNexus đã sẵn sàng. Cập nhật ngay để có tính năng mới nhất.",
+      update: "Cập nhật",
+      dismiss: "Để sau"
+    },
+    offline: {
+      title: "Bạn đang offline",
+      description: "Vui lòng kiểm tra kết nối internet của bạn."
+    }
+  },
+common: {
+    loading: "Đang tải...",
+    error: "Có lỗi xảy ra",
+    success: "Thành công",
+    failed: "Thất bại",
+    save: "Lưu",
+    cancel: "Hủy",
+    close: "Đóng",
+    delete: "Xóa",
+    confirm: "Xác nhận",
+    back: "Quay lại",
+    next: "Tiếp theo",
+    submit: "Gửi",
+    search: "Tìm kiếm",
+    filter: "Lọc",
+    copy: "Sao chép",
+    sort: "Sắp xếp",
+    viewAll: "Xem tất cả",
+    viewDetails: "Xem chi tiết",
+    notSupportedYet: "Tính năng sắp ra mắt",
+    blocked: "Bị Chặn",
+    currency: {
+      vnd: "đ",
+      grow: "Token",
+      shop: "SHOP"
+    },
+    location: {
+      vietnam: "Việt Nam"
+    },
+    rank: {
+      daisu: "Đại Sứ",
+      ctv: "Cộng Tác Viên"
+    },
+    pending: "[MISSING] pending",
+    you: "[MISSING] you"
+  },
+nav: {
+    home: "Trang chủ",
+    commission_wallet: "Ví hoa hồng",
+    orders: "Đơn hàng",
+    profile: "Hồ sơ",
+    dashboard: "Bảng điều khiển",
+    network: "Mạng lưới",
+    products: "Sản Phẩm",
+    partner: "Partner",
+    ventureDescription: "Gia nhập đội ngũ 200+ Co-Founders",
+    marketplace: "Cửa hàng",
+    wallet: "Ví tiền",
+    team: "Đội nhóm",
+    copilot: "Trợ lý AI",
+    referral: "Giới thiệu",
+    healthCoach: "Huấn luyện sức khỏe",
+    leaderboard: "Bảng xếp hạng",
+    marketingTools: "Công cụ Marketing",
+    healthCheck: "Kiểm tra hệ thống",
+    admin: "Quản trị",
+    settings: "Cài đặt",
+    logout: "Đăng xuất",
+    darkMode: "Giao diện tối",
+    lightMode: "Giao diện sáng",
+    company: "Công Ty",
+    aboutUs: "Về Chúng Tôi",
+    careers: "Tuyển Dụng",
+    ventureProgram: "Chương Trình Venture",
+    withdrawal: "Rút tiền",
+    agentDashboard: "Bảng điều khiển Agent",
+    openMenu: "Mở menu",
+    notifications: "Thông báo",
+    skipToContent: "Chuyển đến nội dung chính",
+    pageContent: "Nội dung trang",
+    mainNavigation: "Điều hướng chính",
+    primaryNavigation: "Điều hướng chính",
+    wellnexusHome: "Trang chủ WellNexus",
+    navigateTo: "Đi đến {{label}}",
+    switchToLight: "Chuyển sang giao diện sáng",
+    switchToDark: "Chuyển sang giao diện tối",
+    rankLabel: "Hạng: {{rank}}",
+    profilePicture: "Ảnh đại diện"
+  },
+errors: {
+    passwordsDoNotMatch: "Mật khẩu không khớp",
+    signupFailed: "Đăng ký thất bại. Vui lòng thử lại.",
+    invalidCredentials: "Email hoặc mật khẩu không đúng.",
+    timeout: "Đăng nhập hết thời gian. Vui lòng kiểm tra kết nối mạng.",
+    emailNotConfirmed: "Email chưa được xác nhận. Vui lòng kiểm tra hộp thư.",
+    network: "Lỗi kết nối mạng. Vui lòng thử lại.",
+    unauthorized: "Bạn không có quyền truy cập.",
+    notFound: "Không tìm thấy trang này.",
+    serverError: "Lỗi máy chủ. Vui lòng thử lại sau.",
+    validation: {
+      required: "Trường này là bắt buộc",
+      email: "Email không hợp lệ",
+      phone: "Số điện thoại không hợp lệ",
+      minLength: "Tối thiểu {min} ký tự",
+      maxLength: "Tối đa {max} ký tự",
+      passwordMatch: "Mật khẩu không khớp",
+      minAmount: "Số tiền tối thiểu {amount}",
+      maxAmount: "Số tiền tối đa {amount}",
+      insufficientBalance: "Số dư không đủ"
+    }
+  },
+success: {
+    saved: "Đã lưu thành công!",
+    updated: "Đã cập nhật thành công!",
+    deleted: "Đã xóa thành công!",
+    sent: "Đã gửi thành công!",
+    copied: "Đã sao chép!",
+    questCompleted: "Hoàn thành nhiệm vụ!",
+    purchaseSuccess: "Mua hàng thành công!",
+    withdrawalSuccess: "Yêu cầu rút tiền thành công!",
+    stakingSuccess: "Gửi tiết kiệm thành công!",
+    unstakingSuccess: "Rút tiết kiệm thành công!"
+  },
+errorboundary: {
+    oops_something_went_wrong: "Rất tiếc! Đã xảy ra lỗi",
+    we_ve_encountered_an_unexpecte: "Chúng tôi gặp phải lỗi không mong muốn. Vui lòng thử lại.",
+    error_details_dev_only: "Chi Tiết Lỗi (Chỉ Dành Cho Nhà Phát Triển)",
+    reload_page: "Tải Lại Trang",
+    go_home: "Về Trang Chủ"
+  },
+button: {
+    loading: "Đang tải..."
+  },
+sidebar: {
+    wellnexus: "WellNexus",
+    social_commerce: "Thương Mại Xã Hội",
+    the_coach: "Huấn Luyện Viên",
+    day_3_30: "Ngày 3/30",
+    xp: "XP",
+    get_ai_advice: "Nhận Tư Vấn AI",
+    coachFallback: "Hãy tập trung chia sẻ giá trị hôm nay. Doanh số sẽ theo sau!",
+    getAiAdviceLabel: "Nhận tư vấn từ huấn luyện viên AI",
+    questList: "Danh sách nhiệm vụ"
+  },
+notification: {
+    dismiss: "Dismiss"
+  },
+notfound: {
+    title: "404 - Không tìm thấy trang",
+    description: "Rất tiếc, trang bạn đang tìm kiếm không tồn tại hoặc đã bị di chuyển.",
+    back_home: "Quay lại trang chủ"
+  },
+app: {
+    commission_wallet: "Ví Hoa Hồng"
+  },
+patterns: {
+    th_l_i: "Thử lại",
+    x_y_ra_l_i: "Xảy ra lỗi"
+  },
+notificationcenter: {
+    actions_required: "Hành Động Cần Thực Hiện",
+    audit_center: "Trung Tâm Kiểm Toán",
+    clear_history: "Xóa Lịch Sử",
+    no_new_activity: "Không Có Hoạt Động Mới",
+    notifications: "Thông Báo",
+    we_ll_notify_you_when_somethin: "Chúng tôi sẽ thông báo khi có hoạt động mới"
+  }
+};
