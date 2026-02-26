@@ -127,7 +127,13 @@ export function useAuth() {
 
         return { data: { user, session: { access_token: 'mock-token' } }, error: null };
       }
-      return supabase.auth.signInWithPassword({ email, password });
+      const { data, error } = await supabase.auth.signInWithPassword({ email, password });
+
+      if (error) {
+        authLogger.error('Sign in failed', error);
+      }
+
+      return { data, error };
     },
 
     signUp: async (email: string, password: string, name: string) => {
@@ -140,7 +146,10 @@ export function useAuth() {
         },
       });
 
-      if (error) throw error;
+      if (error) {
+        authLogger.error('Sign up failed', error);
+        throw error;
+      }
 
       // 2. Create user record in users table
       if (data.user) {
@@ -178,7 +187,13 @@ export function useAuth() {
         setUser(null);
         return { error: null };
       }
-      return supabase.auth.signOut();
+      const { error } = await supabase.auth.signOut();
+
+      if (error) {
+        authLogger.error('Sign out failed', error);
+      }
+
+      return { error };
     },
   };
 }

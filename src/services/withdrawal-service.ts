@@ -68,11 +68,15 @@ export const withdrawalService = {
         p_bank_name: bankInfo.bankName,
         p_bank_account_number: bankInfo.accountNumber,
         p_bank_account_name: bankInfo.accountName,
-      }); // rpc returns 'any' usually, assuming string ID
+      });
 
       if (error) {
         uiLogger.error('Create withdrawal request failed', error);
-        throw new PaymentError(error.message || 'Failed to create withdrawal request', { operation: 'createWithdrawal' });
+        throw fromSupabaseError(error, { operation: 'createWithdrawal' });
+      }
+
+      if (!data) {
+        throw new PaymentError('No withdrawal ID returned from server', { operation: 'createWithdrawal' });
       }
 
       const requestId = data as string; // Returns request ID
