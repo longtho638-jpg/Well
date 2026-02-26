@@ -1,5 +1,5 @@
 import { readFileSync } from 'fs';
-import { join } from 'path';
+import { join, dirname } from 'path';
 import ts from 'typescript';
 
 /**
@@ -18,29 +18,25 @@ function parseLocaleFile(filePath) {
   );
 
   let localeData = {};
+  const imports = {};
 
-  // Find the default export or the exported object
-  // This is a simplified traversal to find the exported object literal
-  function visit(node) {
-    if (ts.isExportAssignment(node)) {
-      // export default { ... }
-      if (ts.isObjectLiteralExpression(node.expression)) {
-        localeData = parseObjectLiteral(node.expression);
+  // First pass: collect imports
+  sourceFile.statements.forEach(node => {
+    if (ts.isImportDeclaration(node)) {
+      const modulePath = node.moduleSpecifier.getText(sourceFile).replace(/['"]/g, '');
+      if (node.importClause?.namedBindings && ts.isNamedImports(node.importClause.namedBindings)) {
+        node.importClause.namedBindings.elements.forEach(element => {
+          const name = element.name.getText(sourceFile);
+          imports[name] = { path: modulePath };
+        });
       }
-    } else if (ts.isVariableStatement(node)) {
-      // Handle 'export const vi = { ... }'
-      const declarationList = node.declarationList;
-      declarationList.declarations.forEach(declaration => {
-        if (declaration.initializer && ts.isObjectLiteralExpression(declaration.initializer)) {
-          // We found an object literal assigned to a variable export
-          // Merge it (in case there are multiple, though unlikely for locale files)
-          const obj = parseObjectLiteral(declaration.initializer);
-          localeData = { ...localeData, ...obj };
-        }
-      });
+      if (node.importClause?.name) {
+        // Default import
+        const name = node.importClause.name.getText(sourceFile);
+        imports[name] = { path: modulePath, isDefault: true };
+      }
     }
-    ts.forEachChild(node, visit);
-  }
+  });
 
   function parseObjectLiteral(node) {
     const obj = {};
@@ -56,9 +52,72 @@ function parseLocaleFile(filePath) {
           // Fallback for other types or dynamic values - treat as leaf
           obj[key] = 'VALUE';
         }
+      } else if (ts.isSpreadAssignment(prop)) {
+        // Handle spread operator: ...network
+        const spreadName = prop.expression.getText(sourceFile);
+
+        // Resolve the imported content
+        if (imports[spreadName]) {
+          const importedPath = imports[spreadName].path;
+          let fullImportedPath = join(dirname(filePath), importedPath);
+          if (!fullImportedPath.endsWith('.ts')) fullImportedPath += '.ts';
+
+          try {
+            // Recursively parse the imported file
+            // Note: parseLocaleFile returns flattened keys, but here we need the object structure
+            // So we'll use a slightly different approach: extract raw data
+            const importedContent = readFileSync(fullImportedPath, 'utf-8');
+            const importedSource = ts.createSourceFile(fullImportedPath, importedContent, ts.ScriptTarget.Latest, true);
+
+            // Simplified: look for the object exported with the same name or default
+            ts.forEachChild(importedSource, (child) => {
+              if (ts.isVariableStatement(child)) {
+                child.declarationList.declarations.forEach(decl => {
+                  if (decl.name.getText(importedSource) === spreadName && decl.initializer && ts.isObjectLiteralExpression(decl.initializer)) {
+                    Object.assign(obj, parseObjectLiteralFromOtherFile(decl.initializer, importedSource));
+                  }
+                });
+              } else if (ts.isExportAssignment(child) && ts.isObjectLiteralExpression(child.expression)) {
+                Object.assign(obj, parseObjectLiteralFromOtherFile(child.expression, importedSource));
+              }
+            });
+          } catch (e) {
+            console.warn(`Could not resolve spread: ${spreadName} at ${fullImportedPath}`);
+          }
+        }
       }
     });
     return obj;
+  }
+
+  function parseObjectLiteralFromOtherFile(node, source) {
+    const obj = {};
+    node.properties.forEach(prop => {
+      if (ts.isPropertyAssignment(prop)) {
+        const key = prop.name.getText(source).replace(/['"]/g, '');
+        if (ts.isObjectLiteralExpression(prop.initializer)) {
+          obj[key] = parseObjectLiteralFromOtherFile(prop.initializer, source);
+        } else {
+          obj[key] = 'VALUE';
+        }
+      }
+    });
+    return obj;
+  }
+
+  function visit(node) {
+    if (ts.isVariableStatement(node)) {
+      node.declarationList.declarations.forEach(decl => {
+        if (decl.initializer && ts.isObjectLiteralExpression(decl.initializer)) {
+          const name = decl.name.getText(sourceFile);
+          // Only parse the main exported objects (vi, en, etc) or all top-level objects
+          Object.assign(localeData, parseObjectLiteral(decl.initializer));
+        }
+      });
+    } else if (ts.isExportAssignment(node) && ts.isObjectLiteralExpression(node.expression)) {
+      Object.assign(localeData, parseObjectLiteral(node.expression));
+    }
+    ts.forEachChild(node, visit);
   }
 
   visit(sourceFile);
