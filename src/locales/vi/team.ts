@@ -324,14 +324,4 @@ agentDashboard: {
     },
     training: "[MISSING] training"
   },
-partnerdetailmodal: {
-    cancel: "Cancel",
-    contact_info: "Contact Info",
-    edit_metrics: "Edit Metrics",
-    email: "Email",
-    joined: "Joined",
-    partner_details: "Partner Details",
-    rank: "Rank",
-    save_changes: "Save Changes"
-  }
 };

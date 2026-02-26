@@ -98,6 +98,8 @@ loginactivitylog: {
     if_you_don_t_recognize_these_a: "Nếu bạn không nhận ra các hoạt động này, hãy bảo mật tài khoản ngay lập tức.",
     location: "Vị Trí",
     login_activity: "Hoạt Động Đăng Nhập",
+    export_json: "Xuất JSON",
+    export_csv: "Xuất CSV",
     no_login_attempts_found: "Không tìm thấy lần đăng nhập nào",
     recent_sign_in_attempts_to_you: "Các lần đăng nhập gần đây vào tài khoản của bạn",
     status: "Trạng Thái",

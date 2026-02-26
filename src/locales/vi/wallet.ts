@@ -213,6 +213,8 @@ finance: {
     capital_flow: "Luồng Vốn",
     capital_flow_management: "Quản Lý Luồng Vốn",
     export: "Xuất",
+    export_json: "Xuất JSON",
+    export_csv: "Xuất CSV",
     filter: "Lọc",
     gross: "Tổng",
     member: "Thành Viên",

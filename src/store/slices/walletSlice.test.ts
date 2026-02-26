@@ -63,7 +63,7 @@ describe('walletSlice', () => {
   };
 
   const createTestStore = (userOverrides = {}) => {
-    return createStore<WalletSlice & { user: User; setUser: (u: User) => void }>((set, get, api) => ({
+    return createStore<WalletSlice & { user: User; setUser: (u: User) => void; products: Product[]; revenueData: any[] }>((set, get, api) => ({
       user: { ...initialUser, ...userOverrides },
       setUser: (user) => set({ user }),
       ...createWalletSlice(set, get, api),

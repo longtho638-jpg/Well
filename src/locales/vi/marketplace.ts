@@ -294,6 +294,8 @@ ordertable: {
   },
 ordermanagement: {
     actions: "Hành Động",
+    export_json: "Xuất JSON",
+    export_csv: "Xuất CSV",
     activate_commissions: "Kích Hoạt Hoa Hồng",
     all: "Tất Cả",
     all_pending_orders_have_been_p: "Tất cả đơn hàng chờ xử lý đã được xử lý",

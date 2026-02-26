@@ -50,8 +50,8 @@ common: {
       daisu: "Đại Sứ",
       ctv: "Cộng Tác Viên"
     },
-    pending: "[MISSING] pending",
-    you: "[MISSING] you"
+    pending: "Chờ xử lý",
+    you: "Bạn"
   },
 nav: {
     home: "Trang chủ",

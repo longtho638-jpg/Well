@@ -64,6 +64,8 @@ admin: {
     finance: {
       title: "Hoạt Động Tài Chính",
       subtitle: "Quản lý yêu cầu rút tiền và tuân thủ thuế",
+      export_json: "Xuất JSON",
+      export_csv: "Xuất CSV",
       gross: "Tổng:",
       tax: "Thuế (10%):",
       net: "Thực nhận:",
@@ -177,6 +179,8 @@ auditlog: {
     detailed_forensics_for_trace: "Điều Tra Chi Tiết Dấu Vết",
     event_inspection: "Kiểm Tra Sự Kiện",
     export_dataset: "Xuất Dữ Liệu",
+    export_json: "Xuất JSON",
+    export_csv: "Xuất CSV",
     immutable_ledger_of_administra: "Sổ Cái Bất Biến Quản Trị",
     network_origin: "Nguồn Mạng",
     no_telemetry_signals_detected: "Không Phát Hiện Tín Hiệu Telemetry",
