@@ -36,11 +36,11 @@ describe('useAdminOverview', () => {
           return {
               eq: mockEq,
               // Return promise-like object directly if no .eq needed
-              then: (resolve) => resolve({ count: 10, error: null }),
+              then: (resolve: (value: any) => void) => resolve({ count: 10, error: null }),
           }
       }
       return {
-          then: (resolve) => resolve({ data: [], error: null }),
+          then: (resolve: (value: any) => void) => resolve({ data: [], error: null }),
       };
     });
 

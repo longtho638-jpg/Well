@@ -28,18 +28,23 @@ vi.mock('@/utils/logger', () => ({
 }));
 
 // Mock globals
-global.navigator = {
-  serviceWorker: {
-    ready: Promise.resolve({
-      pushManager: {
-        getSubscription: vi.fn().mockResolvedValue(null),
-        subscribe: vi.fn().mockResolvedValue({
-          toJSON: () => ({ endpoint: 'test-endpoint', keys: { p256dh: 'key', auth: 'auth' } }),
-        }),
-      },
-    }),
+const mockServiceWorker = {
+  ready: Promise.resolve({
+    pushManager: {
+      getSubscription: vi.fn().mockResolvedValue(null),
+      subscribe: vi.fn().mockResolvedValue({
+        toJSON: () => ({ endpoint: 'test-endpoint', keys: { p256dh: 'key', auth: 'auth' } }),
+      }),
+    },
+  }),
+};
+
+Object.defineProperty(global, 'navigator', {
+  value: {
+    serviceWorker: mockServiceWorker,
   },
-} as any;
+  writable: true,
+});
 
 const mockNotification = {
   requestPermission: vi.fn().mockResolvedValue('granted'),
@@ -67,15 +72,18 @@ describe('web-push-notification-service', () => {
     mockUpsert.mockResolvedValue({ error: { message: 'Upsert failed' } });
 
     // Mock existing subscription to bypass VAPID check
-    global.navigator.serviceWorker.ready = Promise.resolve({
-      pushManager: {
-        getSubscription: vi.fn().mockResolvedValue({
-          toJSON: () => ({ endpoint: 'test-endpoint', keys: { p256dh: 'key', auth: 'auth' } }),
-          unsubscribe: vi.fn(),
-        }),
-        subscribe: vi.fn(),
-      },
-    }) as any;
+    Object.defineProperty(global.navigator.serviceWorker, 'ready', {
+      writable: true,
+      value: Promise.resolve({
+        pushManager: {
+          getSubscription: vi.fn().mockResolvedValue({
+            toJSON: () => ({ endpoint: 'test-endpoint', keys: { p256dh: 'key', auth: 'auth' } }),
+            unsubscribe: vi.fn(),
+          }),
+          subscribe: vi.fn(),
+        },
+      }),
+    });
 
     // Desired behavior: Throws error, logs 'Failed to save push subscription'.
     await expect(subscribeToPushNotifications()).rejects.toThrow('Upsert failed');
@@ -89,13 +97,16 @@ describe('web-push-notification-service', () => {
     mockEq.mockResolvedValue({ error: { message: 'Delete failed' } });
 
     // Mock subscription exists so it tries to delete
-    global.navigator.serviceWorker.ready = Promise.resolve({
-      pushManager: {
-        getSubscription: vi.fn().mockResolvedValue({
-          unsubscribe: vi.fn().mockResolvedValue(true),
-        }),
-      },
-    }) as any;
+    Object.defineProperty(global.navigator.serviceWorker, 'ready', {
+      writable: true,
+      value: Promise.resolve({
+        pushManager: {
+          getSubscription: vi.fn().mockResolvedValue({
+            unsubscribe: vi.fn().mockResolvedValue(true),
+          }),
+        },
+      }),
+    });
 
     const result = await unsubscribeFromPushNotifications();
 
