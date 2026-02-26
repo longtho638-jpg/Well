@@ -64,20 +64,30 @@ export function useAgentOS() {
     // Role Check (Real Supabase Auth)
     getUserRole: async () => {
       try {
-        const { data: { session } } = await import('@/lib/supabase').then(m => m.supabase.auth.getSession());
+        const { data: { session }, error: sessionError } = await import('@/lib/supabase').then(m => m.supabase.auth.getSession());
         
+        if (sessionError) {
+          agentLogger.error('Failed to get session', sessionError);
+          return 'Visitor';
+        }
+
         if (!session?.user) return 'Visitor';
 
-        const { data: profile } = await import('@/lib/supabase').then(m => m.supabase
+        const { data: profile, error: profileError } = await import('@/lib/supabase').then(m => m.supabase
           .from('users')
           .select('role') // Assuming 'role' or 'rank' determines access. 'role' is better for ACL.
           .eq('id', session.user.id)
           .single()
         );
 
+        if (profileError) {
+          agentLogger.error(`Failed to fetch role for user ${session.user.id}`, profileError);
+          return 'Visitor';
+        }
+
         return profile?.role || 'Member';
       } catch (e) {
-        agentLogger.warn('Failed to fetch user role', e);
+        agentLogger.error('Failed to fetch user role', e);
         return 'Visitor';
       }
     },
