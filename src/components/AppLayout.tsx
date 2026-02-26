@@ -41,6 +41,10 @@ export const AppLayout: React.FC = () => {
     };
   }, [isMobileMenuOpen]);
 
+  const handleProfileClick = () => {
+    navigate('/dashboard/profile');
+  };
+
   return (
     <div className="flex h-screen bg-gray-50 dark:bg-slate-900 transition-colors font-sans text-gray-900 dark:text-slate-100 overflow-hidden">
       {/* Skip to main content link for keyboard/screen reader users */}
@@ -88,6 +92,7 @@ export const AppLayout: React.FC = () => {
         <header className="sticky top-0 z-40 w-full h-16 px-4 sm:px-6 backdrop-blur-md bg-white/70 border-b border-gray-100/50 dark:bg-slate-800/70 dark:border-slate-700/50 flex items-center justify-between shadow-sm">
           <div className="flex items-center gap-4">
             <button
+              type="button"
               onClick={() => setIsMobileMenuOpen(true)}
               className="p-2.5 -ml-2 text-gray-500 hover:bg-gray-100 dark:hover:bg-slate-700 rounded-lg md:hidden transition-colors touch-manipulation"
               aria-label="Open menu"
@@ -108,17 +113,29 @@ export const AppLayout: React.FC = () => {
 
           <div className="flex items-center gap-3 sm:gap-4">
             <ThemeToggle />
-            <button className="p-2.5 text-gray-500 hover:bg-gray-100 dark:hover:bg-slate-700 rounded-xl relative transition-colors touch-manipulation" aria-label="Notifications">
+            <button
+              type="button"
+              className="p-2.5 text-gray-500 hover:bg-gray-100 dark:hover:bg-slate-700 rounded-xl relative transition-colors touch-manipulation"
+              aria-label="Notifications"
+            >
               <Bell className="w-5 h-5" />
               <span className="absolute top-2 right-2 w-2 h-2 bg-red-500 rounded-full border-2 border-white dark:border-slate-800 animate-pulse"></span>
             </button>
 
             <div className="h-8 w-px bg-gray-200 dark:bg-slate-700 mx-1 hidden sm:block"></div>
 
-            {/* eslint-disable-next-line jsx-a11y/click-events-have-key-events, jsx-a11y/no-static-element-interactions */}
             <div
+              role="button"
+              tabIndex={0}
               className="flex items-center gap-3 pl-1 cursor-pointer hover:opacity-80 transition-opacity"
-              onClick={() => navigate('/dashboard/profile')}
+              onClick={handleProfileClick}
+              onKeyDown={(e) => {
+                if (e.key === 'Enter' || e.key === ' ') {
+                  e.preventDefault();
+                  handleProfileClick();
+                }
+              }}
+              aria-label="Go to profile"
             >
               <div className="text-right hidden sm:block">
                 <p className="text-sm font-bold text-gray-900 dark:text-slate-100">{user.name}</p>
@@ -129,7 +146,7 @@ export const AppLayout: React.FC = () => {
                   <div className="w-full h-full rounded-full bg-white dark:bg-slate-800 overflow-hidden">
                     <img
                       src={user.avatarUrl}
-                      alt="Profile"
+                      alt={`${user.name}'s profile`}
                       className="w-full h-full object-cover"
                     />
                   </div>

@@ -100,6 +100,7 @@ const NetworkPage: React.FC = () => {
 
         <div className="flex items-center gap-3">
           <button
+            type="button"
             onClick={handleExportJSON}
             disabled={isExportingJSON || !flatData}
             className="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-amber-500 to-orange-600 hover:from-amber-600 hover:to-orange-700 disabled:from-gray-400 disabled:to-gray-500 text-white font-semibold rounded-lg shadow-lg shadow-amber-900/20 transition-all transform active:scale-95 disabled:cursor-not-allowed disabled:transform-none"
@@ -112,6 +113,7 @@ const NetworkPage: React.FC = () => {
             <span className="text-sm font-bold">Xuất JSON</span>
           </button>
           <button
+            type="button"
             onClick={handleExportCSV}
             disabled={isExportingCSV || !flatData}
             className="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-amber-500 to-orange-600 hover:from-amber-600 hover:to-orange-700 disabled:from-gray-400 disabled:to-gray-500 text-white font-semibold rounded-lg shadow-lg shadow-amber-900/20 transition-all transform active:scale-95 disabled:cursor-not-allowed disabled:transform-none"
@@ -123,7 +125,7 @@ const NetworkPage: React.FC = () => {
             )}
             <span className="text-sm font-bold">Xuất CSV</span>
           </button>
-          <button className="flex items-center gap-2 px-4 py-2 bg-emerald-500/10 text-emerald-400 rounded-xl hover:bg-emerald-500/20 transition-colors border border-emerald-500/20">
+          <button type="button" className="flex items-center gap-2 px-4 py-2 bg-emerald-500/10 text-emerald-400 rounded-xl hover:bg-emerald-500/20 transition-colors border border-emerald-500/20">
             <Share2 className="w-4 h-4" />
             <span className="text-sm font-bold">Invite Member</span>
           </button>

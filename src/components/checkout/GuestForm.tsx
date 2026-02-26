@@ -32,9 +32,10 @@ export const GuestForm: React.FC<GuestFormProps> = ({ onSubmit, isSubmitting: _i
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div className="space-y-2">
-                        <label className="text-xs font-bold text-zinc-500 uppercase tracking-wider">{t('checkout.guestForm.fullName.label')}</label>
+                        <label htmlFor="fullName" className="text-xs font-bold text-zinc-500 uppercase tracking-wider">{t('checkout.guestForm.fullName.label')}</label>
                         <div className="relative">
                             <input
+                                id="fullName"
                                 {...register('fullName')}
                                 placeholder={t('checkout.guestForm.fullName.placeholder')}
                                 className={`w-full bg-zinc-50 dark:bg-black/20 border ${errors.fullName ? 'border-rose-500' : 'border-zinc-200 dark:border-white/10'} rounded-xl px-4 py-3 pl-10 focus:outline-none focus:ring-2 focus:ring-teal-500/20 focus:border-teal-500 transition-all`}
@@ -45,9 +46,10 @@ export const GuestForm: React.FC<GuestFormProps> = ({ onSubmit, isSubmitting: _i
                     </div>
 
                     <div className="space-y-2">
-                        <label className="text-xs font-bold text-zinc-500 uppercase tracking-wider">{t('checkout.guestForm.phone.label')}</label>
+                        <label htmlFor="phone" className="text-xs font-bold text-zinc-500 uppercase tracking-wider">{t('checkout.guestForm.phone.label')}</label>
                         <div className="relative">
                             <input
+                                id="phone"
                                 {...register('phone')}
                                 placeholder={t('checkout.guestForm.phone.placeholder')}
                                 className={`w-full bg-zinc-50 dark:bg-black/20 border ${errors.phone ? 'border-rose-500' : 'border-zinc-200 dark:border-white/10'} rounded-xl px-4 py-3 pl-10 focus:outline-none focus:ring-2 focus:ring-teal-500/20 focus:border-teal-500 transition-all`}
@@ -58,9 +60,10 @@ export const GuestForm: React.FC<GuestFormProps> = ({ onSubmit, isSubmitting: _i
                     </div>
 
                     <div className="space-y-2 md:col-span-2">
-                        <label className="text-xs font-bold text-zinc-500 uppercase tracking-wider">{t('checkout.guestForm.email.label')}</label>
+                        <label htmlFor="email" className="text-xs font-bold text-zinc-500 uppercase tracking-wider">{t('checkout.guestForm.email.label')}</label>
                         <div className="relative">
                             <input
+                                id="email"
                                 {...register('email')}
                                 placeholder={t('checkout.guestForm.email.placeholder')}
                                 className={`w-full bg-zinc-50 dark:bg-black/20 border ${errors.email ? 'border-rose-500' : 'border-zinc-200 dark:border-white/10'} rounded-xl px-4 py-3 pl-10 focus:outline-none focus:ring-2 focus:ring-teal-500/20 focus:border-teal-500 transition-all`}
@@ -80,8 +83,9 @@ export const GuestForm: React.FC<GuestFormProps> = ({ onSubmit, isSubmitting: _i
 
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
                     <div className="space-y-2">
-                        <label className="text-xs font-bold text-zinc-500 uppercase tracking-wider">{t('checkout.guestForm.address.city.label')}</label>
+                        <label htmlFor="city" className="text-xs font-bold text-zinc-500 uppercase tracking-wider">{t('checkout.guestForm.address.city.label')}</label>
                         <input
+                            id="city"
                             {...register('address.city')}
                             placeholder={t('checkout.guestForm.address.city.placeholder')}
                             className={`w-full bg-zinc-50 dark:bg-black/20 border ${errors.address?.city ? 'border-rose-500' : 'border-zinc-200 dark:border-white/10'} rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-teal-500/20 focus:border-teal-500 transition-all`}
@@ -90,8 +94,9 @@ export const GuestForm: React.FC<GuestFormProps> = ({ onSubmit, isSubmitting: _i
                     </div>
 
                     <div className="space-y-2">
-                        <label className="text-xs font-bold text-zinc-500 uppercase tracking-wider">{t('checkout.guestForm.address.district.label')}</label>
+                        <label htmlFor="district" className="text-xs font-bold text-zinc-500 uppercase tracking-wider">{t('checkout.guestForm.address.district.label')}</label>
                         <input
+                            id="district"
                             {...register('address.district')}
                             placeholder={t('checkout.guestForm.address.district.placeholder')}
                             className={`w-full bg-zinc-50 dark:bg-black/20 border ${errors.address?.district ? 'border-rose-500' : 'border-zinc-200 dark:border-white/10'} rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-teal-500/20 focus:border-teal-500 transition-all`}
@@ -100,8 +105,9 @@ export const GuestForm: React.FC<GuestFormProps> = ({ onSubmit, isSubmitting: _i
                     </div>
 
                     <div className="space-y-2">
-                        <label className="text-xs font-bold text-zinc-500 uppercase tracking-wider">{t('checkout.guestForm.address.ward.label')}</label>
+                        <label htmlFor="ward" className="text-xs font-bold text-zinc-500 uppercase tracking-wider">{t('checkout.guestForm.address.ward.label')}</label>
                         <input
+                            id="ward"
                             {...register('address.ward')}
                             placeholder={t('checkout.guestForm.address.ward.placeholder')}
                             className={`w-full bg-zinc-50 dark:bg-black/20 border ${errors.address?.ward ? 'border-rose-500' : 'border-zinc-200 dark:border-white/10'} rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-teal-500/20 focus:border-teal-500 transition-all`}
@@ -111,9 +117,10 @@ export const GuestForm: React.FC<GuestFormProps> = ({ onSubmit, isSubmitting: _i
                 </div>
 
                 <div className="space-y-2">
-                    <label className="text-xs font-bold text-zinc-500 uppercase tracking-wider">{t('checkout.guestForm.address.street.label')}</label>
+                    <label htmlFor="street" className="text-xs font-bold text-zinc-500 uppercase tracking-wider">{t('checkout.guestForm.address.street.label')}</label>
                     <div className="relative">
                         <input
+                            id="street"
                             {...register('address.street')}
                             placeholder={t('checkout.guestForm.address.street.placeholder')}
                             className={`w-full bg-zinc-50 dark:bg-black/20 border ${errors.address?.street ? 'border-rose-500' : 'border-zinc-200 dark:border-white/10'} rounded-xl px-4 py-3 pl-10 focus:outline-none focus:ring-2 focus:ring-teal-500/20 focus:border-teal-500 transition-all`}
@@ -124,8 +131,9 @@ export const GuestForm: React.FC<GuestFormProps> = ({ onSubmit, isSubmitting: _i
                 </div>
 
                 <div className="space-y-2 mt-6">
-                    <label className="text-xs font-bold text-zinc-500 uppercase tracking-wider">{t('checkout.guestForm.note.label')}</label>
+                    <label htmlFor="note" className="text-xs font-bold text-zinc-500 uppercase tracking-wider">{t('checkout.guestForm.note.label')}</label>
                     <textarea
+                        id="note"
                         {...register('note')}
                         placeholder={t('checkout.guestForm.note.placeholder')}
                         rows={3}

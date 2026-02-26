@@ -55,7 +55,15 @@ const ProductCard: React.FC<Props> = ({ product }) => {
 
   return (
     <div
+      role="button"
+      tabIndex={0}
       onClick={handleViewDetails}
+      onKeyDown={(e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          handleViewDetails();
+        }
+      }}
       className="glass-pearl dark:glass-void rounded-2xl overflow-hidden hover-lift transition-all duration-300 group flex flex-col h-full cursor-pointer relative border border-white/40 dark:border-white/5"
     >
       {/* Image Container */}
@@ -107,6 +115,7 @@ const ProductCard: React.FC<Props> = ({ product }) => {
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mt-auto">
             <button
+              type="button"
               onClick={handleShare}
               className="flex items-center justify-center gap-2 bg-white dark:bg-slate-800 border border-gray-200 dark:border-slate-600 hover:border-gray-300 dark:hover:border-slate-500 text-gray-700 dark:text-slate-300 hover:bg-gray-50 dark:hover:bg-slate-700 active:bg-gray-100 dark:active:bg-slate-600 py-3 rounded-xl text-xs font-bold transition-all duration-200 hover:shadow-lg active:scale-95"
               aria-label="Share product link"
@@ -114,6 +123,7 @@ const ProductCard: React.FC<Props> = ({ product }) => {
               <Share2 className="w-3.5 h-3.5" /> {t('productcard.share')}</button>
 
             <button
+              type="button"
               onClick={handleBuy}
               disabled={isBuying || outOfStock || showSuccess}
               className={`btn-liquid flex items-center justify-center gap-2 py-3 rounded-xl text-xs font-bold transition-all duration-200 relative

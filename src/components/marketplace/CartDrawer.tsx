@@ -61,6 +61,7 @@ export const CartDrawer: React.FC<CartDrawerProps> = ({
                                     {itemCount} {t('cartdrawer.items_confirmed')}</div>
                             </div>
                             <button
+                                type="button"
                                 onClick={onClose}
                                 className="p-3 bg-zinc-100 dark:bg-white/5 rounded-2xl hover:bg-zinc-200 dark:hover:bg-white/10 transition-colors"
                             >
@@ -92,6 +93,7 @@ export const CartDrawer: React.FC<CartDrawerProps> = ({
                                                     {item.product.name}
                                                 </h3>
                                                 <button
+                                                    type="button"
                                                     onClick={() => onRemove(item.product.id)}
                                                     className="p-2 -mr-1 text-zinc-400 hover:text-rose-500 transition-colors touch-manipulation"
                                                     aria-label={`Remove ${item.product.name}`}
@@ -105,6 +107,7 @@ export const CartDrawer: React.FC<CartDrawerProps> = ({
 
                                             <div className="flex items-center gap-1 bg-white dark:bg-zinc-900 p-1 rounded-xl border border-zinc-200 dark:border-white/10 w-fit">
                                                 <button
+                                                    type="button"
                                                     onClick={() => onUpdateQuantity(item.product.id, -1)}
                                                     className="p-2.5 hover:bg-zinc-100 dark:hover:bg-white/5 rounded-lg text-zinc-500 touch-manipulation"
                                                     aria-label="Decrease quantity"
@@ -113,6 +116,7 @@ export const CartDrawer: React.FC<CartDrawerProps> = ({
                                                 </button>
                                                 <span className="w-8 text-center font-black text-xs">{item.quantity}</span>
                                                 <button
+                                                    type="button"
                                                     onClick={() => onUpdateQuantity(item.product.id, 1)}
                                                     className="p-2.5 hover:bg-zinc-100 dark:hover:bg-white/5 rounded-lg text-zinc-500 touch-manipulation"
                                                     aria-label="Increase quantity"
@@ -147,6 +151,7 @@ export const CartDrawer: React.FC<CartDrawerProps> = ({
                                 </div>
                             </div>
                             <button
+                                type="button"
                                 onClick={handleCheckout}
                                 disabled={items.length === 0}
                                 className="w-full bg-teal-600 text-white py-5 rounded-3xl font-black uppercase tracking-widest shadow-2xl shadow-teal-900/40 hover:bg-teal-500 active:scale-95 transition-all flex items-center justify-center gap-3 disabled:opacity-50 disabled:grayscale"
