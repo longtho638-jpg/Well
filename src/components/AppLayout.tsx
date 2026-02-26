@@ -62,6 +62,7 @@ export const AppLayout: React.FC = () => {
       {/* ================================================================ */}
       {isMobileMenuOpen && (
         <div className="fixed inset-0 z-50 flex md:hidden">
+          {/* eslint-disable-next-line jsx-a11y/click-events-have-key-events, jsx-a11y/no-static-element-interactions */}
           <div
             className="absolute inset-0 bg-black/50 backdrop-blur-sm"
             onClick={() => setIsMobileMenuOpen(false)}
@@ -114,6 +115,7 @@ export const AppLayout: React.FC = () => {
 
             <div className="h-8 w-px bg-gray-200 dark:bg-slate-700 mx-1 hidden sm:block"></div>
 
+            {/* eslint-disable-next-line jsx-a11y/click-events-have-key-events, jsx-a11y/no-static-element-interactions */}
             <div
               className="flex items-center gap-3 pl-1 cursor-pointer hover:opacity-80 transition-opacity"
               onClick={() => navigate('/dashboard/profile')}
