@@ -92,25 +92,6 @@ export function mapRange(
 // ============================================================================
 
 /**
- * Calculate commission (for MLM)
- */
-export function calculateCommission(
-    amount: number,
-    rate: number,
-    levels: number[] = []
-): number {
-    let commission = amount * (rate / 100);
-
-    // Add cascading commissions
-    levels.forEach((levelRate, index) => {
-        const levelCommission = amount * (levelRate / 100) * Math.pow(0.5, index);
-        commission += levelCommission;
-    });
-
-    return Math.round(commission);
-}
-
-/**
  * Calculate growth percentage
  */
 export function growthRate(oldValue: number, newValue: number): number {
