@@ -43,7 +43,7 @@ class Logger {
 
         const prefix = this.formatPrefix();
         const color = LOG_COLORS[level];
-        const logFn = console[level] || console.log; // eslint-disable-line no-console
+        const logFn = console[level] || console.log;
 
         if (IS_DEV) {
             logFn(

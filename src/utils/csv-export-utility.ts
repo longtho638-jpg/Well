@@ -6,7 +6,7 @@
 export interface CSVColumn {
   key: string;
   header: string;
-  formatter?: (value: any) => string;
+  formatter?: (value: unknown) => string;
 }
 
 /**
@@ -20,7 +20,7 @@ export function convertToCSV<T>(data: T[], columns: CSVColumn[]): string {
   const rows = data.map(item => {
     return columns.map(col => {
       // access property safely
-      let value = (item as any)[col.key];
+      let value = (item as Record<string, unknown>)[col.key];
 
       // Apply formatter if provided
       if (col.formatter) {
