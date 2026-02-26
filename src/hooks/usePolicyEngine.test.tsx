@@ -1,7 +1,7 @@
 import { renderHook, act, waitFor } from '@testing-library/react';
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { usePolicyEngine } from './usePolicyEngine';
-import { policyService } from '@/services/policyService';
+import { policyService, PolicyConfig } from '@/services/policyService';
 import { adminLogger } from '@/utils/logger';
 
 // Mock dependencies
@@ -21,7 +21,10 @@ vi.mock('@/utils/logger', () => ({
 describe('usePolicyEngine', () => {
   beforeEach(() => {
     vi.clearAllMocks();
-    (policyService.fetchPolicy as any).mockResolvedValue({});
+    (policyService.fetchPolicy as any).mockResolvedValue({
+      commissions: { retailComm: 25 },
+      rules: { whiteLabelGMV: 1000000000 }
+    } as Partial<PolicyConfig>);
   });
 
   it('should initialize with default values', async () => {
@@ -44,9 +47,8 @@ describe('usePolicyEngine', () => {
     // whiteLabelGMV = 1,000,000,000
     // projectedSaaSRevenue = 15 * 1,000,000,000 * 0.20 = 3,000,000,000
 
-    const sim = result.current.simulation as any;
+    const sim = result.current.simulation;
 
-    // These assertions are expected to fail before implementation
     expect(sim.strategicCandidates).toBe(15);
     expect(sim.projectedSaaSRevenue).toBe(3000000000);
   });
@@ -59,7 +61,7 @@ describe('usePolicyEngine', () => {
       result.current.simulation.setSimPartners(2000);
     });
 
-    const sim = result.current.simulation as any;
+    const sim = result.current.simulation;
 
     // simPartners = 2000
     // strategicCandidates = 2000 * 0.015 = 30

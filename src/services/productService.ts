@@ -1,5 +1,6 @@
 import { supabase } from '@/lib/supabase';
 import { adminLogger } from '@/utils/logger';
+import { fromSupabaseError } from '@/utils/errors';
 
 export interface Product {
     id: string;
@@ -42,7 +43,7 @@ export const productService = {
 
         if (error) {
             adminLogger.error('Failed to load products', error);
-            throw error;
+            throw fromSupabaseError(error);
         }
         return data || [];
     },
@@ -60,7 +61,7 @@ export const productService = {
 
         if (error) {
             adminLogger.error('Failed to update product', error);
-            throw error;
+            throw fromSupabaseError(error);
         }
     },
 
@@ -80,7 +81,7 @@ export const productService = {
 
         if (error) {
             adminLogger.error('Failed to add product', error);
-            throw error;
+            throw fromSupabaseError(error);
         }
     },
 
@@ -96,7 +97,7 @@ export const productService = {
 
         if (error) {
             adminLogger.error('Failed to delete product', error);
-            throw error;
+            throw fromSupabaseError(error);
         }
     }
 };
