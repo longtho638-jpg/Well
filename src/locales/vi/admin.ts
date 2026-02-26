@@ -139,7 +139,7 @@ admin: {
     partner_recon_crm: "Partner Recon CRM",
     precision_orchestration_of_net: "Precision Orchestration of Network",
     rank_intelligence: "Rank Intelligence",
-    mission_control: "[MISSING] mission control"
+    mission_control: "Trung Tâm Điều Hành"
   },
 adminsecuritysettings: {
     "100": "100",

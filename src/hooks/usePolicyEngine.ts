@@ -2,6 +2,10 @@ import { useState, useEffect, useCallback, useMemo } from 'react';
 import { policyService, PolicyConfig, RankUpgrade } from '@/services/policyService';
 import { adminLogger } from '@/utils/logger';
 
+// Strategic Forecast Constants
+const STRATEGIC_CANDIDATE_RATIO = 0.015; // 1.5%
+const SAAS_REVENUE_SHARE = 0.20; // 20%
+
 export function usePolicyEngine() {
     const [loading, setLoading] = useState(true);
     const [saving, setSaving] = useState(false);
@@ -117,8 +121,8 @@ export function usePolicyEngine() {
         const profitMargin = simGMV > 0 ? (simProfit / simGMV) * 100 : 0;
 
         // Strategic Forecast
-        const strategicCandidates = Math.floor(simPartners * 0.015); // 1.5%
-        const projectedSaaSRevenue = strategicCandidates * whiteLabelGMV * 0.20; // 20%
+        const strategicCandidates = Math.floor(simPartners * STRATEGIC_CANDIDATE_RATIO);
+        const projectedSaaSRevenue = strategicCandidates * whiteLabelGMV * SAAS_REVENUE_SHARE;
 
         return {
             simGMV,
