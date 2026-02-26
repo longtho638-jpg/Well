@@ -1,0 +1,3 @@
+
+✖ Error: ENOENT: no such file or directory, stat '/Users/macbookprom1/archive-2026/Well/src/stores'
+

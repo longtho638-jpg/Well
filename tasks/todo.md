@@ -1,28 +1,22 @@
-# 10x Deep Scan & Tech Debt Liquidation - Project Well
+# 10x Deep Scan & Tech Debt Eradication Plan
 
-## 🎯 Mục tiêu
-- [ ] 10x Deep Scan: hooks/, stores/, context/
-- [ ] Fix Supabase query error handling
-- [ ] 100% i18n coverage (zero hardcoded strings)
-- [ ] Binh Pháp Score: 100/100 (Production Ready)
+## Mục tiêu
+Thực hiện DEEP 10x SCAN toàn bộ dự án Well, tìm và triệt tiêu mọi nợ kỹ thuật (TODO, FIXME, HACK, dead code, circular deps). 
+Đặc biệt tập trung:
+- hooks, stores, context, types, pages, components, utils, config
+- i18n translations
+- Supabase error handling
 
-## 📋 Giai đoạn 1: Quét sâu (Scout & Analyze)
-- [x] [A1] Supabase Error Handling Audit (Found critical silent failures)
-- [x] [A2] i18n Coverage Audit (Found 50+ hardcoded strings)
-- [x] [A3] Hooks/Store/Context Logic Audit (Found God-hooks and Logic leaks)
-- [x] [A4] General Tech Debt (`any`, `logs`, `TODO`)
-- [ ] [A5] Security & Secrets Audit
-- [ ] [A6] Performance & Re-render Analysis
-- [ ] [A7] UI/Style & Hardcoded Colors Audit
-- [ ] [A8] Test Coverage Gap Analysis
-- [ ] [A9] Dependency & Vulnerability Scan
-- [ ] [A10] A11y & SEO Readiness Audit
+**Quy tắc:** Chỉ sửa TỐI ĐA 5 file. Nếu nhiều hơn, báo cáo phần còn lại.
 
-## 📋 Giai đoạn 2: Sửa lỗi & Tối ưu (Batch 1 - Critical Fixes)
-- [ ] Fix critical Supabase silent failures (useAdminOverview, useAgentOS, web-push) [IN_PROGRESS]
-- [ ] Refactor walletSlice logic leak [PENDING]
-- [ ] Fix high-impact i18n (SettingsPage) [PENDING]
-- [ ] Split useAdvanced.ts (First step) [PENDING]
-
-## 📋 Giai đoạn 3: Xác thực (Verify & Ship)
-- [ ] Binh Pháp 100/100 [PENDING]
+## Các bước thực hiện
+- [ ] 1. Khảo sát codebase (Deep Scan) bằng subagents và grep.
+  - [ ] Tìm TODO/FIXME/HACK.
+  - [ ] Quét Supabase error handling.
+  - [ ] Quét i18n translations missing/hardcoded.
+  - [ ] Quét dead code và circular dependencies (cơ bản).
+- [ ] 2. Tổng hợp danh sách Top 5 file nợ kỹ thuật nghiêm trọng nhất cần fix ngay (ưu tiên hooks/stores/context, Supabase, i18n).
+- [ ] 3. Tiến hành fix triệt để nguyên nhân gốc rễ trên 5 file này.
+- [ ] 4. Verification: Chạy test, type check, linting để đảm bảo không gãy code.
+- [ ] 5. Cập nhật `tasks/lessons.md` với bài học rút ra sau khi fix.
+- [ ] 6. Báo cáo danh sách các file nợ kỹ thuật còn lại (nếu có).

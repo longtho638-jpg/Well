@@ -31,7 +31,7 @@ export function useAdminOverview() {
         pendingOrders: 0,
         systemHealth: 100,
     });
-    const [aiActions, setAIActions] = useState<AIAction[]>(import.meta.env.DEV ? MOCK_ACTIONS : []);
+    const [aiActions, setAIActions] = useState<AIAction[]>([]);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState<Error | null>(null);
 
