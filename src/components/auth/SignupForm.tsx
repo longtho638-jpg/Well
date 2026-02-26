@@ -71,11 +71,13 @@ export const SignupForm: React.FC = () => {
                             type="text"
                             {...register('name')}
                             placeholder={t('auth.register.placeholders.name')}
+                            aria-invalid={!!errors.name}
+                            aria-describedby={errors.name ? "name-error" : undefined}
                             className="w-full bg-slate-950/50 border border-slate-800 text-white rounded-2xl py-4 pl-12 pr-4 focus:outline-none focus:ring-2 focus:ring-teal-500/30 focus:border-teal-500/50 transition-all placeholder:text-slate-700 font-medium"
                         />
                     </div>
                     {errors.name && (
-                        <p className="text-xs text-rose-400 ml-1">{t(errors.name.message ?? '')}</p>
+                        <p id="name-error" className="text-xs text-rose-400 ml-1">{t(errors.name.message ?? '')}</p>
                     )}
                 </div>
 
@@ -88,11 +90,13 @@ export const SignupForm: React.FC = () => {
                             type="email"
                             {...register('email')}
                             placeholder={t('auth.register.placeholders.email')}
+                            aria-invalid={!!errors.email}
+                            aria-describedby={errors.email ? "email-error" : undefined}
                             className="w-full bg-slate-950/50 border border-slate-800 text-white rounded-2xl py-4 pl-12 pr-4 focus:outline-none focus:ring-2 focus:ring-teal-500/30 focus:border-teal-500/50 transition-all placeholder:text-slate-700 font-medium"
                         />
                     </div>
                     {errors.email && (
-                        <p className="text-xs text-rose-400 ml-1">{t(errors.email.message ?? '')}</p>
+                        <p id="email-error" className="text-xs text-rose-400 ml-1">{t(errors.email.message ?? '')}</p>
                     )}
                 </div>
 
@@ -106,6 +110,8 @@ export const SignupForm: React.FC = () => {
                                 type="password"
                                 {...register('password')}
                                 placeholder="••••••••"
+                                aria-invalid={!!errors.password}
+                                aria-describedby={errors.password ? "password-error" : undefined}
                                 className="w-full bg-slate-950/50 border border-slate-800 text-white rounded-2xl py-4 pl-12 pr-4 focus:outline-none focus:ring-2 focus:ring-teal-500/30 focus:border-teal-500/50 transition-all placeholder:text-slate-700"
                             />
                         </div>
@@ -117,7 +123,7 @@ export const SignupForm: React.FC = () => {
                             />
                         )}
                         {errors.password && !watchedPassword && (
-                            <p className="text-xs text-rose-400 ml-1">{t(errors.password.message ?? '')}</p>
+                            <p id="password-error" className="text-xs text-rose-400 ml-1">{t(errors.password.message ?? '')}</p>
                         )}
                     </div>
 
@@ -130,11 +136,13 @@ export const SignupForm: React.FC = () => {
                                 type="password"
                                 {...register('confirmPassword')}
                                 placeholder="••••••••"
+                                aria-invalid={!!errors.confirmPassword}
+                                aria-describedby={errors.confirmPassword ? "confirm-password-error" : undefined}
                                 className="w-full bg-slate-950/50 border border-slate-800 text-white rounded-2xl py-4 pl-12 pr-4 focus:outline-none focus:ring-2 focus:ring-teal-500/30 focus:border-teal-500/50 transition-all placeholder:text-slate-700"
                             />
                         </div>
                         {errors.confirmPassword && (
-                            <p className="text-xs text-rose-400 ml-1">{t(errors.confirmPassword.message ?? '')}</p>
+                            <p id="confirm-password-error" className="text-xs text-rose-400 ml-1">{t(errors.confirmPassword.message ?? '')}</p>
                         )}
                     </div>
                 </div>

@@ -44,6 +44,14 @@ export const BankSelect: React.FC<BankSelectProps> = ({ value, onChange, error, 
         id={id}
         type="button"
         onClick={() => setIsOpen(!isOpen)}
+        onKeyDown={(e) => {
+          if (e.key === 'Escape') {
+            setIsOpen(false);
+          }
+        }}
+        aria-haspopup="listbox"
+        aria-expanded={isOpen}
+        aria-controls="bank-listbox"
         className={`w-full flex items-center justify-between p-3 rounded-xl border transition-all ${
           error
             ? 'bg-red-500/5 border-red-500/50 text-red-200'
@@ -84,6 +92,7 @@ export const BankSelect: React.FC<BankSelectProps> = ({ value, onChange, error, 
             exit={{ opacity: 0, y: 10 }}
             className="absolute z-50 w-full mt-2 bg-zinc-900 border border-white/10 rounded-xl shadow-xl overflow-hidden max-h-60 overflow-y-auto"
             role="listbox"
+            id="bank-listbox"
           >
             {VN_BANKS.map((bank) => (
               <button

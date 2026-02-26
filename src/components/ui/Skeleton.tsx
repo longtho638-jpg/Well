@@ -1,5 +1,6 @@
 import React from 'react';
 import { motion } from 'framer-motion';
+import { useTranslation } from '@/hooks';
 
 interface SkeletonProps {
   className?: string;
@@ -61,8 +62,10 @@ export function Skeleton({
 
 // Page-level skeleton for lazy loading fallback
 export function PageSkeleton() {
+  const { t } = useTranslation();
   return (
     <div className="space-y-6 p-6" aria-hidden="true">
+      <span className="sr-only" role="status">{t('common.loading')}</span>
       {/* Header skeleton */}
       <div className="flex items-center justify-between">
         <Skeleton variant="text" width="200px" height="32px" />

@@ -103,11 +103,13 @@ export default function Login() {
                                     type="email"
                                     {...register('email')}
                                     placeholder="user@example.com"
+                                    aria-invalid={!!errors.email}
+                                    aria-describedby={errors.email ? "email-error" : undefined}
                                     className="w-full bg-slate-950/50 border border-slate-700/50 text-white rounded-2xl py-3.5 pl-12 pr-4 focus:outline-none focus:ring-2 focus:ring-teal-500/40 focus:border-teal-500/50 transition-all placeholder:text-slate-600"
                                 />
                             </div>
                             {errors.email && (
-                                <p className="text-xs text-red-400 ml-1 mt-1">{errors.email.message}</p>
+                                <p id="email-error" className="text-xs text-red-400 ml-1 mt-1">{errors.email.message}</p>
                             )}
                         </div>
 
@@ -127,6 +129,8 @@ export default function Login() {
                                     type={showPassword ? 'text' : 'password'}
                                     {...register('password')}
                                     placeholder="••••••••"
+                                    aria-invalid={!!errors.password}
+                                    aria-describedby={errors.password ? "password-error" : undefined}
                                     className="w-full bg-slate-950/50 border border-slate-700/50 text-white rounded-2xl py-3.5 pl-12 pr-12 focus:outline-none focus:ring-2 focus:ring-teal-500/40 focus:border-teal-500/50 transition-all placeholder:text-slate-600"
                                 />
                                 <button
@@ -139,7 +143,7 @@ export default function Login() {
                                 </button>
                             </div>
                             {errors.password && (
-                                <p className="text-xs text-red-400 ml-1 mt-1">{errors.password.message}</p>
+                                <p id="password-error" className="text-xs text-red-400 ml-1 mt-1">{errors.password.message}</p>
                             )}
                         </div>
 

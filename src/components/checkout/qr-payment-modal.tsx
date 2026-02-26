@@ -104,6 +104,9 @@ export function QRPaymentModal({
                     animate={{ opacity: 1 }}
                     exit={{ opacity: 0 }}
                     className="fixed inset-0 z-50 flex items-center justify-center bg-slate-950/80 backdrop-blur-sm p-4"
+                    role="dialog"
+                    aria-modal="true"
+                    aria-labelledby="qr-payment-title"
                     onClick={(e) => {
                         if (e.target === e.currentTarget) handleClose();
                     }}
@@ -116,7 +119,7 @@ export function QRPaymentModal({
                     >
                         {/* Header */}
                         <div className="relative px-6 py-4 border-b border-slate-800">
-                            <h2 className="text-xl font-bold text-white pr-8">
+                            <h2 id="qr-payment-title" className="text-xl font-bold text-white pr-8">
                                 {status === 'success'
                                     ? t('checkout.payment.success')
                                     : status === 'failed'
@@ -140,7 +143,7 @@ export function QRPaymentModal({
                                         <div className="bg-white rounded-2xl p-4 mx-auto w-fit">
                                             <img
                                                 src={paymentData.qrCode}
-                                                alt="QR Code"
+                                                alt={`Payment QR Code for ${paymentData.amount.toLocaleString('vi-VN')} ${paymentData.currency}`}
                                                 className="w-64 h-64 object-contain"
                                             />
                                         </div>
