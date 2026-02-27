@@ -67,16 +67,21 @@ export function useAuth() {
     }
 
     // 3. Check active session on mount
-    supabase.auth.getSession().then(async ({ data: { session } }) => {
-      if (session?.user) {
-        // Fetch full user data from database using store action
-        await fetchUserFromDB();
-        // Load other real data from Supabase after login
-        fetchRealData();
-      }
-    }).finally(() => {
-      setInitialized(true);
-    });
+    supabase.auth.getSession()
+      .then(async ({ data: { session } }) => {
+        if (session?.user) {
+          // Fetch full user data from database using store action
+          await fetchUserFromDB();
+          // Load other real data from Supabase after login
+          fetchRealData();
+        }
+      })
+      .catch((error) => {
+        authLogger.error('Error restoring session:', error);
+      })
+      .finally(() => {
+        setInitialized(true);
+      });
 
     // Listen for auth state changes
     const { data: { subscription } } = supabase.auth.onAuthStateChange(
