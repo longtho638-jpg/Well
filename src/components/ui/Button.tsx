@@ -1,6 +1,7 @@
 import { ButtonHTMLAttributes, ReactNode, forwardRef } from 'react';
 import { Loader2 } from 'lucide-react';
 import { useTranslation } from '@/hooks';
+import { uiLogger } from '@/utils/logger';
 
 interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   variant?: 'primary' | 'secondary' | 'outline' | 'ghost' | 'danger';
@@ -39,7 +40,7 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(({
 
   // Development warning for accessibility
   if (import.meta.env.DEV && !children && !props['aria-label'] && !props['aria-labelledby']) {
-    console.warn('Button component requires children or an aria-label for accessibility.');
+    uiLogger.warn('Button component requires children or an aria-label for accessibility.');
   }
 
   return (

@@ -130,7 +130,7 @@ const App: React.FC = () => {
           {/* ============================================================ */}
           {/* ADMIN ROUTES: Mission Control with Nested Routes (Protected) */}
           {/* ============================================================ */}
-          <Route path="/admin" element={<AdminRoute><SafePage><Admin /></SafePage></AdminRoute>}>
+          <Route path="/admin" element={<ErrorBoundary><AdminRoute><SafePage><Admin /></SafePage></AdminRoute></ErrorBoundary>}>
             <Route index element={<SafePage fallback={AdminSpinner}><Overview /></SafePage>} />
             <Route path="cms" element={<SafePage fallback={AdminSpinner}><CMS /></SafePage>} />
             <Route path="partners" element={<SafePage fallback={AdminSpinner}><Partners /></SafePage>} />
