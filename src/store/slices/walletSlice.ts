@@ -10,6 +10,7 @@ import { calculatePIT } from '../../utils/tax';
 import { enrichUserWithWealthMetrics } from '@/utils/business/wealthEngine';
 import { agentRegistry } from '@/agents';
 import { agentLogger } from '@/utils/logger';
+import { supabase } from '../../lib/supabase';
 
 // ============================================================================
 // SLICE TYPES
@@ -17,7 +18,8 @@ import { agentLogger } from '@/utils/logger';
 
 export interface WalletState {
     transactions: Transaction[];
-    products: Product[];
+    // Removed products from WalletState as it belongs to ProductSlice,
+    // but the slice logic needs access to it via `get().products` which is valid in the combined store.
     revenueData: Array<{ name: string; value: number }>;
 }
 
@@ -27,24 +29,27 @@ export interface WalletActions {
     withdrawShopTokens: (amount: number) => Promise<void>;
     addTransaction: (transaction: Transaction) => void;
     simulateOrder: (productId: string) => Promise<void>;
-    fetchProducts: () => Promise<void>;
+    // fetchProducts removed, handled by ProductSlice
     fetchTransactions: () => Promise<void>;
 }
 
 export type WalletSlice = WalletState & WalletActions;
+
+//Helper type to allow access to products from ProductSlice in the combined store
+type CombinedState = WalletSlice & { user: User; setUser: (user: User) => void; products: Product[] };
 
 // ============================================================================
 // SLICE CREATOR
 // ============================================================================
 
 export const createWalletSlice: StateCreator<
-    WalletSlice & { user: User; setUser: (user: User) => void },
+    CombinedState,
     [],
     [],
     WalletSlice
 > = (set, get) => ({
     transactions: [],
-    products: [],
+    // products initialized in ProductSlice, but we don't init it here to avoid conflict
     revenueData: [],
 
     stakeGrowTokens: (amount) => {
@@ -72,7 +77,7 @@ export const createWalletSlice: StateCreator<
                 stakedGrowBalance: state.user.stakedGrowBalance + amount
             }),
             transactions: [newTransaction, ...state.transactions]
-        } as Partial<WalletSlice & { user: User }>);
+        } as Partial<CombinedState>);
     },
 
     unstakeGrowTokens: (amount) => {
@@ -102,7 +107,7 @@ export const createWalletSlice: StateCreator<
                 growBalance: state.user.growBalance + amount + stakingReward
             }),
             transactions: [newTransaction, ...state.transactions]
-        } as Partial<WalletSlice & { user: User }>);
+        } as Partial<CombinedState>);
     },
 
     withdrawShopTokens: async (amount) => {
@@ -133,11 +138,12 @@ export const createWalletSlice: StateCreator<
                 shopBalance: state.user.shopBalance - amount
             }),
             transactions: [newTransaction, ...state.transactions]
-        } as Partial<WalletSlice & { user: User }>);
+        } as Partial<CombinedState>);
     },
 
     simulateOrder: async (productId) => {
         const state = get();
+        // Access products from the combined store state (provided by ProductSlice)
         const product = state.products.find(p => p.id === productId);
 
         if (!product || product.stock <= 0) throw new Error("Product unavailable");
@@ -184,6 +190,8 @@ export const createWalletSlice: StateCreator<
             accumulatedBonusRevenue: (state.user.accumulatedBonusRevenue || 0) + bonusRevenue
         };
 
+        // Note: updating products state requires calling set() with products key,
+        // which works because of CombinedState
         set({
             products: state.products.map(p =>
                 p.id === productId
@@ -193,7 +201,7 @@ export const createWalletSlice: StateCreator<
             user: enrichUserWithWealthMetrics(updatedUser),
             transactions: [newTransaction, ...state.transactions],
             revenueData: newRevenueData
-        } as Partial<WalletSlice & { user: User }>);
+        } as Partial<CombinedState>);
 
         // Trigger Reward Agent
         const beeAgent = agentRegistry.get('The Bee');
@@ -238,6 +246,31 @@ export const createWalletSlice: StateCreator<
         transactions: [transaction, ...state.transactions]
     })),
 
-    fetchProducts: async () => { /* implementation handled by combined store fetch */ },
-    fetchTransactions: async () => { /* implementation handled by combined store fetch */ },
+    fetchTransactions: async () => {
+        const { data: { session } } = await supabase.auth.getSession();
+        if (!session?.user) return;
+
+        const { data } = await supabase
+            .from('transactions')
+            .select('*')
+            .eq('user_id', session.user.id)
+            .order('created_at', { ascending: false })
+            .limit(50);
+
+        if (data && data.length > 0) {
+            const transactions: Transaction[] = data.map(t => ({
+                id: t.id,
+                userId: t.user_id,
+                date: t.date || new Date(t.created_at).toISOString().split('T')[0],
+                amount: t.amount,
+                type: t.type || 'Direct Sale',
+                status: t.status || 'completed',
+                taxDeducted: t.tax_deducted || 0,
+                hash: t.hash || '',
+                currency: t.currency || 'SHOP',
+                metadata: t.metadata || {}
+            }));
+            set({ transactions });
+        }
+    },
 });
