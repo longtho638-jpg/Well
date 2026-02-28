@@ -265,9 +265,9 @@ recentactivitylist: {
     view_digital_audit_trace: "View Digital Audit Trace"
   },
 liveActivities: {
-    in: "[MISSING] in",
-    just_now: "[MISSING] just now",
-    vnd: "[MISSING] vnd"
+    in: "trong",
+    just_now: "Vừa xong",
+    vnd: "VNĐ"
   },
 liveactivitiesticker: {
     recent: "Gần đây: ",

@@ -244,7 +244,7 @@ top3podium: {
     top_3_t_ng_t_i: "Top 3 tổng tài"
   },
 ranks: {
-    unknown: "[MISSING] unknown"
+    unknown: "Chưa xác định"
   },
 rankprogressbar: {
     rank_upgrade_progress: "Tiến độ nâng hạng",
@@ -322,6 +322,6 @@ agentDashboard: {
       capabilities: "Khả năng nghiệp vụ",
       trainingHistory: "Lịch sử huấn luyện"
     },
-    training: "[MISSING] training"
+    training: "Huấn luyện"
   },
 };

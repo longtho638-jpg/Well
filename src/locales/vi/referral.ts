@@ -118,8 +118,8 @@ referral: {
       node_topology: "Topology Nút"
     },
     hero: {
-      accumulated_revenue: "[MISSING] accumulated revenue",
-      this_month: "[MISSING] this month"
+      accumulated_revenue: "Doanh Thu Tích Lũy",
+      this_month: "Tháng Này"
     }
   },
 referralhero: {

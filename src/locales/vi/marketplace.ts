@@ -147,7 +147,7 @@ producttabs: {
     standard_engagement_protocol: "Standard Engagement Protocol",
     primary_yield: "Lợi Nhuận Chính",
     composition: "Thành Phần",
-    protocol: "[MISSING] protocol"
+    protocol: "Quy Trình"
   },
 productactions: {
     copy_ref_node: "Copy Ref Node",
