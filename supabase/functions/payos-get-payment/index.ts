@@ -1,9 +1,6 @@
 import { serve } from 'https://deno.land/std@0.168.0/http/server.ts'
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2'
-
-interface GetPaymentRequest {
-  orderCode: number
-}
+import { loadCredentials, getPaymentStatus } from '../_shared/vibe-payos/mod.ts'
 
 serve(async (req) => {
   try {
@@ -30,10 +27,9 @@ serve(async (req) => {
       )
     }
 
-    // 2. Parse request body
-    const body: GetPaymentRequest = await req.json()
+    // 2. Parse request & verify ownership
+    const body: { orderCode: number } = await req.json()
 
-    // 3. Verify user owns this order (RLS check)
     const { data: orderData, error: orderError } = await supabase
       .from('orders')
       .select('user_id, order_code')
@@ -54,37 +50,12 @@ serve(async (req) => {
       )
     }
 
-    // 4. Get PayOS credentials from Vault
-    const payosClientId = Deno.env.get('PAYOS_CLIENT_ID')
-    const payosApiKey = Deno.env.get('PAYOS_API_KEY')
+    // 3. Get status via SDK
+    const creds = loadCredentials()
+    const status = await getPaymentStatus(body.orderCode, creds)
 
-    if (!payosClientId || !payosApiKey) {
-      throw new Error('PayOS credentials not configured')
-    }
-
-    // 5. Call PayOS API to get payment status
-    const payosResponse = await fetch(
-      `https://api-merchant.payos.vn/v2/payment-requests/${body.orderCode}`,
-      {
-        method: 'GET',
-        headers: {
-          'x-client-id': payosClientId,
-          'x-api-key': payosApiKey,
-          'Content-Type': 'application/json',
-        },
-      }
-    )
-
-    if (!payosResponse.ok) {
-      const error = await payosResponse.text()
-      throw new Error(`PayOS API error: ${error}`)
-    }
-
-    const paymentData = await payosResponse.json()
-
-    // 6. Return sanitized payment info
     return new Response(
-      JSON.stringify(paymentData.data || {}),
+      JSON.stringify(status),
       { headers: { 'Content-Type': 'application/json' } }
     )
   } catch (error) {

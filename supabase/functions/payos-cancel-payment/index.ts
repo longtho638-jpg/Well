@@ -1,10 +1,6 @@
 import { serve } from 'https://deno.land/std@0.168.0/http/server.ts'
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2'
-
-interface CancelPaymentRequest {
-  orderCode: number
-  cancellationReason?: string
-}
+import { loadCredentials, cancelPayment } from '../_shared/vibe-payos/mod.ts'
 
 serve(async (req) => {
   try {
@@ -31,10 +27,9 @@ serve(async (req) => {
       )
     }
 
-    // 2. Parse request body
-    const body: CancelPaymentRequest = await req.json()
+    // 2. Parse & validate
+    const body: { orderCode: number; cancellationReason?: string } = await req.json()
 
-    // Validate required field
     if (!body.orderCode || typeof body.orderCode !== 'number' || body.orderCode <= 0) {
       return new Response(
         JSON.stringify({ error: 'Missing or invalid orderCode' }),
@@ -42,7 +37,7 @@ serve(async (req) => {
       )
     }
 
-    // 3. Verify user owns this order (RLS check)
+    // 3. Verify ownership
     const { data: orderData, error: orderError } = await supabase
       .from('orders')
       .select('user_id, order_code')
@@ -63,53 +58,18 @@ serve(async (req) => {
       )
     }
 
-    // 4. Get PayOS credentials from Vault
-    const payosClientId = Deno.env.get('PAYOS_CLIENT_ID')
-    const payosApiKey = Deno.env.get('PAYOS_API_KEY')
+    // 4. Cancel via SDK
+    const creds = loadCredentials()
+    const result = await cancelPayment(body.orderCode, body.cancellationReason || 'User cancelled', creds)
 
-    if (!payosClientId || !payosApiKey) {
-      throw new Error('PayOS credentials not configured')
-    }
-
-    // 5. Call PayOS API to cancel payment
-    const payosResponse = await fetch(
-      `https://api-merchant.payos.vn/v2/payment-requests/${body.orderCode}/cancel`,
-      {
-        method: 'POST',
-        headers: {
-          'x-client-id': payosClientId,
-          'x-api-key': payosApiKey,
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          cancellationReason: body.cancellationReason || 'User cancelled',
-        }),
-      }
-    )
-
-    if (!payosResponse.ok) {
-      const error = await payosResponse.text()
-      throw new Error(`PayOS API error: ${error}`)
-    }
-
-    const paymentData = await payosResponse.json()
-
-    // 6. Update order status in database
-    const { error: updateError } = await supabase
+    // 5. Update local DB
+    await supabase
       .from('orders')
-      .update({
-        status: 'cancelled',
-        updated_at: new Date().toISOString(),
-      })
+      .update({ status: 'cancelled', updated_at: new Date().toISOString() })
       .eq('order_code', body.orderCode)
 
-    if (updateError) {
-      console.error('Database update error:', updateError)
-    }
-
-    // 7. Return cancellation result
     return new Response(
-      JSON.stringify(paymentData.data || {}),
+      JSON.stringify(result),
       { headers: { 'Content-Type': 'application/json' } }
     )
   } catch (error) {

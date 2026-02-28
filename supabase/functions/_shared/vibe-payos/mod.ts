@@ -1,0 +1,37 @@
+/**
+ * Vibe PayOS SDK — Entry Point (Deno module convention)
+ *
+ * Shared PayOS primitives for Supabase Edge Functions.
+ * Eliminates duplicated HMAC, signature, API calls across 4+ functions.
+ *
+ * Usage:
+ *   import { loadCredentials, createPayment } from '../_shared/vibe-payos/mod.ts'
+ *   import { verifyWebhookSignature } from '../_shared/vibe-payos/mod.ts'
+ */
+
+// Types
+export type {
+  PayOSCredentials,
+  PayOSCreateRequest,
+  PayOSCreateResponse,
+  PayOSItem,
+  PayOSPaymentStatus,
+  PayOSWebhookData,
+  PayOSWebhookPayload,
+} from './types.ts'
+
+// Crypto (HMAC, signatures, verification)
+export {
+  hmacSha256,
+  secureCompare,
+  createPaymentSignature,
+  verifyWebhookSignature,
+} from './crypto.ts'
+
+// HTTP Client (PayOS API operations)
+export {
+  loadCredentials,
+  createPayment,
+  getPaymentStatus,
+  cancelPayment,
+} from './client.ts'
