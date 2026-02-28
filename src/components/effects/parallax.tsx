@@ -7,7 +7,7 @@ interface ParallaxProps {
     className?: string;
 }
 
-export function Parallax({ children, speed = 0.5, className: _className = '' }: ParallaxProps) {
+export function Parallax({ children, speed = 0.5, className = '' }: ParallaxProps) {
     const ref = useRef<HTMLDivElement>(null);
     const [offset, setOffset] = useState(0);
 

@@ -5,7 +5,7 @@ interface AnimatedBorderProps {
     className?: string;
 }
 
-export function AnimatedBorder({ children, className: _className = '' }: AnimatedBorderProps) {
+export function AnimatedBorder({ children, className = '' }: AnimatedBorderProps) {
     return (
         <div className={`relative p-[2px] rounded-3xl overflow-hidden ${className}`}>
             {/* Animated gradient border */}

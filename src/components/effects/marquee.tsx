@@ -7,7 +7,7 @@ interface MarqueeProps {
     className?: string;
 }
 
-export function Marquee({ children, speed = 20, direction = 'left', className: _className = '' }: MarqueeProps) {
+export function Marquee({ children, speed = 20, direction = 'left', className = '' }: MarqueeProps) {
     return (
         <div className={`overflow-hidden ${className}`}>
             <motion.div

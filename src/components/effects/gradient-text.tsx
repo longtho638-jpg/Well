@@ -8,8 +8,8 @@ interface GradientTextProps {
 
 export function GradientText({
     children,
-    className: _className = '',
-    colors: _colors = ['#10b981', '#06b6d4', '#8b5cf6', '#ec4899', '#10b981']
+    className = '',
+    colors = ['#10b981', '#06b6d4', '#8b5cf6', '#ec4899', '#10b981']
 }: GradientTextProps) {
     return (
         <motion.span

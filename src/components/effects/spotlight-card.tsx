@@ -6,7 +6,7 @@ interface SpotlightCardProps {
     className?: string;
 }
 
-export function SpotlightCard({ children, className: _className = '' }: SpotlightCardProps) {
+export function SpotlightCard({ children, className = '' }: SpotlightCardProps) {
     const ref = useRef<HTMLDivElement>(null);
     const [position, setPosition] = useState({ x: 0, y: 0 });
     const [isHovered, setIsHovered] = useState(false);

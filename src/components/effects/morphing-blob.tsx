@@ -1,7 +1,7 @@
 import { motion } from 'framer-motion';
 import { isSafari } from '@/utils/browser-detect';
 
-export function MorphingBlob({ className: _className = '' }: { className?: string }) {
+export function MorphingBlob({ className = '' }: { className?: string }) {
     // Safari: render static blob without blur animation to prevent GPU compositor crash
     if (isSafari()) {
         return (
