@@ -1,145 +1,145 @@
 export const health = {
   healthcheck: {
-    "100": "[MISSING] 100",
-    s_n_ph_m_c_ai_xu_t_d_nh: "[MISSING] s n ph m c ai xu t d nh",
-    u_ti_n: "[MISSING] u ti n",
-    l_i_ch_kh_c: "[MISSING] l i ch kh c",
-    ph_n_t_ch_chi_ti_t: "[MISSING] ph n t ch chi ti t",
-    i_m_s_t_ng_kh_a_c_nh_s_c_kh: "[MISSING] i m s t ng kh a c nh s c kh"
+    "100": "100",
+    s_n_ph_m_c_ai_xu_t_d_nh: "AI-recommended products for you",
+    u_ti_n: "Priority",
+    l_i_ch_kh_c: "Other Benefits",
+    ph_n_t_ch_chi_ti_t: "Detailed Analysis",
+    i_m_s_t_ng_kh_a_c_nh_s_c_kh: "Score across all health dimensions"
   },
   healthCheck: {
-    consultationTitle: "[MISSING] consultationTitle",
-    consultationDescription: "[MISSING] consultationDescription",
-    chatNow: "[MISSING] chatNow",
-    recommendationsTitle: "[MISSING] recommendationsTitle",
-    priceLabel: "[MISSING] priceLabel",
-    orderNow: "[MISSING] orderNow",
-    back: "[MISSING] back",
-    viewResults: "[MISSING] viewResults",
-    next: "[MISSING] next",
-    timeInfo: "[MISSING] timeInfo",
-    radarTitle: "[MISSING] radarTitle",
-    resultsTitle: "[MISSING] resultsTitle",
-    yourHealthScore: "[MISSING] yourHealthScore",
+    consultationTitle: "AI Health Consultation",
+    consultationDescription: "Get personalized health advice from our AI coach",
+    chatNow: "Chat Now",
+    recommendationsTitle: "Recommended Products",
+    priceLabel: "Price",
+    orderNow: "Order Now",
+    back: "Back",
+    viewResults: "View Results",
+    next: "Next",
+    timeInfo: "Takes about 2 minutes",
+    radarTitle: "Health Radar",
+    resultsTitle: "Your Results",
+    yourHealthScore: "Your Health Score",
     questions: {
       sleep: {
-        question: "[MISSING] question",
+        question: "How many hours do you sleep per night?",
         options: {
-          under5: "[MISSING] under5",
-          _5to6: "[MISSING]  5to6",
-          _6to7: "[MISSING]  6to7",
-          _7to8: "[MISSING]  7to8",
-          over8: "[MISSING] over8"
+          under5: "Under 5 hours",
+          _5to6: "5-6 hours",
+          _6to7: "6-7 hours",
+          _7to8: "7-8 hours",
+          over8: "Over 8 hours"
         }
       },
       stress: {
-        question: "[MISSING] question",
+        question: "How often do you feel stressed?",
         options: {
-          veryOften: "[MISSING] veryOften",
-          often: "[MISSING] often",
-          sometimes: "[MISSING] sometimes",
-          rarely: "[MISSING] rarely",
-          never: "[MISSING] never"
+          veryOften: "Very Often",
+          often: "Often",
+          sometimes: "Sometimes",
+          rarely: "Rarely",
+          never: "Never"
         }
       },
       energy: {
-        question: "[MISSING] question",
+        question: "How would you describe your energy level?",
         options: {
-          veryTired: "[MISSING] veryTired",
-          tired: "[MISSING] tired",
-          normal: "[MISSING] normal",
-          energetic: "[MISSING] energetic",
-          veryEnergetic: "[MISSING] veryEnergetic"
+          veryTired: "Very Tired",
+          tired: "Tired",
+          normal: "Normal",
+          energetic: "Energetic",
+          veryEnergetic: "Very Energetic"
         }
       },
       exercise: {
-        question: "[MISSING] question",
+        question: "How many times per week do you exercise?",
         options: {
-          never: "[MISSING] never",
-          _1to2: "[MISSING]  1to2",
-          _3to4: "[MISSING]  3to4",
-          _5plus: "[MISSING]  5plus"
+          never: "Never",
+          _1to2: "1-2 times",
+          _3to4: "3-4 times",
+          _5plus: "5+ times"
         }
       },
       goal: {
-        question: "[MISSING] question",
+        question: "What is your primary health goal?",
         options: {
-          betterSleep: "[MISSING] betterSleep",
-          reduceStress: "[MISSING] reduceStress",
-          increaseEnergy: "[MISSING] increaseEnergy",
-          boostImmunity: "[MISSING] boostImmunity",
-          overallHealth: "[MISSING] overallHealth"
+          betterSleep: "Better Sleep",
+          reduceStress: "Reduce Stress",
+          increaseEnergy: "Increase Energy",
+          boostImmunity: "Boost Immunity",
+          overallHealth: "Overall Health"
         }
       }
     },
     dimensions: {
-      sleep: "[MISSING] sleep",
-      stress: "[MISSING] stress",
-      energy: "[MISSING] energy",
-      exercise: "[MISSING] exercise"
+      sleep: "Sleep",
+      stress: "Stress",
+      energy: "Energy",
+      exercise: "Exercise"
     },
     products: {
       anima119: {
-        name: "[MISSING] name",
-        reason: "[MISSING] reason",
+        name: "Anima 119",
+        reason: "Supports better sleep and stress reduction",
         benefits: {
-          sleep: "[MISSING] sleep",
-          stress: "[MISSING] stress",
-          emotion: "[MISSING] emotion",
-          memory: "[MISSING] memory"
+          sleep: "Improve sleep quality",
+          stress: "Reduce stress levels",
+          emotion: "Balance emotions",
+          memory: "Enhance memory"
         }
       },
       immuneBoost: {
-        name: "[MISSING] name",
-        reason: "[MISSING] reason",
+        name: "Immune Boost",
+        reason: "Strengthens your immune system",
         benefits: {
-          immunity: "[MISSING] immunity",
-          fatigue: "[MISSING] fatigue",
-          antioxidant: "[MISSING] antioxidant",
-          recovery: "[MISSING] recovery"
+          immunity: "Boost immunity",
+          fatigue: "Reduce fatigue",
+          antioxidant: "Rich in antioxidants",
+          recovery: "Faster recovery"
         }
       },
       starterKit: {
-        name: "[MISSING] name",
-        reason: "[MISSING] reason",
+        name: "Starter Kit",
+        reason: "Complete nutrition for daily wellness",
         benefits: {
-          nutrition: "[MISSING] nutrition",
-          balance: "[MISSING] balance",
-          health: "[MISSING] health",
-          allAges: "[MISSING] allAges"
+          nutrition: "Essential nutrition",
+          balance: "Body balance",
+          health: "Overall health",
+          allAges: "Suitable for all ages"
         }
       }
     },
     scoreLabels: {
-      excellent: "[MISSING] excellent",
-      good: "[MISSING] good",
-      average: "[MISSING] average",
-      needsImprovement: "[MISSING] needsImprovement"
+      excellent: "Excellent",
+      good: "Good",
+      average: "Average",
+      needsImprovement: "Needs Improvement"
     },
     scoreDescriptions: {
-      excellent: "[MISSING] excellent",
-      good: "[MISSING] good",
-      average: "[MISSING] average",
-      poor: "[MISSING] poor"
+      excellent: "Your health is in great shape! Keep it up.",
+      good: "You're doing well. Small improvements can make a big difference.",
+      average: "There's room for improvement. Let's work on it together.",
+      poor: "Your health needs attention. We recommend consulting our AI Coach."
     },
-    restartQuiz: "[MISSING] restartQuiz"
+    restartQuiz: "Restart Quiz"
   },
   healthCoach: {
-    subtitle: "[MISSING] subtitle",
-    disclaimerTech: "[MISSING] disclaimerTech",
-    disclaimerMedical: "[MISSING] disclaimerMedical",
-    totalLabel: "[MISSING] totalLabel",
-    orderNow: "[MISSING] orderNow",
-    greeting: "[MISSING] greeting",
-    title: "[MISSING] title",
-    analyzing: "[MISSING] analyzing",
-    placeholder: "[MISSING] placeholder",
-    send: "[MISSING] send",
-    quickSuggestionsLabel: "[MISSING] quickSuggestionsLabel",
+    subtitle: "Your personal AI health advisor",
+    disclaimerTech: "Powered by Gemini AI",
+    disclaimerMedical: "Not a substitute for professional medical advice",
+    totalLabel: "Total",
+    orderNow: "Order Now",
+    greeting: "Hello! I'm your AI Health Coach. How can I help you today?",
+    title: "Health Coach",
+    analyzing: "Analyzing...",
+    placeholder: "Ask me about your health...",
+    send: "Send",
+    quickSuggestionsLabel: "Quick Suggestions",
     suggestions: {
-      sleep: "[MISSING] sleep",
-      fatigue: "[MISSING] fatigue",
-      immunity: "[MISSING] immunity"
+      sleep: "How can I improve my sleep?",
+      fatigue: "I feel tired all the time",
+      immunity: "How to boost my immunity?"
     }
   }
 };

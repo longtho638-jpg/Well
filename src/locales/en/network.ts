@@ -14,13 +14,13 @@ export const network = {
     addMember: "Add Member"
   },
   liveconsole: {
-    live_operations_node_agent: "[MISSING] live operations node agent",
-    sync_active: "[MISSING] sync active",
-    lat_4ms: "[MISSING] lat 4ms",
-    encrypted: "[MISSING] encrypted",
-    wellnexus_bee: "[MISSING] wellnexus bee",
-    bee_agent_core_v4_2_0_stable: "[MISSING] bee agent core v4 2 0 stable",
-    tx: "[MISSING] tx",
-    bps: "[MISSING] bps"
+    live_operations_node_agent: "Live Operations Node Agent",
+    sync_active: "Sync Active",
+    lat_4ms: "Lat: 4ms",
+    encrypted: "Encrypted",
+    wellnexus_bee: "WellNexus Bee",
+    bee_agent_core_v4_2_0_stable: "Bee Agent Core v4.2.0 Stable",
+    tx: "TX",
+    bps: "BPS"
   }
 };

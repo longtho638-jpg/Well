@@ -1,96 +1,96 @@
 export const referral = {
   referral: {
     link: {
-      title: "[MISSING] title",
-      share: "[MISSING] share",
-      description: "[MISSING] description",
-      copied: "[MISSING] copied",
-      copy: "[MISSING] copy",
-      shareVia: "[MISSING] shareVia",
-      email: "[MISSING] email",
-      dismiss_visual_key: "[MISSING] dismiss visual key",
-      generate_visual_key: "[MISSING] generate visual key"
+      title: "Referral Link",
+      share: "Share",
+      description: "Share your referral link to earn commissions",
+      copied: "Copied!",
+      copy: "Copy",
+      shareVia: "Share Via",
+      email: "Email",
+      dismiss_visual_key: "Dismiss Visual Key",
+      generate_visual_key: "Generate Visual Key"
     },
     hero: {
-      accumulated_revenue: "[MISSING] accumulated revenue",
-      this_month: "[MISSING] this month"
+      accumulated_revenue: "Accumulated Revenue",
+      this_month: "This Month"
     },
     network: {
-      network_architecture: "[MISSING] network architecture",
-      tier_1_tier_2_visualization: "[MISSING] tier 1 tier 2 visualization",
-      f1_sentinel_nodes: "[MISSING] f1 sentinel nodes",
-      nodes: "[MISSING] nodes",
-      f2_secondary_propagation: "[MISSING] f2 secondary propagation",
+      network_architecture: "Network Architecture",
+      tier_1_tier_2_visualization: "Tier 1 & Tier 2 Visualization",
+      f1_sentinel_nodes: "F1 Sentinel Nodes",
+      nodes: "Nodes",
+      f2_secondary_propagation: "F2 Secondary Propagation",
       status: {
-        active: "[MISSING] active",
-        registered: "[MISSING] registered",
-        pending: "[MISSING] pending",
-        expired: "[MISSING] expired",
-        unknown: "[MISSING] unknown"
+        active: "Active",
+        registered: "Registered",
+        pending: "Pending",
+        expired: "Expired",
+        unknown: "Unknown"
       },
-      node_val: "[MISSING] node val",
-      yield: "[MISSING] yield"
+      node_val: "Node Value",
+      yield: "Yield"
     },
     qrcode: {
-      visual_id_key: "[MISSING] visual id key",
-      wellnexus_network: "[MISSING] wellnexus network",
-      scanning_initiates_sync: "[MISSING] scanning initiates sync",
-      commit_to_local_storage: "[MISSING] commit to local storage",
-      recommended_for_high_conversio: "[MISSING] recommended for high conversio"
+      visual_id_key: "Visual ID Key",
+      wellnexus_network: "WellNexus Network",
+      scanning_initiates_sync: "Scanning initiates sync",
+      commit_to_local_storage: "Save to Device",
+      recommended_for_high_conversio: "Recommended for high conversion rates"
     },
     rewards: {
       activation: {
-        title: "[MISSING] title",
-        desc: "[MISSING] desc",
-        sub: "[MISSING] sub"
+        title: "Activation Bonus",
+        desc: "Earn bonus when your referral makes first purchase",
+        sub: "One-time reward"
       },
       revenue: {
-        title: "[MISSING] title",
-        desc: "[MISSING] desc",
-        sub: "[MISSING] sub"
+        title: "Revenue Share",
+        desc: "Earn ongoing commission from referral sales",
+        sub: "Recurring income"
       },
       expansion: {
-        title: "[MISSING] title",
-        desc: "[MISSING] desc",
-        sub: "[MISSING] sub"
+        title: "Network Expansion",
+        desc: "Bonus for growing your team beyond F1",
+        sub: "Multi-level rewards"
       },
-      yield_mechanics: "[MISSING] yield mechanics",
-      incentive_algorithm: "[MISSING] incentive algorithm"
+      yield_mechanics: "Yield Mechanics",
+      incentive_algorithm: "Incentive Algorithm"
     },
     stats: {
-      totalReferrals: "[MISSING] totalReferrals",
-      active: "[MISSING] active",
-      conversionRate: "[MISSING] conversionRate",
-      optimized: "[MISSING] optimized",
-      monthlyReferrals: "[MISSING] monthlyReferrals",
-      growth_spike: "[MISSING] growth spike"
+      totalReferrals: "Total Referrals",
+      active: "Active",
+      conversionRate: "Conversion Rate",
+      optimized: "Optimized",
+      monthlyReferrals: "Monthly Referrals",
+      growth_spike: "Growth Spike"
     },
     chart: {
-      propagation_velocity: "[MISSING] propagation velocity",
-      growth_yield_trajectory: "[MISSING] growth yield trajectory",
-      nodes: "[MISSING] nodes",
-      yield: "[MISSING] yield"
+      propagation_velocity: "Propagation Velocity",
+      growth_yield_trajectory: "Growth & Yield Trajectory",
+      nodes: "Nodes",
+      yield: "Yield"
     },
-    title: "[MISSING] title",
-    subtitle: "[MISSING] subtitle",
-    description: "[MISSING] description",
+    title: "Referral Program",
+    subtitle: "Grow your network and earn rewards",
+    description: "Share your referral link and earn commissions on every signup",
     tabs: {
-      propagation: "[MISSING] propagation",
-      network: "[MISSING] network"
+      propagation: "Propagation",
+      network: "Network"
     }
   },
   achievementgrid: {
-    ecosystem_standing: "[MISSING] ecosystem standing"
+    ecosystem_standing: "Ecosystem Standing"
   },
   dailyquesthub: {
-    grow: "[MISSING] grow",
-    completed: "[MISSING] completed",
-    claim_reward: "[MISSING] claim reward",
-    start_quest: "[MISSING] start quest",
-    mastered: "[MISSING] mastered",
-    completed_1: "[MISSING] completed 1",
-    yield: "[MISSING] yield",
-    grow_1: "[MISSING] grow 1",
-    accumulated_today: "[MISSING] accumulated today"
+    grow: "GROW",
+    completed: "Completed",
+    claim_reward: "Claim Reward",
+    start_quest: "Start Quest",
+    mastered: "Mastered",
+    completed_1: "Completed",
+    yield: "Yield",
+    grow_1: "GROW",
+    accumulated_today: "Accumulated Today"
   }
 };

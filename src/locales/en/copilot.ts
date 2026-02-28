@@ -1,159 +1,159 @@
 export const copilot = {
   copilot: {
     suggestions: {
-      script: "[MISSING] script",
-      price: "[MISSING] price",
-      trust: "[MISSING] trust",
-      competitor: "[MISSING] competitor"
+      script: "Generate Sales Script",
+      price: "Handle Price Objection",
+      trust: "Build Trust",
+      competitor: "Compare with Competitor"
     },
     input: {
-      placeholder: "[MISSING] placeholder"
+      placeholder: "Type your question or describe the situation..."
     },
     objectionTypes: {
-      price: "[MISSING] price",
-      skepticism: "[MISSING] skepticism",
-      competition: "[MISSING] competition",
-      timing: "[MISSING] timing",
-      need: "[MISSING] need",
-      general: "[MISSING] general"
+      price: "Price",
+      skepticism: "Skepticism",
+      competition: "Competition",
+      timing: "Timing",
+      need: "Need",
+      general: "General"
     },
     features: {
       objectionHandling: {
-        title: "[MISSING] title",
-        description: "[MISSING] description"
+        title: "Objection Handling",
+        description: "AI-powered responses to common customer objections"
       },
       salesScript: {
-        title: "[MISSING] title",
-        description: "[MISSING] description"
+        title: "Sales Script Generator",
+        description: "Create personalized scripts for any product"
       },
       realtimeCoaching: {
-        title: "[MISSING] title",
-        description: "[MISSING] description"
+        title: "Real-time Coaching",
+        description: "Get live tips during customer conversations"
       }
     },
-    title: "[MISSING] title",
-    subtitle: "[MISSING] subtitle",
-    description: "[MISSING] description",
+    title: "Sales Copilot",
+    subtitle: "Your AI-powered sales assistant",
+    description: "Get instant help with objections, scripts, and coaching",
     stats: {
-      title: "[MISSING] title",
-      objectionsHandled: "[MISSING] objectionsHandled",
-      scriptsCreated: "[MISSING] scriptsCreated",
-      conversionRate: "[MISSING] conversionRate"
+      title: "Performance",
+      objectionsHandled: "Objections Handled",
+      scriptsCreated: "Scripts Created",
+      conversionRate: "Conversion Rate"
     },
     tips: {
-      title: "[MISSING] title",
-      tip1: "[MISSING] tip1",
-      tip2: "[MISSING] tip2",
-      tip3: "[MISSING] tip3",
-      tip4: "[MISSING] tip4"
+      title: "Pro Tips",
+      tip1: "Listen more than you talk — understand the customer's needs first",
+      tip2: "Focus on benefits, not features — show how it helps them",
+      tip3: "Use social proof — share success stories from other partners",
+      tip4: "Follow up within 24 hours — timing is everything"
     }
   },
   copilotheader: {
-    the_copilot: "[MISSING] the copilot",
-    ai_sales_assistant_powered_b: "[MISSING] ai sales assistant powered b",
-    script: "[MISSING] script",
-    coach: "[MISSING] coach"
+    the_copilot: "The Copilot",
+    ai_sales_assistant_powered_b: "AI Sales Assistant powered by Gemini",
+    script: "Script",
+    coach: "Coach"
   },
   copilotcoaching: {
-    coaching_tips: "[MISSING] coaching tips",
-    ng: "[MISSING] ng"
+    coaching_tips: "Coaching Tips",
+    ng: "Apply"
   },
   copilotmessageitem: {
-    g_i_nhanh: "[MISSING] g i nhanh"
+    g_i_nhanh: "Quick Send"
   },
   copilotsuggestions: {
-    g_i_c_u_h_i: "[MISSING] g i c u h i",
-    g_i: "[MISSING] g i"
+    g_i_c_u_h_i: "Suggested Questions",
+    g_i: "Send"
   },
   useCopilot: {
-    error_processing: "[MISSING] error processing",
-    current_product: "[MISSING] current product",
-    script_generated: "[MISSING] script generated",
-    failed_generate: "[MISSING] failed generate",
-    coaching_ready: "[MISSING] coaching ready",
-    failed_coaching: "[MISSING] failed coaching"
+    error_processing: "Error processing your request",
+    current_product: "Current Product",
+    script_generated: "Script generated successfully",
+    failed_generate: "Failed to generate script",
+    coaching_ready: "Coaching ready",
+    failed_coaching: "Failed to start coaching session"
   },
   airecommendation: {
-    "240": "[MISSING] 240",
-    users_helped: "[MISSING] users helped"
+    "240": "240",
+    users_helped: "users helped"
   },
   chatmessage: {
-    verified_advice: "[MISSING] verified advice"
+    verified_advice: "Verified Advice"
   },
   chatsidebar: {
-    l_ch_s: "[MISSING] l ch s",
-    c_c_cu_c_h_i_tho_i: "[MISSING] c c cu c h i tho i",
-    t_o_cu_c_h_i_tho_i_m_i: "[MISSING] t o cu c h i tho i m i",
+    l_ch_s: "History",
+    c_c_cu_c_h_i_tho_i: "All Conversations",
+    t_o_cu_c_h_i_tho_i_m_i: "New Conversation",
     no_history: "No chat history"
   },
   contextsidebar: {
-    "15": "[MISSING] 15",
-    h_s_kh_ch_h_ng: "[MISSING] h s kh ch h ng",
-    th_ng_tin_t_v_n: "[MISSING] th ng tin t v n",
-    tu_i: "[MISSING] tu i",
-    tu_i_1: "[MISSING] tu i 1",
-    v_n_ch_nh: "[MISSING] v n ch nh",
-    l_ch_s_mua_h_ng: "[MISSING] l ch s mua h ng",
-    l_n_t_v_n_g_n_nh_t: "[MISSING] l n t v n g n nh t",
-    i_m_s_c_kh_e: "[MISSING] i m s c kh e",
-    i_m_s_t_t_ti_p_t_c_duy_tr: "[MISSING] i m s t t ti p t c duy tr",
-    t_v_n_ho_n_th_nh: "[MISSING] t v n ho n th nh",
-    c_i_thi_n_s_c_kh_e: "[MISSING] c i thi n s c kh e",
+    "15": "15",
+    h_s_kh_ch_h_ng: "Customer Profile",
+    th_ng_tin_t_v_n: "Consultation Info",
+    tu_i: "Age",
+    tu_i_1: "years old",
+    v_n_ch_nh: "Main Concern",
+    l_ch_s_mua_h_ng: "Purchase History",
+    l_n_t_v_n_g_n_nh_t: "Last Consultation",
+    i_m_s_c_kh_e: "Health Score",
+    i_m_s_t_t_ti_p_t_c_duy_tr: "Good score — keep maintaining",
+    t_v_n_ho_n_th_nh: "Consultation Complete",
+    c_i_thi_n_s_c_kh_e: "Health Improvement",
     no_patient_data: "No patient data available"
   },
   copilotpage: {
-    "85": "[MISSING] 85",
+    "85": "85",
     mock: {
       session1: {
-        title: "[MISSING] title",
-        preview: "[MISSING] preview"
+        title: "Product Consultation",
+        preview: "How to introduce Anima 119 to new customers"
       },
       session2: {
-        title: "[MISSING] title",
-        preview: "[MISSING] preview"
+        title: "Price Negotiation",
+        preview: "Customer says the product is too expensive"
       },
       session3: {
-        title: "[MISSING] title",
-        preview: "[MISSING] preview"
+        title: "Team Building",
+        preview: "How to recruit new team members effectively"
       },
       session4: {
-        title: "[MISSING] title",
-        preview: "[MISSING] preview"
+        title: "Follow-up Strategy",
+        preview: "Best practices for customer follow-up"
       }
     },
     prompts: {
       facebook: {
-        title: "[MISSING] title",
-        prompt: "[MISSING] prompt"
+        title: "Facebook Post",
+        prompt: "Write an engaging Facebook post about WellNexus products"
       },
       salesScript: {
-        title: "[MISSING] title",
-        prompt: "[MISSING] prompt"
+        title: "Sales Script",
+        prompt: "Create a sales script for approaching new customers"
       },
       objection: {
-        title: "[MISSING] title",
-        prompt: "[MISSING] prompt"
+        title: "Handle Objection",
+        prompt: "How to respond when customer says it's too expensive"
       },
       coldCall: {
-        title: "[MISSING] title",
-        prompt: "[MISSING] prompt"
+        title: "Cold Call Script",
+        prompt: "Write a phone script for contacting potential partners"
       },
       highlight: {
-        title: "[MISSING] title",
-        prompt: "[MISSING] prompt"
+        title: "Product Highlight",
+        prompt: "Highlight key benefits of our health products"
       },
       promotion: {
-        title: "[MISSING] title",
-        prompt: "[MISSING] prompt"
+        title: "Promotion Post",
+        prompt: "Create a promotional post for the current month's offer"
       }
     },
     time: {
-      justNow: "[MISSING] justNow",
-      yesterday: "[MISSING] yesterday"
+      justNow: "Just now",
+      yesterday: "Yesterday"
     },
-    chat_m_i: "[MISSING] chat m i",
-    l_ch_s_chat: "[MISSING] l ch s chat",
-    xem_l_ch_s_chat: "[MISSING] xem l ch s chat",
-    g_i_prompt_click_d_ng_n: "[MISSING] g i prompt click d ng n"
+    chat_m_i: "New Chat",
+    l_ch_s_chat: "Chat History",
+    xem_l_ch_s_chat: "View Chat History",
+    g_i_prompt_click_d_ng_n: "Send a prompt or click a suggestion below"
   }
 };
