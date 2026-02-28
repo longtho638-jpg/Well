@@ -35,3 +35,12 @@ export {
   getPaymentStatus,
   cancelPayment,
 } from './client.ts'
+
+// Webhook Pipeline (reusable Edge Function handler)
+export { handlePayOSWebhook } from './webhook-pipeline.ts'
+export type {
+  WebhookPipelineConfig,
+  WebhookOrderRecord,
+  WebhookSubscriptionIntent,
+  WebhookCallbacks,
+} from './webhook-pipeline.ts'
