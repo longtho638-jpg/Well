@@ -47,6 +47,7 @@ interface SubscriptionIntentRecord {
   planId: string;
   billingCycle: 'monthly' | 'yearly';
   status: string;
+  orgId?: string | null;
 }
 
 interface WebhookHandlerDeps {

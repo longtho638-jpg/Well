@@ -128,7 +128,7 @@ serve(async (req) => {
       // Không phải order thường — kiểm tra subscription payment intent
       const { data: intent } = await supabase
         .from('subscription_payment_intents')
-        .select('id, user_id, plan_id, billing_cycle, status')
+        .select('id, user_id, plan_id, billing_cycle, status, org_id')
         .eq('payos_order_code', payload.data.orderCode)
         .single()
 
@@ -303,7 +303,7 @@ serve(async (req) => {
 // ---------------------------------------------------------------------------
 async function handleSubscriptionWebhook(
   supabase: ReturnType<typeof createClient>,
-  intent: { id: string; user_id: string; plan_id: string; billing_cycle: string; status: string },
+  intent: { id: string; user_id: string; plan_id: string; billing_cycle: string; status: string; org_id?: string | null },
   data: WebhookData
 ): Promise<Response> {
   // Idempotency: bỏ qua nếu đã xử lý
@@ -341,7 +341,7 @@ async function handleSubscriptionWebhook(
       .eq('user_id', intent.user_id)
       .in('status', ['active', 'trialing'])
 
-    // Tạo subscription mới
+    // Tạo subscription mới (multi-org: gắn org_id nếu có)
     const { error: subError } = await supabase.from('user_subscriptions').insert({
       user_id: intent.user_id,
       plan_id: intent.plan_id,
@@ -351,6 +351,7 @@ async function handleSubscriptionWebhook(
       payos_order_code: data.orderCode,
       last_payment_at: new Date().toISOString(),
       next_payment_at: periodEnd.toISOString(),
+      org_id: intent.org_id ?? null,
     })
 
     if (subError) {

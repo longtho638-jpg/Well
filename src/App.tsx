@@ -36,6 +36,7 @@ const CheckoutPage = lazy(() => import('./pages/Checkout/CheckoutPage').then(m =
 const OrderSuccess = lazy(() => import('./components/checkout/OrderSuccess').then(m => ({ default: m.OrderSuccess })));
 const SettingsPage = lazy(() => import('./pages/SettingsPage'));
 const ProfilePage = lazy(() => import('./pages/ProfilePage'));
+const SubscriptionPage = lazy(() => import('./pages/SubscriptionPage'));
 const NotFoundPage = lazy(() => import('./pages/NotFoundPage'));
 
 // Code splitting: Lazy load Admin pages for better performance
@@ -188,6 +189,7 @@ const App: React.FC = () => {
             <Route path="leaderboard" element={<SafePage fallback={SectionSpinner}><Leaderboard /></SafePage>} />
             <Route path="marketing-tools" element={<SafePage fallback={SectionSpinner}><MarketingTools /></SafePage>} />
             <Route path="agents" element={<SafePage fallback={SectionSpinner}><AgentDashboard /></SafePage>} />
+            <Route path="subscription" element={<SafePage fallback={SectionSpinner}><SubscriptionPage /></SafePage>} />
             <Route path="settings" element={<SafePage fallback={SectionSpinner}><SettingsPage /></SafePage>} />
             <Route path="profile" element={<SafePage fallback={SectionSpinner}><ProfilePage /></SafePage>} />
           </Route>

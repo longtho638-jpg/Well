@@ -12,7 +12,8 @@ import {
     createQuestSlice, QuestSlice,
     createTeamSlice, TeamSlice,
     createAgentSlice, AgentSlice,
-    createUISlice, UISlice
+    createUISlice, UISlice,
+    createSubscriptionSlice, SubscriptionSlice,
 } from './slices';
 import { storeLogger } from '../utils/logger';
 import { supabase } from '../lib/supabase';
@@ -20,20 +21,21 @@ import { User, Product, Transaction, UserRank } from '../types';
 export type { User, Product, Transaction, UserRank };
 
 // Combined Store Type definition
-export type AppState = AuthSlice & WalletSlice & QuestSlice & TeamSlice & AgentSlice & UISlice & {
+export type AppState = AuthSlice & WalletSlice & QuestSlice & TeamSlice & AgentSlice & UISlice & SubscriptionSlice & {
     fetchRealData: () => Promise<void>;
     fetchProducts: () => Promise<void>;
     fetchTransactions: () => Promise<void>;
 };
 
-export const useStore = create<AppState>((set, get, ...a) => ({
+export const useStore = create<AppState>((set, get, api) => ({
     // Initialize slices with spread state
-    ...createAuthSlice(set, get, ...a),
-    ...createWalletSlice(set, get, ...a),
-    ...createQuestSlice(set, get, ...a),
-    ...createTeamSlice(set, get, ...a),
-    ...createAgentSlice(set, get, ...a),
-    ...createUISlice(set, get, ...a),
+    ...createAuthSlice(set as never, get as never, api as never),
+    ...createWalletSlice(set as never, get as never, api as never),
+    ...createQuestSlice(set as never, get as never, api as never),
+    ...createTeamSlice(set as never, get as never, api as never),
+    ...createAgentSlice(set as never, get as never, api as never),
+    ...createUISlice(set as never, get as never, api as never),
+    ...createSubscriptionSlice(set as never, get as never, api as never),
 
     // Initial State Overrides - CLEAN SLATE for Production
     isAuthenticated: false,

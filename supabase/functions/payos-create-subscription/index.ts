@@ -10,6 +10,7 @@ interface SubscriptionPaymentRequest {
   billingCycle: 'monthly' | 'yearly'
   returnUrl: string
   cancelUrl: string
+  orgId?: string           // UUID của organizations (multi-org support)
 }
 
 // ---------------------------------------------------------------------------
@@ -136,6 +137,7 @@ serve(async (req) => {
       amount,
       status: 'pending',
       created_at: new Date().toISOString(),
+      org_id: body.orgId ?? null,
     })
 
     return new Response(
