@@ -21,3 +21,14 @@ export type {
   TenantInfo,
   TenantResolverConfig,
 } from './tenant-resolver';
+
+// Subdomain route matching (tenant slug → route config)
+export {
+  matchTenantRoute,
+  resolveSubdomainRoute,
+  createRouteConfig,
+} from './subdomain-route-matcher';
+export type {
+  TenantRouteConfig,
+  SubdomainRouteResult,
+} from './subdomain-route-matcher';
