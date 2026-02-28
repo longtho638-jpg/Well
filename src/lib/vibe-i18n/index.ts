@@ -37,3 +37,15 @@ export {
   detectLocale,
   setLocale,
 } from './format-utils';
+
+// Tenant-aware locale resolution (vibe-tenant + vibe-i18n bridge)
+export {
+  resolveTenantLocale,
+  canSwitchLocale,
+  getLocaleOptions,
+} from './tenant-locale-resolver';
+export type {
+  TenantLocaleConfig,
+  TenantLocaleDeps,
+  TenantLocaleResult,
+} from './tenant-locale-resolver';
