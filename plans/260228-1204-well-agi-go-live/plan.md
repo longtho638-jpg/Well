@@ -18,8 +18,8 @@ Dự án Well hiện tại đang ở trạng thái khá ổn định (Build PASS
 | Phase | Mục tiêu | Trạng thái |
 |-------|----------|------------|
 | [Phase 01: Audit & Baseline](./phase-01-audit-baseline.md) | Xác lập baseline, kiểm tra lại toàn bộ lỗi ẩn. | Pending |
-| [Phase 02: Type Safety & Debt Liquidation](./phase-02-type-safety-debt.md) | Xóa sổ 100% ESLint warnings, fix `any`, fix non-null assertions. | Pending |
-| [Phase 03: UX & A11y Polish](./phase-03-ux-a11y-polish.md) | Sửa 8 lỗi A11y, tối ưu trải nghiệm người dùng. | Pending |
+| [Phase 02: Type Safety & Debt Liquidation](./phase-02-type-safety-debt.md) | Xóa sổ 100% ESLint warnings, fix `any`, fix non-null assertions. | Completed |
+| [Phase 03: UX & A11y Polish](./phase-03-ux-a11y-polish.md) | Sửa 8 lỗi A11y, tối ưu trải nghiệm người dùng. | Completed |
 | [Phase 04: Component Refactoring](./phase-04-refactoring.md) | Tách các file > 200 lines (Withdrawal Service, Effects). | Pending |
 | [Phase 05: Final Verification & Ship](./phase-05-verification-ship.md) | Smoke test production, verify GREEN production rule. | Pending |
 

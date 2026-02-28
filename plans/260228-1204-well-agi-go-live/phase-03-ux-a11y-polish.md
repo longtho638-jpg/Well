@@ -1,7 +1,7 @@
 # Phase 03: UX & A11y Polish — Well AGI Go Live
 
 ## Tổng Quan
-- **Trạng thái**: Pending
+- **Trạng thái**: Completed
 - **Mục tiêu**: Nâng cao tính chuyên nghiệp của sản phẩm bằng cách sửa lỗi Accessibility (A11y) và tối ưu hóa các thành phần UI/UX cốt lõi.
 
 ## Các Bước Thực Hiện
@@ -19,9 +19,9 @@
    - Đảm bảo không có hiện tượng vỡ layout trên các màn hình phổ biến.
 
 ## Danh Sách Cần Kiểm Tra (Checklist)
-- [ ] 0 A11y warnings trong console/lint
-- [ ] Keyboard navigation hoạt động hoàn hảo cho Command Palette
-- [ ] Visual UI check cho các tiers (Starter/Growth/Premium/Master)
+- [x] 0 A11y warnings trong console/lint
+- [x] Keyboard navigation hoạt động hoàn hảo cho Command Palette
+- [x] Visual UI check cho các tiers (Starter/Growth/Premium/Master)
 
 ## Tiêu Chí Thành Công
 - Sản phẩm đạt điểm A11y cao (vượt qua các trình quét tự động).
