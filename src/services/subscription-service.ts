@@ -2,71 +2,43 @@
  * WellNexus Subscription Service
  * Quản lý subscription plans và user subscriptions cho RaaS model.
  * Hỗ trợ multi-org: mỗi org có subscription riêng.
+ *
+ * Types & pure logic imported from vibe-subscription SDK.
  */
 
 import { supabase } from '@/lib/supabase';
+import { canAccessFeature, calculatePeriodEnd } from '@/lib/vibe-subscription';
+import type {
+    SubscriptionPlan,
+    UserSubscription,
+    ActivePlanInfo,
+    Organization,
+    OrgMember,
+    FeatureGateConfig,
+} from '@/lib/vibe-subscription';
 
-// ---------------------------------------------------------------------------
-// Types
-// ---------------------------------------------------------------------------
+// Re-export types so existing consumers don't break
+export type { SubscriptionPlan, UserSubscription, ActivePlanInfo, Organization, OrgMember };
 
-export interface SubscriptionPlan {
-    id: string;
-    slug: 'free' | 'basic' | 'pro' | 'agency';
-    name: string;
-    price_monthly: number;
-    price_yearly: number;
-    max_members: number;
-    features: string[];
-    is_active: boolean;
-    sort_order: number;
-}
+// ─── Well-specific feature gate config ──────────────────────────
 
-export interface UserSubscription {
-    id: string;
-    user_id: string;
-    plan_id: string;
-    org_id: string | null;
-    status: 'active' | 'past_due' | 'canceled' | 'trialing' | 'expired';
-    billing_cycle: 'monthly' | 'yearly';
-    started_at: string;
-    current_period_end: string;
-    canceled_at: string | null;
-    payos_order_code: number | null;
-    last_payment_at: string | null;
-    next_payment_at: string | null;
-}
+const WELL_FEATURE_GATE: FeatureGateConfig = {
+    planHierarchy: ['free', 'basic', 'pro', 'agency'],
+    featureMinPlan: {
+        dashboard: 'free',
+        marketplace: 'free',
+        basic_commission: 'free',
+        withdrawal: 'basic',
+        health_coach: 'basic',
+        ai_copilot: 'pro',
+        advanced_analytics: 'pro',
+        white_label: 'agency',
+        api_access: 'agency',
+    },
+    defaultMinPlan: 'pro',
+};
 
-export interface ActivePlanInfo {
-    plan_slug: string;
-    plan_name: string;
-    status: string;
-    period_end: string;
-    max_members: number;
-}
-
-export interface Organization {
-    id: string;
-    name: string;
-    slug: string;
-    owner_id: string;
-    logo_url: string | null;
-    is_active: boolean;
-    metadata: Record<string, unknown>;
-    created_at: string;
-}
-
-export interface OrgMember {
-    id: string;
-    org_id: string;
-    user_id: string;
-    role: 'owner' | 'admin' | 'member';
-    joined_at: string;
-}
-
-// ---------------------------------------------------------------------------
-// Service
-// ---------------------------------------------------------------------------
+// ─── Service ────────────────────────────────────────────────────
 
 export const subscriptionService = {
     // ── Plan queries ───────────────────────────────────────────────
@@ -115,13 +87,7 @@ export const subscriptionService = {
         orgId?: string;
     }): Promise<UserSubscription> {
         const { userId, planId, billingCycle, payosOrderCode, orgId } = params;
-
-        const periodEnd = new Date();
-        if (billingCycle === 'monthly') {
-            periodEnd.setMonth(periodEnd.getMonth() + 1);
-        } else {
-            periodEnd.setFullYear(periodEnd.getFullYear() + 1);
-        }
+        const periodEnd = calculatePeriodEnd(new Date(), billingCycle);
 
         const { data, error } = await supabase
             .from('user_subscriptions')
@@ -158,25 +124,7 @@ export const subscriptionService = {
     async canAccessFeature(userId: string, feature: string): Promise<boolean> {
         const activePlan = await this.getActivePlan(userId);
         if (!activePlan) return false;
-
-        const planHierarchy = ['free', 'basic', 'pro', 'agency'];
-        const userPlanIndex = planHierarchy.indexOf(activePlan.plan_slug);
-
-        const featureMinPlan: Record<string, string> = {
-            dashboard: 'free',
-            marketplace: 'free',
-            basic_commission: 'free',
-            withdrawal: 'basic',
-            health_coach: 'basic',
-            ai_copilot: 'pro',
-            advanced_analytics: 'pro',
-            white_label: 'agency',
-            api_access: 'agency',
-        };
-
-        const requiredPlan = featureMinPlan[feature] ?? 'pro';
-        const requiredIndex = planHierarchy.indexOf(requiredPlan);
-        return userPlanIndex >= requiredIndex;
+        return canAccessFeature(activePlan.plan_slug, feature, WELL_FEATURE_GATE);
     },
 
     // ── Org-level subscription ─────────────────────────────────────
