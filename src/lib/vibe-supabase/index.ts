@@ -39,3 +39,14 @@ export {
   createOrg,
   orgQueries,
 } from './org-scoped-query-helpers';
+
+// Subscription query helpers (user-level plans + subscriptions)
+export {
+  getPlans,
+  getUserActivePlan,
+  getUserSubscription,
+  createSubscription,
+  cancelSubscription,
+  createSubscriptionIntent,
+  subscriptionQueries,
+} from './subscription-query-helpers';

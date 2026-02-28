@@ -3,7 +3,8 @@
  * Quản lý subscription plans và user subscriptions cho RaaS model.
  * Hỗ trợ multi-org: mỗi org có subscription riêng.
  *
- * Types & pure logic imported from vibe-subscription SDK.
+ * All Supabase queries delegated to vibe-supabase SDK.
+ * Pure logic imported from vibe-subscription SDK.
  */
 
 import { supabase } from '@/lib/supabase';
@@ -22,6 +23,12 @@ import {
     createOrg as _createOrg,
     getOrgActivePlan as _getOrgActivePlan,
     getOrgSubscription as _getOrgSubscription,
+    getPlans as _getPlans,
+    getUserActivePlan as _getUserActivePlan,
+    getUserSubscription as _getUserSubscription,
+    createSubscription as _createSubscription,
+    cancelSubscription as _cancelSubscription,
+    createSubscriptionIntent as _createSubscriptionIntent,
 } from '@/lib/vibe-supabase';
 
 // Re-export types so existing consumers don't break
@@ -48,42 +55,20 @@ const WELL_FEATURE_GATE: FeatureGateConfig = {
 // ─── Service ────────────────────────────────────────────────────
 
 export const subscriptionService = {
-    // ── Plan queries ───────────────────────────────────────────────
+    // ── Plan queries (delegates to vibe-supabase SDK) ────────────────
 
     async getPlans(): Promise<SubscriptionPlan[]> {
-        const { data, error } = await supabase
-            .from('subscription_plans')
-            .select('*')
-            .eq('is_active', true)
-            .order('sort_order');
-
-        if (error) throw error;
-        return data as SubscriptionPlan[];
+        return _getPlans(supabase);
     },
 
-    // ── User-level subscription ────────────────────────────────────
+    // ── User-level subscription (delegates to vibe-supabase SDK) ─────
 
     async getActivePlan(userId: string): Promise<ActivePlanInfo | null> {
-        const { data, error } = await supabase
-            .rpc('get_user_active_plan', { p_user_id: userId });
-
-        if (error) throw error;
-        return (data as ActivePlanInfo[])?.[0] ?? null;
+        return _getUserActivePlan(supabase, userId);
     },
 
     async getUserSubscription(userId: string): Promise<UserSubscription | null> {
-        const { data, error } = await supabase
-            .from('user_subscriptions')
-            .select('*')
-            .eq('user_id', userId)
-            .in('status', ['active', 'trialing'])
-            .gt('current_period_end', new Date().toISOString())
-            .order('created_at', { ascending: false })
-            .limit(1)
-            .maybeSingle();
-
-        if (error) throw error;
-        return data as UserSubscription | null;
+        return _getUserSubscription(supabase, userId);
     },
 
     async createSubscription(params: {
@@ -93,7 +78,6 @@ export const subscriptionService = {
         payosOrderCode: number;
         orgId?: string;
     }): Promise<UserSubscription> {
-        // Use SDK to compute activation params (period end, status)
         const activation = computeActivationParams({
             userId: params.userId,
             planId: params.planId,
@@ -101,29 +85,14 @@ export const subscriptionService = {
             orgId: params.orgId,
         });
 
-        const { data, error } = await supabase
-            .from('user_subscriptions')
-            .insert({
-                ...activation.data,
-                payos_order_code: params.payosOrderCode,
-            })
-            .select()
-            .single();
-
-        if (error) throw error;
-        return data as UserSubscription;
+        return _createSubscription(supabase, {
+            ...activation.data,
+            payos_order_code: params.payosOrderCode,
+        });
     },
 
     async cancelSubscription(subscriptionId: string): Promise<void> {
-        const { error } = await supabase
-            .from('user_subscriptions')
-            .update({
-                status: 'canceled',
-                canceled_at: new Date().toISOString(),
-            })
-            .eq('id', subscriptionId);
-
-        if (error) throw error;
+        return _cancelSubscription(supabase, subscriptionId);
     },
 
     async canAccessFeature(userId: string, feature: string): Promise<boolean> {
@@ -156,7 +125,7 @@ export const subscriptionService = {
         return _createOrg(supabase, params);
     },
 
-    // ── Subscription payment intent (for PayOS checkout) ───────────
+    // ── Subscription payment intent (delegates to vibe-supabase SDK) ─
 
     async createSubscriptionIntent(params: {
         userId: string;
@@ -164,17 +133,12 @@ export const subscriptionService = {
         billingCycle: 'monthly' | 'yearly';
         orgId?: string;
     }): Promise<{ checkoutUrl: string; orderCode: number }> {
-        const { data, error } = await supabase.functions.invoke('payos-create-subscription', {
-            body: {
-                planId: params.planId,
-                billingCycle: params.billingCycle,
-                returnUrl: `${window.location.origin}/dashboard/subscription?status=success`,
-                cancelUrl: `${window.location.origin}/dashboard/subscription?status=canceled`,
-                orgId: params.orgId,
-            },
+        return _createSubscriptionIntent(supabase, {
+            planId: params.planId,
+            billingCycle: params.billingCycle,
+            returnUrl: `${window.location.origin}/dashboard/subscription?status=success`,
+            cancelUrl: `${window.location.origin}/dashboard/subscription?status=canceled`,
+            orgId: params.orgId,
         });
-
-        if (error) throw error;
-        return { checkoutUrl: data.checkoutUrl, orderCode: data.orderCode };
     },
 };
