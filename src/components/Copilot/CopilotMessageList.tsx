@@ -19,11 +19,10 @@ export const CopilotMessageList: React.FC<CopilotMessageListProps> = ({
 }) => {
     const messagesEndRef = useRef<HTMLDivElement>(null);
 
-    const scrollToBottom = () => {
-        messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
-    };
-
     useEffect(() => {
+        const scrollToBottom = () => {
+            messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+        };
         scrollToBottom();
         const currentMessagesEnd = messagesEndRef.current;
         return () => {

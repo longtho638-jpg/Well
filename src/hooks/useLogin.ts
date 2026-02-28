@@ -73,7 +73,9 @@ export const useLogin = () => {
 
             if (result?.error) throw result.error;
 
-            navigateAfterLogin(data.email);
+            if (data.email) {
+                navigateAfterLogin(data.email);
+            }
         } catch (err: unknown) {
             if (timeoutId !== undefined) {
                 clearTimeout(timeoutId);

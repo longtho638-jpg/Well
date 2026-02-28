@@ -203,7 +203,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ onMobileClose }) => {
         <div className="flex items-center gap-3">
           <img
             src={user.avatarUrl}
-            alt={user.name}
+            alt=""
             loading="lazy"
             className="w-10 h-10 rounded-full border border-zinc-700 shadow-sm object-cover"
           />
