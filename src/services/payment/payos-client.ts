@@ -8,21 +8,23 @@
 
 import { supabase } from '@/lib/supabase';
 import { createPaymentProvider } from '@/lib/vibe-payment';
-import type { VibePaymentResponse, VibePaymentStatus } from '@/lib/vibe-payment';
+import type {
+  VibePaymentItem,
+  VibePaymentRequest,
+  VibePaymentStatus,
+} from '@/lib/vibe-payment';
 import { PaymentError } from '@/utils/errors';
 import { paymentBreaker } from '@/utils/circuit-breaker';
 
 // SDK provider instance (singleton)
 const provider = createPaymentProvider('payos', supabase);
 
-// ─── Backward-compatible type re-exports ────────────────────────
+// ─── Re-export SDK types with backward-compatible aliases ────────
 
-export interface PaymentItem {
-    name: string;
-    quantity: number;
-    price: number;
-}
+/** @deprecated Use VibePaymentItem from '@/lib/vibe-payment' */
+export type PaymentItem = VibePaymentItem;
 
+/** Backward-compatible PaymentResponse (superset of SDK VibePaymentResponse) */
 export interface PaymentResponse {
     bin: string;
     accountNumber: string;
@@ -37,34 +39,18 @@ export interface PaymentResponse {
     qrCode: string;
 }
 
-export interface PaymentStatus {
-    id: string;
-    orderCode: number;
-    amount: number;
-    amountPaid: number;
-    amountRemaining: number;
-    status: string;
-    createdAt: string;
-    transactions: Record<string, unknown>[];
-    cancellationReason?: string;
-    canceledAt?: string;
-}
+/** @deprecated Use VibePaymentStatus from '@/lib/vibe-payment' */
+export type PaymentStatus = VibePaymentStatus;
 
-export interface CreatePaymentRequest {
-    orderCode: number;
-    amount: number;
-    description: string;
-    items: PaymentItem[];
-    returnUrl: string;
-    cancelUrl: string;
-}
+/** @deprecated Use VibePaymentRequest from '@/lib/vibe-payment' */
+export type CreatePaymentRequest = VibePaymentRequest;
 
 // ─── API (circuit-breaker wrapped) ──────────────────────────────
 
-export async function createPayment(request: CreatePaymentRequest): Promise<PaymentResponse> {
+export async function createPayment(request: VibePaymentRequest): Promise<PaymentResponse> {
     return paymentBreaker.execute(async () => {
         try {
-            const result: VibePaymentResponse = await provider.createPayment(request);
+            const result = await provider.createPayment(request);
             return { checkoutUrl: result.checkoutUrl, orderCode: result.orderCode } as PaymentResponse;
         } catch (err) {
             throw new PaymentError(
@@ -75,11 +61,10 @@ export async function createPayment(request: CreatePaymentRequest): Promise<Paym
     });
 }
 
-export async function getPaymentStatus(orderCode: number): Promise<PaymentStatus> {
+export async function getPaymentStatus(orderCode: number): Promise<VibePaymentStatus> {
     return paymentBreaker.execute(async () => {
         try {
-            const result: VibePaymentStatus = await provider.getPaymentStatus(orderCode);
-            return result as unknown as PaymentStatus;
+            return await provider.getPaymentStatus(orderCode);
         } catch (err) {
             throw new PaymentError(
                 `Payment status check failed: ${err instanceof Error ? err.message : 'Unknown'}`,
@@ -92,11 +77,10 @@ export async function getPaymentStatus(orderCode: number): Promise<PaymentStatus
 export async function cancelPayment(
     orderCode: number,
     cancellationReason: string = 'User cancelled',
-): Promise<PaymentStatus> {
+): Promise<VibePaymentStatus> {
     return paymentBreaker.execute(async () => {
         try {
-            const result: VibePaymentStatus = await provider.cancelPayment(orderCode, cancellationReason);
-            return result as unknown as PaymentStatus;
+            return await provider.cancelPayment(orderCode, cancellationReason);
         } catch (err) {
             throw new PaymentError(
                 `Payment cancellation failed: ${err instanceof Error ? err.message : 'Unknown'}`,
