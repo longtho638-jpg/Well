@@ -7,7 +7,7 @@
  */
 
 import { supabase } from '@/lib/supabase';
-import { canAccessFeature, calculatePeriodEnd } from '@/lib/vibe-subscription';
+import { canAccessFeature, computeActivationParams } from '@/lib/vibe-subscription';
 import type {
     SubscriptionPlan,
     UserSubscription,
@@ -86,21 +86,19 @@ export const subscriptionService = {
         payosOrderCode: number;
         orgId?: string;
     }): Promise<UserSubscription> {
-        const { userId, planId, billingCycle, payosOrderCode, orgId } = params;
-        const periodEnd = calculatePeriodEnd(new Date(), billingCycle);
+        // Use SDK to compute activation params (period end, status)
+        const activation = computeActivationParams({
+            userId: params.userId,
+            planId: params.planId,
+            billingCycle: params.billingCycle,
+            orgId: params.orgId,
+        });
 
         const { data, error } = await supabase
             .from('user_subscriptions')
             .insert({
-                user_id: userId,
-                plan_id: planId,
-                billing_cycle: billingCycle,
-                status: 'active',
-                current_period_end: periodEnd.toISOString(),
-                payos_order_code: payosOrderCode,
-                last_payment_at: new Date().toISOString(),
-                next_payment_at: periodEnd.toISOString(),
-                org_id: orgId ?? null,
+                ...activation.data,
+                payos_order_code: params.payosOrderCode,
             })
             .select()
             .single();
