@@ -108,17 +108,13 @@ export async function orchestrateBillingWebhook(
 export function createBillingWebhookConfig(params: {
   webhookSecret: string;
   checksumKey: string;
-  onPaymentSuccess?: (event: VibeWebhookEvent) => Promise<void>;
-  onPaymentCancelled?: (event: VibeWebhookEvent) => Promise<void>;
+  onPaymentSuccess?: (event: VibeWebhookEvent, orderId: string) => Promise<void>;
+  onPaymentCancelled?: (event: VibeWebhookEvent, orderId: string) => Promise<void>;
 }): VibeWebhookConfig {
   return {
     webhookSecret: params.webhookSecret,
     checksumKey: params.checksumKey,
-    onOrderPaid: params.onPaymentSuccess
-      ? (event) => params.onPaymentSuccess!(event)
-      : undefined,
-    onOrderCancelled: params.onPaymentCancelled
-      ? (event) => params.onPaymentCancelled!(event)
-      : undefined,
+    onOrderPaid: params.onPaymentSuccess,
+    onOrderCancelled: params.onPaymentCancelled,
   };
 }
