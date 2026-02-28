@@ -87,6 +87,7 @@ export const common = {
     notifications: "Notifications",
     skipToContent: "Skip to main content",
     pageContent: "Page content",
+    desktop_navigation: "Desktop navigation",
     mainNavigation: "Main navigation",
     primaryNavigation: "Primary navigation",
     wellnexusHome: "WellNexus home",
@@ -142,6 +143,7 @@ export const common = {
   },
   sidebar: {
     wellnexus: "WellNexus",
+    wellnexus_home: "WellNexus Home",
     social_commerce: "Social Commerce",
     the_coach: "The Coach",
     day_3_30: "Day 3/30",

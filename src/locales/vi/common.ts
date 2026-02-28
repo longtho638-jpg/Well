@@ -87,6 +87,7 @@ nav: {
     notifications: "Thông báo",
     skipToContent: "Chuyển đến nội dung chính",
     pageContent: "Nội dung trang",
+    desktop_navigation: "Điều hướng máy tính",
     mainNavigation: "Điều hướng chính",
     primaryNavigation: "Điều hướng chính",
     wellnexusHome: "Trang chủ WellNexus",

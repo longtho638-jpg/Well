@@ -10,7 +10,7 @@ vi.mock('framer-motion', async () => {
   return {
     motion: {
       div: actualReact.forwardRef(({ children, onClick, className, ...props }: React.HTMLAttributes<HTMLDivElement>, ref: React.ForwardedRef<HTMLDivElement>) => (
-        <div ref={ref} className={className} onClick={onClick} {...props}>
+        <div ref={ref} className={className} onClick={onClick} role="none" {...props}>
           {children}
         </div>
       )),

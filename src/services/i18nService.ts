@@ -3,7 +3,7 @@
  * High-performance internationalization engine with memoized formatters.
  */
 
-import { Locale, LOCALES } from '../utils/i18n';
+import { Locale, LOCALES } from '../types/i18n';
 
 // Cache for Intl formatters to avoid expensive re-initialization
 const formatters = {

@@ -27,6 +27,7 @@ export const marketplace = {
     out_of_stock: "[MISSING] out of stock",
     stock: "[MISSING] stock",
     share: "[MISSING] share",
+    share_product_link: "Share product link",
     added: "[MISSING] added",
     buy_now: "[MISSING] buy now"
   },

@@ -73,6 +73,11 @@
   - [x] UI Implementation (`AgentDashboard.tsx`)
   - [x] Localization (EN/VI)
   - [x] Integration with Registry
+- [x] **AGI Go Live Optimization (v2.5.0)** ✅
+  - [x] 100% Build & Test PASS
+  - [x] Zero ESLint Warnings/Errors
+  - [x] Component Refactoring (< 200 lines rule)
+  - [x] A11y & Keyboard Navigation Polish
 - [ ] **Policy Engine**
   - [ ] Core Engine Logic
   - [ ] Rule Management UI

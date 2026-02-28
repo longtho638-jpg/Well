@@ -55,6 +55,7 @@ export const BentoCard: React.FC<BentoCardProps> = ({
         <div
             className={`group relative border border-white/10 bg-zinc-900/50 overflow-hidden rounded-3xl ${colClasses[colSpan]} ${rowClasses[rowSpan]} ${className}`}
             onMouseMove={handleMouseMove}
+            role="none"
         >
             <motion.div
                 className="pointer-events-none absolute -inset-px rounded-3xl opacity-0 transition duration-300 group-hover:opacity-100"

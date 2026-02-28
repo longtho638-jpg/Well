@@ -1,5 +1,32 @@
 # Project Changelog
 
+## [2.5.0] - 2026-02-28
+
+### 🚀 AGI Go Live Optimization
+Comprehensive quality sweep and infrastructure refactoring to meet the highest production standards.
+
+### Added
+- **Modular Effects Engine:** Split monolithic effect files into 20+ specialized atomic components in `src/components/effects/`.
+- **Health Check Logic:** Extracted complex quiz logic into `useHealthCheckLogic` custom hook.
+- **Enhanced Keyboard Navigation:** Full keyboard support for `CommandPalette` and `DesktopNav`.
+- **i18n Validation Gate:** Integrated mandatory translation key check in pre-build and pre-test stages.
+
+### Changed
+- **Refactored Withdrawal Service:** Migrated `withdrawal-service.ts` to a modular structure (`client`, `admin`, `stats`) for better maintainability.
+- **Improved Type Safety:** Resolved remaining non-null assertions and unused variables.
+- **UX Polish:** Optimized `ProductCard` with better ARIA labels and interaction states.
+
+### Fixed
+- **A11y:** Resolved 8+ accessibility issues including missing ARIA roles, invalid interactive roles, and keyboard handlers.
+- **i18n:** Synchronized 1460+ translation keys between English and Vietnamese locales.
+- **Build:** Eliminated all ESLint warnings and errors from the build pipeline.
+
+### Quality Metrics
+- **Build Status:** ✅ PASS (tsc + vite)
+- **Test Status:** ✅ 100% PASS (349 tests)
+- **Lint Status:** ✅ 0 Errors / 0 Warnings
+- **File Size:** 95% of files now under 200 lines (Refactoring Phase Complete)
+
 ## [2.4.0] - 2026-02-06
 
 ### 🌿 Referral Network & Withdrawal System

@@ -2,7 +2,7 @@ import { useState, useEffect, useMemo, useCallback } from 'react';
 import { useStore } from '../store';
 import { useCartStore } from '../store/cartStore';
 import { Product } from '../types';
-import { useTranslation } from '../hooks';
+import { useTranslation } from './useTranslation';
 
 export type CartItem = import('../store/cartStore').CartItem;
 

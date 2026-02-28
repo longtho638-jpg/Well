@@ -20,7 +20,7 @@ export const useLogin = () => {
     const [success, setSuccess] = useState(false);
     const { t } = useTranslation();
 
-    const { signIn } = useAuth();
+    const { signIn: _signIn } = useAuth();
     const navigate = useNavigate();
 
     const form = useForm<LoginFormValues>({
@@ -38,15 +38,14 @@ export const useLogin = () => {
     const navigateAfterLogin = (userEmail: string) => {
         const userIsAdmin = isAdmin(userEmail);
         setSuccess(true);
-        setLoading(false);
-
-        setTimeout(() => {
+        const timer = setTimeout(() => {
             if (userIsAdmin) {
                 navigate('/admin');
             } else {
                 navigate('/dashboard');
             }
         }, 800);
+        return () => clearTimeout(timer);
     };
 
     /**
@@ -56,20 +55,30 @@ export const useLogin = () => {
         setLoading(true);
         setServerError('');
 
+        let timeoutId: ReturnType<typeof setTimeout> | undefined = undefined;
+
         try {
-            let timeoutId: ReturnType<typeof setTimeout>;
             const timeoutPromise = new Promise((_, reject) => {
                 timeoutId = setTimeout(() => reject(new Error('TIMEOUT')), 30000);
             });
 
-            const signInPromise = signIn(data.email, data.password);
-            const result = await Promise.race([signInPromise, timeoutPromise]) as { error?: Error };
-            clearTimeout(timeoutId!);
+            const signInPromise = _signIn(data.email, data.password);
+            const raceResult = await Promise.race([signInPromise, timeoutPromise]);
+            const result = raceResult as { error?: Error } | undefined;
+
+            if (timeoutId !== undefined) {
+                clearTimeout(timeoutId);
+                timeoutId = undefined;
+            }
 
             if (result?.error) throw result.error;
 
             navigateAfterLogin(data.email);
         } catch (err: unknown) {
+            if (timeoutId !== undefined) {
+                clearTimeout(timeoutId);
+            }
+
             const errorObj = err as Error;
             authLogger.error('Login failed', errorObj);
 

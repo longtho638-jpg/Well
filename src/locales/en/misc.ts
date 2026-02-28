@@ -37,6 +37,7 @@ export const misc = {
   commandpalette: {
     agencyos_85_commands: "AgencyOS: 85 Commands",
     all: "All",
+    command_list: "Command list",
     error: "Error",
     executing_command: "Executing Command",
     no_commands_found: "No Commands Found",
@@ -73,12 +74,13 @@ export const misc = {
     xp: "XP"
   },
   sidebar: {
-    wellnexus: "[MISSING] wellnexus",
-    social_commerce: "[MISSING] social commerce",
-    the_coach: "[MISSING] the coach",
-    day_3_30: "[MISSING] day 3 30",
-    xp: "[MISSING] xp",
-    get_ai_advice: "[MISSING] get ai advice",
+    wellnexus: "WellNexus",
+    wellnexus_home: "WellNexus Home",
+    social_commerce: "Social Commerce",
+    the_coach: "The Coach",
+    day_3_30: "Day 3/30",
+    xp: "XP",
+    get_ai_advice: "Get AI Advice",
     coachFallback: "Focus on sharing value today. Sales will follow!",
     getAiAdviceLabel: "Get personalized AI advice",
     questList: "Quest list"

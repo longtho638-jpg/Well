@@ -125,6 +125,18 @@ serve(async (req) => {
       .single()
 
     if (fetchError || !currentOrder) {
+      // Không phải order thường — kiểm tra subscription payment intent
+      const { data: intent } = await supabase
+        .from('subscription_payment_intents')
+        .select('id, user_id, plan_id, billing_cycle, status')
+        .eq('payos_order_code', payload.data.orderCode)
+        .single()
+
+      if (intent) {
+        // Xử lý subscription payment
+        return await handleSubscriptionWebhook(supabase, intent, payload.data)
+      }
+
       console.error('Order not found:', payload.data.orderCode)
       await logAudit(supabase, null, 'PAYOS_WEBHOOK_FAILED', { error: 'Order not found', orderCode: payload.data.orderCode }, 'failure')
       return new Response(
@@ -285,6 +297,74 @@ serve(async (req) => {
     )
   }
 })
+
+// ---------------------------------------------------------------------------
+// Subscription webhook handler — activate/cancel subscription sau PayOS payment
+// ---------------------------------------------------------------------------
+async function handleSubscriptionWebhook(
+  supabase: ReturnType<typeof createClient>,
+  intent: { id: string; user_id: string; plan_id: string; billing_cycle: string; status: string },
+  data: WebhookData
+): Promise<Response> {
+  // Idempotency: bỏ qua nếu đã xử lý
+  if (intent.status !== 'pending') {
+    return new Response(
+      JSON.stringify({ success: true, message: 'Subscription already processed' }),
+      { headers: { 'Content-Type': 'application/json' } }
+    )
+  }
+
+  const isPaid = data.code === '00'
+  const isCanceled = data.code === '01'
+  const newIntentStatus = isPaid ? 'paid' : isCanceled ? 'canceled' : 'pending'
+
+  // Cập nhật intent status (atomic: chỉ update nếu vẫn pending)
+  await supabase
+    .from('subscription_payment_intents')
+    .update({ status: newIntentStatus, completed_at: new Date().toISOString() })
+    .eq('id', intent.id)
+    .eq('status', 'pending')
+
+  if (isPaid) {
+    // Tính period_end dựa trên billing_cycle
+    const periodEnd = new Date()
+    if (intent.billing_cycle === 'yearly') {
+      periodEnd.setFullYear(periodEnd.getFullYear() + 1)
+    } else {
+      periodEnd.setMonth(periodEnd.getMonth() + 1)
+    }
+
+    // Hủy subscription cũ nếu có (upgrade/renew)
+    await supabase
+      .from('user_subscriptions')
+      .update({ status: 'canceled', canceled_at: new Date().toISOString() })
+      .eq('user_id', intent.user_id)
+      .in('status', ['active', 'trialing'])
+
+    // Tạo subscription mới
+    const { error: subError } = await supabase.from('user_subscriptions').insert({
+      user_id: intent.user_id,
+      plan_id: intent.plan_id,
+      billing_cycle: intent.billing_cycle,
+      status: 'active',
+      current_period_end: periodEnd.toISOString(),
+      payos_order_code: data.orderCode,
+      last_payment_at: new Date().toISOString(),
+      next_payment_at: periodEnd.toISOString(),
+    })
+
+    if (subError) {
+      console.error('[subscription] Create subscription failed:', subError)
+    } else {
+      console.log(`[subscription] Activated for user ${intent.user_id}, plan ${intent.plan_id}`)
+    }
+  }
+
+  return new Response(
+    JSON.stringify({ success: true, subscriptionStatus: newIntentStatus }),
+    { headers: { 'Content-Type': 'application/json' } }
+  )
+}
 
 // Helper to log to audit_logs table
 async function logAudit(supabase: ReturnType<typeof createClient>, userId: string | null, action: string, payload: Record<string, unknown>, severity: string) {

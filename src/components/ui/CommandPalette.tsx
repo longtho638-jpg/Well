@@ -36,6 +36,7 @@ export function CommandPalette({ isOpen, onClose }: CommandPaletteProps) {
     const [selectedCategory, setSelectedCategory] = useState<AgencyOSCategory | null>(null);
     const [isExecuting, setIsExecuting] = useState(false);
     const [lastResult, setLastResult] = useState<{ success: boolean; message?: string; output?: string; error?: string } | null>(null);
+    const [selectedIndex, setSelectedIndex] = useState(0);
 
     const filteredCommands = useMemo(() => {
         const results: Array<{ category: AgencyOSCategory; command: string; description: string; i18nKey: string }> = [];
@@ -59,6 +60,27 @@ export function CommandPalette({ isOpen, onClose }: CommandPaletteProps) {
 
         return results;
     }, [search, selectedCategory]);
+
+    const inputRef = React.useRef<HTMLInputElement>(null);
+    const listRef = React.useRef<HTMLUListElement>(null);
+
+    // Reset selected index when filtered results change
+    React.useEffect(() => {
+        setSelectedIndex(0);
+    }, [filteredCommands]);
+
+    // Focus input on open
+    React.useEffect(() => {
+        if (!isOpen) return;
+
+        const timer = setTimeout(() => {
+            inputRef.current?.focus();
+        }, 100);
+
+        return () => {
+            clearTimeout(timer);
+        };
+    }, [isOpen]);
 
     // Execute a command via AgencyOSAgent
     const executeCommand = useCallback(async (command: string) => {
@@ -119,8 +141,17 @@ export function CommandPalette({ isOpen, onClose }: CommandPaletteProps) {
     const handleKeyDown = useCallback((e: React.KeyboardEvent) => {
         if (e.key === 'Escape') {
             onClose();
+        } else if (e.key === 'ArrowDown') {
+            e.preventDefault();
+            setSelectedIndex((prev) => (prev + 1) % filteredCommands.length);
+        } else if (e.key === 'ArrowUp') {
+            e.preventDefault();
+            setSelectedIndex((prev) => (prev - 1 + filteredCommands.length) % filteredCommands.length);
+        } else if (e.key === 'Enter' && filteredCommands.length > 0) {
+            e.preventDefault();
+            executeCommand(filteredCommands[selectedIndex].command);
         }
-    }, [onClose]);
+    }, [onClose, filteredCommands, selectedIndex, executeCommand]);
 
     if (!isOpen) return null;
 
@@ -128,25 +159,27 @@ export function CommandPalette({ isOpen, onClose }: CommandPaletteProps) {
         <div
             className="fixed inset-0 z-50 flex items-start justify-center pt-[10vh]"
             onKeyDown={handleKeyDown}
+            role="none"
         >
             {/* Backdrop */}
             <div
                 className="absolute inset-0 bg-black/60 backdrop-blur-sm"
                 onClick={onClose}
+                role="presentation"
             />
 
             {/* Palette Container */}
-            <div className="relative w-full max-w-2xl bg-gray-900 rounded-xl shadow-2xl border border-gray-700 overflow-hidden">
+            <div className="relative w-full max-w-2xl bg-gray-900 rounded-xl shadow-2xl border border-gray-700 overflow-hidden" role="dialog" aria-modal="true">
                 {/* Header/Search */}
                 <div className="flex items-center gap-3 px-4 py-3 border-b border-gray-700">
                     <Command className="w-5 h-5 text-cyan-400" />
                     <input
+                        ref={inputRef}
                         type="text"
                         placeholder={t('common.search')}
                         value={search}
                         onChange={(e) => setSearch(e.target.value)}
                         className="flex-1 bg-transparent text-white placeholder-gray-500 outline-none text-lg"
-                        autoFocus
                     />
                     <button
                         onClick={onClose}
@@ -188,29 +221,31 @@ export function CommandPalette({ isOpen, onClose }: CommandPaletteProps) {
                             <p>{t('commandpalette.no_commands_found')}</p>
                         </div>
                     ) : (
-                        <ul className="py-2">
-                            {filteredCommands.map((cmd) => (
-                                <li key={cmd.command}>
+                        <ul ref={listRef} className="py-2" role="listbox" aria-label={t('commandpalette.command_list')}>
+                            {filteredCommands.map((cmd, index) => (
+                                <li key={cmd.command} role="option" aria-selected={selectedIndex === index}>
                                     <button
                                         onClick={() => executeCommand(cmd.command)}
                                         disabled={isExecuting}
-                                        className="w-full flex items-center gap-3 px-4 py-2.5 hover:bg-gray-800/50 transition-colors text-left group"
+                                        className={`w-full flex items-center gap-3 px-4 py-2.5 transition-colors text-left group ${
+                                            selectedIndex === index ? 'bg-gray-800/80 ring-1 ring-inset ring-cyan-500/50' : 'hover:bg-gray-800/50'
+                                        }`}
                                     >
                                         <span className="text-lg">{CATEGORY_ICONS[cmd.category]}</span>
                                         <div className="flex-1 min-w-0">
                                             <div className="flex items-center gap-2">
-                                                <code className="text-cyan-400 font-mono text-sm">
+                                                <code className={`text-sm font-mono transition-colors ${selectedIndex === index ? 'text-cyan-300' : 'text-cyan-400'}`}>
                                                     {cmd.command}
                                                 </code>
                                                 <span className="text-xs text-gray-600 bg-gray-800 px-1.5 py-0.5 rounded">
                                                     {CATEGORY_LABELS[cmd.category]}
                                                 </span>
                                             </div>
-                                            <p className="text-gray-400 text-sm truncate">
+                                            <p className={`text-sm truncate transition-colors ${selectedIndex === index ? 'text-gray-300' : 'text-gray-400'}`}>
                                                 {t(cmd.i18nKey)}
                                             </p>
                                         </div>
-                                        <ChevronRight className="w-4 h-4 text-gray-600 group-hover:text-cyan-400 transition-colors" />
+                                        <ChevronRight className={`w-4 h-4 transition-colors ${selectedIndex === index ? 'text-cyan-300 translate-x-1' : 'text-gray-600 group-hover:text-cyan-400'}`} />
                                     </button>
                                 </li>
                             ))}

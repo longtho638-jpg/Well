@@ -200,10 +200,28 @@ const App: React.FC = () => {
           <Route path="/product/:id" element={<Navigate to="/dashboard/product/:id" replace />} />
 
           {/* ============================================================ */}
-          {/* DIAGNOSTIC ROUTES */}
+          {/* DIAGNOSTIC ROUTES: Yêu cầu đăng nhập — không expose public */}
           {/* ============================================================ */}
-          <Route path="/test" element={<ErrorBoundary><TestPage /></ErrorBoundary>} />
-          <Route path="/debugger" element={<ErrorBoundary><DebuggerPage /></ErrorBoundary>} />
+          <Route
+            path="/test"
+            element={
+              isAuthenticated ? (
+                <ErrorBoundary><TestPage /></ErrorBoundary>
+              ) : (
+                <Navigate to="/" replace />
+              )
+            }
+          />
+          <Route
+            path="/debugger"
+            element={
+              isAuthenticated ? (
+                <ErrorBoundary><DebuggerPage /></ErrorBoundary>
+              ) : (
+                <Navigate to="/" replace />
+              )
+            }
+          />
           <Route path="/system-status" element={<SafePage><SystemStatus /></SafePage>} />
 
           {/* ============================================================ */}

@@ -8,7 +8,7 @@ import { getPaymentStatus } from '@/services/payment/payos-client';
 vi.mock('framer-motion', () => ({
   motion: {
     div: ({ children, className, onClick, ...props }: React.ComponentProps<'div'>) => (
-      <div className={className} onClick={onClick} {...props}>
+      <div className={className} onClick={onClick} role="none" {...props}>
         {children}
       </div>
     ),

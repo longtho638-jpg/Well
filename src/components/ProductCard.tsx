@@ -56,7 +56,16 @@ const ProductCard: React.FC<Props> = ({ product }) => {
   return (
     <div
       onClick={handleViewDetails}
+      onKeyDown={(e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          handleViewDetails();
+        }
+      }}
       className="glass-pearl dark:glass-void rounded-2xl overflow-hidden hover-lift transition-all duration-300 group flex flex-col h-full cursor-pointer relative border border-white/40 dark:border-white/5"
+      role="button"
+      tabIndex={0}
+      aria-label={t('productcard.view_details_for', { name: product.name })}
     >
       {/* Image Container */}
       <div className="relative aspect-square bg-gradient-to-br from-gray-50 to-white dark:from-slate-900 dark:to-slate-800 overflow-hidden p-6 flex items-center justify-center group-hover:p-4 transition-all duration-500">
@@ -108,8 +117,8 @@ const ProductCard: React.FC<Props> = ({ product }) => {
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mt-auto">
             <button
               onClick={handleShare}
-              className="flex items-center justify-center gap-2 bg-white dark:bg-slate-800 border border-gray-200 dark:border-slate-600 hover:border-gray-300 dark:hover:border-slate-500 text-gray-700 dark:text-slate-300 hover:bg-gray-50 dark:hover:bg-slate-700 active:bg-gray-100 dark:active:bg-slate-600 py-3 rounded-xl text-xs font-bold transition-all duration-200 hover:shadow-lg active:scale-95"
-              aria-label="Share product link"
+              className="flex items-center justify-center gap-2 bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 hover:border-zinc-300 dark:hover:border-zinc-600 text-zinc-700 dark:text-zinc-300 hover:bg-zinc-50 dark:hover:bg-zinc-700 active:bg-zinc-100 dark:active:bg-zinc-600 py-3 rounded-xl text-xs font-bold transition-all duration-200 hover:shadow-lg active:scale-95"
+              aria-label={t('productcard.share_product_link')}
             >
               <Share2 className="w-3.5 h-3.5" /> {t('productcard.share')}</button>
 

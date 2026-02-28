@@ -91,7 +91,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ onMobileClose }) => {
             handleNav('/dashboard');
           }
         }}
-        aria-label={t('nav.wellnexusHome')}
+        aria-label={t('sidebar.wellnexus_home')}
       >
         <div className="w-10 h-10 bg-zinc-800 dark:bg-zinc-900 rounded-xl flex items-center justify-center text-emerald-400 font-bold shadow-lg border border-zinc-200 dark:border-zinc-800 flex-shrink-0">W</div>
         <div>
@@ -152,27 +152,27 @@ export const Sidebar: React.FC<SidebarProps> = ({ onMobileClose }) => {
               ))}
             </ul>
 
-            <AnimatePresence mode='wait'>
-              {advice ? (
-                <motion.div
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  className="bg-zinc-100 dark:bg-zinc-800 rounded-lg p-3 text-xs text-zinc-600 dark:text-zinc-300 italic border border-zinc-200 dark:border-zinc-700 mb-2"
-                  role="status"
-                  aria-live="polite"
-                >
-                  "{advice}"
-                </motion.div>
-              ) : (
-                <button
-                  onClick={handleAdvice}
-                  disabled={loading}
-                  className="w-full py-2.5 bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs rounded-lg flex items-center justify-center gap-2 transition-all duration-200 shadow-lg shadow-emerald-500/20 hover:shadow-emerald-500/30"
-                  aria-label={loading ? t('common.loading') : t('sidebar.getAiAdviceLabel')}
-                >
-                  {loading ? <Sparkles className="w-3 h-3 animate-spin" aria-hidden="true" /> : <Sparkles className="w-3 h-3" aria-hidden="true" />} {t('sidebar.get_ai_advice')}</button>
-              )}
-            </AnimatePresence>
+          <AnimatePresence mode='wait'>
+            {advice ? (
+              <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                className="bg-zinc-100 dark:bg-zinc-800 rounded-lg p-3 text-xs text-zinc-600 dark:text-zinc-300 italic border border-zinc-200 dark:border-zinc-700 mb-2"
+                role="status"
+                aria-live="polite"
+              >
+                "{advice}"
+              </motion.div>
+            ) : (
+              <button
+                onClick={handleAdvice}
+                disabled={loading}
+                className="w-full py-2.5 bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs rounded-lg flex items-center justify-center gap-2 transition-all duration-200 shadow-lg shadow-emerald-500/20 hover:shadow-emerald-500/30"
+                aria-label={loading ? t('common.loading') : t('sidebar.getAiAdviceLabel')}
+              >
+                {loading ? <Sparkles className="w-3 h-3 animate-spin" aria-hidden="true" /> : <Sparkles className="w-3 h-3" aria-hidden="true" />} {t('sidebar.get_ai_advice')}</button>
+            )}
+          </AnimatePresence>
           </div>
         </div>
       </div>
@@ -203,7 +203,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ onMobileClose }) => {
         <div className="flex items-center gap-3">
           <img
             src={user.avatarUrl}
-            alt={`${user.name}'s profile picture`}
+            alt={user.name}
             loading="lazy"
             className="w-10 h-10 rounded-full border border-zinc-700 shadow-sm object-cover"
           />

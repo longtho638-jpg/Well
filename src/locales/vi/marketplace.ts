@@ -113,6 +113,7 @@ productcard: {
     earn: "Kiếm ",
     out_of_stock: "Hết Hàng",
     share: "Chia Sẻ",
+    share_product_link: "Chia sẻ liên kết sản phẩm",
     stock: "Còn: "
   },
 productgrid: {

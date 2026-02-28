@@ -4,43 +4,13 @@
  */
 
 import { i18nService } from '../services/i18nService';
+import { Locale, LocaleConfig, LOCALES } from '../types/i18n';
+
+export { type Locale, type LocaleConfig, LOCALES };
 
 // ============================================================================
-// LOCALE TYPES
+// FORMATTING WRAPPERS
 // ============================================================================
-
-export type Locale = 'vi' | 'en';
-
-export interface LocaleConfig {
-    code: Locale;
-    name: string;
-    nativeName: string;
-    direction: 'ltr' | 'rtl';
-    dateFormat: string;
-    currencyCode: string;
-    currencySymbol: string;
-}
-
-export const LOCALES: Record<Locale, LocaleConfig> = {
-    vi: {
-        code: 'vi',
-        name: 'Vietnamese',
-        nativeName: 'Tiếng Việt',
-        direction: 'ltr',
-        dateFormat: 'DD/MM/YYYY',
-        currencyCode: 'VND',
-        currencySymbol: '₫',
-    },
-    en: {
-        code: 'en',
-        name: 'English',
-        nativeName: 'English',
-        direction: 'ltr',
-        dateFormat: 'MM/DD/YYYY',
-        currencyCode: 'USD',
-        currencySymbol: '$',
-    },
-};
 
 export function formatNumber(value: number, locale: Locale = 'vi'): string {
     return i18nService.getNumberFormatter(locale).format(value);
@@ -117,7 +87,7 @@ export function pluralize(count: number, forms: PluralForms, locale: Locale = 'v
 export function detectLocale(): Locale {
     // Check localStorage preference
     const stored = localStorage.getItem('locale');
-    if (stored === 'vi' || stored === 'en') return stored;
+    if (stored === 'vi' || stored === 'en') return stored as Locale;
 
     // Check browser language
     const browserLang = navigator.language.split('-')[0];
