@@ -20,6 +20,8 @@ export type {
   OrgRole,
   OrgMember,
   FeatureGateConfig,
+  OrgBillingDashboard,
+  OrgRevenueMetrics,
 } from './types';
 
 // Feature gate utilities
@@ -50,3 +52,18 @@ export type {
   OrgBillingDeps,
   SubscriptionActivationResult,
 } from './multi-org-billing-engine';
+
+// Proration calculator (mid-cycle plan changes)
+export { calculateProration } from './proration-calculator';
+export type { ProrateInput, ProrateResult } from './proration-calculator';
+
+// Renewal scheduler (auto-renewal detection)
+export {
+  findRenewableSubscriptions,
+  createRenewalIntent,
+} from './renewal-scheduler';
+export type {
+  RenewalSchedulerConfig,
+  RenewalIntent,
+  RenewalSchedulerDeps,
+} from './renewal-scheduler';

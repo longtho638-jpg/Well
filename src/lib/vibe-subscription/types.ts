@@ -90,3 +90,30 @@ export interface FeatureGateConfig {
   /** Default plan required when feature not in map */
   defaultMinPlan?: string;
 }
+
+// ─── Org Billing Dashboard ─────────────────────────────────────
+
+/** Aggregated billing view for a multi-org dashboard */
+export interface OrgBillingDashboard {
+  orgId: string;
+  orgName: string;
+  currentPlan: ActivePlanInfo | null;
+  memberCount: number;
+  maxMembers: number;
+  billingCycle: BillingCycle | null;
+  nextPaymentDate: string | null;
+  monthlyRevenue: number;
+  accessibleFeatures: string[];
+}
+
+/** Revenue metrics across all orgs for platform admin */
+export interface OrgRevenueMetrics {
+  totalOrgs: number;
+  activeSubscriptions: number;
+  totalMRR: number;
+  totalARR: number;
+  churnRate: number;
+  averageRevenuePerOrg: number;
+  revenueByPlan: Record<string, number>;
+  currency: string;
+}

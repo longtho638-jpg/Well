@@ -1,6 +1,6 @@
 import { serve } from 'https://deno.land/std@0.168.0/http/server.ts'
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2'
-import { handlePayOSWebhook } from '../_shared/vibe-payos/mod.ts'
+import { handlePayOSWebhook, computeSubscriptionPeriodEnd } from '../_shared/vibe-payos/mod.ts'
 import type { WebhookCallbacks, WebhookOrderRecord, WebhookSubscriptionIntent } from '../_shared/vibe-payos/mod.ts'
 import type { PayOSWebhookData } from '../_shared/vibe-payos/mod.ts'
 
@@ -59,17 +59,15 @@ serve(async (req) => {
     },
 
     activateSubscription: async (intent, data) => {
-      const periodEnd = new Date()
-      if (intent.billing_cycle === 'yearly') {
-        periodEnd.setFullYear(periodEnd.getFullYear() + 1)
-      } else {
-        periodEnd.setMonth(periodEnd.getMonth() + 1)
-      }
+      const now = new Date()
+      const periodEnd = computeSubscriptionPeriodEnd(now, intent.billing_cycle)
+      const nowIso = now.toISOString()
+      const periodEndIso = periodEnd.toISOString()
 
       // Cancel existing active subscriptions
       await supabase
         .from('user_subscriptions')
-        .update({ status: 'canceled', canceled_at: new Date().toISOString() })
+        .update({ status: 'canceled', canceled_at: nowIso })
         .eq('user_id', intent.user_id)
         .in('status', ['active', 'trialing'])
 
@@ -78,10 +76,10 @@ serve(async (req) => {
         plan_id: intent.plan_id,
         billing_cycle: intent.billing_cycle,
         status: 'active',
-        current_period_end: periodEnd.toISOString(),
+        current_period_end: periodEndIso,
         payos_order_code: data.orderCode,
-        last_payment_at: new Date().toISOString(),
-        next_payment_at: periodEnd.toISOString(),
+        last_payment_at: nowIso,
+        next_payment_at: periodEndIso,
         org_id: intent.org_id ?? null,
       })
 

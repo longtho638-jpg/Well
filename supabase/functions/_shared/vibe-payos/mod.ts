@@ -44,3 +44,6 @@ export type {
   WebhookSubscriptionIntent,
   WebhookCallbacks,
 } from './webhook-pipeline.ts'
+
+// Subscription period helper (shared across Edge Functions)
+export { computeSubscriptionPeriodEnd } from './subscription-period-helper.ts'
