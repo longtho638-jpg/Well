@@ -1,220 +1,220 @@
 export const marketplace = {
   marketplace: {
-    subtitle: "[MISSING] subtitle",
+    subtitle: "Browse and purchase health products",
     quickBuy: {
-      title: "[MISSING] title",
-      subtitle: "[MISSING] subtitle",
-      recent: "[MISSING] recent",
-      favorites: "[MISSING] favorites",
-      purchased: "[MISSING] purchased",
-      buyNow: "[MISSING] buyNow",
-      noRecent: "[MISSING] noRecent",
-      noFavorites: "[MISSING] noFavorites",
-      vatIncluded: "[MISSING] vatIncluded",
-      viewFullMarketplace: "[MISSING] viewFullMarketplace"
+      title: "Quick Buy",
+      subtitle: "Fast checkout for your favorites",
+      recent: "Recent",
+      favorites: "Favorites",
+      purchased: "Purchased",
+      buyNow: "Buy Now",
+      noRecent: "No recent purchases",
+      noFavorites: "No favorites yet",
+      vatIncluded: "VAT Included",
+      viewFullMarketplace: "View Full Marketplace"
     },
-    title: "[MISSING] title",
-    searchPlaceholder: "[MISSING] searchPlaceholder",
+    title: "Marketplace",
+    searchPlaceholder: "Search products...",
     aiRecommendation: {
-      title: "[MISSING] title",
-      live: "[MISSING] live"
+      title: "AI Recommendation",
+      live: "LIVE"
     },
-    noProductsFound: "[MISSING] noProductsFound"
+    noProductsFound: "No products found"
   },
   productcard: {
-    earn: "[MISSING] earn",
-    view_details: "[MISSING] view details",
-    out_of_stock: "[MISSING] out of stock",
-    stock: "[MISSING] stock",
-    share: "[MISSING] share",
+    earn: "Earn",
+    view_details: "View Details",
+    out_of_stock: "Out of Stock",
+    stock: "Stock",
+    share: "Share",
     share_product_link: "Share product link",
-    added: "[MISSING] added",
-    buy_now: "[MISSING] buy now"
+    added: "Added",
+    buy_now: "Buy Now"
   },
   productgrid: {
-    ai_recommended: "[MISSING] ai recommended",
-    add_to_cart: "[MISSING] add to cart",
-    price: "[MISSING] price",
-    commission: "[MISSING] commission"
+    ai_recommended: "AI Recommended",
+    add_to_cart: "Add to Cart",
+    price: "Price",
+    commission: "Commission"
   },
   marketplacefilters: {
     categories: {
-      all: "[MISSING] all",
-      health: "[MISSING] health",
-      wellness: "[MISSING] wellness",
-      nutrition: "[MISSING] nutrition"
+      all: "All",
+      health: "Health",
+      wellness: "Wellness",
+      nutrition: "Nutrition"
     },
     prices: {
-      all: "[MISSING] all",
-      under5m: "[MISSING] under5m",
-      "5to15m": "[MISSING] 5to15m",
-      over15m: "[MISSING] over15m"
+      all: "All Prices",
+      under5m: "Under 5M",
+      "5to15m": "5M - 15M",
+      over15m: "Over 15M"
     },
-    b_l_c: "[MISSING] b l c",
-    danh_m_c: "[MISSING] danh m c",
-    kho_ng_gi: "[MISSING] kho ng gi",
-    t_l_i_b_l_c: "[MISSING] t l i b l c"
+    b_l_c: "Filter",
+    danh_m_c: "Category",
+    kho_ng_gi: "Price Range",
+    t_l_i_b_l_c: "Reset Filters"
   },
   marketplaceheader: {
-    items_available: "[MISSING] items available"
+    items_available: "items available"
   },
   cart: {
-    empty: "[MISSING] empty",
-    yourOrder: "[MISSING] yourOrder",
-    removeItem: "[MISSING] removeItem",
-    quantity: "[MISSING] quantity",
-    subtotal: "[MISSING] subtotal",
-    shipping: "[MISSING] shipping",
-    shippingFree: "[MISSING] shippingFree",
-    total: "[MISSING] total"
+    empty: "Your cart is empty",
+    yourOrder: "Your Order",
+    removeItem: "Remove",
+    quantity: "Quantity",
+    subtotal: "Subtotal",
+    shipping: "Shipping",
+    shippingFree: "Free Shipping",
+    total: "Total"
   },
   checkout: {
-    guestInfo: "[MISSING] guestInfo",
+    guestInfo: "Guest Information",
     guestForm: {
       fullName: {
-        label: "[MISSING] label",
-        placeholder: "[MISSING] placeholder"
+        label: "Full Name",
+        placeholder: "Enter your full name"
       },
       phone: {
-        label: "[MISSING] label",
-        placeholder: "[MISSING] placeholder"
+        label: "Phone",
+        placeholder: "Enter phone number"
       },
       email: {
-        label: "[MISSING] label",
-        placeholder: "[MISSING] placeholder"
+        label: "Email",
+        placeholder: "Enter email address"
       },
       address: {
         city: {
-          label: "[MISSING] label",
-          placeholder: "[MISSING] placeholder"
+          label: "City/Province",
+          placeholder: "Select city"
         },
         district: {
-          label: "[MISSING] label",
-          placeholder: "[MISSING] placeholder"
+          label: "District",
+          placeholder: "Select district"
         },
         ward: {
-          label: "[MISSING] label",
-          placeholder: "[MISSING] placeholder"
+          label: "Ward",
+          placeholder: "Select ward"
         },
         street: {
-          label: "[MISSING] label",
-          placeholder: "[MISSING] placeholder"
+          label: "Street Address",
+          placeholder: "Enter street address"
         }
       },
       note: {
-        label: "[MISSING] label",
-        placeholder: "[MISSING] placeholder"
+        label: "Note",
+        placeholder: "Add delivery note (optional)"
       }
     },
-    shippingAddress: "[MISSING] shippingAddress",
+    shippingAddress: "Shipping Address",
     successPage: {
-      title: "[MISSING] title",
-      message: "[MISSING] message",
-      continueShopping: "[MISSING] continueShopping",
-      backToHome: "[MISSING] backToHome"
+      title: "Order Placed!",
+      message: "Your order has been placed successfully",
+      continueShopping: "Continue Shopping",
+      backToHome: "Back to Home"
     },
     payment: {
-      confirm_close: "[MISSING] confirm close",
-      success: "[MISSING] success",
-      failed: "[MISSING] failed",
-      qr_scan: "[MISSING] qr scan",
-      scan_instruction: "[MISSING] scan instruction",
-      scan_detail: "[MISSING] scan detail",
-      amount: "[MISSING] amount",
-      order_code: "[MISSING] order code",
-      expires_in: "[MISSING] expires in",
-      success_title: "[MISSING] success title",
-      success_message: "[MISSING] success message",
-      failed_title: "[MISSING] failed title",
-      failed_message: "[MISSING] failed message",
-      title: "[MISSING] title",
-      cod: "[MISSING] cod",
-      banking: "[MISSING] banking"
+      confirm_close: "Are you sure you want to close?",
+      success: "Payment Successful",
+      failed: "Payment Failed",
+      qr_scan: "Scan QR Code",
+      scan_instruction: "Scan to pay",
+      scan_detail: "Use your banking app to scan this QR code",
+      amount: "Amount",
+      order_code: "Order Code",
+      expires_in: "Expires in",
+      success_title: "Payment Successful!",
+      success_message: "Your payment has been confirmed",
+      failed_title: "Payment Failed",
+      failed_message: "Payment could not be processed. Please try again.",
+      title: "Payment",
+      cod: "Cash on Delivery",
+      banking: "Bank Transfer"
     },
-    error: "[MISSING] error",
-    success: "[MISSING] success",
-    backToShop: "[MISSING] backToShop",
-    title: "[MISSING] title",
-    processing: "[MISSING] processing",
-    placeOrder: "[MISSING] placeOrder",
-    terms: "[MISSING] terms",
+    error: "An error occurred",
+    success: "Order placed successfully",
+    backToShop: "Back to Shop",
+    title: "Checkout",
+    processing: "Processing...",
+    placeOrder: "Place Order",
+    terms: "I agree to the Terms and Conditions",
     validation: {
-      fullNameRequired: "[MISSING] fullNameRequired",
-      emailInvalid: "[MISSING] emailInvalid",
-      phoneInvalid: "[MISSING] phoneInvalid",
-      streetRequired: "[MISSING] streetRequired",
-      wardRequired: "[MISSING] wardRequired",
-      districtRequired: "[MISSING] districtRequired",
-      cityRequired: "[MISSING] cityRequired"
+      fullNameRequired: "Full name is required",
+      emailInvalid: "Invalid email address",
+      phoneInvalid: "Invalid phone number",
+      streetRequired: "Street address is required",
+      wardRequired: "Ward is required",
+      districtRequired: "District is required",
+      cityRequired: "City is required"
     }
   },
   cartdrawer: {
-    your_cart: "[MISSING] your cart",
-    items_confirmed: "[MISSING] items confirmed",
-    your_cart_is_empty: "[MISSING] your cart is empty",
-    start_adding_premium_products: "[MISSING] start adding premium products",
-    subtotal: "[MISSING] subtotal",
-    total: "[MISSING] total",
-    proceed_to_checkout: "[MISSING] proceed to checkout"
+    your_cart: "Your Cart",
+    items_confirmed: "items confirmed",
+    your_cart_is_empty: "Your cart is empty",
+    start_adding_premium_products: "Start adding premium products",
+    subtotal: "Subtotal",
+    total: "Total",
+    proceed_to_checkout: "Proceed to Checkout"
   },
   productdetail: {
-    identity_missing: "[MISSING] identity missing",
-    the_requested_product_node_is: "[MISSING] the requested product node is",
-    revert_to_marketplace: "[MISSING] revert to marketplace",
-    back_to_command_registry: "[MISSING] back to command registry",
-    verified_node: "[MISSING] verified node",
-    premium_tier: "[MISSING] premium tier"
+    identity_missing: "Product Not Found",
+    the_requested_product_node_is: "The requested product is not available",
+    revert_to_marketplace: "Back to Marketplace",
+    back_to_command_registry: "Back to Product List",
+    verified_node: "Verified",
+    premium_tier: "Premium Tier"
   },
   producthero: {
-    logistics_depleted: "[MISSING] logistics depleted"
+    logistics_depleted: "Out of Stock"
   },
   productinfo: {
-    bio_optic_optimization: "[MISSING] bio optic optimization",
-    "4_9_core_rating": "[MISSING] 4 9 core rating",
-    available_capacity: "[MISSING] available capacity",
-    units: "[MISSING] units"
+    bio_optic_optimization: "Bio-Optic Optimization",
+    "4_9_core_rating": "4.9 Core Rating",
+    available_capacity: "Available Capacity",
+    units: "Units"
   },
   productpricing: {
-    market_valuation: "[MISSING] market valuation",
-    node_yield_profit: "[MISSING] node yield profit"
+    market_valuation: "Market Valuation",
+    node_yield_profit: "Node Yield (Profit)"
   },
   producttabs: {
-    primary_yield: "[MISSING] primary yield",
-    composition: "[MISSING] composition",
-    protocol: "[MISSING] protocol",
-    standard_engagement_protocol: "[MISSING] standard engagement protocol"
+    primary_yield: "Primary Yield",
+    composition: "Composition",
+    protocol: "Protocol",
+    standard_engagement_protocol: "Standard Engagement Protocol"
   },
   productactions: {
-    copy_ref_node: "[MISSING] copy ref node",
-    logistics_offline: "[MISSING] logistics offline",
-    allocated_successfully: "[MISSING] allocated successfully",
-    order_prototype: "[MISSING] order prototype"
+    copy_ref_node: "Copy Referral Link",
+    logistics_offline: "Currently Unavailable",
+    allocated_successfully: "Added Successfully",
+    order_prototype: "Order Template"
   },
   redemptionzone: {
     categories: {
-      all: "[MISSING] all",
-      tech: "[MISSING] tech",
-      travel: "[MISSING] travel",
-      courses: "[MISSING] courses"
+      all: "All",
+      tech: "Tech",
+      travel: "Travel",
+      courses: "Courses"
     },
-    grow_rewards: "[MISSING] grow rewards",
-    s_d_ng_grow_token_t_ch_l_y_t: "[MISSING] s d ng grow token t ch l y t",
-    s_d_hi_n_t_i: "[MISSING] s d hi n t i",
-    grow_tokens: "[MISSING] grow tokens",
-    redeem_reward: "[MISSING] redeem reward",
-    not_enough_grow: "[MISSING] not enough grow"
+    grow_rewards: "GROW Rewards",
+    s_d_ng_grow_token_t_ch_l_y_t: "Use GROW tokens earned to redeem rewards",
+    s_d_hi_n_t_i: "Current Balance",
+    grow_tokens: "GROW Tokens",
+    redeem_reward: "Redeem Reward",
+    not_enough_grow: "Not enough GROW tokens"
   },
   orderimagemodal: {
-    evidence_inspection: "[MISSING] evidence inspection",
-    payment_verification_system_v3: "[MISSING] payment verification system v3",
-    external_view: "[MISSING] external view",
-    security_protocol_cross_verif: "[MISSING] security protocol cross verif"
+    evidence_inspection: "Evidence Inspection",
+    payment_verification_system_v3: "Payment Verification System v3",
+    external_view: "External View",
+    security_protocol_cross_verif: "Security Protocol: Cross-verification"
   },
   topproducts: {
-    top_products: "[MISSING] top products",
-    based_on_units_sold: "[MISSING] based on units sold",
-    sold: "[MISSING] sold",
-    earn: "[MISSING] earn"
+    top_products: "Top Products",
+    based_on_units_sold: "Based on Units Sold",
+    sold: "Sold",
+    earn: "Earn"
   },
   products: {
     title: "Products",
@@ -231,22 +231,22 @@ export const marketplace = {
     viewDetails: "View Details",
     outOfStock: "Out of Stock",
     inStock: "In Stock",
-    out_of_stock: "[MISSING] out of stock",
-    low_stock: "[MISSING] low stock",
-    in_stock: "[MISSING] in stock",
-    global_catalog: "[MISSING] global catalog",
-    inventory_management_dttt_st: "[MISSING] inventory management dttt st",
-    add_product: "[MISSING] add product",
-    dttt_commission_logic: "[MISSING] dttt commission logic",
-    bonus_revenue_dttt_represent: "[MISSING] bonus revenue dttt represent",
-    member_21_startup_25: "[MISSING] member 21 startup 25",
-    sku: "[MISSING] sku",
-    retail_msrp: "[MISSING] retail msrp",
-    dttt_basis: "[MISSING] dttt basis",
-    member_comm: "[MISSING] member comm",
-    partner_comm: "[MISSING] partner comm",
-    commit: "[MISSING] commit",
-    esc: "[MISSING] esc",
-    edit_config: "[MISSING] edit config"
+    out_of_stock: "Out of Stock",
+    low_stock: "Low Stock",
+    in_stock: "In Stock",
+    global_catalog: "Global Catalog",
+    inventory_management_dttt_st: "Inventory Management (DTTT Standard)",
+    add_product: "Add Product",
+    dttt_commission_logic: "DTTT Commission Logic",
+    bonus_revenue_dttt_represent: "Bonus revenue DTTT represents",
+    member_21_startup_25: "Member 21% / Startup 25%",
+    sku: "SKU",
+    retail_msrp: "Retail (MSRP)",
+    dttt_basis: "DTTT Basis",
+    member_comm: "Member Comm.",
+    partner_comm: "Partner Comm.",
+    commit: "Commit",
+    esc: "ESC",
+    edit_config: "Edit Config"
   }
 };
