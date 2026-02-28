@@ -1,14 +1,21 @@
 /**
  * PayOS Payment Gateway Client
- * Vietnamese QR payment integration service
+ * Thin wrapper over vibe-payment SDK with circuit breaker resilience.
  *
- * SECURE IMPLEMENTATION: All payment operations are proxied through
- * Supabase Edge Functions to keep credentials server-side only.
+ * Backward-compatible: all existing imports continue to work.
+ * Internally delegates to vibe-payment PayOSAdapter.
  */
 
 import { supabase } from '@/lib/supabase';
+import { createPaymentProvider } from '@/lib/vibe-payment';
+import type { VibePaymentResponse, VibePaymentStatus } from '@/lib/vibe-payment';
 import { PaymentError } from '@/utils/errors';
 import { paymentBreaker } from '@/utils/circuit-breaker';
+
+// SDK provider instance (singleton)
+const provider = createPaymentProvider('payos', supabase);
+
+// ─── Backward-compatible type re-exports ────────────────────────
 
 export interface PaymentItem {
     name: string;
@@ -52,83 +59,61 @@ export interface CreatePaymentRequest {
     cancelUrl: string;
 }
 
-/**
- * Create a new payment request via secure Edge Function
- */
+// ─── API (circuit-breaker wrapped) ──────────────────────────────
+
 export async function createPayment(request: CreatePaymentRequest): Promise<PaymentResponse> {
     return paymentBreaker.execute(async () => {
-        const { data, error } = await supabase.functions.invoke('payos-create-payment', {
-            body: {
-                orderCode: request.orderCode,
-                amount: request.amount,
-                description: request.description,
-                items: request.items,
-                returnUrl: request.returnUrl,
-                cancelUrl: request.cancelUrl,
-            },
-        });
-
-        if (error) {
-            throw new PaymentError(`Payment creation failed: ${error.message}`, { orderCode: request.orderCode });
+        try {
+            const result: VibePaymentResponse = await provider.createPayment(request);
+            return { checkoutUrl: result.checkoutUrl, orderCode: result.orderCode } as PaymentResponse;
+        } catch (err) {
+            throw new PaymentError(
+                `Payment creation failed: ${err instanceof Error ? err.message : 'Unknown'}`,
+                { orderCode: request.orderCode },
+            );
         }
-
-        return {
-            checkoutUrl: data.checkoutUrl,
-            orderCode: data.orderCode,
-        } as PaymentResponse;
     });
 }
 
-/**
- * Check payment status via secure Edge Function proxy
- */
 export async function getPaymentStatus(orderCode: number): Promise<PaymentStatus> {
     return paymentBreaker.execute(async () => {
-        const { data, error } = await supabase.functions.invoke('payos-get-payment', {
-            body: { orderCode },
-        });
-
-        if (error) {
-            throw new PaymentError(`Payment status check failed: ${error.message}`, { orderCode });
+        try {
+            const result: VibePaymentStatus = await provider.getPaymentStatus(orderCode);
+            return result as unknown as PaymentStatus;
+        } catch (err) {
+            throw new PaymentError(
+                `Payment status check failed: ${err instanceof Error ? err.message : 'Unknown'}`,
+                { orderCode },
+            );
         }
-
-        return data as PaymentStatus;
     });
 }
 
-/**
- * Cancel a payment via secure Edge Function proxy
- */
 export async function cancelPayment(
     orderCode: number,
-    cancellationReason: string = 'User cancelled'
+    cancellationReason: string = 'User cancelled',
 ): Promise<PaymentStatus> {
     return paymentBreaker.execute(async () => {
-        const { data, error } = await supabase.functions.invoke('payos-cancel-payment', {
-            body: { orderCode, cancellationReason },
-        });
-
-        if (error) {
-            throw new PaymentError(`Payment cancellation failed: ${error.message}`, { orderCode });
+        try {
+            const result: VibePaymentStatus = await provider.cancelPayment(orderCode, cancellationReason);
+            return result as unknown as PaymentStatus;
+        } catch (err) {
+            throw new PaymentError(
+                `Payment cancellation failed: ${err instanceof Error ? err.message : 'Unknown'}`,
+                { orderCode },
+            );
         }
-
-        return data as PaymentStatus;
     });
 }
 
-/**
- * Check if PayOS is configured (always true with Edge Functions)
- */
 export function isPayOSConfigured(): boolean {
-    // Always return true since configuration is server-side
-    return true;
+    return provider.isConfigured();
 }
 
-/**
- * Webhook verification is now handled server-side in Edge Function
- * This function is deprecated and kept for backward compatibility
- */
-export async function verifyWebhook(webhookBody: { data?: Record<string, unknown>; signature?: string }): Promise<Record<string, unknown>> {
+/** @deprecated Webhook verification handled server-side */
+export async function verifyWebhook(
+    webhookBody: { data?: Record<string, unknown>; signature?: string },
+): Promise<Record<string, unknown>> {
     return webhookBody.data || {};
 }
 
