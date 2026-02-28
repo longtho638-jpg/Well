@@ -73,7 +73,7 @@ export default [
             'jsx-a11y/img-redundant-alt': 'warn',
 
             // General rules
-            'no-console': ['error', { allow: ['warn', 'error'] }],
+            'no-console': 'error',
             'no-unused-vars': 'off', // Use TypeScript version
             'no-undef': 'off', // TypeScript handles this
             'prefer-const': 'warn',
@@ -83,6 +83,13 @@ export default [
             react: {
                 version: 'detect',
             },
+        },
+    },
+    // Test overrides
+    {
+        files: ['**/*.test.ts', '**/*.test.tsx', 'src/test/setup.ts'],
+        rules: {
+            'no-console': 'off',
         },
     },
 ];
