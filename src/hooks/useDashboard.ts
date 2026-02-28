@@ -3,16 +3,13 @@
  * Manages live telemetry, financial stats, and activity streams.
  */
 
-import { useState, useEffect, useMemo, useCallback } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import { useStore } from '@/store';
 import { useTranslation } from '@/hooks';
-import { TranslationKey } from './useTranslation';
 import {
     Coins,
-    ShoppingBag,
     Award,
     TrendingDown,
-    Gift,
     CheckCircle2,
     Users,
     Package,
@@ -22,7 +19,6 @@ import {
     Zap,
     type LucideIcon
 } from 'lucide-react';
-import { formatVND, formatNumber } from '@/utils/format';
 
 // Raw transaction row shape returned from Supabase/store
 interface RawTransaction {
@@ -54,13 +50,6 @@ export interface LiveActivity {
     location?: string;
 }
 
-const vietnameseNames = [
-    'Nguyễn Văn Minh', 'Trần Thị Hương', 'Lê Quang Hải', 'Phạm Thu Hà',
-    'Hoàng Minh Tuấn', 'Đỗ Thị Lan', 'Vũ Công Phượng', 'Ngô Thị Mai',
-    'Bùi Văn Toàn', 'Đinh Thị Ngọc', 'Phan Văn Đức', 'Lý Thị Kim',
-    'Trịnh Văn Quyết', 'Võ Thị Sáu', 'Mai Văn Thành', 'Cao Thị Loan',
-    'Đặng Văn Lâm', 'Huỳnh Thị Ngân', 'Tô Văn Hùng', 'Lưu Thị Phương'
-];
 
 export function useDashboard() {
     const { t } = useTranslation();

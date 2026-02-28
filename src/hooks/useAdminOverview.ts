@@ -19,10 +19,6 @@ export interface AIAction {
     timestamp: string;
 }
 
-const MOCK_ACTIONS: AIAction[] = [
-    { id: 'A001', type: 'kyc', title: 'KYC Verification Required', description: 'Partner "Minh Tran" submitted KYC documents', priority: 'high', aiConfidence: 95, timestamp: '2 minutes ago' },
-    { id: 'A002', type: 'fraud', title: 'Suspicious Activity Detected', description: '5 transactions from same IP in 10 minutes', priority: 'high', aiConfidence: 87, timestamp: '15 minutes ago' },
-];
 
 export function useAdminOverview() {
     const [metrics, setMetrics] = useState<DashboardMetrics>({

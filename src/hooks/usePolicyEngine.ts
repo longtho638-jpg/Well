@@ -2,6 +2,21 @@ import { useState, useEffect, useCallback, useMemo } from 'react';
 import { policyService, PolicyConfig, RankUpgrade } from '@/services/policyService';
 import { adminLogger } from '@/utils/logger';
 
+export interface PolicySimulation {
+    simGMV: number;
+    simTotalPayout: number;
+    simProfit: number;
+    profitMargin: number;
+    strategicCandidates: number;
+    projectedSaaSRevenue: number;
+    simPartners: number;
+    setSimPartners: (v: number) => void;
+    simAOV: number;
+    setSimAOV: (v: number) => void;
+    fixedCost: number;
+    setFixedCost: (v: number) => void;
+}
+
 export function usePolicyEngine() {
     const [loading, setLoading] = useState(true);
     const [saving, setSaving] = useState(false);
