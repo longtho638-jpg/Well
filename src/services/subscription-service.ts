@@ -16,6 +16,13 @@ import type {
     OrgMember,
     FeatureGateConfig,
 } from '@/lib/vibe-subscription';
+import {
+    getUserOrgs as _getUserOrgs,
+    getOrgMembers as _getOrgMembers,
+    createOrg as _createOrg,
+    getOrgActivePlan as _getOrgActivePlan,
+    getOrgSubscription as _getOrgSubscription,
+} from '@/lib/vibe-supabase';
 
 // Re-export types so existing consumers don't break
 export type { SubscriptionPlan, UserSubscription, ActivePlanInfo, Organization, OrgMember };
@@ -125,76 +132,28 @@ export const subscriptionService = {
         return canAccessFeature(activePlan.plan_slug, feature, WELL_FEATURE_GATE);
     },
 
-    // ── Org-level subscription ─────────────────────────────────────
+    // ── Org-level subscription (delegates to vibe-supabase SDK) ────
 
     async getOrgActivePlan(orgId: string): Promise<ActivePlanInfo | null> {
-        const { data, error } = await supabase
-            .rpc('get_org_active_plan', { p_org_id: orgId });
-
-        if (error) throw error;
-        return (data as ActivePlanInfo[])?.[0] ?? null;
+        return _getOrgActivePlan(supabase, orgId);
     },
 
     async getOrgSubscription(orgId: string): Promise<UserSubscription | null> {
-        const { data, error } = await supabase
-            .from('user_subscriptions')
-            .select('*')
-            .eq('org_id', orgId)
-            .in('status', ['active', 'trialing'])
-            .gt('current_period_end', new Date().toISOString())
-            .order('created_at', { ascending: false })
-            .limit(1)
-            .maybeSingle();
-
-        if (error) throw error;
-        return data as UserSubscription | null;
+        return _getOrgSubscription(supabase, orgId);
     },
 
-    // ── Organization CRUD ──────────────────────────────────────────
+    // ── Organization CRUD (delegates to vibe-supabase SDK) ─────────
 
     async getUserOrgs(userId: string): Promise<Organization[]> {
-        const { data, error } = await supabase
-            .from('org_members')
-            .select('org_id, role, organizations(*)')
-            .eq('user_id', userId);
-
-        if (error) throw error;
-        return (data ?? [])
-            .map((m) => (m.organizations as unknown) as Organization)
-            .filter(Boolean);
+        return _getUserOrgs(supabase, userId);
     },
 
     async getOrgMembers(orgId: string): Promise<OrgMember[]> {
-        const { data, error } = await supabase
-            .from('org_members')
-            .select('*')
-            .eq('org_id', orgId);
-
-        if (error) throw error;
-        return data as OrgMember[];
+        return _getOrgMembers(supabase, orgId);
     },
 
     async createOrg(params: { name: string; slug: string; ownerId: string }): Promise<Organization> {
-        const { data, error } = await supabase
-            .from('organizations')
-            .insert({
-                name: params.name,
-                slug: params.slug,
-                owner_id: params.ownerId,
-            })
-            .select()
-            .single();
-
-        if (error) throw error;
-
-        // Auto-add owner as org member
-        await supabase.from('org_members').insert({
-            org_id: data.id,
-            user_id: params.ownerId,
-            role: 'owner',
-        });
-
-        return data as Organization;
+        return _createOrg(supabase, params);
     },
 
     // ── Subscription payment intent (for PayOS checkout) ───────────

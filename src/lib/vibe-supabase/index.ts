@@ -28,3 +28,14 @@ export type {
   QueryResult,
   QueryListResult,
 } from './typed-query-helpers';
+
+// Org-scoped query helpers (multi-org CRUD)
+export {
+  getUserOrgs,
+  getOrgById,
+  getOrgMembers,
+  getOrgActivePlan,
+  getOrgSubscription,
+  createOrg,
+  orgQueries,
+} from './org-scoped-query-helpers';
