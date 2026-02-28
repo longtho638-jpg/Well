@@ -54,3 +54,13 @@ export {
 // Autonomous webhook handler
 export { processWebhookEvent, isValidTransition } from './autonomous-webhook-handler';
 export type { WebhookHandlerDeps, OrderRecord, SubscriptionIntentRecord } from './autonomous-webhook-handler';
+
+// Billing webhook orchestrator (payment→subscription→tenant pipeline)
+export {
+  orchestrateBillingWebhook,
+  createBillingWebhookConfig,
+} from './billing-webhook-orchestrator';
+export type {
+  BillingOrchestrationDeps,
+  BillingOrchestrationResult,
+} from './billing-webhook-orchestrator';

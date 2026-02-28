@@ -35,3 +35,18 @@ export {
   isPeriodActive,
   daysRemaining,
 } from './billing-period';
+
+// Multi-org billing engine
+export {
+  resolveOrgSubscription,
+  canOrgAccessFeature,
+  getOrgAccessibleFeatures,
+  computeActivationParams,
+  needsRenewal,
+} from './multi-org-billing-engine';
+
+export type {
+  OrgSubscriptionContext,
+  OrgBillingDeps,
+  SubscriptionActivationResult,
+} from './multi-org-billing-engine';
