@@ -1,15 +1,15 @@
-# WellNexus 2.0: Agentic HealthFi OS
+# WellNexus RaaS Health Platform: Agentic HealthFi OS
 
-> **Go-Live Ready** | 307+ Tests ✅ | Build 3.2s ✅ | PWA Ready 📱 | CI/CD ✅
+> **Go-Live Ready** | 349+ Tests ✅ | Build 3.2s ✅ | PWA Ready 📱 | CI/CD ✅
 
-A Hybrid Community Commerce platform for Vietnam, powered by a robust Agentic Operating System (Agent-OS) and Supabase backend.
+An open-source Hybrid Community Commerce platform for Vietnam, powered by a robust Agentic Operating System (Agent-OS) and Supabase backend. Built for RaaS (Retail-as-a-Service) health products.
 
-## 🏆 Audit Status (2026-02-02)
+## 🏆 Audit Status (2026-02-28)
 
 | Check | Status |
 |-------|--------|
 | CI Pipeline | ✅ Passing (1m25s) |
-| Unit Tests | ✅ 307+ |
+| Unit Tests | ✅ 349+ |
 | TypeScript | ✅ 5.9.3 Strict |
 | React | ✅ v19.2.4 |
 | Vite | ✅ v7.3.1 |
