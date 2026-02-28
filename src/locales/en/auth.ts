@@ -30,20 +30,20 @@ export const auth = {
     },
     register: {
       password: "Password",
-      fullName: "[MISSING] fullName",
+      fullName: "Full Name",
       placeholders: {
-        name: "[MISSING] name",
-        email: "[MISSING] email"
+        name: "Enter your full name",
+        email: "Enter your email"
       },
-      emailBusiness: "[MISSING] emailBusiness",
-      confirmPassword: "[MISSING] confirmPassword",
-      processing: "[MISSING] processing",
-      registerButton: "[MISSING] registerButton",
-      earlyAccess: "[MISSING] earlyAccess",
-      title: "[MISSING] title",
-      subtitle: "[MISSING] subtitle",
-      haveAccount: "[MISSING] haveAccount",
-      login: "[MISSING] login"
+      emailBusiness: "Business Email",
+      confirmPassword: "Confirm Password",
+      processing: "Processing...",
+      registerButton: "Register",
+      earlyAccess: "Early Access",
+      title: "Create Account",
+      subtitle: "Join WellNexus today",
+      haveAccount: "Already have an account?",
+      login: "Log In"
     },
     password: {
       strength: {
@@ -61,37 +61,37 @@ export const auth = {
       }
     },
     confirmEmail: {
-      invalidLink: "[MISSING] invalidLink",
-      unexpectedError: "[MISSING] unexpectedError"
+      invalidLink: "Invalid or expired confirmation link",
+      unexpectedError: "An unexpected error occurred"
     },
     forgotPassword: {
-      errorMessage: "[MISSING] errorMessage",
-      title: "[MISSING] title",
-      subtitle: "[MISSING] subtitle",
-      successMessage: "[MISSING] successMessage",
-      backToLogin: "[MISSING] backToLogin",
-      emailPlaceholder: "[MISSING] emailPlaceholder",
-      submitButton: "[MISSING] submitButton"
+      errorMessage: "Failed to send reset email. Please try again.",
+      title: "Forgot Password",
+      subtitle: "Enter your email to receive a reset link",
+      successMessage: "Reset link sent! Check your email.",
+      backToLogin: "Back to Login",
+      emailPlaceholder: "Enter your email",
+      submitButton: "Send Reset Link"
     },
     resetPassword: {
-      passwordMismatch: "[MISSING] passwordMismatch",
-      weakPassword: "[MISSING] weakPassword",
-      errorMessage: "[MISSING] errorMessage",
-      title: "[MISSING] title",
-      subtitle: "[MISSING] subtitle",
-      successMessage: "[MISSING] successMessage",
-      newPasswordPlaceholder: "[MISSING] newPasswordPlaceholder",
-      confirmPasswordPlaceholder: "[MISSING] confirmPasswordPlaceholder",
-      submitButton: "[MISSING] submitButton"
+      passwordMismatch: "Passwords do not match",
+      weakPassword: "Password is too weak",
+      errorMessage: "Failed to reset password. Please try again.",
+      title: "Reset Password",
+      subtitle: "Enter your new password",
+      successMessage: "Password reset successfully!",
+      newPasswordPlaceholder: "New password",
+      confirmPasswordPlaceholder: "Confirm new password",
+      submitButton: "Reset Password"
     }
   },
   onboardingquest: {
-    the_coach: "[MISSING] the coach",
-    powered_by_gemini_ai: "[MISSING] powered by gemini ai",
-    day_3_30: "[MISSING] day 3 30",
-    xp: "[MISSING] xp",
-    ai_strategy: "[MISSING] ai strategy",
-    stuck_ask_your_ai_coach_for_a: "[MISSING] stuck ask your ai coach for a"
+    the_coach: "The Coach",
+    powered_by_gemini_ai: "Powered by Gemini AI",
+    day_3_30: "Day 3/30",
+    xp: "XP",
+    ai_strategy: "AI Strategy",
+    stuck_ask_your_ai_coach_for_a: "Stuck? Ask your AI Coach for advice"
   },
   sessionmanager: {
     active_sessions: "Active Sessions",
@@ -107,15 +107,15 @@ export const auth = {
     sign_out_all_others: "Sign out all other devices"
   },
   loginactivitylog: {
-    login_activity: "[MISSING] login activity",
-    recent_sign_in_attempts_to_you: "[MISSING] recent sign in attempts to you",
-    failed_login_attempt: "[MISSING] failed login attempt",
-    detected: "[MISSING] detected",
-    if_you_don_t_recognize_these_a: "[MISSING] if you don t recognize these a",
-    time: "[MISSING] time",
-    device: "[MISSING] device",
-    location: "[MISSING] location",
-    status: "[MISSING] status",
-    no_login_attempts_found: "[MISSING] no login attempts found"
+    login_activity: "Login Activity",
+    recent_sign_in_attempts_to_you: "Recent sign-in attempts to your account",
+    failed_login_attempt: "Failed Login Attempt",
+    detected: "Detected",
+    if_you_don_t_recognize_these_a: "If you don't recognize these attempts, change your password immediately",
+    time: "Time",
+    device: "Device",
+    location: "Location",
+    status: "Status",
+    no_login_attempts_found: "No login attempts found"
   }
 };

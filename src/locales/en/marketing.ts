@@ -74,21 +74,10 @@ export const marketing = {
             leadership: "Leadership bonuses",
             training: "Advanced training",
             recognition: "Top performer awards",
-            platform: "[MISSING] platform",
-            market: "[MISSING] market",
-            data: "[MISSING] data",
-            equity: "[MISSING] equity"
-          }
-        },
-        empire: {
-          name: "EMPIRE",
-          description: "Co-ownership",
-          mission: "Become stakeholder",
-          status: "Future Vision",
-          benefits: {
-            market: "Marketplace ownership",
-            data: "Data monetization",
-            equity: "Equity participation"
+            platform: "Platform access",
+            market: "Market expansion",
+            data: "Data analytics",
+            equity: "Equity share"
           }
         },
         metropolis: {

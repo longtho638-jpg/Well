@@ -7,8 +7,8 @@ export const dashboard = {
       greeting: "Hello, {name}!",
       description: "Track your business growth in real-time",
       shareButton: "Share Referral Link",
-      ipoPathway: "[MISSING] ipoPathway",
-      remaining: "[MISSING] remaining"
+      ipoPathway: "IPO Pathway",
+      remaining: "Remaining"
     },
     stats: {
       totalRevenue: "Total Revenue",
@@ -17,79 +17,79 @@ export const dashboard = {
       conversionRate: "Conversion Rate",
       pendingOrders: "Pending Orders",
       completedOrders: "Completed Orders",
-      commission: "[MISSING] commission",
-      totalNodeYield: "[MISSING] totalNodeYield",
-      liquidCapital: "[MISSING] liquidCapital",
-      ecosystemVolume: "[MISSING] ecosystemVolume"
+      commission: "Commission",
+      totalNodeYield: "Total Node Yield",
+      liquidCapital: "Liquid Capital",
+      ecosystemVolume: "Ecosystem Volume"
     },
     quickActions: {
       title: "Quick Actions",
       addMember: "Add Member",
       viewReports: "View Reports",
       manageProducts: "Manage Products",
-      shareProductDesc: "[MISSING] shareProductDesc",
-      shareAchievement: "[MISSING] shareAchievement",
-      shareAchievementDesc: "[MISSING] shareAchievementDesc"
+      shareProductDesc: "Share product with your network",
+      shareAchievement: "Share Achievement",
+      shareAchievementDesc: "Share your achievement with others"
     },
     achievements: {
-      title: "[MISSING] title",
-      topSeller: "[MISSING] topSeller",
-      goalCrusher: "[MISSING] goalCrusher",
-      teamLeader: "[MISSING] teamLeader",
-      speedDemon: "[MISSING] speedDemon"
+      title: "Achievements",
+      topSeller: "Top Seller",
+      goalCrusher: "Goal Crusher",
+      teamLeader: "Team Leader",
+      speedDemon: "Speed Demon"
     },
     commission: {
-      today: "[MISSING] today",
-      thisWeek: "[MISSING] thisWeek",
-      thisMonth: "[MISSING] thisMonth",
-      title: "[MISSING] title",
-      subtitle: "[MISSING] subtitle",
-      availableBalance: "[MISSING] availableBalance",
-      withdraw: "[MISSING] withdraw",
-      breakdown: "[MISSING] breakdown",
-      directSales: "[MISSING] directSales",
-      teamVolume: "[MISSING] teamVolume",
-      total: "[MISSING] total",
-      viewDetails: "[MISSING] viewDetails"
+      today: "Today",
+      thisWeek: "This Week",
+      thisMonth: "This Month",
+      title: "Commission",
+      subtitle: "Your earnings overview",
+      availableBalance: "Available Balance",
+      withdraw: "Withdraw",
+      breakdown: "Breakdown",
+      directSales: "Direct Sales",
+      teamVolume: "Team Volume",
+      total: "Total",
+      viewDetails: "View Details"
     },
     dailyQuest: {
-      title: "[MISSING] title"
+      title: "Daily Quest"
     },
     liveActivities: {
-      title: "[MISSING] title",
-      live: "[MISSING] live",
-      subtitle: "[MISSING] subtitle",
-      systemActive: "[MISSING] systemActive"
+      title: "Live Activities",
+      live: "LIVE",
+      subtitle: "Real-time system activity",
+      systemActive: "System Active"
     },
     recentActivity: {
-      title: "[MISSING] title",
-      completedQuest: "[MISSING] completedQuest",
-      newTeamMember: "[MISSING] newTeamMember",
-      productShipped: "[MISSING] productShipped",
-      reachedRank: "[MISSING] reachedRank"
+      title: "Recent Activity",
+      completedQuest: "Completed Quest",
+      newTeamMember: "New Team Member",
+      productShipped: "Product Shipped",
+      reachedRank: "Reached Rank"
     },
     revenueBreakdown: {
-      title: "[MISSING] title",
-      directSales: "[MISSING] directSales",
-      teamBonus: "[MISSING] teamBonus",
-      referral: "[MISSING] referral"
+      title: "Revenue Breakdown",
+      directSales: "Direct Sales",
+      teamBonus: "Team Bonus",
+      referral: "Referral"
     },
     valuation: {
-      title: "[MISSING] title",
-      subtitle: "[MISSING] subtitle",
-      formula: "[MISSING] formula",
-      assetBreakdown: "[MISSING] assetBreakdown",
-      cashflow: "[MISSING] cashflow",
-      equity: "[MISSING] equity",
-      projectedAnnual: "[MISSING] projectedAnnual",
-      upgradePortfolio: "[MISSING] upgradePortfolio"
+      title: "Valuation",
+      subtitle: "Your portfolio value",
+      formula: "Formula",
+      assetBreakdown: "Asset Breakdown",
+      cashflow: "Cashflow",
+      equity: "Equity",
+      projectedAnnual: "Projected Annual",
+      upgradePortfolio: "Upgrade Portfolio"
     },
-    system_online: "[MISSING] system online"
+    system_online: "System Online"
   },
   statsgrid: {
-    next_cycle: "[MISSING] next cycle",
-    "10_pit": "[MISSING] 10 pit",
-    reserved_tier_gt_2m: "[MISSING] reserved tier gt 2m"
+    next_cycle: "Next Cycle",
+    "10_pit": "10% PIT",
+    reserved_tier_gt_2m: "Reserved Tier >2M"
   },
   useStatsGrid: {
     tbd: "TBD"
@@ -99,59 +99,59 @@ export const dashboard = {
     share_text: "Share Text"
   },
   herocard: {
-    founders_pathway: "[MISSING] founders pathway",
-    reach: "[MISSING] reach",
-    "100m_vnd_revenue": "[MISSING] 100m vnd revenue",
-    to_unlock: "[MISSING] to unlock",
-    venture_partner_status: "[MISSING] venture partner status",
-    achievement_logic: "[MISSING] achievement logic",
-    ecosystem_scaling: "[MISSING] ecosystem scaling",
-    to_hit_next_milestone: "[MISSING] to hit next milestone",
-    live: "[MISSING] live",
-    access_secured: "[MISSING] access secured"
+    founders_pathway: "Founder's Pathway",
+    reach: "Reach",
+    "100m_vnd_revenue": "100M VND Revenue",
+    to_unlock: "to unlock",
+    venture_partner_status: "Venture Partner Status",
+    achievement_logic: "Achievement Logic",
+    ecosystem_scaling: "Ecosystem Scaling",
+    to_hit_next_milestone: "to hit next milestone",
+    live: "LIVE",
+    access_secured: "Access Secured"
   },
   quickactionscard: {
-    health_check_share_text: "[MISSING] health check share text",
-    link_copied: "[MISSING] link copied",
-    achievement_title: "[MISSING] achievement title",
-    achievement_copied: "[MISSING] achievement copied",
-    send_gift_card: "[MISSING] send gift card",
-    share_health_check: "[MISSING] share health check",
-    share_health_check_desc: "[MISSING] share health check desc",
-    c_ng_c_h_tr_kinh_doanh: "[MISSING] c ng c h tr kinh doanh",
-    tip_s_d_ng_c_c_c_ng_c_n: "[MISSING] tip s d ng c c c ng c n"
+    health_check_share_text: "Check your health score with WellNexus!",
+    link_copied: "Link Copied!",
+    achievement_title: "Achievement",
+    achievement_copied: "Achievement copied!",
+    send_gift_card: "Send Gift Card",
+    share_health_check: "Share Health Check",
+    share_health_check_desc: "Share your health check results",
+    c_ng_c_h_tr_kinh_doanh: "Business Support Tools",
+    tip_s_d_ng_c_c_c_ng_c_n: "Tip: Use these tools to boost your business"
   },
   recentactivitylist: {
-    view_digital_audit_trace: "[MISSING] view digital audit trace"
+    view_digital_audit_trace: "View Digital Audit Trace"
   },
   valuationcard: {
-    mom_growth: "[MISSING] mom growth",
-    "12_5_pe_ratio": "[MISSING] 12 5 pe ratio"
+    mom_growth: "MoM Growth",
+    "12_5_pe_ratio": "12.5x PE Ratio"
   },
   liveActivities: {
-    in: "[MISSING] in",
-    just_now: "[MISSING] just now",
-    vnd: "[MISSING] vnd"
+    in: "in",
+    just_now: "Just now",
+    vnd: "VND"
   },
   liveactivitiesticker: {
-    recent: "[MISSING] recent",
-    nodes: "[MISSING] nodes"
+    recent: "Recent: ",
+    nodes: " active"
   },
   heroenhancements: {
-    c_tin_t_ng_b_i: "[MISSING] c tin t ng b i"
+    c_tin_t_ng_b_i: "Trusted by"
   },
   revenueprogresswidget: {
-    revenue_milestone: "[MISSING] revenue milestone",
-    global_ecosystem_velocity: "[MISSING] global ecosystem velocity",
-    benchmark: "[MISSING] benchmark",
-    monthly_liquidity_flow: "[MISSING] monthly liquidity flow",
-    baseline_0: "[MISSING] baseline 0",
-    target: "[MISSING] target",
-    avg_unit_order: "[MISSING] avg unit order",
-    daily_momentum: "[MISSING] daily momentum",
-    verified_partners: "[MISSING] verified partners",
-    annualized_run_rate_arr: "[MISSING] annualized run rate arr",
-    benchmark_achieved: "[MISSING] benchmark achieved",
-    days_to_benchmark: "[MISSING] days to benchmark"
+    revenue_milestone: "Revenue Milestone",
+    global_ecosystem_velocity: "Global Ecosystem Velocity",
+    benchmark: "Benchmark",
+    monthly_liquidity_flow: "Monthly Liquidity Flow",
+    baseline_0: "Baseline: 0",
+    target: "Target",
+    avg_unit_order: "Avg Unit Order",
+    daily_momentum: "Daily Momentum",
+    verified_partners: "Verified Partners",
+    annualized_run_rate_arr: "Annualized Run Rate (ARR)",
+    benchmark_achieved: "Benchmark Achieved",
+    days_to_benchmark: "Days to Benchmark"
   }
 };
