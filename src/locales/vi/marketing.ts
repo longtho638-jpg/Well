@@ -383,7 +383,17 @@ cms: {
     cross_platform_content_deliver: "Phân Phối Nội Dung Đa Nền Tảng",
     link: "Liên Kết",
     loc: "LOC",
-    target: "Mục Tiêu"
+    target: "Mục Tiêu",
+    content_banners: "Banner Nội Dung",
+    live_banners: "Banner Đang Hoạt Động",
+    broadcasts: "Thông Báo Phát Sóng",
+    total_templates: "Tổng Mẫu",
+    tab_banners: "Banner",
+    tab_announcements: "Thông Báo",
+    tab_templates: "Mẫu",
+    search_placeholder: "Tìm kiếm theo từ khóa...",
+    archive: "Lưu Trữ",
+    enable: "Kích Hoạt"
   },
 founderrevenuegoal: {
     "1m_founder_journey": "Hành Trình $1M Founder",

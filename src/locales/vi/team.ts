@@ -1,5 +1,5 @@
 export const team = {
-team: {
+  team: {
     title: "Portfolio Management",
     subtitle: "Quản lý mạng lưới đối tác & scaling tài sản",
     leaderDashboard: "Bảng điều khiển mạng lưới đối tác",
@@ -67,14 +67,14 @@ team: {
       activityHeatmap: "Biểu đồ hoạt động"
     }
   },
-teamcharts: {
+  teamcharts: {
     network_health: "Network Health"
   },
-teammemberstable: {
+  teammemberstable: {
     member: "Member",
     partner: "Partner"
   },
-partners: {
+  partners: {
     all_partners: "All Partners",
     kyc: "KYC",
     new: "New",
@@ -86,14 +86,19 @@ partners: {
     view_profile: "View Profile",
     partner_recon_crm: "CRM Đối Soát Đối Tác",
     precision_orchestration_of_net: "Điều Phối Chính Xác Mạng Lưới",
-    rank_intelligence: "Thông Minh Cấp Bậc"
+    rank_intelligence: "Thông Minh Cấp Bậc",
+    filter_all: "Tất Cả Nút Định Danh",
+    filter_active: "Trạng Thái Hoạt Động",
+    filter_banned: "Trạng Thái Bị Cấm",
+    filter_dormant: "Trạng Thái Không Hoạt Động",
+    search_placeholder: "Tìm kiếm theo tên, email hoặc UID..."
   },
-partnercrm: {
+  partnercrm: {
     partner_crm: "Partner CRM",
     search: "Search",
     search_partner_id_name_email: "Search Partner ID, Name, Email"
   },
-partnermanagement: {
+  partnermanagement: {
     action: "Action",
     active: "Active",
     kyc: "KYC",
@@ -107,11 +112,11 @@ partnermanagement: {
     status: "Status",
     verified: "Verified"
   },
-partnerrow: {
+  partnerrow: {
     member: "Member",
     partner: "Partner"
   },
-partnerstable: {
+  partnerstable: {
     auth_pending: "Chờ Xác Thực",
     auth_status: "Trạng Thái Xác Thực",
     direct_yield: "Lợi Nhuận Trực Tiếp",
@@ -123,17 +128,20 @@ partnerstable: {
     points_buffer: "Bộ Đệm Điểm",
     synchronizing_crm_ledger: "Đang Đồng Bộ Sổ Cái CRM"
   },
-partnerdetailmodal: {
-    cancel: "Cancel",
-    contact_info: "Contact Info",
-    edit_metrics: "Edit Metrics",
+  partnerdetailmodal: {
+    cancel: "Hủy",
+    contact_info: "Thông Tin Liên Hệ",
+    edit_metrics: "Sửa Chỉ Số",
     email: "Email",
-    joined: "Joined",
-    partner_details: "Partner Details",
-    rank: "Rank",
-    save_changes: "Save Changes"
+    joined: "Ngày Tham Gia",
+    partner_details: "Chi Tiết Đối Tác",
+    rank: "Cấp Bậc",
+    save_changes: "Lưu Thay Đổi",
+    total_sales: "Tổng Doanh Số",
+    pending_cashback: "Hoàn Tiền Chờ",
+    point_balance: "Số Dư Điểm"
   },
-partnerprofilemodal: {
+  partnerprofilemodal: {
     close: "Close",
     email: "Email",
     joined: "Joined",
@@ -146,17 +154,17 @@ partnerprofilemodal: {
     total_revenue: "Total Revenue",
     verified: "Verified"
   },
-agentgridcard: {
+  agentgridcard: {
     "0x": "0x",
     neural_training: "Neural Training",
     node_id: "Node ID",
     telemetry_stream_active: "Telemetry Stream Active"
   },
-agentdetailsmodal: {
+  agentdetailsmodal: {
     enforcement: "Enforcement",
     intelligence_node_context: "Intelligence Node Context"
   },
-leaderboard: {
+  leaderboard: {
     title: "Bảng Xếp Hạng",
     subtitle: "Top 10 Partners xuất sắc nhất tháng này",
     highestSales: "Doanh số cao nhất",
@@ -185,7 +193,7 @@ leaderboard: {
     motivation3: "🚀 Tiếp tục phấn đấu để leo hạng!",
     readyToFight: "Sẵn sàng chiến đấu! 💪"
   },
-leaderdashboard: {
+  leaderdashboard: {
     export_report: "Export Report",
     leader_dashboard: "Leader Dashboard",
     network_overview: "Network Overview",
@@ -234,19 +242,19 @@ leaderdashboard: {
       low: "Rủi ro thấp"
     }
   },
-leadershipladder: {
+  leadershipladder: {
     leadership_ladder: "Leadership Ladder",
     strategic_rank_progression_map: "Strategic Rank Progression Map"
   },
-top3podium: {
+  top3podium: {
     doanh_s: "Doanh số",
     doanh_s_cao_nh_t_th_ng_n_y: "Doanh số cao nhất tháng này",
     top_3_t_ng_t_i: "Top 3 tổng tài"
   },
-ranks: {
+  ranks: {
     unknown: "Chưa xác định"
   },
-rankprogressbar: {
+  rankprogressbar: {
     rank_upgrade_progress: "Tiến độ nâng hạng",
     upgrade_to: "Nâng lên ",
     kh_i_nghi_p: "Khởi nghiệp",
@@ -258,17 +266,17 @@ rankprogressbar: {
     almost_there_just: "Sắp đạt rồi! Chỉ còn ",
     more_to_kh_i_nghi_p_rank: " nữa để lên hạng Khởi nghiệp!"
   },
-rankladdersection: {
+  rankladdersection: {
     downlines: "Tuyến Dưới",
     rank_migration_ladder: "Thang Nâng Cấp Hạng",
     sales_req_vnd: "Doanh Số Yêu Cầu (VND)",
     target_rank: "Hạng Mục Tiêu",
     team_volume: "Khối Lượng Nhóm"
   },
-achievementgrid: {
+  achievementgrid: {
     ecosystem_standing: "Ecosystem Standing"
   },
-agentdashboard: {
+  agentdashboard: {
     establishing_node_sync: "Establishing node sync...",
     agent_command_center: "Agent Command Center",
     intelligence_grid_optimal: "Intelligence Grid: Optimal",
@@ -288,7 +296,7 @@ agentdashboard: {
     total_agents: "Tổng Đại Lý",
     total_kpis: "Tổng KPI"
   },
-agentDashboard: {
+  agentDashboard: {
     title: "Hệ Điều Hành Agent",
     subtitle: "Quản lý và vận hành đội ngũ nhân sự AI",
     establishingNodeSync: "Đang đồng bộ node...",
@@ -323,5 +331,5 @@ agentDashboard: {
       trainingHistory: "Lịch sử huấn luyện"
     },
     training: "Huấn luyện"
-  },
+  }
 };
