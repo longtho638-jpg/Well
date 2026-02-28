@@ -204,7 +204,7 @@ export const WithdrawalModal: React.FC<WithdrawalModalProps> = ({
             <Select
               label="Bank Name"
               value={bankName}
-              onChange={(e) => {
+              onChange={(e: React.ChangeEvent<HTMLSelectElement>) => {
                 setBankName(e.target.value);
                 if (errors.bankName) setErrors(prev => ({ ...prev, bankName: '' }));
               }}
@@ -218,7 +218,7 @@ export const WithdrawalModal: React.FC<WithdrawalModalProps> = ({
               label="Account Number"
               type="text"
               value={accountNumber}
-              onChange={(e) => {
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
                 setAccountNumber(e.target.value);
                 if (errors.accountNumber) setErrors(prev => ({ ...prev, accountNumber: '' }));
               }}
@@ -232,7 +232,7 @@ export const WithdrawalModal: React.FC<WithdrawalModalProps> = ({
               label="Account Holder Name"
               type="text"
               value={accountName}
-              onChange={(e) => {
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
                 setAccountName(e.target.value);
                 if (errors.accountName) setErrors(prev => ({ ...prev, accountName: '' }));
               }}
