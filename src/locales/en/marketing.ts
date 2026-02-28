@@ -59,9 +59,9 @@ export const marketing = {
             ai: "Full AI Coach",
             team: "Team dashboard",
             rewards: "Performance bonuses",
-            copilot: "[MISSING] copilot",
-            marketing: "[MISSING] marketing",
-            dashboard: "[MISSING] dashboard"
+            copilot: "AI Sales Copilot",
+            marketing: "Marketing automation",
+            dashboard: "Advanced analytics dashboard"
           }
         },
         forest: {
@@ -100,19 +100,19 @@ export const marketing = {
       subheadline: "Transformed lives",
       items: {
         item1: {
-          name: "[MISSING] name",
-          role: "[MISSING] role",
-          content: "[MISSING] content"
+          name: "Nguyen Minh Anh",
+          role: "Ambassador Partner",
+          content: "WellNexus changed my life. The AI Coach helped me build a team of 50+ in just 3 months."
         },
         item2: {
-          name: "[MISSING] name",
-          role: "[MISSING] role",
-          content: "[MISSING] content"
+          name: "Tran Duc Huy",
+          role: "Startup Partner",
+          content: "From zero experience to $800/month in passive income. The platform makes everything easy."
         },
         item3: {
-          name: "[MISSING] name",
-          role: "[MISSING] role",
-          content: "[MISSING] content"
+          name: "Le Thi Mai",
+          role: "Gold Partner",
+          content: "The community support is incredible. I never feel alone on this journey."
         }
       }
     },
@@ -152,53 +152,53 @@ export const marketing = {
       terms: "Terms"
     },
     featured: {
-      badge: "[MISSING] badge",
-      title: "[MISSING] title",
-      subtitle: "[MISSING] subtitle",
-      viewAll: "[MISSING] viewAll",
-      addToCart: "[MISSING] addToCart",
-      price: "[MISSING] price"
+      badge: "Featured Products",
+      title: "Best Sellers",
+      subtitle: "Our most popular health products",
+      viewAll: "View All",
+      addToCart: "Add to Cart",
+      price: "Price"
     },
     bento: {
       ai_coach: {
-        title: "[MISSING] title",
-        description: "[MISSING] description"
+        title: "AI Health Coach",
+        description: "Get personalized wellness guidance powered by Gemini AI"
       },
       passive_income: {
-        title: "[MISSING] title",
-        description: "[MISSING] description",
-        amount: "[MISSING] amount",
-        label: "[MISSING] label"
+        title: "Passive Income",
+        description: "Build recurring revenue streams",
+        amount: "12,450,000₫",
+        label: "Avg Monthly Income"
       },
       community: {
-        title: "[MISSING] title",
-        description: "[MISSING] description"
+        title: "Global Community",
+        description: "Join 1,000+ wellness entrepreneurs worldwide"
       },
       global: {
-        title: "[MISSING] title",
-        description: "[MISSING] description"
+        title: "Global Expansion",
+        description: "Expanding across Southeast Asia markets"
       }
     },
     heroStats: {
-      partnersActive: "[MISSING] partnersActive",
-      gmvTotal: "[MISSING] gmvTotal",
-      yoyGrowth: "[MISSING] yoyGrowth",
-      slotsRemaining: "[MISSING] slotsRemaining"
+      partnersActive: "Active Partners",
+      gmvTotal: "Total GMV",
+      yoyGrowth: "YoY Growth",
+      slotsRemaining: "Slots Remaining"
     },
     socialProof: {
       actions: {
-        joined: "[MISSING] joined",
-        silver: "[MISSING] silver",
-        withdraw: "[MISSING] withdraw",
-        team: "[MISSING] team",
-        order: "[MISSING] order"
+        joined: "joined WellNexus",
+        silver: "reached Silver rank",
+        withdraw: "withdrew commission",
+        team: "built a team of 10+",
+        order: "placed an order"
       },
       times: {
-        min2: "[MISSING] min2",
-        min5: "[MISSING] min5",
-        min8: "[MISSING] min8",
-        min12: "[MISSING] min12",
-        min15: "[MISSING] min15"
+        min2: "2 min ago",
+        min5: "5 min ago",
+        min8: "8 min ago",
+        min12: "12 min ago",
+        min15: "15 min ago"
       }
     },
     stickyCta: {
@@ -224,107 +224,107 @@ export const marketing = {
   },
   marketing: {
     affiliate: {
-      title: "[MISSING] title",
-      subtitle: "[MISSING] subtitle",
-      linkLabel: "[MISSING] linkLabel",
+      title: "Affiliate Program",
+      subtitle: "Share and earn commissions",
+      linkLabel: "Your Referral Link",
       stats: {
-        title: "[MISSING] title",
-        clicks: "[MISSING] clicks",
-        signups: "[MISSING] signups",
-        conversion: "[MISSING] conversion",
-        conversionValue: "[MISSING] conversionValue"
+        title: "Performance Stats",
+        clicks: "Clicks",
+        signups: "Sign-ups",
+        conversion: "Conversion",
+        conversionValue: "Conversion Value"
       },
-      tip: "[MISSING] tip",
-      partnerLabel: "[MISSING] partnerLabel",
-      downloadQR: "[MISSING] downloadQR",
-      share: "[MISSING] share",
-      qrTip: "[MISSING] qrTip",
-      shareTitle: "[MISSING] shareTitle",
-      shareText: "[MISSING] shareText"
+      tip: "Share your link on social media for best results",
+      partnerLabel: "Partner ID",
+      downloadQR: "Download QR",
+      share: "Share",
+      qrTip: "Print this QR code on your business card",
+      shareTitle: "Join WellNexus",
+      shareText: "Join WellNexus and start your wellness business today!"
     },
     contentLibrary: {
-      title: "[MISSING] title",
-      subtitle: "[MISSING] subtitle",
+      title: "Content Library",
+      subtitle: "Ready-to-share marketing content",
       categories: {
-        product: "[MISSING] product",
-        testimonial: "[MISSING] testimonial",
-        tips: "[MISSING] tips",
-        promotion: "[MISSING] promotion"
+        product: "Product",
+        testimonial: "Testimonial",
+        tips: "Tips",
+        promotion: "Promotion"
       },
-      copied: "[MISSING] copied",
-      copyText: "[MISSING] copyText",
-      downloadImage: "[MISSING] downloadImage"
+      copied: "Copied!",
+      copyText: "Copy Text",
+      downloadImage: "Download Image"
     },
     giftCards: {
-      title: "[MISSING] title",
-      subtitle: "[MISSING] subtitle",
-      createNew: "[MISSING] createNew",
-      createTitle: "[MISSING] createTitle",
-      codeLabel: "[MISSING] codeLabel",
-      codePlaceholder: "[MISSING] codePlaceholder",
-      valueLabel: "[MISSING] valueLabel",
-      typeLabel: "[MISSING] typeLabel",
-      typeFixed: "[MISSING] typeFixed",
-      typePercentage: "[MISSING] typePercentage",
-      createButton: "[MISSING] createButton",
-      cancel: "[MISSING] cancel",
-      usageCount: "[MISSING] usageCount",
-      createdDate: "[MISSING] createdDate"
+      title: "Gift Cards",
+      subtitle: "Create and manage gift cards",
+      createNew: "Create New",
+      createTitle: "Create Gift Card",
+      codeLabel: "Code",
+      codePlaceholder: "Enter gift card code",
+      valueLabel: "Value",
+      typeLabel: "Type",
+      typeFixed: "Fixed Amount",
+      typePercentage: "Percentage",
+      createButton: "Create Gift Card",
+      cancel: "Cancel",
+      usageCount: "Usage Count",
+      createdDate: "Created Date"
     },
-    title: "[MISSING] title",
-    subtitle: "[MISSING] subtitle",
+    title: "Marketing Tools",
+    subtitle: "Grow your business with powerful marketing tools",
     stats: {
-      giftCards: "[MISSING] giftCards",
-      contentTemplates: "[MISSING] contentTemplates",
-      affiliateLink: "[MISSING] affiliateLink",
-      active: "[MISSING] active"
+      giftCards: "Gift Cards",
+      contentTemplates: "Content Templates",
+      affiliateLink: "Affiliate Link",
+      active: "Active"
     },
     templates: {
       t1: {
-        title: "[MISSING] title",
-        content: "[MISSING] content"
+        title: "Product Launch",
+        content: "Introducing our newest health product! Try it today and feel the difference."
       },
       t2: {
-        title: "[MISSING] title",
-        content: "[MISSING] content"
+        title: "Success Story",
+        content: "See how our partners are building wealth with WellNexus. Join the movement!"
       },
       t3: {
-        title: "[MISSING] title",
-        content: "[MISSING] content"
+        title: "Health Tips",
+        content: "Daily wellness tips to keep you energized and focused. Your health matters!"
       },
       t4: {
-        title: "[MISSING] title",
-        content: "[MISSING] content"
+        title: "Special Offer",
+        content: "Limited time offer! Get started with WellNexus today and unlock exclusive benefits."
       }
     }
   },
   marketingtools: {
-    "4_9": "[MISSING] 4 9",
-    ai_landing_builder: "[MISSING] ai landing builder",
-    new: "[MISSING] new",
-    t_o_trang_tuy_n_d_ng_chuy_n_ng: "[MISSING] t o trang tuy n d ng chuy n ng",
-    ch_n_template: "[MISSING] ch n template",
-    upload_nh_ch_n_dung: "[MISSING] upload nh ch n dung",
-    nh_t_i_l_n: "[MISSING] nh t i l n",
-    click_thay_i: "[MISSING] click thay i",
-    click_t_i_nh_l_n: "[MISSING] click t i nh l n",
-    jpg_png_t_i_a_5mb: "[MISSING] jpg png t i a 5mb",
-    ai_ang_vi_t_c_u_chuy_n: "[MISSING] ai ang vi t c u chuy n",
-    ai_vi_t_c_u_chuy_n_c_a_t_i: "[MISSING] ai vi t c u chuy n c a t i",
-    preview_landing_page: "[MISSING] preview landing page",
-    link_landing_page: "[MISSING] link landing page",
-    l_t_xem: "[MISSING] l t xem",
-    chuy_n_i: "[MISSING] chuy n i",
-    t_l: "[MISSING] t l",
-    xu_t_b_n_ngay: "[MISSING] xu t b n ngay",
-    landing_page_xu_t_b_n: "[MISSING] landing page xu t b n",
-    link_s_n_s_ng_chia_s: "[MISSING] link s n s ng chia s",
-    ch_n_template_v_click_ai_vi: "[MISSING] ch n template v click ai vi",
-    ai_s_t_o_landing_page_chuy_n: "[MISSING] ai s t o landing page chuy n",
-    landing_pages_t_o: "[MISSING] landing pages t o",
-    live: "[MISSING] live",
-    views: "[MISSING] views",
-    conversions: "[MISSING] conversions"
+    "4_9": "4.9",
+    ai_landing_builder: "AI Landing Builder",
+    new: "NEW",
+    t_o_trang_tuy_n_d_ng_chuy_n_ng: "Create professional recruitment pages",
+    ch_n_template: "Choose Template",
+    upload_nh_ch_n_dung: "Upload Portrait Photo",
+    nh_t_i_l_n: "Photo Uploaded",
+    click_thay_i: "Click to Change",
+    click_t_i_nh_l_n: "Click to Upload Photo",
+    jpg_png_t_i_a_5mb: "JPG/PNG, max 5MB",
+    ai_ang_vi_t_c_u_chuy_n: "AI is writing your story...",
+    ai_vi_t_c_u_chuy_n_c_a_t_i: "AI Write My Story",
+    preview_landing_page: "Preview Landing Page",
+    link_landing_page: "Landing Page Link",
+    l_t_xem: "Views",
+    chuy_n_i: "Conversions",
+    t_l: "Rate",
+    xu_t_b_n_ngay: "Publish Now",
+    landing_page_xu_t_b_n: "Landing Page Published!",
+    link_s_n_s_ng_chia_s: "Link ready to share",
+    ch_n_template_v_click_ai_vi: "Choose a template and click 'AI Write My Story'",
+    ai_s_t_o_landing_page_chuy_n: "AI will create a professional landing page for you",
+    landing_pages_t_o: "Landing Pages Created",
+    live: "LIVE",
+    views: "Views",
+    conversions: "Conversions"
   },
   landingpage: {
     ultimate_level_wellness: "ULTIMATE LEVEL WELLNESS",
@@ -347,16 +347,16 @@ export const marketing = {
     h_ng_ng_n_partner_thay_i: "Thousands transformed with WellNexus"
   },
   sharebuttons: {
-    zalo: "[MISSING] zalo",
-    facebook: "[MISSING] facebook",
-    telegram: "[MISSING] telegram",
-    email: "[MISSING] email",
-    hideQR: "[MISSING] hideQR",
-    showQR: "[MISSING] showQR"
+    zalo: "Zalo",
+    facebook: "Facebook",
+    telegram: "Telegram",
+    email: "Email",
+    hideQR: "Hide QR",
+    showQR: "Show QR"
   },
   portfoliosection: {
-    growth: "[MISSING] growth",
-    arr: "[MISSING] arr"
+    growth: "Growth",
+    arr: "ARR"
   },
   stickyCta: {
     label: "157 slots remaining — Register today",

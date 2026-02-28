@@ -1,38 +1,38 @@
 export const misc = {
   eastasiabrand: {
-    wellnexus: "[MISSING] wellnexus",
-    v_ch_ng_t_i: "[MISSING] v ch ng t i",
-    s_n_ph_m: "[MISSING] s n ph m",
-    i_t_c: "[MISSING] i t c",
-    b_t_u: "[MISSING] b t u"
+    wellnexus: "WellNexus",
+    v_ch_ng_t_i: "About Us",
+    s_n_ph_m: "Products",
+    i_t_c: "Partners",
+    b_t_u: "Get Started"
   },
   premiumnavigation: {
-    premium_member: "[MISSING] premium member",
-    wellnexus_all_rights_reserved: "[MISSING] wellnexus all rights reserved",
-    made_with_in_vietnam: "[MISSING] made with in vietnam",
-    ssl_secured: "[MISSING] ssl secured",
-    top_10_east_asia: "[MISSING] top 10 east asia",
-    wellnexus_1: "[MISSING] wellnexus 1",
-    social_commerce_2_0_1: "[MISSING] social commerce 2 0 1",
-    h_sinh_th_i_social_commerce_t: "[MISSING] h sinh th i social commerce t",
+    premium_member: "Premium Member",
+    wellnexus_all_rights_reserved: "WellNexus. All Rights Reserved.",
+    made_with_in_vietnam: "Made with ♥ in Vietnam",
+    ssl_secured: "SSL Secured",
+    top_10_east_asia: "Top 10 East Asia",
+    wellnexus_1: "WellNexus",
+    social_commerce_2_0_1: "Social Commerce 2.0",
+    h_sinh_th_i_social_commerce_t: "Next-gen Social Commerce Ecosystem",
     hello_wellnexus_vn: "wellnexusvn@gmail.com",
     "84_901_234_567": "0918 876 586",
     q1_tp_hcm_vietnam: "286 Nguyễn Xuyển, Thanh Liệt, Hà Nội",
-    wellnexus: "[MISSING] wellnexus",
-    social_commerce_2_0: "[MISSING] social commerce 2 0",
-    hot: "[MISSING] hot",
-    premium_member_1: "[MISSING] premium member 1",
-    dashboard: "[MISSING] dashboard",
-    ng_xu_t: "[MISSING] ng xu t",
-    b_t_u_ngay: "[MISSING] b t u ngay",
+    wellnexus: "WellNexus",
+    social_commerce_2_0: "Social Commerce 2.0",
+    hot: "HOT",
+    premium_member_1: "Premium Member",
+    dashboard: "Dashboard",
+    ng_xu_t: "Sign Out",
+    b_t_u_ngay: "Get Started Now",
     mobileNavigation: "Mobile navigation menu",
-    newsletter: "[MISSING] newsletter",
-    nh_n_th_ng_tin: "[MISSING] nh n th ng tin",
-    c_quy_n: "[MISSING] c quy n",
-    ng_k_nh_n_tin_t_c_u: "[MISSING] ng k nh n tin t c u",
-    email_placeholder: "[MISSING] email placeholder",
-    ng_k: "[MISSING] ng k",
-    ng_k_1: "[MISSING] ng k 1"
+    newsletter: "Newsletter",
+    nh_n_th_ng_tin: "Get Updates",
+    c_quy_n: "All Rights Reserved",
+    ng_k_nh_n_tin_t_c_u: "Subscribe for early news & updates",
+    email_placeholder: "Enter your email",
+    ng_k: "Subscribe",
+    ng_k_1: "Subscribe"
   },
   commandpalette: {
     agencyos_85_commands: "AgencyOS: 85 Commands",
@@ -87,107 +87,107 @@ export const misc = {
   },
   venture: {
     footer: {
-      strategic_ecosystem_builder: "[MISSING] strategic ecosystem builder",
-      subscribe_for_exclusive_intake: "[MISSING] subscribe for exclusive intake",
-      privacy: "[MISSING] privacy",
-      terms: "[MISSING] terms",
-      tagline: "[MISSING] tagline",
+      strategic_ecosystem_builder: "Strategic Ecosystem Builder",
+      subscribe_for_exclusive_intake: "Subscribe for exclusive intake updates",
+      privacy: "Privacy",
+      terms: "Terms",
+      tagline: "Building the future of health commerce",
       newsletter: {
-        title: "[MISSING] title",
-        placeholder: "[MISSING] placeholder"
+        title: "Newsletter",
+        placeholder: "Enter your email"
       },
-      copyright: "[MISSING] copyright"
+      copyright: "© 2026 WellNexus"
     },
     market: {
-      total_addressable_market: "[MISSING] total addressable market",
-      velocity: "[MISSING] velocity",
-      init_sea_expansion_protocol: "[MISSING] init sea expansion protocol",
-      sectionBadge: "[MISSING] sectionBadge",
-      sectionTitle: "[MISSING] sectionTitle",
-      subheadline: "[MISSING] subheadline",
+      total_addressable_market: "Total Addressable Market",
+      velocity: "Velocity",
+      init_sea_expansion_protocol: "Init SEA Expansion Protocol",
+      sectionBadge: "Market Opportunity",
+      sectionTitle: "Southeast Asia Market",
+      subheadline: "Expanding across the region",
       regions: {
-        vietnam: "[MISSING] vietnam",
-        thailand: "[MISSING] thailand",
-        indonesia: "[MISSING] indonesia",
-        philippines: "[MISSING] philippines"
+        vietnam: "Vietnam",
+        thailand: "Thailand",
+        indonesia: "Indonesia",
+        philippines: "Philippines"
       },
       status: {
-        active: "[MISSING] active",
-        expanding: "[MISSING] expanding",
-        protocol_init: "[MISSING] protocol init",
-        pending: "[MISSING] pending"
+        active: "Active",
+        expanding: "Expanding",
+        protocol_init: "Protocol Init",
+        pending: "Pending"
       }
     },
     navigation: {
-      venture_builder: "[MISSING] venture builder",
+      venture_builder: "Venture Builder",
       menu: {
-        portfolio: "[MISSING] portfolio",
-        deal: "[MISSING] deal",
-        market: "[MISSING] market"
+        portfolio: "Portfolio",
+        deal: "Deal Room",
+        market: "Market"
       },
-      apply_recruitment: "[MISSING] apply recruitment"
+      apply_recruitment: "Apply / Recruitment"
     },
     portfolio: {
-      val: "[MISSING] val",
-      growth: "[MISSING] growth",
-      arr_node: "[MISSING] arr node",
-      sectionBadge: "[MISSING] sectionBadge",
-      sectionTitle: "[MISSING] sectionTitle",
-      subheadline: "[MISSING] subheadline",
+      val: "Valuation",
+      growth: "Growth",
+      arr_node: "ARR Node",
+      sectionBadge: "Portfolio",
+      sectionTitle: "Our Ventures",
+      subheadline: "Strategic investments across Vietnam",
       roles: {
-        ceo: "[MISSING] ceo",
-        cmo: "[MISSING] cmo",
-        cto: "[MISSING] cto"
+        ceo: "CEO",
+        cmo: "CMO",
+        cto: "CTO"
       },
       regions: {
-        hanoi: "[MISSING] hanoi",
-        hcmc: "[MISSING] hcmc",
-        danang: "[MISSING] danang"
+        hanoi: "Hanoi",
+        hcmc: "HCMC",
+        danang: "Da Nang"
       }
     },
     hero: {
-      badge: "[MISSING] badge",
-      headline: "[MISSING] headline",
-      headlineAccent: "[MISSING] headlineAccent",
-      subheadline: "[MISSING] subheadline",
-      primaryCta: "[MISSING] primaryCta",
-      secondaryCta: "[MISSING] secondaryCta",
+      badge: "Venture Builder",
+      headline: "Build the Future",
+      headlineAccent: "of Health Commerce",
+      subheadline: "Strategic venture building in Southeast Asia",
+      primaryCta: "Apply Now",
+      secondaryCta: "View Portfolio",
       stats: {
-        valuation_label: "[MISSING] valuation label",
-        nodes_label: "[MISSING] nodes label",
-        market_label: "[MISSING] market label"
+        valuation_label: "Valuation",
+        nodes_label: "Active Nodes",
+        market_label: "Market Cap"
       }
     },
     deal: {
-      sectionBadge: "[MISSING] sectionBadge",
-      sectionTitle: "[MISSING] sectionTitle",
-      subheadline: "[MISSING] subheadline",
+      sectionBadge: "Deal Room",
+      sectionTitle: "Investment Thesis",
+      subheadline: "Strategic capital deployment",
       capitalNode: {
-        category: "[MISSING] category",
-        item1: "[MISSING] item1",
-        item2: "[MISSING] item2",
-        item3: "[MISSING] item3"
+        category: "Capital Node",
+        item1: "Seed funding available",
+        item2: "Series A pipeline",
+        item3: "Revenue-based financing"
       },
       techStack: {
-        category: "[MISSING] category",
-        item1: "[MISSING] item1",
-        item2: "[MISSING] item2",
-        item3: "[MISSING] item3",
-        item4: "[MISSING] item4"
+        category: "Tech Stack",
+        item1: "AI-powered platform",
+        item2: "Real-time analytics",
+        item3: "Blockchain ledger",
+        item4: "Mobile-first design"
       },
       ownership: {
-        category: "[MISSING] category",
-        item1: "[MISSING] item1",
-        item2: "[MISSING] item2",
-        item3: "[MISSING] item3",
-        item4: "[MISSING] item4"
+        category: "Ownership",
+        item1: "Equity participation",
+        item2: "Revenue share model",
+        item3: "Vesting schedule",
+        item4: "Board advisory"
       }
     }
   },
   fraudbadge: {
-    critical_risk: "[MISSING] critical risk",
-    suspected: "[MISSING] suspected",
-    verified: "[MISSING] verified"
+    critical_risk: "Critical Risk",
+    suspected: "Suspected",
+    verified: "Verified"
   },
   profilepage: {
     personal_information: "Personal Information",
@@ -204,29 +204,29 @@ export const misc = {
     joined: "Joined"
   },
   agencyosdemo: {
-    agencyos_integration: "[MISSING] agencyos integration",
-    "85_ai_powered_automation_comm": "[MISSING] 85 ai powered automation comm",
-    open_command_palette_k: "[MISSING] open command palette k",
-    command_categories: "[MISSING] command categories",
-    commands: "[MISSING] commands",
-    agent_kpis: "[MISSING] agent kpis",
-    all_commands: "[MISSING] all commands",
-    execution_history: "[MISSING] execution history",
-    no_commands_executed_yet_clic: "[MISSING] no commands executed yet clic"
+    agencyos_integration: "AgencyOS Integration",
+    "85_ai_powered_automation_comm": "85 AI-powered automation commands",
+    open_command_palette_k: "Open Command Palette (⌘K)",
+    command_categories: "Command Categories",
+    commands: "Commands",
+    agent_kpis: "Agent KPIs",
+    all_commands: "All Commands",
+    execution_history: "Execution History",
+    no_commands_executed_yet_clic: "No commands executed yet. Click a command to start."
   },
   debuggerpage: {
-    system_debugger: "[MISSING] system debugger",
-    v_debug_1_0: "[MISSING] v debug 1 0",
-    zustand_store_state: "[MISSING] zustand store state",
-    environment_window: "[MISSING] environment window",
-    window_props: "[MISSING] window props",
-    local_storage_keys: "[MISSING] local storage keys",
-    empty: "[MISSING] empty"
+    system_debugger: "System Debugger",
+    v_debug_1_0: "v.Debug 1.0",
+    zustand_store_state: "Zustand Store State",
+    environment_window: "Environment Window",
+    window_props: "Window Props",
+    local_storage_keys: "Local Storage Keys",
+    empty: "Empty"
   },
   testpage: {
-    well_test_page: "[MISSING] well test page",
-    connectivity_check: "[MISSING] connectivity check",
-    client_status: "[MISSING] client status",
-    active: "[MISSING] active"
+    well_test_page: "Well Test Page",
+    connectivity_check: "Connectivity Check",
+    client_status: "Client Status",
+    active: "Active"
   }
 };
