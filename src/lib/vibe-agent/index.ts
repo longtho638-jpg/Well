@@ -29,3 +29,24 @@ export {
   VibeAgentRegistry,
   createAgentRegistry,
 } from './agent-registry-singleton';
+
+// Event Bus — Electron IPC EventEmitter pattern for inter-agent communication
+export { agentEventBus } from './agent-event-bus';
+export type {
+  AgentEventChannel,
+  AgentEvent,
+  AgentLifecyclePayload,
+} from './agent-event-bus';
+
+// Domain Event Dispatcher — Cal.com webhook dispatcher pattern
+export { domainEventDispatcher } from './domain-event-dispatcher';
+export type {
+  OrderEvent,
+  CommissionEvent,
+  RankUpgradeEvent,
+  DomainEventMap,
+} from './domain-event-dispatcher';
+
+// Agent Health Monitor — Electron crash recovery + circuit breaker
+export { agentHealthMonitor } from './agent-health-monitor';
+export type { AgentHealthStatus } from './agent-health-monitor';

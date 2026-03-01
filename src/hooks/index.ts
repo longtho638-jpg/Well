@@ -40,3 +40,4 @@ export * from './useQuests';
 export * from './useAdvanced';
 export * from './useDashboard';
 export * from './useNetworkTree';
+export * from './use-agent-chat';
