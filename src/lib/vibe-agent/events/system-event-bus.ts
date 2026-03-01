@@ -27,7 +27,7 @@ export class SystemEventBus {
     this.logger.info(`Dispatching event: ${channel} from ${source}`, payload);
     try {
       // Mapping to AgentEventChannel types if necessary, but here we cast for flexibility
-      await agentEventBus.emit(channel as any, payload, source);
+      await agentEventBus.emit(channel as import('../agent-event-bus').AgentEventChannel, payload, source);
     } catch (error) {
       this.logger.error(`Failed to dispatch event: ${channel}`, error);
     }
@@ -36,8 +36,8 @@ export class SystemEventBus {
   /**
    * Subscribe to a specific event channel.
    */
-  public subscribe<T>(channel: string, handler: (payload: any) => void | Promise<void>): () => void {
-    return agentEventBus.on(channel as any, (event) => {
+  public subscribe(channel: string, handler: (payload: unknown) => void | Promise<void>): () => void {
+    return agentEventBus.on(channel as Parameters<typeof agentEventBus.on>[0], (event) => {
       return handler(event.payload);
     });
   }

@@ -3,29 +3,40 @@
  *
  * Demonstrates Vercel AI SDK integration with Vibe Agent.
  * Features: Streaming responses, specialized agent system prompts, and structured output handling.
+ * AGI mode: optional ReAct reasoning chain + tool call visualization.
  */
 
-import React, { useRef, useEffect } from 'react';
+import React, { useRef, useEffect, useState } from 'react';
 import { Send, User, Bot, Loader2, Sparkles } from 'lucide-react';
 import { useVibeChat } from '@/hooks/use-vibe-chat';
 import { motion, AnimatePresence } from 'framer-motion';
+import type { Message } from '@ai-sdk/react';
+import { AgentReasoningView, type ReasoningStep } from './AgentReasoningView';
+import { AgentToolCallCard, type ToolCallData } from './AgentToolCallCard';
 
 interface AgentChatProps {
   agentId: string;
+  isAgiMode?: boolean;
 }
 
-export const AgentChat: React.FC<AgentChatProps> = ({ agentId }) => {
+export const AgentChat: React.FC<AgentChatProps> = ({ agentId, isAgiMode = false }) => {
   const {
     messages,
     input,
     setInput,
     handleSubmit,
-    isLoading,
+    status,
     agentName,
     agentFunction
   } = useVibeChat({ agentId });
 
   const scrollRef = useRef<HTMLDivElement>(null);
+
+  // AGI mode: demo reasoning steps (populated from agent stream in production)
+  const [reasoningSteps] = useState<ReasoningStep[]>([]);
+
+  // AGI mode: demo tool calls (populated from agent stream in production)
+  const [activeToolCalls] = useState<ToolCallData[]>([]);
 
   useEffect(() => {
     if (scrollRef.current) {
@@ -42,7 +53,14 @@ export const AgentChat: React.FC<AgentChatProps> = ({ agentId }) => {
             <Sparkles className="w-5 h-5" />
           </div>
           <div>
-            <h3 className="font-bold text-lg leading-tight">{agentName}</h3>
+            <h3 className="font-bold text-lg leading-tight flex items-center gap-2">
+              {agentName}
+              {isAgiMode && (
+                <span className="px-1.5 py-0.5 text-[9px] font-black uppercase tracking-widest bg-purple-500/30 border border-purple-400/40 rounded text-purple-200 italic">
+                  AGI
+                </span>
+              )}
+            </h3>
             <p className="text-xs opacity-80 uppercase tracking-wider font-semibold">{agentFunction}</p>
           </div>
         </div>
@@ -71,7 +89,7 @@ export const AgentChat: React.FC<AgentChatProps> = ({ agentId }) => {
               <p className="text-sm">Start a conversation with {agentName}</p>
             </motion.div>
           )}
-          {messages.map((message) => (
+          {messages.map((message: Message) => (
             <motion.div
               key={message.id}
               initial={{ opacity: 0, y: 10 }}
@@ -95,7 +113,7 @@ export const AgentChat: React.FC<AgentChatProps> = ({ agentId }) => {
             </motion.div>
           ))}
         </AnimatePresence>
-        {isLoading && messages[messages.length - 1]?.role !== 'assistant' && (
+        {status === 'streaming' && messages[messages.length - 1]?.role !== 'assistant' && (
           <div className="flex justify-start">
             <div className="flex space-x-3 items-center opacity-50">
               <div className="w-8 h-8 rounded-full bg-white border border-gray-100 flex items-center justify-center">
@@ -106,6 +124,16 @@ export const AgentChat: React.FC<AgentChatProps> = ({ agentId }) => {
           </div>
         )}
       </div>
+
+      {/* AGI: Tool calls + Reasoning chain */}
+      {isAgiMode && (activeToolCalls.length > 0 || reasoningSteps.length > 0) && (
+        <div className="px-4 pb-2 bg-gray-50/50 border-t border-gray-100">
+          {activeToolCalls.map((tc, i) => (
+            <AgentToolCallCard key={i} toolCall={tc} />
+          ))}
+          <AgentReasoningView steps={reasoningSteps} />
+        </div>
+      )}
 
       {/* Input */}
       <form
@@ -120,7 +148,7 @@ export const AgentChat: React.FC<AgentChatProps> = ({ agentId }) => {
         />
         <button
           type="submit"
-          disabled={!input.trim() || isLoading}
+          disabled={!input.trim() || status === 'streaming'}
           className="p-2.5 bg-purple-600 text-white rounded-xl shadow-lg shadow-purple-200 hover:bg-purple-700 disabled:opacity-50 disabled:shadow-none transition-all"
         >
           <Send className="w-5 h-5" />

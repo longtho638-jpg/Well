@@ -110,7 +110,7 @@ export const orderService = {
       throw error;
     }
 
-    return (data || []).map((order: any) => {
+    return (data || []).map((order: typeof data extends Array<infer T> ? T : never) => {
       const userRaw = order.user;
       const user = Array.isArray(userRaw)
         ? (userRaw[0] as { name: string; email: string } | undefined) ?? { name: 'Unknown', email: '' }

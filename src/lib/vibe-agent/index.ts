@@ -326,3 +326,57 @@ export { INTEGRATION_MANIFESTS, initializeIntegrations } from './registry/integr
 // Workflow Automation Engine — Cal.com automation engine pattern
 export { AutomationEngine, automationEngine, WorkflowDefinitionSchema, TriggerSchema, ActionSchema } from './workflow/automation-engine';
 export type { WorkflowDefinition, Trigger, Action } from './workflow/automation-engine';
+
+// ─── AGI Core Engine ─────────────────────────────────────────
+
+// AGI Tool Registry — typed commerce tools (searchProducts, createOrder, etc.)
+export { agiToolRegistry } from './agi-tool-registry';
+export type {
+  AGIToolRegistry,
+  ProductSearchResult,
+  ProductDetailResult,
+  OrderResult,
+  CommissionResult,
+  DistributorRankResult,
+} from './agi-tool-registry';
+
+// AGI ReAct Reasoning Loop — Thought → Action → Observation cycle
+export { executeReActLoop } from './agi-react-reasoning-loop';
+export type {
+  ReasoningStepType,
+  ReasoningStep,
+  ReasoningTrace,
+  ToolCallInfo,
+  ReActLoopOptions,
+} from './agi-react-reasoning-loop';
+
+// AGI Model Tier Router — fast/balanced/powerful tier selection
+export { selectModelTier, getModelNameForTier, TIER_MODELS } from './agi-model-tier-router';
+export type { ModelTier, TierContext, TierSelection } from './agi-model-tier-router';
+
+// Vercel AI Adapter — streamVibeText + streamVibeAgent + getVibeModel
+export { getVibeModel, streamVibeText, streamVibeAgent } from './agent-vercel-ai-adapter';
+export type { VibeStreamOptions, VibeAgentOptions } from './agent-vercel-ai-adapter';
+
+// AGI Commerce Tools — concrete tool implementations (search, order, rank, commission, health)
+export {
+  searchProducts,
+  createOrder,
+  checkDistributorRank,
+  calculateCommission,
+  getHealthRecommendation,
+  SearchProductsSchema,
+  CreateOrderSchema,
+  CheckRankSchema,
+  CalculateCommissionSchema,
+  HealthRecommendationSchema,
+} from './agi-commerce-tools';
+export type { HealthRecommendationResult } from './agi-commerce-tools';
+
+// AGI Commerce Orchestrator — Plan-Execute-Verify for commerce flows
+export { commerceOrchestrator } from './agi-commerce-orchestrator';
+export type {
+  OrchestratorStatus,
+  CommerceGoal,
+  OrchestratorResult,
+} from './agi-commerce-orchestrator';

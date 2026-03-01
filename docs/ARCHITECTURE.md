@@ -1,250 +1,192 @@
 # WellNexus Architecture Overview
 
-## System Architecture
+## Tech Stack
 
-WellNexus is built as a modern, scalable web application using a component-based architecture.
+| Layer | Technology |
+|-------|-----------|
+| Frontend | React 19.2.4, TypeScript 5.9.3 (strict), Vite 7.3.1 |
+| Styling | Tailwind CSS, Framer Motion (Aura Elite design) |
+| State | Zustand (8 slices) |
+| i18n | i18next — Vietnamese (vi.ts) + English (en.ts) |
+| Backend | Supabase (Auth, PostgreSQL, Edge Functions, Realtime) |
+| AI | Google Gemini via Supabase Edge Function |
+| Payments | PayOS via Edge Function |
+| Email | Resend via Edge Function |
+| Testing | Vitest 4.x (vmThreads pool), Testing Library |
+| Deployment | Vercel, auto-deploy on push to main |
 
-### Technology Stack
+## Routing (React Router v6 + Lazy Loading)
 
-**Frontend:**
-- React 19.2.4 with TypeScript 5.9.3 (Strict Mode)
-- Vite 7.3.1 for build tooling
-- Tailwind CSS for styling
-- Framer Motion for animations
-- Zustand for state management (6 slices pattern)
-- i18next for internationalization (Vietnamese + English)
-
-**Backend Services:**
-- Supabase (PRIMARY) -- Auth, PostgreSQL Database, Edge Functions, Realtime
-- Google Gemini AI for coaching features (via Edge Function)
-- PayOS for payment processing (via Edge Function)
-- Resend for transactional emails (via Edge Function)
-
-**Testing:**
-- Vitest 4.x for unit and integration tests
-- Testing Library for component tests
-- 307+ tests across 30 files with 100% pass rate
-
-### Project Structure
+All pages use `React.lazy()` wrapped in `<SafePage>` (ErrorBoundary + Suspense).
 
 ```
-Well/
-├── src/
-│   ├── agents/           # Agent-OS framework and business agents
-│   ├── components/       # Reusable UI components
-│   │   ├── ui/          # Base UI component library
-│   │   ├── Dashboard/   # Dashboard-specific components
-│   │   ├── Referral/    # Referral system components
-│   │   └── ...
-│   ├── pages/           # Route-level page components
-│   ├── services/        # External service integrations (Supabase, PayOS, Gemini)
-│   ├── hooks/           # Custom React hooks (useAuth, useWallet, useAgentOS)
-│   ├── utils/           # Utility functions (commission, tokenomics, format)
-│   ├── store/           # Zustand store (6 slices: auth, wallet, team, agent, ui, cart)
-│   ├── locales/         # i18n translations (vi.ts, en.ts)
-│   ├── styles/          # Global styles and design tokens
-│   └── types.ts         # TypeScript type definitions
-├── public/              # Static assets
-├── docs/                # Project documentation
-├── plans/               # Development plans and reports
-└── dist/                # Production build output
+/ (LandingPage)
+/login, /signup, /confirm-email
+/forgot-password, /reset-password
+/ref/:referralId (ReferralRedirect)
+/venture (VenturePage)
+/checkout, /checkout/success
+
+/admin (AdminRoute — env-based RBAC)
+  index     → Overview
+  cms       → CMS
+  partners  → Partners
+  finance   → Finance
+  policy-engine → PolicyEngine
+  orders    → OrderManagement
+  products  → AdminProducts
+  audit-log → AuditLog
+
+/dashboard (Protected — AppLayout)
+  index         → Dashboard
+  marketplace   → Marketplace
+  product/:id   → ProductDetail
+  wallet        → CommissionWallet
+  copilot       → CopilotPage
+  team          → LeaderDashboard
+  referral      → ReferralPage
+  network       → NetworkPage
+  withdrawal    → WithdrawalPage
+  health-coach  → HealthCoach
+  health-check  → HealthCheck
+  leaderboard   → Leaderboard
+  marketing-tools → MarketingTools
+  agents        → AgentDashboard
+  subscription  → SubscriptionPage
+  settings      → SettingsPage
+  profile       → ProfilePage
+
+/test, /debugger (diagnostic — auth-gated)
+/system-status (public)
+* → NotFoundPage (404)
 ```
 
-### Key Components
+## State Management (Zustand)
 
-#### 1. Agent-OS Framework
+`src/store/` — 8 slices + cart store:
 
-A modular agent system for business automation:
-- Coach Agent: AI-powered business coaching
-- Sales Copilot: Objection handling and sales assistance
-- Reward Engine: Automated commission calculations
-- Project Manager: Task and workflow automation
+| Slice | Responsibility |
+|-------|---------------|
+| `authSlice` | Auth state, session, user profile |
+| `walletSlice` | Commission wallet, transactions |
+| `teamSlice` | Downline team metrics |
+| `agentSlice` | Agent-OS registry + execution state |
+| `productSlice` | Product catalog |
+| `subscriptionSlice` | Subscription tiers |
+| `questSlice` | Gamification quests |
+| `uiSlice` | Theme, modals, toast |
+| `cartStore` | Shopping cart (separate) |
 
-#### 2. State Management
+## Agent-OS Framework
 
-**Zustand Store** (`src/store/`):
-- Single source of truth for application state
-- User authentication state
-- Product catalog
-- Transaction history
-- Team metrics
-- Referral data
+`src/agents/` — 24+ modular agents:
 
-#### 3. Routing Architecture
+**Core** (`core/`): `BaseAgent.ts`, `index.ts`
 
-**React Router v6** with protected routes:
-```
-/ (Landing Page)
-/dashboard (Main Dashboard - Protected)
-  ├── /marketplace
-  ├── /wallet
-  ├── /team
-  ├── /referral
-  └── /admin
-```
+**Custom Agents** (`custom/`):
+- `AgencyOSAgent`, `GeminiCoachAgent`, `SalesCopilotAgent`
+- `ProjectManagerAgent`, `DebuggerAgent`, `DocsManagerAgent`
+- `CodeReviewerAgent`, `ScoutAgent`, `ScoutExternalAgent`, `TheBeeAgent`
 
-#### 4. Service Layer
+**Orchestration** (`orchestration/`):
+- `agent-supervisor-orchestrator.ts` — multi-agent coordination
+- `agent-intent-classifier.ts` — intent routing
 
-Abstraction layer for external services:
-- `geminiService.ts` - Google Gemini AI integration (via Edge Function)
-- `supabase.ts` - Supabase client configuration
-- `payos-client.ts` - PayOS payment integration
-- `referral-service.ts` - Referral tree and downline management
-- `email-service-client-side-trigger.ts` - Email triggers via Edge Function
-- `copilotService.ts` - Sales assistant logic
+**ClaudeKit** (`claudekit/`):
+- `ClaudeKitAdapter.ts` — CC CLI integration bridge
 
-### Data Flow
+**Registry** (`registry.ts`): Central agent registration + lifecycle
+
+## Data Flow
 
 ```
-User Action
-    ↓
-React Component
-    ↓
-Custom Hook (optional)
-    ↓
-Zustand Store / Service Layer
-    ↓
-External API (Supabase Auth/DB/Edge Functions / Gemini)
-    ↓
-State Update
-    ↓
-Component Re-render
+User Action → React Component → Custom Hook
+  → Zustand Store / Service Layer
+  → Supabase Auth/DB/Edge Functions
+  → State Update → Re-render
 ```
 
-### Build & Deployment
+## WebSocket & Realtime
 
-**Build Process:**
-1. TypeScript compilation (`tsc`)
-2. Vite bundling and optimization
-3. Code splitting for vendors
-4. Gzip compression
-5. Asset hashing for cache busting
+**Connection Cache** (`src/lib/websocket-connection-cache.ts`):
+- Singleton manager for Supabase Realtime channels
+- Ref-counted subscriptions — multiple components share one channel
+- Auto-cleanup: last consumer `release()` triggers `removeChannel()`
+- `acquire(channelName, factory?)` / `release(channelName)` / `releaseAll()`
 
-**Production Build:**
-```bash
-npm run build
-# Output: dist/ directory (~350 KB gzipped)
-```
+**Usage** (`src/hooks/useRealTimeNotifications.ts`):
+- Subscribes to user-specific Supabase Realtime channels
+- Uses connection cache to prevent duplicate subscriptions
 
-**Deployment:**
-- Platform: Vercel
-- Auto-deploy: On push to main branch
-- CI/CD: GitHub Actions (build + test + security audit)
-- Build time: ~3.2 seconds
-- Production URL: https://wellnexus.vn/
+## Rate Limiting
 
-### Performance Optimizations
+**Client-side** (`src/lib/rate-limiter.ts`):
+- Sliding window algorithm, per-user tracking
+- Default: 10 requests/60s window
+- `commandRateLimiter` singleton for AgencyOS commands
+- Methods: `isAllowed()`, `getRemaining()`, `getResetTime()`, `resetAll()`
 
-1. **Code Splitting:**
-   - React vendor chunk (86.72 KB)
-   - Supabase vendor chunk (44.35 KB)
-   - Motion vendor chunk (40.64 KB)
-   - Page-level code splitting
+**Server-side**: Supabase Edge Functions handle API rate limits via built-in quotas.
 
-2. **Bundle Optimization:**
-   - Tree shaking
-   - Minification
-   - Gzip compression
-   - Asset optimization
+## Input Validation (Zod)
 
-3. **Runtime Performance:**
-   - Lazy loading for routes
-   - Memoization for expensive components
-   - Zustand selectors for optimal re-renders
+**Schemas** (`src/schemas/`):
+- `order.ts` — Order creation, items, quantities
+- `auth.ts` — Login, signup, password reset
+- `api-validation-schemas.ts` — PayOS webhook, payout, withdrawal
+- All export inferred types via `z.infer<typeof Schema>`
+- VND business rules: 10,000 min, 500M max, integer amounts
 
-### Security
+## Security
 
-- Environment variables for sensitive data (server-side secrets via Supabase)
-- HTTPS enforced
-- Supabase Row Level Security (RLS) on all tables
+- Supabase RLS on all tables
+- CSP + HSTS headers via `vercel.json`
 - HMAC-SHA256 webhook verification (PayOS)
-- Input validation (zod, DOMPurify)
-- XSS protection (React built-in + DOMPurify)
-- SQL injection protection (Supabase parameterized queries)
-- CSP and HSTS headers via Vercel config
-- Secure in-memory token storage (no localStorage for sensitive tokens)
+- Input validation: Zod (API boundaries) + DOMPurify (XSS)
+- Auth tokens: encrypted in-memory (no localStorage)
+- Admin access: `VITE_ADMIN_EMAILS` env-based RBAC
+- Auto-logout: 30 min inactivity (`useAutoLogout`)
+- Rate limiting on client-side command execution
 
-### Testing Strategy
+## Performance
 
-**Unit Tests:**
-- Utility functions (format, tax, tokenomics)
-- Business logic (commission, wallet, dashboard)
-- Test coverage: Format, Tax, Tokenomics, Commission, Wallet
+**Code Splitting** (Vite `manualChunks`):
+- `react-vendor` ~86 KB gzipped
+- `supabase-vendor` ~44 KB gzipped
+- `motion-vendor` ~40 KB gzipped
+- All pages lazy-loaded
 
-**Component Tests:**
-- UI components (Button, Input, Modal)
-- Interaction testing
-- Accessibility verification
+**Build:** ~3.2s | **Bundle:** ~350 KB gzipped | **PWA:** enabled
 
-**Integration Tests:**
-- User flow testing
-- Admin logic
-- Dashboard pages
-- Affiliate system
-- Multi-user scenarios
+## Containerization
 
-### Scalability Considerations
+- **Dockerfile**: Multi-stage (node:22-alpine → nginx:alpine), SPA routing
+- **PM2**: `ecosystem.config.cjs` for process management (cluster mode)
+- **nginx**: Custom SPA config with immutable asset caching
 
-**Current State:**
-- Supabase PostgreSQL database with RLS
-- Supabase Edge Functions for serverless API
-- 8 Edge Functions deployed (payment, email, AI, commission)
-- Suitable for growing user base
+## CI/CD
 
-**Future Growth:**
-- Replace mock data with API calls
-- Implement caching layer
-- Add CDN for static assets
-- Consider microservices architecture
-- Database optimization
+- **GitHub Actions** (`ci.yml`): lint → test (coverage) → build → security audit
+- Concurrency groups: cancel-in-progress on new push
+- Coverage artifact upload on every run
+- **Lighthouse** (`lighthouse.yml`): Performance monitoring on PRs
+- **Vercel**: Auto-deploy on push to main
 
-### Development Workflow
+## Testing
 
-1. **Local Development:**
-   ```bash
-   npm run dev  # Start dev server on :5173
-   ```
+- 380+ vitest tests across 37 test files
+- Pool: `vmThreads` for isolation
+- Pre-test: `pnpm i18n:validate` (key sync check)
+- Coverage: unit (utils, store), component, integration (flows)
+- Integration tests with retry for esbuild stability
 
-2. **Testing:**
-   ```bash
-   npm test           # Watch mode
-   npm run test:run   # Run once
-   ```
+## Development Commands
 
-3. **Building:**
-   ```bash
-   npm run build      # Production build
-   npm run preview    # Preview build locally
-   ```
-
-4. **Deployment:**
-   - Push to main → Auto-deploy to Vercel
-
-### Monitoring & Maintenance
-
-- Sentry for error tracking (optional)
-- Vercel Analytics for performance (Core Web Vitals)
-- GitHub Actions CI/CD pipeline
-- Build status badges on README
-
-### Technical Debt & Future Improvements
-
-**Completed:**
-- ✅ Phase 2 architecture refactoring (1,169 lines reduced)
-- ✅ Component extraction (14 reusable components)
-- ✅ TypeScript strict mode
-- ✅ Comprehensive test coverage
-
-**Planned (Optional):**
-- ESLint configuration
-- E2E testing with Playwright
-- Storybook for component documentation
-- API layer implementation
-- Performance monitoring
-
----
-
-For detailed implementation guides, see:
-- `README.md` - Getting started
-- `CONTRIBUTING.md` - Development guidelines
-- `CHANGELOG.md` - Version history
+```bash
+pnpm dev          # dev server :5173
+pnpm build        # production build → dist/
+pnpm test         # vitest run (vmThreads)
+pnpm test:coverage # coverage report
+pnpm test:ui      # vitest UI
+pnpm i18n:validate # check translation key sync
+```

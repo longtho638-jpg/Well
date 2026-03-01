@@ -13,7 +13,7 @@ import { agentEventBus } from './agent-event-bus';
 import { agentHealthMonitor } from './agent-health-monitor';
 import { agentExecutionQueue } from './agent-execution-queue-n8n-pattern';
 import type { VibeBaseAgent } from './base-agent-abstract';
-import type { VibeAgentDefinition, VibeAgentLog } from './types';
+import type { VibeAgentLog } from './types';
 
 class AgentWorkerSupervisor {
   private registry: VibeAgentRegistry;
@@ -31,7 +31,12 @@ class AgentWorkerSupervisor {
   private setupIpcHandlers(): void {
     // Listen for tool:executed events which are used by vibeAgentBridge.invoke
     agentEventBus.on('tool:executed', async (event) => {
-      const { agentName, action, payload, requestId } = event.payload as any;
+      const { agentName, action, payload, requestId } = event.payload as {
+        agentName: string;
+        action: string;
+        payload: Record<string, unknown>;
+        requestId: string;
+      };
 
       // Special case for supervisor commands
       if (agentName === 'supervisor') {
@@ -62,7 +67,7 @@ class AgentWorkerSupervisor {
     });
 
     // Register the queue processor
-    agentExecutionQueue.registerProcessor(/.*/ as any, async (job) => {
+    agentExecutionQueue.registerProcessor('*', async (job) => {
       const { agent, action, payload, requestId } = job.data as {
         agent: VibeBaseAgent;
         action: string;
@@ -96,9 +101,9 @@ class AgentWorkerSupervisor {
   /**
    * Internal commands for managing the agent system itself
    */
-  private async handleSupervisorCommand(action: string, payload: any, requestId: string): Promise<void> {
+  private async handleSupervisorCommand(action: string, payload: Record<string, unknown>, requestId: string): Promise<void> {
     try {
-      let result: any;
+      let result: unknown;
 
       switch (action) {
         case 'listAgents':
@@ -136,14 +141,14 @@ class AgentWorkerSupervisor {
     }, 'SUPERVISOR');
   }
 
-  private recordLog(agentName: string, action: string, inputs: any, outputs: any): void {
+  private recordLog(agentName: string, action: string, inputs: unknown, outputs: unknown): void {
     const log: VibeAgentLog = {
       id: `log-${Date.now()}-${Math.random().toString(36).slice(2, 7)}`,
       agentName,
       action,
       timestamp: new Date().toISOString(),
-      inputs,
-      outputs
+      inputs: (typeof inputs === 'object' && inputs !== null ? inputs : { value: inputs }) as Record<string, unknown>,
+      outputs: (typeof outputs === 'object' && outputs !== null ? outputs : { value: outputs }) as Record<string, unknown>
     };
 
     this.logs.unshift(log);

@@ -1,6 +1,7 @@
 import { z } from 'zod';
 import { executeWorkflow, WorkflowStep, WorkflowState } from '../workflow-execution-context';
 import { integrationRegistry } from '../registry/integration-registry';
+import { agentLogger } from '@/utils/logger';
 
 /**
  * Workflow Automation Engine — Foundations
@@ -53,7 +54,7 @@ export class AutomationEngine {
     definition: WorkflowDefinition,
     initialData: unknown
   ): Promise<WorkflowState> {
-    console.log(`[AutomationEngine] Triggering workflow: ${definition.name} (${definition.id})`);
+    agentLogger.info(`[AutomationEngine] Triggering workflow: ${definition.name} (${definition.id})`);
 
     if (!definition.enabled) {
       throw new Error(`Workflow ${definition.id} is disabled`);
@@ -64,7 +65,7 @@ export class AutomationEngine {
       return {
         name: `Action_${index + 1}_${action.capability}`,
         retryPolicy: action.retryPolicy,
-        execute: async (input, ctx) => {
+        execute: async (input, _ctx) => {
           // Verify integration availability
           const integration = integrationRegistry.getById(action.integrationId);
           if (!integration) {
@@ -75,7 +76,7 @@ export class AutomationEngine {
             throw new Error(`Integration ${integration.name} does not support capability: ${action.capability}`);
           }
 
-          console.log(`[AutomationEngine] Executing ${action.capability} via ${integration.name}`);
+          agentLogger.info(`[AutomationEngine] Executing ${action.capability} via ${integration.name}`);
 
           // In a real system, this would call the actual integration handler
           // For now, we simulate the execution and merge params with input
@@ -85,8 +86,7 @@ export class AutomationEngine {
             processedAt: new Date().toISOString(),
           };
         },
-        compensate: async (input, output, ctx) => {
-          console.log(`[AutomationEngine] Compensating ${action.capability}`);
+        compensate: async (_input, _output, _ctx) => {
           // Rollback logic would go here
         }
       };

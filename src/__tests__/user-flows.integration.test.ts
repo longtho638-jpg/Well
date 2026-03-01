@@ -16,8 +16,9 @@ interface ExecuteResult {
 
 /**
  * Integration tests simulating real user workflows
+ * retry: handle transient esbuild service crashes in vmThreads pool
  */
-describe('User Flow Integration Tests', () => {
+describe('User Flow Integration Tests', { retry: 2 }, () => {
     beforeEach(() => {
         // Reset state between tests
         commandRateLimiter.resetAll();

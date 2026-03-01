@@ -3,37 +3,37 @@
  *
  * Bridges Vibe Agent's LiteLLM-style router with Vercel AI SDK.
  * Provides a unified way to get a LanguageModel instance for streaming.
+ * Includes streamVibeAgent() for AGI ReAct tool-use loops.
  */
 
 import { google } from '@ai-sdk/google';
 import { openai } from '@ai-sdk/openai';
 import { agentLLMRouter } from './agent-llm-router-litellm-pattern';
-import type { LanguageModelV1 } from 'ai';
+import type { LanguageModel, ModelMessage } from 'ai';
+import type { ReasoningStep, ReasoningTrace } from './agi-react-reasoning-loop';
+import type { AGIToolRegistry } from './agi-tool-registry';
 
 /**
  * Get a Vercel AI SDK LanguageModel based on router configuration.
+ * Provider SDKs may return LanguageModelV1 — cast is safe since
+ * streamText accepts both V1 and V2 at runtime.
  */
-export function getVibeModel(preferredModel?: string): LanguageModelV1 {
+export function getVibeModel(preferredModel?: string): LanguageModel {
   const deployment = agentLLMRouter.selectDeployment(preferredModel);
 
   if (!deployment) {
-    // Fallback to a default if nothing is configured in the router
-    // In a real RaaS project, we'd want to ensure the router is seeded.
-    return google('models/gemini-1.5-pro-latest');
+    return google('models/gemini-1.5-pro-latest') as unknown as LanguageModel;
   }
 
   switch (deployment.provider) {
     case 'google':
-      return google(deployment.modelName);
+      return google(deployment.modelName) as unknown as LanguageModel;
     case 'openai':
-      return openai(deployment.modelName);
+      return openai(deployment.modelName) as unknown as LanguageModel;
     case 'anthropic':
-      // Assuming we'd add @ai-sdk/anthropic if needed
-      // For now, mapping to a generic provider if available or throwing
       throw new Error(`Provider ${deployment.provider} not yet fully mapped in Vercel AI Adapter`);
     default:
-      // Default to Google as per project primary stack
-      return google('models/gemini-1.5-pro-latest');
+      return google('models/gemini-1.5-pro-latest') as unknown as LanguageModel;
   }
 }
 
@@ -44,7 +44,7 @@ export interface VibeStreamOptions {
   model?: string;
   system?: string;
   prompt?: string;
-  messages?: any[];
+  messages?: ModelMessage[];
 }
 
 /**
@@ -54,20 +54,51 @@ export async function streamVibeText(options: VibeStreamOptions) {
   const { streamText } = await import('ai');
   const model = getVibeModel(options.model);
 
-  return streamText({
+  // Build args — streamText uses a discriminated union (prompt XOR messages)
+  const args = {
     model,
     system: options.system,
-    prompt: options.prompt,
-    messages: options.messages,
-    onFinish: ({ usage, text }) => {
-      // Track usage in the router for cost/kpi monitoring
+    ...(options.messages
+      ? { messages: options.messages }
+      : { prompt: options.prompt ?? '' }),
+    onFinish: ({ usage }: { usage: { inputTokens?: number; outputTokens?: number } }) => {
       const deployment = agentLLMRouter.selectDeployment(options.model);
       if (deployment) {
         agentLLMRouter.recordUsage(deployment.id, {
-          inputTokens: usage.promptTokens,
-          outputTokens: usage.completionTokens,
+          inputTokens: usage.inputTokens ?? 0,
+          outputTokens: usage.outputTokens ?? 0,
         });
       }
     },
+  };
+
+  return streamText(args as Parameters<typeof streamText>[0]);
+}
+
+// ─── AGI Agent Streaming ─────────────────────────────────────
+
+export interface VibeAgentOptions {
+  prompt: string;
+  system?: string;
+  model?: string;
+  maxSteps?: number;
+  tools?: Partial<AGIToolRegistry>;
+  onStepFinish?: (step: ReasoningStep) => void;
+}
+
+/**
+ * Stream a full AGI ReAct loop with tool use.
+ * Wraps executeReActLoop with adapter-level model resolution.
+ * Use this for agentic chat flows requiring tool calls.
+ */
+export async function streamVibeAgent(options: VibeAgentOptions): Promise<ReasoningTrace> {
+  const { executeReActLoop } = await import('./agi-react-reasoning-loop');
+  return executeReActLoop({
+    prompt: options.prompt,
+    system: options.system,
+    model: options.model,
+    maxSteps: options.maxSteps ?? 5,
+    tools: options.tools,
+    onStepFinish: options.onStepFinish,
   });
 }

@@ -1,4 +1,4 @@
-import { describe, it, expect, vi } from 'vitest';
+import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { createStore } from 'zustand';
 import { createWalletSlice, WalletSlice } from './walletSlice';
 import { User, UserRank, Product } from '../../types';
@@ -7,7 +7,7 @@ import { agentRegistry, BaseAgent } from '@/agents';
 // Mock dependencies
 vi.mock('../../utils/tokenomics', () => ({
   generateTxHash: vi.fn(() => 'mock-tx-hash'),
-  calculateStakingReward: vi.fn((amount) => amount * 0.1), // Simple mock
+  calculateStakingReward: vi.fn((amount) => amount * 0.1),
 }));
 
 vi.mock('../../utils/tax', () => ({
@@ -31,6 +31,10 @@ vi.mock('@/utils/logger', () => ({
 }));
 
 describe('walletSlice', () => {
+  beforeEach(() => {
+    vi.clearAllMocks();
+  });
+
   const initialUser: User = {
     id: 'user-123',
     email: 'test@example.com',

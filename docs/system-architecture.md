@@ -82,6 +82,32 @@ graph TD
 - **Error Tracking:** Sentry (100% sample rate for production errors).
 - **Performance:** Core Web Vitals monitoring via Vercel Analytics.
 
+### 7. AGI RaaS Layer (Agent-OS → AGI Upgrade)
+
+The platform includes an AGI reasoning layer built on top of the existing Agent-OS:
+
+```
+┌─────────────────────────────────────────┐
+│ UI: AGI Chat + Reasoning Visualizer     │ AgentChat, AgentReasoningView, AgentToolCallCard
+├─────────────────────────────────────────┤
+│ Commerce Orchestrator (Plan-Execute)    │ agi-commerce-orchestrator.ts
+├─────────────────────────────────────────┤
+│ Tool Registry (5 AI SDK tools)          │ agi-tool-registry.ts
+│ Commerce Tools (5 standalone functions) │ agi-commerce-tools.ts
+│ ReAct Reasoning Loop (Thought→Act→Obs) │ agi-react-reasoning-loop.ts
+│ Model Tier Router (fast/balanced/power) │ agi-model-tier-router.ts
+├─────────────────────────────────────────┤
+│ Existing: LLM Router, Memory, EventBus │ vibe-agent/ infrastructure
+└─────────────────────────────────────────┘
+```
+
+**Key Components:**
+- **ReAct Loop** — Multi-step reasoning via Vercel AI SDK v6 `streamText` + `stopWhen: stepCountIs(N)`
+- **Tool Registry** — 5 typed commerce tools: searchProducts, getProductDetails, createOrder, calculateCommission, checkDistributorRank
+- **Commerce Orchestrator** — Decomposes natural language goals into tool calls, emits domain events, human-in-the-loop gate for orders >50M VND
+- **Model Tier Router** — Cost-aware routing: flash-lite (fast) → flash (balanced) → pro (powerful)
+- **34 unit tests** covering tool registry, tier router, commerce tools, schemas, orchestrator
+
 ## Deployment Pipeline
 - **Host:** Vercel (Edge Network)
 - **Trigger:** Push to `main` branch.

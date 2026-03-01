@@ -67,16 +67,18 @@ class RateLimiter {
     }
 
     /**
-     * Get time until rate limit resets (in ms)
+     * Get time until rate limit resets (in ms) — based on oldest request in window
      */
     getResetTime(key: string): number {
+        const now = Date.now();
         const userRequests = this.requests.get(key) || [];
-        if (userRequests.length === 0) return 0;
+        const recentRequests = userRequests.filter(
+            (req) => now - req.timestamp < this.config.windowMs
+        );
+        if (recentRequests.length === 0) return 0;
 
-        const oldestRequest = userRequests[0];
-        const resetTime = oldestRequest.timestamp + this.config.windowMs;
-
-        return Math.max(0, resetTime - Date.now());
+        const oldestInWindow = recentRequests[0];
+        return Math.max(0, oldestInWindow.timestamp + this.config.windowMs - now);
     }
 
     /**

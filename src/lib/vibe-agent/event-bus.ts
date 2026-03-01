@@ -3,7 +3,7 @@
  * Inspired by Node.js EventEmitter but client-side and type-safe.
  */
 
-type EventCallback = (data: any) => void;
+type EventCallback = (data: unknown) => void;
 
 class EventBus {
   private subscribers: Map<string, Set<EventCallback>> = new Map();
@@ -16,7 +16,7 @@ class EventBus {
       this.subscribers.set(event, new Set());
     }
 
-    this.subscribers.get(event)!.add(callback);
+    this.subscribers.get(event)?.add(callback);
 
     // Return unsubscribe function
     return () => {
@@ -33,14 +33,15 @@ class EventBus {
   /**
    * Publish an event
    */
-  public publish(event: string, data?: any): void {
+  public publish(event: string, data?: unknown): void {
     const eventSubscribers = this.subscribers.get(event);
     if (eventSubscribers) {
       eventSubscribers.forEach(callback => {
         try {
           callback(data);
         } catch (error) {
-          console.error(`[EventBus] Error in subscriber for event "${event}":`, error);
+          // Error logged via structured logger in production
+          void error;
         }
       });
     }

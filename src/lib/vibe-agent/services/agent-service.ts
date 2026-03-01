@@ -34,8 +34,6 @@ export class AgentService extends BaseService<typeof AgentCreateSchema, typeof A
 
   protected async implementation(input: AgentCreateInput): Promise<AgentResponse> {
     // In a real application, this would interact with Supabase or another DB
-    console.log(`[AgentService] Creating agent: ${input.name} of type ${input.type}`);
-
     // Mocking the creation process
     const mockAgent: AgentResponse = {
       id: crypto.randomUUID(),

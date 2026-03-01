@@ -1,4 +1,5 @@
 import { z } from 'zod';
+import { agentLogger } from '@/utils/logger';
 
 /**
  * Integration Schema
@@ -46,9 +47,9 @@ export class IntegrationRegistry {
     try {
       const validated = IntegrationSchema.parse(integration);
       this.integrations.set(validated.id, validated);
-      console.log(`[IntegrationRegistry] Registered: ${validated.name} (${validated.slug})`);
+      agentLogger.info(`[IntegrationRegistry] Registered: ${validated.name} (${validated.slug})`);
     } catch (error) {
-      console.error(`[IntegrationRegistry] Registration Failed for ${integration.name}:`, error);
+      agentLogger.error(`[IntegrationRegistry] Registration Failed for ${integration.name}:`, error);
       throw error;
     }
   }
