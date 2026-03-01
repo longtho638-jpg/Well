@@ -9,6 +9,10 @@ export default defineConfig({
     environment: 'jsdom',
     setupFiles: './src/test/setup.ts',
     css: true,
+    env: {
+      NODE_ENV: 'test',
+    },
+    fileParallelism: false,
     exclude: [
       '**/node_modules/**',
       '**/dist/**',
@@ -16,6 +20,8 @@ export default defineConfig({
       '**/e2e/**',
       '**/.claude/**', // Playwright tests - run with `npx playwright test`
       '**/admin-panel/**', // Has its own test suite and React version
+      '**/n8n_codebase/**', // Separate project with its own test suite
+      '**/scripts/**', // Build/utility scripts
     ],
     coverage: {
       provider: 'v8',

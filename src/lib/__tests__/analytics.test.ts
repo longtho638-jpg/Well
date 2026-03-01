@@ -7,7 +7,7 @@ const mockVa = vi.fn();
 describe('Analytics', () => {
     beforeEach(() => {
         vi.clearAllMocks();
-        vi.stubGlobal('window', { va: mockVa });
+        (window as Record<string, unknown>).va = mockVa;
     });
 
     describe('event', () => {

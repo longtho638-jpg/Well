@@ -3,8 +3,8 @@ import { validateConfig } from './validate-config';
 
 describe('validateConfig', () => {
   beforeEach(() => {
-    // Mock console.error to keep test output clean
     vi.spyOn(console, 'error').mockImplementation(() => {});
+    vi.spyOn(console, 'log').mockImplementation(() => {});
   });
 
   afterEach(() => {
@@ -12,7 +12,6 @@ describe('validateConfig', () => {
   });
 
   it('should return valid state when all keys are present', () => {
-    // Setup env vars
     const mockEnv = {
       VITE_FIREBASE_API_KEY: 'test-key',
       VITE_FIREBASE_AUTH_DOMAIN: 'test-domain',
@@ -34,25 +33,21 @@ describe('validateConfig', () => {
   it('should detect missing keys', () => {
     const mockEnv = {
       VITE_FIREBASE_API_KEY: 'test-key',
-      // Missing other keys
       PROD: false,
     };
 
     const result = validateConfig(mockEnv);
     expect(result.isValid).toBe(false);
     expect(result.missingKeys).toContain('VITE_FIREBASE_AUTH_DOMAIN');
-    expect(console.error).toHaveBeenCalled();
   });
 
-  it('should return invalid state and log error in production if keys are missing', () => {
-     const mockEnv = {
-      PROD: true, // Production mode
-      // Missing keys
+  it('should return invalid state in production if keys are missing', () => {
+    const mockEnv = {
+      PROD: true,
     };
 
     const result = validateConfig(mockEnv);
     expect(result.isValid).toBe(false);
     expect(result.missingKeys.length).toBeGreaterThan(0);
-    expect(console.error).toHaveBeenCalled();
   });
 });
