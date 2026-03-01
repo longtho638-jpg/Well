@@ -50,3 +50,14 @@ export {
   createSubscriptionIntent,
   subscriptionQueries,
 } from './subscription-query-helpers';
+
+// Usage tracking query helpers (org-scoped metering)
+export {
+  trackFeatureUsage,
+  trackFeatureUsageBatch,
+  getOrgUsageSummary,
+  getOrgUsageByFeature,
+  getUsageTimeline,
+  checkOrgQuota,
+  usageQueries,
+} from './usage-tracking-query-helpers';

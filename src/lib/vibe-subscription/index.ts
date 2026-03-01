@@ -22,6 +22,9 @@ export type {
   FeatureGateConfig,
   OrgBillingDashboard,
   OrgRevenueMetrics,
+  UsageRecord,
+  UsageSummary,
+  UsageQuota,
 } from './types';
 
 // Feature gate utilities

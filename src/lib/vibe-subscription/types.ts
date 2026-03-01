@@ -117,3 +117,35 @@ export interface OrgRevenueMetrics {
   revenueByPlan: Record<string, number>;
   currency: string;
 }
+
+// ─── Usage Tracking (org-scoped metering) ─────────────────────
+
+/** Single usage event for a feature within an org */
+export interface UsageRecord {
+  id: string;
+  org_id: string;
+  user_id: string;
+  feature: string;
+  quantity: number;
+  recorded_at: string;
+  metadata: Record<string, unknown>;
+}
+
+/** Aggregated usage summary for an org within a billing period */
+export interface UsageSummary {
+  org_id: string;
+  feature: string;
+  total_quantity: number;
+  event_count: number;
+  period_start: string;
+  period_end: string;
+}
+
+/** Quota definition tied to a plan — how much of a feature an org can use */
+export interface UsageQuota {
+  feature: string;
+  limit: number;
+  used: number;
+  remaining: number;
+  percentage: number;
+}

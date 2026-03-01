@@ -16,6 +16,9 @@ import type {
     Organization,
     OrgMember,
     FeatureGateConfig,
+    UsageRecord,
+    UsageSummary,
+    UsageQuota,
 } from '@/lib/vibe-subscription';
 import {
     getUserOrgs as _getUserOrgs,
@@ -29,10 +32,13 @@ import {
     createSubscription as _createSubscription,
     cancelSubscription as _cancelSubscription,
     createSubscriptionIntent as _createSubscriptionIntent,
+    trackFeatureUsage as _trackFeatureUsage,
+    getOrgUsageSummary as _getOrgUsageSummary,
+    checkOrgQuota as _checkOrgQuota,
 } from '@/lib/vibe-supabase';
 
 // Re-export types so existing consumers don't break
-export type { SubscriptionPlan, UserSubscription, ActivePlanInfo, Organization, OrgMember };
+export type { SubscriptionPlan, UserSubscription, ActivePlanInfo, Organization, OrgMember, UsageRecord, UsageSummary, UsageQuota };
 
 // ─── Well-specific feature gate config ──────────────────────────
 
@@ -140,5 +146,35 @@ export const subscriptionService = {
             cancelUrl: `${window.location.origin}/dashboard/subscription?status=canceled`,
             orgId: params.orgId,
         });
+    },
+
+    // ── Usage tracking (delegates to vibe-supabase SDK) ──────────
+
+    async trackUsage(params: {
+        orgId: string;
+        userId: string;
+        feature: string;
+        quantity?: number;
+        metadata?: Record<string, unknown>;
+    }): Promise<UsageRecord> {
+        return _trackFeatureUsage(supabase, params);
+    },
+
+    async getOrgUsage(
+        orgId: string,
+        periodStart: string,
+        periodEnd: string,
+    ): Promise<UsageSummary[]> {
+        return _getOrgUsageSummary(supabase, orgId, periodStart, periodEnd);
+    },
+
+    async checkQuota(
+        orgId: string,
+        feature: string,
+        planLimit: number,
+        periodStart: string,
+        periodEnd: string,
+    ): Promise<UsageQuota> {
+        return _checkOrgQuota(supabase, orgId, feature, planLimit, periodStart, periodEnd);
     },
 };
