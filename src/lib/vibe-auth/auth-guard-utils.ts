@@ -86,13 +86,13 @@ export function createAutoLogoutController(
 
   const start = () => {
     lastActivity = Date.now();
-    const events = mergedConfig.trackedEvents ?? DEFAULT_AUTO_LOGOUT.trackedEvents!;
+    const events = mergedConfig.trackedEvents ?? DEFAULT_AUTO_LOGOUT.trackedEvents ?? [];
     events.forEach(event => window.addEventListener(event, handleActivity));
     intervalId = setInterval(checkInactivity, mergedConfig.checkIntervalMs);
   };
 
   const stop = () => {
-    const events = mergedConfig.trackedEvents ?? DEFAULT_AUTO_LOGOUT.trackedEvents!;
+    const events = mergedConfig.trackedEvents ?? DEFAULT_AUTO_LOGOUT.trackedEvents ?? [];
     events.forEach(event => window.removeEventListener(event, handleActivity));
     if (intervalId) clearInterval(intervalId);
     if (throttleTimeout) clearTimeout(throttleTimeout);
