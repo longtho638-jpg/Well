@@ -50,3 +50,37 @@ export type {
 // Agent Health Monitor — Electron crash recovery + circuit breaker
 export { agentHealthMonitor } from './agent-health-monitor';
 export type { AgentHealthStatus } from './agent-health-monitor';
+
+// Agent Heartbeat Monitor — Uptime-Kuma heartbeat loop pattern
+export { agentHeartbeatMonitor } from './agent-heartbeat-monitor';
+export type {
+  HeartbeatStatus,
+  HeartbeatConfig,
+  HeartbeatRecord,
+  MonitoredAgent,
+} from './agent-heartbeat-monitor';
+
+// Notification Dispatcher — Uptime-Kuma multi-channel notification pattern
+export {
+  notificationDispatcher,
+  consoleLogProvider,
+  createInAppProvider,
+} from './notification-dispatcher';
+export type {
+  NotificationChannel,
+  AlertSeverity,
+  AgentAlert,
+  NotificationProvider,
+  NotificationRule,
+} from './notification-dispatcher';
+
+// Agent Status Page — Uptime-Kuma public status page pattern
+export { agentStatusPage } from './agent-status-page';
+export type {
+  StatusPageData,
+  AgentStatusEntry,
+  MonitorGroup,
+  Incident,
+  IncidentSeverity,
+  IncidentStatus,
+} from './agent-status-page';
