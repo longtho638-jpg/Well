@@ -1,10 +1,7 @@
 import { serve } from 'https://deno.land/std@0.168.0/http/server.ts'
-import { createClient } from 'https://esm.sh/@supabase/supabase-js@2'
-import { handlePayOSWebhook, computeSubscriptionPeriodEnd } from '../_shared/vibe-payos/mod.ts'
+import { handlePayOSWebhook, computeSubscriptionPeriodEnd, createAdminClient } from '../_shared/vibe-payos/mod.ts'
 import type { WebhookCallbacks, WebhookOrderRecord, WebhookSubscriptionIntent } from '../_shared/vibe-payos/mod.ts'
 import type { PayOSWebhookData } from '../_shared/vibe-payos/mod.ts'
-
-// ─── Types ──────────────────────────────────────────────────────
 
 interface OrderItem {
   product_name: string
@@ -12,13 +9,8 @@ interface OrderItem {
   unit_price?: number
 }
 
-// ─── Main handler ───────────────────────────────────────────────
-
 serve(async (req) => {
-  const supabase = createClient(
-    Deno.env.get('SUPABASE_URL') ?? '',
-    Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') ?? ''
-  )
+  const supabase = createAdminClient()
 
   const callbacks: WebhookCallbacks = {
     findOrder: async (orderCode) => {
@@ -83,8 +75,15 @@ serve(async (req) => {
         org_id: intent.org_id ?? null,
       })
 
-      if (error) console.error('[subscription] Create failed:', error)
-      else console.log(`[subscription] Activated for user ${intent.user_id}, plan ${intent.plan_id}`)
+      if (error) {
+        await callbacks.logAudit(intent.user_id, 'SUBSCRIPTION_ACTIVATION_FAILED', {
+          intentId: intent.id, planId: intent.plan_id, error: error.message,
+        }, 'failure')
+      } else {
+        await callbacks.logAudit(intent.user_id, 'SUBSCRIPTION_ACTIVATED', {
+          planId: intent.plan_id, billingCycle: intent.billing_cycle, periodEnd: periodEndIso,
+        }, 'success')
+      }
     },
 
     logAudit: async (userId, action, payload, severity) => {
@@ -97,14 +96,15 @@ serve(async (req) => {
           ip_address: '0.0.0.0',
         })
       } catch (err) {
-        console.error('Failed to write audit log:', err)
+        // Last-resort fallback — audit logging must not break webhook flow
+        console.error('[audit] Write failed:', err)
       }
     },
 
     // ─── Business logic side effects ──────────────────────────
 
     onOrderPaid: async (order: WebhookOrderRecord, data: PayOSWebhookData) => {
-      // Sync to transactions table
+      // Sync to transactions table (idempotent)
       const { data: existingTx } = await supabase
         .from('transactions')
         .select('id')
@@ -113,7 +113,7 @@ serve(async (req) => {
         .limit(1)
 
       if (!existingTx || existingTx.length === 0) {
-        await supabase.from('transactions').insert({
+        const { error: txError } = await supabase.from('transactions').insert({
           user_id: order.user_id,
           amount: data.amount,
           type: 'sale',
@@ -121,7 +121,13 @@ serve(async (req) => {
           description: `PayOS đơn hàng #${data.orderCode}`,
           reference_id: order.id,
           created_at: new Date().toISOString(),
-        }).catch((err: Error) => console.error('Failed to sync transaction:', err))
+        })
+
+        if (txError) {
+          await callbacks.logAudit(order.user_id, 'TRANSACTION_SYNC_FAILED', {
+            orderId: order.id, orderCode: data.orderCode, error: txError.message,
+          }, 'failure')
+        }
       }
 
       // Email notification (fire-and-forget)
@@ -148,7 +154,11 @@ serve(async (req) => {
                 })),
               },
             },
-          }).catch((err) => console.error('Email send failed:', err))
+          }).catch(async (err) => {
+            await callbacks.logAudit(order.user_id, 'EMAIL_SEND_FAILED', {
+              orderId: order.id, error: String(err),
+            }, 'failure')
+          })
         }
       }
 
@@ -161,7 +171,11 @@ serve(async (req) => {
             old_record: { status: 'pending' },
           },
           ...(webhookSecret ? { headers: { 'x-webhook-secret': webhookSecret } } : {}),
-        }).catch((err) => console.error('Commission distribution failed:', err))
+        }).catch(async (err) => {
+          await callbacks.logAudit(order.user_id, 'COMMISSION_DISTRIBUTION_FAILED', {
+            orderId: order.id, error: String(err),
+          }, 'failure')
+        })
       }
     },
   }

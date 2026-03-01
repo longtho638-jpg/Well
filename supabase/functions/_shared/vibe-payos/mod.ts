@@ -47,3 +47,11 @@ export type {
 
 // Subscription period helper (shared across Edge Functions)
 export { computeSubscriptionPeriodEnd } from './subscription-period-helper.ts'
+
+// Edge Function helpers (auth, JSON response, admin client)
+export {
+  jsonRes,
+  requireAuth,
+  createAdminClient,
+  optionalAuth,
+} from './edge-function-helpers.ts'
