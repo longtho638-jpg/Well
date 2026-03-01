@@ -5,84 +5,190 @@ export const dashboard = {
     serverTime: "Server Time",
     hero: {
       greeting: "Hello, {name}!",
-      description: "Track your business growth in real-time",
-      shareButton: "Share Referral Link",
+      roadToFounder: "Journey to Founder Club",
       ipoPathway: "IPO Pathway",
-      remaining: "Remaining"
+      currentProgress: "Current Progress",
+      teamVolume: "Team Volume",
+      portfolioValue: "Portfolio Value",
+      target: "Target",
+      remaining: "Remaining",
+      daysLeft: "{days} days",
+      onTrack: "On Track",
+      needsBoost: "Needs Boost",
+      description: "Track your business growth in real-time",
+      shareButton: "Share Referral Link"
+    },
+    valuation: {
+      title: "Business Valuation",
+      subtitle: "Business Valuation (PE Ratio 5x)",
+      formula: "Valuation Formula",
+      assetBreakdown: "Asset Breakdown",
+      cashflow: "Cashflow",
+      equity: "Equity",
+      projectedAnnual: "Projected Annual Profit",
+      upgradePortfolio: "Upgrade Portfolio",
+      peRatio: "PE Ratio",
+      monthlyProfit: "Monthly Profit",
+      annualizedRevenue: "Annualized Revenue",
+      assetGrowth: "Asset Growth",
+      valuationMethod: "Valuation Method: DCF & Comparable"
     },
     stats: {
+      totalSales: "Total Cashflow",
+      teamVolume: "Portfolio Volume",
+      commission: "Net Profit",
+      rank: "Investor Tier",
+      growth: "Asset Growth",
+      thisMonth: "This month",
+      vsLastMonth: "MoM Growth",
+      totalNodeYield: "Total Node Yield",
+      liquidCapital: "Liquid Capital",
+      ecosystemVolume: "Ecosystem Volume",
       totalRevenue: "Total Revenue",
       totalCommission: "Total Commission",
       activeMembers: "Active Members",
       conversionRate: "Conversion Rate",
       pendingOrders: "Pending Orders",
-      completedOrders: "Completed Orders",
+      completedOrders: "Completed Orders"
+    },
+    commission: {
+      title: "Commission",
+      subtitle: "Real-time earnings",
+      today: "Today",
+      thisWeek: "This Week",
+      thisMonth: "This Month",
+      availableBalance: "Available Balance",
+      breakdown: "Earnings Breakdown",
+      directSales: "Direct Sales",
+      teamVolume: "Team Volume",
+      total: "Total",
+      withdraw: "Withdraw",
+      viewDetails: "View Details"
+    },
+    revenue: {
+      title: "7-Day Asset Performance",
+      subtitle: "Asset growth chart",
+      total: "Total",
+      average: "Average",
+      peak: "Peak"
+    },
+    revenueBreakdown: {
+      title: "Income Streams",
+      directSales: "Direct Income",
+      teamBonus: "Portfolio Bonus",
+      referral: "Referral Income"
+    },
+    topProducts: {
+      title: "Top Selling Products",
+      sales: "{count} sold",
       commission: "Commission",
-      totalNodeYield: "Total Node Yield",
-      liquidCapital: "Liquid Capital",
-      ecosystemVolume: "Ecosystem Volume"
+      stock: "{count} in stock",
+      outOfStock: "Out of stock",
+      buyNow: "Buy Now"
     },
     quickActions: {
       title: "Quick Actions",
+      shareProduct: "Share Product",
+      shareProductDesc: "Send link to customers",
+      inviteTeam: "Invite Team",
+      inviteTeamDesc: "Expand your network",
+      viewStats: "View Stats",
+      viewStatsDesc: "Detailed analytics",
+      withdraw: "Withdraw",
+      withdrawDesc: "Transfer to your account",
+      shareAchievement: "Share Achievement",
+      shareAchievementDesc: "Show off your achievements",
       addMember: "Add Member",
       viewReports: "View Reports",
-      manageProducts: "Manage Products",
-      shareProductDesc: "Share product with your network",
-      shareAchievement: "Share Achievement",
-      shareAchievementDesc: "Share your achievement with others"
+      manageProducts: "Manage Products"
+    },
+    dailyQuest: {
+      title: "Daily Quests",
+      subtitle: "Complete to earn GROW Tokens",
+      progress: "Progress",
+      completed: "{count}/{total} completed",
+      completedAll: "ALL DONE",
+      questsProgress: "{completed}/{total} quests",
+      tokensEarned: "{amount} GROW earned",
+      tokensToday: "GROW today",
+      startQuest: "Start",
+      claiming: "Claiming...",
+      claim: "Claim Reward",
+      claimedSuccess: "Claimed {amount} GROW Token!",
+      questCompleted: "Completed",
+      types: {
+        onboarding: "Onboarding",
+        sales: "Sales",
+        learning: "Learning"
+      },
+      quests: {
+        dailyCheckIn: {
+          title: "Start the Day",
+          description: "Daily app check-in"
+        },
+        shareHealthCheck: {
+          title: "Spread the Value",
+          description: "Share 1 Health Check link"
+        },
+        watchTraining: {
+          title: "Learn",
+          description: "Watch 1 training video"
+        }
+      }
+    },
+    liveActivities: {
+      title: "Live Activities",
+      subtitle: "Real-time system activity",
+      live: "LIVE",
+      updateContinuously: "Updating continuously",
+      recent: "{count} recent activities",
+      systemActive: "System is active!",
+      new: "NEW",
+      loading: "Loading activities...",
+      in: "in",
+      just_now: "Just now",
+      vnd: "₫",
+      activities: {
+        earnedGrow: "just earned {amount} GROW tokens",
+        rewardedGrow: "rewarded {amount} GROW",
+        teamBonusGrow: "earned {amount} GROW from team bonus",
+        completedOrder: "just closed order {amount}",
+        soldSuccess: "sold successfully {amount}",
+        finishedOrder: "completed order {amount}",
+        rankedUpGold: "just ranked up to Gold",
+        rankedUpPartner: "reached Partner rank",
+        rankedUpFounder: "leveled up to Founder Club",
+        rankedUpSilver: "ranked up to Silver",
+        withdrew: "withdrew {amount} to account",
+        transferredSuccess: "transferred {amount} successfully",
+        referredPartner: "successfully referred 1 new Partner",
+        referralBonus: "received referral bonus {amount}",
+        teamExpanded: "team expanded by 1 member"
+      }
+    },
+    recentActivity: {
+      title: "Recent Activity",
+      completedQuest: "Completed Quest: First Sale",
+      newTeamMember: "New team member joined",
+      productShipped: "Product shipped to customer",
+      reachedRank: "Reached Partner rank",
+      hoursAgo: "{hours} hours ago",
+      daysAgo: "{days} days ago"
     },
     achievements: {
       title: "Achievements",
       topSeller: "Top Seller",
       goalCrusher: "Goal Crusher",
       teamLeader: "Team Leader",
-      speedDemon: "Speed Demon"
+      speedDemon: "Speed Demon",
+      unlocked: "{count} / {total} unlocked",
+      locked: "Locked"
     },
-    commission: {
-      today: "Today",
-      thisWeek: "This Week",
-      thisMonth: "This Month",
-      title: "Commission",
-      subtitle: "Your earnings overview",
-      availableBalance: "Available Balance",
-      withdraw: "Withdraw",
-      breakdown: "Breakdown",
-      directSales: "Direct Sales",
-      teamVolume: "Team Volume",
-      total: "Total",
-      viewDetails: "View Details"
-    },
-    dailyQuest: {
-      title: "Daily Quest"
-    },
-    liveActivities: {
-      title: "Live Activities",
-      live: "LIVE",
-      subtitle: "Real-time system activity",
-      systemActive: "System Active"
-    },
-    recentActivity: {
-      title: "Recent Activity",
-      completedQuest: "Completed Quest",
-      newTeamMember: "New Team Member",
-      productShipped: "Product Shipped",
-      reachedRank: "Reached Rank"
-    },
-    revenueBreakdown: {
-      title: "Revenue Breakdown",
-      directSales: "Direct Sales",
-      teamBonus: "Team Bonus",
-      referral: "Referral"
-    },
-    valuation: {
-      title: "Valuation",
-      subtitle: "Your portfolio value",
-      formula: "Formula",
-      assetBreakdown: "Asset Breakdown",
-      cashflow: "Cashflow",
-      equity: "Equity",
-      projectedAnnual: "Projected Annual",
-      upgradePortfolio: "Upgrade Portfolio"
+    quickStats: {
+      title: "Quick Stats",
+      totalTransactions: "Total Transactions",
+      activeProducts: "Active Products",
+      currentRank: "Current Rank"
     },
     system_online: "System Online"
   },
@@ -108,16 +214,26 @@ export const dashboard = {
     ecosystem_scaling: "Ecosystem Scaling",
     to_hit_next_milestone: "to hit next milestone",
     live: "LIVE",
-    access_secured: "Access Secured"
+    access_secured: "Access Secured",
+    commission: "Commission",
+    h_ng_n_m: "Annual",
+    live_commission: "Live Commission",
+    partner_id: "Partner ID",
+    t_ng_tr_ng: "Growth",
+    th_ng: "Month",
+    total_yield: "Total Yield",
+    welcome: "Welcome"
   },
   quickactionscard: {
     health_check_share_text: "Check your health score with WellNexus!",
     link_copied: "Link Copied!",
     achievement_title: "Achievement",
     achievement_copied: "Achievement copied!",
+    achievement_share_text: "🎉 My WellNexus Achievement:\n\n🏆 Rank: {{rank}}\n💰 Sales: {{sales}}\n👥 Team Volume: {{team}}\n\nJoin me at WellNexus! 💪",
     send_gift_card: "Send Gift Card",
+    gift_card_created: "Gift Card created: {{code}} (Copied)",
     share_health_check: "Share Health Check",
-    share_health_check_desc: "Share your health check results",
+    share_health_check_desc: "Share health check link",
     c_ng_c_h_tr_kinh_doanh: "Business Support Tools",
     tip_s_d_ng_c_c_c_ng_c_n: "Tip: Use these tools to boost your business"
   },
@@ -127,6 +243,54 @@ export const dashboard = {
   valuationcard: {
     mom_growth: "MoM Growth",
     "12_5_pe_ratio": "12.5x PE Ratio"
+  },
+  overview: {
+    active_nodes: "Active Nodes",
+    agent_cluster: "Agent Cluster",
+    certified: "Certified",
+    core: "Core",
+    custom: "Custom",
+    identity_protocol: "Identity Protocol",
+    live_sync: "Live Sync",
+    network_foundation: "Network Foundation",
+    operational: "Operational",
+    partners_active: "Active Partners",
+    pending_operations: "Pending Operations",
+    platform_metrics: "Platform Metrics",
+    revenue_ytd: "Revenue YTD",
+    system_status: "System Status",
+    total_yield: "Total Yield",
+    mission_control: "Mission Control",
+    autonomous_ecosystem_orchestra: "Autonomous Ecosystem Orchestration",
+    ecosystem_online: "Ecosystem Online",
+    ai_action_center: "AI Action Center",
+    autonomous_recommendations: "Autonomous Recommendations",
+    queue_exhausted: "Queue Exhausted",
+    ai_agent_has_autonomously_reso: "AI agent has autonomously resolved all pending actions.",
+    live_pulse: "Live Pulse",
+    growth_trajectory: "Growth Trajectory",
+    ecosystem_scale: "Ecosystem Scale",
+    risk: "Risk",
+    ai: "AI: ",
+    confident: "% Confident",
+    resolve: "Resolve",
+    reject: "Reject",
+    action_resolved: "Resolved per AI recommendation",
+    action_rejected: "Rejected AI recommendation",
+    global_gmv: "Global GMV",
+    trend_wow: "+18.4% WoW",
+    active_bee_force: "Active Bee Force",
+    trend_new_nodes: "+12 New Nodes",
+    ai_signal_pending: "AI Signals Pending",
+    trend_action_required: "Action required",
+    ecosystem_sla: "Ecosystem SLA",
+    trend_operational: "Operational",
+    evt_ai_scan: "AI scan complete: 245 profiles",
+    evt_12s_ago: "12 seconds ago",
+    evt_policy_locked: "Policy: Retail commission locked at 25%",
+    evt_2m_ago: "2 minutes ago",
+    evt_zero_fraud: "Security: No fraud detected",
+    evt_5m_ago: "5 minutes ago"
   },
   liveActivities: {
     in: "in",
@@ -139,6 +303,19 @@ export const dashboard = {
   },
   heroenhancements: {
     c_tin_t_ng_b_i: "Trusted by"
+  },
+  liveconsole: {
+    autonomous_agents_real_time_l: "Autonomous Agents Real-Time Log",
+    intelligence_console: "Intelligence Console",
+    live: "LIVE",
+    bee_agent_core_v4_2_0_stable: "BEE Agent Core v4.2.0 Stable",
+    bps: "BPS",
+    encrypted: "Encrypted",
+    lat_4ms: "Latency: 4ms",
+    live_operations_node_agent: "Live Operations Node Agent",
+    sync_active: "Sync Active",
+    tx: "TX",
+    wellnexus_bee: "WellNexus BEE"
   },
   revenueprogresswidget: {
     revenue_milestone: "Revenue Milestone",

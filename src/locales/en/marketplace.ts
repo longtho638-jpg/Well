@@ -1,35 +1,80 @@
 export const marketplace = {
   marketplace: {
+    title: "Marketplace",
     subtitle: "Browse and purchase health products",
+    searchPlaceholder: "Search products...",
+    filterBy: "Filter by",
+    sortBy: "Sort by",
+    noProductsFound: "No products found",
+    aiRecommended: "AI Recommended",
+    categories: {
+      all: "All",
+      supplements: "Supplements",
+      wellness: "Wellness",
+      beauty: "Beauty",
+      starter: "Starter Kit"
+    },
+    sort: {
+      popular: "Most Popular",
+      newest: "Newest",
+      priceLow: "Price: Low to High",
+      priceHigh: "Price: High to Low",
+      commission: "Highest Commission"
+    },
+    aiRecommendation: {
+      title: "AI Opportunity Radar",
+      loading: "Analyzing {count} market signals...",
+      live: "LIVE",
+      suggestion: "Based on current market trends and your sales history, **{productName}** is the hottest product right now! Commission up to {commission}%."
+    },
+    product: {
+      commission: "Commission",
+      sales: "{count} sold",
+      stock: "{count} in stock",
+      outOfStock: "Out of Stock",
+      addToCart: "Add to Cart",
+      buyNow: "Buy Now",
+      shareProduct: "Share",
+      viewDetails: "View Details"
+    },
+    productDetail: {
+      description: "Product Description",
+      features: "Features",
+      ingredients: "Ingredients",
+      usage: "Usage",
+      benefits: "Benefits",
+      reviews: "Reviews",
+      rating: "{score} / 5",
+      reviewCount: "{count} reviews"
+    },
     quickBuy: {
       title: "Quick Buy",
-      subtitle: "Fast checkout for your favorites",
+      subtitle: "Fast checkout for essentials",
       recent: "Recent",
       favorites: "Favorites",
-      purchased: "Purchased",
-      buyNow: "Buy Now",
-      noRecent: "No recent purchases",
-      noFavorites: "No favorites yet",
+      noItems: "No {tab} items found",
+      noRecent: "Purchase history will appear here",
+      noFavorites: "Mark favorites for quick access",
       vatIncluded: "VAT Included",
-      viewFullMarketplace: "View Full Marketplace"
-    },
-    title: "Marketplace",
-    searchPlaceholder: "Search products...",
-    aiRecommendation: {
-      title: "AI Recommendation",
-      live: "LIVE"
-    },
-    noProductsFound: "No products found"
+      viewFullMarketplace: "View All Products →",
+      buyNow: "Buy Now",
+      purchased: "Purchased!",
+      commission: "Commission: {rate}%"
+    }
   },
   productcard: {
     earn: "Earn",
     view_details: "View Details",
     out_of_stock: "Out of Stock",
-    stock: "Stock",
+    stock: "Stock: ",
     share: "Share",
     share_product_link: "Share product link",
     added: "Added",
-    buy_now: "Buy Now"
+    buy_now: "Buy Now",
+    add_to_cart: "Add to Cart",
+    ai_pick: "AI Pick",
+    commission: "Commission",
+    price: "Price"
   },
   productgrid: {
     ai_recommended: "AI Recommended",
@@ -248,5 +293,40 @@ export const marketplace = {
     commit: "Commit",
     esc: "ESC",
     edit_config: "Edit Config"
+  },
+  ordertable: {
+    approve: "Approve",
+    asset: "Asset",
+    inspect_bill: "Inspect Bill",
+    no_evidence: "No Evidence",
+    transaction_logged: "Transaction Logged"
+  },
+  ordermanagement: {
+    actions: "Actions",
+    export_json: "Export JSON",
+    export_csv: "Export CSV",
+    activate_commissions: "Activate Commissions",
+    all: "All",
+    all_pending_orders_have_been_p: "All pending orders have been processed",
+    all_synced: "All Synced",
+    cashflow_hub: "Cashflow Hub",
+    customer: "Customer",
+    date: "Date",
+    filters: "Filters",
+    fraud_check: "Fraud Check",
+    never_approve: "Never Approve",
+    operational_risk_protocol: "Operational Risk Protocol",
+    order: "Order",
+    order_id: "Order ID",
+    order_orchestrator: "Order Orchestrator",
+    orders: "Orders",
+    queue_synchronized: "Queue Synchronized",
+    real_time_order_pipeline_manag: "Real-time Order Pipeline Management",
+    status: "Status",
+    strict_compliance_rule: "Strict Compliance Rule",
+    sync: "Sync",
+    syncing_global_ledgers: "Syncing Global Ledgers...",
+    verify_transactions_and: "Verify Transactions and",
+    without_verified_bank_clearanc: "Without Verified Bank Clearance"
   }
 };

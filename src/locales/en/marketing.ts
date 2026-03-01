@@ -220,6 +220,30 @@ export const marketing = {
       freeToJoin: "Free to Join",
       certified: "Certified Products",
       community: "1,243+ Partners"
+    },
+    whyNow: {
+      sectionBadge: "First-Mover Advantage",
+      sectionTitle: "Why Join Now?",
+      subheadline: "Special benefits for early movers in the Seed stage",
+      cta: "Join Now - Only 157 slots left",
+      benefits: {
+        founders: {
+          title: "Founders Club Bonus",
+          description: "Special commission and equity allocation for first 200 Partners"
+        },
+        growth: {
+          title: "Early Growth",
+          description: "Build team from scratch, benefit from network effect as system scales"
+        },
+        tech: {
+          title: "Exclusive AI Technology",
+          description: "Early access to Agentic OS and AI tools exclusively for Founders"
+        },
+        market: {
+          title: "SEA Market First-Mover",
+          description: "Lead in the $12B market, expand to 4 SEA countries"
+        }
+      }
     }
   },
   marketing: {
@@ -387,6 +411,195 @@ export const marketing = {
       strategy: "Strategy",
       agents: "AI Agents"
     }
+  },
+  eastasiabrand: {
+    wellnexus: "WellNexus",
+    v_ch_ng_t_i: "About Us",
+    s_n_ph_m: "Products",
+    i_t_c: "Partners",
+    b_t_u: "Get Started",
+    awards: {
+      top10: {
+        title: "Top 10 Startup",
+        subtitle: "Vietnam 2025"
+      },
+      sea: {
+        title: "SEA Expansion",
+        subtitle: "4 Countries"
+      },
+      partner: {
+        title: "Premium Partner",
+        subtitle: "Grade A+"
+      },
+      iso: {
+        title: "ISO 27001",
+        subtitle: "Security Certified"
+      }
+    }
+  },
+  agencyosdemo: {
+    "85_ai_powered_automation_comm": "85% AI Automation",
+    agencyos_integration: "AgencyOS Integration",
+    agent_kpis: "Agent KPIs",
+    all_commands: "All Commands",
+    command_categories: "Command Categories",
+    commands: "Commands",
+    execution_history: "Execution History",
+    no_commands_executed_yet_clic: "No commands executed yet. Click to run.",
+    open_command_palette_k: "Open Command Palette (⌘K)"
+  },
+  cms: {
+    action: "Action",
+    content_orchestrator: "Content Orchestrator",
+    create: "Create",
+    cross_platform_content_deliver: "Cross-Platform Content Delivery",
+    link: "Link",
+    loc: "LOC",
+    target: "Target",
+    content_banners: "Content Banners",
+    live_banners: "Live Banners",
+    broadcasts: "Broadcasts",
+    total_templates: "Total Templates",
+    tab_banners: "Banners",
+    tab_announcements: "Announcements",
+    tab_templates: "Templates",
+    search_placeholder: "Search by keyword...",
+    archive: "Archive",
+    enable: "Enable"
+  },
+  founderrevenuegoal: {
+    "1m_founder_journey": "$1M Founder Journey",
+    current_stage: "Current Stage",
+    projected_yoy_growth: "Projected YoY Growth",
+    revenue_milestone: "Revenue Milestone",
+    "1_000_000_usd": "$1,000,000 USD",
+    ai_xu_t_h_nh_ng: "AI Suggested Actions",
+    c_n_t_ng_t_c: "Needs to Accelerate",
+    doanh_thu_hi_n_t_i: "Current Revenue",
+    m_c_ti_u_2026: "2026 Target",
+    of_goal: "of Goal",
+    v_t_ti_n: "Ahead of Schedule"
+  },
+  valuationcard: {
+    "12_5_pe_ratio": "12.5x PE Ratio",
+    mom_growth: "MoM Growth"
+  },
+  venture: {
+    hero: {
+      badge: "Co-Founder Recruitment Protocol v4.0",
+      headline: "Venture Builder:",
+      headlineAccent: "Next-Generation Health Tech Ecosystem",
+      subheadline: "Building a decentralized medical supply chain across Southeast Asia. We don't hire employees; we build equity-backed Co-Founder nodes.",
+      primaryCta: "Launch Recruitment Protocol",
+      secondaryCta: "Review Investment Portfolio",
+      stats: {
+        valuation_label: "Cumulative Valuation",
+        nodes_label: "Target Nodes",
+        market_label: "Primary Market"
+      }
+    },
+    navigation: {
+      apply_recruitment: "Apply / Recruitment",
+      venture_builder: "Venture Builder",
+      menu: {
+        portfolio: "Portfolio",
+        deal: "Deal",
+        market: "SEA Market"
+      }
+    },
+    deal: {
+      sectionBadge: "Protocol Document Pack",
+      sectionTitle: "Equity & Infrastructure",
+      subheadline: "Hyper-scalable investment structure for high-performance Co-Founders with local autonomy.",
+      capitalNode: {
+        category: "Capital Node",
+        item1: "Zero initial liquidity inventory sync",
+        item2: "Working capital pool backed by the network",
+        item3: "Credit expansion based on performance metrics"
+      },
+      techStack: {
+        category: "Tech Stack 2.0",
+        item1: "Agentic OS - Native AI orchestration",
+        item2: "Real-time pricing & productivity telemetry",
+        item3: "Dynamic tax compliance abstraction",
+        item4: "Distributed ledger integration"
+      },
+      ownership: {
+        category: "Ownership Matrix",
+        item1: "ESOP - Direct equity ownership",
+        item2: "GROW Delta - Incentive-aligned productivity",
+        item3: "4-year linear vesting // 1-year cliff",
+        item4: "IPO-indexed valuation milestones"
+      }
+    },
+    portfolio: {
+      sectionBadge: "Active Founder Nodes",
+      sectionTitle: "Proven Productivity Generation",
+      subheadline: "Ecosystem telemetry from active high-performance nodes.",
+      roles: {
+        ceo: "Co-Founder // CEO",
+        cmo: "Co-Founder // CMO",
+        cto: "Co-Founder // CTO"
+      },
+      regions: {
+        hanoi: "Hanoi",
+        hcmc: "Ho Chi Minh City",
+        danang: "Da Nang"
+      },
+      val: "Val",
+      growth: "Growth",
+      arr_node: "ARR Node"
+    },
+    market: {
+      sectionBadge: "Ecosystem Expansion",
+      sectionTitle: "SEA Regional Dominance",
+      subheadline: "Multi-lateral expansion protocol into $12B addressable market.",
+      regions: {
+        vietnam: "Vietnam",
+        thailand: "Thailand",
+        indonesia: "Indonesia",
+        philippines: "Philippines"
+      },
+      status: {
+        active: "Active",
+        expanding: "Expanding",
+        protocol_init: "Protocol Init",
+        pending: "Pending"
+      },
+      total_addressable_market: "Total Addressable Market",
+      velocity: "Velocity",
+      init_sea_expansion_protocol: "Init SEA Expansion Protocol"
+    },
+    footer: {
+      tagline: "Venture Builder powering high-fidelity governance surfaces and decentralized health commerce across Southeast Asia.",
+      strategic_ecosystem_builder: "Strategic Ecosystem Builder",
+      newsletter: {
+        title: "Transmission Sync",
+        placeholder: "comm_channel@secure.vn"
+      },
+      subscribe_for_exclusive_intake: "Subscribe for Exclusive Intake",
+      copyright: "© 2026 WellNexus Venture Builder // Zero Absolute Debt",
+      privacy: "Ecosystem Privacy",
+      terms: "Terms Compliance"
+    }
+  },
+  venturefooter: {
+    strategic_ecosystem_builder: "Strategic Ecosystem Builder",
+    subscribe_for_exclusive_intake: "Subscribe for Exclusive Intake"
+  },
+  venturemarketmap: {
+    init_sea_expansion_protocol: "Init SEA Expansion Protocol",
+    total_addressable_market: "Total Addressable Market",
+    velocity: "Velocity"
+  },
+  venturenavigation: {
+    apply_recruitment: "Apply / Recruitment",
+    venture_builder: "Venture Builder"
+  },
+  ventureportfolio: {
+    arr_node: "ARR Node",
+    growth: "Growth",
+    val: "Val"
   },
   exitIntent: {
     headline: "Wait! Don't Leave Yet",

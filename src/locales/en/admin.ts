@@ -1,5 +1,8 @@
 export const admin = {
   admin: {
+    title: "System Administration",
+    subtitle: "Configure and manage the entire system",
+    sidebarTitle: "Mission Control",
     nav: {
       overview: "Overview",
       content: "Content",
@@ -10,6 +13,8 @@ export const admin = {
       strategy: "Strategy",
       auditLog: "Audit Log"
     },
+    adminLabel: "Admin",
+    superUser: "Super User",
     mission: "Mission",
     control_center: "Control Center",
     ai_sentinel_active: "AI Sentinel Active",
@@ -19,7 +24,101 @@ export const admin = {
     superuser_node: "Superuser Node",
     mission_control: "Mission Control",
     administration: "Administration",
-    secure_session: "Secure Session"
+    secure_session: "Secure Session",
+    tabs: {
+      overview: "Overview",
+      cms: "CMS",
+      partners: "Partners",
+      finance: "Finance",
+      strategy: "Strategy"
+    },
+    overview: {
+      title: "System Overview",
+      subtitle: "Real-time platform metrics and health status",
+      totalRevenue: "Total Revenue",
+      activePartners: "Active Partners",
+      pendingPayouts: "Pending Payouts",
+      systemHealth: "System Health",
+      chartTitle: "7-Day Revenue Trend"
+    },
+    cms: {
+      title: "Content Management",
+      subtitle: "Edit landing page content and marketing copy",
+      heroHeadline: "Hero Headline",
+      heroSubheadline: "Hero Subheadline",
+      ctaButtonText: "CTA Button Text",
+      saveChanges: "Save Changes",
+      saveSuccess: "CMS Content saved successfully!",
+      preview: "Preview"
+    },
+    partners: {
+      title: "Partner Operations",
+      subtitle: "Manage partner accounts and KYC verification",
+      tableHeaders: {
+        id: "ID",
+        name: "Name",
+        rank: "Rank",
+        sales: "Sales",
+        status: "Status",
+        actions: "Actions"
+      }
+    },
+    finance: {
+      title: "Financial Operations",
+      subtitle: "Manage withdrawal requests and tax compliance",
+      export_json: "Export JSON",
+      export_csv: "Export CSV",
+      gross: "Gross:",
+      tax: "Tax (10%):",
+      net: "Net:",
+      approve: "Approve",
+      reject: "Reject",
+      noRequests: "No withdrawal requests at this time"
+    },
+    users: {
+      title: "User Management",
+      totalUsers: "Total Users",
+      activeUsers: "Active",
+      verifiedUsers: "Verified",
+      bannedUsers: "Banned",
+      actions: {
+        view: "View",
+        edit: "Edit",
+        ban: "Ban",
+        unban: "Unban",
+        verify: "Verify",
+        delete: "Delete"
+      }
+    },
+    products: {
+      title: "Product Management",
+      addProduct: "Add Product",
+      editProduct: "Edit Product",
+      deleteProduct: "Delete Product",
+      activeProducts: "Active",
+      draftProducts: "Draft"
+    },
+    policy: {
+      title: "Policy System",
+      subtitle: "Manage rules and policies",
+      commission: "Commission Policy",
+      tax: "Tax Policy",
+      rank: "Rank Policy",
+      referral: "Referral Policy",
+      rules: "Rules",
+      active: "Active",
+      inactive: "Inactive",
+      createRule: "Create Rule",
+      editRule: "Edit Rule"
+    },
+    settings: {
+      title: "System Settings",
+      general: "General",
+      security: "Security",
+      notifications: "Notifications",
+      integrations: "Integrations",
+      backup: "Backup"
+    }
   },
   cms: {
     content_orchestrator: "Content Orchestrator",
@@ -107,6 +206,48 @@ export const admin = {
     projectionSimulator: "Projection Simulator",
     realTime: "Real-Time",
     policyChangesAreCryptographicallySigned: "Policy changes are cryptographically signed"
+  },
+  bulkactionsbar: {
+    activate: "Activate",
+    ban: "Ban",
+    export_csv: "Export CSV",
+    partner: "Partner",
+    selected: "Selected"
+  },
+  debuggerpage: {
+    empty: "Empty",
+    environment_window: "Environment Window",
+    local_storage_keys: "Local Storage Keys",
+    system_debugger: "System Debugger",
+    v_debug_1_0: "v.Debug 1.0",
+    window_props: "Window Props",
+    zustand_store_state: "Zustand Store State"
+  },
+  testpage: {
+    active: "Active",
+    client_status: "Client Status",
+    connectivity_check: "Connectivity Check",
+    well_test_page: "Well Test Page"
+  },
+  simulationpanel: {
+    active_distribution_node: "Active Distribution Nodes",
+    margin: "Margin",
+    monthly_fixed: "Monthly Fixed",
+    nodes: "Nodes",
+    projected_ebitda: "Projected EBITDA",
+    projected_gmv: "Projected GMV",
+    system_payout: "System Payout",
+    target_aov: "Target AOV",
+    vc_simulation_engine: "VC Simulation Engine",
+    strategic_forecast: "Strategic Forecast",
+    strategic_candidates: "Strategic Candidates",
+    projected_saas_revenue: "Projected SaaS Revenue",
+    partners: "Partners"
+  },
+  fraudbadge: {
+    critical_risk: "Critical Risk",
+    suspected: "Suspected",
+    verified: "Verified"
   },
   adminsecuritysettings: {
     "100": "100",

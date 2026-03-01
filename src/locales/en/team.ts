@@ -1,24 +1,52 @@
 export const team = {
   team: {
+    title: "Portfolio Management",
+    subtitle: "Manage your partner network & asset scaling",
+    leaderDashboard: "Partner network dashboard",
+    description: "Track partner performance, expand market share, and optimize portfolio growth.",
+    metrics: {
+      totalMembers: "Active Partners",
+      teamVolume: "Network Portfolio Value",
+      averageSales: "Avg. Profit / Partner",
+      topPerformers: "Top Earners",
+      active: "Active"
+    },
     charts: {
-      rankDistribution: "Rank Distribution"
+      teamPerformance: "Team Performance (Top 5)",
+      rankDistribution: "Rank Distribution",
+      personalSales: "Personal Sales",
+      teamVolumeChart: "Team Volume"
+    },
+    overview: {
+      title: "Team Overview",
+      totalMembers: "Total Members",
+      activeMembers: "Active",
+      totalTeamVolume: "Team Volume",
+      monthlyGrowth: "Monthly Growth",
+      averageSales: "Average Sales/Person"
     },
     members: {
+      title: "Members",
       teamMembers: "Team Members",
       search: "Search",
+      searchPlaceholder: "Search member...",
+      name: "Full Name",
       member: "Member",
       rank: "Rank",
       personalSales: "Personal Sales",
       teamVolume: "Team Volume",
       downlines: "Downlines",
       growth: "Growth",
-      actions: "Actions"
+      actions: "Actions",
+      lastActive: "Last Active",
+      viewProfile: "View Profile",
+      sendMessage: "Send Message"
     },
     filters: {
       allRanks: "All Ranks",
-      sortSales: "Sort by Sales",
-      sortGrowth: "Sort by Growth",
-      sortTeam: "Sort by Team",
+      sortSales: "Sort: Sales",
+      sortGrowth: "Sort: Growth",
+      sortTeam: "Sort: Team Volume",
       export: "Export"
     },
     actions: {
@@ -26,56 +54,39 @@ export const team = {
       call: "Call",
       moreActions: "More Actions"
     },
-    leaderDashboard: "Leader Dashboard",
-    subtitle: "Manage and grow your team",
-    metrics: {
-      totalMembers: "Total Members",
-      active: "Active",
-      teamVolume: "Team Volume",
-      averageSales: "Average Sales",
-      topPerformers: "Top Performers"
+    topPerformers: {
+      title: "Top Performers",
+      thisMonth: "This Month",
+      allTime: "All Time"
     },
-    description: "Your team overview and management"
-  },
-  leaderboard: {
-    challengeTitle: "Challenge",
-    challengeSubtitle: "Compete for top rankings",
-    yourGoal: "Your Goal",
-    motivation1: "Keep pushing to reach the top!",
-    motivation2: "You're doing great, stay consistent!",
-    motivation3: "Almost there, one more push!",
-    readyToFight: "Ready to Fight",
-    yourPosition: "Your Position",
-    you: "You",
-    keepPushing: "Keep Pushing!",
-    title: "Leaderboard",
-    subtitle: "Top performers this month",
-    highestSales: "Highest Sales",
-    topHundredPlus: "Top 100+",
-    yourGrowTokens: "Your GROW Tokens",
-    noteLabel: "Note",
-    noteText: "Rankings update in real-time based on sales performance",
-    rank: "Rank",
-    partner: "Partner",
-    shopSales: "SHOP Sales",
-    growToken: "GROW Token",
-    challenge: "Challenge"
+    analytics: {
+      title: "Team Analytics",
+      recruitmentTrend: "Recruitment Trend",
+      salesTrend: "Sales Trend",
+      rankDistribution: "Rank Distribution",
+      activityHeatmap: "Activity Heatmap"
+    }
   },
   leaderdashboard: {
+    export_report: "Export Report",
+    leader_dashboard: "Leader Dashboard",
+    network_overview: "Network Overview",
+    portfolio_management: "Portfolio Management",
+    ai_insights: "AI Insights",
     network_health: "Network Health",
     partner: "Partner",
     member: "Member",
-    th_nh_vi_n_c_n_ch: "Members Needing Attention",
+    th_nh_vi_n_c_n_ch: "Members Needing Attention (",
     ai_ph_t_hi_n_nh_ng_th_nh_vi_n: "AI detected members at risk of churn",
     risk_levels: {
-      high: "High",
-      medium: "Medium",
-      low: "Low"
+      high: "High Risk",
+      medium: "Medium Risk",
+      low: "Low Risk"
     },
     l_do_c_n_ch: "Reason for Attention",
     ai_xu_t: "AI Suggestion",
     g_i_nh_c_nh: "Send Reminder",
-    t_ng_qu_kh_ch_l: "Send Gift to Encourage",
+    t_ng_qu_kh_ch_l: "Customer Overview",
     th_nh_vi_n_r_i_ro_cao: "High Risk Members",
     th_nh_vi_n_r_i_ro_trung_b_nh: "Medium Risk Members",
     t_l_gi_ch_n: "Retention Rate",
@@ -92,7 +103,8 @@ export const team = {
     },
     ranks: {
       dai_su: "Ambassador",
-      ctv: "CTV"
+      ctv: "CTV",
+      unknown: "Unknown"
     },
     alerts: {
       reminder_success: "Reminder sent successfully",
@@ -101,9 +113,137 @@ export const team = {
       gift_failed: "Failed to send gift"
     },
     qu_n_l_i_nh_m: "Team Management",
-    ai_insights: "AI Insights",
     s_h_th_ng: "Network Map",
     all_ranks: "All Ranks"
+  },
+  partners: {
+    all_partners: "All Partners",
+    kyc: "KYC",
+    new: "New",
+    partner_network: "Partner Network",
+    real_time_identity_node_manage: "Real-time Identity Node Management",
+    search_id_name_email: "Search ID, Name, Email",
+    status: "Status",
+    verified: "Verified",
+    view_profile: "View Profile",
+    partner_recon_crm: "Partner Recon CRM",
+    precision_orchestration_of_net: "Precision Orchestration of Network",
+    rank_intelligence: "Rank Intelligence",
+    filter_all: "All Identity Nodes",
+    filter_active: "Active Status",
+    filter_banned: "Banned Status",
+    filter_dormant: "Dormant Status",
+    search_placeholder: "Search by name, email or UID..."
+  },
+  partnercrm: {
+    partner_crm: "Partner CRM",
+    search: "Search",
+    search_partner_id_name_email: "Search Partner ID, Name, Email"
+  },
+  partnermanagement: {
+    action: "Action",
+    active: "Active",
+    kyc: "KYC",
+    name: "Name",
+    partner_network: "Partner Network",
+    pending: "Pending",
+    rank: "Rank",
+    real_time_identity_node_manage: "Real-time Identity Node Management",
+    revenue: "Revenue",
+    search_id_name_email: "Search ID, Name, Email",
+    status: "Status",
+    verified: "Verified"
+  },
+  partnerrow: {
+    member: "Member",
+    partner: "Partner"
+  },
+  leaderboard: {
+    title: "Leaderboard",
+    subtitle: "Top performers this month",
+    highestSales: "Highest Sales",
+    yourPosition: "Your Position",
+    yourGrowTokens: "Your GROW Tokens",
+    topHundredPlus: "Top 100+",
+    rank: "Rank",
+    partner: "Partner",
+    shopSales: "SHOP Sales",
+    growToken: "GROW Token",
+    you: "You",
+    challenge: "Challenge",
+    partnerIdLabel: "Partner ID: {id}",
+    rankLabel: "Rank #{rank}",
+    toTop10: "{count} more positions to Top 10!",
+    keepPushing: "Keep pushing! 💪",
+    noteLabel: "💡 Note:",
+    noteText: "Rankings update in real-time. SHOP tokens calculated by total sales, GROW tokens are performance rewards.",
+    lastUpdate: "Last updated: {time}",
+    challengeTitle: "Challenge!",
+    challengeSubtitle: "Beat your rival",
+    yourGoal: "Your goal:",
+    goalText: "Earn {amount} more to surpass {name}!",
+    motivation1: "💪 You can do this!",
+    motivation2: "🔥 Every order brings you closer to your goal",
+    motivation3: "🚀 Keep pushing to climb the ranks!",
+    readyToFight: "Ready to fight! 💪"
+  },
+  leadershipladder: {
+    leadership_ladder: "Leadership Ladder",
+    strategic_rank_progression_map: "Strategic Rank Progression Map"
+  },
+  top3podium: {
+    doanh_s: "Sales",
+    doanh_s_cao_nh_t_th_ng_n_y: "Highest sales this month",
+    top_3_t_ng_t_i: "Top 3 Overall"
+  },
+  partnerdetailmodal: {
+    partner_details: "Partner Details",
+    edit_metrics: "Edit Metrics",
+    cancel: "Cancel",
+    save_changes: "Save Changes",
+    rank: "Rank",
+    contact_info: "Contact Info",
+    email: "Email",
+    joined: "Joined",
+    total_sales: "Total Sales",
+    pending_cashback: "Pending Cashback",
+    point_balance: "Point Balance"
+  },
+  agentDashboard: {
+    title: "Agent Operating System",
+    subtitle: "Manage and operate your AI workforce",
+    establishingNodeSync: "Establishing Node Sync...",
+    intelligenceGridOptimal: "Intelligence Grid: Optimal",
+    operationalTier: "Operational Tier: ",
+    version: "v1.2.0 Stable",
+    registry: "Registry",
+    nodes: "Nodes",
+    strategicSimulatorOffline: "Strategic Simulator Offline",
+    connectToPolicyEngine: "Connect to Policy Engine to run real-time market simulations.",
+    active_node: "Active Node",
+    strategic_objectives: "Strategic Objectives",
+    operational_policies: "Operational Policies",
+    operational_telemetry: "Operational Telemetry",
+    inputs_data_streams: "Inputs / Data Streams",
+    stats: {
+      totalAgents: "Total Agents",
+      activeFunctions: "Business Functions",
+      customAgents: "Expert Agents"
+    },
+    grid: {
+      neuralSync: "Syncing Neural Link...",
+      statusActive: "Active",
+      statusTraining: "Training",
+      statusStandby: "Standby"
+    },
+    details: {
+      efficiency: "Processing Efficiency",
+      accuracy: "Accuracy",
+      latency: "Response Latency",
+      capabilities: "Business Capabilities",
+      trainingHistory: "Training History"
+    },
+    training: "Training"
   },
   networktree: {
     toast: {
@@ -158,16 +298,6 @@ export const team = {
     ghost_network_detected: "Ghost network detected",
     no_partner_nodes_matching_curr: "No partner nodes matching current filter"
   },
-  partnerdetailmodal: {
-    partner_details: "Partner Details",
-    edit_metrics: "Edit Metrics",
-    cancel: "Cancel",
-    save_changes: "Save Changes",
-    rank: "Rank",
-    contact_info: "Contact Info",
-    email: "Email",
-    joined: "Joined"
-  },
   rankladdersection: {
     rank_migration_ladder: "Rank Migration Ladder",
     target_rank: "Target Rank",
@@ -178,28 +308,6 @@ export const team = {
   agentdetailsmodal: {
     intelligence_node_context: "Intelligence Node Context",
     enforcement: "Enforcement"
-  },
-  agentDashboard: {
-    strategic_objectives: "Strategic Objectives",
-    operational_policies: "Operational Policies",
-    operational_telemetry: "Operational Telemetry",
-    inputs_data_streams: "Inputs & Data Streams",
-    active_node: "Active Node",
-    training: "Training",
-    stats: {
-      totalAgents: "Total Agents",
-      activeFunctions: "Active Functions",
-      customAgents: "Custom Agents"
-    },
-    establishingNodeSync: "Establishing Node Sync...",
-    title: "Agent Dashboard",
-    intelligenceGridOptimal: "Intelligence Grid Optimal",
-    operationalTier: "Operational Tier",
-    version: "Version",
-    registry: "Registry",
-    nodes: "Nodes",
-    strategicSimulatorOffline: "Strategic Simulator Offline",
-    connectToPolicyEngine: "Connect to Policy Engine"
   },
   agentgridcard: {
     node_id: "Node ID",

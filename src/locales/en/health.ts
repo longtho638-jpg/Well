@@ -8,18 +8,19 @@ export const health = {
     i_m_s_t_ng_kh_a_c_nh_s_c_kh: "Score across all health dimensions"
   },
   healthCheck: {
-    consultationTitle: "AI Health Consultation",
-    consultationDescription: "Get personalized health advice from our AI coach",
-    chatNow: "Chat Now",
+    questionProgress: "Question {current} / {total}",
+    consultationTitle: "Need more in-depth consultation?",
+    consultationDescription: "Connect with your Partner via Zalo for free 1-on-1 consultation",
+    chatNow: "Chat on Zalo",
     recommendationsTitle: "Recommended Products",
     priceLabel: "Price",
     orderNow: "Order Now",
     back: "Back",
     viewResults: "View Results",
     next: "Next",
-    timeInfo: "Takes about 2 minutes",
-    radarTitle: "Health Radar",
-    resultsTitle: "Your Results",
+    timeInfo: "⏱️ Only 2 minutes to complete • 🔒 Your information is secure",
+    radarTitle: "Health Score",
+    resultsTitle: "Assessment Results",
     yourHealthScore: "Your Health Score",
     questions: {
       sleep: {
@@ -76,7 +77,8 @@ export const health = {
       sleep: "Sleep",
       stress: "Stress",
       energy: "Energy",
-      exercise: "Exercise"
+      exercise: "Exercise",
+      goal: "Goal"
     },
     products: {
       anima119: {
@@ -125,21 +127,30 @@ export const health = {
     restartQuiz: "Restart Quiz"
   },
   healthCoach: {
+    title: "Health Coach AI",
     subtitle: "Your personal AI health advisor",
-    disclaimerTech: "Powered by Gemini AI",
-    disclaimerMedical: "Not a substitute for professional medical advice",
+    greeting: "Hello! I'm **WellNexus Health Coach** 🌿\n\nPlease share your health condition or symptoms you are experiencing. I will recommend the most suitable product combo for you.\n\n**Example:** \"I often have insomnia and headaches\" or \"I constantly feel tired\".",
+    greetingResponse: "Hello! I'm **WellNexus Health Coach** — your AI health assistant. 🌿\n\nDescribe your symptoms or health concerns and I'll recommend the best products for you.\n\n**Example:** \"I have trouble sleeping and headaches\" or \"I feel tired and get sick often\".",
+    fallbackResponse: "Thank you for sharing. Could you describe your symptoms in more detail?\n\n**Tip:** Let me know what issue you're experiencing (e.g., insomnia, headaches, fatigue, frequent illness...)",
+    sleepStressResponse: "Based on the symptoms you described (insomnia, headaches, stress), I recommend **ANIMA Relaxation Combo**. This combo is specially designed to improve sleep and reduce nervous tension.",
+    fatigueResponse: "Fatigue and poor immunity symptoms may be due to nutritional deficiency. I suggest **Energy & Immunity Combo** to restore your health.",
+    comboRelaxation: "ANIMA Relaxation Combo",
+    comboEnergy: "Energy & Immunity Combo",
+    reasonRelaxation: "ANIMA 119 helps stabilize the nervous system, improve sleep. Immune Boost adds energy and boosts immunity.",
+    reasonEnergy: "Starter Kit provides comprehensive nutrition, Immune Boost strengthens immunity and reduces fatigue.",
     totalLabel: "Total",
     orderNow: "Order Now",
-    greeting: "Hello! I'm your AI Health Coach. How can I help you today?",
-    title: "Health Coach",
-    analyzing: "Analyzing...",
-    placeholder: "Ask me about your health...",
+    orderSuccess: "✅ Order created successfully!\n\n**{comboName}** ({totalPrice}) has been added to your transaction history.\n\nYou can check in the **Commission Wallet** page. Thank you for trusting ANIMA! 🎉",
+    placeholder: "Describe your symptoms... (e.g. I often have insomnia, headaches)",
     send: "Send",
     quickSuggestionsLabel: "Quick Suggestions",
     suggestions: {
-      sleep: "How can I improve my sleep?",
-      fatigue: "I feel tired all the time",
-      immunity: "How to boost my immunity?"
-    }
+      sleep: "I often have insomnia",
+      fatigue: "I feel tired",
+      immunity: "Boost my immunity"
+    },
+    disclaimerTech: "💡 Health Coach AI uses symptom analysis technology to suggest suitable products.",
+    disclaimerMedical: "Note: This is a support tool, not a substitute for professional medical advice.",
+    analyzing: "Analyzing..."
   }
 };

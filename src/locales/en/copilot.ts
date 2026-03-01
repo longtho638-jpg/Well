@@ -66,6 +66,7 @@ export const copilot = {
     g_i: "Send"
   },
   useCopilot: {
+    greeting: "Hello {name}! 👋 I'm **The Copilot** — your AI sales assistant.\n\nI can help you:\n✅ Handle customer objections\n✅ Suggest smart responses\n✅ Create sales scripts\n\nTry entering a customer objection, e.g.: \"This product is too expensive!\"",
     error_processing: "Error processing your request",
     current_product: "Current Product",
     script_generated: "Script generated successfully",
@@ -100,6 +101,13 @@ export const copilot = {
     t_v_n_ho_n_th_nh: "Consultation Complete",
     c_i_thi_n_s_c_kh_e: "Health Improvement",
     no_patient_data: "No patient data available"
+  },
+  beeautomationsection: {
+    auto_upgrade_threshold: "Auto Upgrade Threshold",
+    bee_engine_automation: "BEE Engine Automation",
+    ctv_commission_r_8: "CTV Commission: ₫8",
+    sponsor_bonus_amb: "Sponsor Bonus (AMB)",
+    vnd_sales_ctv_startup: "VND Sales CTV→Startup"
   },
   copilotpage: {
     "85": "85",
@@ -149,6 +157,7 @@ export const copilot = {
     },
     time: {
       justNow: "Just now",
+      hoursAgo: "{{count}} hours ago",
       yesterday: "Yesterday"
     },
     chat_m_i: "New Chat",

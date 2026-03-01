@@ -94,7 +94,7 @@ export async function orchestrateBillingWebhook(
   // Step 4: Notify downstream (non-blocking)
   if (webhookResult.status === 'processed' && deps.onBillingComplete) {
     deps.onBillingComplete(result).catch((err) =>
-      console.error('[vibe-payment] onBillingComplete callback failed:', err),
+      deps.logAudit(null, 'CALLBACK_FAILED', { callback: 'onBillingComplete', error: String(err) }, 'failure'),
     );
   }
 

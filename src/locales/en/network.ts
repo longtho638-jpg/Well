@@ -11,7 +11,12 @@ export const network = {
     filterActive: "Active",
     filterInactive: "Inactive",
     viewDetails: "Details",
-    addMember: "Add Member"
+    addMember: "Add Member",
+    total_downlines: "Total Downlines",
+    direct_f1: "Direct (F1)",
+    active_members: "Active Members",
+    team_volume: "Team Volume",
+    invite_member: "Invite Member"
   },
   liveconsole: {
     live_operations_node_agent: "Live Operations Node Agent",

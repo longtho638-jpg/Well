@@ -11,6 +11,7 @@ export const auth = {
       noAccount: "Don't have an account?",
       signUp: "Sign Up",
       or: "Or",
+      demo: "Demo Sign In",
       backToHome: "Back to WellNexus home",
       showPassword: "Show password",
       hidePassword: "Hide password"
@@ -29,22 +30,30 @@ export const auth = {
       signIn: "Sign In"
     },
     register: {
-      password: "Password",
+      title: "Register",
+      subtitle: "Join the WellNexus community",
+      earlyAccess: "Early Access 2.0",
       fullName: "Full Name",
+      email: "Email",
+      emailBusiness: "Business Email",
+      phone: "Phone number",
+      password: "Password",
+      confirmPassword: "Confirm Password",
+      referralCode: "Referral code (optional)",
+      agree: "I agree to the",
+      terms: "Terms of Service",
+      and: "and",
+      privacy: "Privacy Policy",
+      registerButton: "Register",
+      processing: "Creating your account...",
+      haveAccount: "Already have an account?",
+      login: "Log In",
       placeholders: {
         name: "Enter your full name",
         email: "Enter your email"
-      },
-      emailBusiness: "Business Email",
-      confirmPassword: "Confirm Password",
-      processing: "Processing...",
-      registerButton: "Register",
-      earlyAccess: "Early Access",
-      title: "Create Account",
-      subtitle: "Join WellNexus today",
-      haveAccount: "Already have an account?",
-      login: "Log In"
+      }
     },
+    demo: "Demo",
     password: {
       strength: {
         weak: "Weak",
@@ -84,6 +93,31 @@ export const auth = {
       confirmPasswordPlaceholder: "Confirm new password",
       submitButton: "Reset Password"
     }
+  },
+  signup: {
+    early_access_2_0: "Early Access 2.0"
+  },
+  signupform: {
+    email_business: "Business Email",
+    h_v_t_n: "Full Name",
+    m_t_kh_u: "Password",
+    ng_k_ngay: "Register Now",
+    processing_account: "Processing account",
+    x_c_nh_n: "Confirm"
+  },
+  profilepage: {
+    personal_information: "Personal Information",
+    account_status: "Account Status",
+    full_name: "Full Name",
+    email_address: "Email Address",
+    phone_number: "Phone Number",
+    date_of_birth: "Date of Birth",
+    address: "Address",
+    kyc_verified: "Identity Verified",
+    email_verified: "Email Verified",
+    security_strength: "Security Strength",
+    edit: "Edit",
+    joined: "Joined"
   },
   onboardingquest: {
     the_coach: "The Coach",

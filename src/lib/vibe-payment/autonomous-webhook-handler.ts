@@ -27,7 +27,7 @@ const VALID_TRANSITIONS: Record<string, VibePaymentStatusCode[]> = {
 };
 
 function isValidTransition(current: string, next: VibePaymentStatusCode): boolean {
-  const allowed = VALID_TRANSITIONS[current];
+  const allowed = VALID_TRANSITIONS[current.toLowerCase()];
   if (!allowed) return false;
   return allowed.includes(next);
 }
@@ -154,13 +154,13 @@ async function processOrderWebhook(
   // Fire side-effect callbacks (non-blocking)
   if (newStatus === 'PAID' && config.onOrderPaid) {
     config.onOrderPaid(event, order.id).catch((err) =>
-      console.error('[vibe-payment] onOrderPaid callback failed:', err),
+      deps.logAudit(order.userId, 'CALLBACK_FAILED', { callback: 'onOrderPaid', error: String(err) }, 'failure'),
     );
   }
 
   if (newStatus === 'CANCELLED' && config.onOrderCancelled) {
     config.onOrderCancelled(event, order.id).catch((err) =>
-      console.error('[vibe-payment] onOrderCancelled callback failed:', err),
+      deps.logAudit(order.userId, 'CALLBACK_FAILED', { callback: 'onOrderCancelled', error: String(err) }, 'failure'),
     );
   }
 
@@ -199,7 +199,7 @@ async function processSubscriptionWebhook(
         amount: event.amount,
         status: 'paid',
       }).catch((err) =>
-        console.error('[vibe-payment] onSubscriptionPaid callback failed:', err),
+        deps.logAudit(intent.userId, 'CALLBACK_FAILED', { callback: 'onSubscriptionPaid', error: String(err) }, 'failure'),
       );
     }
   }
@@ -213,7 +213,7 @@ async function processSubscriptionWebhook(
       amount: event.amount,
       status: 'canceled',
     }).catch((err) =>
-      console.error('[vibe-payment] onSubscriptionCancelled callback failed:', err),
+      deps.logAudit(intent.userId, 'CALLBACK_FAILED', { callback: 'onSubscriptionCancelled', error: String(err) }, 'failure'),
     );
   }
 
