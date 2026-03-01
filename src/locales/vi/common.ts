@@ -18,6 +18,8 @@ pwa: {
     }
   },
 common: {
+    access_restricted: "Quyền truy cập bị hạn chế",
+    unknown_agent: "Chuyên viên không xác định",
     loading: "Đang tải...",
     error: "Có lỗi xảy ra",
     success: "Thành công",

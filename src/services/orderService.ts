@@ -1,125 +1,121 @@
-/**
- * WellNexus Order Service (Admin)
- * Handles all Supabase interactions for order management and commission triggering.
- */
-
 import { supabase } from '@/lib/supabase';
 import { adminLogger } from '@/utils/logger';
-import { OrderPayload } from '@/types/checkout';
+import { BaseService } from '@/lib/vibe-agent/services/base-service';
+import {
+  OrderPayloadSchema,
+  OrderStatusUpdateSchema,
+  OrderPayload,
+  OrderStatusUpdate
+} from '@/schemas/order';
+import { z } from 'zod';
+import { eventBus } from '@/lib/vibe-agent/event-bus';
 
-interface OrderMetadata {
-    source?: string;
-    campaign?: string;
-    notes?: string;
-    [key: string]: string | number | boolean | undefined;
-}
+// Re-export PendingOrder type for consumers
+export type { PendingOrder } from '@/schemas/order-schema';
 
-export interface PendingOrder {
-    id: string;
-    user_id: string;
-    amount: number;
-    created_at: string;
-    payment_proof_url?: string;
-    currency: string;
-    status: string;
-    type: string;
-    user: {
-        name: string;
-        email: string;
+/**
+ * Order Creation Service
+ */
+export class CreateOrderService extends BaseService<typeof OrderPayloadSchema, z.ZodString> {
+  protected inputSchema = OrderPayloadSchema;
+  protected outputSchema = z.string();
+
+  protected async implementation(payload: OrderPayload): Promise<string> {
+    const { items, customer, paymentMethod, totalAmount } = payload;
+
+    const transactionData = {
+      user_id: customer.userId || null,
+      amount: totalAmount,
+      type: 'sale',
+      status: 'pending',
+      currency: 'VND',
+      created_at: new Date().toISOString(),
+      metadata: {
+        guest_profile: customer.guestProfile,
+        items: items,
+        payment_method: paymentMethod,
+        is_guest: !customer.userId,
+        order_code: payload.orderCode
+      }
     };
-    metadata?: OrderMetadata;
+
+    const { data, error } = await supabase
+      .from('transactions')
+      .insert(transactionData)
+      .select()
+      .single();
+
+    if (error) {
+      adminLogger.error('Create order failed', error);
+      throw error;
+    }
+
+    eventBus.publish('well:order.created', { orderId: data.id, payload });
+
+    return data.id;
+  }
 }
 
-export const orderService = {
-    /**
-     * Create a new order (guest or authenticated)
-     */
-    async createOrder(payload: OrderPayload): Promise<string> {
-        const { items, customer, paymentMethod, totalAmount } = payload;
+/**
+ * Order Status Update Service
+ */
+export class UpdateOrderStatusService extends BaseService<typeof OrderStatusUpdateSchema, z.ZodVoid> {
+  protected inputSchema = OrderStatusUpdateSchema;
+  protected outputSchema = z.void();
 
-        // Prepare transaction data
-        // Note: user_id is null for guests. Ensure DB 'transactions.user_id' is nullable
-        // or RLS policies allow public insert with metadata.
-        const transactionData = {
-            user_id: customer.userId || null,
-            amount: totalAmount,
-            type: 'sale', // standard sale type
-            status: 'pending',
-            currency: 'VND',
-            created_at: new Date().toISOString(),
-            metadata: {
-                guest_profile: customer.guestProfile,
-                items: items,
-                payment_method: paymentMethod,
-                is_guest: !customer.userId,
-                order_code: payload.orderCode
-            }
-        };
+  protected async implementation(input: OrderStatusUpdate): Promise<void> {
+    const { orderId, status } = input;
 
-        const { data, error } = await supabase
-            .from('transactions')
-            .insert(transactionData)
-            .select()
-            .single();
+    const { error, data } = await supabase
+      .from('transactions')
+      .update({ status })
+      .eq('id', orderId)
+      .eq('status', 'pending')
+      .select('id')
+      .maybeSingle();
 
-        if (error) {
-            adminLogger.error('Create order failed', error);
-            // Fallback for demo/dev if DB restriction prevents insert
-            // Throwing to let UI handle it
-            throw error;
-        }
-
-        return data.id;
-    },
-
-    /**
-     * Fetch all pending 'sale' transactions with user details
-     * Uses Supabase foreign key join to avoid N+1 query pattern
-     */
-    async getPendingOrders(): Promise<PendingOrder[]> {
-        const { data, error } = await supabase
-            .from('transactions')
-            .select('id, user_id, amount, created_at, payment_proof_url, currency, status, type, user:users(name, email)')
-            .eq('status', 'pending')
-            .eq('type', 'sale')
-            .order('created_at', { ascending: false });
-
-        if (error) {
-            adminLogger.error('Failed to fetch pending orders', error);
-            throw error;
-        }
-
-        return (data || []).map((order) => {
-            const userRaw = order.user;
-            const user = Array.isArray(userRaw)
-                ? (userRaw[0] as { name: string; email: string } | undefined) ?? { name: 'Unknown', email: '' }
-                : (userRaw as unknown as { name: string; email: string } | null) ?? { name: 'Unknown', email: '' };
-            return { ...order, user };
-        });
-    },
-
-    /**
-     * Update order status (Approve/Reject)
-     * State machine: only 'pending' orders can transition to 'completed' or 'cancelled'
-     */
-    async updateOrderStatus(orderId: string, status: 'completed' | 'cancelled'): Promise<void> {
-        // Atomic state machine guard: only update if currently 'pending'
-        // Prevents completed→cancelled or cancelled→completed invalid transitions
-        const { error, data } = await supabase
-            .from('transactions')
-            .update({ status })
-            .eq('id', orderId)
-            .eq('status', 'pending') // Guard: reject transition from any non-pending state
-            .select('id')
-            .maybeSingle();
-
-        if (error) {
-            adminLogger.error(`Failed to update order ${orderId} status to ${status}`, error);
-            throw error;
-        }
-
-        if (!data) {
-            throw new Error(`Order ${orderId} is not in pending state and cannot be transitioned to ${status}`);
-        }
+    if (error) {
+      adminLogger.error(`Failed to update order ${orderId} status to ${status}`, error);
+      throw error;
     }
+
+    if (!data) {
+      throw new Error(`Order ${orderId} is not in pending state and cannot be transitioned to ${status}`);
+    }
+
+    if (status === 'completed') {
+      eventBus.publish('well:order.completed', { orderId });
+    } else if (status === 'cancelled') {
+      eventBus.publish('well:order.cancelled', { orderId });
+    }
+  }
+}
+
+// Legacy wrapper for compatibility
+export const orderService = {
+  createOrder: (payload: OrderPayload) => new CreateOrderService().execute(payload),
+  updateOrderStatus: (orderId: string, status: 'completed' | 'cancelled') =>
+    new UpdateOrderStatusService().execute({ orderId, status }),
+
+  async getPendingOrders() {
+    const { data, error } = await supabase
+      .from('transactions')
+      .select('id, user_id, amount, created_at, payment_proof_url, currency, status, type, user:users(name, email)')
+      .eq('status', 'pending')
+      .eq('type', 'sale')
+      .order('created_at', { ascending: false });
+
+    if (error) {
+      adminLogger.error('Failed to fetch pending orders', error);
+      throw error;
+    }
+
+    return (data || []).map((order: any) => {
+      const userRaw = order.user;
+      const user = Array.isArray(userRaw)
+        ? (userRaw[0] as { name: string; email: string } | undefined) ?? { name: 'Unknown', email: '' }
+        : (userRaw as unknown as { name: string; email: string } | null) ?? { name: 'Unknown', email: '' };
+      return { ...order, user };
+    });
+  }
 };

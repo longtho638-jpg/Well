@@ -18,6 +18,8 @@ export const common = {
     }
   },
   common: {
+    access_restricted: "Access restricted",
+    unknown_agent: "Unknown agent",
     loading: "Loading...",
     error: "An error occurred",
     success: "Success",

@@ -32,6 +32,10 @@
     "node_modules",
     "dist",
     "functions",
-    "src/__tests__"
+    "src/__tests__",
+    "**/*.test.ts",
+    "**/*.test.tsx",
+    "**/*.spec.ts",
+    "**/*.spec.tsx"
   ]
 }
