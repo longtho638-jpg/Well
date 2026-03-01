@@ -5,7 +5,7 @@
  * Wrapped with circuit breaker for resilience.
  */
 
-import type { SupabaseClient } from '@supabase/supabase-js';
+import type { SupabaseLike } from '@/lib/vibe-supabase/typed-query-helpers';
 import type {
   VibePaymentProvider,
   VibePaymentRequest,
@@ -79,9 +79,9 @@ function payosCodeToEventType(code: string): WebhookEventType {
 
 export class PayOSAdapter implements VibePaymentProvider {
   readonly name = 'payos' as const;
-  private readonly supabase: SupabaseClient;
+  private readonly supabase: SupabaseLike;
 
-  constructor(supabase: SupabaseClient) {
+  constructor(supabase: SupabaseLike) {
     this.supabase = supabase;
   }
 
@@ -101,9 +101,10 @@ export class PayOSAdapter implements VibePaymentProvider {
       throw new Error(`PayOS create payment failed: ${error.message}`);
     }
 
+    const result = data as Record<string, unknown>;
     return {
-      checkoutUrl: data.checkoutUrl,
-      orderCode: data.orderCode,
+      checkoutUrl: result.checkoutUrl as string,
+      orderCode: result.orderCode as number,
     };
   }
 
@@ -116,16 +117,17 @@ export class PayOSAdapter implements VibePaymentProvider {
       throw new Error(`PayOS get payment failed: ${error.message}`);
     }
 
+    const d = data as Record<string, unknown>;
     return {
-      orderCode: data.orderCode ?? orderCode,
-      amount: data.amount ?? 0,
-      amountPaid: data.amountPaid ?? 0,
-      amountRemaining: data.amountRemaining ?? 0,
-      status: (data.status as VibePaymentStatusCode) ?? 'PENDING',
-      createdAt: data.createdAt ?? '',
-      transactions: data.transactions ?? [],
-      cancellationReason: data.cancellationReason,
-      canceledAt: data.canceledAt,
+      orderCode: (d.orderCode as number) ?? orderCode,
+      amount: (d.amount as number) ?? 0,
+      amountPaid: (d.amountPaid as number) ?? 0,
+      amountRemaining: (d.amountRemaining as number) ?? 0,
+      status: (d.status as VibePaymentStatusCode) ?? 'PENDING',
+      createdAt: (d.createdAt as string) ?? '',
+      transactions: (d.transactions as Record<string, unknown>[]) ?? [],
+      cancellationReason: d.cancellationReason as string | undefined,
+      canceledAt: d.canceledAt as string | undefined,
     };
   }
 

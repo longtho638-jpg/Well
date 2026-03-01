@@ -10,14 +10,14 @@
  *   await trackFeatureUsage(supabase, { orgId, userId, feature: 'ai_copilot', quantity: 1 });
  */
 
-import type { SupabaseClient } from '@supabase/supabase-js';
+import type { SupabaseLike } from './typed-query-helpers';
 import type { UsageRecord, UsageSummary, UsageQuota } from '@/lib/vibe-subscription';
 
 // ─── Write Operations ──────────────────────────────────────────
 
 /** Record a single usage event for an org feature */
 export async function trackFeatureUsage(
-  supabase: SupabaseClient,
+  supabase: SupabaseLike,
   params: {
     orgId: string;
     userId: string;
@@ -39,13 +39,13 @@ export async function trackFeatureUsage(
     .select()
     .single();
 
-  if (error) throw error;
+  if (error) throw new Error(error.message);
   return data as UsageRecord;
 }
 
 /** Batch insert multiple usage events (efficient for bulk metering) */
 export async function trackFeatureUsageBatch(
-  supabase: SupabaseClient,
+  supabase: SupabaseLike,
   records: Array<{
     orgId: string;
     userId: string;
@@ -67,7 +67,7 @@ export async function trackFeatureUsageBatch(
     .from('usage_records')
     .insert(rows, { count: 'exact' });
 
-  if (error) throw error;
+  if (error) throw new Error(error.message);
   return count ?? rows.length;
 }
 
@@ -75,7 +75,7 @@ export async function trackFeatureUsageBatch(
 
 /** Get aggregated usage summary for an org within a billing period */
 export async function getOrgUsageSummary(
-  supabase: SupabaseClient,
+  supabase: SupabaseLike,
   orgId: string,
   periodStart: string,
   periodEnd: string,
@@ -87,13 +87,13 @@ export async function getOrgUsageSummary(
       p_period_end: periodEnd,
     });
 
-  if (error) throw error;
+  if (error) throw new Error(error.message);
   return (data ?? []) as UsageSummary[];
 }
 
 /** Get usage for a specific feature within an org */
 export async function getOrgUsageByFeature(
-  supabase: SupabaseClient,
+  supabase: SupabaseLike,
   orgId: string,
   feature: string,
   periodStart: string,
@@ -105,7 +105,7 @@ export async function getOrgUsageByFeature(
 
 /** Get raw usage timeline for an org (paginated, newest first) */
 export async function getUsageTimeline(
-  supabase: SupabaseClient,
+  supabase: SupabaseLike,
   orgId: string,
   options?: {
     feature?: string;
@@ -128,13 +128,13 @@ export async function getUsageTimeline(
   }
 
   const { data, error } = await query;
-  if (error) throw error;
+  if (error) throw new Error(error.message);
   return (data ?? []) as UsageRecord[];
 }
 
 /** Check quota: compare current usage against plan limits */
 export async function checkOrgQuota(
-  supabase: SupabaseClient,
+  supabase: SupabaseLike,
   orgId: string,
   feature: string,
   planLimit: number,

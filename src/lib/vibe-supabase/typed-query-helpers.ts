@@ -4,9 +4,33 @@
  * Eliminates repetitive Supabase query patterns across services.
  * Provides typed wrappers for common operations: fetchOne, fetchMany,
  * insertOne, updateWhere, rpcCall, invokeFunction.
+ *
+ * All functions accept a SupabaseLike client — no singleton capture.
  */
 
-import type { SupabaseClient } from '@supabase/supabase-js';
+// ─── Generic Supabase interface (avoids hard @supabase/supabase-js dep) ──
+
+interface SupabaseQueryBuilder {
+  select: (columns?: string, options?: { count?: string }) => SupabaseQueryBuilder;
+  eq: (column: string, value: string | number | boolean) => SupabaseQueryBuilder;
+  in: (column: string, values: Array<string | number>) => SupabaseQueryBuilder;
+  gt: (column: string, value: string | number) => SupabaseQueryBuilder;
+  insert: (row: Record<string, unknown> | Record<string, unknown>[], options?: { count?: string }) => SupabaseQueryBuilder;
+  update: (updates: Record<string, unknown>) => SupabaseQueryBuilder;
+  order: (column: string, options?: { ascending?: boolean }) => SupabaseQueryBuilder;
+  limit: (count: number) => SupabaseQueryBuilder;
+  range: (from: number, to: number) => SupabaseQueryBuilder;
+  single: () => Promise<{ data: unknown; error: { message: string } | null }>;
+  maybeSingle: () => Promise<{ data: unknown; error: { message: string } | null }>;
+  then: (resolve: (value: { data: unknown[]; error: { message: string } | null; count: number | null }) => void) => void;
+}
+
+export interface SupabaseLike {
+  from: (table: string) => SupabaseQueryBuilder;
+  rpc: (fn: string, params?: Record<string, unknown>) => Promise<{ data: unknown; error: { message: string } | null }>;
+  functions: { invoke: (name: string, options: { body: Record<string, unknown> }) => Promise<{ data: unknown; error: { message: string } | null }> };
+  auth: { getUser: () => Promise<{ data: { user: { id: string } | null } }> };
+}
 
 // ─── Result Types ───────────────────────────────────────────────
 
@@ -25,7 +49,7 @@ export interface QueryListResult<T> {
 
 /** Fetch single row with typed result */
 export async function fetchOne<T>(
-  supabase: SupabaseClient,
+  supabase: SupabaseLike,
   table: string,
   column: string,
   value: string | number,
@@ -45,7 +69,7 @@ export async function fetchOne<T>(
 
 /** Fetch multiple rows with optional pagination */
 export async function fetchMany<T>(
-  supabase: SupabaseClient,
+  supabase: SupabaseLike,
   table: string,
   options: {
     select?: string;
@@ -83,7 +107,7 @@ export async function fetchMany<T>(
     query = query.range(offset, offset + (limit ?? 10) - 1);
   }
 
-  const { data, error, count } = await query;
+  const { data, error, count } = await (query as unknown as Promise<{ data: unknown[]; error: { message: string } | null; count: number | null }>);
 
   return {
     data: (data as T[]) ?? [],
@@ -94,7 +118,7 @@ export async function fetchMany<T>(
 
 /** Insert single row and return it */
 export async function insertOne<T>(
-  supabase: SupabaseClient,
+  supabase: SupabaseLike,
   table: string,
   row: Record<string, unknown>,
   select = '*',
@@ -111,9 +135,9 @@ export async function insertOne<T>(
   };
 }
 
-/** Atomic update with optimistic concurrency guard */
+/** Atomic update with filters */
 export async function updateWhere<T>(
-  supabase: SupabaseClient,
+  supabase: SupabaseLike,
   table: string,
   updates: Record<string, unknown>,
   filters: Record<string, string | number>,
@@ -135,7 +159,7 @@ export async function updateWhere<T>(
 
 /** Call Postgres RPC function with typed result */
 export async function rpcCall<T>(
-  supabase: SupabaseClient,
+  supabase: SupabaseLike,
   functionName: string,
   params: Record<string, unknown> = {},
 ): Promise<QueryResult<T>> {
@@ -149,7 +173,7 @@ export async function rpcCall<T>(
 
 /** Invoke Supabase Edge Function */
 export async function invokeFunction<T>(
-  supabase: SupabaseClient,
+  supabase: SupabaseLike,
   name: string,
   body: Record<string, unknown>,
 ): Promise<QueryResult<T>> {
@@ -163,7 +187,7 @@ export async function invokeFunction<T>(
 
 /** Get current authenticated user ID or null */
 export async function getCurrentUserId(
-  supabase: SupabaseClient,
+  supabase: SupabaseLike,
 ): Promise<string | null> {
   const { data: { user } } = await supabase.auth.getUser();
   return user?.id ?? null;

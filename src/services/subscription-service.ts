@@ -7,8 +7,12 @@
  * Pure logic imported from vibe-subscription SDK.
  */
 
-import { supabase } from '@/lib/supabase';
+import { supabase as supabaseClient } from '@/lib/supabase';
+import type { SupabaseLike } from '@/lib/vibe-supabase/typed-query-helpers';
 import { canAccessFeature, computeActivationParams } from '@/lib/vibe-subscription';
+
+// Cast real SupabaseClient to SupabaseLike at boundary — structurally compatible at runtime
+const supabase = supabaseClient as unknown as SupabaseLike;
 import type {
     SubscriptionPlan,
     UserSubscription,

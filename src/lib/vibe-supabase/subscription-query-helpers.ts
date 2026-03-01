@@ -10,7 +10,7 @@
  *   const plans = await subscriptionQueries.getPlans(supabase);
  */
 
-import type { SupabaseClient } from '@supabase/supabase-js';
+import type { SupabaseLike } from './typed-query-helpers';
 import type {
   SubscriptionPlan,
   UserSubscription,
@@ -21,7 +21,7 @@ import type {
 
 /** Fetch all active subscription plans ordered by sort_order */
 export async function getPlans(
-  supabase: SupabaseClient,
+  supabase: SupabaseLike,
 ): Promise<SubscriptionPlan[]> {
   const { data, error } = await supabase
     .from('subscription_plans')
@@ -29,7 +29,7 @@ export async function getPlans(
     .eq('is_active', true)
     .order('sort_order');
 
-  if (error) throw error;
+  if (error) throw new Error(error.message);
   return data as SubscriptionPlan[];
 }
 
@@ -37,19 +37,19 @@ export async function getPlans(
 
 /** Get active plan info for a user via Postgres RPC */
 export async function getUserActivePlan(
-  supabase: SupabaseClient,
+  supabase: SupabaseLike,
   userId: string,
 ): Promise<ActivePlanInfo | null> {
   const { data, error } = await supabase
     .rpc('get_user_active_plan', { p_user_id: userId });
 
-  if (error) throw error;
+  if (error) throw new Error(error.message);
   return (data as ActivePlanInfo[])?.[0] ?? null;
 }
 
 /** Get user's current active subscription (most recent, not expired) */
 export async function getUserSubscription(
-  supabase: SupabaseClient,
+  supabase: SupabaseLike,
   userId: string,
 ): Promise<UserSubscription | null> {
   const { data, error } = await supabase
@@ -62,13 +62,13 @@ export async function getUserSubscription(
     .limit(1)
     .maybeSingle();
 
-  if (error) throw error;
+  if (error) throw new Error(error.message);
   return data as UserSubscription | null;
 }
 
 /** Insert a new subscription record */
 export async function createSubscription(
-  supabase: SupabaseClient,
+  supabase: SupabaseLike,
   row: Record<string, unknown>,
 ): Promise<UserSubscription> {
   const { data, error } = await supabase
@@ -77,13 +77,13 @@ export async function createSubscription(
     .select()
     .single();
 
-  if (error) throw error;
+  if (error) throw new Error(error.message);
   return data as UserSubscription;
 }
 
 /** Cancel a subscription by ID (set status + canceled_at) */
 export async function cancelSubscription(
-  supabase: SupabaseClient,
+  supabase: SupabaseLike,
   subscriptionId: string,
 ): Promise<void> {
   const { error } = await supabase
@@ -94,12 +94,12 @@ export async function cancelSubscription(
     })
     .eq('id', subscriptionId);
 
-  if (error) throw error;
+  if (error) throw new Error(error.message);
 }
 
 /** Create a subscription payment intent via PayOS Edge Function */
 export async function createSubscriptionIntent(
-  supabase: SupabaseClient,
+  supabase: SupabaseLike,
   params: {
     planId: string;
     billingCycle: 'monthly' | 'yearly';
@@ -112,8 +112,9 @@ export async function createSubscriptionIntent(
     body: params,
   });
 
-  if (error) throw error;
-  return { checkoutUrl: data.checkoutUrl, orderCode: data.orderCode };
+  if (error) throw new Error(error.message);
+  const result = data as { checkoutUrl: string; orderCode: number };
+  return { checkoutUrl: result.checkoutUrl, orderCode: result.orderCode };
 }
 
 // ─── Convenience Namespace ──────────────────────────────────────

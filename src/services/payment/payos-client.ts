@@ -6,8 +6,9 @@
  * Internally delegates to vibe-payment PayOSAdapter.
  */
 
-import { supabase } from '@/lib/supabase';
+import { supabase as supabaseClient } from '@/lib/supabase';
 import { createPaymentProvider } from '@/lib/vibe-payment';
+import type { SupabaseLike } from '@/lib/vibe-supabase/typed-query-helpers';
 import type {
   VibePaymentItem,
   VibePaymentRequest,
@@ -17,7 +18,7 @@ import { PaymentError } from '@/utils/errors';
 import { paymentBreaker } from '@/utils/circuit-breaker';
 
 // SDK provider instance (singleton)
-const provider = createPaymentProvider('payos', supabase);
+const provider = createPaymentProvider('payos', supabaseClient as unknown as SupabaseLike);
 
 // ─── Re-export SDK types with backward-compatible aliases ────────
 

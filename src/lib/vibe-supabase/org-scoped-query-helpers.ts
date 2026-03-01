@@ -10,7 +10,7 @@
  *   const orgs = await orgQueries.getUserOrgs(supabase, userId);
  */
 
-import type { SupabaseClient } from '@supabase/supabase-js';
+import type { SupabaseLike } from './typed-query-helpers';
 import type {
   Organization,
   OrgMember,
@@ -22,7 +22,7 @@ import type {
 
 /** Fetch all organizations a user belongs to (via org_members join) */
 export async function getUserOrgs(
-  supabase: SupabaseClient,
+  supabase: SupabaseLike,
   userId: string,
 ): Promise<Organization[]> {
   const { data, error } = await supabase
@@ -30,15 +30,15 @@ export async function getUserOrgs(
     .select('org_id, role, organizations(*)')
     .eq('user_id', userId);
 
-  if (error) throw error;
-  return (data ?? [])
-    .map((m) => (m.organizations as unknown) as Organization)
+  if (error) throw new Error(error.message);
+  return ((data ?? []) as Array<{ organizations: unknown }>)
+    .map((m) => m.organizations as Organization)
     .filter(Boolean);
 }
 
 /** Fetch org by ID */
 export async function getOrgById(
-  supabase: SupabaseClient,
+  supabase: SupabaseLike,
   orgId: string,
 ): Promise<Organization | null> {
   const { data, error } = await supabase
@@ -53,7 +53,7 @@ export async function getOrgById(
 
 /** Fetch all members of an organization */
 export async function getOrgMembers(
-  supabase: SupabaseClient,
+  supabase: SupabaseLike,
   orgId: string,
 ): Promise<OrgMember[]> {
   const { data, error } = await supabase
@@ -61,27 +61,27 @@ export async function getOrgMembers(
     .select('*')
     .eq('org_id', orgId);
 
-  if (error) throw error;
-  return data as OrgMember[];
+  if (error) throw new Error(error.message);
+  return (data ?? []) as OrgMember[];
 }
 
 // ─── Org Subscription Queries ───────────────────────────────────
 
 /** Get the active plan for an org (via Postgres RPC) */
 export async function getOrgActivePlan(
-  supabase: SupabaseClient,
+  supabase: SupabaseLike,
   orgId: string,
 ): Promise<ActivePlanInfo | null> {
   const { data, error } = await supabase
     .rpc('get_org_active_plan', { p_org_id: orgId });
 
-  if (error) throw error;
+  if (error) throw new Error(error.message);
   return (data as ActivePlanInfo[])?.[0] ?? null;
 }
 
 /** Get the current active subscription for an org */
 export async function getOrgSubscription(
-  supabase: SupabaseClient,
+  supabase: SupabaseLike,
   orgId: string,
 ): Promise<UserSubscription | null> {
   const { data, error } = await supabase
@@ -94,7 +94,7 @@ export async function getOrgSubscription(
     .limit(1)
     .maybeSingle();
 
-  if (error) throw error;
+  if (error) throw new Error(error.message);
   return data as UserSubscription | null;
 }
 
@@ -102,7 +102,7 @@ export async function getOrgSubscription(
 
 /** Create an organization and auto-add owner as member */
 export async function createOrg(
-  supabase: SupabaseClient,
+  supabase: SupabaseLike,
   params: { name: string; slug: string; ownerId: string },
 ): Promise<Organization> {
   const { data, error } = await supabase
@@ -115,16 +115,17 @@ export async function createOrg(
     .select()
     .single();
 
-  if (error) throw error;
+  if (error) throw new Error(error.message);
+  const org = data as Organization;
 
   // Auto-add owner as org member
   await supabase.from('org_members').insert({
-    org_id: data.id,
+    org_id: org.id,
     user_id: params.ownerId,
     role: 'owner',
   });
 
-  return data as Organization;
+  return org;
 }
 
 // ─── Convenience Namespace ──────────────────────────────────────

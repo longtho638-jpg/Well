@@ -10,13 +10,13 @@
  *   const result = await provider.createPayment({ ... });
  */
 
-import type { SupabaseClient } from '@supabase/supabase-js';
+import type { SupabaseLike } from '@/lib/vibe-supabase/typed-query-helpers';
 import type { PaymentProviderName, VibePaymentProvider } from './types';
 import { PayOSAdapter } from './payos-adapter';
 
 export function createPaymentProvider(
   name: PaymentProviderName,
-  supabase: SupabaseClient,
+  supabase: SupabaseLike,
 ): VibePaymentProvider {
   switch (name) {
     case 'payos':
