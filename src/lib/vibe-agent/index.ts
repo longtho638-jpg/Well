@@ -74,6 +74,18 @@ export type {
   NotificationRule,
 } from './notification-dispatcher';
 
+// Workflow Execution Context — Temporal.io durable workflow pattern
+export { executeWorkflow, sendSignal } from './workflow-execution-context';
+export type {
+  WorkflowStatus,
+  StepStatus,
+  StepRetryPolicy,
+  WorkflowStep,
+  StepExecution,
+  WorkflowState,
+  WorkflowContext,
+} from './workflow-execution-context';
+
 // Agent Status Page — Uptime-Kuma public status page pattern
 export { agentStatusPage } from './agent-status-page';
 export type {
