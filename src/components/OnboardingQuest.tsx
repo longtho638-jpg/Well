@@ -24,7 +24,7 @@ const OnboardingQuest: React.FC<Props> = ({ quests, user }) => {
         const text = await getCoachAdvice(user.name, user.totalSales, pending);
         setAdvice(text);
     } catch {
-        setAdvice("Keep sharing your positivity! The sales will follow.");
+        setAdvice(t('onboardingquest.fallback_advice'));
     }
     setLoading(false);
   };
@@ -107,7 +107,7 @@ const OnboardingQuest: React.FC<Props> = ({ quests, user }) => {
             className="mt-4 w-full bg-white/10 hover:bg-white/20 text-white border border-white/10 font-semibold py-2 rounded-lg text-sm transition-all flex items-center justify-center gap-2 group"
             >
             {loading ? <Loader2 className="w-4 h-4 animate-spin"/> : <Sparkles className="w-4 h-4 group-hover:text-marigold transition-colors"/>}
-            {loading ? "Analyzing Sales Data..." : "Get AI Advice"}
+            {loading ? t('onboardingquest.analyzing') : t('onboardingquest.get_ai_advice')}
             </button>
         )}
       </div>

@@ -130,7 +130,10 @@ export const auth = {
     day_3_30: "Day 3/30",
     xp: "XP",
     ai_strategy: "AI Strategy",
-    stuck_ask_your_ai_coach_for_a: "Stuck? Ask your AI Coach for advice"
+    stuck_ask_your_ai_coach_for_a: "Stuck? Ask your AI Coach for advice",
+    fallback_advice: "Keep sharing your positivity! The sales will follow.",
+    analyzing: "Analyzing sales data...",
+    get_ai_advice: "Get AI Advice"
   },
   sessionmanager: {
     active_sessions: "Active Sessions",
@@ -157,6 +160,7 @@ export const auth = {
     status: "Status",
     no_login_attempts_found: "No login attempts found",
     export_json: "Export JSON",
-    export_csv: "Export CSV"
+    export_csv: "Export CSV",
+    export_activity_log: "Export activity log"
   }
 };

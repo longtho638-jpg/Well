@@ -24,9 +24,16 @@ common: {
     error: "Có lỗi xảy ra",
     success: "Thành công",
     failed: "Thất bại",
+    all: "Tất cả",
+    priority: {
+      high: "Quan trọng",
+      medium: "Trung bình",
+      low: "Thấp"
+    },
     save: "Lưu",
     cancel: "Hủy",
     close: "Đóng",
+    chatViaZalo: "Chat với chúng tôi qua Zalo",
     refresh: "Làm mới",
     delete: "Xóa",
     confirm: "Xác nhận",

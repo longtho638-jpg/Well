@@ -29,15 +29,20 @@ import {
 } from './use-founder-revenue-goal-progress-calculator';
 import { FounderProgressRing } from './founder-revenue-goal-progress-ring-svg';
 
-const PriorityBadge: React.FC<{ priority: string }> = ({ priority }) => {
+const PriorityBadge: React.FC<{ priority: string; t: (key: string) => string }> = ({ priority, t }) => {
     const config = {
         high: 'bg-red-500/10 text-red-400 border-red-500/20',
         medium: 'bg-amber-500/10 text-amber-400 border-amber-500/20',
         low: 'bg-blue-500/10 text-blue-400 border-blue-500/20',
     };
+    const labelMap: Record<string, string> = {
+        high: t('common.priority.high'),
+        medium: t('common.priority.medium'),
+        low: t('common.priority.low'),
+    };
     return (
         <span className={`px-2 py-0.5 text-xs font-medium border rounded-full ${config[priority as keyof typeof config]}`}>
-            {priority === 'high' ? 'Quan trọng' : priority === 'medium' ? 'Trung bình' : 'Thấp'}
+            {labelMap[priority] ?? priority}
         </span>
     );
 };
@@ -162,7 +167,7 @@ export function FounderRevenueGoal() {
                                 <div>
                                     <div className="flex items-center gap-2">
                                         <p className="text-sm font-medium text-zinc-100">{rec.title}</p>
-                                        <PriorityBadge priority={rec.priority} />
+                                        <PriorityBadge priority={rec.priority} t={t} />
                                     </div>
                                     <p className="text-xs text-zinc-500">{rec.description}</p>
                                 </div>

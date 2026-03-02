@@ -27,9 +27,9 @@ export const ReferralHero: React.FC<ReferralHeroProps> = ({
         animate={{ opacity: 1, y: 0 }}
         className="bg-gradient-to-br from-teal-600 via-teal-700 to-cyan-700 dark:from-zinc-900 dark:via-zinc-900 dark:to-zinc-950 rounded-[3rem] shadow-2xl overflow-hidden relative border border-white/10"
     >
-        <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-20 mix-blend-overlay" />
+        <div className="absolute inset-0 bg-gradient-to-br from-white/5 to-transparent opacity-20 mix-blend-overlay" />
 
-        <div className="relative p-12">
+        <div className="relative p-6 md:p-12">
             <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-12">
                 <div className="flex-1 space-y-6">
                     <div className="flex items-center gap-6">

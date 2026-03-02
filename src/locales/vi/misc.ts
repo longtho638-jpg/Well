@@ -112,7 +112,10 @@ export const misc = {
     powered_by_gemini_ai: "Được hỗ trợ bởi Gemini AI",
     stuck_ask_your_ai_coach_for_a: "Gặp khó khăn? Hỏi Huấn luyện viên AI để nhận gợi ý!",
     the_coach: "Huấn luyện viên",
-    xp: "XP"
+    xp: "XP",
+    fallback_advice: "Hãy tiếp tục chia sẻ năng lượng tích cực! Doanh số sẽ đến.",
+    analyzing: "Đang phân tích dữ liệu...",
+    get_ai_advice: "Nhận tư vấn AI"
   },
   eastasiabrand: {
     wellnexus: "WellNexus",

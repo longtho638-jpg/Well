@@ -62,7 +62,7 @@ export function LoginActivityLog({
                   filter === f ? 'bg-zinc-800 text-zinc-100' : 'text-zinc-500 hover:text-zinc-300'
                 }`}
               >
-                {f === 'all' ? 'All' : f === 'success' ? 'Successful' : 'Failed'}
+                {f === 'all' ? t('common.all') : f === 'success' ? t('common.success') : t('common.failed')}
                 {f === 'failed' && failedCount > 0 && (
                   <span className="ml-1 text-red-400">({failedCount})</span>
                 )}
@@ -73,7 +73,7 @@ export function LoginActivityLog({
           <button
             onClick={onExport}
             className="p-2 text-zinc-400 hover:text-zinc-100 hover:bg-zinc-800 rounded-lg transition-colors"
-            title="Export activity log"
+            aria-label={t('loginactivitylog.export_activity_log')}
           >
             <Download className="w-5 h-5" />
           </button>

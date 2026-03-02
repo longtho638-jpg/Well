@@ -122,7 +122,8 @@ loginactivitylog: {
     no_login_attempts_found: "Không tìm thấy lần đăng nhập nào",
     recent_sign_in_attempts_to_you: "Các lần đăng nhập gần đây vào tài khoản của bạn",
     status: "Trạng Thái",
-    time: "Thời Gian"
+    time: "Thời Gian",
+    export_activity_log: "Xuất nhật ký đăng nhập"
   },
 sessionmanager: {
     active_now: "Hoạt Động",
@@ -143,7 +144,10 @@ onboardingquest: {
     day_3_30: "Ngày 3/30",
     xp: "XP",
     ai_strategy: "Chiến Lược AI",
-    stuck_ask_your_ai_coach_for_a: "Gặp khó khăn? Hỏi Huấn luyện viên AI của bạn để nhận gợi ý"
+    stuck_ask_your_ai_coach_for_a: "Gặp khó khăn? Hỏi Huấn luyện viên AI của bạn để nhận gợi ý",
+    fallback_advice: "Hãy tiếp tục chia sẻ năng lượng tích cực! Doanh số sẽ đến.",
+    analyzing: "Đang phân tích dữ liệu...",
+    get_ai_advice: "Nhận tư vấn AI"
   },
 profilepage: {
     personal_information: "Thông Tin Cá Nhân",

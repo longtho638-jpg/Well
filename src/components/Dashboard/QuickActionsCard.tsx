@@ -74,9 +74,9 @@ export const QuickActionsCard: React.FC = () => {
       id: 'gift-card',
       label: t('quickactionscard.send_gift_card'),
       icon: Gift,
-      color: 'from-pink-500 to-rose-600',
-      bgColor: 'bg-pink-50',
-      iconColor: 'text-pink-600',
+      bgClass: 'bg-pink-500/10',
+      iconColor: 'text-pink-400',
+      gradient: 'from-pink-500/20 to-rose-600/10',
       onClick: handleSendGiftCard,
       description: t('dashboard.quickActions.shareProductDesc'),
     },
@@ -84,9 +84,9 @@ export const QuickActionsCard: React.FC = () => {
       id: 'health-check',
       label: t('quickactionscard.share_health_check'),
       icon: Heart,
-      color: 'from-red-500 to-pink-600',
-      bgColor: 'bg-red-50',
-      iconColor: 'text-red-600',
+      bgClass: 'bg-red-500/10',
+      iconColor: 'text-red-400',
+      gradient: 'from-red-500/20 to-pink-600/10',
       onClick: handleShareHealthCheck,
       description: t('quickactionscard.share_health_check_desc'),
     },
@@ -94,9 +94,9 @@ export const QuickActionsCard: React.FC = () => {
       id: 'share-achievement',
       label: t('dashboard.quickActions.shareAchievement'),
       icon: Share2,
-      color: 'from-blue-500 to-cyan-600',
-      bgColor: 'bg-blue-50',
-      iconColor: 'text-blue-600',
+      bgClass: 'bg-blue-500/10',
+      iconColor: 'text-blue-400',
+      gradient: 'from-blue-500/20 to-cyan-600/10',
       onClick: handleShareAchievement,
       description: t('dashboard.quickActions.shareAchievementDesc'),
     },
@@ -106,16 +106,16 @@ export const QuickActionsCard: React.FC = () => {
     <motion.div
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
-      className="bg-white dark:bg-slate-800 rounded-2xl border border-gray-100 dark:border-slate-700 shadow-sm p-6"
+      className="bg-zinc-900/50 backdrop-blur-xl rounded-2xl border border-white/5 shadow-sm p-6"
     >
       {/* Header */}
       <div className="flex items-center gap-2 mb-5">
-        <div className="w-8 h-8 bg-gradient-to-br from-[#00575A] to-[#FFBF00] dark:from-teal-600 dark:to-yellow-400 rounded-lg flex items-center justify-center">
+        <div className="w-8 h-8 bg-gradient-to-br from-teal-600 to-yellow-400 rounded-lg flex items-center justify-center">
           <Zap className="w-4 h-4 text-white" />
         </div>
         <div>
-          <h3 className="font-bold text-gray-900 dark:text-slate-100">{t('dashboard.quickActions.title')}</h3>
-          <p className="text-xs text-gray-500 dark:text-slate-400">{t('quickactionscard.c_ng_c_h_tr_kinh_doanh')}</p>
+          <h3 className="font-bold text-white">{t('dashboard.quickActions.title')}</h3>
+          <p className="text-xs text-zinc-400">{t('quickactionscard.c_ng_c_h_tr_kinh_doanh')}</p>
         </div>
       </div>
 
@@ -128,10 +128,7 @@ export const QuickActionsCard: React.FC = () => {
             animate={{ opacity: 1, x: 0 }}
             transition={{ delay: idx * 0.1 }}
             onClick={action.onClick}
-            className="w-full group relative overflow-hidden rounded-xl bg-gradient-to-r hover:shadow-md transition-all duration-300 p-4 text-left"
-            style={{
-              background: `linear-gradient(135deg, ${action.bgColor.replace('bg-', '')} 0%, white 100%)`,
-            }}
+            className={`w-full group relative overflow-hidden rounded-xl bg-gradient-to-r ${action.gradient} hover:shadow-md transition-all duration-300 p-4 text-left`}
           >
             {/* Hover effect overlay */}
             <div className="absolute inset-0 bg-gradient-to-r opacity-0 group-hover:opacity-10 transition-opacity duration-300"
@@ -140,22 +137,22 @@ export const QuickActionsCard: React.FC = () => {
 
             <div className="relative z-10 flex items-center gap-4">
               {/* Icon */}
-              <div className={`w-12 h-12 ${action.bgColor} dark:bg-opacity-20 rounded-xl flex items-center justify-center shrink-0 group-hover:scale-110 transition-transform duration-300`}>
-                <action.icon className={`w-6 h-6 ${action.iconColor} dark:brightness-125`} />
+              <div className={`w-12 h-12 ${action.bgClass} rounded-xl flex items-center justify-center shrink-0 group-hover:scale-110 transition-transform duration-300`}>
+                <action.icon className={`w-6 h-6 ${action.iconColor}`} />
               </div>
 
               {/* Text */}
               <div className="flex-1 min-w-0">
-                <p className="font-semibold text-gray-900 dark:text-slate-100 text-sm md:text-base mb-0.5">
+                <p className="font-semibold text-white text-sm md:text-base mb-0.5">
                   {action.label}
                 </p>
-                <p className="text-xs text-gray-500 dark:text-slate-400 truncate">
+                <p className="text-xs text-zinc-400 truncate">
                   {action.description}
                 </p>
               </div>
 
               {/* Arrow indicator */}
-              <div className="shrink-0 text-gray-400 dark:text-slate-500 group-hover:text-gray-600 dark:group-hover:text-slate-300 group-hover:translate-x-1 transition-all duration-300">
+              <div className="shrink-0 text-zinc-500 group-hover:text-zinc-300 group-hover:translate-x-1 transition-all duration-300">
                 <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
                 </svg>
@@ -170,9 +167,9 @@ export const QuickActionsCard: React.FC = () => {
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ delay: 0.4 }}
-        className="mt-4 pt-4 border-t border-gray-100 dark:border-slate-700"
+        className="mt-4 pt-4 border-t border-white/5"
       >
-        <p className="text-xs text-gray-400 dark:text-slate-500 text-center">
+        <p className="text-xs text-zinc-500 text-center">
           {t('quickactionscard.tip_s_d_ng_c_c_c_ng_c_n')}</p>
       </motion.div>
     </motion.div>

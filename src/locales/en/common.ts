@@ -24,9 +24,16 @@ export const common = {
     error: "An error occurred",
     success: "Success",
     failed: "Failed",
+    all: "All",
+    priority: {
+      high: "High",
+      medium: "Medium",
+      low: "Low"
+    },
     save: "Save",
     cancel: "Cancel",
     close: "Close",
+    chatViaZalo: "Chat with us via Zalo",
     refresh: "Refresh",
     confirm: "Confirm",
     back: "Back",

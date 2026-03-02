@@ -22,8 +22,12 @@ const ToggleSwitch: React.FC<{
     enabled: boolean;
     onChange: (enabled: boolean) => void;
     loading?: boolean;
-}> = ({ enabled, onChange, loading }) => (
+    label?: string;
+}> = ({ enabled, onChange, loading, label }) => (
     <button
+        role="switch"
+        aria-checked={enabled}
+        aria-label={label}
         onClick={() => onChange(!enabled)}
         disabled={loading}
         className={`relative w-12 h-6 rounded-full transition-colors ${enabled ? 'bg-emerald-500' : 'bg-zinc-700'} ${loading ? 'opacity-50' : ''}`}

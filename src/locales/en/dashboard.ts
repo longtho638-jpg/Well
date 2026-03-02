@@ -76,7 +76,8 @@ export const dashboard = {
       title: "Income Streams",
       directSales: "Direct Income",
       teamBonus: "Portfolio Bonus",
-      referral: "Referral Income"
+      referral: "Referral Income",
+      yield: "Yield"
     },
     topProducts: {
       title: "Top Selling Products",

@@ -107,7 +107,10 @@ export const misc = {
     powered_by_gemini_ai: "Powered by Gemini AI",
     stuck_ask_your_ai_coach_for_a: "Stuck? Ask your AI Coach for a hint!",
     the_coach: "The Coach",
-    xp: "XP"
+    xp: "XP",
+    fallback_advice: "Keep sharing your positivity! The sales will follow.",
+    analyzing: "Analyzing sales data...",
+    get_ai_advice: "Get AI Advice"
   },
   sidebar: {
     wellnexus: "WellNexus",

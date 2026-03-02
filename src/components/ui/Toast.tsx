@@ -59,8 +59,9 @@ export function ToastProvider({ children }: { children: React.ReactNode }) {
               
               <p className="flex-1 text-sm font-medium">{toast.message}</p>
               
-              <button 
+              <button
                 onClick={() => removeToast(toast.id)}
+                aria-label="Dismiss"
                 className="text-gray-400 hover:text-gray-600"
               >
                 <X className="w-4 h-4" />

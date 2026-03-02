@@ -76,7 +76,8 @@ dashboard: {
       title: "Nguồn Thu Nhập (Income Streams)",
       directSales: "Direct Income",
       teamBonus: "Portfolio Bonus",
-      referral: "Referral Income"
+      referral: "Referral Income",
+      yield: "Doanh thu"
     },
     topProducts: {
       title: "Sản phẩm bán chạy",

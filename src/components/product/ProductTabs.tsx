@@ -54,7 +54,7 @@ export const ProductTabs: React.FC<Props> = ({ activeTab, setActiveTab, details 
                 })}
             </div>
 
-            <div className="p-16 lg:p-24 bg-zinc-900/20 backdrop-blur-sm min-h-[400px]">
+            <div className="p-6 md:p-16 lg:p-24 bg-zinc-900/20 backdrop-blur-sm min-h-[400px]">
                 <AnimatePresence mode="wait">
                     <motion.div
                         key={activeTab}

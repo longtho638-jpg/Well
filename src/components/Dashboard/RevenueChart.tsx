@@ -15,20 +15,20 @@ export const RevenueChart: React.FC<Props> = ({ data }) => {
   return (
     <motion.div
         initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.4 }}
-        className="col-span-1 lg:col-span-2 bg-white dark:bg-slate-800 p-6 rounded-2xl border border-gray-100 dark:border-slate-700 shadow-sm h-[340px]"
+        className="col-span-1 lg:col-span-2 bg-zinc-900/50 backdrop-blur-xl p-6 rounded-2xl border border-white/5 shadow-sm h-[340px]"
     >
       <div className="flex items-center justify-between mb-6">
         <div>
-            <h3 className="font-bold text-lg text-brand-dark dark:text-slate-100">{t('revenuechart.revenue_growth')}</h3>
-            <p className="text-gray-400 dark:text-slate-500 text-xs mt-0.5">{t('revenuechart.last_7_days_performance')}</p>
+            <h3 className="font-bold text-lg text-white">{t('revenuechart.revenue_growth')}</h3>
+            <p className="text-zinc-500 text-xs mt-0.5">{t('revenuechart.last_7_days_performance')}</p>
         </div>
         {/* Filter Dropdown styled with standard Tailwind forms */}
         <div className="relative">
-            <select className="appearance-none bg-gray-50 dark:bg-slate-700 border border-gray-200 dark:border-slate-600 text-xs font-semibold text-gray-600 dark:text-slate-300 rounded-lg pl-3 pr-8 py-2 outline-none focus:ring-2 focus:ring-brand-primary/20 dark:focus:ring-teal-500/40 cursor-pointer transition-all hover:border-brand-primary/30 dark:hover:border-teal-500/50">
+            <select className="appearance-none bg-zinc-800 border border-zinc-700 text-xs font-semibold text-zinc-300 rounded-lg pl-3 pr-8 py-2 outline-none focus:ring-2 focus:ring-teal-500/40 cursor-pointer transition-all hover:border-teal-500/50">
                 <option>{t('revenuechart.last_7_days')}</option>
                 <option>{t('revenuechart.last_30_days')}</option>
             </select>
-            <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-500 dark:text-slate-400">
+            <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-zinc-400">
                 <svg className="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"/></svg>
             </div>
         </div>

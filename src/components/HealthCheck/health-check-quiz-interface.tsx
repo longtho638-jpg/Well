@@ -115,7 +115,7 @@ export default function HealthCheckQuizInterface({
                     onClick={() => onAnswer(currentQuestion.id, option.value)}
                     whileHover={{ scale: 1.02, x: 10 }}
                     whileTap={{ scale: 0.98 }}
-                    className={`w-full p-6 rounded-2xl border-3 text-left transition-all duration-300 ${
+                    className={`w-full p-6 rounded-2xl border-2 text-left transition-all duration-300 ${
                       answers[currentQuestion.id] === option.value
                         ? 'border-teal-500 bg-gradient-to-r from-teal-500/20 to-teal-600/20 shadow-xl scale-105'
                         : 'border-white/10 bg-white/5 hover:border-teal-500/50 hover:bg-white/10 shadow-md hover:shadow-lg'

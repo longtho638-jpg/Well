@@ -83,7 +83,7 @@ export default function HealthCheckRadarChart({
         </RadarChart>
       </ResponsiveContainer>
 
-      <div className="grid grid-cols-4 gap-4 mt-6">
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mt-6">
         {healthDimensions.map((dim, idx) => (
           <motion.div
             key={dim.dimension}

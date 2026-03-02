@@ -21,7 +21,7 @@ export const ValuationCard: React.FC<ValuationCardProps> = ({ user }) => {
             className="relative overflow-hidden rounded-[3rem] shadow-2xl group"
         >
             <div className="absolute inset-0 bg-gradient-to-br from-amber-400 via-yellow-500 to-orange-600 group-hover:scale-105 transition-transform duration-[2s]" />
-            <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/carbon-fibre.png')] opacity-10 mix-blend-overlay" />
+            <div className="absolute inset-0 bg-gradient-to-br from-white/5 to-transparent opacity-10 mix-blend-overlay" />
 
             <div className="absolute top-0 right-0 w-[40rem] h-[40rem] bg-white/10 rounded-full blur-[100px] -mr-48 -mt-48 animate-pulse" />
             <div className="absolute bottom-0 left-0 w-[30rem] h-[30rem] bg-black/10 rounded-full blur-[80px] -ml-24 -mb-24" />

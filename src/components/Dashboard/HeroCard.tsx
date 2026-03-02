@@ -61,7 +61,7 @@ export const HeroCard: React.FC<Props> = ({ user }) => {
       </div>
 
       {/* Content Container */}
-      <div className="relative z-10 p-12 flex flex-col xl:flex-row justify-between items-end gap-12">
+      <div className="relative z-10 p-6 md:p-12 flex flex-col xl:flex-row justify-between items-end gap-12">
         <div className="flex-1 w-full space-y-10">
           {/* Header & Elite Badges */}
           <div className="space-y-6">
@@ -106,7 +106,7 @@ export const HeroCard: React.FC<Props> = ({ user }) => {
                 transition={{ duration: 2.5, ease: [0.22, 1, 0.36, 1] }}
                 className="h-full bg-gradient-to-r from-teal-500 via-emerald-400 to-amber-400 rounded-lg relative shadow-[0_0_30px_rgba(45,212,191,0.4)]"
               >
-                <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/carbon-fibre.png')] opacity-10" />
+                <div className="absolute inset-0 bg-gradient-to-r from-white/5 to-transparent opacity-10" />
                 <motion.div
                   animate={{ x: ['-100%', '200%'] }}
                   transition={{ duration: 3, repeat: Infinity, ease: "linear" }}
