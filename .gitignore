@@ -45,7 +45,6 @@ firebase-debug.*.log
 .clinerules
 .cursorrules
 .aiderignore
-CLAUDE.md
 
 # Performance reports
 lighthouse-report.json
