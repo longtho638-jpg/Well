@@ -133,10 +133,10 @@ export const financeService = {
                 })
             );
 
-            return formattedTransactions.length > 0 ? formattedTransactions : mockTransactions;
+            return formattedTransactions;
         } catch (error) {
             adminLogger.error('Failed to fetch transactions', error);
-            return mockTransactions;
+            return [];
         }
     },
 

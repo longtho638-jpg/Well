@@ -47,10 +47,9 @@ export function initSentry() {
     // 100% for initial launch to capture all issues, reduce to 10% as traffic grows
     tracesSampleRate: 1.0,
 
-    // Session replay sample rate
-    // 100% for launch phase to understand user journeys and debug issues
-    replaysSessionSampleRate: 1.0, // 100% of sessions
-    replaysOnErrorSampleRate: 1.0, // 100% of sessions with errors
+    // Session replay — reduced to 10% to protect PII on financial pages
+    replaysSessionSampleRate: 0.1,
+    replaysOnErrorSampleRate: 1.0, // Keep 100% for error debugging
 
     // Filter sensitive data
     beforeSend(event) {

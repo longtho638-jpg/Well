@@ -158,18 +158,23 @@ export const walletService = {
      * @returns Promise<void>
      */
     async requestPayout(userId: string, amount: number): Promise<void> {
+        // Server-side validation: amount must be positive integer, capped at safe limit
+        if (!Number.isFinite(amount) || amount <= 0 || !Number.isInteger(amount)) {
+            throw new Error('Invalid payout amount: must be a positive integer');
+        }
+        if (amount > 500_000_000) {
+            throw new Error('Payout amount exceeds maximum limit');
+        }
+
         walletLogger.info(`Initiating payout request: ${amount} VND for user ${userId}`);
 
-        // Insert into payout_requests table
-        const { error } = await supabase
-            .from('transactions')
-            .insert({
-                user_id: userId,
-                amount: amount,
-                type: 'Withdrawal',
-                status: 'pending',
-                currency: 'SHOP'
-            });
+        // Use RPC for server-side balance validation (RLS + stored proc enforce constraints)
+        const { error } = await supabase.rpc('create_withdrawal_request', {
+            p_amount: amount,
+            p_bank_name: 'wallet_payout',
+            p_bank_account_number: 'internal',
+            p_bank_account_name: 'internal',
+        });
 
         if (error) {
             walletLogger.error('Payout request failed', error);

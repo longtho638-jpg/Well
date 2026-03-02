@@ -43,8 +43,8 @@ export function useAuth() {
   const { setUser, setIsAuthenticated, setInitialized, fetchRealData, fetchUserFromDB } = useStore();
 
   useEffect(() => {
-    // 1. Check for mock session first (allows E2E tests to bypass Supabase even if configured)
-    const hasMockSession = localStorage.getItem('wellnexus_mock_session') === 'true';
+    // 1. Check for mock session first (DEV only — prevents production auth bypass)
+    const hasMockSession = import.meta.env.DEV && localStorage.getItem('wellnexus_mock_session') === 'true';
 
     if (hasMockSession) {
       authLogger.info('Restoring mock session from localStorage');
@@ -116,8 +116,8 @@ export function useAuth() {
         return { data: { user, session: { access_token: 'demo-token' } }, error: null };
       }
 
-      // DEV MODE: Return mock success when Supabase not configured
-      if (!isSupabaseConfigured()) {
+      // DEV MODE: Return mock success when Supabase not configured (DEV only)
+      if (import.meta.env.DEV && !isSupabaseConfigured()) {
         authLogger.debug('Dev mode - using mock login for:', email);
         const user = { ...MOCK_USER, email };
         setUser(user);

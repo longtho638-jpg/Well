@@ -81,6 +81,13 @@ export function useSubscriptionPageBillingAndPlans() {
         planId: plan.id,
         billingCycle,
       });
+      // Validate checkout URL before redirect (prevent open redirect)
+      try {
+        const url = new URL(checkoutUrl);
+        if (!['https:', 'http:'].includes(url.protocol)) throw new Error('Invalid protocol');
+      } catch {
+        throw new Error('Invalid checkout URL');
+      }
       window.location.href = checkoutUrl;
     } catch {
       setUpgrading(null);
