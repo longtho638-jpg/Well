@@ -3,8 +3,7 @@
    "The Void" Aesthetic
    ============================================ */
 
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
-@import url('https://api.fontshare.com/v2/css?f[]=clash-display@500,600,700&display=swap');
+/* Fonts loaded in index.css — no duplicate imports here */
 
 /* MD3 Design Tokens */
 @import './md3-tokens.css';
@@ -86,7 +85,7 @@
 body {
   background-color: var(--bg-void);
   color: var(--text-primary);
-  font-family: 'Inter', sans-serif;
+  font-family: var(--font-body, 'Inter', sans-serif);
   -webkit-font-smoothing: antialiased;
   selection-background-color: var(--accent-cyan);
   selection-color: var(--bg-void);
