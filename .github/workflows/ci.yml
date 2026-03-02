@@ -65,3 +65,79 @@ jobs:
           name: build-artifacts
           path: dist/
           retention-days: 7
+
+  e2e:
+    name: E2E Tests (Chromium)
+    runs-on: ubuntu-latest
+    needs: test
+    timeout-minutes: 10
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 9
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile || pnpm install
+
+      - name: Install Playwright browsers
+        run: pnpm exec playwright install --with-deps chromium
+
+      - name: Run E2E tests
+        run: pnpm exec playwright test --project=chromium
+
+      - name: Upload E2E report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: e2e-report
+          path: playwright-report/
+          retention-days: 7
+
+  smoke-test:
+    name: Post-Deploy Smoke Test
+    runs-on: ubuntu-latest
+    needs: test
+    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+    timeout-minutes: 5
+
+    steps:
+      - name: Wait for Vercel deployment
+        run: sleep 60
+
+      - name: Smoke test production
+        run: |
+          MAX_ATTEMPTS=5
+          ATTEMPT=0
+          PROD_URL="https://wellnexus.vn"
+          while [ $ATTEMPT -lt $MAX_ATTEMPTS ]; do
+            ATTEMPT=$((ATTEMPT + 1))
+            HTTP_STATUS=$(curl -sI "$PROD_URL" -o /dev/null -w "%{http_code}" --max-time 10 || echo "000")
+            echo "Attempt $ATTEMPT/$MAX_ATTEMPTS: HTTP $HTTP_STATUS"
+            if [ "$HTTP_STATUS" = "200" ]; then
+              echo "✅ Production GREEN — HTTP 200"
+              exit 0
+            fi
+            sleep 15
+          done
+          echo "❌ Production DOWN after $MAX_ATTEMPTS attempts"
+          exit 1
+
+      - name: Notify success
+        if: success()
+        run: |
+          echo "✅ Deploy SUCCESS: wellnexus.vn is live and responding HTTP 200"
+
+      - name: Notify failure
+        if: failure()
+        run: |
+          echo "❌ Deploy FAILED: wellnexus.vn is not responding"

@@ -4,6 +4,7 @@
  */
 
 import { captureException } from './performance';
+import { csrfToken } from './security-csrf-token-generator-and-session-store';
 
 // ============================================================================
 // API CONFIGURATION
@@ -60,10 +61,14 @@ class ApiClient {
         this.authToken = token;
     }
 
-    private getHeaders(): Record<string, string> {
+    private getHeaders(method: string): Record<string, string> {
         const headers = { ...this.config.headers };
         if (this.authToken) {
             headers['Authorization'] = `Bearer ${this.authToken}`;
+        }
+        // CSRF token for state-changing requests (defense-in-depth)
+        if (method !== 'GET' && method !== 'HEAD') {
+            headers['X-CSRF-Token'] = csrfToken.get();
         }
         return headers;
     }
@@ -79,7 +84,7 @@ class ApiClient {
         try {
             const response = await fetch(`${this.config.baseUrl}${endpoint}`, {
                 method,
-                headers: this.getHeaders(),
+                headers: this.getHeaders(method),
                 body: body ? JSON.stringify(body) : undefined,
                 signal: controller.signal,
             });

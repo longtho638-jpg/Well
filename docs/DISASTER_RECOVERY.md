@@ -453,6 +453,115 @@ notifications (user alerts)
 
 ---
 
-**Document Version:** 1.0
+---
+
+## Cost Estimates & Budget Alerts
+
+### Monthly Infrastructure Costs
+
+| Service | Plan | Monthly Cost | Notes |
+|---------|------|-------------|-------|
+| **Supabase** | Pro | $25/mo | 8GB DB, 250GB bandwidth, daily backups |
+| **Vercel** | Pro | $20/mo | Unlimited deploys, analytics, preview |
+| **Resend** | Free→Pro | $0-20/mo | 100/day free, 50k/mo on Pro |
+| **Sentry** | Developer | $0/mo | 5k errors/mo free |
+| **PayOS** | Standard | Transaction fees | 1.1% per transaction |
+| **Domain** | wellnexus.vn | $12/yr (~$1/mo) | Annual renewal |
+| **TOTAL** | | **~$46-66/mo** | Scales with usage |
+
+### Budget Alert Thresholds
+
+| Trigger | Threshold | Action |
+|---------|-----------|--------|
+| Supabase DB size | > 6GB (75%) | Evaluate data archival |
+| Supabase bandwidth | > 200GB (80%) | Check for abuse, optimize queries |
+| Vercel bandwidth | > 800GB (80%) | Review image sizes, enable CDN cache |
+| Sentry errors | > 4k/mo (80%) | Triage error flood, fix top issues |
+| PayOS volume | > 100 tx/day | Review for fraud patterns |
+
+### Scaling Triggers
+
+| Metric | Current | Scale At | Action |
+|--------|---------|----------|--------|
+| Users | ~100 | 1,000 | Upgrade Supabase to Team plan |
+| DB size | ~500MB | 4GB | Enable read replicas |
+| API calls | ~1k/day | 10k/day | Add edge caching layer |
+| Build time | ~11s | 30s | Split into micro-frontends |
+
+---
+
+## Alert Thresholds & Monitoring
+
+### Sentry Alert Rules (Production)
+
+| Alert | Condition | Severity | Notify |
+|-------|-----------|----------|--------|
+| Error spike | > 5% error rate in 5min | CRITICAL | Slack + Email |
+| New error type | First occurrence | HIGH | Slack |
+| Performance P95 | Response > 3s | HIGH | Email |
+| Session crash | > 1% crash rate | CRITICAL | Slack + Email |
+| Replay trigger | User rage-click (3+ clicks in 2s) | MEDIUM | Slack |
+
+### Uptime Monitoring Setup
+
+**Provider:** UptimeRobot (Free tier: 50 monitors, 5min intervals)
+
+| Monitor | URL | Interval | Alert |
+|---------|-----|----------|-------|
+| Homepage | https://wellnexus.vn | 5min | Email + Slack |
+| API Health | https://wellnexus.vn/api/health | 5min | Email + Slack |
+| Login Page | https://wellnexus.vn/login | 15min | Email |
+
+### Web Vitals Thresholds (Lighthouse CI)
+
+| Metric | Good | Needs Work | Poor |
+|--------|------|-----------|------|
+| LCP | < 2.5s | 2.5-4s | > 4s |
+| FID/INP | < 100ms | 100-300ms | > 300ms |
+| CLS | < 0.1 | 0.1-0.25 | > 0.25 |
+| FCP | < 1.8s | 1.8-3s | > 3s |
+
+---
+
+## Quarterly DR Drill Checklist
+
+### Q2 2026 Drill (Due: 2026-06-01)
+
+**Pre-Drill:**
+- [ ] Schedule 2-hour window with team
+- [ ] Prepare isolated staging environment
+- [ ] Export latest production backup
+
+**Database Restore Drill (60 min):**
+- [ ] Download latest Supabase backup
+- [ ] Restore to staging PostgreSQL instance
+- [ ] Verify table counts match production (±24h)
+- [ ] Run critical queries: users, transactions, orders
+- [ ] Test application login against restored DB
+- [ ] Document actual restore time: _____ minutes
+- [ ] Compare against RTO target (4 hours): PASS/FAIL
+
+**Deployment Failover Drill (30 min):**
+- [ ] Build project locally: `pnpm run build`
+- [ ] Deploy dist/ to secondary platform (Netlify/CF Pages)
+- [ ] Verify HTTP 200 on secondary URL
+- [ ] Test login + dashboard + marketplace flows
+- [ ] Document actual failover time: _____ minutes
+
+**Communication Drill (15 min):**
+- [ ] Send test incident notification to team Slack
+- [ ] Verify all team members received notification
+- [ ] Test escalation path (L1 → L2 → L3)
+
+**Post-Drill:**
+- [ ] Document findings in `plans/reports/dr-drill-YYMMDD.md`
+- [ ] Update procedures if any gaps found
+- [ ] Schedule next drill date
+- [ ] Update this checklist for next quarter
+
+---
+
+**Document Version:** 2.0
+**Last Updated:** 2026-03-02
 **Approval:** Pending
-**Next Review:** 2026-05-02
+**Next Review:** 2026-06-02
