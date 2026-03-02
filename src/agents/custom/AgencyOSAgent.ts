@@ -1,8 +1,6 @@
 /**
- * AgencyOS Command Agent (Refactored)
+ * AgencyOS Command Agent
  * Integrates 85+ AgencyOS slash commands into WellNexus Agent-OS.
- * 
- * Logic and definitions moved to commandDefinitions.ts for better maintainability.
  */
 
 import { BaseAgent } from '../core/BaseAgent';
@@ -14,28 +12,14 @@ import {
     commandStore,
     generateCommandOutput
 } from './commandDefinitions';
+import {
+    CommandExecutionResult,
+    CommandHistoryEntry,
+    executeAgencyOSCommand,
+} from './agency-os-agent-internal-types';
 
 export type { AgencyOSCategory, AgencyOSCommand };
 export { AGENCYOS_COMMANDS, commandStore, generateCommandOutput };
-
-// Types for internal tracking
-interface CommandExecutionResult {
-    success: boolean;
-    command: string;
-    description?: string;
-    category?: string;
-    executedAt?: string;
-    message?: string;
-    output?: string;
-    error?: string;
-    suggestion?: AgencyOSCommand[];
-}
-
-interface CommandHistoryEntry {
-    command: string;
-    timestamp: string;
-    result: CommandExecutionResult | null;
-}
 
 export class AgencyOSAgent extends BaseAgent {
     private commandHistory: CommandHistoryEntry[] = [];
@@ -123,7 +107,7 @@ export class AgencyOSAgent extends BaseAgent {
             switch (action) {
                 case 'executeCommand': {
                     if (!command) throw new Error('Command identifier is required');
-                    const output = await this.executeAgencyOSCommand(command, context);
+                    const output = await executeAgencyOSCommand(command, this.commandHistory, context);
                     this.log(action, input, output);
 
                     if (output.success) {
@@ -184,45 +168,6 @@ export class AgencyOSAgent extends BaseAgent {
             this.log(action, input, errorOutput);
             return errorOutput;
         }
-    }
-
-    /**
-     * Execute a specific AgencyOS command (Simulation)
-     */
-    private async executeAgencyOSCommand(
-        command: string,
-        context?: Record<string, unknown>
-    ): Promise<CommandExecutionResult> {
-        const normalizedCommand = command.startsWith('/') ? command : `/${command}`;
-
-        const commandInfo = commandStore.find(normalizedCommand);
-        if (!commandInfo) {
-            return {
-                success: false,
-                command: normalizedCommand,
-                error: `Unknown command: ${normalizedCommand}`,
-                suggestion: commandStore.search(normalizedCommand.replace('/', '')),
-            };
-        }
-
-        const executionTimestamp = new Date().toISOString();
-        const result: CommandExecutionResult = {
-            success: true,
-            command: normalizedCommand,
-            description: commandInfo.description,
-            category: commandInfo.category,
-            executedAt: executionTimestamp,
-            message: `✅ Command ${normalizedCommand} executed successfully.`,
-            output: generateCommandOutput(normalizedCommand, context),
-        };
-
-        this.commandHistory.push({
-            command: normalizedCommand,
-            timestamp: executionTimestamp,
-            result,
-        });
-
-        return result;
     }
 
     /**

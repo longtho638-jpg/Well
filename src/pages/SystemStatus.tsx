@@ -2,100 +2,16 @@ import { useState, useEffect, useCallback } from 'react';
 import { motion } from 'framer-motion';
 import { ArrowLeft } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
-import { createLogger } from '@/utils/logger';
-import { supabase, isSupabaseConfigured } from '@/lib/supabase';
-
-const statusLogger = createLogger('SystemStatus');
-
-type CheckStatus = 'checking' | 'healthy' | 'degraded' | 'down';
-
-interface HealthCheckItem {
-  id: string;
-  label: string;
-  status: CheckStatus;
-  detail: string;
-  latency?: number;
-}
-
-function StatusDot({ status }: { status: CheckStatus }) {
-  const colorMap: Record<CheckStatus, string> = {
-    checking: 'bg-zinc-400 animate-pulse',
-    healthy: 'bg-emerald-400 shadow-emerald-400/50 shadow-lg',
-    degraded: 'bg-amber-400 shadow-amber-400/50 shadow-lg',
-    down: 'bg-red-400 shadow-red-400/50 shadow-lg',
-  };
-
-  return <span className={`inline-block w-3 h-3 rounded-full ${colorMap[status]}`} />;
-}
-
-function StatusLabel({ status }: { status: CheckStatus }) {
-  const labelMap: Record<CheckStatus, { text: string; color: string }> = {
-    checking: { text: 'Checking...', color: 'text-zinc-400' },
-    healthy: { text: 'Healthy', color: 'text-emerald-400' },
-    degraded: { text: 'Degraded', color: 'text-amber-400' },
-    down: { text: 'Down', color: 'text-red-400' },
-  };
-
-  const item = labelMap[status];
-  return <span className={`text-xs font-semibold uppercase tracking-wider ${item.color}`}>{item.text}</span>;
-}
-
-async function checkSupabase(): Promise<Pick<HealthCheckItem, 'status' | 'detail' | 'latency'>> {
-  if (!isSupabaseConfigured()) {
-    return { status: 'degraded', detail: 'Supabase not configured (using mock data)' };
-  }
-
-  const start = performance.now();
-  try {
-    const { error } = await supabase.auth.getSession();
-    const latency = Math.round(performance.now() - start);
-
-    if (error) {
-      statusLogger.warn('Supabase auth check returned error', { error: error.message });
-      return { status: 'degraded', detail: error.message, latency };
-    }
-
-    statusLogger.info('Supabase connection healthy', { latency });
-    return { status: 'healthy', detail: `Connected (${latency}ms)`, latency };
-  } catch (err) {
-    const latency = Math.round(performance.now() - start);
-    const message = err instanceof Error ? err.message : 'Unknown error';
-    statusLogger.error('Supabase connection failed', { error: message });
-    return { status: 'down', detail: message, latency };
-  }
-}
-
-function checkLocalStorage(): Pick<HealthCheckItem, 'status' | 'detail'> {
-  try {
-    const testKey = '__well_health_check__';
-    localStorage.setItem(testKey, '1');
-    const value = localStorage.getItem(testKey);
-    localStorage.removeItem(testKey);
-
-    if (value !== '1') {
-      statusLogger.warn('LocalStorage read/write mismatch');
-      return { status: 'degraded', detail: 'Read/write mismatch' };
-    }
-
-    const usedKeys = Object.keys(localStorage).length;
-    statusLogger.info('LocalStorage healthy', { usedKeys });
-    return { status: 'healthy', detail: `Available (${usedKeys} keys stored)` };
-  } catch (err) {
-    const message = err instanceof Error ? err.message : 'Unknown error';
-    statusLogger.error('LocalStorage unavailable', { error: message });
-    return { status: 'down', detail: message };
-  }
-}
-
-function checkNetwork(): Pick<HealthCheckItem, 'status' | 'detail'> {
-  const online = navigator.onLine;
-  if (online) {
-    statusLogger.info('Network online');
-    return { status: 'healthy', detail: 'Online' };
-  }
-  statusLogger.warn('Network offline');
-  return { status: 'down', detail: 'Offline' };
-}
+import {
+  HealthCheckItem,
+  CheckStatus,
+  checkSupabase,
+  checkLocalStorage,
+  checkNetwork,
+  deriveOverallStatus,
+  statusLogger,
+} from './system-status/system-status-health-check-utils';
+import { StatusDot, StatusLabel } from './system-status/system-status-indicator-components';
 
 export default function SystemStatus() {
   const navigate = useNavigate();
@@ -156,13 +72,7 @@ export default function SystemStatus() {
     };
   }, [runChecks]);
 
-  const overallStatus: CheckStatus = checks.some(c => c.status === 'down')
-    ? 'down'
-    : checks.some(c => c.status === 'degraded')
-      ? 'degraded'
-      : checks.every(c => c.status === 'healthy')
-        ? 'healthy'
-        : 'checking';
+  const overallStatus: CheckStatus = deriveOverallStatus(checks);
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-zinc-950 via-zinc-900 to-zinc-950 p-6">

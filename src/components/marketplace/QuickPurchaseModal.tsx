@@ -1,12 +1,10 @@
-import React, { useState, useEffect, useMemo, useRef } from 'react';
+import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { X, Heart, ShoppingBag, Clock, Star, ArrowRight, Check } from 'lucide-react';
-import { useStore } from '@/store';
-import { Product } from '@/types';
 import { formatVND } from '@/utils/format';
 import { useTranslation } from '@/hooks';
 import { useNavigate } from 'react-router-dom';
-import { uiLogger } from '@/utils/logger';
+import { useQuickPurchaseFavoritesAndOrder } from './use-quick-purchase-favorites-and-order';
 
 interface QuickPurchaseModalProps {
   isOpen: boolean;
@@ -18,86 +16,17 @@ type TabType = 'recent' | 'favorites';
 export const QuickPurchaseModal: React.FC<QuickPurchaseModalProps> = ({ isOpen, onClose }) => {
   const { t } = useTranslation();
   const navigate = useNavigate();
-  const { transactions, products, simulateOrder } = useStore();
-
   const [activeTab, setActiveTab] = useState<TabType>('recent');
-  const [favorites, setFavorites] = useState<string[]>([]);
-  const [processingId, setProcessingId] = useState<string | null>(null);
-  const processingTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
-
-  // Cleanup timers on unmount
-  useEffect(() => {
-    return () => {
-      if (processingTimerRef.current) clearTimeout(processingTimerRef.current);
-    };
-  }, []);
-
-  // Load favorites from localStorage
-  useEffect(() => {
-    const saved = localStorage.getItem('wellnexus_favorites');
-    if (saved) {
-      try {
-        setFavorites(JSON.parse(saved));
-      } catch (e) {
-        uiLogger.error('Failed to parse favorites', e);
-      }
-    }
-  }, []);
-
-  // Toggle favorite
-  const toggleFavorite = (productId: string) => {
-    const newFavorites = favorites.includes(productId)
-      ? favorites.filter(id => id !== productId)
-      : [...favorites, productId];
-
-    setFavorites(newFavorites);
-    localStorage.setItem('wellnexus_favorites', JSON.stringify(newFavorites));
-  };
-
-  // Derived Data: Recent Products
-  const recentProducts = useMemo(() => {
-    // Extract product IDs from transaction metadata
-    const recentIds = new Set<string>();
-    transactions.forEach(tx => {
-      if (tx.type === 'Direct Sale' && tx.metadata?.product_id) {
-        recentIds.add(String(tx.metadata.product_id));
-      }
-    });
-
-    // Map to actual product objects
-    return Array.from(recentIds)
-      .map(id => products.find(p => p.id === id))
-      .filter((p): p is Product => !!p)
-      .slice(0, 6); // Limit to 6 recent items
-  }, [transactions, products]);
-
-  // Derived Data: Favorite Products
-  const favoriteProducts = useMemo(() => {
-    return favorites
-      .map(id => products.find(p => p.id === id))
-      .filter((p): p is Product => !!p);
-  }, [favorites, products]);
+  const {
+      favorites,
+      processingId,
+      recentProducts,
+      favoriteProducts,
+      toggleFavorite,
+      handleBuyNow,
+  } = useQuickPurchaseFavoritesAndOrder();
 
   const displayProducts = activeTab === 'recent' ? recentProducts : favoriteProducts;
-
-  const handleBuyNow = async (product: Product) => {
-    setProcessingId(product.id);
-    try {
-      // Simulate rapid checkout
-      await new Promise(r => setTimeout(r, 1000));
-      await simulateOrder(product.id);
-      // Optional: Navigate to wallet or show toast?
-      // For "Quick Purchase", staying in context is usually better, maybe show success state then close.
-      if (processingTimerRef.current) clearTimeout(processingTimerRef.current);
-      processingTimerRef.current = setTimeout(() => {
-        setProcessingId(null);
-        // onClose(); // Optional: close on success
-      }, 1000);
-    } catch (error) {
-      uiLogger.error('Purchase failed', error);
-      setProcessingId(null);
-    }
-  };
 
   return (
     <AnimatePresence>

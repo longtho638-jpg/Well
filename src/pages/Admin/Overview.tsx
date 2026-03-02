@@ -12,10 +12,6 @@ import {
   Bot,
   Sparkles,
   ShieldAlert,
-  TrendingUp,
-  Clock,
-  UserCheck,
-  Wallet,
   Zap,
   RefreshCw,
   Settings
@@ -23,120 +19,12 @@ import {
 import { AreaChart, Area, ResponsiveContainer } from 'recharts';
 
 // Hooks & Utils
-import { useAdminOverview, AIAction } from '@/hooks/useAdminOverview';
+import { useAdminOverview } from '@/hooks/useAdminOverview';
 import { formatVND } from '@/utils/format';
 import { useToast } from '@/components/ui/Toast';
 import { useTranslation } from '@/hooks';
-
-// ============================================================
-// SUB-COMPONENTS
-// ============================================================
-
-const Counter: React.FC<{ value: number; format?: (val: number) => string }> = ({ value, format }) => {
-  const [count, setCount] = React.useState(0);
-
-  React.useEffect(() => {
-    const duration = 2000;
-    const steps = 60;
-    const increment = value / steps;
-    let current = 0;
-
-    const timer = setInterval(() => {
-      current += increment;
-      if (current >= value) {
-        setCount(value);
-        clearInterval(timer);
-      } else {
-        setCount(Math.floor(current));
-      }
-    }, duration / steps);
-
-    return () => clearInterval(timer);
-  }, [value]);
-
-  return <>{format ? format(count) : count}</>;
-};
-
-const MetricCard: React.FC<{ label: string; value: string; numericValue?: number; trend: string; icon: React.ElementType; color: string; index: number }> = ({ label, value, numericValue, trend, icon: Icon, color, index }) => (
-  <motion.div
-    initial={{ opacity: 0, y: 20 }}
-    animate={{ opacity: 1, y: 0 }}
-    transition={{ delay: index * 0.1, duration: 0.5 }}
-    whileHover={{ y: -8, scale: 1.02 }}
-    className="bg-white dark:bg-zinc-900 border border-zinc-100 dark:border-white/5 p-8 rounded-[2.5rem] shadow-sm relative overflow-hidden group"
-  >
-    <div className="absolute top-0 right-0 p-8 opacity-5 group-hover:scale-110 transition-transform duration-500">
-      <Icon size={120} />
-    </div>
-    <div className="relative z-10 space-y-4">
-      <div className="flex items-center gap-3">
-        <div className={`p-3 rounded-2xl border ${color}`}>
-          <Icon size={20} />
-        </div>
-        <span className="text-[10px] font-black uppercase tracking-[0.2em] text-zinc-500">{label}</span>
-      </div>
-      <div className="space-y-1">
-        <p className="text-3xl font-black text-zinc-900 dark:text-white tracking-tighter">
-          {numericValue !== undefined ? <Counter value={numericValue} format={(val) => value.replace(/[\d,.]+/, val.toLocaleString('vi-VN'))} /> : value}
-        </p>
-        <div className="flex items-center gap-1.5 text-emerald-500 text-[10px] font-black uppercase tracking-widest">
-          <TrendingUp size={12} />
-          {trend}
-        </div>
-      </div>
-    </div>
-  </motion.div>
-);
-
-const AIActionItem: React.FC<{ action: AIAction; onAction: (id: string, decision: 'approve' | 'reject') => void }> = ({ action, onAction }) => {
-    const { t } = useTranslation();
-  const icons = {
-    kyc: UserCheck,
-    withdrawal: Wallet,
-    fraud: ShieldAlert,
-    policy: Activity
-  };
-  const Icon = icons[action.type];
-
-  return (
-    <motion.div
-      layout
-      initial={{ opacity: 0, scale: 0.95 }}
-      animate={{ opacity: 1, scale: 1 }}
-      className="p-6 bg-zinc-50 dark:bg-zinc-800/50 border border-zinc-100 dark:border-white/5 rounded-3xl group hover:border-[#00575A]/30 transition-all"
-    >
-      <div className="flex items-start gap-4">
-        <div className={`p-4 rounded-2xl ${action.priority === 'high' ? 'bg-rose-500/10 text-rose-500 border-rose-500/20' : 'bg-[#00575A]/10 text-[#00575A] border-[#00575A]/20'} border`}>
-          <Icon size={24} />
-        </div>
-        <div className="flex-1 space-y-3">
-          <div className="flex justify-between items-start">
-            <div>
-              <h4 className="font-black text-zinc-900 dark:text-white uppercase tracking-tight">{action.title}</h4>
-              <p className="text-xs text-zinc-500 font-medium mt-1 uppercase tracking-widest flex items-center gap-1.5"><Clock size={10} /> {action.timestamp}</p>
-            </div>
-            <span className={`px-3 py-1 text-[9px] font-black uppercase tracking-widest rounded-lg ${action.priority === 'high' ? 'bg-rose-500 text-white shadow-lg shadow-rose-500/20' : 'bg-zinc-200 dark:bg-zinc-700 text-zinc-500'}`}>
-              {action.priority} {t('overview.risk')}</span>
-          </div>
-          <p className="text-sm text-zinc-600 dark:text-zinc-400 font-medium leading-relaxed">"{action.description}"</p>
-
-          {/* Confidence Meter */}
-          <div className="flex items-center gap-4">
-            <div className="flex-1 h-1.5 bg-zinc-200 dark:bg-zinc-700 rounded-full overflow-hidden">
-              <motion.div initial={{ width: 0 }} animate={{ width: `${action.aiConfidence}%` }} className="h-full bg-[#00575A]" />
-            </div>
-            <span className="text-[10px] font-black text-[#00575A] uppercase tracking-tighter">{t('overview.ai')}{action.aiConfidence}{t('overview.confident')}</span>
-          </div>
-
-          <div className="flex gap-2 pt-2">
-            <button onClick={() => onAction(action.id, 'approve')} className="flex-1 bg-[#00575A] text-white py-3 rounded-2xl font-black uppercase tracking-widest text-[10px] shadow-lg shadow-teal-500/20 hover:scale-[1.02] transition-all">{t('overview.resolve')}</button>
-            <button onClick={() => onAction(action.id, 'reject')} className="flex-1 bg-zinc-100 dark:bg-zinc-800 text-zinc-500 py-3 rounded-2xl font-black uppercase tracking-widest text-[10px] border border-zinc-200 dark:border-white/5">{t('overview.reject')}</button>
-          </div>
-        </div>
-      </div>
-    </motion.div>
-  );
-};
+import { MetricCard } from './overview-animated-metric-cards';
+import { AIActionItem } from './overview-ai-action-item';
 
 // ============================================================
 // MAIN PAGE

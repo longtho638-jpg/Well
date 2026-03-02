@@ -1,11 +1,13 @@
-/**
- * useAgentChat - Vercel AI SDK useChat-inspired hook for agent conversations.
- * Manages messages, SSE streaming, loading state, error, submit, abort, reload.
- */
+/** useAgentChat — hook for agent SSE streaming conversations. */
 
 import { useState, useCallback, useRef } from 'react';
 import { supabase } from '@/lib/supabase';
 import type { AgentMessage } from '@/types/agent-chat-types';
+import {
+  fetchAgentChatContent,
+  generateMessageId,
+  nowIso,
+} from './use-agent-chat-sse-stream-parser';
 
 export type { AgentMessage };
 
@@ -30,63 +32,6 @@ interface UseAgentChatReturn {
   append: (message: Omit<AgentMessage, 'id' | 'timestamp'>) => void;
 }
 
-function generateId(): string {
-  return `${Date.now()}-${Math.random().toString(36).slice(2, 9)}`;
-}
-
-function nowIso(): string {
-  return new Date().toISOString();
-}
-
-async function parseSSEStream(
-  body: ReadableStream<Uint8Array>,
-  onToken: (token: string) => void,
-  signal: AbortSignal
-): Promise<string> {
-  const reader = body.getReader();
-  const decoder = new TextDecoder();
-  let fullContent = '';
-  let buffer = '';
-
-  try {
-    while (true) {
-      if (signal.aborted) break;
-      const { done, value } = await reader.read();
-      if (done) break;
-
-      buffer += decoder.decode(value, { stream: true });
-      const lines = buffer.split('\n');
-      buffer = lines.pop() ?? '';
-
-      for (const line of lines) {
-        const trimmed = line.trim();
-        if (!trimmed || trimmed === 'data: [DONE]') continue;
-        if (trimmed.startsWith('data:')) {
-          const jsonStr = trimmed.slice(5).trim();
-          try {
-            const parsed = JSON.parse(jsonStr) as Record<string, unknown>;
-            const token =
-              (parsed['content'] as string) ??
-              (parsed['text'] as string) ??
-              (parsed['delta'] as string) ??
-              '';
-            if (token) {
-              fullContent += token;
-              onToken(token);
-            }
-          } catch {
-            // Non-JSON SSE line — skip
-          }
-        }
-      }
-    }
-  } finally {
-    reader.releaseLock();
-  }
-
-  return fullContent;
-}
-
 export function useAgentChat(options: UseAgentChatOptions): UseAgentChatReturn {
   const { agentId, systemPrompt, initialMessages = [], onFinish, onError } = options;
 
@@ -106,7 +51,7 @@ export function useAgentChat(options: UseAgentChatOptions): UseAgentChatReturn {
       setIsLoading(true);
       setError(null);
 
-      const assistantId = generateId();
+      const assistantId = generateMessageId();
       const assistantPlaceholder: AgentMessage = {
         id: assistantId,
         role: 'assistant',
@@ -122,48 +67,21 @@ export function useAgentChat(options: UseAgentChatOptions): UseAgentChatReturn {
         const { data: sessionData } = await supabase.auth.getSession();
         const accessToken = sessionData.session?.access_token ?? '';
 
-        const response = await fetch(
-          `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/agent-chat`,
-          {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-              Authorization: `Bearer ${accessToken}`,
-            },
-            body: JSON.stringify({ agentId, messages: history, systemPrompt }),
-            signal: controller.signal,
-          }
-        );
-
-        if (!response.ok) {
-          throw new Error(`Agent chat request failed: ${response.status} ${response.statusText}`);
-        }
-
-        let finalContent = '';
-
-        if (response.body) {
-          finalContent = await parseSSEStream(
-            response.body,
-            (token) => {
-              setMessages(prev =>
-                prev.map(m =>
-                  m.id === assistantId
-                    ? { ...m, content: m.content + token }
-                    : m
-                )
-              );
-            },
-            controller.signal
-          );
-        } else {
-          // Non-streaming fallback: parse JSON body
-          const json = (await response.json()) as Record<string, unknown>;
-          finalContent =
-            (json['content'] as string) ??
-            (json['message'] as string) ??
-            (json['text'] as string) ??
-            '';
-        }
+        const finalContent = await fetchAgentChatContent({
+          agentId,
+          systemPrompt,
+          history,
+          controller,
+          accessToken,
+          supabaseUrl: import.meta.env.VITE_SUPABASE_URL as string,
+          onToken: (token) => {
+            setMessages(prev =>
+              prev.map(m =>
+                m.id === assistantId ? { ...m, content: m.content + token } : m
+              )
+            );
+          },
+        });
 
         const finishedMessage: AgentMessage = {
           id: assistantId,
@@ -211,7 +129,7 @@ export function useAgentChat(options: UseAgentChatOptions): UseAgentChatReturn {
       if (!trimmed || isLoading) return;
 
       const userMessage: AgentMessage = {
-        id: generateId(),
+        id: generateMessageId(),
         role: 'user',
         content: trimmed,
         agentId,
@@ -258,7 +176,7 @@ export function useAgentChat(options: UseAgentChatOptions): UseAgentChatReturn {
     (message: Omit<AgentMessage, 'id' | 'timestamp'>) => {
       const full: AgentMessage = {
         ...message,
-        id: generateId(),
+        id: generateMessageId(),
         timestamp: nowIso(),
       };
       setMessages(prev => [...prev, full]);

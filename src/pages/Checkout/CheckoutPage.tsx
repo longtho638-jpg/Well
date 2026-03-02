@@ -1,152 +1,26 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useCartStore } from '../../store/cartStore';
 import { CartSummary } from '../../components/checkout/CartSummary';
 import { GuestForm } from '../../components/checkout/GuestForm';
-import { GuestInfoValues } from '../../utils/validation/checkoutSchema';
 import { ArrowLeft, CreditCard, Loader2, QrCode, Banknote } from 'lucide-react';
-import { orderService } from '../../services/orderService';
-import { sendOrderConfirmationEmail } from '../../services/email-service';
-import { useToast } from '../../components/ui/Toast';
-import { uiLogger } from '../../utils/logger';
-import { OrderPayload, PaymentMethod } from '../../types/checkout';
 import { useTranslation } from '@/hooks';
-import { createPayment, PaymentResponse } from '../../services/payment/payos-client';
 import { QRPaymentModal } from '../../components/checkout/qr-payment-modal';
+import { useCheckoutPagePaymentHandler } from './use-checkout-page-payment-handler';
 
 export const CheckoutPage: React.FC = () => {
     const navigate = useNavigate();
     const { t } = useTranslation();
-    const { showToast } = useToast();
-    const cartItems = useCartStore(state => state.items);
-    const getTotal = useCartStore(state => state.getTotal);
-    const cartTotal = getTotal();
-    const clearCart = useCartStore(state => state.clearCart);
-    const [isSubmitting, setIsSubmitting] = useState(false);
-
-    // Payment State
-    const [paymentMethod, setPaymentMethod] = useState<PaymentMethod>('cod');
-    const [showPaymentModal, setShowPaymentModal] = useState(false);
-    const [paymentData, setPaymentData] = useState<PaymentResponse | null>(null);
-    const [pendingGuestInfo, setPendingGuestInfo] = useState<GuestInfoValues | null>(null);
-
-    useEffect(() => {
-        if (cartItems.length === 0) {
-            navigate('/marketplace');
-        }
-    }, [cartItems, navigate]);
-
-    const handleCheckout = async (data: GuestInfoValues) => {
-        setIsSubmitting(true);
-        setPendingGuestInfo(data);
-
-        try {
-            if (paymentMethod === 'payos') {
-                // Generate a safe numeric order code within PostgreSQL int4 range (max 2,147,483,647)
-                // Use: last 7 digits of epoch seconds + 3 random digits = max ~9,999,999,999 → cap to safe range
-                const epochSec = Math.floor(Date.now() / 1000); // seconds, not ms
-                const tsPart = epochSec % 100000; // 5 digits max (0-99999)
-                const randomSuffix = Math.floor(100 + Math.random() * 900); // 3 digits (100-999)
-                const orderCode = Number(`${tsPart}${randomSuffix}`); // max 99999999 — safely within int4
-
-                // Create PayOS Payment Link
-                const response = await createPayment({
-                    orderCode: orderCode,
-                    amount: cartTotal,
-                    description: `WellNexus Order ${orderCode}`,
-                    items: cartItems.map(item => ({
-                        name: item.product.name,
-                        quantity: item.quantity,
-                        price: item.product.price
-                    })),
-                    returnUrl: `${window.location.origin}/checkout/success`,
-                    cancelUrl: `${window.location.origin}/checkout`
-                });
-
-                if (response && response.checkoutUrl) {
-                    setPaymentData(response);
-                    setShowPaymentModal(true);
-                } else {
-                    throw new Error('Failed to create payment link');
-                }
-            } else {
-                // COD Flow
-                await processOrder(data, 'cod');
-            }
-        } catch (error) {
-            uiLogger.error('Checkout failed:', error);
-            showToast(t('checkout.error'), 'error');
-            setIsSubmitting(false); // Only reset if error/COD. For PayOS, wait for modal.
-        } finally {
-             // For PayOS, we stay "submitting" until modal opens or fails
-             if (paymentMethod === 'cod') {
-                 setIsSubmitting(false);
-             }
-        }
-    };
-
-    const processOrder = async (guestData: GuestInfoValues, method: PaymentMethod, orderCode?: number) => {
-        try {
-            const payload: OrderPayload = {
-                items: cartItems.map(item => ({
-                    productId: item.product.id,
-                    quantity: item.quantity,
-                    price: item.product.price
-                })),
-                customer: {
-                    guestProfile: guestData
-                },
-                paymentMethod: method,
-                totalAmount: cartTotal,
-                orderCode: orderCode
-            };
-
-            const orderId = await orderService.createOrder(payload);
-
-            // Fire-and-forget order confirmation email
-            if (guestData.email) {
-                sendOrderConfirmationEmail(guestData.email, {
-                    userName: guestData.fullName,
-                    orderId,
-                    orderDate: new Date().toLocaleDateString('vi-VN'),
-                    totalAmount: new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(cartTotal),
-                    items: cartItems.map(item => ({
-                        name: item.product.name,
-                        quantity: item.quantity,
-                        price: new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(item.product.price),
-                    })),
-                    shippingAddress: `${guestData.address.street}, ${guestData.address.ward}, ${guestData.address.district}, ${guestData.address.city}`,
-                }).catch(err => uiLogger.error('Order confirmation email failed:', err));
-            }
-
-            clearCart();
-            showToast(t('checkout.success'), 'success');
-            navigate('/checkout/success');
-        } catch (error) {
-            uiLogger.error('Order creation failed:', error);
-            showToast(t('checkout.error'), 'error');
-            throw error;
-        }
-    };
-
-    const handlePaymentSuccess = async (orderCode: number) => {
-        if (!pendingGuestInfo) return;
-        const guestInfo = pendingGuestInfo;
-        setPendingGuestInfo(null); // Clear immediately to prevent double-order
-        try {
-            await processOrder(guestInfo, 'payos', orderCode);
-            setShowPaymentModal(false);
-        } catch {
-            // Error handling already in processOrder
-            setIsSubmitting(false);
-        }
-    };
-
-    const handlePaymentFailure = (error: string) => {
-        showToast(error, 'error');
-        setShowPaymentModal(false);
-        setIsSubmitting(false);
-    };
+    const {
+        isSubmitting,
+        paymentMethod,
+        setPaymentMethod,
+        showPaymentModal,
+        paymentData,
+        handleCheckout,
+        handlePaymentSuccess,
+        handlePaymentFailure,
+        closePaymentModal,
+    } = useCheckoutPagePaymentHandler();
 
     return (
         <div className="min-h-screen bg-zinc-50 dark:bg-black pb-20">
@@ -261,11 +135,7 @@ export const CheckoutPage: React.FC = () => {
             {/* PayOS QR Modal */}
             <QRPaymentModal
                 isOpen={showPaymentModal}
-                onClose={() => {
-                    setShowPaymentModal(false);
-                    setIsSubmitting(false);
-                    setPendingGuestInfo(null); // Clear to prevent double-order on resubmit
-                }}
+                onClose={closePaymentModal}
                 paymentData={paymentData}
                 onSuccess={handlePaymentSuccess}
                 onFailure={handlePaymentFailure}

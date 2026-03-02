@@ -72,8 +72,8 @@ export default [
             'jsx-a11y/no-autofocus': 'warn',
             'jsx-a11y/img-redundant-alt': 'warn',
 
-            // File size enforcement (warn during refactor, error after Phase 07)
-            'max-lines': ['warn', { max: 200, skipBlankLines: true, skipComments: true }],
+            // File size enforcement (Phase 07 activated — hard gate)
+            'max-lines': ['error', { max: 200, skipBlankLines: true, skipComments: true }],
 
             // General rules
             'no-console': ['error', { allow: ['warn', 'error'] }],
@@ -89,9 +89,9 @@ export default [
         },
     },
 
-    // Exempt data/locale files from max-lines (they are data, not logic)
+    // Exempt data/locale/test/route-registry files from max-lines
     {
-        files: ['src/locales/**', 'src/data/**', '**/*.test.ts', '**/*.test.tsx'],
+        files: ['src/locales/**', 'src/data/**', '**/*.test.ts', '**/*.test.tsx', 'src/App.tsx'],
         rules: {
             'max-lines': 'off',
         },

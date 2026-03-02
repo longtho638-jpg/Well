@@ -1,18 +1,16 @@
 /**
  * Session Manager Component
  * Phase 1: Auth Max Level
- * 
+ *
  * Enterprise-grade session management displaying:
  * - Active sessions across devices
  * - Login timestamps and locations
  * - Ability to revoke sessions
  */
 
-import React, { useState, useEffect, useRef } from 'react';
+import React from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
-    Monitor,
-    Smartphone,
     Globe,
     Clock,
     Shield,
@@ -22,19 +20,11 @@ import {
     Loader2,
     MapPin,
 } from 'lucide-react';
-import { authLogger } from '@/utils/logger';
 import { useTranslation } from '@/hooks';
+import { useSessionManager, Session } from './use-session-manager';
+import { DeviceIcon, MOCK_SESSIONS } from './session-manager-device-icon-and-mock-data';
 
-export interface Session {
-    id: string;
-    device: 'desktop' | 'mobile' | 'tablet';
-    browser: string;
-    location: string;
-    ip: string;
-    lastActive: string;
-    isCurrent: boolean;
-    createdAt: string;
-}
+export type { Session };
 
 interface SessionManagerProps {
     sessions?: Session[];
@@ -42,102 +32,21 @@ interface SessionManagerProps {
     onRevokeAllOthers?: () => Promise<void>;
 }
 
-// Mock sessions for demo mode
-const MOCK_SESSIONS: Session[] = [
-    {
-        id: 'current-session',
-        device: 'desktop',
-        browser: 'Chrome on macOS',
-        location: 'Ho Chi Minh City, VN',
-        ip: '113.xxx.xxx.xxx',
-        lastActive: 'Active now',
-        isCurrent: true,
-        createdAt: new Date().toISOString(),
-    },
-    {
-        id: 'mobile-session',
-        device: 'mobile',
-        browser: 'Safari on iOS',
-        location: 'Hanoi, VN',
-        ip: '14.xxx.xxx.xxx',
-        lastActive: '2 hours ago',
-        isCurrent: false,
-        createdAt: new Date(Date.now() - 2 * 60 * 60 * 1000).toISOString(),
-    },
-];
-
-const DeviceIcon: React.FC<{ device: Session['device'] }> = ({ device }) => {
-    switch (device) {
-        case 'mobile':
-            return <Smartphone className="w-5 h-5" />;
-        case 'tablet':
-            return <Monitor className="w-5 h-5" />;
-        default:
-            return <Monitor className="w-5 h-5" />;
-    }
-};
-
 export function SessionManager({
     sessions = import.meta.env.DEV ? MOCK_SESSIONS : [],
     onRevokeSession,
     onRevokeAllOthers,
 }: SessionManagerProps) {
     const { t } = useTranslation();
-    const [localSessions, setLocalSessions] = useState<Session[]>(sessions);
-    const [revoking, setRevoking] = useState<string | null>(null);
-    const [revokingAll, setRevokingAll] = useState(false);
-    const [success, setSuccess] = useState<string | null>(null);
-    const successTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
-
-    useEffect(() => {
-        setLocalSessions(sessions);
-    }, [sessions]);
-
-    useEffect(() => {
-        return () => {
-            if (successTimerRef.current) {
-                clearTimeout(successTimerRef.current);
-            }
-        };
-    }, []);
-
-    const handleRevoke = async (sessionId: string) => {
-        setRevoking(sessionId);
-        try {
-            if (onRevokeSession) {
-                await onRevokeSession(sessionId);
-            }
-            // Optimistically remove from UI
-            setLocalSessions(prev => prev.filter(s => s.id !== sessionId));
-            setSuccess(t('sessionmanager.revoked_success'));
-            if (successTimerRef.current) clearTimeout(successTimerRef.current);
-            successTimerRef.current = setTimeout(() => setSuccess(null), 3000);
-        } catch (error) {
-            authLogger.error('Failed to revoke session', error);
-        } finally {
-            setRevoking(null);
-        }
-    };
-
-    const handleRevokeAll = async () => {
-        setRevokingAll(true);
-        try {
-            if (onRevokeAllOthers) {
-                await onRevokeAllOthers();
-            }
-            // Keep only current session
-            setLocalSessions(prev => prev.filter(s => s.isCurrent));
-            setSuccess(t('sessionmanager.revoked_all_success'));
-            if (successTimerRef.current) clearTimeout(successTimerRef.current);
-            successTimerRef.current = setTimeout(() => setSuccess(null), 3000);
-        } catch (error) {
-            authLogger.error('Failed to revoke sessions', error);
-        } finally {
-            setRevokingAll(false);
-        }
-    };
-
-    const otherSessions = localSessions.filter(s => !s.isCurrent);
+    const {
+        localSessions,
+        revoking,
+        revokingAll,
+        success,
+        otherSessions,
+        handleRevoke,
+        handleRevokeAll,
+    } = useSessionManager({ sessions, onRevokeSession, onRevokeAllOthers });
 
     return (
         <div className="space-y-6">

@@ -1,21 +1,13 @@
 
 import React, { useState } from 'react';
-import { LayoutDashboard, ShoppingBag, Wallet, LogOut, Sparkles, Bot, CheckCircle2, Circle, Users, Share2, Trophy, Heart, Megaphone, Moon, Sun, Activity, Shield, Settings } from 'lucide-react';
+import { LogOut, Sparkles, Bot, CheckCircle2, Circle, Moon, Sun } from 'lucide-react';
 import { getCoachAdvice } from '../services/geminiService';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useStore } from '../store';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useTranslation } from '../hooks';
 import { useTheme } from '../context/ThemeContext';
-import { isAdmin as checkIsAdmin } from '@/utils/admin-check';
-
-interface MenuItem {
-  path: string;
-  label: string;
-  icon: React.ComponentType<{ className?: string }>;
-  matches?: string[];
-  badge?: string;
-}
+import { useSidebarNavMenuItems } from './sidebar/sidebar-nav-menu-items-config';
 
 interface SidebarProps {
   onMobileClose?: () => void;
@@ -30,27 +22,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ onMobileClose }) => {
   const [advice, setAdvice] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
 
-  // Check if current user is admin
-  const isAdmin = checkIsAdmin(user?.email) || user?.role === 'admin' || user?.isAdmin === true;
-
-  const menuItems: MenuItem[] = [
-    { path: '/dashboard', label: t('nav.dashboard'), icon: LayoutDashboard },
-    { path: '/dashboard/marketplace', label: t('nav.marketplace'), icon: ShoppingBag, matches: ['/dashboard/product'] },
-    { path: '/dashboard/wallet', label: t('nav.wallet'), icon: Wallet },
-    { path: '/dashboard/leaderboard', label: t('nav.leaderboard'), icon: Trophy, badge: 'HOT' },
-    { path: '/dashboard/marketing-tools', label: t('nav.marketingTools'), icon: Megaphone, badge: 'NEW' },
-    { path: '/dashboard/agents', label: t('nav.agentDashboard'), icon: Activity },
-    { path: '/dashboard/health-check', label: t('nav.healthCheck'), icon: Heart },
-    { path: '/dashboard/health-coach', label: t('nav.healthCoach'), icon: Sparkles, badge: 'AI' },
-    { path: '/dashboard/copilot', label: t('nav.copilot'), icon: Bot, badge: 'AI' },
-    { path: '/dashboard/team', label: t('nav.team'), icon: Users },
-    { path: '/dashboard/network', label: t('nav.network'), icon: Users },
-    { path: '/dashboard/withdrawal', label: t('nav.withdrawal'), icon: Wallet },
-    { path: '/dashboard/referral', label: t('nav.referral'), icon: Share2 },
-    { path: '/dashboard/settings', label: t('nav.settings'), icon: Settings },
-    // Admin menu - only visible to admin users
-    ...(isAdmin ? [{ path: '/admin', label: t('nav.admin'), icon: Shield, badge: 'ADMIN' }] : []),
-  ];
+  const menuItems = useSidebarNavMenuItems();
 
   const handleNav = (path: string) => {
     navigate(path);

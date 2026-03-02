@@ -4,104 +4,18 @@
  * Shows real-time commission breakdown with trend indicators
  */
 
-import React, { useMemo } from 'react';
+import React from 'react';
 import { motion } from 'framer-motion';
 import { DollarSign, TrendingUp, TrendingDown, Wallet, ArrowRight } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { formatVND } from '@/utils/format';
-import { useStore } from '@/store';
 import { useTranslation } from '@/hooks';
-
-interface CommissionPeriod {
-  label: string;
-  amount: number;
-  trend: number; // percentage change from previous period
-}
+import { useCommissionWidgetPeriodCalculator } from './use-commission-widget-period-calculator';
 
 export const CommissionWidget: React.FC = () => {
   const { t } = useTranslation();
   const navigate = useNavigate();
-  const { transactions, user } = useStore(state => ({
-    transactions: state.transactions,
-    user: state.user
-  }));
-
-  // Calculate commission periods with memoization
-  const periods = useMemo(() => {
-    const now = new Date();
-    const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
-    const weekAgo = new Date(today.getTime() - 7 * 24 * 60 * 60 * 1000);
-    const monthAgo = new Date(today.getTime() - 30 * 24 * 60 * 60 * 1000);
-    const twoWeeksAgo = new Date(today.getTime() - 14 * 24 * 60 * 60 * 1000);
-    const twoMonthsAgo = new Date(today.getTime() - 60 * 24 * 60 * 60 * 1000);
-
-    // Filter commission transactions
-    const commissionTxs = transactions.filter(tx =>
-      (tx.type === 'Direct Sale' || tx.type === 'Team Volume Bonus') &&
-      tx.status === 'completed'
-    );
-
-    // Calculate earnings for each period
-    const todayTxs = commissionTxs.filter(tx => new Date(tx.date) >= today);
-    const todayEarnings = todayTxs.reduce((sum, tx) => sum + (tx.amount - (tx.taxDeducted || 0)), 0);
-
-    const weekTxs = commissionTxs.filter(tx => new Date(tx.date) >= weekAgo);
-    const weekEarnings = weekTxs.reduce((sum, tx) => sum + (tx.amount - (tx.taxDeducted || 0)), 0);
-
-    const monthTxs = commissionTxs.filter(tx => new Date(tx.date) >= monthAgo);
-    const monthEarnings = monthTxs.reduce((sum, tx) => sum + (tx.amount - (tx.taxDeducted || 0)), 0);
-
-    // Calculate previous periods for trend comparison
-    const prevWeekTxs = commissionTxs.filter(tx => {
-      const txDate = new Date(tx.date);
-      return txDate >= twoWeeksAgo && txDate < weekAgo;
-    });
-    const prevWeekEarnings = prevWeekTxs.reduce((sum, tx) => sum + (tx.amount - (tx.taxDeducted || 0)), 0);
-
-    const prevMonthTxs = commissionTxs.filter(tx => {
-      const txDate = new Date(tx.date);
-      return txDate >= twoMonthsAgo && txDate < monthAgo;
-    });
-    const prevMonthEarnings = prevMonthTxs.reduce((sum, tx) => sum + (tx.amount - (tx.taxDeducted || 0)), 0);
-
-    // Calculate trends (% change)
-    const todayTrend = todayEarnings > 0 ? 15.2 : 0; // Mock trend for today
-    const weekTrend = prevWeekEarnings > 0
-      ? ((weekEarnings - prevWeekEarnings) / prevWeekEarnings) * 100
-      : weekEarnings > 0 ? 100 : 0;
-    const monthTrend = prevMonthEarnings > 0
-      ? ((monthEarnings - prevMonthEarnings) / prevMonthEarnings) * 100
-      : monthEarnings > 0 ? 100 : 0;
-
-    return [
-      { label: t('dashboard.commission.today'), amount: todayEarnings, trend: todayTrend },
-      { label: t('dashboard.commission.thisWeek'), amount: weekEarnings, trend: weekTrend },
-      { label: t('dashboard.commission.thisMonth'), amount: monthEarnings, trend: monthTrend },
-    ] as CommissionPeriod[];
-  }, [transactions, t]);
-
-    // Calculate breakdown (direct sales vs team volume) - Filtered by Month to match Total
-  const breakdown = useMemo(() => {
-    const now = new Date();
-    const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
-    const monthAgo = new Date(today.getTime() - 30 * 24 * 60 * 60 * 1000);
-
-    const commissionTxs = transactions.filter(tx =>
-      (tx.type === 'Direct Sale' || tx.type === 'Team Volume Bonus') &&
-      tx.status === 'completed' &&
-      new Date(tx.date) >= monthAgo
-    );
-
-    const directSales = commissionTxs
-      .filter(tx => tx.type === 'Direct Sale')
-      .reduce((sum, tx) => sum + (tx.amount - (tx.taxDeducted || 0)), 0);
-
-    const teamVolume = commissionTxs
-      .filter(tx => tx.type === 'Team Volume Bonus')
-      .reduce((sum, tx) => sum + (tx.amount - (tx.taxDeducted || 0)), 0);
-
-    return { directSales, teamVolume };
-  }, [transactions]);
+  const { periods, breakdown, user } = useCommissionWidgetPeriodCalculator();
 
   const totalCommission = periods[2].amount; // Month total
 

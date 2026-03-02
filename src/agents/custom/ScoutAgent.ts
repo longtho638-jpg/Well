@@ -1,26 +1,12 @@
 import { BaseAgent } from '../core/BaseAgent';
-
-interface CodeFinding {
-    file: string;
-    relevance: number;
-    summary: string;
-    codeSnippet?: string;
-    lineNumber?: number;
-}
-
-interface PatternMatch {
-    name: string;
-    files: string[];
-    description: string;
-    examples: string[];
-}
-
-interface DependencyMap {
-    target: string;
-    dependents: string[];
-    dependencies: string[];
-    impactRadius: 'low' | 'medium' | 'high';
-}
+import {
+    CodeFinding,
+    PatternMatch,
+    DependencyMap,
+    exploreCodebase,
+    discoverPatterns,
+    analyzeDependencies,
+} from './scout-agent-codebase-exploration-tools';
 
 /**
  * ScoutAgent - Codebase exploration and pattern discovery
@@ -155,107 +141,21 @@ export class ScoutAgent extends BaseAgent {
         totalFiles: number;
         categories: Record<string, string[]>;
     }> {
-        // Simulate codebase exploration
-        const findings: CodeFinding[] = [];
-
-        // Simulated search based on query
-        if (query.toLowerCase().includes('auth')) {
-            findings.push(
-                {
-                    file: 'src/middleware/auth.ts',
-                    relevance: 0.95,
-                    summary: 'Authentication middleware handling JWT tokens',
-                    codeSnippet: 'export const authMiddleware = (req, res, next) => {...}',
-                    lineNumber: 10,
-                },
-                {
-                    file: 'src/api/auth.ts',
-                    relevance: 0.90,
-                    summary: 'Authentication API endpoints',
-                    codeSnippet: 'router.post(\'/login\', loginHandler);',
-                    lineNumber: 25,
-                }
-            );
-        }
-
-        if (query.toLowerCase().includes('agent')) {
-            findings.push(
-                {
-                    file: 'src/agents/custom/GeminiCoachAgent.ts',
-                    relevance: 0.92,
-                    summary: 'Agent extending BaseAgent pattern',
-                    codeSnippet: 'export class GeminiCoachAgent extends BaseAgent {...}',
-                    lineNumber: 14,
-                },
-                {
-                    file: 'src/agents/registry.ts',
-                    relevance: 0.88,
-                    summary: 'Agent registry singleton',
-                    codeSnippet: 'export class AgentRegistry {...}',
-                    lineNumber: 10,
-                }
-            );
-        }
-
-        return {
-            query,
-            scope: scope || 'project-wide',
-            findings,
-            totalFiles: findings.length,
-            categories: this.categorizeFindings(findings),
-        };
+        return exploreCodebase(query, scope);
     }
 
     /**
      * Discover implementation patterns
      */
     private async discoverPatterns(query: string, _scope?: string): Promise<Record<string, unknown>> {
-        const patterns: PatternMatch[] = [];
-
-        // Simulate pattern discovery
-        patterns.push(
-            {
-                name: 'BaseAgent Extension Pattern',
-                files: [
-                    'src/agents/custom/GeminiCoachAgent.ts',
-                    'src/agents/custom/AgencyOSAgent.ts',
-                    'src/agents/custom/DebuggerAgent.ts',
-                ],
-                description: 'All custom agents extend BaseAgent class',
-                examples: ['export class XAgent extends BaseAgent'],
-            },
-            {
-                name: 'Registry Singleton Pattern',
-                files: ['src/agents/registry.ts'],
-                description: 'Centralized agent registry using singleton',
-                examples: ['export const agentRegistry = AgentRegistry.getInstance()'],
-            }
-        );
-
-        return {
-            query,
-            patterns,
-            totalPatterns: patterns.length,
-        };
+        return discoverPatterns(query);
     }
 
     /**
      * Analyze file dependencies
      */
     private async analyzeDependencies(target: string): Promise<DependencyMap> {
-        // Simulate dependency analysis
-        return {
-            target,
-            dependents: [
-                'src/pages/Dashboard.tsx',
-                'src/components/AgentPanel.tsx',
-            ],
-            dependencies: [
-                'src/agents/core/BaseAgent.ts',
-                'src/types/agentic.ts',
-            ],
-            impactRadius: 'medium',
-        };
+        return analyzeDependencies(target);
     }
 
     /**
@@ -264,37 +164,14 @@ export class ScoutAgent extends BaseAgent {
     private async collectContext(query: string, scope?: string): Promise<Record<string, unknown>> {
         const exploration = await this.exploreCodebase(query, scope);
         const patterns = await this.discoverPatterns(query, scope);
-        const relatedFiles = (exploration.findings as CodeFinding[]).slice(0, 3).map((f: CodeFinding) => f.file);
+        const relatedFiles = exploration.findings.slice(0, 3).map((f) => f.file);
 
         return {
             query,
             findings: exploration.findings,
-            patterns: patterns.patterns,
+            patterns: (patterns as { patterns: PatternMatch[] }).patterns,
             relatedFiles,
-            summary: `Found ${exploration.totalFiles} files and ${patterns.totalPatterns} patterns`,
+            summary: `Found ${exploration.totalFiles} files and ${(patterns as { totalPatterns: number }).totalPatterns} patterns`,
         };
-    }
-
-    // Helper methods
-
-    private categorizeFindings(findings: CodeFinding[]) {
-        const categories: Record<string, string[]> = {
-            core: [],
-            api: [],
-            components: [],
-            utils: [],
-            other: [],
-        };
-
-        findings.forEach(finding => {
-            if (finding.file.includes('/core/')) categories.core.push(finding.file);
-            else if (finding.file.includes('/api/')) categories.api.push(finding.file);
-            else if (finding.file.includes('/components/')) categories.components.push(finding.file);
-            else if (finding.file.includes('/utils/') || finding.file.includes('/lib/'))
-                categories.utils.push(finding.file);
-            else categories.other.push(finding.file);
-        });
-
-        return categories;
     }
 }

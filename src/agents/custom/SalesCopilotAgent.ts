@@ -1,22 +1,17 @@
 import { BaseAgent } from '../core/BaseAgent';
-import { AgentDefinition } from '@/types/agentic';
 import { ObjectionType } from '@/types';
 import { aiLogger } from '@/utils/logger';
 import { supabase } from '@/lib/supabase';
-import { OBJECTION_TEMPLATES } from '@/config/sales-templates';
 import { SALES_PROMPTS } from '@/config/sales-prompts';
+import {
+  SalesCopilotResponse,
+  SalesCopilotResult,
+  SALES_COPILOT_DEFINITION,
+  detectObjection,
+  getObjectionResponse,
+} from './sales-copilot-agent-types-and-definition';
 
-export interface SalesCopilotResponse {
-  response: string;
-  objectionType?: ObjectionType;
-  suggestion?: string;
-}
-
-export type SalesCopilotResult =
-  | string
-  | ObjectionType
-  | SalesCopilotResponse
-  | { error: string };
+export type { SalesCopilotResponse, SalesCopilotResult };
 
 /**
  * Sales Copilot Agent - AI assistant for objection handling.
@@ -24,66 +19,7 @@ export type SalesCopilotResult =
 export class SalesCopilotAgent extends BaseAgent {
 
   constructor() {
-    const definition: AgentDefinition = {
-      agent_name: 'Sales Copilot',
-      business_function: 'Sales & Revenue',
-      primary_objectives: [
-        'Detect customer objections in real-time conversations',
-        'Suggest appropriate responses to overcome objections',
-        'Generate personalized sales scripts',
-        'Provide coaching on sales conversations'
-      ],
-      inputs: [
-        { source: 'customer_message', dataType: 'user_input' },
-        { source: 'conversation_context', dataType: 'CRM' },
-        { source: 'product_info', dataType: 'API' }
-      ],
-      tools_and_systems: ['Objection Template Database', 'CRM', 'Google Gemini API (via Edge Function)'],
-      core_actions: [
-        'detectObjection',
-        'suggestResponse',
-        'generateResponse',
-        'generateSalesScript',
-        'analyzeConversation'
-      ],
-      outputs: [
-        'objection_type',
-        'suggested_response',
-        'sales_script',
-        'coaching_analysis'
-      ],
-      success_kpis: [
-        { name: 'Objection Detection Accuracy', target: 85, current: 0, unit: '%' },
-        { name: 'Response Acceptance Rate', target: 70, current: 0, unit: '%' },
-        { name: 'Conversion Rate Improvement', target: 15, current: 0, unit: '%' },
-      ],
-      risk_and_failure_modes: [
-        'Misclassifying objection type',
-        'Suggesting inappropriate responses',
-        'Missing cultural nuances in Vietnamese',
-      ],
-      human_in_the_loop_points: [
-        'Sales agent must review and adapt suggested responses',
-        'All responses must be approved before sending to customer',
-      ],
-      policy_and_constraints: [
-        {
-          rule: 'Never make false claims about product efficacy',
-          enforcement: 'hard',
-        },
-        {
-          rule: 'Responses must respect customer concerns, not dismiss them',
-          enforcement: 'hard',
-        },
-        {
-          rule: 'No aggressive or pushy sales tactics',
-          enforcement: 'hard',
-        },
-      ],
-      visibility: 'all'
-    };
-
-    super(definition);
+    super(SALES_COPILOT_DEFINITION);
   }
 
   /**
@@ -136,14 +72,14 @@ export class SalesCopilotAgent extends BaseAgent {
       switch (action) {
         case 'detectObjection':
           if (!message) throw new Error('Message required for objection detection');
-          output = this.detectObjection(message);
+          output = detectObjection(message);
           break;
 
         case 'suggestResponse': {
           // Template-based suggestion
           if (!message) throw new Error('Message required for response suggestion');
-          const type = this.detectObjection(message);
-          output = this.getObjectionResponse(type);
+          const type = detectObjection(message);
+          output = getObjectionResponse(type);
           break;
         }
 
@@ -177,37 +113,6 @@ export class SalesCopilotAgent extends BaseAgent {
   }
 
   /**
-   * Detect objection type from customer message.
-   */
-  private detectObjection(message: string): ObjectionType {
-    const lowerMessage = message.toLowerCase();
-
-    for (const template of OBJECTION_TEMPLATES) {
-      if (template.keywords.length === 0) continue;
-      if (template.keywords.some((keyword) => lowerMessage.includes(keyword.toLowerCase()))) {
-        return template.type;
-      }
-    }
-
-    return 'general';
-  }
-
-  /**
-   * Get suggested response for an objection type.
-   */
-  private getObjectionResponse(objectionType: ObjectionType): string {
-    const template = OBJECTION_TEMPLATES.find((t) => t.type === objectionType);
-
-    if (!template || template.responses.length === 0) {
-      return 'Tôi hiểu quan ngại của bạn. Hãy để tôi giải thích thêm về sản phẩm này...';
-    }
-
-    // Return random response from templates
-    const randomIndex = Math.floor(Math.random() * template.responses.length);
-    return template.responses[randomIndex];
-  }
-
-  /**
    * Generate AI-powered response using Gemini
    */
   private async generateCopilotResponse(
@@ -215,8 +120,8 @@ export class SalesCopilotAgent extends BaseAgent {
     conversationHistory: Array<{ role: string; content: string }>,
     productContext?: string
   ): Promise<{ response: string; objectionType?: ObjectionType; suggestion?: string }> {
-    const objectionType = this.detectObjection(userMessage);
-    const suggestion = this.getObjectionResponse(objectionType);
+    const objectionType = detectObjection(userMessage);
+    const suggestion = getObjectionResponse(objectionType);
 
     try {
         const contextPrompt = productContext ? `Product Context: ${productContext}\n\n` : '';

@@ -1,107 +1,23 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState } from 'react';
 import { Wallet, ShieldAlert, Download, ArrowDownLeft, Info, Sparkles, TrendingUp, FileText } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { formatVND } from '../utils/format';
-import { calculatePIT } from '../utils/tax';
-import { useStore } from '../store';
 import { WithdrawalModal } from './WithdrawalModal';
 import { useTranslation } from '@/hooks';
-import { useCommissionPDFReport } from '@/hooks/use-commission-pdf-report-generator';
+import { useCommissionWalletExportHandlers } from './commission/use-commission-wallet-export-handlers';
 
 const CommissionWalletInner: React.FC = () => {
     const { t } = useTranslation();
-  const { transactions, user } = useStore();
-  const [isWithdrawalModalOpen, setIsWithdrawalModalOpen] = useState(false);
-  const { generatePDF, isGenerating } = useCommissionPDFReport();
-
-  const processedTransactions = useMemo(() => transactions.map(tx => {
-    const { taxAmount, isTaxable } = calculatePIT(tx.amount);
-    return { ...tx, taxDeducted: taxAmount, isTaxable };
-  }), [transactions]);
-
-  const totalGross = useMemo(() => processedTransactions.reduce((sum, tx) => sum + tx.amount, 0), [processedTransactions]);
-  const totalTax = useMemo(() => processedTransactions.reduce((sum, tx) => sum + tx.taxDeducted, 0), [processedTransactions]);
-  const totalNet = totalGross - totalTax;
-
-  const handleExportPDF = async () => {
-    const now = new Date();
-    const monthName = now.toLocaleString('vi-VN', { month: 'long', year: 'numeric' });
-
-    // Convert transactions to commission items
-    const commissions = processedTransactions.map(tx => ({
-      date: tx.date,
-      type: (tx.type.toLowerCase().includes('direct') ? 'direct' : 'sponsor') as 'direct' | 'sponsor',
-      amount: tx.amount,
-      orderId: tx.id,
-      fromUser: tx.type,
-    }));
-
-    const totalDirect = commissions
-      .filter(c => c.type === 'direct')
-      .reduce((sum, c) => sum + c.amount, 0);
-
-    const totalSponsor = commissions
-      .filter(c => c.type === 'sponsor')
-      .reduce((sum, c) => sum + c.amount, 0);
-
-    const reportData = {
-      userName: user?.name || 'User',
-      userEmail: user?.email || '',
-      month: monthName,
-      startDate: new Date(now.getFullYear(), now.getMonth(), 1).toISOString().split('T')[0],
-      endDate: now.toISOString().split('T')[0],
-      commissions,
-      totalDirect,
-      totalSponsor,
-      totalEarned: totalGross,
-      currentBalance: totalNet,
-    };
-
-    try {
-      await generatePDF(reportData);
-    } catch {
-      // PDF generation failed, non-critical
-    }
-  };
-
-  const handleExportCSV = () => {
-    // Create CSV header
-    const headers = ['Date', 'Ref ID', 'Type', 'Gross Amount (VND)', 'Tax Deducted (VND)', 'Net Received (VND)', 'Status'];
-
-    // Create CSV rows
-    const rows = processedTransactions.map(t => [
-      t.date,
-      t.id,
-      t.type,
-      t.amount,
-      t.taxDeducted || 0,
-      t.amount - (t.taxDeducted || 0),
-      t.status
-    ]);
-
-    // Add summary row
-    rows.push([]);
-    rows.push(['SUMMARY', '', '', totalGross, totalTax, totalNet, '']);
-
-    // Combine into CSV string
-    const csvContent = [
-      headers.join(','),
-      ...rows.map(row => row.join(','))
-    ].join('\n');
-
-    // Create download link
-    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
-    const link = document.createElement('a');
-    const url = URL.createObjectURL(blob);
-
-    link.setAttribute('href', url);
-    link.setAttribute('download', `wellnexus_earnings_${new Date().toISOString().split('T')[0]}.csv`);
-    link.style.visibility = 'hidden';
-
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-  };
+    const [isWithdrawalModalOpen, setIsWithdrawalModalOpen] = useState(false);
+    const {
+        processedTransactions,
+        totalGross,
+        totalTax,
+        totalNet,
+        isGenerating,
+        handleExportCSV,
+        handleExportPDF,
+    } = useCommissionWalletExportHandlers();
 
   return (
     <div className="space-y-6">

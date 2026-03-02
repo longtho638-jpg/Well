@@ -15,6 +15,12 @@ import type {
   VibeWebhookEvent,
   WebhookProcessingResult,
 } from './types';
+import type {
+  OrderRecord,
+  SubscriptionIntentRecord,
+  WebhookHandlerDeps,
+} from './webhook-handler-dependency-injection-types';
+import { processSubscriptionWebhook } from './webhook-handler-dependency-injection-types';
 
 // ─── State Machine ──────────────────────────────────────────────
 
@@ -30,39 +36,6 @@ function isValidTransition(current: string, next: VibePaymentStatusCode): boolea
   const allowed = VALID_TRANSITIONS[current.toLowerCase()];
   if (!allowed) return false;
   return allowed.includes(next);
-}
-
-// ─── Webhook Handler Types ──────────────────────────────────────
-
-interface OrderRecord {
-  id: string;
-  status: string;
-  userId: string | null;
-  orderCode: number;
-}
-
-interface SubscriptionIntentRecord {
-  id: string;
-  userId: string;
-  planId: string;
-  billingCycle: 'monthly' | 'yearly';
-  status: string;
-  orgId?: string | null;
-}
-
-interface WebhookHandlerDeps {
-  /** Find order by orderCode */
-  findOrder: (orderCode: number) => Promise<OrderRecord | null>;
-  /** Find subscription intent by orderCode */
-  findSubscriptionIntent: (orderCode: number) => Promise<SubscriptionIntentRecord | null>;
-  /** Atomically update order status (only if current status matches) */
-  updateOrderStatus: (orderId: string, fromStatus: string, toStatus: string, paymentData: Record<string, unknown>) => Promise<boolean>;
-  /** Update subscription intent status */
-  updateSubscriptionIntent: (intentId: string, status: string) => Promise<void>;
-  /** Activate a subscription after payment */
-  activateSubscription: (intent: SubscriptionIntentRecord) => Promise<void>;
-  /** Log to audit table */
-  logAudit: (userId: string | null, action: string, payload: Record<string, unknown>, severity: string) => Promise<void>;
 }
 
 // ─── Main Handler ───────────────────────────────────────────────
@@ -167,59 +140,6 @@ async function processOrderWebhook(
   return { status: 'processed', orderCode: event.orderCode, newStatus };
 }
 
-// ─── Subscription Processing ────────────────────────────────────
-
-async function processSubscriptionWebhook(
-  event: VibeWebhookEvent,
-  intent: SubscriptionIntentRecord,
-  config: VibeWebhookConfig,
-  deps: WebhookHandlerDeps,
-): Promise<WebhookProcessingResult> {
-  // Idempotency: only process pending intents
-  if (intent.status !== 'pending') {
-    return { status: 'ignored', orderCode: event.orderCode, reason: 'Subscription already processed' };
-  }
-
-  const isPaid = event.type === 'payment.paid';
-  const isCancelled = event.type === 'payment.cancelled';
-  const newIntentStatus = isPaid ? 'paid' : isCancelled ? 'canceled' : 'pending';
-  const newStatus: VibePaymentStatusCode = isPaid ? 'PAID' : isCancelled ? 'CANCELLED' : 'PENDING';
-
-  await deps.updateSubscriptionIntent(intent.id, newIntentStatus);
-
-  if (isPaid) {
-    await deps.activateSubscription(intent);
-
-    if (config.onSubscriptionPaid) {
-      config.onSubscriptionPaid(event, {
-        id: intent.id,
-        userId: intent.userId,
-        planId: intent.planId,
-        billingCycle: intent.billingCycle,
-        amount: event.amount,
-        status: 'paid',
-      }).catch((err) =>
-        deps.logAudit(intent.userId, 'CALLBACK_FAILED', { callback: 'onSubscriptionPaid', error: String(err) }, 'failure'),
-      );
-    }
-  }
-
-  if (isCancelled && config.onSubscriptionCancelled) {
-    config.onSubscriptionCancelled(event, {
-      id: intent.id,
-      userId: intent.userId,
-      planId: intent.planId,
-      billingCycle: intent.billingCycle,
-      amount: event.amount,
-      status: 'canceled',
-    }).catch((err) =>
-      deps.logAudit(intent.userId, 'CALLBACK_FAILED', { callback: 'onSubscriptionCancelled', error: String(err) }, 'failure'),
-    );
-  }
-
-  return { status: 'processed', orderCode: event.orderCode, newStatus };
-}
-
 // ─── Helpers ────────────────────────────────────────────────────
 
 function eventTypeToStatus(type: string): VibePaymentStatusCode {
@@ -234,3 +154,4 @@ function eventTypeToStatus(type: string): VibePaymentStatusCode {
 
 export type { WebhookHandlerDeps, OrderRecord, SubscriptionIntentRecord };
 export { isValidTransition, VALID_TRANSITIONS };
+

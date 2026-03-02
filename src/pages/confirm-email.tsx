@@ -3,118 +3,13 @@
  * Handles Supabase email confirmation redirects
  */
 
-import { useEffect, useState } from 'react';
-import { useNavigate, useSearchParams } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { CheckCircle, XCircle, Loader2, Mail } from 'lucide-react';
 import { GridPattern } from '../components/ui/Aura';
-import { supabase } from '@/lib/supabase';
-import { authLogger } from '@/utils/logger';
-import { useTranslation } from '@/hooks';
-
-type ConfirmationState = 'loading' | 'success' | 'error' | 'already_confirmed';
+import { useConfirmEmailVerificationFlow } from './confirm-email/use-confirm-email-verification-flow';
 
 export default function ConfirmEmail() {
-    const [state, setState] = useState<ConfirmationState>('loading');
-    const [errorMessage, setErrorMessage] = useState('');
-    const [searchParams] = useSearchParams();
-    const navigate = useNavigate();
-    const { t } = useTranslation();
-
-    useEffect(() => {
-        let timeoutId: ReturnType<typeof setTimeout> | null = null;
-        let authSubscription: { unsubscribe: () => void } | null = null;
-
-        const confirmEmail = async () => {
-            try {
-                // Strategy 1: Check query params (token_hash + type) — Supabase email link format
-                const tokenHash = searchParams.get('token_hash');
-                const type = searchParams.get('type');
-
-                if (tokenHash && (type === 'signup' || type === 'email')) {
-                    const { error } = await supabase.auth.verifyOtp({
-                        token_hash: tokenHash,
-                        type: type as 'signup' | 'email',
-                    });
-
-                    if (error) {
-                        if (error.message.includes('already been confirmed') || error.message.includes('already registered')) {
-                            setState('already_confirmed');
-                        } else {
-                            authLogger.error('Email confirmation failed', error);
-                            setState('error');
-                            setErrorMessage(error.message);
-                        }
-                    } else {
-                        setState('success');
-                        setTimeout(() => navigate('/login'), 2000);
-                    }
-                    return;
-                }
-
-                // Strategy 2: Hash fragment (implicit flow) or PKCE code param
-                // Supabase client with detectSessionInUrl: true processes these automatically,
-                // but there's a race condition — use onAuthStateChange for reliable detection
-                const hash = window.location.hash;
-                const code = searchParams.get('code');
-
-                if ((hash && hash.includes('access_token')) || code) {
-                    const { data: { subscription } } = supabase.auth.onAuthStateChange(
-                        (event, session) => {
-                            if (event === 'SIGNED_IN' && session) {
-                                subscription.unsubscribe();
-                                if (timeoutId) clearTimeout(timeoutId);
-                                setState('success');
-                                setTimeout(() => navigate('/login'), 2000);
-                            }
-                        }
-                    );
-                    authSubscription = subscription;
-
-                    // Check if Supabase already processed the URL before the listener was set up
-                    const { data: { session } } = await supabase.auth.getSession();
-                    if (session) {
-                        subscription.unsubscribe();
-                        authSubscription = null;
-                        setState('success');
-                        setTimeout(() => navigate('/login'), 2000);
-                        return;
-                    }
-
-                    // Timeout after 10s if session never establishes
-                    timeoutId = setTimeout(() => {
-                        subscription.unsubscribe();
-                        authSubscription = null;
-                        setState('error');
-                        setErrorMessage('Confirmation timed out. Please try again.');
-                    }, 10000);
-                    return;
-                }
-
-                // Strategy 3: No URL tokens — check for existing session (e.g., already confirmed)
-                const { data: { session: existingSession } } = await supabase.auth.getSession();
-                if (existingSession) {
-                    setState('already_confirmed');
-                    return;
-                }
-
-                // No valid token found
-                setState('error');
-                setErrorMessage(t('auth.confirmEmail.invalidLink') || 'Invalid confirmation link');
-            } catch (err) {
-                authLogger.error('Confirmation error', err);
-                setState('error');
-                setErrorMessage(t('auth.confirmEmail.unexpectedError') || 'An unexpected error occurred');
-            }
-        };
-
-        confirmEmail();
-
-        return () => {
-            if (timeoutId) clearTimeout(timeoutId);
-            if (authSubscription) authSubscription.unsubscribe();
-        };
-    }, [searchParams, navigate, t]);
+    const { state, errorMessage, navigate } = useConfirmEmailVerificationFlow();
 
     return (
         <div className="min-h-screen bg-slate-950 flex items-center justify-center p-6 relative overflow-hidden">

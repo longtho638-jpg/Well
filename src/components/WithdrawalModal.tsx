@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Modal } from './ui/Modal';
 import { Button } from './ui/Button';
 import { Input } from './ui/Input';
@@ -6,7 +6,7 @@ import { Select } from './ui/Select';
 import { formatVND } from '../utils/format';
 import { Wallet, AlertTriangle, CheckCircle2, CreditCard, Building2 } from 'lucide-react';
 import { useTranslation } from '@/hooks';
-import { VIETNAM_BANKS } from '../constants/banks';
+import { useWithdrawalFormStateAndValidation } from './withdrawal/use-withdrawal-form-state-and-validation';
 
 interface WithdrawalModalProps {
   isOpen: boolean;
@@ -20,107 +20,26 @@ export const WithdrawalModal: React.FC<WithdrawalModalProps> = ({
   availableBalance,
 }) => {
     const { t } = useTranslation();
-  const [amount, setAmount] = useState('');
-  const [bankName, setBankName] = useState('');
-  const [accountNumber, setAccountNumber] = useState('');
-  const [accountName, setAccountName] = useState('');
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const [isSuccess, setIsSuccess] = useState(false);
-  const [errors, setErrors] = useState<Record<string, string>>({});
-
-  const MIN_WITHDRAWAL = 100000; // 100k VND
-  const MAX_WITHDRAWAL = availableBalance;
-
-  const handleAmountChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const value = e.target.value.replace(/[^0-9]/g, '');
-    setAmount(value);
-
-    // Clear amount error when user types
-    if (errors.amount) {
-      setErrors(prev => ({ ...prev, amount: '' }));
-    }
-  };
-
-  const setQuickAmount = (percentage: number) => {
-    const calculatedAmount = Math.floor(availableBalance * percentage);
-    setAmount(calculatedAmount.toString());
-    if (errors.amount) {
-      setErrors(prev => ({ ...prev, amount: '' }));
-    }
-  };
-
-  const validate = (): boolean => {
-    const newErrors: Record<string, string> = {};
-
-    if (!amount || parseInt(amount) === 0) {
-      newErrors.amount = t('withdrawalmodal.validation.amount_required');
-    } else if (parseInt(amount) < MIN_WITHDRAWAL) {
-      newErrors.amount = t('withdrawalmodal.validation.min_withdrawal').replace('{amount}', formatVND(MIN_WITHDRAWAL));
-    } else if (parseInt(amount) > MAX_WITHDRAWAL) {
-      newErrors.amount = t('withdrawalmodal.validation.exceeds_balance');
-    }
-
-    if (!bankName.trim()) {
-      newErrors.bankName = t('withdrawalmodal.validation.bank_name_required');
-    }
-
-    if (!accountNumber.trim()) {
-      newErrors.accountNumber = t('withdrawalmodal.validation.account_number_required');
-    } else if (!/^\d+$/.test(accountNumber)) {
-      newErrors.accountNumber = t('withdrawalmodal.validation.account_number_numeric');
-    }
-
-    if (!accountName.trim()) {
-      newErrors.accountName = t('withdrawalmodal.validation.account_name_required');
-    }
-
-    setErrors(newErrors);
-    return Object.keys(newErrors).length === 0;
-  };
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-
-    if (!validate()) {
-      return;
-    }
-
-    setIsSubmitting(true);
-
-    // Simulate API call
-    await new Promise(resolve => setTimeout(resolve, 2000));
-
-    setIsSubmitting(false);
-    setIsSuccess(true);
-
-    // Reset form after 3 seconds and close
-    setTimeout(() => {
-      setIsSuccess(false);
-      setAmount('');
-      setBankName('');
-      setAccountNumber('');
-      setAccountName('');
-      setErrors({});
-      onClose();
-    }, 3000);
-  };
-
-  const handleClose = () => {
-    if (!isSubmitting) {
-      setAmount('');
-      setBankName('');
-      setAccountNumber('');
-      setAccountName('');
-      setErrors({});
-      setIsSuccess(false);
-      onClose();
-    }
-  };
-
-  const bankOptions = VIETNAM_BANKS.map(bank => ({
-    value: bank.name,
-    label: `${bank.shortName} - ${bank.name}`
-  }));
+    const {
+        amount,
+        bankName,
+        setBankName,
+        accountNumber,
+        setAccountNumber,
+        accountName,
+        setAccountName,
+        isSubmitting,
+        isSuccess,
+        errors,
+        setErrors,
+        bankOptions,
+        MIN_WITHDRAWAL,
+        MAX_WITHDRAWAL,
+        handleAmountChange,
+        setQuickAmount,
+        handleSubmit,
+        handleClose,
+    } = useWithdrawalFormStateAndValidation({ availableBalance, onClose });
 
   return (
     <Modal

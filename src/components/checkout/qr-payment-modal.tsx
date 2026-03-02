@@ -3,11 +3,12 @@
  * Displays PayOS QR code for customer payment with auto-refresh status
  */
 
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { X, CheckCircle, XCircle, Clock, RefreshCw, Smartphone } from 'lucide-react';
 import { useTranslation } from '@/hooks';
-import { getPaymentStatus, type PaymentResponse } from '@/services/payment/payos-client';
+import { type PaymentResponse } from '@/services/payment/payos-client';
+import { useQRPaymentStatusPoller } from './use-qr-payment-status-poller';
 
 interface QRPaymentModalProps {
     isOpen: boolean;
@@ -25,74 +26,14 @@ export function QRPaymentModal({
     onFailure,
 }: QRPaymentModalProps) {
     const { t } = useTranslation();
-    const [status, setStatus] = useState<'pending' | 'processing' | 'success' | 'failed'>('pending');
-    const [timeLeft, setTimeLeft] = useState(600); // 10 minutes in seconds
-    const [isChecking, setIsChecking] = useState(false);
+    const { status, timeLeft, isChecking, formatTime, handleClose: handleClosePoller } = useQRPaymentStatusPoller({
+        isOpen,
+        paymentData,
+        onSuccess,
+        onFailure,
+    });
 
-    // Auto-refresh payment status every 3 seconds
-    useEffect(() => {
-        if (!isOpen || !paymentData || status !== 'pending') return;
-
-        const interval = setInterval(async () => {
-            try {
-                setIsChecking(true);
-                const statusResponse = await getPaymentStatus(paymentData.orderCode);
-
-                if (statusResponse.status === 'PAID') {
-                    setStatus('success');
-                    clearInterval(interval);
-                    onSuccess(paymentData.orderCode);
-                } else if (statusResponse.status === 'CANCELLED') {
-                    setStatus('failed');
-                    onFailure('Payment was cancelled');
-                    clearInterval(interval);
-                }
-            } catch {
-                // status check failed, will retry on next interval
-            } finally {
-                setIsChecking(false);
-            }
-        }, 3000);
-
-        return () => clearInterval(interval);
-    }, [isOpen, paymentData, status, onSuccess, onFailure]);
-
-    // Countdown timer
-    useEffect(() => {
-        if (!isOpen || status !== 'pending') return;
-
-        const timer = setInterval(() => {
-            setTimeLeft((prev) => {
-                if (prev <= 1) {
-                    setStatus('failed');
-                    onFailure('Payment expired');
-                    clearInterval(timer);
-                    return 0;
-                }
-                return prev - 1;
-            });
-        }, 1000);
-
-        return () => clearInterval(timer);
-    }, [isOpen, status, onFailure]);
-
-    // Format time as MM:SS
-    const formatTime = (seconds: number) => {
-        const mins = Math.floor(seconds / 60);
-        const secs = seconds % 60;
-        return `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
-    };
-
-    const handleClose = () => {
-        if (status === 'pending') {
-            // Warn user before closing
-            if (window.confirm(t('checkout.payment.confirm_close'))) {
-                onClose();
-            }
-        } else {
-            onClose();
-        }
-    };
+    const handleClose = () => handleClosePoller(onClose);
 
     if (!paymentData) return null;
 

@@ -1,30 +1,24 @@
 /**
- * WellNexus Marketplace (Refactored)
- * A social commerce hub for premium well-being products and rewards.
- * 
- * Modular architecture leveraging useMarketplace hook and domain components.
+ * WellNexus Marketplace
+ * Social commerce hub for premium well-being products and rewards.
  */
 
 import React, { lazy, Suspense } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { ShoppingCart, Award, Zap } from 'lucide-react';
+import { Zap } from 'lucide-react';
 import { GridPattern } from '@/components/ui/Aura';
-
-// Hooks
 import { useMarketplace } from '@/hooks/useMarketplace';
-
-// Components
 import { MarketplaceHeader } from '@/components/marketplace/MarketplaceHeader';
 import { MarketplaceFilters } from '@/components/marketplace/MarketplaceFilters';
 import { AIRecommendation } from '@/components/marketplace/AIRecommendation';
 import { ProductGrid } from '@/components/marketplace/ProductGrid';
 import { RedemptionZone } from '@/components/marketplace/RedemptionZone';
+import { MarketplaceModeToggleButtons } from '@/components/marketplace/marketplace-mode-toggle-buttons';
 import { SEOHead } from '@/components/seo/seo-head';
 import { Breadcrumbs } from '@/components/seo/breadcrumbs';
 import { seoConfig } from '@/config/seo-config';
 import { useToast } from '@/components/ui/Toast';
 
-// Lazy Loaded Components
 const QuickPurchaseModal = lazy(() => import('@/components/marketplace/QuickPurchaseModal').then(m => ({ default: m.QuickPurchaseModal })));
 const CartDrawer = lazy(() => import('@/components/marketplace/CartDrawer').then(m => ({ default: m.CartDrawer })));
 
@@ -32,36 +26,16 @@ export const Marketplace: React.FC = () => {
   const [showQuickBuy, setShowQuickBuy] = React.useState(false);
   const { showToast } = useToast();
   const {
-    // State
-    user,
-    products,
-    allRedemptionItems,
-    searchTerm,
-    setSearchTerm,
-    priceRange,
-    setPriceRange,
-    category,
-    setCategory,
-    aiSuggestion,
-    loadingAi,
-    cart,
-    showRedemption,
-    setShowRedemption,
-    showFilters,
-    setShowFilters,
-    showCart,
-    setShowCart,
-
-    // Actions
-    addToCart,
-    updateQuantity,
-    removeFromCart,
-    redeemItem,
-
-    // Totals
-    cartTotal,
-    cartItemCount,
-    t
+    user, products, allRedemptionItems,
+    searchTerm, setSearchTerm,
+    priceRange, setPriceRange,
+    category, setCategory,
+    aiSuggestion, loadingAi,
+    cart, showRedemption, setShowRedemption,
+    showFilters, setShowFilters,
+    showCart, setShowCart,
+    addToCart, updateQuantity, removeFromCart, redeemItem,
+    cartTotal, cartItemCount, t,
   } = useMarketplace();
 
   return (
@@ -75,36 +49,17 @@ export const Marketplace: React.FC = () => {
       />
       <GridPattern />
 
-      {/* Navigation & Mode Toggle */}
       <div className="sticky top-0 z-40 bg-white/80 dark:bg-zinc-950/80 backdrop-blur-2xl border-b border-zinc-200 dark:border-white/10 p-4">
         <div className="max-w-7xl mx-auto flex flex-col gap-4">
-          <div className="w-full">
-            <Breadcrumbs />
-          </div>
-          <div className="flex gap-4">
-          <button
-            onClick={() => setShowRedemption(false)}
-            className={`flex-1 px-8 py-5 rounded-2xl font-black text-xs uppercase tracking-widest transition-all duration-500 flex items-center justify-center gap-3 ${!showRedemption
-              ? 'bg-zinc-900 dark:bg-zinc-100 text-white dark:text-zinc-900 shadow-2xl'
-              : 'text-zinc-400 hover:text-zinc-900 dark:hover:text-white'
-              }`}
-          >
-            <ShoppingCart size={20} />
-            {t('nav.marketplace')}
-          </button>
-
-          <button
-            onClick={() => setShowRedemption(true)}
-            className={`flex-1 px-8 py-5 rounded-2xl font-black text-xs uppercase tracking-widest transition-all duration-500 flex items-center justify-center gap-3 ${showRedemption
-              ? 'bg-gradient-to-r from-purple-600 to-pink-600 text-white shadow-2xl shadow-purple-900/40'
-              : 'text-zinc-400 hover:text-purple-500 dark:hover:text-purple-400'
-              }`}
-          >
-            <Award size={20} />
-            {t('wallet.staking.rewards')}
-          </button>
+          <div className="w-full"><Breadcrumbs /></div>
+          <MarketplaceModeToggleButtons
+            showRedemption={showRedemption}
+            onShop={() => setShowRedemption(false)}
+            onRedeem={() => setShowRedemption(true)}
+            shopLabel={t('nav.marketplace')}
+            redeemLabel={t('wallet.staking.rewards')}
+          />
         </div>
-      </div>
       </div>
 
       <div className="relative z-10 max-w-7xl mx-auto px-6 py-12">
@@ -117,7 +72,6 @@ export const Marketplace: React.FC = () => {
               exit={{ opacity: 0, x: -20 }}
               className="grid grid-cols-1 lg:grid-cols-4 gap-12"
             >
-              {/* Sidebar Filters */}
               <div className={`hidden lg:block lg:col-span-1 transition-all duration-500 ${!showFilters ? 'lg:opacity-0 lg:-translate-x-10 pointer-events-none w-0 overflow-hidden' : ''}`}>
                 <MarketplaceFilters
                   category={category}
@@ -125,15 +79,10 @@ export const Marketplace: React.FC = () => {
                   priceRange={priceRange}
                   setPriceRange={setPriceRange}
                   onClose={() => setShowFilters(false)}
-                  onReset={() => {
-                    setCategory('all');
-                    setPriceRange('all');
-                    setSearchTerm('');
-                  }}
+                  onReset={() => { setCategory('all'); setPriceRange('all'); setSearchTerm(''); }}
                 />
               </div>
 
-              {/* Main Content Area */}
               <div className={`${showFilters ? 'lg:col-span-3' : 'lg:col-span-4'} space-y-12 transition-all duration-500`}>
                 <MarketplaceHeader
                   searchTerm={searchTerm}
@@ -145,7 +94,6 @@ export const Marketplace: React.FC = () => {
                   searchPlaceholder={t('marketplace.searchPlaceholder')}
                   totalProducts={products.length}
                 />
-
                 <AIRecommendation
                   suggestion={aiSuggestion}
                   loading={loadingAi}
@@ -153,17 +101,17 @@ export const Marketplace: React.FC = () => {
                   liveLabel={t('marketplace.aiRecommendation.live')}
                   loadingText={t('marketplace.aiRecommendation.loading', { count: 100 })}
                 />
-
                 <ProductGrid
                   products={products}
                   recommendedIds={aiSuggestion?.productIds || []}
                   onAddToCart={addToCart}
-                  onViewDetail={(_id) => { /* Detail view transition logic here */ }}
+                  onViewDetail={(_id) => {}}
                 />
-
                 {products.length === 0 && (
                   <div className="py-40 text-center">
-                    <h3 className="text-3xl font-black text-zinc-300 dark:text-zinc-800 uppercase tracking-[0.5em]">{t('marketplace.noProductsFound')}</h3>
+                    <h3 className="text-3xl font-black text-zinc-300 dark:text-zinc-800 uppercase tracking-[0.5em]">
+                      {t('marketplace.noProductsFound')}
+                    </h3>
                   </div>
                 )}
               </div>
@@ -193,7 +141,6 @@ export const Marketplace: React.FC = () => {
         </AnimatePresence>
       </div>
 
-      {/* Cart Drawer Overlay */}
       <Suspense fallback={null}>
         <CartDrawer
           isOpen={showCart}
@@ -206,7 +153,6 @@ export const Marketplace: React.FC = () => {
         />
       </Suspense>
 
-      {/* Quick Buy FAB */}
       {!showRedemption && (
         <motion.button
           initial={{ scale: 0, rotate: 180 }}
@@ -221,10 +167,7 @@ export const Marketplace: React.FC = () => {
       )}
 
       <Suspense fallback={null}>
-        <QuickPurchaseModal
-          isOpen={showQuickBuy}
-          onClose={() => setShowQuickBuy(false)}
-        />
+        <QuickPurchaseModal isOpen={showQuickBuy} onClose={() => setShowQuickBuy(false)} />
       </Suspense>
     </div>
   );
