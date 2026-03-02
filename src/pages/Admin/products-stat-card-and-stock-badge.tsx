@@ -77,7 +77,7 @@ export const ProductListItem: React.FC<ProductListItemProps> = ({
       <div className="grid grid-cols-1 xl:grid-cols-4 gap-10">
         <div className="flex gap-6 col-span-1 xl:col-span-2">
           <div className="w-32 h-32 bg-zinc-100 dark:bg-zinc-800 rounded-3xl overflow-hidden border border-zinc-200 dark:border-white/5 shrink-0 shadow-inner">
-            {p.image_url ? <img src={p.image_url} alt={p.name} className="w-full h-full object-cover" /> : <ImageIcon size={32} className="text-zinc-400 m-12" />}
+            {p.image_url ? <img src={p.image_url} alt={p.name} loading="lazy" className="w-full h-full object-cover" /> : <ImageIcon size={32} className="text-zinc-400 m-12" />}
           </div>
           <div className="space-y-4">
             <div>

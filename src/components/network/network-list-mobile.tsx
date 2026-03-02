@@ -41,7 +41,7 @@ const NodeItem: React.FC<{ node: NetworkNode; level: number }> = ({ node, level 
         <div className="flex items-center gap-3">
           <div className="relative">
             {node.attributes?.avatar ? (
-              <img src={node.attributes.avatar} alt={node.name} className="w-10 h-10 rounded-full object-cover border border-white/10" />
+              <img src={node.attributes.avatar} alt={node.name} loading="lazy" className="w-10 h-10 rounded-full object-cover border border-white/10" />
             ) : (
               <div className="w-10 h-10 rounded-full bg-zinc-800 flex items-center justify-center border border-white/10">
                 <RankIcon rank={node.rank} />

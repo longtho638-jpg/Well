@@ -99,7 +99,7 @@ export const RedemptionZone: React.FC<RedemptionZoneProps> = ({
                             className="group bg-zinc-900 border border-zinc-800 rounded-[2.5rem] overflow-hidden shadow-xl"
                         >
                             <div className="relative h-60 overflow-hidden">
-                                <img src={item.imageUrl} alt={item.name} className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-700" />
+                                <img src={item.imageUrl} alt={item.name} loading="lazy" className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-700" />
                                 <div className="absolute top-4 right-4 bg-zinc-950/80 backdrop-blur-md px-4 py-2 rounded-xl text-yellow-400 font-black text-sm border border-yellow-500/30 flex items-center gap-2">
                                     <Award size={16} />
                                     {formatNumber(item.growCost)}

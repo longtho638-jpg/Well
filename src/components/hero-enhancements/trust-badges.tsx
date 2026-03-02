@@ -26,7 +26,7 @@ export function TrustBadges({ badges }: TrustBadgesProps) {
                         transition={{ delay: index * 0.1 }}
                     >
                         {badge.logo ? (
-                            <img src={badge.logo} alt={badge.name} className="h-8 md:h-10" />
+                            <img src={badge.logo} alt={badge.name} loading="lazy" className="h-8 md:h-10" />
                         ) : (
                             badge.name
                         )}

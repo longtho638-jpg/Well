@@ -59,7 +59,7 @@ export const NodeCard: React.FC<NodeCardProps> = ({ nodeDatum, toggleNode }) => 
           {/* Avatar/Icon */}
           <div className={`w-10 h-10 rounded-full flex items-center justify-center border ${rankConfig.bg} ${rankConfig.border}`}>
             {attributes.avatar ? (
-              <img src={attributes.avatar} alt={nodeDatum.name} className="w-full h-full rounded-full object-cover" />
+              <img src={attributes.avatar} alt={nodeDatum.name} loading="lazy" className="w-full h-full rounded-full object-cover" />
             ) : (
               <Icon className={`w-5 h-5 ${rankConfig.color}`} />
             )}
