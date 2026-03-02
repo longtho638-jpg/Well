@@ -8,6 +8,7 @@
 
 import { google } from '@ai-sdk/google';
 import { openai } from '@ai-sdk/openai';
+import { anthropic } from '@ai-sdk/anthropic';
 import { agentLLMRouter } from './agent-llm-router-litellm-pattern';
 import type { LanguageModel, ModelMessage } from 'ai';
 import type { ReasoningStep, ReasoningTrace } from './agi-react-reasoning-loop';
@@ -31,7 +32,7 @@ export function getVibeModel(preferredModel?: string): LanguageModel {
     case 'openai':
       return openai(deployment.modelName) as unknown as LanguageModel;
     case 'anthropic':
-      throw new Error(`Provider ${deployment.provider} not yet fully mapped in Vercel AI Adapter`);
+      return anthropic(deployment.modelName) as unknown as LanguageModel;
     default:
       return google('models/gemini-1.5-pro-latest') as unknown as LanguageModel;
   }

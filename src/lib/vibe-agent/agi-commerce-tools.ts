@@ -66,9 +66,9 @@ export async function searchProducts(
 ): Promise<ProductSearchResult> {
   // Stub — replace with Supabase query
   const products = [
-    { id: 'prod-001', name: 'Well Alkaline Filter', price: 4500000, stock: 50 },
-    { id: 'prod-002', name: 'Well Mineral Boost', price: 180000, stock: 200 },
-    { id: 'prod-003', name: 'Well Hydrogen Generator', price: 12000000, stock: 15 },
+    { id: 'prod-001', name: 'Well Alkaline Filter', price: 4500000, stock: 50, category: 'water-filter' },
+    { id: 'prod-002', name: 'Well Mineral Boost', price: 180000, stock: 200, category: 'supplement' },
+    { id: 'prod-003', name: 'Well Hydrogen Generator', price: 12000000, stock: 15, category: 'water-filter' },
   ];
 
   const filtered = products
