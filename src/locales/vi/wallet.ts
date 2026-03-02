@@ -279,7 +279,11 @@ withdrawal: {
     requestSubtitle: "Nhập thông tin để rút tiền về tài khoản ngân hàng",
     nameMatchNote: "Tên phải trùng khớp với tên đăng ký tài khoản",
     submitButton: "Gửi Yêu Cầu Rút Tiền",
-    historyTitle: "Lịch Sử Rút Tiền"
+    historyTitle: "Lịch Sử Rút Tiền",
+    minLabel: "Tối thiểu",
+    availableLabel: "Khả dụng",
+    policyTitle: "Chính sách rút tiền",
+    policyDescription: "Yêu cầu rút tiền được xử lý trong 24-48 giờ. Vui lòng đảm bảo tên tài khoản ngân hàng trùng khớp với thông tin xác minh danh tính."
   },
 commissionWallet: {
     title: "Ví Hoa Hồng",

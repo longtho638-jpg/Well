@@ -51,7 +51,11 @@ export const auth = {
       placeholders: {
         name: "Enter your full name",
         email: "Enter your email"
-      }
+      },
+      checkEmail: "Check Your Email!",
+      emailSentMessage: "We've sent a confirmation link to {{email}}. Click the link to activate your account.",
+      didntReceive: "Didn't receive it? Check your spam folder or",
+      resendEmail: "resend confirmation email"
     },
     demo: "Demo",
     password: {

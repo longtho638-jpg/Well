@@ -35,16 +35,14 @@ export const SignupForm: React.FC = () => {
                         >
                             <CheckCircle className="w-8 h-8 text-white" />
                         </motion.div>
-                        <h3 className="text-2xl font-bold mb-2">Check Your Email!</h3>
+                        <h3 className="text-2xl font-bold mb-2">{t('auth.register.checkEmail')}</h3>
                         <p className="text-slate-300 text-center text-sm max-w-sm">
-                            We've sent a confirmation link to <span className="text-teal-400 font-bold">{form.getValues('email')}</span>.
-                            Click the link to activate your account.
+                            {t('auth.register.emailSentMessage', { email: form.getValues('email') })}
                         </p>
                         <div className="mt-6 text-xs text-slate-400 text-center">
-                            <p>Didn't receive it? Check your spam folder or</p>
+                            <p>{t('auth.register.didntReceive')}</p>
                             <button className="text-teal-400 hover:text-teal-300 underline mt-1">
-                                resend confirmation email
-                            </button>
+                                {t('auth.register.resendEmail')}</button>
                         </div>
                     </motion.div>
                 )}

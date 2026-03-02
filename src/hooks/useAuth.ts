@@ -74,6 +74,8 @@ export function useAuth() {
         // Load other real data from Supabase after login
         fetchRealData();
       }
+    }).catch((err) => {
+      authLogger.error('Session initialization failed', err);
     }).finally(() => {
       setInitialized(true);
     });

@@ -51,7 +51,11 @@ auth: {
       placeholders: {
         name: "Nhập họ và tên đầy đủ",
         email: "ten@congty.com"
-      }
+      },
+      checkEmail: "Kiểm tra Email của bạn!",
+      emailSentMessage: "Chúng tôi đã gửi liên kết xác nhận đến {{email}}. Nhấn liên kết để kích hoạt tài khoản.",
+      didntReceive: "Không nhận được? Kiểm tra thư mục spam hoặc",
+      resendEmail: "gửi lại email xác nhận"
     },
     forgotPassword: {
       title: "Quên mật khẩu",

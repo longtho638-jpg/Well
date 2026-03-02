@@ -116,8 +116,8 @@ export const WithdrawalForm: React.FC<WithdrawalFormProps> = ({ onSuccess }) => 
               </p>
             ) : (
               <p className="mt-1 text-xs text-zinc-500 flex justify-between">
-                <span>Min: {new Intl.NumberFormat('vi-VN').format(MIN_WITHDRAWAL)} đ</span>
-                <span>Available: {new Intl.NumberFormat('vi-VN').format(user?.pendingCashback || 0)} đ</span>
+                <span>{t('withdrawal.minLabel')}: {new Intl.NumberFormat('vi-VN').format(MIN_WITHDRAWAL)} đ</span>
+                <span>{t('withdrawal.availableLabel')}: {new Intl.NumberFormat('vi-VN').format(user?.pendingCashback || 0)} đ</span>
               </p>
             )}
           </div>

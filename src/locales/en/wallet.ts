@@ -151,7 +151,11 @@ export const wallet = {
     requestSubtitle: "Enter details to withdraw to your bank account",
     nameMatchNote: "Name must match your registered account",
     submitButton: "Submit Withdrawal Request",
-    historyTitle: "Withdrawal History"
+    historyTitle: "Withdrawal History",
+    minLabel: "Min",
+    availableLabel: "Available",
+    policyTitle: "Withdrawal Policy",
+    policyDescription: "Withdrawals are processed within 24-48 hours. Please ensure your bank account name matches your KYC identity."
   },
   commissionWallet: {
     title: "Commission Wallet",

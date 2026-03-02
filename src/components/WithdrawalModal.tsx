@@ -45,7 +45,7 @@ export const WithdrawalModal: React.FC<WithdrawalModalProps> = ({
     <Modal
       isOpen={isOpen}
       onClose={handleClose}
-      title="Request Withdrawal"
+      title={t('withdrawal.requestTitle')}
       maxWidth="lg"
       showCloseButton={!isSubmitting}
     >
@@ -74,13 +74,13 @@ export const WithdrawalModal: React.FC<WithdrawalModalProps> = ({
           {/* Amount Input */}
           <div>
             <Input
-              label="Withdrawal Amount"
+              label={t('withdrawal.amount')}
               type="text"
               value={amount ? formatVND(parseInt(amount)) : ''}
               onChange={handleAmountChange}
               placeholder={t('withdrawalmodal.enter_amount')}
               error={errors.amount}
-              helperText={`Min: ${formatVND(MIN_WITHDRAWAL)} • Max: ${formatVND(MAX_WITHDRAWAL)}`}
+              helperText={`${t('withdrawal.minLabel')}: ${formatVND(MIN_WITHDRAWAL)} • Max: ${formatVND(MAX_WITHDRAWAL)}`}
               required
               icon={<Wallet className="w-5 h-5" />}
             />
@@ -121,7 +121,7 @@ export const WithdrawalModal: React.FC<WithdrawalModalProps> = ({
               {t('withdrawalmodal.bank_account_details')}</h3>
 
             <Select
-              label="Bank Name"
+              label={t('withdrawal.bankName')}
               value={bankName}
               onChange={(e: React.ChangeEvent<HTMLSelectElement>) => {
                 setBankName(e.target.value);
@@ -134,7 +134,7 @@ export const WithdrawalModal: React.FC<WithdrawalModalProps> = ({
             />
 
             <Input
-              label="Account Number"
+              label={t('withdrawal.accountNumber')}
               type="text"
               value={accountNumber}
               onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
@@ -148,7 +148,7 @@ export const WithdrawalModal: React.FC<WithdrawalModalProps> = ({
             />
 
             <Input
-              label="Account Holder Name"
+              label={t('withdrawal.accountName')}
               type="text"
               value={accountName}
               onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
@@ -157,7 +157,7 @@ export const WithdrawalModal: React.FC<WithdrawalModalProps> = ({
               }}
               placeholder={t('withdrawalmodal.account_name_placeholder')}
               error={errors.accountName}
-              helperText="Must match your registered name"
+              helperText={t('withdrawal.nameMatchNote')}
               required
             />
           </div>

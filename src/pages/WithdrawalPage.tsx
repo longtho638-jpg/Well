@@ -45,14 +45,14 @@ const WithdrawalPage: React.FC = () => {
         <div className="relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-6">
           <div>
             <p className="text-emerald-100 font-medium mb-1 uppercase tracking-wider text-xs">
-              Available Balance
+              {t('withdrawal.availableBalance')}
             </p>
             <h2 className="text-4xl md:text-5xl font-black text-white tracking-tight">
               {formatVND(user?.shopBalance || 0)}
             </h2>
             <div className="flex items-center gap-2 mt-2 text-emerald-100/80 text-sm">
               <Info className="w-4 h-4" />
-              <span>Minimum withdrawal: 2,000,000 đ</span>
+              <span>{t('withdrawal.minimumAmount')}</span>
             </div>
           </div>
 
@@ -60,9 +60,9 @@ const WithdrawalPage: React.FC = () => {
              <div className="flex gap-3">
                 <AlertTriangle className="w-5 h-5 text-amber-300 shrink-0" />
                 <div className="space-y-1">
-                  <p className="text-sm font-bold text-white">Withdrawal Policy</p>
+                  <p className="text-sm font-bold text-white">{t('withdrawal.policyTitle')}</p>
                   <p className="text-xs text-emerald-50 leading-relaxed">
-                    Withdrawals are processed within 24-48 hours. Please ensure your bank account name matches your KYC identity.
+                    {t('withdrawal.policyDescription')}
                   </p>
                 </div>
              </div>
