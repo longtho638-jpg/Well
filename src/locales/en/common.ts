@@ -27,6 +27,7 @@ export const common = {
     save: "Save",
     cancel: "Cancel",
     close: "Close",
+    refresh: "Refresh",
     confirm: "Confirm",
     back: "Back",
     next: "Next",

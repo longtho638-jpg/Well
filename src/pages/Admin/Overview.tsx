@@ -53,7 +53,7 @@ const Overview: React.FC = () => {
           <p className="text-zinc-500 font-medium text-lg">{t('overview.autonomous_ecosystem_orchestra')}</p>
         </div>
         <div className="flex items-center gap-3">
-          <button onClick={refresh} className="p-4 bg-white dark:bg-zinc-900 border border-zinc-100 dark:border-white/5 rounded-2xl shadow-sm text-zinc-500">
+          <button onClick={refresh} aria-label={t('common.refresh')} className="p-4 bg-white dark:bg-zinc-900 border border-zinc-100 dark:border-white/5 rounded-2xl shadow-sm text-zinc-500">
             <RefreshCw size={24} className={loading ? 'animate-spin' : ''} />
           </button>
           <div className="flex items-center gap-3 bg-emerald-500/10 text-emerald-500 px-6 py-4 rounded-2xl border border-emerald-500/20">
@@ -68,10 +68,10 @@ const Overview: React.FC = () => {
 
       {/* Strategic Metrics */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-        <MetricCard label="Global GMV" value={formatVND(metrics.totalRevenue)} numericValue={metrics.totalRevenue} trend="+18.4% WoW" icon={Activity} color="bg-blue-500/10 text-blue-500 border-blue-500/20" index={0} />
-        <MetricCard label="Active Bee Force" value={metrics.activePartners.toString()} numericValue={metrics.activePartners} trend="+12 New nodes" icon={Users} color="bg-indigo-500/10 text-indigo-500 border-indigo-500/20" index={1} />
-        <MetricCard label="AI Signal Pending" value={aiActions.length.toString()} numericValue={aiActions.length} trend="Action required" icon={Bot} color="bg-rose-500/10 text-rose-500 border-rose-500/20" index={2} />
-        <MetricCard label="Ecosystem SLA" value={`${metrics.systemHealth}%`} numericValue={metrics.systemHealth} trend="Operational" icon={CheckCircle2} color="bg-emerald-500/10 text-emerald-500 border-emerald-500/20" index={3} />
+        <MetricCard label={t('overview.global_gmv')} value={formatVND(metrics.totalRevenue)} numericValue={metrics.totalRevenue} trend={t('overview.trend_wow')} icon={Activity} color="bg-blue-500/10 text-blue-500 border-blue-500/20" index={0} />
+        <MetricCard label={t('overview.active_bee_force')} value={metrics.activePartners.toString()} numericValue={metrics.activePartners} trend={t('overview.trend_new_nodes')} icon={Users} color="bg-indigo-500/10 text-indigo-500 border-indigo-500/20" index={1} />
+        <MetricCard label={t('overview.ai_signal_pending')} value={aiActions.length.toString()} numericValue={aiActions.length} trend={t('overview.trend_action_required')} icon={Bot} color="bg-rose-500/10 text-rose-500 border-rose-500/20" index={2} />
+        <MetricCard label={t('overview.ecosystem_sla')} value={`${metrics.systemHealth}%`} numericValue={metrics.systemHealth} trend={t('overview.trend_operational')} icon={CheckCircle2} color="bg-emerald-500/10 text-emerald-500 border-emerald-500/20" index={3} />
       </div>
 
       {/* Main Orchestration Grid */}
@@ -138,15 +138,15 @@ const Overview: React.FC = () => {
 
             <div className="space-y-4 relative z-10 pt-4 border-t border-white/5">
               {[
-                { m: 'AI scan completed: 245 profiles', t: '12s ago', i: Bot },
-                { m: 'Policy: Retail Comm locked at 25%', t: '2m ago', i: Settings },
-                { m: 'Security: Zero fraud packets detected', t: '5m ago', i: ShieldAlert },
+                { m: t('overview.evt_ai_scan'), time: t('overview.evt_12s_ago'), i: Bot },
+                { m: t('overview.evt_policy_locked'), time: t('overview.evt_2m_ago'), i: Settings },
+                { m: t('overview.evt_zero_fraud'), time: t('overview.evt_5m_ago'), i: ShieldAlert },
               ].map((evt, i) => (
                 <div key={i} className="flex gap-4 items-start group">
-                  <div className="p-2 bg-white/5 rounded-lg text-zinc-400 group-hover:text-emerald-400 transition-colors"><evt.i size={14} /></div>
+                  <div className="p-3 bg-white/5 rounded-lg text-zinc-400 group-hover:text-emerald-400 transition-colors"><evt.i size={14} /></div>
                   <div className="flex-1">
                     <p className="text-xs font-bold text-zinc-300 group-hover:text-white transition-colors leading-tight">{evt.m}</p>
-                    <p className="text-[9px] font-black text-zinc-600 uppercase mt-1">{evt.t}</p>
+                    <p className="text-[9px] font-black text-zinc-600 uppercase mt-1">{evt.time}</p>
                   </div>
                 </div>
               ))}

@@ -131,7 +131,8 @@ export const wallet = {
       pending: "Pending",
       approved: "Approved",
       rejected: "Rejected",
-      completed: "Completed"
+      completed: "Completed",
+      cancelled: "Cancelled"
     },
     errors: {
       insufficientBalance: "Insufficient balance",
@@ -151,6 +152,9 @@ export const wallet = {
     requestSubtitle: "Enter details to withdraw to your bank account",
     nameMatchNote: "Name must match your registered account",
     submitButton: "Submit Withdrawal Request",
+    subtitle: "Securely withdraw your earnings to your bank account",
+    noTransactions: "No transactions yet",
+    rejectionNote: "Note",
     historyTitle: "Withdrawal History",
     minLabel: "Min",
     availableLabel: "Available",

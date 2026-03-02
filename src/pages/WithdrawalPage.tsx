@@ -28,7 +28,7 @@ const WithdrawalPage: React.FC = () => {
             {t('nav.withdrawal') || 'Withdrawal'}
           </h1>
           <p className="text-zinc-400 mt-1">
-            Securely withdraw your earnings to your bank account
+            {t('withdrawal.subtitle')}
           </p>
         </div>
       </div>

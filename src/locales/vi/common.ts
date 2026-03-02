@@ -27,6 +27,7 @@ common: {
     save: "Lưu",
     cancel: "Hủy",
     close: "Đóng",
+    refresh: "Làm mới",
     delete: "Xóa",
     confirm: "Xác nhận",
     back: "Quay lại",

@@ -54,7 +54,7 @@ export const WithdrawalHistory: React.FC = () => {
         return (
           <span className="flex items-center gap-1 text-xs font-bold text-zinc-400 bg-zinc-500/10 px-2 py-1 rounded-full border border-zinc-500/20">
             <AlertCircle className="w-3 h-3" />
-            Cancelled
+            {t('withdrawal.status.cancelled')}
           </span>
         );
       default:
@@ -81,6 +81,7 @@ export const WithdrawalHistory: React.FC = () => {
         <h3 className="text-lg font-bold text-white">{t('withdrawal.historyTitle') || 'Transaction History'}</h3>
         <button
           onClick={fetchHistory}
+          aria-label={t('common.refresh')}
           className="p-2 hover:bg-white/10 rounded-lg transition-colors text-zinc-400 hover:text-white"
         >
           <RefreshCw className={`w-4 h-4 ${loading ? 'animate-spin' : ''}`} />
@@ -91,7 +92,7 @@ export const WithdrawalHistory: React.FC = () => {
         {requests.length === 0 ? (
           <div className="flex flex-col items-center justify-center h-48 text-zinc-500">
             <Clock className="w-10 h-10 mb-3 opacity-20" />
-            <p className="text-sm">No transactions yet</p>
+            <p className="text-sm">{t('withdrawal.noTransactions')}</p>
           </div>
         ) : (
           requests.map((req, idx) => (
@@ -126,7 +127,7 @@ export const WithdrawalHistory: React.FC = () => {
 
               {req.status === 'rejected' && req.rejection_reason && (
                 <div className="mt-2 text-xs text-red-300 bg-red-500/10 p-2 rounded-lg">
-                  Note: {req.rejection_reason}
+                  {t('withdrawal.rejectionNote')}: {req.rejection_reason}
                 </div>
               )}
             </motion.div>

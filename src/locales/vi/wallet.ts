@@ -255,7 +255,8 @@ withdrawal: {
       pending: "Đang Chờ",
       approved: "Đã Duyệt",
       rejected: "Bị Từ Chối",
-      completed: "Hoàn Thành"
+      completed: "Hoàn Thành",
+      cancelled: "Đã Hủy"
     },
     errors: {
       insufficientBalance: "Số dư không đủ",
@@ -279,6 +280,9 @@ withdrawal: {
     requestSubtitle: "Nhập thông tin để rút tiền về tài khoản ngân hàng",
     nameMatchNote: "Tên phải trùng khớp với tên đăng ký tài khoản",
     submitButton: "Gửi Yêu Cầu Rút Tiền",
+    subtitle: "Rút tiền an toàn về tài khoản ngân hàng của bạn",
+    noTransactions: "Chưa có giao dịch nào",
+    rejectionNote: "Lý do",
     historyTitle: "Lịch Sử Rút Tiền",
     minLabel: "Tối thiểu",
     availableLabel: "Khả dụng",
