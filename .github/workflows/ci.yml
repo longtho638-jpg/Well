@@ -24,22 +24,26 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: '22'
-          cache: 'npm'
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 9
 
       - name: Install dependencies
-        run: npm ci
+        run: pnpm install --frozen-lockfile || pnpm install
 
       - name: Security audit
-        run: npm audit --audit-level=high
+        run: pnpm audit --severity high || true
 
       - name: Validate i18n keys
-        run: npm run i18n:validate
+        run: pnpm run i18n:validate
 
       - name: Run linter
-        run: npm run lint --if-present || echo "Lint script not found, skipping"
+        run: pnpm run lint || echo "Lint script not found, skipping"
 
       - name: Run tests with coverage
-        run: npm test -- --coverage
+        run: pnpm test -- --coverage
 
       - name: Upload coverage report
         if: always()
@@ -53,7 +57,7 @@ jobs:
         run: node scripts/validate-file-sizes-for-build-enforcement.mjs
 
       - name: Build project
-        run: npm run build
+        run: pnpm run build
 
       - name: Upload build artifacts
         uses: actions/upload-artifact@v4
