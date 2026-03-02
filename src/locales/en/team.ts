@@ -207,7 +207,9 @@ export const team = {
     joined: "Joined",
     total_sales: "Total Sales",
     pending_cashback: "Pending Cashback",
-    point_balance: "Point Balance"
+    point_balance: "Point Balance",
+    update_success: "Partner updated successfully",
+    update_failed: "Failed to update partner"
   },
   agentDashboard: {
     title: "Agent Operating System",

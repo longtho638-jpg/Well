@@ -131,7 +131,8 @@ referralqrcode: {
     wellnexus_network: "WellNexus Network",
     scanning_initiates_sync: "Scanning initiates sync",
     commit_to_local_storage: "Commit to Local Storage",
-    recommended_for_high_conversio: "Recommended for high conversion"
+    recommended_for_high_conversio: "Recommended for high conversion",
+    qr_code_alt: "Mã QR Giới Thiệu"
   },
 referraltrendchart: {
     propagation_velocity: "Propagation Velocity",

@@ -286,6 +286,13 @@ export const admin = {
     suspected: "Suspected",
     verified: "Verified"
   },
+  partnerfilters: {
+    search_placeholder: "Search identity by name, email, or UID...",
+    filter_all: "All Identity Nodes",
+    filter_active: "Active Status",
+    filter_banned: "Banned Status",
+    filter_dormant: "Dormant Status"
+  },
   adminsecuritysettings: {
     "100": "100",
     b_o_m_t_t_i_kho_n: "Account Security",

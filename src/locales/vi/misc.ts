@@ -267,5 +267,29 @@ export const misc = {
     connectivity_check: "Kiểm Tra Kết Nối",
     client_status: "Trạng Thái Client",
     active: "Đang Hoạt Động"
+  },
+  agent: {
+    chat: {
+      active: "Đang Hoạt Động",
+      startConversation: "Bắt đầu trò chuyện với {{name}}",
+      messagePlaceholder: "Nhắn tin {{name}}...",
+      errorTitle: "Lỗi Kết Nối",
+      errorMessage: "Đại lý gặp lỗi. Vui lòng thử lại."
+    },
+    reasoning: {
+      thought: "Suy nghĩ",
+      action: "Hành động",
+      observation: "Quan sát",
+      tool: "Công cụ",
+      result: "Kết quả",
+      chainTitle: "Chuỗi Suy Luận AGI"
+    },
+    toolcall: {
+      running: "Đang chạy",
+      done: "Xong",
+      error: "Lỗi",
+      inputs: "Đầu vào",
+      output: "Đầu ra"
+    }
   }
 };

@@ -81,7 +81,9 @@ export const marketplace = {
     ai_recommended: "AI Recommended",
     add_to_cart: "Add to Cart",
     price: "Price",
-    commission: "Commission"
+    commission: "Commission",
+    empty_title: "No products found",
+    empty_message: "Try adjusting your filters or search terms"
   },
   marketplacefilters: {
     categories: {
@@ -320,7 +322,15 @@ export const marketplace = {
     asset: "Asset",
     inspect_bill: "Inspect Bill",
     no_evidence: "No Evidence",
-    transaction_logged: "Transaction Logged"
+    transaction_logged: "Transaction Logged",
+    col_timeline: "Timeline",
+    col_partner_identity: "Partner Identity",
+    col_value_vnd: "Value (VND)",
+    col_evidence: "Evidence",
+    col_governance: "Governance",
+    anonymous_partner: "Anonymous Partner",
+    unverified_email: "unverified@network.node",
+    empty_state: "No pending orders found"
   },
   ordermanagement: {
     actions: "Actions",

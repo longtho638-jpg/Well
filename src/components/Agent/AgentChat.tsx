@@ -71,7 +71,7 @@ export const AgentChat: React.FC<AgentChatProps> = ({ agentId, isAgiMode = false
             <span className="animate-ping absolute inline-flex h-2 w-2 rounded-full bg-green-400 opacity-75"></span>
             <span className="relative inline-flex rounded-full h-2 w-2 bg-green-500"></span>
           </span>
-          <span className="text-xs font-medium uppercase tracking-tight">Active</span>
+          <span className="text-xs font-medium uppercase tracking-tight">{t('agent.chat.active')}</span>
         </div>
       </div>
 
@@ -88,7 +88,7 @@ export const AgentChat: React.FC<AgentChatProps> = ({ agentId, isAgiMode = false
               className="h-full flex flex-col items-center justify-center text-center space-y-4 opacity-40"
             >
               <Bot className="w-12 h-12" />
-              <p className="text-sm">Start a conversation with {agentName}</p>
+              <p className="text-sm">{t('agent.chat.startConversation', { name: agentName })}</p>
             </motion.div>
           )}
           {messages.map((message: Message) => (
@@ -125,6 +125,14 @@ export const AgentChat: React.FC<AgentChatProps> = ({ agentId, isAgiMode = false
             </div>
           </div>
         )}
+        {status === 'error' && (
+          <div className="flex justify-center">
+            <div className="px-4 py-3 bg-red-500/10 border border-red-500/20 rounded-xl text-center">
+              <p className="text-xs font-semibold text-red-400">{t('agent.chat.errorTitle')}</p>
+              <p className="text-xs text-red-300/70 mt-1">{t('agent.chat.errorMessage')}</p>
+            </div>
+          </div>
+        )}
       </div>
 
       {/* AGI: Tool calls + Reasoning chain */}
@@ -145,7 +153,7 @@ export const AgentChat: React.FC<AgentChatProps> = ({ agentId, isAgiMode = false
         <input
           value={input}
           onChange={(e) => setInput(e.target.value)}
-          placeholder={`Message ${agentName}...`}
+          placeholder={t('agent.chat.messagePlaceholder', { name: agentName })}
           className="flex-1 px-4 py-2.5 bg-gray-100 border-none rounded-xl text-sm focus:ring-2 focus:ring-purple-500/20 focus:bg-white transition-all outline-none"
         />
         <button

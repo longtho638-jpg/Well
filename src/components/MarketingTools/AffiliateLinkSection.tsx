@@ -117,7 +117,7 @@ export default function AffiliateLinkSection({
             <div className="bg-gradient-to-br from-green-100 dark:from-slate-700 to-teal-100 dark:to-slate-700 p-8 rounded-2xl border-4 border-white dark:border-slate-600 shadow-2xl">
               <img
                 src={qrCodeUrl}
-                alt="QR Code"
+                alt={t('marketing.affiliate.qrCodeAlt')}
                 className="w-64 h-64 rounded-xl"
               />
               <div className="mt-4 text-center">

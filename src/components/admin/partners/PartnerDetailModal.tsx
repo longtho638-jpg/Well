@@ -47,7 +47,7 @@ export const PartnerDetailModal = memo(({
 
             if (error) throw error;
 
-            showToast('Partner updated successfully', 'success');
+            showToast(t('partnerdetailmodal.update_success'), 'success');
             onUpdate(partner.id, {
                 rank: formData.rank,
                 pendingCashback: formData.pendingCashback,
@@ -57,7 +57,7 @@ export const PartnerDetailModal = memo(({
             setIsEditing(false);
         } catch (error) {
             adminLogger.error('Error updating partner', error);
-            showToast('Failed to update partner', 'error');
+            showToast(t('partnerdetailmodal.update_failed'), 'error');
         } finally {
             setLoading(false);
         }
@@ -143,7 +143,7 @@ export const PartnerDetailModal = memo(({
 
                         <div>
                             <Input
-                                label="Total Sales"
+                                label={t('partnerdetailmodal.total_sales')}
                                 type="number"
                                 value={formData.totalSales}
                                 onChange={(e) => setFormData({ ...formData, totalSales: Number(e.target.value) })}
@@ -154,7 +154,7 @@ export const PartnerDetailModal = memo(({
 
                         <div>
                             <Input
-                                label="Pending Cashback"
+                                label={t('partnerdetailmodal.pending_cashback')}
                                 type="number"
                                 value={formData.pendingCashback}
                                 onChange={(e) => setFormData({ ...formData, pendingCashback: Number(e.target.value) })}
@@ -165,7 +165,7 @@ export const PartnerDetailModal = memo(({
 
                         <div>
                             <Input
-                                label="Point Balance"
+                                label={t('partnerdetailmodal.point_balance')}
                                 type="number"
                                 value={formData.pointBalance}
                                 onChange={(e) => setFormData({ ...formData, pointBalance: Number(e.target.value) })}

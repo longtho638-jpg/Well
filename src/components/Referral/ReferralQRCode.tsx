@@ -28,7 +28,7 @@ export const ReferralQRCode: React.FC<ReferralQRCodeProps> = ({ qrCodeUrl, onDow
             <div className="absolute inset-0 bg-teal-500/10 blur-2xl opacity-0 group-hover:opacity-100 transition-opacity" />
             <img
                 src={qrCodeUrl}
-                alt="Referral QR Code"
+                alt={t('referralqrcode.qr_code_alt')}
                 className="w-64 h-64 mx-auto relative z-10"
             />
             <div className="mt-6 text-center relative z-10">

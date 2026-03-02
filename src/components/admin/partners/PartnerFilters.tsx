@@ -3,6 +3,7 @@ import { Search, Filter, RefreshCw, Loader2 } from 'lucide-react';
 import { motion } from 'framer-motion';
 
 import { PartnerFilterStatus } from '@/hooks/usePartners';
+import { useTranslation } from '@/hooks';
 
 interface PartnerFiltersProps {
     searchQuery: string;
@@ -21,11 +22,13 @@ export const PartnerFilters: React.FC<PartnerFiltersProps> = ({
     loading,
     onRefresh
 }) => {
+    const { t } = useTranslation();
+
     const filterOptions: Array<{ id: string; label: string; value: PartnerFilterStatus }> = [
-        { id: 'all', label: 'All Identity Nodes', value: 'all' },
-        { id: 'active', label: 'Active Status', value: 'Active' },
-        { id: 'banned', label: 'Banned Status', value: 'Banned' },
-        { id: 'dormant', label: 'Dormant Status', value: 'Dormant' },
+        { id: 'all', label: t('partnerfilters.filter_all'), value: 'all' },
+        { id: 'active', label: t('partnerfilters.filter_active'), value: 'Active' },
+        { id: 'banned', label: t('partnerfilters.filter_banned'), value: 'Banned' },
+        { id: 'dormant', label: t('partnerfilters.filter_dormant'), value: 'Dormant' },
     ];
 
     return (
@@ -36,7 +39,7 @@ export const PartnerFilters: React.FC<PartnerFiltersProps> = ({
                 </div>
                 <input
                     type="text"
-                    placeholder="Search identity by name, email, or UID..."
+                    placeholder={t('partnerfilters.search_placeholder')}
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
                     className="w-full bg-zinc-950 border border-white/5 rounded-2xl py-4 pl-16 pr-6 text-sm font-medium text-white placeholder:text-zinc-600 focus:outline-none focus:border-teal-500/50 focus:ring-4 focus:ring-teal-500/5 transition-all outline-none italic"

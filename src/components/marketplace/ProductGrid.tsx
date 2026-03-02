@@ -1,6 +1,6 @@
 import React, { memo } from 'react';
 import { BentoGrid, BentoCard, AuraBadge } from '@/components/ui/Aura';
-import { ShoppingCart, ArrowRight } from 'lucide-react';
+import { ShoppingCart, ArrowRight, PackageOpen } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { Product } from '@/types';
 import { formatVND } from '@/utils/format';
@@ -111,6 +111,22 @@ export const ProductGrid: React.FC<ProductGridProps> = ({
     onAddToCart,
     onViewDetail,
 }) => {
+    const { t } = useTranslation();
+
+    if (products.length === 0) {
+        return (
+            <div className="flex flex-col items-center justify-center py-24 text-center">
+                <PackageOpen className="w-16 h-16 text-zinc-600 mb-4" />
+                <h3 className="text-lg font-black text-zinc-400 uppercase tracking-tight mb-2">
+                    {t('productgrid.empty_title')}
+                </h3>
+                <p className="text-sm text-zinc-500">
+                    {t('productgrid.empty_message')}
+                </p>
+            </div>
+        );
+    }
+
     return (
         <BentoGrid className="grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {products.map((product, idx) => (

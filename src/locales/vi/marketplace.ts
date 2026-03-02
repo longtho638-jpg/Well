@@ -132,10 +132,12 @@ productcard: {
     stock: "Còn: "
   },
 productgrid: {
-    add_to_cart: "Add to Cart",
-    ai_recommended: "AI Recommended",
-    commission: "Commission",
-    price: "Price"
+    add_to_cart: "Thêm vào giỏ",
+    ai_recommended: "AI Đề Xuất",
+    commission: "Hoa hồng",
+    price: "Giá",
+    empty_title: "Không tìm thấy sản phẩm",
+    empty_message: "Thử điều chỉnh bộ lọc hoặc từ khóa tìm kiếm"
   },
 producthero: {
     logistics_depleted: "Logistics Depleted"
@@ -302,11 +304,19 @@ orderimagemodal: {
     security_protocol_cross_verif: "Security Protocol: Cross Verification"
   },
 ordertable: {
-    approve: "Approve",
-    asset: "Asset",
-    inspect_bill: "Inspect Bill",
-    no_evidence: "No Evidence",
-    transaction_logged: "Transaction Logged"
+    approve: "Duyệt",
+    asset: "Tài sản",
+    inspect_bill: "Xem Hóa Đơn",
+    no_evidence: "Không Có Bằng Chứng",
+    transaction_logged: "Giao Dịch Đã Ghi",
+    col_timeline: "Thời Gian",
+    col_partner_identity: "Danh Tính Đối Tác",
+    col_value_vnd: "Giá Trị (VND)",
+    col_evidence: "Bằng Chứng",
+    col_governance: "Quản Trị",
+    anonymous_partner: "Đối Tác Ẩn Danh",
+    unverified_email: "chưa-xác-minh@mạng.node",
+    empty_state: "Không có đơn hàng chờ xử lý"
   },
 ordermanagement: {
     actions: "Hành Động",

@@ -54,7 +54,8 @@ marketing: {
       share: "Chia sẻ",
       qrTip: "In QR code này ra giấy và dán tại cửa hàng, hoặc chia sẻ online để khách hàng dễ dàng truy cập!",
       shareTitle: "QR Code của tôi - WellNexus",
-      shareText: "Quét QR code này để truy cập link giới thiệu của tôi!"
+      shareText: "Quét QR code này để truy cập link giới thiệu của tôi!",
+      qrCodeAlt: "Mã QR"
     },
     templates: {
       t1: {

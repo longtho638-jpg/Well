@@ -123,7 +123,9 @@ copilotcoaching: {
     ng: "Đúng"
   },
 copilotmessageitem: {
-    g_i_nhanh: "Gửi nhanh"
+    g_i_nhanh: "Gửi nhanh",
+    copiedToClipboard: "Đã sao chép vào clipboard",
+    copySuggestion: "Sao chép gợi ý"
   },
 copilotsuggestions: {
     g_i: "Gửi",

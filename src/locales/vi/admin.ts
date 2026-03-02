@@ -164,6 +164,13 @@ admin: {
     stat_broadcasts: "Phát sóng",
     stat_total_templates: "Tổng mẫu"
   },
+  partnerfilters: {
+    search_placeholder: "Tìm danh tính theo tên, email hoặc UID...",
+    filter_all: "Tất Cả Nút Định Danh",
+    filter_active: "Trạng Thái Hoạt Động",
+    filter_banned: "Trạng Thái Bị Cấm",
+    filter_dormant: "Trạng Thái Không Hoạt Động"
+  },
   adminsecuritysettings: {
     "100": "100",
     "15_ph_t": "15 phút",

@@ -67,7 +67,9 @@ export const copilot = {
     ng: "Apply"
   },
   copilotmessageitem: {
-    g_i_nhanh: "Quick Send"
+    g_i_nhanh: "Quick Send",
+    copiedToClipboard: "Copied to clipboard",
+    copySuggestion: "Copy suggestion"
   },
   copilotsuggestions: {
     g_i_c_u_h_i: "Suggested Questions",

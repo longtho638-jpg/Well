@@ -8,6 +8,7 @@
 import React, { useState } from 'react';
 import { Search, ShoppingCart, Award, DollarSign, Wrench, ChevronDown, Loader2, CheckCircle, XCircle } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { useTranslation } from '@/hooks';
 
 export interface ToolCallData {
   name: string;
@@ -33,19 +34,19 @@ const STATUS_CONFIG = {
     icon: Loader2,
     colorClass: 'text-blue-400',
     animate: true,
-    label: 'Running',
+    labelKey: 'running' as const,
   },
   success: {
     icon: CheckCircle,
     colorClass: 'text-emerald-400',
     animate: false,
-    label: 'Done',
+    labelKey: 'done' as const,
   },
   error: {
     icon: XCircle,
     colorClass: 'text-red-400',
     animate: false,
-    label: 'Error',
+    labelKey: 'error' as const,
   },
 } as const;
 
@@ -55,6 +56,7 @@ interface AgentToolCallCardProps {
 
 export const AgentToolCallCard: React.FC<AgentToolCallCardProps> = ({ toolCall }) => {
   const [expanded, setExpanded] = useState(false);
+  const { t } = useTranslation();
 
   const ToolIcon = getToolIcon(toolCall.name);
   const statusCfg = STATUS_CONFIG[toolCall.status];
@@ -80,7 +82,7 @@ export const AgentToolCallCard: React.FC<AgentToolCallCardProps> = ({ toolCall }
             {toolCall.name}
           </p>
           <p className={`text-[9px] font-bold uppercase tracking-widest italic ${statusCfg.colorClass}`}>
-            {statusCfg.label}
+            {t(`agent.toolcall.${statusCfg.labelKey}`)}
           </p>
         </div>
 
@@ -115,7 +117,7 @@ export const AgentToolCallCard: React.FC<AgentToolCallCardProps> = ({ toolCall }
               {Object.keys(toolCall.args).length > 0 && (
                 <div>
                   <p className="text-[9px] font-black uppercase tracking-widest text-zinc-500 mb-1 italic">
-                    Inputs
+                    {t('agent.toolcall.inputs')}
                   </p>
                   <pre className="text-[10px] text-zinc-400 bg-black/30 rounded-lg p-2 overflow-x-auto font-mono leading-relaxed">
                     {JSON.stringify(toolCall.args, null, 2)}
@@ -125,7 +127,7 @@ export const AgentToolCallCard: React.FC<AgentToolCallCardProps> = ({ toolCall }
               {toolCall.result !== undefined && (
                 <div>
                   <p className="text-[9px] font-black uppercase tracking-widest text-zinc-500 mb-1 italic">
-                    Output
+                    {t('agent.toolcall.output')}
                   </p>
                   <pre className="text-[10px] text-zinc-400 bg-black/30 rounded-lg p-2 overflow-x-auto font-mono leading-relaxed">
                     {JSON.stringify(toolCall.result, null, 2)}

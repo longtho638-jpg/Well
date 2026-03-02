@@ -62,7 +62,7 @@ export const CopilotMessageItem: React.FC<CopilotMessageItemProps> = React.memo(
         setCopied(true);
         if (copiedTimerRef.current) clearTimeout(copiedTimerRef.current);
         copiedTimerRef.current = setTimeout(() => setCopied(false), 2000);
-        showToast('Copied to clipboard', 'success');
+        showToast(t('copilotmessageitem.copiedToClipboard'), 'success');
     };
 
     const getObjectionBadge = (type?: ObjectionType) => {
@@ -121,7 +121,7 @@ export const CopilotMessageItem: React.FC<CopilotMessageItemProps> = React.memo(
                             <button
                                 onClick={() => handleCopy(message.suggestion || '')}
                                 className="p-1.5 hover:bg-zinc-100 dark:hover:bg-zinc-800 rounded-lg transition-colors"
-                                title="Copy suggestion"
+                                title={t('copilotmessageitem.copySuggestion')}
                             >
                                 {copied ? (
                                     <Check className="w-3.5 h-3.5 text-green-500" />

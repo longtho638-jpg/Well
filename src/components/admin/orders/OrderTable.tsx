@@ -24,20 +24,24 @@ export const OrderTable: React.FC<OrderTableProps> = ({
     onApprove,
     onReject
 }) => {
+    const { t } = useTranslation();
+
+    const columnHeaders = [
+        { icon: Calendar, label: t('ordertable.col_timeline') },
+        { icon: User, label: t('ordertable.col_partner_identity') },
+        { icon: DollarSign, label: t('ordertable.col_value_vnd') },
+        { icon: ImageIcon, label: t('ordertable.col_evidence') },
+        { icon: Shield, label: t('ordertable.col_governance'), center: true },
+    ];
+
     return (
         <div className="bg-zinc-950/80 backdrop-blur-3xl rounded-[2.5rem] overflow-hidden border border-white/5 shadow-2xl">
             <div className="overflow-x-auto">
                 <table className="w-full text-left">
                     <thead>
                         <tr className="border-b border-white/5 bg-white/[0.02]">
-                            {[
-                                { icon: Calendar, label: 'Timeline' },
-                                { icon: User, label: 'Partner Identity' },
-                                { icon: DollarSign, label: 'Value (VND)' },
-                                { icon: ImageIcon, label: 'Evidence' },
-                                { icon: Shield, label: 'Governance', center: true }
-                            ].map((head, idx) => (
-                                <th key={idx} className={`p-8 text-[10px] font-black uppercase tracking-[0.3em] text-zinc-500 italic ${head.center ? 'text-center' : ''}`}>
+                            {columnHeaders.map((head) => (
+                                <th key={head.label} className={`p-8 text-[10px] font-black uppercase tracking-[0.3em] text-zinc-500 italic ${head.center ? 'text-center' : ''}`}>
                                     <div className={`flex items-center gap-3 ${head.center ? 'justify-center' : ''}`}>
                                         <head.icon size={14} className="text-zinc-600" />
                                         {head.label}
@@ -48,17 +52,25 @@ export const OrderTable: React.FC<OrderTableProps> = ({
                     </thead>
                     <tbody className="divide-y divide-white/5">
                         <AnimatePresence mode="popLayout">
-                            {orders.map((order, index) => (
-                                <OrderRow
-                                    key={order.id}
-                                    order={order}
-                                    index={index}
-                                    isProcessing={processingId === order.id}
-                                    onViewBill={onViewBill}
-                                    onApprove={onApprove}
-                                    onReject={onReject}
-                                />
-                            ))}
+                            {orders.length === 0 ? (
+                                <tr>
+                                    <td colSpan={5} className="p-16 text-center text-zinc-500 text-sm font-medium italic">
+                                        {t('ordertable.empty_state')}
+                                    </td>
+                                </tr>
+                            ) : (
+                                orders.map((order, index) => (
+                                    <OrderRow
+                                        key={order.id}
+                                        order={order}
+                                        index={index}
+                                        isProcessing={processingId === order.id}
+                                        onViewBill={onViewBill}
+                                        onApprove={onApprove}
+                                        onReject={onReject}
+                                    />
+                                ))
+                            )}
                         </AnimatePresence>
                     </tbody>
                 </table>
@@ -109,10 +121,10 @@ const OrderRow: React.FC<OrderRowProps> = ({
 
             <td className="p-8">
                 <div className="font-black text-white text-lg tracking-tight group-hover:text-amber-500 transition-colors italic">
-                    {order.user?.name || 'Anonymous Partner'}
+                    {order.user?.name || t('ordertable.anonymous_partner')}
                 </div>
                 <div className="text-[10px] text-zinc-500 font-bold uppercase tracking-widest mt-1 opacity-60 group-hover:opacity-100 transition-opacity">
-                    {order.user?.email || 'unverified@network.node'}
+                    {order.user?.email || t('ordertable.unverified_email')}
                 </div>
             </td>
 

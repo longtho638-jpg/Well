@@ -279,7 +279,8 @@ export const marketing = {
       share: "Share",
       qrTip: "Print this QR code on your business card",
       shareTitle: "Join WellNexus",
-      shareText: "Join WellNexus and start your wellness business today!"
+      shareText: "Join WellNexus and start your wellness business today!",
+      qrCodeAlt: "QR Code"
     },
     contentLibrary: {
       title: "Content Library",

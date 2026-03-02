@@ -309,7 +309,15 @@ export const wallet = {
     asset: "Asset",
     inspect_bill: "Inspect Bill",
     no_evidence: "No Evidence",
-    approve: "Approve"
+    approve: "Approve",
+    col_timeline: "Timeline",
+    col_partner_identity: "Partner Identity",
+    col_value_vnd: "Value (VND)",
+    col_evidence: "Evidence",
+    col_governance: "Governance",
+    anonymous_partner: "Anonymous Partner",
+    unverified_email: "unverified@network.node",
+    empty_state: "No pending orders found"
   },
   bulkactionsbar: {
     partner: "Partner",

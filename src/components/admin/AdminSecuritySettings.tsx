@@ -14,6 +14,7 @@ import {
     CheckCircle,
 } from 'lucide-react';
 import { useTranslation } from '@/hooks';
+import { useToast } from '@/components/ui/Toast';
 import { useAdminSecuritySettingsFormState } from './use-admin-security-settings-form-state';
 import { AdminSecurity2FASetupModal } from './admin-security-2fa-setup-modal';
 import { AdminSecurityLoginActivityList } from './admin-security-login-activity-list';
@@ -42,6 +43,7 @@ const ToggleSwitch: React.FC<{
 
 export function AdminSecuritySettings() {
     const { t } = useTranslation();
+    const { showToast } = useToast();
     const {
         settings,
         loginActivity,
@@ -118,7 +120,12 @@ export function AdminSecuritySettings() {
                                 </p>
                             </div>
                         </div>
-                        <button className="text-sm text-emerald-400 hover:underline">{t('adminsecuritysettings.i_m_t_kh_u')}</button>
+                        <button
+                            onClick={() => showToast(t('common.notSupportedYet'), 'info')}
+                            className="text-sm text-emerald-400 hover:underline"
+                        >
+                            {t('adminsecuritysettings.i_m_t_kh_u')}
+                        </button>
                     </div>
                 </div>
 

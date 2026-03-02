@@ -267,5 +267,29 @@ export const misc = {
     connectivity_check: "Connectivity Check",
     client_status: "Client Status",
     active: "Active"
+  },
+  agent: {
+    chat: {
+      active: "Active",
+      startConversation: "Start a conversation with {{name}}",
+      messagePlaceholder: "Message {{name}}...",
+      errorTitle: "Connection Error",
+      errorMessage: "The agent encountered an error. Please try again."
+    },
+    reasoning: {
+      thought: "Thought",
+      action: "Action",
+      observation: "Observation",
+      tool: "Tool",
+      result: "Result",
+      chainTitle: "AGI Reasoning Chain"
+    },
+    toolcall: {
+      running: "Running",
+      done: "Done",
+      error: "Error",
+      inputs: "Inputs",
+      output: "Output"
+    }
   }
 };

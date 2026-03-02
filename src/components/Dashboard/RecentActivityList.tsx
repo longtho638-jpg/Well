@@ -2,6 +2,7 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import { Clock } from 'lucide-react';
 import { useTranslation } from '@/hooks';
+import { useToast } from '@/components/ui/Toast';
 
 interface Activity {
     icon: React.ElementType;
@@ -17,6 +18,7 @@ interface RecentActivityListProps {
 
 export const RecentActivityList: React.FC<RecentActivityListProps> = ({ activities }) => {
     const { t } = useTranslation();
+    const { showToast } = useToast();
 
     return (
         <motion.div
@@ -67,6 +69,7 @@ export const RecentActivityList: React.FC<RecentActivityListProps> = ({ activiti
             <motion.button
                 whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}
+                onClick={() => showToast(t('common.notSupportedYet'), 'info')}
                 className="w-full mt-6 py-4 bg-zinc-900 text-zinc-500 font-black text-[10px] uppercase tracking-[0.2em] rounded-2xl border border-white/5 hover:text-white hover:border-white/10 transition-all italic"
             >
                 {t('recentactivitylist.view_digital_audit_trace')}</motion.button>

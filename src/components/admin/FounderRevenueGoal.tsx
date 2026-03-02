@@ -160,7 +160,7 @@ export function FounderRevenueGoal() {
                             initial={{ opacity: 0, x: -20 }}
                             animate={{ opacity: 1, x: 0 }}
                             transition={{ delay: i * 0.1 }}
-                            className="flex items-center justify-between p-3 bg-zinc-800/50 rounded-lg hover:bg-zinc-800 transition-colors cursor-pointer group"
+                            className="flex items-center justify-between p-3 bg-zinc-800/50 rounded-lg hover:bg-zinc-800 transition-colors group"
                         >
                             <div className="flex items-center gap-3">
                                 <Rocket className="w-4 h-4 text-zinc-400" />

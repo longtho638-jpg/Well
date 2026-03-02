@@ -314,7 +314,15 @@ ordertable: {
     asset: "Tài Sản",
     inspect_bill: "Kiểm Tra Hóa Đơn",
     no_evidence: "Không Có Bằng Chứng",
-    approve: "Phê Duyệt"
+    approve: "Phê Duyệt",
+    col_timeline: "Thời Gian",
+    col_partner_identity: "Danh Tính Đối Tác",
+    col_value_vnd: "Giá Trị (VND)",
+    col_evidence: "Bằng Chứng",
+    col_governance: "Quản Trị",
+    anonymous_partner: "Đối Tác Ẩn Danh",
+    unverified_email: "chưa-xác-minh@mạng.node",
+    empty_state: "Không có đơn hàng chờ xử lý"
   },
 bulkactionsbar: {
     partner: "Đối Tác",

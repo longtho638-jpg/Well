@@ -139,7 +139,9 @@ export const team = {
     save_changes: "Lưu Thay Đổi",
     total_sales: "Tổng Doanh Số",
     pending_cashback: "Hoàn Tiền Chờ",
-    point_balance: "Số Dư Điểm"
+    point_balance: "Số Dư Điểm",
+    update_success: "Cập nhật đối tác thành công",
+    update_failed: "Cập nhật đối tác thất bại"
   },
   partnerprofilemodal: {
     close: "Close",

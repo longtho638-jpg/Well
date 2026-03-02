@@ -1,5 +1,5 @@
 
-import React from 'react';
+import React, { useState } from 'react';
 import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 import { ChartDataPoint } from '../../types';
 import { formatVND, formatCompact } from '../../utils/format';
@@ -12,6 +12,9 @@ interface Props {
 
 export const RevenueChart: React.FC<Props> = ({ data }) => {
     const { t } = useTranslation();
+    // TODO: Data filtering needs backend support — currently shows all-time data regardless of selection
+    const [selectedRange, setSelectedRange] = useState<'7d' | '30d'>('7d');
+
   return (
     <motion.div
         initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.4 }}
@@ -22,11 +25,15 @@ export const RevenueChart: React.FC<Props> = ({ data }) => {
             <h3 className="font-bold text-lg text-white">{t('revenuechart.revenue_growth')}</h3>
             <p className="text-zinc-500 text-xs mt-0.5">{t('revenuechart.last_7_days_performance')}</p>
         </div>
-        {/* Filter Dropdown styled with standard Tailwind forms */}
+        {/* Filter Dropdown — visual selection only; data filtering needs backend support */}
         <div className="relative">
-            <select className="appearance-none bg-zinc-800 border border-zinc-700 text-xs font-semibold text-zinc-300 rounded-lg pl-3 pr-8 py-2 outline-none focus:ring-2 focus:ring-teal-500/40 cursor-pointer transition-all hover:border-teal-500/50">
-                <option>{t('revenuechart.last_7_days')}</option>
-                <option>{t('revenuechart.last_30_days')}</option>
+            <select
+                value={selectedRange}
+                onChange={(e) => setSelectedRange(e.target.value as '7d' | '30d')}
+                className="appearance-none bg-zinc-800 border border-zinc-700 text-xs font-semibold text-zinc-300 rounded-lg pl-3 pr-8 py-2 outline-none focus:ring-2 focus:ring-teal-500/40 cursor-pointer transition-all hover:border-teal-500/50"
+            >
+                <option value="7d">{t('revenuechart.last_7_days')}</option>
+                <option value="30d">{t('revenuechart.last_30_days')}</option>
             </select>
             <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-zinc-400">
                 <svg className="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"/></svg>
