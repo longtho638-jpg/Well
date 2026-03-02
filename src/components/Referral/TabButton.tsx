@@ -15,7 +15,7 @@ export default function TabButton({ active, onClick, icon: Icon, label }: TabBut
   return (
     <button
       onClick={onClick}
-      className={`px-8 py-5 font-black text-[10px] uppercase tracking-[0.3em] transition-all relative flex items-center gap-4 italic
+      className={`px-8 py-5 font-black text-[10px] uppercase tracking-[0.3em] transition-all relative flex items-center gap-4 italic cursor-pointer
             ${active ? 'text-white' : 'text-zinc-500 hover:text-zinc-300'}`}
     >
       <Icon size={16} className={active ? 'text-teal-400' : 'text-zinc-500'} />

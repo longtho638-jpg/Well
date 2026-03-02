@@ -46,7 +46,8 @@ copilot: {
       general: "Khác"
     },
     input: {
-      placeholder: "Nhập lời phản đối của khách hàng..."
+      placeholder: "Nhập lời phản đối của khách hàng...",
+      send: "Gửi tin nhắn"
     },
     suggestions: {
       price: "Giá sản phẩm quá cao!",

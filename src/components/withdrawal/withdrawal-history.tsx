@@ -82,9 +82,9 @@ export const WithdrawalHistory: React.FC = () => {
         <button
           onClick={fetchHistory}
           aria-label={t('common.refresh')}
-          className="p-2 hover:bg-white/10 rounded-lg transition-colors text-zinc-400 hover:text-white"
+          className="p-3 hover:bg-white/10 rounded-lg transition-colors text-zinc-400 hover:text-white cursor-pointer"
         >
-          <RefreshCw className={`w-4 h-4 ${loading ? 'animate-spin' : ''}`} />
+          <RefreshCw className={`w-5 h-5 ${loading ? 'animate-spin' : ''}`} />
         </button>
       </div>
 

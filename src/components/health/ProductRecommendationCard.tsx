@@ -1,17 +1,27 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { motion } from 'framer-motion';
-import { Package, Pill, ShoppingCart } from 'lucide-react';
+import { Package, Pill, ShoppingCart, Loader2 } from 'lucide-react';
 import { ProductRecommendation } from '@/hooks/useHealthCoach';
 import { formatVND } from '@/utils/format';
 import { useTranslation } from '@/hooks';
 
 interface ProductRecommendationCardProps {
     recommendation: ProductRecommendation;
-    onOrder: () => void;
+    onOrder: () => void | Promise<void>;
 }
 
 export const ProductRecommendationCard: React.FC<ProductRecommendationCardProps> = ({ recommendation, onOrder }) => {
     const { t } = useTranslation();
+    const [isOrdering, setIsOrdering] = useState(false);
+
+    const handleOrder = async () => {
+        setIsOrdering(true);
+        try {
+            await onOrder();
+        } finally {
+            setIsOrdering(false);
+        }
+    };
 
     return (
         <motion.div
@@ -59,10 +69,11 @@ export const ProductRecommendationCard: React.FC<ProductRecommendationCardProps>
                 <motion.button
                     whileHover={{ scale: 1.02 }}
                     whileTap={{ scale: 0.98 }}
-                    onClick={onOrder}
-                    className="w-full bg-gradient-to-r from-primary to-teal-600 text-white py-4 px-6 rounded-xl font-bold hover:shadow-xl transition-all duration-300 flex items-center justify-center gap-2 group"
+                    onClick={handleOrder}
+                    disabled={isOrdering}
+                    className="w-full bg-gradient-to-r from-primary to-teal-600 text-white py-4 px-6 rounded-xl font-bold hover:shadow-xl transition-all duration-300 flex items-center justify-center gap-2 group disabled:opacity-50 cursor-pointer"
                 >
-                    <ShoppingCart className="w-5 h-5 group-hover:scale-110 transition-transform" />
+                    {isOrdering ? <Loader2 className="w-5 h-5 animate-spin" /> : <ShoppingCart className="w-5 h-5 group-hover:scale-110 transition-transform" />}
                     {t('healthCoach.orderNow')}
                 </motion.button>
             </div>

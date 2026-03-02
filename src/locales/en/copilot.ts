@@ -7,7 +7,8 @@ export const copilot = {
       competitor: "Compare with Competitor"
     },
     input: {
-      placeholder: "Type your question or describe the situation..."
+      placeholder: "Type your question or describe the situation...",
+      send: "Send message"
     },
     objectionTypes: {
       price: "Price",

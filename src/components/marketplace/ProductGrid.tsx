@@ -92,7 +92,8 @@ const ProductCardItem = memo(({
                                 +{product.commissionRate * 100}{t('productgrid.commission')}</div>
                             <button
                                 onClick={() => onViewDetail(product.id)}
-                                className="w-12 h-12 bg-zinc-900 dark:bg-white rounded-2xl flex items-center justify-center text-white dark:text-zinc-900 hover:scale-110 transition-transform shadow-xl"
+                                aria-label={t('productcard.view_details_for', { name: product.name })}
+                                className="w-12 h-12 bg-zinc-900 dark:bg-white rounded-2xl flex items-center justify-center text-white dark:text-zinc-900 hover:scale-110 transition-transform shadow-xl cursor-pointer"
                             >
                                 <ArrowRight size={20} />
                             </button>
