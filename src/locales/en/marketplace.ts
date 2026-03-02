@@ -65,6 +65,7 @@ export const marketplace = {
   productcard: {
     earn: "Earn",
     view_details: "View Details",
+    view_details_for: "View details for {{name}}",
     out_of_stock: "Out of Stock",
     stock: "Stock: ",
     share: "Share",

@@ -122,6 +122,7 @@ productcard: {
     commission: "Hoa Hồng",
     price: "Giá",
     view_details: "Xem Chi Tiết",
+    view_details_for: "Xem chi tiết sản phẩm {{name}}",
     added: "Đã Thêm",
     buy_now: "Mua Ngay",
     earn: "Kiếm ",

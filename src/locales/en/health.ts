@@ -9,6 +9,7 @@ export const health = {
   },
   healthCheck: {
     questionProgress: "Question {current} / {total}",
+    zaloMessage: "Hello! I just completed a health check and scored {{score}} points. I'd like more advice.",
     consultationTitle: "Need more in-depth consultation?",
     consultationDescription: "Connect with your Partner via Zalo for free 1-on-1 consultation",
     chatNow: "Chat on Zalo",

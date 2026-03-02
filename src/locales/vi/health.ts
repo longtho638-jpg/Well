@@ -140,6 +140,7 @@ healthCheck: {
         }
       }
     },
+    zaloMessage: "Xin chào! Tôi vừa làm bài kiểm tra sức khỏe và đạt {{score}} điểm. Tôi muốn tư vấn thêm.",
     consultationTitle: "Cần tư vấn chuyên sâu hơn?",
     consultationDescription: "Kết nối ngay với Partner của bạn qua Zalo để được tư vấn miễn phí 1-1",
     chatNow: "Nhắn tin Zalo ngay",
