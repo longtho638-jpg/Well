@@ -33,6 +33,7 @@
     "dist",
     "functions",
     "src/__tests__",
+    "src/test",
     "**/*.test.ts",
     "**/*.test.tsx",
     "**/*.spec.ts",
