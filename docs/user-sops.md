@@ -61,10 +61,11 @@ Trang tong quan sau khi dang nhap. Hien thi:
 | 2 | Loc theo gia, danh muc, AI goi y |
 | 3 | Click san pham → Trang chi tiet |
 | 4 | "Them vao gio" hoac "Mua Ngay" |
-| 5 | Thanh toan tai `/checkout` |
+| 5 | Thanh toan tai `/checkout` (COD hoac PayOS QR) |
 | 6 | Xac nhan → `/checkout/success` |
 
 **AI Recommendation:** He thong AI tu dong goi y san pham phu hop.
+**Thanh toan:** Xem chi tiet tai [Payment SOPs](./payment-sops.md).
 
 ---
 
@@ -75,13 +76,15 @@ Trang tong quan sau khi dang nhap. Hien thi:
 | Buoc | Hanh dong | Luu y |
 |------|-----------|-------|
 | 1 | Xem so du kha dung | Hien thi tren Withdrawal page |
-| 2 | Nhap so tien rut | Toi thieu 2,000,000 VND |
-| 3 | Nhap thong tin ngan hang | Ten NH, STK, Ten chu TK |
-| 4 | Xac nhan rut tien | Gui yeu cau |
-| 5 | Cho xu ly | 24-48 gio |
+| 2 | Nhap so tien rut | Toi thieu 2,000,000 VND, toi da 500M VND |
+| 3 | Chon ngan hang tu danh sach VN banks | Dropdown co shortName |
+| 4 | Nhap so tai khoan (chi so) + Ten chu TK | Validate realtime |
+| 5 | Nhan "Rut tien" | Gui yeu cau qua RPC server-side |
+| 6 | Cho admin duyet | 24-48 gio lam viec |
 
 **Quick Amount:** Nut 25%, 50%, 75%, Max de chon nhanh.
-**Chinh sach:** Xu ly trong 24-48 gio. Ten tai khoan phai khop voi ten dang ky.
+**Chinh sach:** Xu ly 24-48 gio. Thue TNCN 10% cho rut > 2M VND. Can goi Basic+.
+**Chi tiet:** Xem [Payment SOPs](./payment-sops.md).
 
 ---
 
@@ -176,10 +179,12 @@ Tro ly AI ho tro:
 
 | Buoc | Hanh dong |
 |------|-----------|
-| 1 | Xem cac goi (Starter/Growth/Premium/Master) |
-| 2 | Chon goi phu hop |
-| 3 | Thanh toan qua Polar.sh |
-| 4 | Kich hoat tinh nang premium |
+| 1 | Xem cac goi (Free/Basic/Pro/Agency) |
+| 2 | Chon chu ky thanh toan: Thang hoac Nam |
+| 3 | Click "Nang cap" → Redirect sang PayOS checkout |
+| 4 | Hoan tat thanh toan → Subscription kich hoat tu dong |
+
+**Chi tiet:** Xem [Payment SOPs](./payment-sops.md).
 
 ---
 
