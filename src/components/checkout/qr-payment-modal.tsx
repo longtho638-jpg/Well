@@ -124,6 +124,7 @@ export function QRPaymentModal({
                                     : t('checkout.payment.qr_scan')}
                             </h2>
                             <button
+                                type="button"
                                 onClick={handleClose}
                                 className="absolute right-4 top-4 text-slate-400 hover:text-white transition-colors"
                             >
@@ -231,6 +232,7 @@ export function QRPaymentModal({
                         {status !== 'pending' && (
                             <div className="px-6 pb-6">
                                 <button
+                                    type="button"
                                     onClick={onClose}
                                     className="w-full py-3 bg-gradient-to-r from-emerald-500 to-teal-500 text-white rounded-xl font-semibold hover:shadow-lg hover:shadow-emerald-500/20 transition-all"
                                 >

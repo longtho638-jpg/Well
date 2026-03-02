@@ -125,6 +125,7 @@ export default function LeaderboardRankingTable({
                       </p>
                       {!entry.isCurrentUser && currentUserEntry && (
                         <button
+                          type="button"
                           onClick={() => onChallenge(entry)}
                           className="ml-2 px-2 py-1 bg-gradient-to-r from-orange-500 to-red-500 text-white text-xs font-semibold rounded-md hover:from-orange-600 hover:to-red-600 transition-all shadow-sm flex items-center gap-1"
                         >

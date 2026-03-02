@@ -98,7 +98,7 @@ const Admin: React.FC = () => {
               <Sparkles className="w-4 h-4 text-emerald-400 animate-pulse" />
               <span className="text-[10px] font-black text-white uppercase tracking-widest italic">{t('admin.ai_sentinel_active')}</span>
             </div>
-            <p className="text-[10px] font-bold text-zinc-500 uppercase tracking-widest relative z-10">{t('admin.monitoring_2_4k_identity_nodes')}</p>
+            <p className="text--[10px] font-bold text-zinc-500 uppercase tracking-widest relative z-10">{t('admin.monitoring_2_4k_identity_nodes')}</p>
           </motion.div>
         )}
 
@@ -107,6 +107,7 @@ const Admin: React.FC = () => {
             const active = isActive(item.path);
             return (
               <button
+                type="button"
                 key={item.id}
                 onClick={() => navigate(item.path)}
                 className={`w-full flex items-center gap-4 px-6 py-4 rounded-2xl transition-all relative group ${active
@@ -151,6 +152,7 @@ const Admin: React.FC = () => {
         <div className="p-8 border-t border-white/5 bg-zinc-950/50 backdrop-blur-sm space-y-4">
           {/* Back to User Dashboard */}
           <button
+            type="button"
             onClick={() => navigate('/dashboard')}
             className="w-full flex items-center gap-4 px-6 py-4 bg-zinc-900/50 border border-teal-500/20 rounded-2xl text-teal-400 hover:text-white hover:bg-teal-500/10 transition-all group"
           >
@@ -161,6 +163,7 @@ const Admin: React.FC = () => {
           </button>
 
           <button
+            type="button"
             onClick={() => setSidebarCollapsed(!sidebarCollapsed)}
             className="w-full flex items-center justify-center py-4 bg-zinc-900 border border-white/5 rounded-2xl text-zinc-500 hover:text-white transition-all shadow-xl group"
           >
@@ -173,7 +176,7 @@ const Admin: React.FC = () => {
               </div>
               <div className="flex-1">
                 <p className="text-xs font-black text-white uppercase italic tracking-widest">{t('admin.administrator')}</p>
-                <p className="text-[9px] font-black text-zinc-600 uppercase tracking-[0.2em] mt-0.5">{t('admin.superuser_node')}</p>
+                <p className="text--[9px] font-black text-zinc-600 uppercase tracking-[0.2em] mt-0.5">{t('admin.superuser_node')}</p>
               </div>
             </div>
           )}
@@ -202,7 +205,11 @@ const Admin: React.FC = () => {
                   <ShieldCheck className="text-emerald-400 w-8 h-8" />
                   <h1 className="font-black text-white uppercase italic tracking-tighter text-lg">{t('admin.mission_control')}</h1>
                 </div>
-                <button onClick={() => setMobileMenuOpen(false)} className="p-3 bg-zinc-900 rounded-xl text-zinc-500">
+                <button
+                  type="button"
+                  onClick={() => setMobileMenuOpen(false)}
+                  className="p-3 bg-zinc-900 rounded-xl text-zinc-500"
+                >
                   <X size={20} />
                 </button>
               </div>
@@ -211,6 +218,7 @@ const Admin: React.FC = () => {
                   const active = isActive(item.path);
                   return (
                     <button
+                      type="button"
                       key={item.id}
                       onClick={() => {
                         navigate(item.path);
@@ -248,7 +256,11 @@ const Admin: React.FC = () => {
         {/* Recon Header */}
         <header className="h-24 bg-zinc-950/80 backdrop-blur-2xl border-b border-white/5 flex items-center justify-between px-10 sticky top-0 z-30 shadow-xl">
           <div className="flex items-center gap-8">
-            <button className="md:hidden p-3 bg-zinc-900 rounded-xl text-zinc-400 shadow-xl" onClick={() => setMobileMenuOpen(true)}>
+            <button
+              type="button"
+              className="md:hidden p-3 bg-zinc-900 rounded-xl text-zinc-400 shadow-xl"
+              onClick={() => setMobileMenuOpen(true)}
+            >
               <Menu size={24} />
             </button>
             <div className="flex items-center gap-4 text-[10px] font-black uppercase tracking-[0.4em] text-zinc-600 italic">
@@ -266,9 +278,11 @@ const Admin: React.FC = () => {
           </div>
           <div className="flex items-center gap-6">
             <motion.button
+              type="button"
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
               className="w-12 h-12 bg-zinc-900 border border-white/5 rounded-2xl flex items-center justify-center text-zinc-500 hover:text-white shadow-xl transition-all"
+              aria-label="Search"
             >
               <Search size={20} />
             </motion.button>

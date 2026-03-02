@@ -19,6 +19,7 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(({
   children,
   disabled,
   className = '',
+  type = 'button', // Default to button to prevent form submission
   ...props
 }, ref) => {
   const { t } = useTranslation();
@@ -46,6 +47,7 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(({
   return (
     <button
       ref={ref}
+      type={type}
       disabled={disabled || isLoading}
       className={`${baseStyles} ${variantStyles[variant]} ${sizeStyles[size]} ${className}`}
       {...props}

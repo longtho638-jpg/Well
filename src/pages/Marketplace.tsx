@@ -83,6 +83,7 @@ export const Marketplace: React.FC = () => {
           </div>
           <div className="flex gap-4">
           <button
+            type="button"
             onClick={() => setShowRedemption(false)}
             className={`flex-1 px-8 py-5 rounded-2xl font-black text-xs uppercase tracking-widest transition-all duration-500 flex items-center justify-center gap-3 ${!showRedemption
               ? 'bg-zinc-900 dark:bg-zinc-100 text-white dark:text-zinc-900 shadow-2xl'
@@ -94,6 +95,7 @@ export const Marketplace: React.FC = () => {
           </button>
 
           <button
+            type="button"
             onClick={() => setShowRedemption(true)}
             className={`flex-1 px-8 py-5 rounded-2xl font-black text-xs uppercase tracking-widest transition-all duration-500 flex items-center justify-center gap-3 ${showRedemption
               ? 'bg-gradient-to-r from-purple-600 to-pink-600 text-white shadow-2xl shadow-purple-900/40'
@@ -213,8 +215,10 @@ export const Marketplace: React.FC = () => {
           animate={{ scale: 1, rotate: 0 }}
           whileHover={{ scale: 1.1, rotate: 15 }}
           whileTap={{ scale: 0.9 }}
+          type="button"
           onClick={() => setShowQuickBuy(true)}
           className="fixed bottom-8 right-8 z-30 w-16 h-16 bg-gradient-to-br from-emerald-400 to-teal-600 rounded-full shadow-[0_0_30px_rgba(16,185,129,0.4)] flex items-center justify-center text-white border border-white/20"
+          aria-label={t('marketplace.quickBuy.title')}
         >
           <Zap className="w-8 h-8 fill-white" />
         </motion.button>

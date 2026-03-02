@@ -56,12 +56,13 @@ export const TreeNodeComponent: React.FC<TreeNodeProps> = memo(({ node, level, o
                         </div>
 
                         <button
+                            type="button"
                             onClick={(e) => {
                                 e.stopPropagation();
                                 onAddMember(node.id, node.name);
                             }}
                             className="p-2 hover:bg-zinc-800 rounded-lg transition-colors text-emerald-400"
-                            title={t('networktree.add_member')}
+                            aria-label={t('networktree.add_member')}
                         >
                             <UserPlus className="w-4 h-4" />
                         </button>

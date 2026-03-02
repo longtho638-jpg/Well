@@ -132,6 +132,7 @@ export default function AtRiskMembersListWithActions({
                   {/* Action Buttons */}
                   <div className="flex gap-3 mt-4">
                     <button
+                      type="button"
                       onClick={() => onSendReminder(atRiskMember.member.id)}
                       disabled={actionLoading === `reminder-${atRiskMember.member.id}`}
                       className="flex-1 py-2.5 bg-zinc-200 dark:bg-white/10 hover:bg-zinc-300 dark:hover:bg-white/20 text-zinc-900 dark:text-white rounded-xl text-sm font-bold transition-all flex items-center justify-center gap-2 disabled:opacity-50"
@@ -144,6 +145,7 @@ export default function AtRiskMembersListWithActions({
                       {t('leaderdashboard.g_i_nh_c_nh')}
                     </button>
                     <button
+                      type="button"
                       onClick={() => onSendGift(atRiskMember.member.id)}
                       disabled={actionLoading === `gift-${atRiskMember.member.id}`}
                       className="flex-1 py-2.5 bg-gradient-to-r from-orange-500 to-red-500 hover:from-orange-600 hover:to-red-600 text-white rounded-xl text-sm font-bold transition-all flex items-center justify-center gap-2 shadow-lg shadow-orange-500/20 disabled:opacity-50"

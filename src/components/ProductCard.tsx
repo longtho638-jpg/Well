@@ -55,6 +55,8 @@ const ProductCard: React.FC<Props> = ({ product }) => {
 
   return (
     <div
+      role="button"
+      tabIndex={0}
       onClick={handleViewDetails}
       onKeyDown={(e) => {
         if (e.key === 'Enter' || e.key === ' ') {
@@ -116,6 +118,7 @@ const ProductCard: React.FC<Props> = ({ product }) => {
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mt-auto">
             <button
+              type="button"
               onClick={handleShare}
               className="flex items-center justify-center gap-2 bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 hover:border-zinc-300 dark:hover:border-zinc-600 text-zinc-700 dark:text-zinc-300 hover:bg-zinc-50 dark:hover:bg-zinc-700 active:bg-zinc-100 dark:active:bg-zinc-600 py-3 rounded-xl text-xs font-bold transition-all duration-200 hover:shadow-lg active:scale-95"
               aria-label={t('productcard.share_product_link')}
@@ -123,6 +126,7 @@ const ProductCard: React.FC<Props> = ({ product }) => {
               <Share2 className="w-3.5 h-3.5" /> {t('productcard.share')}</button>
 
             <button
+              type="button"
               onClick={handleBuy}
               disabled={isBuying || outOfStock || showSuccess}
               className={`btn-liquid flex items-center justify-center gap-2 py-3 rounded-xl text-xs font-bold transition-all duration-200 relative
