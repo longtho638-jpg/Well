@@ -114,9 +114,15 @@ export async function subscribeToPushNotifications(): Promise<PushSubscriptionDa
     };
 
     // Save subscription to database
-    const { data: { user } } = await supabase.auth.getUser();
+    const { data: { user }, error: userError } = await supabase.auth.getUser();
+
+    if (userError) {
+      uiLogger.error('Failed to get current user for push subscription', userError);
+      throw userError;
+    }
+
     if (user) {
-      await supabase
+      const { error: upsertError } = await supabase
         .from('push_subscriptions')
         .upsert({
           user_id: user.id,
@@ -125,6 +131,11 @@ export async function subscribeToPushNotifications(): Promise<PushSubscriptionDa
         }, {
           onConflict: 'user_id',
         });
+
+      if (upsertError) {
+        uiLogger.error('Failed to save push subscription', upsertError);
+        throw upsertError;
+      }
 
       uiLogger.info('Push subscription saved', { userId: user.id });
     }
@@ -152,12 +163,22 @@ export async function unsubscribeFromPushNotifications(): Promise<boolean> {
       await subscription.unsubscribe();
 
       // Remove from database
-      const { data: { user } } = await supabase.auth.getUser();
+      const { data: { user }, error: userError } = await supabase.auth.getUser();
+      if (userError) {
+        uiLogger.error('Failed to get current user for push unsubscribe', userError);
+        return false;
+      }
+
       if (user) {
-        await supabase
+        const { error: deleteError } = await supabase
           .from('push_subscriptions')
           .delete()
           .eq('user_id', user.id);
+
+        if (deleteError) {
+          uiLogger.error('Failed to remove push subscription', deleteError);
+          return false;
+        }
 
         uiLogger.info('Push subscription removed', { userId: user.id });
       }

@@ -47,6 +47,9 @@ export function useAdminOverview() {
             ]);
 
             if (uError || oError || sError) {
+                if (uError) adminLogger.error('Failed to fetch users count', uError);
+                if (oError) adminLogger.error('Failed to fetch pending orders', oError);
+                if (sError) adminLogger.error('Failed to fetch total sales', sError);
                 throw uError || oError || sError;
             }
 
