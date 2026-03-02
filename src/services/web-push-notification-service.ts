@@ -6,65 +6,17 @@
 import { supabase } from '@/lib/supabase';
 import { uiLogger } from '@/utils/logger';
 import { ValidationError } from '@/utils/errors';
+import type { PushSubscriptionData } from './web-push-vapid-helpers-and-permission-utils';
+import {
+  VAPID_PUBLIC_KEY,
+  urlBase64ToUint8Array,
+  isPushNotificationSupported,
+  getNotificationPermission,
+  requestNotificationPermission,
+} from './web-push-vapid-helpers-and-permission-utils';
 
-// VAPID public key - set this in production
-// Generate keys with: npx web-push generate-vapid-keys
-const VAPID_PUBLIC_KEY = import.meta.env.VITE_VAPID_PUBLIC_KEY || '';
-
-export interface PushSubscriptionData {
-  endpoint: string;
-  keys: {
-    p256dh: string;
-    auth: string;
-  };
-}
-
-/**
- * Convert base64 VAPID key to Uint8Array
- */
-function urlBase64ToUint8Array(base64String: string): Uint8Array {
-  const padding = '='.repeat((4 - (base64String.length % 4)) % 4);
-  const base64 = (base64String + padding).replace(/-/g, '+').replace(/_/g, '/');
-
-  const rawData = window.atob(base64);
-  const outputArray = new Uint8Array(rawData.length);
-
-  for (let i = 0; i < rawData.length; ++i) {
-    outputArray[i] = rawData.charCodeAt(i);
-  }
-
-  return outputArray;
-}
-
-/**
- * Check if browser supports push notifications
- */
-export function isPushNotificationSupported(): boolean {
-  return 'serviceWorker' in navigator && 'PushManager' in window;
-}
-
-/**
- * Get current notification permission status
- */
-export function getNotificationPermission(): NotificationPermission {
-  if (!('Notification' in window)) {
-    return 'denied';
-  }
-  return Notification.permission;
-}
-
-/**
- * Request notification permission from user
- */
-export async function requestNotificationPermission(): Promise<NotificationPermission> {
-  if (!('Notification' in window)) {
-    throw new ValidationError('This browser does not support notifications');
-  }
-
-  const permission = await Notification.requestPermission();
-  uiLogger.info('Notification permission', { permission });
-  return permission;
-}
+export type { PushSubscriptionData } from './web-push-vapid-helpers-and-permission-utils';
+export { isPushNotificationSupported, getNotificationPermission, requestNotificationPermission };
 
 /**
  * Subscribe to push notifications

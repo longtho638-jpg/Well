@@ -4,26 +4,14 @@
  */
 
 import React from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import {
-  Wallet,
-  TrendingUp,
-  TrendingDown,
-  Clock,
-  Filter,
-  Download,
-  RefreshCw,
-  Loader2,
-  ShieldCheck
-} from 'lucide-react';
+import { AnimatePresence, motion } from 'framer-motion';
+import { Wallet, TrendingUp, TrendingDown, Clock, Filter, Loader2, ShieldCheck } from 'lucide-react';
 
-// Hooks & Services
 import { useFinance } from '@/hooks/useFinance';
 import { useToast } from '@/components/ui/Toast';
-
-// Modular Components
 import { StatBoard } from '@/components/admin/finance/StatBoard';
 import { TransactionCard } from '@/components/admin/finance/TransactionCard';
+import { FinancePageHeader } from '@/components/admin/finance/finance-page-header-with-export-button';
 import { useTranslation } from '@/hooks';
 
 const Finance: React.FC = () => {
@@ -71,41 +59,7 @@ const Finance: React.FC = () => {
   return (
     <div className="space-y-10 pb-20 max-w-7xl mx-auto">
       {/* Header Section */}
-      <motion.div
-        initial={{ opacity: 0, y: -20 }}
-        animate={{ opacity: 1, y: 0 }}
-        className="flex flex-col md:flex-row justify-between items-start md:items-end gap-6"
-      >
-        <div className="space-y-2">
-          <div className="flex items-center gap-4">
-            <div className="w-12 h-12 bg-[#00575A] rounded-2xl flex items-center justify-center shadow-[0_0_20px_rgba(0,87,90,0.3)]">
-              <ShieldCheck className="text-emerald-400" size={28} />
-            </div>
-            <h2 className="text-4xl font-black text-white tracking-tighter uppercase italic">{t('finance.treasury_control')}</h2>
-          </div>
-          <p className="text-zinc-500 font-medium text-lg">{t('finance.platform_liquidity_verificatio')}<span className="text-teal-400 font-bold uppercase italic">{t('finance.automated_fraud_detection')}</span></p>
-        </div>
-
-        <div className="flex items-center gap-4">
-          <motion.button
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-            onClick={refresh}
-            disabled={loading}
-            className="p-4 bg-zinc-900 border border-white/5 rounded-2xl shadow-xl hover:bg-zinc-800 transition-all text-zinc-400 disabled:opacity-50"
-          >
-            <RefreshCw size={20} className={loading ? 'animate-spin' : ''} />
-          </motion.button>
-          <motion.button
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-            onClick={handleExportCSV}
-            className="flex items-center gap-3 bg-zinc-900 text-zinc-300 px-6 py-4 rounded-2xl font-black text-[10px] uppercase tracking-widest italic border border-white/5 hover:border-teal-500/30 transition-all shadow-xl"
-          >
-            <Download size={18} />
-            {t('finance.export_ledger')}</motion.button>
-        </div>
-      </motion.div>
+      <FinancePageHeader loading={loading} onRefresh={refresh} onExportCSV={handleExportCSV} />
 
       {/* Performance StatBoard */}
       <StatBoard

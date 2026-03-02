@@ -1,7 +1,6 @@
 import React, { useState, useMemo } from 'react';
 import { useForm, Controller } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { z } from 'zod';
 import { motion } from 'framer-motion';
 import { useTranslation } from '../../hooks';
 import { Loader2, ArrowRight, Wallet, AlertCircle, ShieldCheck } from 'lucide-react';
@@ -9,8 +8,7 @@ import { BankSelect } from './bank-select';
 import { withdrawalService } from '../../services/withdrawal-service';
 import { useToast } from '../../components/ui/Toast';
 import { useStore } from '../../store';
-
-const MIN_WITHDRAWAL = 2000000; // 2M VND
+import { buildWithdrawalSchema, MIN_WITHDRAWAL, WithdrawalFormData } from './withdrawal-form-zod-schema-and-min-amount';
 
 interface WithdrawalFormProps {
   onSuccess?: () => void;
@@ -22,18 +20,7 @@ export const WithdrawalForm: React.FC<WithdrawalFormProps> = ({ onSuccess }) => 
   const { showToast } = useToast();
   const [loading, setLoading] = useState(false);
 
-  // Validation Schema — useMemo so it rebuilds when balance changes (avoids stale max cap)
-  const schema = useMemo(() => z.object({
-    amount: z.number()
-      .min(MIN_WITHDRAWAL, t('withdrawal.minAmountError') || `Minimum withdrawal is ${new Intl.NumberFormat('vi-VN').format(MIN_WITHDRAWAL)} đ`)
-      .max(user?.pendingCashback || 0, t('withdrawal.insufficientBalance') || 'Insufficient balance'),
-    bankName: z.string().min(1, t('withdrawal.bankRequired') || 'Bank name is required'),
-    accountNumber: z.string().min(5, t('withdrawal.accountNumberRequired') || 'Valid account number is required'),
-    accountName: z.string().min(2, t('withdrawal.accountNameRequired') || 'Account holder name is required'),
-  }), [user?.pendingCashback, t]);
-
-  type WithdrawalFormData = z.infer<typeof schema>;
-
+  const schema = useMemo(() => buildWithdrawalSchema(user?.pendingCashback || 0, t), [user?.pendingCashback, t]);
   const { control, handleSubmit, formState: { errors }, setValue } = useForm<WithdrawalFormData>({
     resolver: zodResolver(schema),
     defaultValues: {

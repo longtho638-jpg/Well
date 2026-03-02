@@ -1,53 +1,21 @@
-import React, { lazy, Suspense } from 'react';
+import React, { Suspense } from 'react';
 import { Routes, Route, Navigate } from 'react-router-dom';
 import { AppLayout } from './components/AppLayout';
 import { AdminRoute } from './components/AdminRoute';
 import { ErrorBoundary } from './components/ErrorBoundary';
-
-// Code splitting: Lazy load pages for better performance
-// Named exports need special handling
-const LandingPage = lazy(() => import('./pages/LandingPage'));
-const Login = lazy(() => import('./pages/Login'));
-const Signup = lazy(() => import('./pages/Signup'));
-const ConfirmEmail = lazy(() => import('./pages/confirm-email'));
-const ReferralRedirect = lazy(() => import('./pages/referral-redirect'));
-const ForgotPasswordPage = lazy(() => import('./pages/forgot-password-page'));
-const ResetPasswordPage = lazy(() => import('./pages/reset-password-page'));
-const Dashboard = lazy(() => import('./pages/Dashboard').then(m => ({ default: m.Dashboard })));
-const Marketplace = lazy(() => import('./pages/Marketplace').then(m => ({ default: m.Marketplace })));
-const ProductDetail = lazy(() => import('./pages/ProductDetail').then(m => ({ default: m.ProductDetail })));
-const CommissionWallet = lazy(() => import('./components/CommissionWallet'));
-const VenturePage = lazy(() => import('./pages/VenturePage'));
-const CopilotPage = lazy(() => import('./pages/CopilotPage'));
-const LeaderDashboard = lazy(() => import('./pages/LeaderDashboard'));
-const ReferralPage = lazy(() => import('./pages/ReferralPage'));
-const HealthCoach = lazy(() => import('./pages/HealthCoach'));
-const HealthCheck = lazy(() => import('./pages/HealthCheck'));
-const NetworkPage = lazy(() => import('./pages/NetworkPage'));
-const WithdrawalPage = lazy(() => import('./pages/WithdrawalPage'));
-const Leaderboard = lazy(() => import('./pages/Leaderboard'));
-const MarketingTools = lazy(() => import('./pages/MarketingTools'));
-const Admin = lazy(() => import('./pages/Admin'));
-const TestPage = lazy(() => import('./pages/TestPage'));
-const DebuggerPage = lazy(() => import('./pages/DebuggerPage'));
-const SystemStatus = lazy(() => import('./pages/SystemStatus'));
-const AgentDashboard = lazy(() => import('./pages/AgentDashboard'));
-const CheckoutPage = lazy(() => import('./pages/Checkout/CheckoutPage').then(m => ({ default: m.CheckoutPage })));
-const OrderSuccess = lazy(() => import('./components/checkout/OrderSuccess').then(m => ({ default: m.OrderSuccess })));
-const SettingsPage = lazy(() => import('./pages/SettingsPage'));
-const ProfilePage = lazy(() => import('./pages/ProfilePage'));
-const SubscriptionPage = lazy(() => import('./pages/SubscriptionPage'));
-const NotFoundPage = lazy(() => import('./pages/NotFoundPage'));
-
-// Code splitting: Lazy load Admin pages for better performance
-const Overview = lazy(() => import('./pages/Admin/Overview'));
-const CMS = lazy(() => import('./pages/Admin/CMS'));
-const Partners = lazy(() => import('./pages/Admin/Partners'));
-const Finance = lazy(() => import('./pages/Admin/Finance'));
-const PolicyEngine = lazy(() => import('./pages/Admin/PolicyEngine'));
-const OrderManagement = lazy(() => import('./pages/Admin/OrderManagement'));
-const AdminProducts = lazy(() => import('./pages/Admin/Products'));
-const AuditLog = lazy(() => import('./pages/Admin/AuditLog'));
+import {
+  LandingPage, Login, Signup, ConfirmEmail, ReferralRedirect,
+  ForgotPasswordPage, ResetPasswordPage, Dashboard, Marketplace,
+  ProductDetail, CommissionWallet, VenturePage, CopilotPage,
+  LeaderDashboard, ReferralPage, HealthCoach, HealthCheck,
+  NetworkPage, WithdrawalPage, Leaderboard, MarketingTools,
+  Admin, TestPage, DebuggerPage, SystemStatus, AgentDashboard,
+  CheckoutPage, OrderSuccess, SettingsPage, ProfilePage,
+  SubscriptionPage, NotFoundPage,
+  Overview, CMS, Partners, Finance, PolicyEngine,
+  OrderManagement, AdminProducts, AuditLog,
+  PageSpinner, SectionSpinner, AdminSpinner,
+} from './config/app-lazy-routes-and-suspense-fallbacks';
 
 import { useStore } from './store';
 import { ThemeProvider } from './context/ThemeContext';
@@ -57,28 +25,6 @@ import { useTranslation } from '@/hooks';
 import { useAuth } from './hooks/useAuth';
 import { useAutoLogout } from './hooks/useAutoLogout';
 import { PWAInstallPrompt } from './components/pwa-install-prompt';
-
-// Reusable Suspense fallbacks — eliminates 25+ duplicate inline spinners
-const PageSpinner = (
-  <div className="flex items-center justify-center h-screen bg-zinc-950" role="status">
-    <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-emerald-500" />
-    <span className="sr-only">Loading page...</span>
-  </div>
-);
-
-const SectionSpinner = (
-  <div className="flex items-center justify-center h-96" role="status">
-    <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#00575A]" />
-    <span className="sr-only">Loading content...</span>
-  </div>
-);
-
-const AdminSpinner = (
-  <div className="flex items-center justify-center h-screen" role="status">
-    <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#00575A]" />
-    <span className="sr-only">Loading admin panel...</span>
-  </div>
-);
 
 // Wraps lazy components with ErrorBoundary + Suspense for chunk-load crash protection
 const SafePage: React.FC<{ fallback?: React.ReactNode; children: React.ReactNode }> = ({ fallback = PageSpinner, children }) => (

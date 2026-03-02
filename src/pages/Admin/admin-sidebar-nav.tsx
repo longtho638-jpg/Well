@@ -6,30 +6,15 @@ import React from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import {
-  LayoutDashboard,
-  FileText,
-  Users,
-  Wallet,
   ChevronLeft,
   ChevronRight,
   Sparkles,
-  DollarSign,
-  Package,
-  ClipboardList,
   ShieldCheck,
   Activity,
-  Settings,
 } from 'lucide-react';
 import { useTranslation } from '@/hooks';
 import { AdminSidebarMobileDrawer } from './admin-sidebar-mobile-drawer';
-
-interface NavItem {
-  id: string;
-  label: string;
-  icon: React.ReactNode;
-  path: string;
-  badge?: string;
-}
+import { NavItem, buildNavItems } from './admin-sidebar-nav-items-builder-with-icons';
 
 interface AdminSidebarNavProps {
   sidebarCollapsed: boolean;
@@ -54,16 +39,7 @@ export const AdminSidebarNav: React.FC<AdminSidebarNavProps> = ({
     return false;
   };
 
-  const navItems: NavItem[] = [
-    { id: 'overview', label: t('admin.nav.overview'), icon: <LayoutDashboard size={20} />, path: '/admin', badge: '3' },
-    { id: 'cms', label: t('admin.nav.content'), icon: <FileText size={20} />, path: '/admin/cms' },
-    { id: 'partners', label: t('admin.nav.partners'), icon: <Users size={20} />, path: '/admin/partners', badge: '5' },
-    { id: 'finance', label: t('admin.nav.finance'), icon: <Wallet size={20} />, path: '/admin/finance', badge: '2' },
-    { id: 'orders', label: t('admin.nav.orders'), icon: <DollarSign size={20} />, path: '/admin/orders' },
-    { id: 'products', label: t('admin.nav.products'), icon: <Package size={20} />, path: '/admin/products' },
-    { id: 'strategy', label: t('admin.nav.strategy'), icon: <Settings size={20} />, path: '/admin/policy-engine' },
-    { id: 'audit', label: t('admin.nav.auditLog'), icon: <ClipboardList size={20} />, path: '/admin/audit-log' },
-  ];
+  const navItems: NavItem[] = buildNavItems(t);
 
   const NavButton = ({ item, onNavigate }: { item: NavItem; onNavigate: () => void }) => {
     const active = isActive(item.path);

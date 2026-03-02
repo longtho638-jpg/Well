@@ -1,10 +1,13 @@
 /**
- * Modal Utilities
+ * Modal Utilities — Zustand modal registry with open/close/closeAll, useModal hook, confirm dialog, and drawer store
  * Phase 17: Forms and Tables
  */
 
 import { create } from 'zustand';
 import { ReactNode, useCallback } from 'react';
+
+export { useConfirmStore, useConfirm } from './modal-confirm-dialog-zustand-store';
+export { useDrawerStore, useDrawer } from './modal-drawer-zustand-store-with-position-and-size';
 
 // ============================================================================
 // MODAL STORE
@@ -58,7 +61,6 @@ export const useModalStore = create<ModalStore>((set, get) => ({
         set(state => {
             const modal = state.modals.get(id);
             modal?.options.onClose?.();
-
             const newModals = new Map(state.modals);
             newModals.delete(id);
             return { modals: newModals };
@@ -92,112 +94,4 @@ export function useModal(id: string) {
         ),
         close: useCallback(() => close(id), [id, close]),
     };
-}
-
-// ============================================================================
-// CONFIRMATION DIALOG
-// ============================================================================
-
-interface ConfirmOptions {
-    title?: string;
-    message: string;
-    confirmText?: string;
-    cancelText?: string;
-    variant?: 'danger' | 'warning' | 'info';
-}
-
-let confirmResolver: ((value: boolean) => void) | null = null;
-
-export const useConfirmStore = create<{
-    isOpen: boolean;
-    options: ConfirmOptions | null;
-    open: (options: ConfirmOptions) => Promise<boolean>;
-    confirm: () => void;
-    cancel: () => void;
-}>((set) => ({
-    isOpen: false,
-    options: null,
-
-    open: (options) => {
-        return new Promise((resolve) => {
-            confirmResolver = resolve;
-            set({
-                isOpen: true,
-                options: {
-                    title: 'Xác nhận',
-                    confirmText: 'Đồng ý',
-                    cancelText: 'Hủy',
-                    variant: 'info',
-                    ...options,
-                },
-            });
-        });
-    },
-
-    confirm: () => {
-        confirmResolver?.(true);
-        confirmResolver = null;
-        set({ isOpen: false, options: null });
-    },
-
-    cancel: () => {
-        confirmResolver?.(false);
-        confirmResolver = null;
-        set({ isOpen: false, options: null });
-    },
-}));
-
-export function useConfirm() {
-    const { open } = useConfirmStore();
-    return open;
-}
-
-// ============================================================================
-// DRAWER STORE
-// ============================================================================
-
-interface DrawerState {
-    isOpen: boolean;
-    content: ReactNode | null;
-    position: 'left' | 'right' | 'top' | 'bottom';
-    size: number;
-}
-
-export const useDrawerStore = create<{
-    drawer: DrawerState;
-    open: (content: ReactNode, position?: DrawerState['position'], size?: number) => void;
-    close: () => void;
-}>((set) => ({
-    drawer: {
-        isOpen: false,
-        content: null,
-        position: 'right',
-        size: 400,
-    },
-
-    open: (content, position = 'right', size = 400) => {
-        set({
-            drawer: {
-                isOpen: true,
-                content,
-                position,
-                size,
-            },
-        });
-    },
-
-    close: () => {
-        set(state => ({
-            drawer: {
-                ...state.drawer,
-                isOpen: false,
-                content: null,
-            },
-        }));
-    },
-}));
-
-export function useDrawer() {
-    const { drawer, open, close } = useDrawerStore();
-    return { ...drawer, open, close };
 }
