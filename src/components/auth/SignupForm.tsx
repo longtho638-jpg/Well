@@ -41,7 +41,11 @@ export const SignupForm: React.FC = () => {
                         </p>
                         <div className="mt-6 text-xs text-slate-400 text-center">
                             <p>{t('auth.register.didntReceive')}</p>
-                            <button className="text-teal-400 hover:text-teal-300 underline mt-1">
+                            <button
+                                type="button"
+                                onClick={() => form.handleSubmit(onSubmit)()}
+                                className="text-teal-400 hover:text-teal-300 underline mt-1"
+                            >
                                 {t('auth.register.resendEmail')}</button>
                         </div>
                     </motion.div>

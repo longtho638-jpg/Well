@@ -90,6 +90,7 @@ export const auth = {
       passwordMismatch: "Passwords do not match",
       weakPassword: "Password is too weak",
       errorMessage: "Failed to reset password. Please try again.",
+      invalidLink: "Invalid or expired reset link. Please request a new one.",
       title: "Reset Password",
       subtitle: "Enter your new password",
       successMessage: "Password reset successfully!",

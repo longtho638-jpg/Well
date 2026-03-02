@@ -1,4 +1,4 @@
-import React, { lazy, Suspense } from 'react';
+import { memo, lazy, Suspense } from 'react';
 import { motion } from 'framer-motion';
 import {
   Users,
@@ -159,7 +159,7 @@ function LeaderDashboard() {
       {/* Network Tree Tab */}
       {activeTab === 'tree' && (
         <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="space-y-6">
-          <Suspense fallback={<div className="flex items-center justify-center h-64 text-zinc-400">Đang tải sơ đồ...</div>}>
+          <Suspense fallback={<div className="flex items-center justify-center h-64 text-zinc-400">{t('common.loading')}</div>}>
             <NetworkTree />
           </Suspense>
         </motion.div>
@@ -168,4 +168,4 @@ function LeaderDashboard() {
   );
 }
 
-export default React.memo(LeaderDashboard);
+export default memo(LeaderDashboard);

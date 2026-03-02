@@ -1,4 +1,3 @@
-import React from 'react';
 import { useStore } from '@/store';
 import { User, Mail, Phone, MapPin, Shield, Calendar, Award } from 'lucide-react';
 import { motion } from 'framer-motion';
@@ -40,7 +39,7 @@ export default function ProfilePage() {
             <div className="flex flex-wrap justify-center md:justify-start gap-4">
               <div className="flex items-center gap-2 text-sm text-zinc-600 dark:text-zinc-300 bg-zinc-100 dark:bg-zinc-800 px-3 py-1.5 rounded-lg">
                 <Award className="w-4 h-4 text-amber-500" />
-                <span>{t('profilepage.joined')}: {new Date().toLocaleDateString()}</span>
+                <span>{t('profilepage.joined')}: {user?.joinedAt ? new Date(user.joinedAt).toLocaleDateString('vi-VN') : '—'}</span>
               </div>
               <div className="flex items-center gap-2 text-sm text-zinc-600 dark:text-zinc-300 bg-zinc-100 dark:bg-zinc-800 px-3 py-1.5 rounded-lg">
                 <Shield className="w-4 h-4 text-blue-500" />

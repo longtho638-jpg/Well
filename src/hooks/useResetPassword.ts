@@ -29,16 +29,27 @@ export function useResetPassword() {
         mode: 'onTouched',
     });
 
-    // Check if user has valid recovery token
+    // Listen for PASSWORD_RECOVERY event from Supabase (recovery token in URL hash)
     useEffect(() => {
-        const checkSession = async () => {
+        const { data: { subscription } } = supabase.auth.onAuthStateChange((event) => {
+            if (event === 'PASSWORD_RECOVERY') {
+                setServerError(''); // Valid recovery session established
+            }
+        });
+
+        // Fallback: check if session already exists (e.g. page refresh)
+        const timeout = setTimeout(async () => {
             const { data: { session } } = await supabase.auth.getSession();
             if (!session) {
-                setServerError('Invalid or expired reset link. Please request a new one.');
+                setServerError(t('auth.resetPassword.invalidLink'));
             }
+        }, 2000); // Allow time for Supabase to process URL hash
+
+        return () => {
+            subscription.unsubscribe();
+            clearTimeout(timeout);
         };
-        checkSession();
-    }, []);
+    }, [t]);
 
     const onSubmit = async (data: ResetPasswordFormValues) => {
         setServerError('');

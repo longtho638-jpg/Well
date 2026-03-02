@@ -104,6 +104,7 @@ export const common = {
   errors: {
     passwordsDoNotMatch: "Passwords do not match",
     signupFailed: "Signup failed. Please try again.",
+    emailAlreadyRegistered: "This email is already registered. Please log in instead.",
     invalidCredentials: "Invalid email or password.",
     timeout: "Login timed out. Please check your network connection.",
     emailNotConfirmed: "Email not confirmed. Please check your inbox.",

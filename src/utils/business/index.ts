@@ -118,20 +118,10 @@ export function calculateCommission(
  * Get commission rate by rank
  * Higher ranks get higher commission rates
  */
+/** @deprecated Use getCommissionRate from './commission' instead — Bee 2.0: CTV=21%, all others=25% */
 export function getCommissionRateByRank(rankId: number): number {
-    // Rank commission structure
-    const rates: Record<number, number> = {
-        1: 0.30, // THIEN_LONG
-        2: 0.28, // PHUONG_HOANG
-        3: 0.27, // DAI_SU_DIAMOND
-        4: 0.26, // DAI_SU_GOLD
-        5: 0.25, // DAI_SU_SILVER
-        6: 0.25, // DAI_SU
-        7: 0.25, // KHOI_NGHIEP
-        8: 0.21, // CTV
-    };
-
-    return rates[rankId] ?? 0.21;
+    // CTV (rank 8) gets 21%, all other ranks get 25%
+    return rankId === 8 ? 0.21 : 0.25;
 }
 
 // ============================================================================

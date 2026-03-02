@@ -10,7 +10,8 @@ const WalletPage: React.FC = () => {
 
   const totalShopBalance = user.shopBalance;
   const totalGrowBalance = useMemo(() => user.growBalance + user.stakedGrowBalance, [user.growBalance, user.stakedGrowBalance]);
-  const totalPortfolioVND = useMemo(() => totalShopBalance / 1000 + (totalGrowBalance * 50000), [totalShopBalance, totalGrowBalance]);
+  const GROW_TO_VND_RATE = 10000;
+  const totalPortfolioVND = useMemo(() => totalShopBalance + (totalGrowBalance * GROW_TO_VND_RATE), [totalShopBalance, totalGrowBalance]);
 
   return (
     <div className="min-h-screen bg-zinc-50 dark:bg-zinc-950 p-6 transition-colors duration-300">

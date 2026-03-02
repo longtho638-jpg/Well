@@ -52,7 +52,7 @@ export async function createPayment(request: VibePaymentRequest): Promise<Paymen
     return paymentBreaker.execute(async () => {
         try {
             const result = await provider.createPayment(request);
-            return { checkoutUrl: result.checkoutUrl, orderCode: result.orderCode } as PaymentResponse;
+            return { checkoutUrl: result.checkoutUrl, orderCode: result.orderCode, qrCode: result.qrCode ?? '' } as PaymentResponse;
         } catch (err) {
             throw new PaymentError(
                 `Payment creation failed: ${err instanceof Error ? err.message : 'Unknown'}`,

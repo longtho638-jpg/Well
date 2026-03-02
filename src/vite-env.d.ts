@@ -13,7 +13,7 @@ interface ImportMetaEnv {
   readonly VITE_SUPABASE_URL: string;
   readonly VITE_SUPABASE_ANON_KEY: string;
   readonly VITE_API_URL: string;
-  readonly VITE_GEMINI_API_KEY: string;
+  /** @deprecated GEMINI_API_KEY is server-side only via Supabase Edge Function Secrets */
   readonly VITE_ADMIN_EMAILS: string;
   readonly VITE_MEKONG_HUB_ENDPOINT: string;
   readonly VITE_MEKONG_HUB_API_KEY: string;

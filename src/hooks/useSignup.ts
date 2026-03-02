@@ -3,7 +3,7 @@ import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { authLogger } from '@/utils/logger';
 import { useTranslation } from '@/hooks';
-import { supabase } from '@/lib/supabase';
+import { useAuth } from '@/hooks/useAuth';
 import { validatePassword, PasswordValidation } from '@/utils/password-validation';
 import { sendWelcomeEmail } from '@/services/email-service';
 import { signupSchema, SignupFormValues } from '@/lib/schemas/auth';
@@ -12,6 +12,7 @@ export function useSignup() {
     const [signupSuccess, setSignupSuccess] = useState(false);
 
     const { t } = useTranslation();
+    const { signUp } = useAuth();
 
     const form = useForm<SignupFormValues>({
         resolver: zodResolver(signupSchema),
@@ -32,23 +33,8 @@ export function useSignup() {
 
     const onSubmit = async (data: SignupFormValues) => {
         try {
-            // Capture sponsor from referral link (/ref/:id → sessionStorage)
-            const sponsorId = sessionStorage.getItem('wellnexus_sponsor_id');
-
-            const { error: signUpError } = await supabase.auth.signUp({
-                email: data.email,
-                password: data.password,
-                options: {
-                    data: {
-                        name: data.name,
-                        role_id: 8, // Default to CTV/Member
-                        ...(sponsorId ? { sponsor_id: sponsorId } : {}),
-                    },
-                    emailRedirectTo: `${window.location.origin}/confirm-email`,
-                },
-            });
-
-            if (signUpError) throw signUpError;
+            // Use useAuth.signUp() which creates BOTH auth account AND users table record
+            await signUp(data.email, data.password, data.name);
 
             authLogger.info('Signup successful for:', data.email);
 
@@ -58,17 +44,18 @@ export function useSignup() {
                 userEmail: data.email,
             }).catch((err) => authLogger.error('Welcome email failed', err));
 
-            // Clear sponsor from sessionStorage after successful signup
-            sessionStorage.removeItem('wellnexus_sponsor_id');
-
             // Show success state - user needs to confirm email
             setSignupSuccess(true);
         } catch (e) {
             const err = e as Error;
             authLogger.error('Signup failed', err);
-            form.setError('root', {
-                message: err.message || t('errors.signupFailed'),
-            });
+
+            // Map Supabase errors to user-friendly messages
+            const message = err.message?.includes('already registered')
+                ? t('errors.emailAlreadyRegistered')
+                : err.message || t('errors.signupFailed');
+
+            form.setError('root', { message });
         }
     };
 

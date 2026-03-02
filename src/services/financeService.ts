@@ -17,63 +17,18 @@ export interface FinanceTransaction {
     reason?: string;
 }
 
-interface SupabaseTransactionRow {
-    id: string;
-    user_id: string;
-    amount: number;
-    status: string;
-    type: string;
-    created_at: string;
-    tax_amount: number | null;
-    net_amount: number | null;
-}
+/** Row shape returned by Supabase transactions query */
+type TransactionRow = { id: string; user_id: string; amount: number; status: string; type: string; created_at: string; tax_amount: number | null; net_amount: number | null };
 
-const mockTransactions: FinanceTransaction[] = [
-    {
-        id: 'R001',
-        type: 'revenue',
-        partnerId: 'P001',
-        partnerName: 'Lan Nguyen',
-        amount: 15900000,
-        status: 'Completed',
-        fraudScore: 12,
-        timestamp: '2024-11-20 14:30',
-        reason: 'ANIMA 119 Sale',
-    },
-    {
-        id: 'W001',
-        type: 'payout',
-        partnerId: 'P001',
-        partnerName: 'Lan Nguyen',
-        gross: 5000000,
-        tax: 500000,
-        net: 4500000,
-        amount: 5000000,
-        status: 'Pending',
-        fraudScore: 15,
-        timestamp: '2024-11-20 10:00',
-        reason: 'Commission Withdrawal',
-    },
-    {
-        id: 'W002',
-        type: 'payout',
-        partnerId: 'P002',
-        partnerName: 'Minh Tran',
-        gross: 3200000,
-        tax: 320000,
-        net: 2880000,
-        amount: 3200000,
-        status: 'Pending',
-        fraudScore: 8,
-        timestamp: '2024-11-20 09:30',
-        reason: 'Commission Withdrawal',
-    },
-];
+const DEV_MOCK_TRANSACTIONS: FinanceTransaction[] = import.meta.env.DEV ? [
+    { id: 'R001', type: 'revenue', partnerId: 'P001', partnerName: 'Demo User', amount: 15900000, status: 'Completed', fraudScore: 0, timestamp: '2024-11-20 14:30', reason: 'Product Sale' },
+    { id: 'W001', type: 'payout', partnerId: 'P001', partnerName: 'Demo User', gross: 5000000, tax: 500000, net: 4500000, amount: 5000000, status: 'Pending', fraudScore: 0, timestamp: '2024-11-20 10:00', reason: 'Commission Withdrawal' },
+] : [];
 
 export const financeService = {
     async getTransactions(): Promise<FinanceTransaction[]> {
         if (!isSupabaseConfigured()) {
-            return mockTransactions;
+            return DEV_MOCK_TRANSACTIONS;
         }
 
         try {
@@ -90,13 +45,13 @@ export const financeService = {
                     net_amount
                 `)
                 .order('created_at', { ascending: false })
-                .limit(50)
-                .returns<SupabaseTransactionRow[]>();
+                .limit(50);
 
             if (error) throw error;
 
+            const rows = (data || []) as TransactionRow[];
             const formattedTransactions: FinanceTransaction[] = await Promise.all(
-                (data || []).map(async (tx): Promise<FinanceTransaction> => {
+                rows.map(async (tx): Promise<FinanceTransaction> => {
                     let partnerName = 'Unknown';
                     try {
                         const { data: userData, error: userError } = await supabase

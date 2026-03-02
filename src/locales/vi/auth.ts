@@ -74,6 +74,7 @@ auth: {
       submitButton: "Đặt lại mật khẩu",
       successMessage: "Mật khẩu đã được đặt lại thành công!",
       errorMessage: "Không thể đặt lại mật khẩu. Vui lòng thử lại.",
+      invalidLink: "Liên kết đặt lại mật khẩu không hợp lệ hoặc đã hết hạn. Vui lòng yêu cầu lại.",
       passwordMismatch: "Mật khẩu không khớp",
       weakPassword: "Mật khẩu quá yếu. Vui lòng chọn mật khẩu mạnh hơn."
     },

@@ -45,7 +45,7 @@ const App: React.FC = () => {
     return (
       <div className="flex items-center justify-center h-screen bg-zinc-950" role="status">
         <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-emerald-500" />
-        <span className="sr-only">Initializing application...</span>
+        <span className="sr-only">{t('common.loading')}</span>
       </div>
     );
   }
@@ -100,7 +100,7 @@ const App: React.FC = () => {
                   <AppLayout />
                 </SafePage>
               ) : (
-                <Navigate to="/" replace />
+                <Navigate to="/login" replace />
               )
             }
           >

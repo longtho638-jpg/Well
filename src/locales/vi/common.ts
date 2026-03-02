@@ -104,6 +104,7 @@ nav: {
 errors: {
     passwordsDoNotMatch: "Mật khẩu không khớp",
     signupFailed: "Đăng ký thất bại. Vui lòng thử lại.",
+    emailAlreadyRegistered: "Email này đã được đăng ký. Vui lòng đăng nhập.",
     invalidCredentials: "Email hoặc mật khẩu không đúng.",
     timeout: "Đăng nhập hết thời gian. Vui lòng kiểm tra kết nối mạng.",
     emailNotConfirmed: "Email chưa được xác nhận. Vui lòng kiểm tra hộp thư.",

@@ -105,6 +105,7 @@ export class PayOSAdapter implements VibePaymentProvider {
     return {
       checkoutUrl: result.checkoutUrl as string,
       orderCode: result.orderCode as number,
+      ...(result.qrCode ? { qrCode: result.qrCode as string } : {}),
     };
   }
 

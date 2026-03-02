@@ -8,6 +8,7 @@
 
 import React, { useRef, useEffect, useState } from 'react';
 import { Send, User, Bot, Loader2, Sparkles } from 'lucide-react';
+import { useTranslation } from '@/hooks';
 import { useVibeChat } from '@/hooks/use-vibe-chat';
 import { motion, AnimatePresence } from 'framer-motion';
 import type { Message } from '@ai-sdk/react';
@@ -31,6 +32,7 @@ export const AgentChat: React.FC<AgentChatProps> = ({ agentId, isAgiMode = false
   } = useVibeChat({ agentId });
 
   const scrollRef = useRef<HTMLDivElement>(null);
+  const { t } = useTranslation();
 
   // AGI mode: demo reasoning steps (populated from agent stream in production)
   const [reasoningSteps] = useState<ReasoningStep[]>([]);
@@ -119,7 +121,7 @@ export const AgentChat: React.FC<AgentChatProps> = ({ agentId, isAgiMode = false
               <div className="w-8 h-8 rounded-full bg-white border border-gray-100 flex items-center justify-center">
                 <Loader2 className="w-4 h-4 animate-spin text-purple-600" />
               </div>
-              <span className="text-xs italic">Thinking...</span>
+              <span className="text-xs italic">{t('common.loading')}</span>
             </div>
           </div>
         )}
