@@ -14,7 +14,9 @@ dashboard: {
       remaining: "Còn lại",
       daysLeft: "{days} ngày",
       onTrack: "Đúng tiến độ",
-      needsBoost: "Cần tăng tốc"
+      needsBoost: "Cần tăng tốc",
+      description: "Theo dõi tăng trưởng kinh doanh theo thời gian thực",
+      shareButton: "Chia sẻ Link Giới Thiệu"
     },
     valuation: {
       title: "Định Giá Doanh Nghiệp",
@@ -41,7 +43,13 @@ dashboard: {
       vsLastMonth: "MoM Growth",
       totalNodeYield: "Tổng Năng Suất Nút",
       liquidCapital: "Vốn Thanh Khoản",
-      ecosystemVolume: "Khối Lượng Hệ Sinh Thái"
+      ecosystemVolume: "Khối Lượng Hệ Sinh Thái",
+      totalRevenue: "Tổng Doanh Thu",
+      totalCommission: "Tổng Hoa Hồng",
+      activeMembers: "Thành Viên Đang Hoạt Động",
+      conversionRate: "Tỷ Lệ Chuyển Đổi",
+      pendingOrders: "Đơn Hàng Chờ",
+      completedOrders: "Đơn Hàng Hoàn Thành"
     },
     commission: {
       title: "Hoa Hồng",
@@ -89,7 +97,10 @@ dashboard: {
       withdraw: "Rút tiền",
       withdrawDesc: "Chuyển về tài khoản",
       shareAchievement: "Chia sẻ thành tích",
-      shareAchievementDesc: "Khoe thành tích của bạn"
+      shareAchievementDesc: "Khoe thành tích của bạn",
+      addMember: "Thêm Thành Viên",
+      viewReports: "Xem Báo Cáo",
+      manageProducts: "Quản Lý Sản Phẩm"
     },
     dailyQuest: {
       title: "Nhiệm vụ hàng ngày",
@@ -288,6 +299,24 @@ liveActivities: {
 liveactivitiesticker: {
     recent: "Gần đây: ",
     nodes: " hoạt động"
+  },
+valuationcard: {
+    mom_growth: "Tăng Trưởng MoM",
+    "12_5_pe_ratio": "Tỷ Lệ P/E 12.5"
+  },
+revenueprogresswidget: {
+    revenue_milestone: "Mốc Doanh Thu",
+    global_ecosystem_velocity: "Tốc Độ Hệ Sinh Thái Toàn Cầu",
+    benchmark: "Chuẩn",
+    monthly_liquidity_flow: "Luồng Thanh Khoản Hàng Tháng",
+    baseline_0: "Cơ Sở: 0",
+    target: "Mục Tiêu",
+    avg_unit_order: "Đơn Vị Đơn Hàng Trung Bình",
+    daily_momentum: "Động Lực Hàng Ngày",
+    verified_partners: "Đối Tác Đã Xác Minh",
+    annualized_run_rate_arr: "Tỷ Lệ Hoạt Động Hàng Năm (ARR)",
+    benchmark_achieved: "Đã Đạt Chuẩn",
+    days_to_benchmark: "Ngày Đến Chuẩn"
   },
 liveconsole: {
     autonomous_agents_real_time_l: "Nhật Ký Thời Gian Thực Đại Lý Tự Động",

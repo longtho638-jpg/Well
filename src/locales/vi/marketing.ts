@@ -163,13 +163,23 @@ landing: {
     },
     features: {
       title: "Tính năng nổi bật",
+      sectionBadge: "Tính Năng Cốt Lõi",
+      sectionTitle: "Tất Cả Những Gì Bạn Cần",
       ai: {
         title: "Trợ lý AI thông minh",
         description: "Hỗ trợ bán hàng 24/7 với công nghệ AI tiên tiến"
       },
+      aiCoach: {
+        title: "Huấn Luyện Viên Sức Khỏe AI",
+        description: "Hướng dẫn cá nhân hóa bởi Gemini AI"
+      },
       token: {
         title: "Hệ thống Dual Token",
         description: "SHOP và GROW token với khả năng staking sinh lời"
+      },
+      commission: {
+        title: "Theo Dõi Thời Gian Thực",
+        description: "Giám sát các chỉ số tăng trưởng trực tiếp"
       },
       compliance: {
         title: "Tuân thủ thuế tự động",
@@ -178,10 +188,17 @@ landing: {
       community: {
         title: "Cộng đồng mạnh mẽ",
         description: "Kết nối với hàng nghìn seller trên toàn quốc"
+      },
+      marketplace: {
+        title: "Sàn Thương Mại Tích Hợp",
+        description: "Sản phẩm sức khỏe được tuyển chọn"
       }
     },
     testimonials: {
       title: "Câu chuyện thành công",
+      sectionBadge: "Câu Chuyện Thành Công",
+      sectionTitle: "Đối Tác Nói Gì",
+      subheadline: "Cuộc sống đã thay đổi",
       items: {
         item1: {
           name: "Nguyễn Minh Anh",
@@ -225,7 +242,10 @@ landing: {
     cta: {
       title: "Sẵn sàng bắt đầu?",
       subtitle: "Tham gia WellNexus hôm nay và xây dựng thu nhập thụ động",
-      button: "Đăng ký miễn phí"
+      button: "Đăng ký miễn phí",
+      sectionBadge: "Sẵn sàng bắt đầu?",
+      primaryButton: "Trở thành Đối Tác",
+      secondaryButton: "Đặt lịch Demo"
     },
     roadmap: {
       sectionBadge: "Lộ Trình Phát Triển",
@@ -256,7 +276,10 @@ landing: {
             copilot: "AI Copilot nâng cao",
             marketing: "Tự động hóa Marketing",
             dashboard: "Bảng điều khiển Leader",
-            passive: "Thu nhập thụ động từ đội nhóm"
+            passive: "Thu nhập thụ động từ đội nhóm",
+            ai: "AI Coach đầy đủ",
+            team: "Bảng điều khiển nhóm",
+            rewards: "Thưởng hiệu suất"
           }
         },
         forest: {
@@ -268,7 +291,11 @@ landing: {
             platform: "Nền tảng Health Coach",
             market: "Sở hữu Marketplace",
             data: "Kiếm tiền từ dữ liệu",
-            equity: "Tham gia cổ phần"
+            equity: "Tham gia cổ phần",
+            ecosystem: "Hệ sinh thái đầy đủ",
+            leadership: "Thưởng lãnh đạo",
+            training: "Đào tạo nâng cao",
+            recognition: "Giải thưởng performer xuất sắc"
           }
         },
         metropolis: {
@@ -323,12 +350,68 @@ landing: {
       q3: "Nếu tôi không có kinh nghiệm kinh doanh thì có làm được không?",
       a3: "Hoàn toàn được. AI Coach của WellNexus hướng dẫn từng bước — từ cách tiếp cận khách hàng, xây dựng mạng lưới, đến tối ưu doanh số. 68% đối tác hiện tại bắt đầu hoàn toàn không có kinh nghiệm."
     },
+    footer: {
+      description: "Nền tảng venture sức khỏe AI",
+      quickLinks: {
+        title: "Liên Kết Nhanh",
+        home: "Trang Chủ",
+        about: "Giới Thiệu",
+        features: "Tính Năng",
+        pricing: "Bảng Giá",
+        contact: "Liên Hệ"
+      },
+      legal: {
+        title: "Pháp Lý",
+        privacy: "Bảo Mật",
+        terms: "Điều Khoản",
+        compliance: "Tuân Thủ"
+      },
+      contact: {
+        title: "Liên Hệ",
+        email: "Email",
+        phone: "Điện Thoại",
+        address: "Địa Chỉ",
+        placeholder: "comm_channel@secure.vn"
+      },
+      subscribe_for_exclusive_intake: "Đăng Ký Cập Nhật",
+      copyright: "© 2026 WellNexus // Không Nợ",
+      privacy: "Bảo Mật",
+      terms: "Điều Khoản"
+    },
     trust: {
       noInventory: "Không tồn kho",
       freeToJoin: "Gia nhập miễn phí",
       certified: "Sản phẩm chứng nhận",
       community: "1,243+ đối tác"
     }
+  },
+sharebuttons: {
+    zalo: "Zalo",
+    facebook: "Facebook",
+    telegram: "Telegram",
+    email: "Email",
+    hideQR: "Ẩn mã QR",
+    showQR: "Hiện mã QR"
+  },
+stickyCta: {
+    label: "157 suất còn lại — Đăng ký ngay hôm nay",
+    cta: "Nhận Slot Của Tôi"
+  },
+faq: {
+    title: "Câu hỏi thường gặp",
+    subtitle: "Giải đáp những băn khoăn phổ biến nhất",
+    q1: "Tôi có cần bỏ vốn hay mua hàng tồn kho không?",
+    a1: "Không. WellNexus không yêu cầu mua hàng tồn kho bắt buộc.",
+    q2: "Thu nhập có thực sự ổn định không hay chỉ là quảng cáo?",
+    a2: "1,243 đối tác đang hoạt động với mức thu nhập trung bình 12,450,000₫/tháng.",
+    q3: "Nếu tôi không có kinh nghiệm kinh doanh thì có làm được không?",
+    a3: "Hoàn toàn được. AI Coach của WellNexus hướng dẫn từng bước."
+  },
+trust: {
+    noInventory: "Không tồn kho",
+    freeToJoin: "Gia nhập miễn phí",
+    certified: "Sản phẩm chứng nhận",
+    community: "1,243+ đối tác"
   },
 eastasiabrand: {
     wellnexus: "WellNexus",

@@ -296,6 +296,32 @@ export const team = {
     total_agents: "Tổng Đại Lý",
     total_kpis: "Tổng KPI"
   },
+  networktree: {
+    toast: {
+      add_failed: "Thêm thành viên thất bại"
+    },
+    nh_p_c_y_add_member: "Điền thông tin để thêm thành viên",
+    sponsor: "Người giới thiệu",
+    full_name: "Họ và tên",
+    name_placeholder: "Nhập họ và tên",
+    email: "Email",
+    email_placeholder: "Nhập địa chỉ email",
+    phone: "Số điện thoại",
+    phone_placeholder: "Nhập số điện thoại",
+    password: "Mật khẩu",
+    password_placeholder: "Nhập mật khẩu",
+    rank: "Cấp bậc",
+    c_ng_t_c_vi_n_ctv: "Cộng tác viên (CTV)",
+    kh_i_nghi_p: "Khởi nghiệp",
+    i_s: "Đại sứ",
+    add_member: "Thêm thành viên",
+    sales: "Doanh số",
+    team: "Đội nhóm",
+    s_h_th_ng_network_tree: "Sơ đồ Network Tree",
+    visual_representation_of_your: "Biểu đồ trực quan cấu trúc mạng lưới của bạn",
+    loading_network_data: "Đang tải dữ liệu mạng lưới...",
+    no_data_available: "Không có dữ liệu"
+  },
   agentDashboard: {
     title: "Hệ Điều Hành Agent",
     subtitle: "Quản lý và vận hành đội ngũ nhân sự AI",

@@ -1,5 +1,11 @@
 #!/usr/bin/env sh
 . "$(dirname -- "$0")/_/husky.sh"
 
-npm run i18n:validate
-npx lint-staged
+# Validate i18n keys only when locale files are staged (fast gate)
+LOCALE_CHANGED=$(git diff --cached --name-only | grep 'src/locales/' | head -1)
+if [ -n "$LOCALE_CHANGED" ]; then
+  echo "Locale files changed — validating i18n keys..."
+  node scripts/validate-i18n-keys.mjs
+fi
+
+npx --no-workspaces lint-staged

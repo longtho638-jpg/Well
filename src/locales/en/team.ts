@@ -324,6 +324,38 @@ export const team = {
     total_kpis: "Total KPIs",
     total_actions: "Total Actions",
     performance: "Performance",
-    action: "Action"
+    action: "Action",
+    establishing_node_sync: "Establishing node sync...",
+    agent_command_center: "Agent Command Center",
+    intelligence_grid_optimal: "Intelligence Grid: Optimal",
+    operational_tier: "Operational Tier: ",
+    v1_2_0_stable: "v1.2.0 Stable",
+    registry: "Registry",
+    nodes: "Nodes",
+    strategic_simulator_offline: "Strategic Simulator Offline",
+    connect_to_the_policy_engine_r: "Connect to the Policy Engine to run real-time market simulations."
+  },
+  teamcharts: {
+    network_health: "Network Health"
+  },
+  teammemberstable: {
+    member: "Member",
+    partner: "Partner"
+  },
+  partnerprofilemodal: {
+    close: "Close",
+    email: "Email",
+    joined: "Joined",
+    kyc_status: "KYC Status",
+    monthly_performance: "Monthly Performance",
+    partner_details: "Partner Details",
+    pending: "Pending",
+    phone: "Phone",
+    rank: "Rank",
+    total_revenue: "Total Revenue",
+    verified: "Verified"
+  },
+  achievementgrid: {
+    ecosystem_standing: "Ecosystem Standing"
   }
 };

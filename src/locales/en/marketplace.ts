@@ -111,7 +111,9 @@ export const marketplace = {
     subtotal: "Subtotal",
     shipping: "Shipping",
     shippingFree: "Free Shipping",
-    total: "Total"
+    total: "Total",
+    viewCart: "View Cart",
+    checkout: "Checkout"
   },
   checkout: {
     guestInfo: "Guest Information",
@@ -183,6 +185,24 @@ export const marketplace = {
     processing: "Processing...",
     placeOrder: "Place Order",
     terms: "I agree to the Terms and Conditions",
+    form: {
+      fullName: "Full Name",
+      phone: "Phone",
+      email: "Email",
+      city: "City/Province",
+      district: "District",
+      ward: "Ward",
+      street: "Street Address",
+      note: "Note",
+      notePlaceholder: "Delivery note (optional)",
+      fullNamePlaceholder: "Enter your full name",
+      phonePlaceholder: "Enter phone number",
+      emailPlaceholder: "Enter email address",
+      cityPlaceholder: "Select city",
+      districtPlaceholder: "Select district",
+      wardPlaceholder: "Select ward",
+      streetPlaceholder: "Enter street address"
+    },
     validation: {
       fullNameRequired: "Full name is required",
       emailInvalid: "Invalid email address",

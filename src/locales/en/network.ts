@@ -16,7 +16,10 @@ export const network = {
     direct_f1: "Direct (F1)",
     active_members: "Active Members",
     team_volume: "Team Volume",
-    invite_member: "Invite Member"
+    invite_member: "Invite Member",
+    manage_team_subtitle: "Manage and visualize your team structure",
+    empty_title: "No network data available",
+    empty_subtitle: "Start inviting members to build your team!"
   },
   liveconsole: {
     live_operations_node_agent: "Live Operations Node Agent",

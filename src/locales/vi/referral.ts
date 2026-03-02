@@ -189,5 +189,19 @@ inviteflowmodal: {
     m_i_th_m_th_nh_vi_n: "Mời thêm thành viên",
     nh_p_email_ng_nghi_p: "Nhập email đồng nghiệp",
     x_c_nh_n_l_i_m_i: "Xác nhận lời mời"
+  },
+achievementgrid: {
+    ecosystem_standing: "Vị Thế Hệ Sinh Thái"
+  },
+dailyquesthub: {
+    grow: "GROW",
+    completed: "Đã hoàn thành",
+    claim_reward: "Nhận thưởng",
+    start_quest: "Bắt đầu nhiệm vụ",
+    mastered: "Đã thành thạo",
+    completed_1: "Đã hoàn thành",
+    yield: "Lợi nhuận",
+    grow_1: "GROW",
+    accumulated_today: "Tích lũy hôm nay"
   }
 };

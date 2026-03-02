@@ -124,7 +124,24 @@ export const health = {
       average: "There's room for improvement. Let's work on it together.",
       poor: "Your health needs attention. We recommend consulting our AI Coach."
     },
-    restartQuiz: "Restart Quiz"
+    restartQuiz: "Restart Quiz",
+    add_product: "Add Product",
+    bonus_revenue_dttt_represent: "Bonus Revenue DTTT Represents",
+    commit: "Commit",
+    dttt_basis: "DTTT Basis",
+    dttt_commission_logic: "DTTT Commission Logic",
+    edit_config: "Edit Config",
+    esc: "ESC",
+    global_catalog: "Global Catalog",
+    in_stock: "In Stock",
+    inventory_management_dttt_st: "Inventory Management DTTT Stock",
+    low_stock: "Low Stock",
+    member_21_startup_25: "Member 21% / Startup 25%",
+    member_comm: "Member Comm",
+    out_of_stock: "Out of Stock",
+    partner_comm: "Partner Comm",
+    retail_msrp: "Retail (MSRP)",
+    sku: "SKU"
   },
   healthCoach: {
     title: "Health Coach AI",

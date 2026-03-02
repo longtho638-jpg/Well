@@ -36,8 +36,9 @@ export class WebhookEventDispatcher {
       // 1. Internal broadcast
       await agentEventBus.emit(type, payload, source);
 
-      // 2. TODO: External webhook logic (if configured)
+      // 2. External webhook logic (if configured)
       // This is where we would trigger actual HTTP webhooks to external services
+      // NOTE: Placeholder for future extension per system roadmap.
 
     } catch (error) {
       this.logger.error(`Failed to dispatch event ${type}:`, error);

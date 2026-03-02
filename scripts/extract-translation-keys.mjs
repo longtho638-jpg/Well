@@ -43,6 +43,8 @@ function extractKeysFromContent(content, filePath) {
     lastIndex = match.index;
 
     const key = match[2];
+    // Skip dynamic keys with template literal interpolation (e.g. `copilot.tips.${tip}`)
+    if (key.includes('${')) continue;
     if (!seen.has(key)) {
       seen.set(key, { key, file: filePath, line: currentLine });
     }

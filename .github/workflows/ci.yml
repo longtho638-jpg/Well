@@ -49,6 +49,9 @@ jobs:
           path: coverage/
           retention-days: 7
 
+      - name: Validate file sizes
+        run: node scripts/validate-file-sizes-for-build-enforcement.mjs
+
       - name: Build project
         run: npm run build
 

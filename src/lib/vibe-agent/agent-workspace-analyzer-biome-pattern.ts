@@ -107,7 +107,7 @@ class AgentWorkspaceAnalyzer {
 
     return {
       totalAgents: agents.length,
-      agentCapabilities: agents.map((n) => this.capabilities.get(n)!).filter(Boolean),
+      agentCapabilities: agents.map((n) => this.capabilities.get(n)).filter((c): c is AgentCapabilities => c !== undefined),
       dependencyGraph: graph,
       circularDependencies: circular,
       orphanedAgents: orphaned,

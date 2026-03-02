@@ -4,82 +4,24 @@
  * Maps n8n's ErrorTrigger node + dedicated Error Workflow concept to a
  * client-side agent error routing system.
  *
- * n8n concepts mapped:
- * - ErrorTrigger: Special node that activates when a workflow fails
- * - Error Workflow: Dedicated workflow for handling errors from any workflow
- * - Error Context: Rich error info (node, inputs, outputs, stack trace)
- * - Manual Retry: Retry from the failed node, not from workflow start
- * - Error Routing: Route errors to different handlers based on error type
- *
  * Pattern source: n8n-io/n8n ErrorTrigger + Error Workflow
  */
 
-// ─── Error Categories (n8n: error type classification) ──────
+export type {
+  ErrorCategory,
+  AgentErrorContext,
+  ErrorRecoveryAction,
+  ErrorHandler,
+  ErrorWorkflowConfig,
+} from './agent-error-workflow-category-and-context-types';
 
-/** Error categories mapped from n8n's error node types */
-export type ErrorCategory =
-  | 'validation'  // n8n: NodeOperationError with validation context
-  | 'timeout'     // n8n: Workflow execution timeout
-  | 'permission'  // n8n: Credential / auth errors
-  | 'network'     // n8n: NodeApiError for HTTP/network failures
-  | 'internal'    // n8n: Internal node execution errors
-  | 'unknown';    // n8n: Catch-all for unclassified errors
-
-// ─── Error Context (n8n: $execution.lastNodeExecuted + error data) ──
-
-/** Rich error context passed to the Error Workflow (n8n: $json in ErrorTrigger) */
-export interface AgentErrorContext {
-  errorId: string;
-  /** Agent that produced the error (n8n: workflow.name) */
-  agentName: string;
-  /** Action/step that failed (n8n: lastNodeExecuted) */
-  action: string;
-  category: ErrorCategory;
-  message: string;
-  stack?: string;
-  /** Original input that triggered the failure (n8n: inputData) */
-  input: unknown;
-  timestamp: string;
-  /** Number of times this error has been retried (n8n: manual retry count) */
-  retryCount: number;
-  /** Metadata for debugging (n8n: extra context on error node) */
-  metadata: Record<string, unknown>;
-}
-
-// ─── Recovery Actions (n8n: error workflow output options) ───
-
-/** Recovery actions an error handler can return (n8n: workflow continuation modes) */
-export type ErrorRecoveryAction =
-  | { type: 'retry'; delayMs?: number }        // n8n: retry from failed node
-  | { type: 'skip'; reason: string }            // n8n: skip node, continue workflow
-  | { type: 'fallback'; result: unknown }       // n8n: substitute output data
-  | { type: 'escalate'; message: string }       // n8n: send to notification node
-  | { type: 'abort'; reason: string };          // n8n: stop workflow execution
-
-// ─── Error Handler (n8n: Error Workflow node handlers) ───────
-
-/** Error handler registration (n8n: error workflow node with category filter) */
-export interface ErrorHandler {
-  name: string;
-  /** Which error categories this handler processes (n8n: error type conditions) */
-  categories: ErrorCategory[];
-  /** Handler function — receives error context, returns recovery action */
-  handle: (error: AgentErrorContext) => Promise<ErrorRecoveryAction>;
-}
-
-// ─── Configuration (n8n: workflow error settings) ────────────
-
-/** Error workflow configuration (n8n: workflow-level error handling settings) */
-export interface ErrorWorkflowConfig {
-  /** Max retry attempts before escalating (n8n: max retry count) */
-  maxRetries: number;
-  /** Base delay between retries in ms (n8n: retry interval) */
-  retryDelayMs: number;
-  /** Auto-classify errors without explicit category (n8n: smart error routing) */
-  enableAutoClassification: boolean;
-  /** Max error history entries to keep in memory */
-  errorHistorySize: number;
-}
+import type {
+  ErrorCategory,
+  AgentErrorContext,
+  ErrorRecoveryAction,
+  ErrorHandler,
+  ErrorWorkflowConfig,
+} from './agent-error-workflow-category-and-context-types';
 
 // ─── Retry Record (n8n: execution retry state) ───────────────
 
@@ -108,21 +50,15 @@ class AgentErrorWorkflow {
   private retryMap = new Map<string, RetryRecord>();
   private config: ErrorWorkflowConfig = { ...DEFAULT_CONFIG };
 
-  // ─── Configuration ─────────────────────────────────────────
-
   /** Update configuration (n8n: workflow settings panel) */
   configure(overrides: Partial<ErrorWorkflowConfig>): void {
     this.config = { ...this.config, ...overrides };
   }
 
-  // ─── Handler Registry (n8n: Error Workflow node registration) ─
-
   /** Register an error handler (n8n: add error-handling node to Error Workflow) */
   registerHandler(handler: ErrorHandler): void {
     this.handlers.push(handler);
   }
-
-  // ─── Classification (n8n: smart error type detection) ────────
 
   /** Auto-classify error category from message/type (n8n: error routing logic) */
   classifyError(error: Error | string): ErrorCategory {
@@ -134,8 +70,6 @@ class AgentErrorWorkflow {
     if (/internal|unexpected|unhandled/.test(msg)) return 'internal';
     return 'unknown';
   }
-
-  // ─── Context Builder (n8n: ErrorTrigger output data shape) ───
 
   /** Build a rich error context (n8n: $json payload emitted by ErrorTrigger) */
   createErrorContext(
@@ -164,8 +98,6 @@ class AgentErrorWorkflow {
     };
   }
 
-  // ─── Routing (n8n: ErrorTrigger → matching Error Workflow node) ─
-
   /** Route error to the first matching handler (n8n: error workflow execution) */
   async handleError(error: AgentErrorContext): Promise<ErrorRecoveryAction> {
     this._recordHistory(error);
@@ -185,8 +117,6 @@ class AgentErrorWorkflow {
       return { type: 'abort', reason: `Handler "${handler.name}" threw: ${msg}` };
     }
   }
-
-  // ─── Retry (n8n: "retry from failed node" button) ────────────
 
   /**
    * Register a retryable operation associated with an error ID.
@@ -232,8 +162,6 @@ class AgentErrorWorkflow {
     return this.handleError(context);
   }
 
-  // ─── History & Stats (n8n: execution history view) ───────────
-
   /** Get error history, optionally filtered by agent (n8n: execution list) */
   getErrorHistory(agentName?: string): AgentErrorContext[] {
     if (!agentName) return [...this.history];
@@ -255,8 +183,6 @@ class AgentErrorWorkflow {
     this.history = [];
     this.retryMap.clear();
   }
-
-  // ─── Private Helpers ─────────────────────────────────────────
 
   private _recordHistory(error: AgentErrorContext): void {
     this.history.push(error);

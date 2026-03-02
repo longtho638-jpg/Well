@@ -10,10 +10,24 @@ auth: {
       loginButton: "Đăng nhập",
       noAccount: "Chưa có tài khoản?",
       signUp: "Đăng ký ngay",
+      or: "Hoặc",
       demo: "Đăng nhập demo",
       backToHome: "Về trang chủ WellNexus",
       showPassword: "Hiện mật khẩu",
       hidePassword: "Ẩn mật khẩu"
+    },
+    signup: {
+      title: "Tạo tài khoản",
+      subtitle: "Tham gia WellNexus",
+      fullName: "Họ và tên",
+      email: "Email",
+      password: "Mật khẩu",
+      confirmPassword: "Xác nhận mật khẩu",
+      referralCode: "Mã giới thiệu",
+      agreeToTerms: "Tôi đồng ý với điều khoản",
+      signupButton: "Tạo tài khoản",
+      haveAccount: "Đã có tài khoản?",
+      signIn: "Đăng nhập"
     },
     register: {
       title: "Đăng ký",
@@ -117,6 +131,14 @@ sessionmanager: {
     revoked_success: "Phiên đã được thu hồi thành công",
     revoked_all_success: "Tất cả phiên khác đã được thu hồi",
     sign_out_all_others: "Đăng xuất tất cả thiết bị khác"
+  },
+onboardingquest: {
+    the_coach: "Huấn Luyện Viên",
+    powered_by_gemini_ai: "Được hỗ trợ bởi Gemini AI",
+    day_3_30: "Ngày 3/30",
+    xp: "XP",
+    ai_strategy: "Chiến Lược AI",
+    stuck_ask_your_ai_coach_for_a: "Gặp khó khăn? Hỏi Huấn luyện viên AI của bạn để nhận gợi ý"
   },
 profilepage: {
     personal_information: "Thông Tin Cá Nhân",

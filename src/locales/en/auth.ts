@@ -150,6 +150,8 @@ export const auth = {
     device: "Device",
     location: "Location",
     status: "Status",
-    no_login_attempts_found: "No login attempts found"
+    no_login_attempts_found: "No login attempts found",
+    export_json: "Export JSON",
+    export_csv: "Export CSV"
   }
 };

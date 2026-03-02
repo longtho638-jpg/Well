@@ -7,77 +7,30 @@
  * - WorkflowGraph: Full DAG — nodes + edges + trigger entry point (n8n IWorkflowBase)
  * - GraphExecutor: Topological execution; parallel branching, conditional routing,
  *   merge-wait semantics (n8n WorkflowExecute.runPartialWorkflow2)
- * - NodeExecutionRecord: Per-node audit log (n8n IRunExecutionData)
  *
  * Pattern source: n8n-io/n8n packages/workflow/src/Workflow.ts + WorkflowExecute.ts
- *
- * Key differentiator from workflow-execution-context.ts (Temporal/saga pattern):
- * - Temporal: Sequential saga steps with compensation/rollback
- * - n8n (this file): DAG traversal — parallel branches, condition routing, merge nodes
  */
 
-// ─── Types ───────────────────────────────────────────────────
+export type {
+  NodeType,
+  NodeStatus,
+  NodeContext,
+  NodeOutput,
+  WorkflowNode,
+  NodeConnection,
+  WorkflowGraph,
+  NodeExecutionRecord,
+  GraphExecutionResult,
+} from './workflow-node-graph-engine-types';
 
-export type NodeType = 'trigger' | 'action' | 'condition' | 'merge' | 'output';
-export type NodeStatus = 'pending' | 'running' | 'success' | 'error' | 'skipped';
-
-export interface NodeContext {
-  graphId: string;
-  runId: string;
-  /** Outputs from all upstream nodes keyed by sourceNodeId */
-  inputs: Record<string, unknown>;
-  parameters: Record<string, unknown>;
-}
-
-export interface NodeOutput {
-  data: unknown;
-  /** Condition nodes set this to select which outgoing branch fires */
-  branch?: string;
-}
-
-export interface WorkflowNode {
-  id: string;
-  name: string;
-  type: NodeType;
-  execute: (input: unknown, ctx: NodeContext) => Promise<NodeOutput>;
-  parameters?: Record<string, unknown>;
-  retryPolicy?: { maxAttempts: number; delayMs: number };
-}
-
-export interface NodeConnection {
-  sourceNodeId: string;
-  targetNodeId: string;
-  /** Branch label for conditional routing (default: 'main') */
-  branch: string;
-}
-
-export interface WorkflowGraph {
-  id: string;
-  name: string;
-  nodes: WorkflowNode[];
-  connections: NodeConnection[];
-  triggerNodeId: string;
-}
-
-export interface NodeExecutionRecord {
-  nodeId: string;
-  nodeName: string;
-  status: NodeStatus;
-  startedAt: number;
-  finishedAt: number | null;
-  output: NodeOutput | null;
-  error: string | null;
-  attempt: number;
-}
-
-export interface GraphExecutionResult {
-  runId: string;
-  graphId: string;
-  status: 'success' | 'error' | 'partial';
-  startedAt: number;
-  finishedAt: number;
-  records: NodeExecutionRecord[];
-}
+import type {
+  NodeContext,
+  NodeOutput,
+  WorkflowNode,
+  WorkflowGraph,
+  NodeExecutionRecord,
+  NodeStatus,
+} from './workflow-node-graph-engine-types';
 
 // ─── Graph Analysis ──────────────────────────────────────────
 
@@ -103,7 +56,8 @@ export function buildExecutionOrder(graph: WorkflowGraph): string[] {
   const order: string[] = [];
 
   while (queue.length > 0) {
-    const cur = queue.shift()!;
+    const cur = queue.shift();
+    if (cur === undefined) break;
     order.push(cur);
     for (const next of adj.get(cur) ?? []) {
       const deg = (inDegree.get(next) ?? 1) - 1;
@@ -129,7 +83,7 @@ export function buildExecutionOrder(graph: WorkflowGraph): string[] {
 class GraphExecutor {
   private runCounter = 0;
 
-  async executeGraph(graph: WorkflowGraph, triggerInput: unknown = {}): Promise<GraphExecutionResult> {
+  async executeGraph(graph: WorkflowGraph, triggerInput: unknown = {}): Promise<import('./workflow-node-graph-engine-types').GraphExecutionResult> {
     const runId = `run-${graph.id}-${++this.runCounter}-${Date.now()}`;
     const startedAt = Date.now();
     const records = new Map<string, NodeExecutionRecord>();
@@ -169,9 +123,8 @@ class GraphExecutor {
         continue;
       }
 
-      outputs.set(nodeId, record.output!);
+      if (record.output) outputs.set(nodeId, record.output);
 
-      // Condition routing — prune branches not selected by this node
       if (node.type === 'condition' && record.output?.branch) {
         const active = record.output.branch;
         for (const conn of graph.connections) {

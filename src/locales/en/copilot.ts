@@ -34,6 +34,13 @@ export const copilot = {
     title: "Sales Copilot",
     subtitle: "Your AI-powered sales assistant",
     description: "Get instant help with objections, scripts, and coaching",
+    startConversation: "Start Conversation",
+    placeholder: "Type your question...",
+    send: "Send",
+    typing: "Typing...",
+    objectionDetected: "Objection Detected",
+    suggestion: "Suggested Response",
+    useSuggestion: "Use This Suggestion",
     stats: {
       title: "Performance",
       objectionsHandled: "Objections Handled",

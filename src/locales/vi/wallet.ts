@@ -146,25 +146,6 @@ commissionsection: {
     max_risk_operational_margin_c: "Giới Hạn Biên Lợi Nhuận Hoạt Động Tối Đa",
     total_system_payout_threshold: "Ngưỡng Chi Trả Toàn Hệ Thống"
   },
-withdrawal: {
-    bankName: "Tên ngân hàng",
-    selectBank: "Chọn ngân hàng",
-    minAmountError: "Số tiền rút tối thiểu không đạt yêu cầu",
-    insufficientBalance: "Số dư không đủ",
-    bankRequired: "Vui lòng chọn ngân hàng",
-    accountNumberRequired: "Vui lòng nhập số tài khoản",
-    accountNameRequired: "Vui lòng nhập tên chủ tài khoản",
-    successMessage: "Yêu cầu rút tiền đã được gửi thành công",
-    errorMessage: "Không thể gửi yêu cầu rút tiền. Vui lòng thử lại",
-    requestTitle: "Yêu Cầu Rút Tiền",
-    requestSubtitle: "Nhập thông tin để rút tiền về tài khoản ngân hàng",
-    amount: "Số tiền",
-    accountNumber: "Số tài khoản",
-    accountName: "Tên chủ tài khoản",
-    nameMatchNote: "Tên phải trùng khớp với tên đăng ký tài khoản",
-    submitButton: "Gửi Yêu Cầu Rút Tiền",
-    historyTitle: "Lịch Sử Rút Tiền"
-  },
 withdrawalmodal: {
     "25": "25%",
     "50": "50%",
@@ -262,5 +243,107 @@ revenueprogresswidget: {
     revenue_milestone: "Revenue Milestone",
     target: "Target: ",
     verified_partners: "Verified Partners"
+  },
+withdrawal: {
+    title: "Rút Tiền",
+    availableBalance: "Số Dư Khả Dụng",
+    minimumAmount: "Tối thiểu: 100.000₫",
+    note: "Ghi Chú",
+    submitRequest: "Gửi Yêu Cầu",
+    history: "Lịch Sử",
+    status: {
+      pending: "Đang Chờ",
+      approved: "Đã Duyệt",
+      rejected: "Bị Từ Chối",
+      completed: "Hoàn Thành"
+    },
+    errors: {
+      insufficientBalance: "Số dư không đủ",
+      belowMinimum: "Dưới mức tối thiểu",
+      invalidAccount: "Tài khoản không hợp lệ",
+      selectBank: "Chọn ngân hàng"
+    },
+    selectBank: "Chọn ngân hàng",
+    accountNumber: "Số tài khoản",
+    accountName: "Tên chủ tài khoản",
+    amount: "Số tiền",
+    bankName: "Tên ngân hàng",
+    minAmountError: "Số tiền rút tối thiểu không đạt yêu cầu",
+    insufficientBalance: "Số dư không đủ",
+    bankRequired: "Vui lòng chọn ngân hàng",
+    accountNumberRequired: "Vui lòng nhập số tài khoản",
+    accountNameRequired: "Vui lòng nhập tên chủ tài khoản",
+    successMessage: "Yêu cầu rút tiền đã được gửi thành công",
+    errorMessage: "Không thể gửi yêu cầu rút tiền. Vui lòng thử lại",
+    requestTitle: "Yêu Cầu Rút Tiền",
+    requestSubtitle: "Nhập thông tin để rút tiền về tài khoản ngân hàng",
+    nameMatchNote: "Tên phải trùng khớp với tên đăng ký tài khoản",
+    submitButton: "Gửi Yêu Cầu Rút Tiền",
+    historyTitle: "Lịch Sử Rút Tiền"
+  },
+commissionWallet: {
+    title: "Ví Hoa Hồng",
+    totalEarned: "Tổng Đã Kiếm",
+    availableBalance: "Số Dư Khả Dụng",
+    pendingCommission: "Hoa Hồng Chờ",
+    thisMonth: "Tháng Này",
+    lastMonth: "Tháng Trước",
+    withdraw: "Rút Tiền",
+    history: "Lịch Sử",
+    date: "Ngày",
+    type: "Loại",
+    amount: "Số Tiền",
+    status: "Trạng Thái",
+    types: {
+      commission: "Hoa Hồng",
+      bonus: "Thưởng",
+      withdrawal: "Rút Tiền",
+      refund: "Hoàn Tiền"
+    }
+  },
+ordertable: {
+    transaction_logged: "Giao Dịch Đã Ghi",
+    asset: "Tài Sản",
+    inspect_bill: "Kiểm Tra Hóa Đơn",
+    no_evidence: "Không Có Bằng Chứng",
+    approve: "Phê Duyệt"
+  },
+bulkactionsbar: {
+    partner: "Đối Tác",
+    selected: "Đã Chọn",
+    activate: "Kích Hoạt",
+    ban: "Cấm",
+    export_csv: "Xuất CSV"
+  },
+founderrevenuegoal: {
+    of_goal: "của Mục Tiêu",
+    m_c_ti_u_2026: "Mục Tiêu 2026",
+    "1_000_000_usd": "$1,000,000 USD",
+    v_t_ti_n: "Vượt Tiến Độ",
+    c_n_t_ng_t_c: "Cần Tăng Tốc",
+    doanh_thu_hi_n_t_i: "Doanh Thu Hiện Tại",
+    ai_xu_t_h_nh_ng: "AI Đề Xuất Hành Động"
+  },
+beeautomationsection: {
+    bee_engine_automation: "Hệ Thống Tự Động BEE",
+    ctv_commission_r_8: "Hoa Hồng CTV: ₫8",
+    sponsor_bonus_amb: "Thưởng Người Giới Thiệu (AMB)",
+    auto_upgrade_threshold: "Ngưỡng Nâng Cấp Tự Động",
+    vnd_sales_ctv_startup: "Doanh Số VND CTV→Startup"
+  },
+simulationpanel: {
+    vc_simulation_engine: "Công Cụ Mô Phỏng VC",
+    active_distribution_node: "Nút Phân Phối Hoạt Động",
+    nodes: "Nút",
+    target_aov: "AOV Mục Tiêu",
+    monthly_fixed: "Cố Định Hàng Tháng",
+    projected_gmv: "GMV Dự Kiến",
+    system_payout: "Chi Trả Hệ Thống",
+    projected_ebitda: "EBITDA Dự Kiến",
+    margin: "Biên Lợi Nhuận",
+    strategic_forecast: "Dự Báo Chiến Lược",
+    strategic_candidates: "Ứng Viên Chiến Lược",
+    projected_saas_revenue: "Doanh Thu SaaS Dự Kiến",
+    partners: "Đối Tác"
   }
 };

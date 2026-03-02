@@ -1,4 +1,12 @@
-import { expect, afterEach, vi } from 'vitest';
+import { expect, afterEach, vi, beforeAll } from 'vitest';
+
+// Polyfill TransformStream for jsdom (required by ai SDK / eventsource-parser)
+beforeAll(async () => {
+  if (typeof globalThis.TransformStream === 'undefined') {
+    const { TransformStream } = await import('node:stream/web');
+    Object.assign(globalThis, { TransformStream });
+  }
+});
 import { cleanup } from '@testing-library/react';
 import * as matchers from '@testing-library/jest-dom/matchers';
 

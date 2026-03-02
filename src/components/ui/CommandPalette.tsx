@@ -1,27 +1,25 @@
-import React, { useState, useMemo, useCallback } from 'react';
+import React from 'react';
 import { Search, Command, ChevronRight, X, Loader2 } from 'lucide-react';
 import { AGENCYOS_COMMANDS, AgencyOSCategory } from '@/agents/custom/AgencyOSAgent';
-import { agentRegistry } from '@/agents';
-import { commandRateLimiter } from '@/lib/rate-limiter';
-import analytics from '@/lib/analytics';
 import { useTranslation } from '@/hooks';
+import { useCommandPaletteSearchAndExecution } from './use-command-palette-search-and-execution';
 
 interface CommandPaletteProps {
     isOpen: boolean;
     onClose: () => void;
 }
 
+const CATEGORY_ICONS: Record<AgencyOSCategory, string> = {
+    marketing: '📣',
+    sales: '💼',
+    finance: '💰',
+    operations: '⚙️',
+    strategy: '🎯',
+    agents: '🤖',
+};
+
 export function CommandPalette({ isOpen, onClose }: CommandPaletteProps) {
     const { t } = useTranslation();
-
-    const CATEGORY_ICONS: Record<AgencyOSCategory, string> = {
-        marketing: '📣',
-        sales: '💼',
-        finance: '💰',
-        operations: '⚙️',
-        strategy: '🎯',
-        agents: '🤖',
-    };
 
     const CATEGORY_LABELS: Record<AgencyOSCategory, string> = {
         marketing: t('agencyos.categories.marketing'),
@@ -32,126 +30,18 @@ export function CommandPalette({ isOpen, onClose }: CommandPaletteProps) {
         agents: t('agencyos.categories.agents'),
     };
 
-    const [search, setSearch] = useState('');
-    const [selectedCategory, setSelectedCategory] = useState<AgencyOSCategory | null>(null);
-    const [isExecuting, setIsExecuting] = useState(false);
-    const [lastResult, setLastResult] = useState<{ success: boolean; message?: string; output?: string; error?: string } | null>(null);
-    const [selectedIndex, setSelectedIndex] = useState(0);
-
-    const filteredCommands = useMemo(() => {
-        const results: Array<{ category: AgencyOSCategory; command: string; description: string; i18nKey: string }> = [];
-        const lowerSearch = search.toLowerCase();
-
-        const categories = selectedCategory
-            ? [selectedCategory]
-            : (Object.keys(AGENCYOS_COMMANDS) as AgencyOSCategory[]);
-
-        for (const cat of categories) {
-            for (const cmd of AGENCYOS_COMMANDS[cat]) {
-                if (
-                    !search ||
-                    cmd.command.toLowerCase().includes(lowerSearch) ||
-                    cmd.description.toLowerCase().includes(lowerSearch)
-                ) {
-                    results.push({ category: cat, ...cmd });
-                }
-            }
-        }
-
-        return results;
-    }, [search, selectedCategory]);
-
-    const inputRef = React.useRef<HTMLInputElement>(null);
-    const listRef = React.useRef<HTMLUListElement>(null);
-
-    // Reset selected index when filtered results change
-    React.useEffect(() => {
-        setSelectedIndex(0);
-    }, [filteredCommands]);
-
-    // Focus input on open
-    React.useEffect(() => {
-        if (!isOpen) return;
-
-        const timer = setTimeout(() => {
-            inputRef.current?.focus();
-        }, 100);
-
-        return () => {
-            clearTimeout(timer);
-        };
-    }, [isOpen]);
-
-    // Execute a command via AgencyOSAgent
-    const executeCommand = useCallback(async (command: string) => {
-        // Check rate limit
-        const userId = 'user'; // In production, use actual user ID
-        if (!commandRateLimiter.isAllowed(userId, command)) {
-            const resetTime = Math.ceil(commandRateLimiter.getResetTime(userId) / 1000);
-            setLastResult({
-                success: false,
-                error: `Rate limit exceeded. Please wait ${resetTime}s before executing more commands.`,
-            });
-            analytics.event('rate_limit_exceeded', { command });
-            return;
-        }
-
-        setIsExecuting(true);
-        setLastResult(null);
-        const startTime = Date.now();
-
-        try {
-            const agent = agentRegistry.get('AgencyOS');
-            if (!agent) {
-                throw new Error('AgencyOS agent not found in registry');
-            }
-
-            const result = await agent.execute({
-                action: 'executeCommand',
-                command,
-            }) as { success: boolean; message?: string; output?: string; error?: string };
-
-            const executionTime = Date.now() - startTime;
-
-            // Track successful command execution
-            analytics.trackCommand(command, result.success, executionTime);
-
-            setLastResult(result);
-        } catch (error) {
-            const executionTime = Date.now() - startTime;
-
-            const errorResult = {
-                success: false,
-                error: error instanceof Error ? error.message : 'Unknown error',
-            };
-
-            // Track error
-            analytics.trackCommand(command, false, executionTime);
-            if (error instanceof Error) {
-                analytics.trackError(error, { command });
-            }
-
-            setLastResult(errorResult);
-        } finally {
-            setIsExecuting(false);
-        }
-    }, []);
-
-    // Handle keyboard shortcuts
-    const handleKeyDown = useCallback((e: React.KeyboardEvent) => {
-        if (e.key === 'Escape') {
-            onClose();
-        } else if (e.key === 'ArrowDown') {
-            e.preventDefault();
-            setSelectedIndex((prev) => (prev + 1) % filteredCommands.length);
-        } else if (e.key === 'ArrowUp') {
-            e.preventDefault();
-            setSelectedIndex((prev) => (prev - 1 + filteredCommands.length) % filteredCommands.length);
-        } else if (e.key === 'Enter' && filteredCommands.length > 0) {
-            e.preventDefault();
-            executeCommand(filteredCommands[selectedIndex].command);
-        }
-    }, [onClose, filteredCommands, selectedIndex, executeCommand]);
+    const {
+        search, setSearch,
+        selectedCategory, setSelectedCategory,
+        isExecuting,
+        lastResult,
+        selectedIndex,
+        filteredCommands,
+        inputRef,
+        listRef,
+        executeCommand,
+        handleKeyDown,
+    } = useCommandPaletteSearchAndExecution(isOpen, onClose);
 
     if (!isOpen) return null;
 
@@ -161,16 +51,10 @@ export function CommandPalette({ isOpen, onClose }: CommandPaletteProps) {
             onKeyDown={handleKeyDown}
             role="none"
         >
-            {/* Backdrop */}
-            <div
-                className="absolute inset-0 bg-black/60 backdrop-blur-sm"
-                onClick={onClose}
-                role="presentation"
-            />
+            <div className="absolute inset-0 bg-black/60 backdrop-blur-sm" onClick={onClose} role="presentation" />
 
-            {/* Palette Container */}
             <div className="relative w-full max-w-2xl bg-gray-900 rounded-xl shadow-2xl border border-gray-700 overflow-hidden" role="dialog" aria-modal="true">
-                {/* Header/Search */}
+                {/* Search header */}
                 <div className="flex items-center gap-3 px-4 py-3 border-b border-gray-700">
                     <Command className="w-5 h-5 text-cyan-400" />
                     <input
@@ -181,39 +65,31 @@ export function CommandPalette({ isOpen, onClose }: CommandPaletteProps) {
                         onChange={(e) => setSearch(e.target.value)}
                         className="flex-1 bg-transparent text-white placeholder-gray-500 outline-none text-lg"
                     />
-                    <button
-                        onClick={onClose}
-                        className="p-1 hover:bg-gray-800 rounded transition-colors"
-                    >
+                    <button onClick={onClose} className="p-1 hover:bg-gray-800 rounded transition-colors">
                         <X className="w-5 h-5 text-gray-400" />
                     </button>
                 </div>
 
-                {/* Category Tabs */}
+                {/* Category tabs */}
                 <div className="flex items-center gap-1 px-4 py-2 border-b border-gray-800 overflow-x-auto">
                     <button
                         onClick={() => setSelectedCategory(null)}
-                        className={`px-3 py-1.5 rounded-lg text-sm font-medium transition-colors ${!selectedCategory
-                            ? 'bg-cyan-500/20 text-cyan-400'
-                            : 'text-gray-400 hover:bg-gray-800'
-                            }`}
+                        className={`px-3 py-1.5 rounded-lg text-sm font-medium transition-colors ${!selectedCategory ? 'bg-cyan-500/20 text-cyan-400' : 'text-gray-400 hover:bg-gray-800'}`}
                     >
-                        {t('commandpalette.all')}</button>
+                        {t('commandpalette.all')}
+                    </button>
                     {(Object.keys(AGENCYOS_COMMANDS) as AgencyOSCategory[]).map((cat) => (
                         <button
                             key={cat}
                             onClick={() => setSelectedCategory(cat)}
-                            className={`px-3 py-1.5 rounded-lg text-sm font-medium transition-colors whitespace-nowrap ${selectedCategory === cat
-                                ? 'bg-cyan-500/20 text-cyan-400'
-                                : 'text-gray-400 hover:bg-gray-800'
-                                }`}
+                            className={`px-3 py-1.5 rounded-lg text-sm font-medium transition-colors whitespace-nowrap ${selectedCategory === cat ? 'bg-cyan-500/20 text-cyan-400' : 'text-gray-400 hover:bg-gray-800'}`}
                         >
                             {CATEGORY_ICONS[cat]} {CATEGORY_LABELS[cat]}
                         </button>
                     ))}
                 </div>
 
-                {/* Command List */}
+                {/* Command list */}
                 <div className="max-h-[50vh] overflow-y-auto">
                     {filteredCommands.length === 0 ? (
                         <div className="px-4 py-8 text-center text-gray-500">
@@ -253,7 +129,7 @@ export function CommandPalette({ isOpen, onClose }: CommandPaletteProps) {
                     )}
                 </div>
 
-                {/* Result Display */}
+                {/* Result display */}
                 {(isExecuting || lastResult) && (
                     <div className="px-4 py-3 border-t border-gray-700 bg-gray-800/50">
                         {isExecuting ? (
@@ -280,7 +156,8 @@ export function CommandPalette({ isOpen, onClose }: CommandPaletteProps) {
                     <span>{t('commandpalette.agencyos_85_commands')}</span>
                     <span>
                         <kbd className="px-1.5 py-0.5 bg-gray-700 rounded">⌘</kbd> +
-                        <kbd className="px-1.5 py-0.5 bg-gray-700 rounded ml-1">K</kbd> {t('commandpalette.to_open')}</span>
+                        <kbd className="px-1.5 py-0.5 bg-gray-700 rounded ml-1">K</kbd> {t('commandpalette.to_open')}
+                    </span>
                 </div>
             </div>
         </div>

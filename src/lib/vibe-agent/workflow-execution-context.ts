@@ -1,90 +1,33 @@
 /**
  * Workflow Execution Context — Temporal.io durable workflow pattern.
  *
- * Maps Temporal's Workflow → Activity → Compensation (Saga) to a
- * client-side execution context for multi-step agent workflows.
- *
  * Temporal concepts mapped:
  * - Workflow: defineWorkflow() — declarative step pipeline with state
  * - Activity: WorkflowStep — individual task with retry + timeout
  * - Signal: receiveSignal() — external event injection mid-workflow
- * - Query: getWorkflowState() — read current execution state
  * - Saga: compensation handlers — rollback on step failure
  * - RetryPolicy: per-step retry config (maxAttempts, backoff)
- * - WorkflowHistory: step execution log for replay/audit
  *
  * Pattern source: temporalio/sdk-typescript workflow.ts
  */
 
-// ─── Types ──────────────────────────────────────────────────
+export type {
+  WorkflowStatus,
+  StepStatus,
+  StepRetryPolicy,
+  WorkflowStep,
+  StepExecution,
+  WorkflowState,
+  WorkflowContext,
+} from './workflow-execution-context-types';
 
-export type WorkflowStatus = 'pending' | 'running' | 'completed' | 'failed' | 'compensating' | 'cancelled';
-export type StepStatus = 'pending' | 'running' | 'completed' | 'failed' | 'skipped' | 'compensated';
-
-/** Temporal RetryPolicy equivalent */
-export interface StepRetryPolicy {
-  maxAttempts: number;
-  initialIntervalMs: number;
-  maxIntervalMs: number;
-  backoffCoefficient: number;
-}
-
-const DEFAULT_RETRY: StepRetryPolicy = {
-  maxAttempts: 3,
-  initialIntervalMs: 1000,
-  maxIntervalMs: 30_000,
-  backoffCoefficient: 2,
-};
-
-/** A single workflow step (Temporal Activity) */
-export interface WorkflowStep<TInput = unknown, TOutput = unknown> {
-  name: string;
-  /** Execute the step — receives input, returns output */
-  execute: (input: TInput, ctx: WorkflowContext) => Promise<TOutput>;
-  /** Compensation handler — Temporal Saga rollback */
-  compensate?: (input: TInput, output: TOutput, ctx: WorkflowContext) => Promise<void>;
-  /** Retry policy for this step */
-  retryPolicy?: Partial<StepRetryPolicy>;
-  /** Timeout in ms (default: 30000) */
-  timeoutMs?: number;
-}
-
-/** Execution record for a single step (WorkflowHistory event) */
-export interface StepExecution {
-  stepName: string;
-  status: StepStatus;
-  startedAt: string;
-  completedAt: string | null;
-  durationMs: number;
-  attempt: number;
-  output: unknown;
-  error: string | null;
-}
-
-/** Full workflow execution state (Temporal WorkflowExecution) */
-export interface WorkflowState {
-  workflowId: string;
-  workflowName: string;
-  status: WorkflowStatus;
-  currentStep: string | null;
-  startedAt: string;
-  completedAt: string | null;
-  stepHistory: StepExecution[];
-  signals: Array<{ name: string; payload: unknown; receivedAt: string }>;
-  result: unknown;
-  error: string | null;
-}
-
-/** Context passed to step execute/compensate functions */
-export interface WorkflowContext {
-  workflowId: string;
-  /** Read pending signals (Temporal signal pattern) */
-  getSignal: (name: string) => unknown | undefined;
-  /** Store data for later steps */
-  setData: (key: string, value: unknown) => void;
-  /** Read data from previous steps */
-  getData: (key: string) => unknown | undefined;
-}
+import type {
+  WorkflowStep,
+  WorkflowState,
+  WorkflowContext,
+  StepExecution,
+} from './workflow-execution-context-types';
+import { DEFAULT_STEP_RETRY } from './workflow-execution-context-types';
 
 // ─── Workflow Execution Engine ──────────────────────────────
 
@@ -127,14 +70,13 @@ export async function executeWorkflow<TInput>(
     getData: (key) => data.get(key),
   };
 
-  // Track completed steps for compensation
   const completedSteps: Array<{ step: WorkflowStep; input: unknown; output: unknown }> = [];
   let currentInput: unknown = input;
 
   for (const step of steps) {
     state.currentStep = step.name;
     const stepStart = Date.now();
-    const retryPolicy = { ...DEFAULT_RETRY, ...step.retryPolicy };
+    const retryPolicy = { ...DEFAULT_STEP_RETRY, ...step.retryPolicy };
 
     const execution: StepExecution = {
       stepName: step.name,
@@ -150,7 +92,6 @@ export async function executeWorkflow<TInput>(
     let stepSucceeded = false;
     let lastError: string | null = null;
 
-    // Retry loop (Temporal RetryPolicy)
     for (let attempt = 1; attempt <= retryPolicy.maxAttempts; attempt++) {
       execution.attempt = attempt;
       try {
@@ -165,7 +106,7 @@ export async function executeWorkflow<TInput>(
         execution.durationMs = Date.now() - stepStart;
 
         completedSteps.push({ step, input: currentInput, output });
-        currentInput = output; // Chain output → next input
+        currentInput = output;
         stepSucceeded = true;
         break;
       } catch (err) {
@@ -187,7 +128,6 @@ export async function executeWorkflow<TInput>(
       execution.durationMs = Date.now() - stepStart;
       state.stepHistory.push(execution);
 
-      // Saga compensation — rollback completed steps in reverse
       state.status = 'compensating';
       await runCompensation(completedSteps, ctx);
 
@@ -231,7 +171,6 @@ async function runCompensation(
   completedSteps: Array<{ step: WorkflowStep; input: unknown; output: unknown }>,
   ctx: WorkflowContext,
 ): Promise<void> {
-  // Reverse order — Temporal Saga pattern
   for (let i = completedSteps.length - 1; i >= 0; i--) {
     const { step, input, output } = completedSteps[i];
     if (step.compensate) {

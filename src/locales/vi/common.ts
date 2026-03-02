@@ -77,6 +77,7 @@ nav: {
     admin: "Quản trị",
     settings: "Cài đặt",
     logout: "Đăng xuất",
+    signOut: "Đăng Xuất",
     darkMode: "Giao diện tối",
     lightMode: "Giao diện sáng",
     company: "Công Ty",
@@ -145,6 +146,7 @@ button: {
   },
 sidebar: {
     wellnexus: "WellNexus",
+    wellnexus_home: "Trang Chủ WellNexus",
     social_commerce: "Thương Mại Xã Hội",
     the_coach: "Huấn Luyện Viên",
     day_3_30: "Ngày 3/30",
@@ -176,5 +178,34 @@ notificationcenter: {
     no_new_activity: "Không Có Hoạt Động Mới",
     notifications: "Thông Báo",
     we_ll_notify_you_when_somethin: "Chúng tôi sẽ thông báo khi có hoạt động mới"
+  },
+settings: {
+    title: "Cài đặt",
+    subtitle: "Quản lý tùy chọn tài khoản và bảo mật của bạn.",
+    sign_out: "Đăng Xuất",
+    sign_out_description: "Đăng xuất khỏi tài khoản trên thiết bị này",
+    sections: {
+      preferences: "Tùy chọn",
+      notifications: "Thông báo",
+      security: "Bảo mật"
+    },
+    items: {
+      dark_mode: "Chế độ tối",
+      dark_mode_description: "Chuyển đổi giữa giao diện sáng và tối",
+      language: "Ngôn ngữ",
+      language_description: "Chọn ngôn ngữ ưa thích",
+      email_notifications: "Thông báo Email",
+      email_notifications_description: "Nhận cập nhật qua email",
+      push_notifications: "Thông báo đẩy",
+      push_notifications_description: "Nhận cập nhật trên thiết bị",
+      change_password: "Đổi mật khẩu",
+      change_password_description: "Cập nhật mật khẩu an toàn",
+      two_factor: "Xác thực hai yếu tố",
+      two_factor_description: "Thêm lớp bảo mật cho tài khoản"
+    },
+    actions: {
+      update: "Cập nhật",
+      enable: "Bật"
+    }
   }
 };

@@ -72,6 +72,9 @@ export default [
             'jsx-a11y/no-autofocus': 'warn',
             'jsx-a11y/img-redundant-alt': 'warn',
 
+            // File size enforcement (warn during refactor, error after Phase 07)
+            'max-lines': ['warn', { max: 200, skipBlankLines: true, skipComments: true }],
+
             // General rules
             'no-console': ['error', { allow: ['warn', 'error'] }],
             'no-unused-vars': 'off', // Use TypeScript version
@@ -83,6 +86,14 @@ export default [
             react: {
                 version: 'detect',
             },
+        },
+    },
+
+    // Exempt data/locale files from max-lines (they are data, not logic)
+    {
+        files: ['src/locales/**', 'src/data/**', '**/*.test.ts', '**/*.test.tsx'],
+        rules: {
+            'max-lines': 'off',
         },
     },
 ];

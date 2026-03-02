@@ -16,7 +16,10 @@ export const network = {
     direct_f1: "Trực Tiếp (F1)",
     active_members: "Thành Viên Hoạt Động",
     team_volume: "Doanh Số Đội",
-    invite_member: "Mời Thành Viên"
+    invite_member: "Mời Thành Viên",
+    manage_team_subtitle: "Quản lý và trực quan hóa cấu trúc đội nhóm",
+    empty_title: "Không có dữ liệu mạng lưới",
+    empty_subtitle: "Hãy bắt đầu mời thành viên để xây dựng đội nhóm!"
   },
   liveconsole: {
     live_operations_node_agent: "Đại Lý Vận Hành Trực Tiếp",

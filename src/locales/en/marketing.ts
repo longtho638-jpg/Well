@@ -12,6 +12,19 @@ export const marketing = {
     features: {
       sectionBadge: "Core Features",
       sectionTitle: "Everything You Need",
+      title: "Key Features",
+      ai: {
+        title: "Smart AI Assistant",
+        description: "24/7 sales support with advanced AI technology"
+      },
+      token: {
+        title: "Dual Token System",
+        description: "SHOP and GROW tokens with staking yield"
+      },
+      compliance: {
+        title: "Automated Tax Compliance",
+        description: "Automatically calculate and report taxes per Vietnam regulations"
+      },
       aiCoach: {
         title: "AI Health Coach",
         description: "Personalized Gemini AI guidance"
@@ -97,6 +110,7 @@ export const marketing = {
     testimonials: {
       sectionBadge: "Success Stories",
       sectionTitle: "What Partners Say",
+      title: "Success Stories",
       subheadline: "Transformed lives",
       items: {
         item1: {
@@ -120,6 +134,7 @@ export const marketing = {
       sectionBadge: "Ready to Start?",
       title: "Join the Revolution",
       subtitle: "Limited spots - 157 left",
+      button: "Register Free",
       primaryButton: "Become Partner",
       secondaryButton: "Schedule Demo"
     },

@@ -4,63 +4,24 @@
  * Maps Uptime-Kuma's notification-dispatchers/ plugin system to a
  * provider-agnostic notification pipeline for agent alerts.
  *
- * Uptime-Kuma supports 90+ notification providers via a simple interface:
- *   { name, send(notification, msg, monitorJSON, heartbeatJSON) }
- *
- * We adapt this to: NotificationProvider.send(alert) with typed channels.
- *
  * Pattern source: louislam/uptime-kuma server/notification-dispatchers/
  */
 
-// ─── Notification Types ────────────────────────────────────
+export type {
+  NotificationChannel,
+  AlertSeverity,
+  AgentAlert,
+  NotificationProvider,
+  NotificationRule,
+} from './notification-dispatcher-channel-and-alert-types';
 
-export type NotificationChannel = 'in-app' | 'push' | 'email' | 'webhook' | 'log';
-export type AlertSeverity = 'info' | 'warning' | 'critical' | 'recovery';
-
-export interface AgentAlert {
-  /** Unique alert ID */
-  alertId: string;
-  /** Agent that triggered the alert */
-  agentName: string;
-  /** Severity level */
-  severity: AlertSeverity;
-  /** Human-readable title (e.g., "Agent Sales Copilot is DOWN") */
-  title: string;
-  /** Detailed message */
-  message: string;
-  /** Timestamp */
-  timestamp: string;
-  /** Optional metadata */
-  metadata?: Record<string, unknown>;
-}
-
-/**
- * Notification Provider interface — Uptime-Kuma provider pattern.
- * Each provider handles one channel (in-app, push, email, webhook, etc.).
- */
-export interface NotificationProvider {
-  /** Provider name (e.g., 'InAppNotifier', 'WebhookNotifier') */
-  name: string;
-  /** Channel this provider handles */
-  channel: NotificationChannel;
-  /** Send an alert through this channel. Returns true on success. */
-  send: (alert: AgentAlert) => Promise<boolean>;
-}
-
-// ─── Notification Rules ────────────────────────────────────
-
-export interface NotificationRule {
-  /** Rule name for debugging */
-  name: string;
-  /** Which agents this rule applies to (empty = all) */
-  agentFilter: string[];
-  /** Minimum severity to trigger (e.g., 'warning' skips 'info') */
-  minSeverity: AlertSeverity;
-  /** Which channels to send through */
-  channels: NotificationChannel[];
-  /** Cooldown between notifications for same agent (ms, 0 = no cooldown) */
-  cooldownMs: number;
-}
+import type {
+  NotificationChannel,
+  AlertSeverity,
+  AgentAlert,
+  NotificationProvider,
+  NotificationRule,
+} from './notification-dispatcher-channel-and-alert-types';
 
 // ─── Severity ordering ─────────────────────────────────────
 
@@ -113,7 +74,6 @@ class NotificationDispatcher {
     failed: Array<{ channel: string; error: string }>;
     skipped: string[];
   }> {
-    // Store in history
     this.history.push(alert);
     if (this.history.length > this.maxHistory) {
       this.history.shift();
@@ -123,11 +83,9 @@ class NotificationDispatcher {
     const failed: Array<{ channel: string; error: string }> = [];
     const skipped: string[] = [];
 
-    // Find matching rules
     const matchingRules = this.rules.filter((rule) => this.ruleMatches(rule, alert));
 
     if (matchingRules.length === 0) {
-      // No rules match — use default behavior (send to all 'log' providers)
       const logProviders = this.providers.get('log') ?? [];
       for (const provider of logProviders) {
         try {
@@ -140,10 +98,8 @@ class NotificationDispatcher {
       return { sent, failed, skipped };
     }
 
-    // Collect unique channels from all matching rules
     const channels = new Set<NotificationChannel>();
     for (const rule of matchingRules) {
-      // Check cooldown
       const cooldownKey = `${alert.agentName}:${rule.name}`;
       if (rule.cooldownMs > 0 && this.isInCooldown(cooldownKey, rule.cooldownMs)) {
         skipped.push(`${rule.name}(cooldown)`);
@@ -154,13 +110,11 @@ class NotificationDispatcher {
         channels.add(ch);
       }
 
-      // Set cooldown
       if (rule.cooldownMs > 0) {
         this.cooldowns.set(cooldownKey, Date.now());
       }
     }
 
-    // Send to all selected channels in parallel
     const promises = Array.from(channels).flatMap((channel) => {
       const providers = this.providers.get(channel) ?? [];
       return providers.map(async (provider) => {
@@ -229,14 +183,10 @@ class NotificationDispatcher {
     this.history = [];
   }
 
-  // ─── Internal ─────────────────────────────────────────────
-
   private ruleMatches(rule: NotificationRule, alert: AgentAlert): boolean {
-    // Agent filter
     if (rule.agentFilter.length > 0 && !rule.agentFilter.includes(alert.agentName)) {
       return false;
     }
-    // Severity threshold
     if (SEVERITY_ORDER[alert.severity] < SEVERITY_ORDER[rule.minSeverity]) {
       return false;
     }
@@ -260,9 +210,8 @@ export const consoleLogProvider: NotificationProvider = {
     const prefix = alert.severity === 'critical' ? '🔴' :
       alert.severity === 'warning' ? '🟡' :
       alert.severity === 'recovery' ? '🟢' : 'ℹ️';
-    // Using structured output for production-safe logging
     const logData = { prefix, title: alert.title, message: alert.message, agent: alert.agentName };
-    void logData; // Consumed by monitoring infrastructure
+    void logData;
     return true;
   },
 };

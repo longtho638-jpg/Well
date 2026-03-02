@@ -98,9 +98,11 @@ class AgentIncrementalComputation {
     this.stats.invalidations++;
 
     // Reset fingerprint to force recompute
-    const entry = this.cache.get(key)!;
-    entry.fingerprint = '';
-    entry.computedAt = '';
+    const entry = this.cache.get(key);
+    if (entry) {
+      entry.fingerprint = '';
+      entry.computedAt = '';
+    }
 
     // Cascade invalidation to dependents
     for (const [k, e] of this.cache) {
@@ -112,8 +114,7 @@ class AgentIncrementalComputation {
 
   /** Invalidate all cache entries */
   invalidateAll(): void {
-    for (const key of this.cache.keys()) {
-      const entry = this.cache.get(key)!;
+    for (const entry of this.cache.values()) {
       entry.fingerprint = '';
       entry.computedAt = '';
     }

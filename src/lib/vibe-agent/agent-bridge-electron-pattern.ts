@@ -43,20 +43,20 @@ export const vibeAgentBridge: VibeAgentBridge = {
     return new Promise((resolve, reject) => {
       // Set up a one-time listener for the response
       const cleanup = agentEventBus.on(`agent:completed` as AgentEventChannel, (event) => {
-        const data = event.payload as any;
-        if (data.requestId === requestId && data.agentName === agentName) {
+        const data = event.payload as Record<string, unknown>;
+        if (data['requestId'] === requestId && data['agentName'] === agentName) {
           cleanup();
-          resolve(data.result as T);
+          resolve(data['result'] as T);
         }
       });
 
       // Set up a one-time listener for errors
       const errorCleanup = agentEventBus.on(`agent:error` as AgentEventChannel, (event) => {
-        const data = event.payload as any;
-        if (data.requestId === requestId && data.agentName === agentName) {
+        const data = event.payload as Record<string, unknown>;
+        if (data['requestId'] === requestId && data['agentName'] === agentName) {
           cleanup();
           errorCleanup();
-          reject(new Error(data.error || 'Agent invocation failed'));
+          reject(new Error(typeof data['error'] === 'string' ? data['error'] : 'Agent invocation failed'));
         }
       });
 
@@ -80,7 +80,7 @@ export const vibeAgentBridge: VibeAgentBridge = {
    * Sends a fire-and-forget message to an agent.
    */
   send(agentName: string, channel: AgentEventChannel, payload: unknown): void {
-    agentEventBus.emit(channel, { agentName, ...payload as any }, 'UI_BRIDGE');
+    agentEventBus.emit(channel, { agentName, ...(payload as Record<string, unknown>) }, 'UI_BRIDGE');
   },
 
   /**

@@ -77,6 +77,7 @@ export const common = {
     admin: "Admin",
     settings: "Settings",
     logout: "Logout",
+    signOut: "Sign Out",
     darkMode: "Dark Mode",
     lightMode: "Light Mode",
     company: "Company",
@@ -177,5 +178,34 @@ export const common = {
     we_ll_notify_you_when_somethin: "We'll notify you when something new happens",
     clear_history: "Clear History",
     audit_center: "Audit Center"
+  },
+  settings: {
+    title: "Settings",
+    subtitle: "Manage your account preferences and security.",
+    sign_out: "Sign Out",
+    sign_out_description: "Sign out of your account on this device",
+    sections: {
+      preferences: "Preferences",
+      notifications: "Notifications",
+      security: "Security"
+    },
+    items: {
+      dark_mode: "Dark Mode",
+      dark_mode_description: "Switch between light and dark themes",
+      language: "Language",
+      language_description: "Select your preferred language",
+      email_notifications: "Email Notifications",
+      email_notifications_description: "Receive updates via email",
+      push_notifications: "Push Notifications",
+      push_notifications_description: "Receive updates on your device",
+      change_password: "Change Password",
+      change_password_description: "Update your password securely",
+      two_factor: "Two-Factor Authentication",
+      two_factor_description: "Add an extra layer of security"
+    },
+    actions: {
+      update: "Update",
+      enable: "Enable"
+    }
   }
 };

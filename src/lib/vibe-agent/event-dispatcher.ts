@@ -106,7 +106,7 @@ class EventDispatcher {
 
     // 2. Internal dispatch (Agent Event Bus)
     // Map to agent-event-bus channels if they match, or use a generic channel
-    await agentEventBus.emit(type as any, validatedPayload, source);
+    await agentEventBus.emit(type as Parameters<typeof agentEventBus.emit>[0], validatedPayload, source);
 
     // 3. External dispatch (Webhooks)
     const activeWebhooks = this.subscriptions.filter(

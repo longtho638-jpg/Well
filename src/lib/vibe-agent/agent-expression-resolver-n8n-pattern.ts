@@ -11,38 +11,17 @@
  *   $helpers                 → built-in + user-registered functions
  */
 
-// ─── Types ───────────────────────────────────────────────────────────────────
+export type {
+  ExpressionContext,
+  ResolvedExpression,
+  ExpressionHelperFn,
+} from './agent-expression-resolver-types';
 
-/** Context data available inside {{ }} expressions (n8n WorkflowDataProxy) */
-export interface ExpressionContext {
-  /** Current node input data */
-  $input: unknown;
-  /** Data from specific nodes by name */
-  $node: Record<string, { data: unknown }>;
-  /** Environment variables (safe subset) */
-  $env: Record<string, string>;
-  /** Current workflow execution metadata */
-  $workflow: { id: string; name: string; active: boolean };
-  /** Current execution metadata */
-  $execution: { id: string; mode: string };
-  /** Current timestamp ISO string */
-  $now: string;
-  /** Today's date YYYY-MM-DD */
-  $today: string;
-  /** Custom variables */
-  $vars: Record<string, unknown>;
-}
-
-/** Result of resolving a single {{ }} expression */
-export interface ResolvedExpression {
-  original: string;
-  resolved: unknown;
-  success: boolean;
-  error?: string;
-}
-
-/** Signature for helper functions registered on the resolver */
-export type ExpressionHelperFn = (...args: unknown[]) => unknown;
+import type {
+  ExpressionContext,
+  ResolvedExpression,
+  ExpressionHelperFn,
+} from './agent-expression-resolver-types';
 
 // ─── Helpers Registry ────────────────────────────────────────────────────────
 
@@ -69,7 +48,7 @@ const BUILT_IN_HELPERS: Record<string, ExpressionHelperFn> = {
   },
 };
 
-// ─── Path Resolution ──────────────────────────────────────────────────────────
+// ─── Path Resolution ─────────────────────────────────────────────────────────
 
 /**
  * Resolve a dotted/bracket path against an object.
@@ -77,7 +56,6 @@ const BUILT_IN_HELPERS: Record<string, ExpressionHelperFn> = {
  * No eval() — pure property traversal.
  */
 function resolveDottedPath(obj: unknown, path: string): unknown {
-  // Normalise bracket notation: a[0] → a.0
   const normalised = path.replace(/\[(\d+)\]/g, '.$1').replace(/^\./, '');
   const parts = normalised.split('.');
   let current: unknown = obj;
@@ -104,13 +82,11 @@ function evaluateExpressionBody(
 ): unknown {
   const trimmed = body.trim();
 
-  // ── Helper function call: $fnName(...)
   const helperMatch = HELPER_CALL_RE.exec(trimmed);
   if (helperMatch) {
     const fnName = `$${helperMatch[1]}`;
     const fn = helpers.get(fnName);
     if (!fn) throw new Error(`Unknown helper: ${fnName}`);
-    // Split args by comma (shallow — does not handle nested commas)
     const rawArgs = helperMatch[2].trim();
     const args = rawArgs.length === 0
       ? []
@@ -118,20 +94,16 @@ function evaluateExpressionBody(
     return fn(...args);
   }
 
-  // ── String literal: "..." or '...'
   if (/^".*"$/.test(trimmed) || /^'.*'$/.test(trimmed)) {
     return trimmed.slice(1, -1);
   }
 
-  // ── Number literal
   if (/^-?\d+(\.\d+)?$/.test(trimmed)) return Number(trimmed);
 
-  // ── Boolean literals
   if (trimmed === 'true') return true;
   if (trimmed === 'false') return false;
   if (trimmed === 'null') return null;
 
-  // ── Context property path starting with $ or simple identifier
   const root = trimmed.split(/[.[]/)[0];
   const contextAny = ctx as unknown as Record<string, unknown>;
   if (root in contextAny) {
@@ -150,8 +122,6 @@ class AgentExpressionResolver {
     Object.entries(BUILT_IN_HELPERS),
   );
 
-  // ─── Registration ────────────────────────────────────────────────────────────
-
   registerFunction(name: string, fn: ExpressionHelperFn): void {
     const key = name.startsWith('$') ? name : `$${name}`;
     this.helpers.set(key, fn);
@@ -161,8 +131,6 @@ class AgentExpressionResolver {
     return Array.from(this.helpers.keys()).sort();
   }
 
-  // ─── Validation ──────────────────────────────────────────────────────────────
-
   validate(template: string): { valid: boolean; errors: string[] } {
     const errors: string[] = [];
     const regex = /\{\{([\s\S]*?)\}\}/g;
@@ -171,21 +139,16 @@ class AgentExpressionResolver {
       const body = match[1].trim();
       if (!body) errors.push(`Empty expression at position ${match.index}`);
     }
-    // Check balanced braces
     const opens = (template.match(/\{\{/g) ?? []).length;
     const closes = (template.match(/\}\}/g) ?? []).length;
     if (opens !== closes) errors.push('Unbalanced {{ }} in template');
     return { valid: errors.length === 0, errors };
   }
 
-  // ─── Core Resolution ─────────────────────────────────────────────────────────
-
-  /** Resolve dotted path helper (public, mirrors n8n WorkflowDataProxy access) */
   resolvePath(obj: unknown, path: string): unknown {
     return resolveDottedPath(obj, path);
   }
 
-  /** Resolve all {{ }} expressions in a template string */
   resolve(template: string, ctx: ExpressionContext): string {
     return template.replace(/\{\{([\s\S]*?)\}\}/g, (_match, body: string) => {
       try {
@@ -196,12 +159,11 @@ class AgentExpressionResolver {
             ? JSON.stringify(value)
             : String(value);
       } catch {
-        return `{{${body}}}`; // leave unresolved on error
+        return `{{${body}}}`;
       }
     });
   }
 
-  /** Resolve a single {{ }} expression body and return structured result */
   resolveOne(expression: string, ctx: ExpressionContext): ResolvedExpression {
     try {
       const body = expression.replace(/^\{\{|\}\}$/g, '').trim();
@@ -217,7 +179,6 @@ class AgentExpressionResolver {
     }
   }
 
-  /** Resolve all string values in a params record (n8n parameter resolution) */
   resolveAll(
     params: Record<string, unknown>,
     ctx: ExpressionContext,

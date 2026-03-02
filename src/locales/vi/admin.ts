@@ -47,7 +47,11 @@ admin: {
       ctaButtonText: "CTA Button Text",
       saveChanges: "Save Changes",
       saveSuccess: "CMS Content saved successfully!",
-      preview: "Preview"
+      preview: "Preview",
+      stat_content_banners: "Biểu ngữ",
+      stat_live_banners: "Đang hiển thị",
+      stat_broadcasts: "Phát sóng",
+      stat_total_templates: "Tổng mẫu"
     },
     partners: {
       title: "Partner Operations",
@@ -141,7 +145,26 @@ admin: {
     rank_intelligence: "Rank Intelligence",
     mission_control: "Trung Tâm Điều Khiển"
   },
-adminsecuritysettings: {
+  cms: {
+    content_orchestrator: "Điều Phối Nội Dung",
+    cross_platform_content_deliver: "Phân Phối Nội Dung Đa Nền Tảng",
+    create: "Tạo",
+    loc: "VỊ TRÍ",
+    action: "Hành động",
+    link: "Liên kết",
+    target: "Đối tượng",
+    tab_banners: "Biểu ngữ",
+    tab_announcements: "Thông báo",
+    tab_templates: "Mẫu",
+    search_placeholder: "Tìm kiếm theo từ khóa...",
+    archive: "Lưu trữ",
+    enable: "Bật",
+    stat_content_banners: "Biểu ngữ",
+    stat_live_banners: "Đang hiển thị",
+    stat_broadcasts: "Phát sóng",
+    stat_total_templates: "Tổng mẫu"
+  },
+  adminsecuritysettings: {
     "100": "100",
     "15_ph_t": "15 phút",
     "1_gi": "1 giờ",
@@ -169,7 +192,7 @@ adminsecuritysettings: {
     x_c_nh_n: "Xác nhận",
     x_c_th_c_2_y_u_t: "Xác thực 2 yếu tố"
   },
-auditlog: {
+  auditlog: {
     all_administrators: "Tất Cả Quản Trị Viên",
     analyze_all_actions: "Phân Tích Tất Cả Hành Động",
     audit_trail: "Dấu Vết Kiểm Toán",
@@ -192,14 +215,14 @@ auditlog: {
     tracing: "Truy Vết",
     utc_synchronization_active: "Đồng Bộ UTC Hoạt Động"
   },
-bulkactionsbar: {
+  bulkactionsbar: {
     activate: "Kích Hoạt",
     ban: "Cấm",
     export_csv: "Xuất CSV",
     partner: "Đối Tác",
     selected: "Đã Chọn"
   },
-policyEngine: {
+  policyEngine: {
     title: "Policy Engine",
     version: "v3.1",
     synchronizingPolicyCore: "Đang đồng bộ Policy Core",
@@ -209,7 +232,7 @@ policyEngine: {
     realTime: "Thời gian thực",
     policyChangesAreCryptographicallySigned: "Thay đổi chính sách được ký bảo mật"
   },
-debuggerpage: {
+  debuggerpage: {
     empty: "Empty",
     environment_window: "Environment Window",
     local_storage_keys: "Local Storage Keys",
@@ -218,13 +241,13 @@ debuggerpage: {
     window_props: "Window Props",
     zustand_store_state: "Zustand Store State"
   },
-testpage: {
+  testpage: {
     active: "Active",
     client_status: "Client Status",
     connectivity_check: "Connectivity Check",
     well_test_page: "Well Test Page"
   },
-simulationpanel: {
+  simulationpanel: {
     active_distribution_node: "Nút Phân Phối Hoạt Động",
     margin: "Biên Lợi Nhuận",
     monthly_fixed: "Cố Định Hàng Tháng",
@@ -239,9 +262,56 @@ simulationpanel: {
     projected_saas_revenue: "Doanh Thu SaaS Dự Kiến",
     partners: "Đối Tác"
   },
-fraudbadge: {
+  fraudbadge: {
     critical_risk: "Critical Risk",
     suspected: "Suspected",
     verified: "Verified"
+  },
+  finance: {
+    treasury_control: "Kiểm Soát Ngân Quỹ",
+    platform_liquidity_verificatio: "Xác Minh Thanh Khoản Nền Tảng",
+    automated_fraud_detection: "Phát Hiện Gian Lận Tự Động",
+    export_ledger: "Xuất Sổ Cái",
+    analyze_all: "Phân Tích Tất Cả",
+    security_passed: "Bảo Mật Đã Qua",
+    quarantined_items: "Mục Cách Ly",
+    security_batch_commit: "Cam Kết Lô Bảo Mật",
+    verifying_digital_ledgers: "Đang xác minh sổ cái số...",
+    ledger_synchronized: "Sổ Cái Đã Đồng Bộ",
+    no_items_in_the_current_filter: "Không có mục nào trong bộ lọc hiện tại"
+  },
+  ordermanagement: {
+    cashflow_hub: "Trung Tâm Luồng Tiền",
+    verify_transactions_and: "Xác minh giao dịch và",
+    activate_commissions: "kích hoạt hoa hồng",
+    syncing_global_ledgers: "Đang đồng bộ sổ cái toàn cầu...",
+    queue_synchronized: "Hàng Đợi Đã Đồng Bộ",
+    all_pending_orders_have_been_p: "Tất cả đơn hàng chờ xử lý đã được xử lý",
+    operational_risk_protocol: "Giao Thức Rủi Ro Hoạt Động",
+    strict_compliance_rule: "Quy Tắc Tuân Thủ Nghiêm Ngặt",
+    never_approve: "Không bao giờ duyệt",
+    without_verified_bank_clearanc: "khi chưa có xác nhận ngân hàng"
+  },
+  overview: {
+    risk: "Rủi Ro",
+    ai: "AI",
+    confident: "Tự Tin",
+    resolve: "Giải Quyết",
+    reject: "Từ Chối",
+    mission_control: "Trung Tâm Điều Khiển",
+    autonomous_ecosystem_orchestra: "Dàn Nhạc Hệ Sinh Thái Tự Động",
+    ecosystem_online: "Hệ Sinh Thái Trực Tuyến",
+    ai_action_center: "Trung Tâm Hành Động AI",
+    autonomous_recommendations: "Gợi Ý Tự Động",
+    queue_exhausted: "Hàng Đợi Đã Xử Lý Hết",
+    ai_agent_has_autonomously_reso: "Đại lý AI đã tự động giải quyết tất cả các mục",
+    live_pulse: "Nhịp Đập Trực Tiếp",
+    growth_trajectory: "Quỹ Đạo Tăng Trưởng",
+    ecosystem_scale: "Quy Mô Hệ Sinh Thái"
+  },
+  partners: {
+    partner_recon_crm: "CRM Đối Soát Đối Tác",
+    precision_orchestration_of_net: "Điều Phối Chính Xác Mạng Lưới",
+    rank_intelligence: "Thông Minh Cấp Bậc"
   }
 };

@@ -94,7 +94,7 @@ const NetworkPage: React.FC = () => {
             {t('nav.network') || 'Referral Network'}
           </h1>
           <p className="text-zinc-400 mt-1">
-            Manage and visualize your team structure
+            {t('network.manage_team_subtitle')}
           </p>
         </div>
 
@@ -109,7 +109,7 @@ const NetworkPage: React.FC = () => {
             ) : (
               <FileJson className="w-4 h-4" />
             )}
-            <span className="text-sm font-bold">Xuất JSON</span>
+            <span className="text-sm font-bold">{t('network.export_json')}</span>
           </button>
           <button
             onClick={handleExportCSV}
@@ -121,11 +121,11 @@ const NetworkPage: React.FC = () => {
             ) : (
               <FileSpreadsheet className="w-4 h-4" />
             )}
-            <span className="text-sm font-bold">Xuất CSV</span>
+            <span className="text-sm font-bold">{t('network.export_csv')}</span>
           </button>
           <button className="flex items-center gap-2 px-4 py-2 bg-emerald-500/10 text-emerald-400 rounded-xl hover:bg-emerald-500/20 transition-colors border border-emerald-500/20">
             <Share2 className="w-4 h-4" />
-            <span className="text-sm font-bold">Invite Member</span>
+            <span className="text-sm font-bold">{t('network.invite_member')}</span>
           </button>
         </div>
       </div>
@@ -133,25 +133,25 @@ const NetworkPage: React.FC = () => {
       {/* Stats Cards */}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
         <StatsCard
-          label="Total Downlines"
+          label={t('network.total_downlines')}
           value={stats.totalDownlines}
           icon={<Users className="w-4 h-4 text-blue-400" />}
           color="bg-blue-500/10 border-blue-500/20"
         />
         <StatsCard
-          label="Direct (F1)"
+          label={t('network.direct_f1')}
           value={stats.f1Count}
           icon={<Share2 className="w-4 h-4 text-purple-400" />}
           color="bg-purple-500/10 border-purple-500/20"
         />
         <StatsCard
-          label="Active Members"
+          label={t('network.active_members')}
           value={stats.activeMembers}
           icon={<Users className="w-4 h-4 text-emerald-400" />}
           color="bg-emerald-500/10 border-emerald-500/20"
         />
         <StatsCard
-          label="Team Volume"
+          label={t('network.team_volume')}
           value={new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND', maximumFractionDigits: 0 }).format(stats.totalTeamSales)}
           icon={<Users className="w-4 h-4 text-yellow-400" />}
           color="bg-yellow-500/10 border-yellow-500/20"
@@ -207,12 +207,15 @@ const StatsCard = ({ label, value, icon, color }: StatsCardProps) => (
   </motion.div>
 );
 
-const EmptyState = () => (
-  <div className="w-full h-64 flex flex-col items-center justify-center bg-white/5 rounded-2xl border border-white/5">
-    <Users className="w-12 h-12 text-zinc-600 mb-4" />
-    <p className="text-zinc-400 font-medium">No network data available</p>
-    <p className="text-zinc-600 text-sm mt-1">Start inviting members to build your team!</p>
-  </div>
-);
+const EmptyState = () => {
+  const { t } = useTranslation();
+  return (
+    <div className="w-full h-64 flex flex-col items-center justify-center bg-white/5 rounded-2xl border border-white/5">
+      <Users className="w-12 h-12 text-zinc-600 mb-4" />
+      <p className="text-zinc-400 font-medium">{t('network.empty_title')}</p>
+      <p className="text-zinc-600 text-sm mt-1">{t('network.empty_subtitle')}</p>
+    </div>
+  );
+};
 
 export default NetworkPage;

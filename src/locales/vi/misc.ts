@@ -113,5 +113,156 @@ export const misc = {
     stuck_ask_your_ai_coach_for_a: "Gặp khó khăn? Hỏi Huấn luyện viên AI để nhận gợi ý!",
     the_coach: "Huấn luyện viên",
     xp: "XP"
+  },
+  eastasiabrand: {
+    wellnexus: "WellNexus",
+    v_ch_ng_t_i: "Về chúng tôi",
+    s_n_ph_m: "Sản phẩm",
+    i_t_c: "Đối tác",
+    b_t_u: "Bắt đầu"
+  },
+  venture: {
+    footer: {
+      strategic_ecosystem_builder: "Nhà Xây Dựng Hệ Sinh Thái Chiến Lược",
+      subscribe_for_exclusive_intake: "Đăng ký nhận thông tin độc quyền",
+      privacy: "Quyền Riêng Tư",
+      terms: "Điều Khoản",
+      tagline: "Xây dựng tương lai của thương mại sức khỏe",
+      newsletter: {
+        title: "Bản Tin",
+        placeholder: "Nhập email của bạn"
+      },
+      copyright: "© 2026 WellNexus"
+    },
+    market: {
+      total_addressable_market: "Tổng Thị Trường Có Thể Tiếp Cận",
+      velocity: "Tốc Độ",
+      init_sea_expansion_protocol: "Khởi Động Giao Thức Mở Rộng SEA",
+      sectionBadge: "Cơ Hội Thị Trường",
+      sectionTitle: "Thị Trường Đông Nam Á",
+      subheadline: "Mở rộng khắp khu vực",
+      regions: {
+        vietnam: "Việt Nam",
+        thailand: "Thái Lan",
+        indonesia: "Indonesia",
+        philippines: "Philippines"
+      },
+      status: {
+        active: "Đang Hoạt Động",
+        expanding: "Đang Mở Rộng",
+        protocol_init: "Khởi Động Giao Thức",
+        pending: "Đang Chờ"
+      }
+    },
+    navigation: {
+      venture_builder: "Venture Builder",
+      menu: {
+        portfolio: "Danh Mục",
+        deal: "Phòng Giao Dịch",
+        market: "Thị Trường"
+      },
+      apply_recruitment: "Ứng Tuyển / Tuyển Dụng"
+    },
+    portfolio: {
+      val: "Định Giá",
+      growth: "Tăng Trưởng",
+      arr_node: "ARR Node",
+      sectionBadge: "Danh Mục",
+      sectionTitle: "Các Dự Án Của Chúng Tôi",
+      subheadline: "Đầu tư chiến lược khắp Việt Nam",
+      roles: {
+        ceo: "CEO",
+        cmo: "CMO",
+        cto: "CTO"
+      },
+      regions: {
+        hanoi: "Hà Nội",
+        hcmc: "TP.HCM",
+        danang: "Đà Nẵng"
+      }
+    },
+    hero: {
+      badge: "Venture Builder",
+      headline: "Xây Dựng Tương Lai",
+      headlineAccent: "của Thương Mại Sức Khỏe",
+      subheadline: "Xây dựng venture chiến lược tại Đông Nam Á",
+      primaryCta: "Ứng Tuyển Ngay",
+      secondaryCta: "Xem Danh Mục",
+      stats: {
+        valuation_label: "Định Giá",
+        nodes_label: "Nút Hoạt Động",
+        market_label: "Vốn Hóa Thị Trường"
+      }
+    },
+    deal: {
+      sectionBadge: "Phòng Giao Dịch",
+      sectionTitle: "Luận Điểm Đầu Tư",
+      subheadline: "Triển khai vốn chiến lược",
+      capitalNode: {
+        category: "Nút Vốn",
+        item1: "Hạt giống có sẵn",
+        item2: "Pipeline Series A",
+        item3: "Tài chính dựa trên doanh thu"
+      },
+      techStack: {
+        category: "Ngăn Xếp Công Nghệ",
+        item1: "Nền tảng hỗ trợ AI",
+        item2: "Phân tích thời gian thực",
+        item3: "Sổ cái blockchain",
+        item4: "Thiết kế ưu tiên di động"
+      },
+      ownership: {
+        category: "Quyền Sở Hữu",
+        item1: "Tham gia vốn chủ sở hữu",
+        item2: "Mô hình chia sẻ doanh thu",
+        item3: "Lịch vesting",
+        item4: "Tư vấn hội đồng quản trị"
+      }
+    }
+  },
+  fraudbadge: {
+    critical_risk: "Rủi Ro Nghiêm Trọng",
+    suspected: "Bị Nghi Ngờ",
+    verified: "Đã Xác Minh"
+  },
+  profilepage: {
+    personal_information: "Thông Tin Cá Nhân",
+    account_status: "Trạng Thái Tài Khoản",
+    full_name: "Họ và Tên",
+    email_address: "Địa Chỉ Email",
+    phone_number: "Số Điện Thoại",
+    date_of_birth: "Ngày Sinh",
+    address: "Địa Chỉ",
+    kyc_verified: "Đã Xác Minh Danh Tính",
+    email_verified: "Email Đã Xác Minh",
+    security_strength: "Độ Mạnh Bảo Mật",
+    edit: "Chỉnh Sửa",
+    joined: "Tham Gia"
+  },
+  agencyosdemo: {
+    agencyos_integration: "Tích Hợp AgencyOS",
+    "85_ai_powered_automation_comm": "85 lệnh tự động hóa AI",
+    open_command_palette_k: "Mở Bảng Lệnh (⌘K)",
+    command_categories: "Danh Mục Lệnh",
+    commands: "Lệnh",
+    agent_kpis: "KPI Đại Lý",
+    all_commands: "Tất Cả Lệnh",
+    execution_history: "Lịch Sử Thực Thi",
+    no_commands_executed_yet_clic: "Chưa có lệnh nào được thực thi. Nhấp để bắt đầu."
+  },
+  debuggerpage: {
+    system_debugger: "Trình Gỡ Lỗi Hệ Thống",
+    v_debug_1_0: "v.Debug 1.0",
+    zustand_store_state: "Trạng Thái Zustand Store",
+    environment_window: "Cửa Sổ Môi Trường",
+    window_props: "Props Cửa Sổ",
+    local_storage_keys: "Khóa Local Storage",
+    empty: "Trống"
+  },
+  testpage: {
+    well_test_page: "Trang Kiểm Tra Well",
+    connectivity_check: "Kiểm Tra Kết Nối",
+    client_status: "Trạng Thái Client",
+    active: "Đang Hoạt Động"
   }
 };
