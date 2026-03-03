@@ -45,8 +45,17 @@ export function SocialProofTicker({ items }: SocialProofTickerProps) {
                 transition={{ duration: 0.4 }}
             >
                 <div className="flex items-center gap-3">
-                    <div className="w-10 h-10 rounded-full bg-gradient-to-br from-emerald-500 to-cyan-500 flex items-center justify-center text-white font-bold text-sm">
-                        {current.avatar || current.name.charAt(0)}
+                    <div className="w-10 h-10 rounded-full bg-gradient-to-br from-emerald-500 to-cyan-500 flex items-center justify-center text-white font-bold text-sm overflow-hidden">
+                        {current.avatar ? (
+                            <img
+                                src={current.avatar}
+                                alt={current.name}
+                                className="w-full h-full object-cover"
+                                loading="lazy"
+                            />
+                        ) : (
+                            current.name.charAt(0)
+                        )}
                     </div>
                     <div>
                         <p className="text-sm text-white font-medium">
