@@ -54,8 +54,17 @@ export function TestimonialsCarousel({ testimonials }: TestimonialsProps) {
                                     "{testimonial.content}"
                                 </p>
                                 <div className="flex items-center justify-center gap-4">
-                                    <div className="w-14 h-14 rounded-full bg-gradient-to-br from-emerald-500 to-cyan-500 flex items-center justify-center text-white font-bold text-xl">
-                                        {testimonial.avatar || testimonial.name.charAt(0)}
+                                    <div className="w-14 h-14 rounded-full bg-gradient-to-br from-emerald-500 to-cyan-500 flex items-center justify-center text-white font-bold text-xl overflow-hidden">
+                                        {testimonial.avatar ? (
+                                            <img
+                                                src={testimonial.avatar}
+                                                alt={testimonial.name}
+                                                className="w-full h-full object-cover"
+                                                loading="lazy"
+                                            />
+                                        ) : (
+                                            testimonial.name.charAt(0)
+                                        )}
                                     </div>
                                     <div className="text-left">
                                         <p className="font-bold text-white">{testimonial.name}</p>
