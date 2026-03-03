@@ -14,7 +14,7 @@ jobs:
   test-part-1:
     name: Tests Part 1 (Utils + Lib + Services)
     runs-on: ubuntu-latest
-    timeout-minutes: 15
+    timeout-minutes: 20
 
     steps:
       - name: Checkout code
@@ -46,8 +46,7 @@ jobs:
         run: pnpm run lint || echo "Lint script not found, skipping"
 
       - name: Run tests with coverage (Part 1)
-        run: echo "⚠️ Tests skipped - esbuild resource issue on ubuntu-latest. Run locally for now."
-        # pnpm test -- --coverage src/utils/ src/lib/ src/services/ --maxWorkers=1
+        run: pnpm test -- --coverage src/utils/ src/lib/ src/services/ --maxWorkers=2
 
       - name: Upload coverage report
         if: always()
@@ -70,7 +69,7 @@ jobs:
   test-part-2:
     name: Tests Part 2 (Agents + Components)
     runs-on: ubuntu-latest
-    timeout-minutes: 15
+    timeout-minutes: 20
 
     steps:
       - name: Checkout code
@@ -90,8 +89,7 @@ jobs:
         run: pnpm install --frozen-lockfile || pnpm install
 
       - name: Run tests (Part 2)
-        run: echo "⚠️ Tests skipped - esbuild resource issue on ubuntu-latest. Run locally for now."
-        # pnpm test -- src/agents/ src/components/ --maxWorkers=1
+        run: pnpm test -- src/agents/ src/components/ --maxWorkers=2
 
   e2e:
     name: E2E Tests (Chromium)
