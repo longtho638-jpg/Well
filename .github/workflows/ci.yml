@@ -24,30 +24,26 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: '22'
-
-      - name: Setup pnpm
-        uses: pnpm/action-setup@v4
-        with:
-          version: 9
+          cache: 'npm'
 
       - name: Install dependencies
-        run: pnpm install --frozen-lockfile || pnpm install
+        run: npm ci
 
       - name: Validate file sizes (strict)
         run: node scripts/validate-file-sizes-for-build-enforcement.mjs --strict
 
       - name: Security audit
-        run: pnpm audit --severity high || true
+        run: npm audit --audit-level=high || true
 
       - name: Validate i18n keys
-        run: pnpm run i18n:validate
+        run: npm run i18n:validate
 
       - name: Run linter
-        run: pnpm run lint || echo "Lint script not found, skipping"
+        run: npm run lint || echo "Lint script not found, skipping"
 
       - name: Run tests with coverage (Part 1)
         # Single-threaded to prevent esbuild resource crashes (CI/CD fix 2026-03-04)
-        run: pnpm test -- --coverage src/utils/ src/lib/ src/services/ --maxWorkers=1
+        run: npm run test:run -- --coverage src/utils/ src/lib/ src/services/
 
       - name: Upload coverage report
         if: always()
@@ -58,7 +54,7 @@ jobs:
           retention-days: 7
 
       - name: Build project
-        run: pnpm run build
+        run: npm run build
 
       - name: Upload build artifacts
         uses: actions/upload-artifact@v4
@@ -80,18 +76,14 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: '22'
-
-      - name: Setup pnpm
-        uses: pnpm/action-setup@v4
-        with:
-          version: 9
+          cache: 'npm'
 
       - name: Install dependencies
-        run: pnpm install --frozen-lockfile || pnpm install
+        run: npm ci
 
       - name: Run tests (Part 2)
         # Single-threaded to prevent esbuild resource crashes (CI/CD fix 2026-03-04)
-        run: pnpm test -- src/agents/ src/components/ --maxWorkers=1
+        run: npm run test:run -- src/agents/ src/components/
 
   e2e:
     name: E2E Tests (Chromium)
@@ -107,20 +99,16 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: '22'
-
-      - name: Setup pnpm
-        uses: pnpm/action-setup@v4
-        with:
-          version: 9
+          cache: 'npm'
 
       - name: Install dependencies
-        run: pnpm install --frozen-lockfile || pnpm install
+        run: npm ci
 
       - name: Install Playwright browsers
-        run: pnpm exec playwright install --with-deps chromium
+        run: npx playwright install --with-deps chromium
 
       - name: Run E2E tests
-        run: pnpm exec playwright test --project=chromium
+        run: npx playwright test --project=chromium
 
       - name: Upload E2E report
         if: always()
