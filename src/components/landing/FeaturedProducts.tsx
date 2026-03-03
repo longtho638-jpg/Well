@@ -69,7 +69,7 @@ export const FeaturedProducts: React.FC<FeaturedProductsProps> = ({ products, on
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
             onClick={() => navigate('/marketplace')}
-            className="group flex items-center gap-2 text-white font-bold bg-white/5 hover:bg-white/10 px-6 py-3 rounded-xl border border-white/10 hover:border-white/20 transition-all"
+            className="group flex items-center gap-2 text-white font-bold bg-white/5 hover:bg-white/10 px-6 py-3 rounded-xl border border-white/10 hover:border-white/20 transition-all cursor-pointer"
           >
             {t('landing.featured.viewAll')}
             <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />

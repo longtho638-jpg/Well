@@ -147,6 +147,8 @@ errorboundary: {
     oops_something_went_wrong: "Rất tiếc! Đã xảy ra lỗi",
     we_ve_encountered_an_unexpecte: "Chúng tôi gặp phải lỗi không mong muốn. Vui lòng thử lại.",
     error_details_dev_only: "Chi Tiết Lỗi (Chỉ Dành Cho Nhà Phát Triển)",
+    retry: "Thử Lại",
+    reload: "Tải Lại",
     reload_page: "Tải Lại Trang",
     go_home: "Về Trang Chủ"
   },

@@ -121,19 +121,19 @@ export class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundarySt
             <div className="flex flex-col sm:flex-row gap-3">
               <button
                 onClick={this.handleRetry}
-                className="flex-1 px-5 py-3 bg-gradient-to-r from-emerald-600 to-teal-600 text-white rounded-xl font-medium text-sm hover:from-emerald-500 hover:to-teal-500 transition-all shadow-lg shadow-emerald-500/20 hover:shadow-emerald-500/30"
+                className="flex-1 px-5 py-3 bg-gradient-to-r from-emerald-600 to-teal-600 text-white rounded-xl font-medium text-sm hover:from-emerald-500 hover:to-teal-500 transition-all shadow-lg shadow-emerald-500/20 hover:shadow-emerald-500/30 cursor-pointer"
               >
-                {t('errorboundary.reload_page')}
+                {t('errorboundary.retry')}
               </button>
               <button
                 onClick={this.handleReload}
-                className="flex-1 px-5 py-3 bg-white/5 border border-white/10 text-white rounded-xl font-medium text-sm hover:bg-white/10 transition-all"
+                className="flex-1 px-5 py-3 bg-white/5 border border-white/10 text-white rounded-xl font-medium text-sm hover:bg-white/10 transition-all cursor-pointer"
               >
-                {t('errorboundary.reload_page')}
+                {t('errorboundary.reload')}
               </button>
               <button
                 onClick={this.handleGoHome}
-                className="flex-1 px-5 py-3 bg-white/5 border border-white/10 text-zinc-400 rounded-xl font-medium text-sm hover:bg-white/10 hover:text-white transition-all"
+                className="flex-1 px-5 py-3 bg-white/5 border border-white/10 text-zinc-400 rounded-xl font-medium text-sm hover:bg-white/10 hover:text-white transition-all cursor-pointer"
               >
                 {t('errorboundary.go_home')}
               </button>

@@ -147,6 +147,8 @@ export const common = {
     oops_something_went_wrong: "Oops! Something went wrong",
     we_ve_encountered_an_unexpecte: "We've encountered an unexpected error. Please try again.",
     error_details_dev_only: "Error Details (Developer Only)",
+    retry: "Retry",
+    reload: "Reload",
     reload_page: "Reload Page",
     go_home: "Go Home"
   },

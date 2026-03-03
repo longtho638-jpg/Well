@@ -117,7 +117,7 @@ export const Modal = forwardRef<HTMLDivElement, ModalProps>(({
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.2 }}
-            className="absolute inset-0 bg-black/50 backdrop-blur-sm"
+            className="absolute inset-0 bg-black/50 backdrop-blur-sm cursor-pointer"
             onClick={onClose}
             aria-hidden="true"
           />
@@ -142,7 +142,7 @@ export const Modal = forwardRef<HTMLDivElement, ModalProps>(({
               {showCloseButton && (
                 <button
                   onClick={onClose}
-                  className="p-2 text-gray-400 dark:text-zinc-500 hover:text-gray-600 dark:hover:text-zinc-300 hover:bg-gray-100 dark:hover:bg-zinc-800 rounded-lg transition-colors"
+                  className="p-2 text-gray-400 dark:text-zinc-500 hover:text-gray-600 dark:hover:text-zinc-300 hover:bg-gray-100 dark:hover:bg-zinc-800 rounded-lg transition-colors cursor-pointer"
                   aria-label="Close modal"
                 >
                   <X className="w-5 h-5" />

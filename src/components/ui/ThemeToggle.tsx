@@ -8,7 +8,7 @@ export function ThemeToggle() {
     return (
         <motion.button
             onClick={toggleTheme}
-            className="relative w-14 h-7 rounded-full p-1 transition-colors duration-300 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-emerald-500"
+            className="relative w-14 h-7 rounded-full p-1 transition-colors duration-300 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-emerald-500 cursor-pointer"
             style={{
                 backgroundColor: isDark ? '#1e293b' : '#e2e8f0',
             }}
