@@ -46,7 +46,7 @@ jobs:
         run: pnpm run lint || echo "Lint script not found, skipping"
 
       - name: Run tests with coverage (Part 1)
-        run: pnpm test -- --coverage src/utils/ src/lib/ src/services/ --maxWorkers=2
+        run: pnpm test -- --coverage src/utils/ src/lib/ src/services/ --maxWorkers=1
 
       - name: Upload coverage report
         if: always()
@@ -89,7 +89,7 @@ jobs:
         run: pnpm install --frozen-lockfile || pnpm install
 
       - name: Run tests (Part 2)
-        run: pnpm test -- src/agents/ src/components/ --maxWorkers=2
+        run: pnpm test -- src/agents/ src/components/ --maxWorkers=1
 
   e2e:
     name: E2E Tests (Chromium)
