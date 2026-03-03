@@ -144,29 +144,17 @@ export function useAuth() {
 
       if (error) throw error;
 
-      // 2. Create user record in users table
+      // 2. User profile is auto-created by Postgres trigger `on_auth_user_created`
+      //    on auth.users INSERT → public.users INSERT (SECURITY DEFINER)
+      //    Name is passed via auth metadata above: options.data.name
       if (data.user) {
-        // Capture sponsor from referral link (/ref/:id → sessionStorage)
+        // TODO: Handle sponsor_id assignment via separate RPC or edge function
         const sponsorId = sessionStorage.getItem('wellnexus_sponsor_id');
-
-        const { error: insertError } = await supabase.from('users').insert([
-          {
-            id: data.user.id,
-            email,
-            name,
-            role_id: 8, // CTV rank (default for new users)
-            ...(sponsorId ? { sponsor_id: sponsorId } : {}),
-          },
-        ]);
-
-        if (insertError) {
-             authLogger.error("Failed to create user record", insertError);
-             // CRITICAL: Throw error to prevent orphaned auth accounts
-             throw new Error(`Failed to create user profile: ${insertError.message}`);
+        if (sponsorId) {
+          // Update sponsor after trigger creates the profile
+          await supabase.from('users').update({ sponsor_id: sponsorId }).eq('id', data.user.id);
+          sessionStorage.removeItem('wellnexus_sponsor_id');
         }
-
-        // Clear sponsor from sessionStorage after successful signup
-        sessionStorage.removeItem('wellnexus_sponsor_id');
       }
 
       return data;
