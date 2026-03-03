@@ -2,37 +2,37 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://wellnexus.vn/</loc>
-    <lastmod>2026-03-03T11:21:08.142Z</lastmod>
+    <lastmod>2026-03-03T12:30:00.982Z</lastmod>
     <changefreq>daily</changefreq>
     <priority>1</priority>
   </url>
   <url>
     <loc>https://wellnexus.vn/dashboard/marketplace</loc>
-    <lastmod>2026-03-03T11:21:08.143Z</lastmod>
+    <lastmod>2026-03-03T12:30:00.987Z</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
     <loc>https://wellnexus.vn/dashboard/wallet</loc>
-    <lastmod>2026-03-03T11:21:08.143Z</lastmod>
+    <lastmod>2026-03-03T12:30:00.987Z</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://wellnexus.vn/login</loc>
-    <lastmod>2026-03-03T11:21:08.143Z</lastmod>
+    <lastmod>2026-03-03T12:30:00.987Z</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
   <url>
     <loc>https://wellnexus.vn/signup</loc>
-    <lastmod>2026-03-03T11:21:08.143Z</lastmod>
+    <lastmod>2026-03-03T12:30:00.987Z</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
   <url>
     <loc>https://wellnexus.vn/forgot-password</loc>
-    <lastmod>2026-03-03T11:21:08.143Z</lastmod>
+    <lastmod>2026-03-03T12:30:00.987Z</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.3</priority>
   </url>
