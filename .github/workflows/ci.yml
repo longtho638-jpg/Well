@@ -15,6 +15,9 @@ jobs:
     name: Tests Part 1 (Utils + Lib + Services)
     runs-on: ubuntu-latest
     timeout-minutes: 20
+    defaults:
+      run:
+        working-directory: ./apps/well
 
     steps:
       - name: Checkout code
@@ -24,49 +27,56 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: '22'
-          cache: 'npm'
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 9
 
       - name: Install dependencies
-        run: npm ci
+        run: pnpm install --frozen-lockfile
 
       - name: Validate file sizes (strict)
         run: node scripts/validate-file-sizes-for-build-enforcement.mjs --strict
 
       - name: Security audit
-        run: npm audit --audit-level=high || true
+        run: pnpm audit --severity high || true
 
       - name: Validate i18n keys
-        run: npm run i18n:validate
+        run: pnpm run i18n:validate
 
       - name: Run linter
-        run: npm run lint || echo "Lint script not found, skipping"
+        run: pnpm run lint || echo "Lint script not found, skipping"
 
       - name: Run tests with coverage (Part 1)
         # Single-threaded to prevent esbuild resource crashes (CI/CD fix 2026-03-04)
-        run: npm run test:run -- --coverage src/utils/ src/lib/ src/services/
+        run: pnpm test -- --coverage src/utils/ src/lib/ src/services/ --maxWorkers=1
 
       - name: Upload coverage report
         if: always()
         uses: actions/upload-artifact@v4
         with:
           name: coverage-report-part-1
-          path: coverage/
+          path: apps/well/coverage/
           retention-days: 7
 
       - name: Build project
-        run: npm run build
+        run: pnpm run build
 
       - name: Upload build artifacts
         uses: actions/upload-artifact@v4
         with:
           name: build-artifacts
-          path: dist/
+          path: apps/well/dist/
           retention-days: 7
 
   test-part-2:
     name: Tests Part 2 (Agents + Components)
     runs-on: ubuntu-latest
     timeout-minutes: 20
+    defaults:
+      run:
+        working-directory: ./apps/well
 
     steps:
       - name: Checkout code
@@ -76,20 +86,27 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: '22'
-          cache: 'npm'
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 9
 
       - name: Install dependencies
-        run: npm ci
+        run: pnpm install --frozen-lockfile
 
       - name: Run tests (Part 2)
         # Single-threaded to prevent esbuild resource crashes (CI/CD fix 2026-03-04)
-        run: npm run test:run -- src/agents/ src/components/
+        run: pnpm test -- src/agents/ src/components/ --maxWorkers=1
 
   e2e:
     name: E2E Tests (Chromium)
     runs-on: ubuntu-latest
     needs: [test-part-1, test-part-2]
     timeout-minutes: 10
+    defaults:
+      run:
+        working-directory: ./apps/well
 
     steps:
       - name: Checkout code
@@ -99,23 +116,27 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: '22'
-          cache: 'npm'
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 9
 
       - name: Install dependencies
-        run: npm ci
+        run: pnpm install --frozen-lockfile
 
       - name: Install Playwright browsers
-        run: npx playwright install --with-deps chromium
+        run: pnpm exec playwright install --with-deps chromium
 
       - name: Run E2E tests
-        run: npx playwright test --project=chromium
+        run: pnpm exec playwright test --project=chromium
 
       - name: Upload E2E report
         if: always()
         uses: actions/upload-artifact@v4
         with:
           name: e2e-report
-          path: playwright-report/
+          path: apps/well/playwright-report/
           retention-days: 7
 
   smoke-test:
