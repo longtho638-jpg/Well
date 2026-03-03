@@ -31,6 +31,10 @@ export const wallet = {
       transfer: "Transfer",
       history: "Transaction History"
     },
+    staking_tiers: "Staking Tiers",
+    total_staked: "Total Staked",
+    total_earned: "Total Earned",
+    pending_rewards: "Pending Rewards",
     staking: {
       title: "Staking",
       subtitle: "Lock GROW Token to earn interest",

@@ -31,6 +31,10 @@ wallet: {
       transfer: "Chuyển khoản",
       history: "Lịch sử giao dịch"
     },
+    staking_tiers: "Các Gói Staking",
+    total_staked: "Tổng Đã Stake",
+    total_earned: "Tổng Đã Kiếm",
+    pending_rewards: "Phần Thưởng Chờ",
     staking: {
       title: "Gửi tiết kiệm (Staking)",
       subtitle: "Khóa GROW Token để nhận lãi suất",
