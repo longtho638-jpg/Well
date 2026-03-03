@@ -4,8 +4,9 @@
 Tài liệu này mô tả các giai đoạn phát triển chính của dự án WellNexus, từ phiên bản MVP hiện tại đến các tính năng nâng cao trong tương lai. Roadmap được chia thành các giai đoạn chính với mục tiêu và tính năng cụ thể.
 
 ## Phiên Bản Hiện Tại: 1.0.0-seed
-**Trạng thái:** Sẵn sàng sản xuất  
+**Trạng thái:** ✅ Sẵn sàng sản xuất — ⚠️ CI/CD bị block (billing)
 **Ngày phát hành:** Đã phát hành
+**Cập nhật gần nhất:** 2026-03-04 — CI/CD billing issue
 
 ### Tính năng đã hoàn thành:
 - [x] Hệ thống xác thực người dùng (Supabase Auth)
@@ -26,8 +27,15 @@ Tài liệu này mô tả các giai đoạn phát triển chính của dự án 
 ---
 
 ## Giai Đoạn 1: Tối Ưu Hóa & Mở Rộng (Phiên bản 1.1.x)
-**Mục tiêu:** Cải thiện hiệu suất và thêm tính năng nâng cao  
+**Mục tiêu:** Cải thiện hiệu suất và thêm tính năng nâng cao
 **Thời gian dự kiến:** Quý 2 năm 2026
+**Blocker hiện tại:** ⚠️ CI/CD cần giải quyết billing GitHub Actions
+
+### Công Việc Khẩn Cấp:
+- [ ] **Giải quyết GitHub Actions billing** — Xem [cicd-billing-troubleshooting.md](./cicd-billing-troubleshooting.md)
+  - Kiểm tra Billing & Plans: https://github.com/settings/billing
+  - Cập nhật payment method hoặc tăng spending limit
+  - Re-run workflows sau khi billing được giải quyết
 
 ### Tính năng ưu tiên cao:
 - [ ] Tối ưu hóa hiệu suất tải trang (mục tiêu < 2s)

@@ -1,15 +1,17 @@
 # WellNexus RaaS Health Platform: Agentic HealthFi OS
 
-> **Founder Handover Ready** | 110 Tests ✅ | Build 6.74s ✅ | Audit 97/100 ✅ | PWA Ready 📱 | CI/CD ✅
+> **Founder Handover Ready** | 110 Tests ✅ | Build 6.74s ✅ | Audit 97/100 ✅ | PWA Ready 📱 | ⚠️ CI/CD: Billing Issue
+
+**Cập nhật gần nhất:** 2026-03-04 — Production LIVE, CI/CD bị block do GitHub Actions billing
 
 An open-source Hybrid Community Commerce platform for Vietnam, powered by a robust Agentic Operating System (Agent-OS) and Supabase backend. Built for RaaS (Retail-as-a-Service) health products.
 
-## 🏆 Audit Status (2026-03-03)
+## 🏆 Audit Status (2026-03-04)
 
 | Check | Status |
 |-------|--------|
-| CI Pipeline | ✅ Passing |
-| Unit Tests | ✅ 110 passed |
+| Production | ✅ LIVE (https://wellnexus.vn — HTTP 200) |
+| Unit Tests | ✅ 440 passed (local) |
 | TypeScript | ✅ 5.9.3 Strict (0 errors) |
 | React | ✅ v19.2.4 |
 | Vite | ✅ v7.3.1 |
@@ -17,20 +19,24 @@ An open-source Hybrid Community Commerce platform for Vietnam, powered by a robu
 | Security Audit | ✅ Clean |
 | Audit Score | ✅ 97/100 |
 | Tech Debt | ✅ Zero (`: any` = 0, `@ts-ignore` = 0) |
-| i18n | ✅ 1592 keys (VI/EN symmetric) |
-| SOPs | ✅ 15 C-suite playbooks |
+| i18n | ✅ 1598 keys (VI/EN symmetric) |
+| CI/CD | ⚠️ BLOCKED (GitHub Actions billing) |
+
+**⚠️ CI/CD Status:** GitHub Actions bị block do billing issue — Xem [Hướng dẫn khắc phục](./docs/cicd-billing-troubleshooting.md)
 
 ## 🔄 CI/CD Pipeline
 
+**⚠️ Lưu ý:** CI/CD đang bị block do GitHub Actions billing. Xem [Hướng dẫn khắc phục](./docs/cicd-billing-troubleshooting.md).
+
 Automated quality gates on every push and pull request:
 
-- ✅ **Continuous Integration** - npm ci, lint, test, build
+- ⚠️ **Continuous Integration** - GitHub Actions billing required
 - ✅ **Security Scanning** - npm audit (high severity check)
 - ✅ **Performance Monitoring** - Lighthouse CI on PRs
 - ✅ **Build Artifacts** - Automated dist/ uploads
 - 🚀 **Auto Deploy** - Vercel Git integration to https://wellnexus.vn
 
-**Status:** All workflows passing | Average build: 1m25s | [View runs →](https://github.com/longtho638-jpg/Well/actions)
+**Production Status:** ✅ LIVE (HTTP 200) | **CI/CD:** ⚠️ Blocked (Billing) | [View Runs →](https://github.com/longtho638-jpg/Well/actions)
 
 ## ✨ Key Features
 
