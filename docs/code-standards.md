@@ -1,189 +1,214 @@
-# Code Standards
+# Tiêu Chuẩn Lập Trình WellNexus
 
-## General Principles
-- **YAGNI (You Aren't Gonna Need It):** Do not over-engineer. Implement only what is needed now.
-- **KISS (Keep It Simple, Stupid):** Prefer simple solutions over complex ones.
-- **DRY (Don't Repeat Yourself):** Extract common logic into hooks or utility functions.
+## Mục Lục
+1. [Tổng Quan](#tổng-quan)
+2. [Cấu Trúc Thư Mục](#cấu-trúc-thư-mục)
+3. [Tên Biến và Hàm](#tên-biến-và-hàm)
+4. [React Components](#react-components)
+5. [TypeScript](#typescript)
+6. [CSS & TailwindCSS](#css--tailwindcss)
+7. [Kiểm Thử](#kiểm-thử)
+8. [Bảo Mật](#bảo-mật)
+9. [Quy Tắc Commit](#quy-tắc-commit)
 
-## File Organization
-- **Naming Convention:** `kebab-case` for files (e.g., `commission-widget.tsx` is preferred, though PascalCase is used for Components currently in this project - *Note: Project uses PascalCase for components, adhering to that*).
-- **Component Co-location:** Tests (`.test.tsx`) should be located next to the component file.
-- **File Size:** Keep files under 200 lines where possible. Split large components.
+## Tổng Quan
+Tài liệu này mô tả các tiêu chuẩn lập trình được sử dụng trong dự án WellNexus. Tất cả các thành viên trong đội ngũ phát triển cần tuân thủ các quy tắc này để đảm bảo chất lượng và tính nhất quán của mã nguồn.
 
-## Coding Style
-- **Components:** Functional components with TypeScript interfaces.
-- **State Management:**
-  - **Distributor Portal:** Use Zustand for global state.
-  - **Admin Panel:** Use TanStack Query for server state (caching, invalidation) and Zustand for client state (auth).
-- **Styling:** Tailwind CSS utility classes. Use `clsx` and `tailwind-merge` for conditional styling.
-  - **Admin Panel:** Use Radix UI primitives for accessible interactive components.
-  ```tsx
-  // Example
-  <div className={cn('p-4 bg-white', active && 'bg-blue-50')}>...</div>
-  ```
-- **Imports:** Group imports: External -> Internal -> Types -> Styles. Use `@/` alias.
+## Cấu Trúc Thư Mục
+```
+src/
+├── agents/                 # 24+ AI agents cho hệ thống Agent-OS
+├── components/            # React UI components theo chức năng
+│   ├── ui/               # UI components cơ bản (Button, Modal, ...)
+│   ├── dashboard/        # Components cho dashboard
+│   ├── marketplace/      # Components cho thị trường
+│   └── ...
+├── hooks/                # React custom hooks
+├── pages/                # Page components
+├── services/             # API services và business logic
+├── store/                # Zustand stores
+├── types/                # TypeScript types/interfaces
+├── utils/                # Utility functions
+├── locales/              # Translation files (vi.ts, en.ts)
+└── lib/                  # Third-party library configurations
+```
+
+## Tên Biến và Hàm
+- Sử dụng `camelCase` cho biến và hàm: `userName`, `calculateCommission`
+- Sử dụng `PascalCase` cho component và type: `UserProfile`, `UserType`
+- Sử dụng `CONSTANT_CASE` cho hằng số: `MAX_COMMISSION_RATE`
+- Tên biến phải mô tả rõ ràng mục đích: `isLoggedIn` thay vì `status`
+- Tránh tên biến quá ngắn trừ khi trong scope nhỏ: `i` trong vòng lặp
+
+## React Components
+### Functional Components
+- Sử dụng arrow function cho components đơn giản:
+```typescript
+const Button = ({ children, onClick }: ButtonProps) => {
+  return <button onClick={onClick}>{children}</button>;
+};
+```
+
+- Với components phức tạp, sử dụng function declaration:
+```typescript
+function UserProfile({ userId }: { userId: string }) {
+  const { data: user } = useUser(userId);
+  
+  if (!user) return <div>Loading...</div>;
+  
+  return (
+    <div>
+      <h1>{user.name}</h1>
+      <p>{user.email}</p>
+    </div>
+  );
+}
+```
+
+### Component Structure
+```typescript
+// 1. Imports
+import React from 'react';
+import { motion } from 'framer-motion';
+
+// 2. Type definitions
+interface Props {
+  title: string;
+  description?: string;
+}
+
+// 3. Component declaration
+export const MyComponent: React.FC<Props> = ({ title, description }) => {
+  // 4. Hooks
+  const { t } = useTranslation();
+
+  // 5. Event handlers
+  const handleClick = () => {
+    // logic
+  };
+
+  // 6. Component body
+  return (
+    <div>
+      <h1>{title}</h1>
+      {description && <p>{description}</p>}
+    </div>
+  );
+};
+
+// 7. Export
+export default MyComponent;
+```
 
 ## TypeScript
-- **Strict Mode:** Enabled. Zero-tolerance policy for `any` types.
-- **Prohibited Patterns:**
-  - ❌ `: any` types (use proper interfaces/types)
-  - ❌ `as any` casts (use proper type assertions or `unknown`)
-  - ❌ `@ts-ignore` without justification
-- **Recommended Patterns:**
-  - ✅ Interface definitions for external data
-  - ✅ Union types for multiple possibilities
-  - ✅ Generic types for reusable logic
-  - ✅ Type guards for runtime checks
-- **Interfaces:**
-  - **Shared:** `src/types.ts`
-  - **Admin Specific:** `admin-panel/src/types/`
-- **Props:** Use `interface Props` or `type Props`.
-- **Verification:** `tsc --noEmit`, `npm run lint`, and tests must pass before commit.
+- Sử dụng strict mode: `strict: true` trong tsconfig.json
+- Không sử dụng `any` trừ khi thực sự cần thiết
+- Định nghĩa type cho tất cả props và biến trả về
+- Sử dụng Union Types thay vì `any`:
+```typescript
+// Good
+type Status = 'loading' | 'success' | 'error';
 
-## Accessibility (a11y)
-- **Standards:** WCAG 2.1 AA compliance.
-- **Semantic HTML:** Use proper HTML5 semantic elements (`<nav>`, `<main>`, `<article>`, etc.).
-- **ARIA:** Use ARIA roles and attributes only when necessary (e.g., custom widgets).
-- **Keyboard Navigation:** Ensure all interactive elements are focusable and usable via keyboard.
-- **Testing:** Verify with screen readers and keyboard-only navigation.
+// Bad
+type Status = any;
+```
 
-## Internationalization (i18n)
-- **Framework:** React i18next with `useTranslation` hook.
-- **Required Practice:** ALL user-facing strings MUST use the `t()` function.
-- **File Organization:**
-  - `src/locales/en.ts` - English translations (base language)
-  - `src/locales/vi.ts` - Vietnamese translations
-- **Key Naming Convention:**
-  - Use domain-based organization: `auth.*`, `dashboard.*`, `checkout.*`, etc.
-  - Use camelCase for key names: `agentDashboard`, `quickPurchase`
-  - NO keys starting with numbers (invalid JavaScript property names)
-- **Prohibited Patterns:**
-  - ❌ Hardcoded strings in JSX: `<button>Login</button>`
-  - ❌ String concatenation for dynamic text
-  - ❌ Duplicate top-level keys in locale files
-- **Recommended Patterns:**
-  - ✅ Use translation function: `<button>{t('auth.login')}</button>`
-  - ✅ Interpolation for dynamic values: `t('welcome', { name: user.name })`
-  - ✅ Organize by feature/page: `checkout.guestForm.email`, `dashboard.stats.revenue`
-- **Verification:** Build must pass with zero duplicate key errors.
+- Sử dụng interface thay vì type cho objects phức tạp:
+```typescript
+interface User {
+  id: string;
+  name: string;
+  email: string;
+}
+```
 
-## Error Handling & Monitoring
-- **Framework:** Sentry (Production) + Console (Development)
-- **Global Error Boundary:** All uncaught exceptions are caught by `ErrorBoundary.tsx`.
-- **Explicit Error Capture:** Use `captureError` utility for handled exceptions that need tracking.
-  ```typescript
-  import { captureError } from '@/utils/sentry';
+## CSS & TailwindCSS
+### Cấu Trúc Lớp (Class Structure)
+- Sắp xếp lớp theo thứ tự logic: `position → display → sizing → margin → padding → border → background → text → other`
+```html
+<div className="relative flex w-full max-w-md mx-auto my-4 p-6 border border-gray-200 bg-white text-gray-900 rounded-lg">
+```
 
-  try {
-    await riskyOperation();
-  } catch (error) {
-    captureError(error as Error, { context: 'riskyOperation' });
-    // Handle UI feedback
-  }
-  ```
-- **User Context:** Automatically tracked when user logs in via `setUserContext`.
-- **Performance Tracing:** Automatic for routing and critical interactions.
-- **Prohibited:**
-  - ❌ `console.error` in production (use `captureError`)
-  - ❌ Swallowing errors without reporting
-  - ❌ Logging Sensitive PII (Personally Identifiable Information)
+### Thiết Kế Aura Elite
+- Sử dụng hiệu ứng glassmorphism:
+```html
+<div className="bg-zinc-950/80 backdrop-blur-2xl p-10 rounded-[2.5rem] border border-white/5 shadow-2xl">
+```
 
-## Security Best Practices
-- **API Key Security:**
-  - ❌ NEVER expose API keys in client code (no `VITE_*` environment variables for secrets)
-  - ✅ Use Supabase Edge Functions for server-side API calls
-  - ✅ Store secrets in Supabase Secrets or Vercel Environment Variables
-  - **Example:**
-    ```typescript
-    // ❌ BAD - Client-side API key
-    const apiKey = import.meta.env.VITE_GEMINI_API_KEY;
+- Gradient và màu sắc:
+```html
+<div className="bg-gradient-to-br from-teal-500/10 to-indigo-500/5">
+```
 
-    // ✅ GOOD - Proxy through Edge Function
-    const { data } = await supabase.functions.invoke('gemini-chat', {
-      body: { message }
-    });
-    ```
-- **Prototype Pollution Prevention:**
-  - ❌ Direct object key assignment without validation
-  - ✅ Validate keys against `FORBIDDEN_KEYS = ['__proto__', 'constructor', 'prototype']`
-  - **Location:** See `src/utils/deep.ts` for reference implementation
-  - **Example:**
-    ```typescript
-    // ✅ GOOD - Validate before assignment
-    if (FORBIDDEN_KEYS.includes(key)) continue;
-    ```
-- **Memory Leak Prevention:**
-  - ✅ Always cleanup side effects in useEffect return function
-  - ✅ Cancel animation frames: `cancelAnimationFrame(animationId)`
-  - ✅ Remove event listeners: `window.removeEventListener('resize', handler)`
-  - **Example:**
-    ```typescript
-    useEffect(() => {
-      const animationId = requestAnimationFrame(animate);
-      window.addEventListener('resize', handleResize);
+### Responsive Design
+- Sử dụng các lớp responsive: `sm:`, `md:`, `lg:`, `xl:`, `2xl:`
+```html
+<div className="text-base md:text-lg lg:text-xl">
+```
 
-      return () => {
-        cancelAnimationFrame(animationId);
-        window.removeEventListener('resize', handleResize);
-      };
-    }, []);
-    ```
-- **Type Safety:**
-  - ❌ Non-null assertions (`element!`, `value!`) bypass null checks
-  - ✅ Proper null checks with explicit error handling
-  - **Example:**
-    ```typescript
-    // ❌ BAD - Bypasses null safety
-    const root = document.getElementById('root')!;
+## Kiểm Thử
+### Unit Tests
+- Mỗi hàm logic quan trọng cần có unit test
+- Sử dụng Vitest và React Testing Library
+```typescript
+import { describe, it, expect } from 'vitest';
+import { render, screen } from '@testing-library/react';
 
-    // ✅ GOOD - Proper null check
-    const root = document.getElementById('root');
-    if (!root) throw new Error('Root element not found');
-    ```
-- **Input Validation:**
-  - ✅ Use Zod schemas for form validation (see `src/utils/validation/checkoutSchema.ts`)
-  - ✅ Sanitize user input before rendering
-  - ✅ Validate API responses before processing
-  - ✅ **Authentication Tokens:**
-    - ❌ NEVER store access tokens in `localStorage` or `cookies` (vulnerable to XSS)
-    - ✅ Store access tokens in **In-Memory** storage (variables/Zustand)
-    - ✅ Use `sessionStorage` ONLY for encrypted non-sensitive fallbacks if strictly necessary
-  - ✅ **Password Policy:**
-    - ✅ Enforce NIST guidelines (length >= 8, complexity)
-    - ✅ Use `PasswordStrengthMeter` for visual feedback
-    - ✅ Validate on both client (UX) and server (Security)
+describe('MyComponent', () => {
+  it('should render title correctly', () => {
+    render(<MyComponent title="Test Title" />);
+    expect(screen.getByText('Test Title')).toBeInTheDocument();
+  });
+});
+```
 
-## Testing
-- **Framework:** Vitest + React Testing Library.
-- **Requirements:**
-  - ✅ 100% pass rate (zero failing tests)
-  - ✅ Coverage thresholds: 70% lines, 70% functions
-  - ✅ All critical paths must have tests
-- **Scope:**
-  - Unit tests for utilities (`src/utils/*.test.ts`)
-  - Component tests for UI widgets (`src/components/*.test.tsx`)
-  - Integration tests for user flows (`src/__tests__/*-flow.integration.test.ts`)
-- **Mocking:** Mock external services (Gemini, Supabase) to ensure isolated tests.
-- **Coverage Configuration:**
-  ```typescript
-  // vitest.config.ts
-  coverage: {
-    provider: 'v8',
-    reporter: ['text', 'json', 'html'],
-    thresholds: {
-      lines: 70,
-      functions: 70,
-      branches: 70,
-      statements: 70
-    }
-  }
-  ```
-- **Pre-commit Verification:**
-  - `npm test` - All tests must pass
-  - `npm run build` - Build must succeed
-  - `tsc --noEmit` - TypeScript compilation must succeed
+### Component Tests
+- Kiểm tra hành vi của component
+- Kiểm tra các trạng thái khác nhau (loading, success, error)
+- Kiểm tra sự kiện (click, change, submit)
 
-## Git Workflow
-- **Commits:** Conventional Commits format (`feat:`, `fix:`, `docs:`, `refactor:`).
-- **Branches:** `feature/name`, `bugfix/issue`.
-- **Deployment:** Auto-deploy to Vercel on push to `main`.
+## Bảo Mật
+### Quản Lý Dữ Liệu Nhạy Cảm
+- Không lưu thông tin nhạy cảm trong localStorage
+- Không hardcode API keys trong mã nguồn
+- Sử dụng Supabase Auth cho xác thực
+- Áp dụng RLS (Row Level Security) cho database
+
+### Xác Thực và Ủy Quyền
+- Mỗi API yêu cầu xác thực phù hợp
+- Sử dụng JWT tokens từ Supabase
+- Kiểm tra quyền hạn trước khi thực hiện hành động nhạy cảm
+
+### Sanitization
+- Sử dụng DOMPurify cho nội dung HTML:
+```typescript
+import DOMPurify from 'dompurify';
+const sanitizedHTML = DOMPurify.sanitize(dirtyHTML);
+```
+
+## Quy Tắc Commit
+### Convention
+- Sử dụng conventional commits: `<type>(<scope>): <description>`
+- Các loại commit:
+  - `feat`: Thêm tính năng mới
+  - `fix`: Sửa lỗi
+  - `docs`: Cập nhật tài liệu
+  - `style`: Thay đổi định dạng không ảnh hưởng logic
+  - `refactor`: Cải thiện mã nguồn không thay đổi logic
+  - `test`: Thêm hoặc sửa test
+  - `chore`: Cập nhật cấu hình, dependencies
+
+### Ví Dụ
+```bash
+feat(auth): add password strength indicator
+fix(marketplace): resolve cart calculation issue
+refactor(dashboard): improve commission calculation logic
+docs(readme): update installation instructions
+```
+
+### Quy Trình
+1. Viết test trước khi thực hiện thay đổi (TDD nếu phù hợp)
+2. Thực hiện thay đổi mã nguồn
+3. Đảm bảo tất cả test vẫn vượt qua
+4. Commit với mô tả rõ ràng
+5. Push và tạo Pull Request với mô tả chi tiết

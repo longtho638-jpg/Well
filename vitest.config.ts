@@ -12,6 +12,10 @@ export default defineConfig({
     env: {
       NODE_ENV: 'test',
     },
+    // Single-threaded test execution to prevent esbuild resource crashes on M1 16GB
+    // Reference: CI/CD fix 2026-03-04 - esbuild worker crashes with parallel tests
+    pool: 'forks' as const,
+    maxWorkers: 1,
     fileParallelism: false,
     exclude: [
       '**/node_modules/**',

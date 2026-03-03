@@ -1,115 +1,118 @@
-# System Architecture
+# Tài Liệu Tổng Quan Dự Án WellNexus
 
-## Overview
-WellNexus consists of two complementary client-side Single Page Applications (SPAs): the **Distributor Portal** (Root) and the **Admin Panel** (Subdirectory). Both interact with shared serverless backend services (Supabase) and AI APIs (Gemini).
+## Mục Lục
+1. [Giới Thiệu](#giới-thiệu)
+2. [Kiến Trúc Hệ Thống](#kiến-trúc-hệ-thống)
+3. [Thành Phần Chính](#thành-phần-chính)
+4. [Luồng Dữ Liệu](#luồng-dữ-liệu)
+5. [Hướng Dẫn Phát Triển](#hướng-dẫn-phát-triển)
 
-## Architecture Diagram
-```mermaid
-graph TD
-    subgraph "Clients"
-        DistributorApp[Distributor Portal]
-        AdminApp[Admin Panel]
-    end
+## Giới Thiệu
+WellNexus là nền tảng sức khỏe RaaS (Retail-as-a-Service) sử dụng hệ thống Agent-OS và Supabase backend. Dự án được xây dựng để cung cấp giải pháp thương mại cho sản phẩm sức khỏe tại Việt Nam.
 
-    subgraph "Frontend Layer (Distributor)"
-        DistributorApp --> D_Router[React Router]
-        D_Router --> D_Pages[Page Components]
-        D_Pages --> D_Store[Zustand Store]
-    end
+### Mục Tiêu Chính
+- Cung cấp nền tảng thương mại cho sản phẩm sức khỏe
+- Hỗ trợ hệ thống phân phối đa cấp (MLM) với 8 cấp độ
+- Tích hợp hệ thống AI agents cho trải nghiệm người dùng nâng cao
+- Hỗ trợ hệ thống token kép (SHOP và GROW)
 
-    subgraph "Frontend Layer (Admin)"
-        AdminApp --> A_Router[React Router]
-        A_Router --> A_Pages[Admin Pages]
-        A_Pages --> A_Query[TanStack Query]
-    end
+## Kiến Trúc Hệ Thống
 
-    subgraph "Service Layer"
-        D_Store --> APIService
-        A_Query --> APIService[Shared Service Logic]
-    end
+### Công Nghệ Chính
+- **Frontend:** React 19.2.4, TypeScript 5.9.3, Vite 7.3.1
+- **UI Framework:** TailwindCSS với thiết kế Aura Elite (glassmorphism, dark gradients)
+- **State Management:** Zustand
+- **Animations:** Framer Motion
+- **Backend:** Supabase (PostgreSQL, Auth, Realtime, Edge Functions)
+- **Testing:** Vitest, React Testing Library, Playwright
+- **Deployment:** Vercel
 
-    subgraph "Backend / External"
-        APIService --> Auth[Supabase Auth]
-        APIService --> SupaDB[Supabase PostgreSQL]
-        APIService --> EdgeFn[Supabase Edge Functions]
-        EdgeFn --> GeminiAPI[Google Gemini]
-        EdgeFn --> PayOS[PayOS Payment]
-        EdgeFn --> Resend[Resend Email]
-    end
+### Kiến Trúc Tổng Thể
+```
+┌─────────────────┐    ┌──────────────────┐    ┌─────────────────┐
+│   Frontend      │◄──►│   Supabase      │◄──►│   AI Services   │
+│   (React/TS)    │    │  (Auth/DB/Edge) │    │ (Anthropic/    │
+│                 │    │                 │    │  Google/OpenAI) │
+└─────────────────┘    └──────────────────┘    └─────────────────┘
+        │                       │
+        ▼                       ▼
+┌─────────────────┐    ┌──────────────────┐
+│   UI Layer      │    │  Business Logic │
+│ (Components,    │    │  (Hooks, Store, │
+│   Pages)        │    │   Services)     │
+└─────────────────┘    └──────────────────┘
 ```
 
-## Core Components
+## Thành Phần Chính
 
-### 1. Distributor Portal (Frontend)
-- **Framework:** React 19.2.4, Vite 7.3.1, TypeScript 5.9.3
-- **State:** Zustand (Global State)
-- **Focus:** Sales, Team Management, AI Coaching
-- **Key Modules:** Dashboard, Marketplace, Agent-OS, Network Visualization, Wallet
+### 1. Hệ Thống Người Dùng
+- Quản lý hồ sơ người dùng với Supabase Auth
+- Hệ thống vai trò và quyền hạn
+- Quản lý token kép (SHOP + GROW)
 
-### 2. Admin Panel (Frontend)
-- **Framework:** React 19.2.4, Vite 7.3.1, TypeScript 5.9.3
-- **State:** TanStack Query (Server State) + Zustand (Auth)
-- **Styling:** Tailwind CSS + Radix UI
-- **Focus:** Platform Oversight, Data Management, Analytics
-- **Key Modules:**
-    - **Distributor Manager:** View/Edit distributor details and hierarchies.
-    - **Order Manager:** Transaction processing and status workflows.
-    - **Withdrawal Manager:** Payout request processing and approval flows.
-    - **Customer CRM:** User data and behavior tracking.
+### 2. Hệ Thống Sản Phẩm & Thị Trường
+- Quản lý sản phẩm và danh mục
+- Giỏ hàng và thanh toán
+- Giao diện thị trường trực quan
 
-### 3. Shared Services
-- **Supabase:** Authentication, PostgreSQL Database, Edge Functions, Realtime subscriptions.
-- **Gemini AI:** Intelligence layer for coaching and agents (via Edge Function).
+### 3. Hệ Thống Hoa Hồng & Mạng Lưới (MLM)
+- Hệ thống hoa hồng Bee 2.0 với 8 cấp độ
+- Tỷ lệ hoa hồng: 21-25% tùy cấp
+- Hệ thống giới thiệu và theo dõi mạng lưới
 
-### 4. Data Flow
-- **Distributor Portal:** Optimized for real-time interaction and client-side state persistence.
-  1. **Action:** User interacts with UI (e.g., "Buy Now").
-  2. **State Update:** Component triggers Zustand action.
-  3. **Service Call:** Action calls Service layer.
-  4. **Mutation:** Store updates state.
-  5. **Re-render:** Subscribed components update via selectors.
-- **Admin Panel:** Optimized for data consistency and fresh server-side data fetching using React Query.
+### 4. Hệ Thống Agent-OS
+- 24+ AI agents cho trải nghiệm nâng cao
+- Tích hợp với các nhà cung cấp AI hàng đầu
+- Ghi nhật ký và theo dõi hiệu suất agent
 
-### 5. Security
-- **Environment Variables:** API keys stored in `.env`.
-- **Authentication:**
-  - Supabase Auth integration for Sign Up, Login, and Password Recovery.
-  - Secure in-memory token storage (no localStorage for sensitive tokens).
-- **Headers:** Content Security Policy (CSP) and HSTS enforced via Vercel configuration.
-- **Compliance:** Automated tax calculation logic enforced on client-side (for MVP) before transaction recording.
+### 5. Hệ Thống Dashboard & Quản Trị
+- Dashboard cá nhân và quản trị viên
+- Biểu đồ hiệu suất và thống kê
+- Công cụ quản lý sản phẩm và người dùng
 
-### 6. Observability & Monitoring
-- **Error Tracking:** Sentry (100% sample rate for production errors).
-- **Performance:** Core Web Vitals monitoring via Vercel Analytics.
+## Luồng Dữ Liệu
 
-### 7. AGI RaaS Layer (Agent-OS → AGI Upgrade)
-
-The platform includes an AGI reasoning layer built on top of the existing Agent-OS:
-
+### Luồng Giao Dịch Chính
 ```
-┌─────────────────────────────────────────┐
-│ UI: AGI Chat + Reasoning Visualizer     │ AgentChat, AgentReasoningView, AgentToolCallCard
-├─────────────────────────────────────────┤
-│ Commerce Orchestrator (Plan-Execute)    │ agi-commerce-orchestrator.ts
-├─────────────────────────────────────────┤
-│ Tool Registry (5 AI SDK tools)          │ agi-tool-registry.ts
-│ Commerce Tools (5 standalone functions) │ agi-commerce-tools.ts
-│ ReAct Reasoning Loop (Thought→Act→Obs) │ agi-react-reasoning-loop.ts
-│ Model Tier Router (fast/balanced/power) │ agi-model-tier-router.ts
-├─────────────────────────────────────────┤
-│ Existing: LLM Router, Memory, EventBus │ vibe-agent/ infrastructure
-└─────────────────────────────────────────┘
+1. Người dùng chọn sản phẩm
+2. Thêm vào giỏ hàng
+3. Xác thực thanh toán
+4. Ghi nhận hoa hồng cho các cấp trong mạng lưới
+5. Cập nhật trạng thái và token
 ```
 
-**Key Components:**
-- **ReAct Loop** — Multi-step reasoning via Vercel AI SDK v6 `streamText` + `stopWhen: stepCountIs(N)`
-- **Tool Registry** — 5 typed commerce tools: searchProducts, getProductDetails, createOrder, calculateCommission, checkDistributorRank
-- **Commerce Orchestrator** — Decomposes natural language goals into tool calls, emits domain events, human-in-the-loop gate for orders >50M VND
-- **Model Tier Router** — Cost-aware routing: flash-lite (fast) → flash (balanced) → pro (powerful)
-- **34 unit tests** covering tool registry, tier router, commerce tools, schemas, orchestrator
+### Luồng Hoa Hồng MLM
+```
+1. Người dùng thực hiện giao dịch
+2. Hệ thống xác định các cấp liên quan trong mạng lưới
+3. Tính toán hoa hồng theo tỷ lệ Bee 2.0
+4. Ghi nhận vào tài khoản tương ứng
+5. Cập nhật bảng xếp hạng và thông báo
+```
 
-## Deployment Pipeline
-- **Host:** Vercel (Edge Network)
-- **Trigger:** Push to `main` branch.
-- **Process:** Build -> Test -> Deploy -> CDN Propagation.
-- **Optimization:** Aggressive caching policies for static assets; immutable deployments.
+## Hướng Dẫn Phát Triển
+
+### Môi Trường Phát Triển
+1. Cài đặt Node.js 18+ và npm 9+
+2. Cài đặt Supabase CLI
+3. Sao chép `.env.example` thành `.env.local`
+4. Cấu hình Supabase credentials
+
+### Thiết Lập Ban Đầu
+```bash
+npm install
+npx supabase db push
+npm run dev
+```
+
+### Quy Tắc Mã Hóa
+- Sử dụng TypeScript với strict mode
+- Tuân thủ quy tắc đặt tên camelCase cho biến và PascalCase cho component
+- Sử dụng TailwindCSS theo nguyên tắc utility-first
+- Component nên được đặt trong thư mục `src/components`
+
+### Kiểm Thử
+- Viết unit test cho các hàm quan trọng
+- Viết component test cho các component chính
+- Đảm bảo đạt độ bao phủ trên 80%
+- Chạy `npm run test` để kiểm tra trước khi commit
