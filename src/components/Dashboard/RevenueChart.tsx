@@ -12,7 +12,6 @@ interface Props {
 
 export const RevenueChart: React.FC<Props> = ({ data }) => {
     const { t } = useTranslation();
-    // TODO: Data filtering needs backend support — currently shows all-time data regardless of selection
     const [selectedRange, setSelectedRange] = useState<'7d' | '30d'>('7d');
 
   return (
