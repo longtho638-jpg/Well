@@ -1,6 +1,6 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { Gift } from 'lucide-react';
+import { Gift, Coins, Trophy } from 'lucide-react';
 import { useTranslation } from '@/hooks';
 
 export const ReferralRewardsList: React.FC = () => {
@@ -11,7 +11,7 @@ export const ReferralRewardsList: React.FC = () => {
             desc: t('referral.rewards.activation.desc'),
             value: '+50K',
             sub: t('referral.rewards.activation.sub'),
-            icon: '🎁',
+            icon: <Gift className="w-8 h-8" />,
             color: 'from-emerald-400 to-emerald-600'
         },
         {
@@ -19,7 +19,7 @@ export const ReferralRewardsList: React.FC = () => {
             desc: t('referral.rewards.revenue.desc'),
             value: '+10%',
             sub: t('referral.rewards.revenue.sub'),
-            icon: '💰',
+            icon: <Coins className="w-8 h-8" />,
             color: 'from-blue-400 to-blue-600'
         },
         {
@@ -27,7 +27,7 @@ export const ReferralRewardsList: React.FC = () => {
             desc: t('referral.rewards.expansion.desc'),
             value: '+1M',
             sub: t('referral.rewards.expansion.sub'),
-            icon: '🏆',
+            icon: <Trophy className="w-8 h-8" />,
             color: 'from-amber-400 to-amber-600'
         }
     ];
@@ -51,7 +51,7 @@ export const ReferralRewardsList: React.FC = () => {
                         whileHover={{ x: 10 }}
                         className="bg-zinc-950 border border-white/5 p-6 rounded-[2rem] group hover:border-white/20 transition-all flex items-center gap-6"
                     >
-                        <div className={`w-16 h-16 bg-gradient-to-br ${reward.color} rounded-2xl flex items-center justify-center text-3xl shadow-2xl group-hover:rotate-12 transition-transform`}>
+                        <div className={`w-16 h-16 bg-gradient-to-br ${reward.color} rounded-2xl flex items-center justify-center text-3xl shadow-2xl group-hover:rotate-12 transition-transform text-white`}>
                             {reward.icon}
                         </div>
                         <div className="flex-1">

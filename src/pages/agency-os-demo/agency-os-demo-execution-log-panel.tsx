@@ -3,7 +3,7 @@
  */
 
 import React from 'react';
-import { Clock, Command } from 'lucide-react';
+import { Clock, Command, Megaphone, Briefcase, DollarSign, Settings, Target, Bot, CheckCircle, XCircle } from 'lucide-react';
 import { useTranslation } from '@/hooks';
 import type { AgencyOSCategory } from '@/agents/custom/AgencyOSAgent';
 
@@ -16,13 +16,13 @@ export const CATEGORY_COLORS: Record<AgencyOSCategory, string> = {
   agents: 'from-indigo-500 to-blue-500',
 };
 
-export const CATEGORY_ICONS: Record<AgencyOSCategory, string> = {
-  marketing: '📣',
-  sales: '💼',
-  finance: '💰',
-  operations: '⚙️',
-  strategy: '🎯',
-  agents: '🤖',
+export const CATEGORY_ICONS: Record<AgencyOSCategory, React.ReactNode> = {
+  marketing: <Megaphone className="w-4 h-4" />,
+  sales: <Briefcase className="w-4 h-4" />,
+  finance: <DollarSign className="w-4 h-4" />,
+  operations: <Settings className="w-4 h-4" />,
+  strategy: <Target className="w-4 h-4" />,
+  agents: <Bot className="w-4 h-4" />,
 };
 
 interface ExecutionLogEntry {
@@ -71,13 +71,17 @@ export const AgencyOSDemoExecutionLogPanel: React.FC<AgencyOSDemoExecutionLogPan
                 </span>
               </div>
               {log.result.success ? (
-                <div className="text-green-400 text-sm">
-                  <p className="font-medium">✅ {log.result.message}</p>
-                  <p className="text-gray-400 mt-1">{log.result.output}</p>
+                <div className="text-green-400 text-sm flex items-start gap-2">
+                  <CheckCircle className="w-4 h-4 mt-0.5 flex-shrink-0" />
+                  <div>
+                    <p className="font-medium">{log.result.message}</p>
+                    <p className="text-gray-400 mt-1">{log.result.output}</p>
+                  </div>
                 </div>
               ) : (
-                <div className="text-red-400 text-sm">
-                  ❌ {log.result.error}
+                <div className="text-red-400 text-sm flex items-start gap-2">
+                  <XCircle className="w-4 h-4 mt-0.5 flex-shrink-0" />
+                  <span>{log.result.error}</span>
                 </div>
               )}
             </div>

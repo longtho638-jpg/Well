@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Command, Zap, CheckCircle } from 'lucide-react';
+import { Command, Zap, CheckCircle, Rocket } from 'lucide-react';
 import { agentRegistry } from '@/agents';
 import { AGENCYOS_COMMANDS, AgencyOSCategory } from '@/agents/custom/AgencyOSAgent';
 import CommandPalette from '@/components/ui/CommandPalette';
@@ -150,7 +150,7 @@ export function AgencyOSDemo() {
                         <h2 className="text-xl font-bold mb-4">
                             {selectedCategory
                                 ? `${CATEGORY_ICONS[selectedCategory]} ${CATEGORY_LABELS[selectedCategory]} ${t('agencyosdemo.commands')}`
-                                : `🚀 ${t('agencyosdemo.all_commands')}`}
+                                : <span className="flex items-center gap-2"><Rocket className="w-5 h-5" />{t('agencyosdemo.all_commands')}</span>}
                         </h2>
                         <div className="grid grid-cols-1 gap-3">
                             {(Object.keys(commandsByCategory) as AgencyOSCategory[]).map((cat) =>
@@ -158,7 +158,7 @@ export function AgencyOSDemo() {
                                     <button
                                         key={cmd.command}
                                         onClick={() => runDemoCommand(cmd.command)}
-                                        className="p-4 bg-gray-700/30 hover:bg-gray-700/50 rounded-lg text-left transition-all group border border-transparent hover:border-cyan-500/50"
+                                        className="p-4 bg-gray-700/30 hover:bg-gray-700/50 rounded-lg text-left transition-all group border border-transparent hover:border-cyan-500/50 cursor-pointer"
                                     >
                                         <div className="flex items-start justify-between">
                                             <div className="flex-1">

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Search, Command, ChevronRight, X, Loader2 } from 'lucide-react';
+import { Search, Command, ChevronRight, X, Loader2, Megaphone, Briefcase, DollarSign, Settings, Target, Bot } from 'lucide-react';
 import { AGENCYOS_COMMANDS, AgencyOSCategory } from '@/agents/custom/AgencyOSAgent';
 import { useTranslation } from '@/hooks';
 import { useCommandPaletteSearchAndExecution } from './use-command-palette-search-and-execution';
@@ -9,13 +9,13 @@ interface CommandPaletteProps {
     onClose: () => void;
 }
 
-const CATEGORY_ICONS: Record<AgencyOSCategory, string> = {
-    marketing: '📣',
-    sales: '💼',
-    finance: '💰',
-    operations: '⚙️',
-    strategy: '🎯',
-    agents: '🤖',
+const CATEGORY_ICONS: Record<AgencyOSCategory, React.ReactNode> = {
+    marketing: <Megaphone className="w-4 h-4" />,
+    sales: <Briefcase className="w-4 h-4" />,
+    finance: <DollarSign className="w-4 h-4" />,
+    operations: <Settings className="w-4 h-4" />,
+    strategy: <Target className="w-4 h-4" />,
+    agents: <Bot className="w-4 h-4" />,
 };
 
 export function CommandPalette({ isOpen, onClose }: CommandPaletteProps) {
@@ -65,7 +65,7 @@ export function CommandPalette({ isOpen, onClose }: CommandPaletteProps) {
                         onChange={(e) => setSearch(e.target.value)}
                         className="flex-1 bg-transparent text-white placeholder-gray-500 outline-none text-lg"
                     />
-                    <button onClick={onClose} className="p-1 hover:bg-gray-800 rounded transition-colors">
+                    <button onClick={onClose} className="p-1 hover:bg-gray-800 rounded transition-colors cursor-pointer">
                         <X className="w-5 h-5 text-gray-400" />
                     </button>
                 </div>
@@ -74,7 +74,7 @@ export function CommandPalette({ isOpen, onClose }: CommandPaletteProps) {
                 <div className="flex items-center gap-1 px-4 py-2 border-b border-gray-800 overflow-x-auto">
                     <button
                         onClick={() => setSelectedCategory(null)}
-                        className={`px-3 py-1.5 rounded-lg text-sm font-medium transition-colors ${!selectedCategory ? 'bg-cyan-500/20 text-cyan-400' : 'text-gray-400 hover:bg-gray-800'}`}
+                        className={`px-3 py-1.5 rounded-lg text-sm font-medium transition-colors cursor-pointer ${!selectedCategory ? 'bg-cyan-500/20 text-cyan-400' : 'text-gray-400 hover:bg-gray-800'}`}
                     >
                         {t('commandpalette.all')}
                     </button>
@@ -82,7 +82,7 @@ export function CommandPalette({ isOpen, onClose }: CommandPaletteProps) {
                         <button
                             key={cat}
                             onClick={() => setSelectedCategory(cat)}
-                            className={`px-3 py-1.5 rounded-lg text-sm font-medium transition-colors whitespace-nowrap ${selectedCategory === cat ? 'bg-cyan-500/20 text-cyan-400' : 'text-gray-400 hover:bg-gray-800'}`}
+                            className={`px-3 py-1.5 rounded-lg text-sm font-medium transition-colors cursor-pointer whitespace-nowrap ${selectedCategory === cat ? 'bg-cyan-500/20 text-cyan-400' : 'text-gray-400 hover:bg-gray-800'}`}
                         >
                             {CATEGORY_ICONS[cat]} {CATEGORY_LABELS[cat]}
                         </button>
@@ -103,7 +103,7 @@ export function CommandPalette({ isOpen, onClose }: CommandPaletteProps) {
                                     <button
                                         onClick={() => executeCommand(cmd.command)}
                                         disabled={isExecuting}
-                                        className={`w-full flex items-center gap-3 px-4 py-2.5 transition-colors text-left group ${
+                                        className={`w-full flex items-center gap-3 px-4 py-2.5 transition-colors text-left group cursor-pointer ${
                                             selectedIndex === index ? 'bg-gray-800/80 ring-1 ring-inset ring-cyan-500/50' : 'hover:bg-gray-800/50'
                                         }`}
                                     >

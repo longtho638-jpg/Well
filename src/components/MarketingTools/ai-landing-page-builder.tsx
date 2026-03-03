@@ -7,6 +7,7 @@ import {
   Image as ImageIcon,
   Sparkles,
   CheckCircle2,
+  Eye,
 } from 'lucide-react';
 import { useTranslation } from '@/hooks';
 import { LandingPageTemplate, UserLandingPage, User } from '@/types';
@@ -177,8 +178,8 @@ export default function AiLandingPageBuilder({
                     )}
                   </div>
                   <div className="flex items-center justify-between text-xs text-gray-600 dark:text-slate-400">
-                    <span>👁️ {page.views} {t('marketingtools.views')}</span>
-                    <span>✅ {page.conversions} {t('marketingtools.conversions')}</span>
+                    <span className="flex items-center gap-1"><Eye className="w-3 h-3" />{page.views} {t('marketingtools.views')}</span>
+                    <span className="flex items-center gap-1"><CheckCircle2 className="w-3 h-3" />{page.conversions} {t('marketingtools.conversions')}</span>
                   </div>
                 </div>
               ))}
