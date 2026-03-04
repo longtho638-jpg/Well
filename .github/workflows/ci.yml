@@ -5,10 +5,8 @@ on:
     branches: [main]
   pull_request:
     branches: [main]
-  # Allow community PRs from forks
-  pull_request_target:
-    branches: [main]
-    types: [opened, synchronize, reopened]
+  # Allow community PRs from forks (pull_request handles cross-repo PRs)
+  workflow_dispatch:
 
 concurrency:
   group: ci-${{ github.ref }}
