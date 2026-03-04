@@ -345,6 +345,45 @@ Don't rebase or amend commits during review (preserves review context).
 
 ---
 
+## 🌱 Good First Issues
+
+Start your contribution journey with these beginner-friendly issues:
+
+**[View All Good First Issues →](https://github.com/longtho638-jpg/Well/issues?q=label%3A%22good+first+issue%22)**
+
+### Current Issues (#95-114)
+
+| # | Issue | Type | Difficulty |
+|---|-------|------|------------|
+| 95 | Add Vietnamese translations for landing page | i18n | 🟢 Easy |
+| 96 | Add JSDoc comments to utility functions | docs | 🟢 Easy |
+| 97 | Add unit tests for formatDate utility | test | 🟢 Easy |
+| 98 | Fix mobile padding on pricing page | style | 🟢 Easy |
+| 99 | Remove console.log from production code | fix | 🟢 Easy |
+| 100 | Replace any types with proper TypeScript types | fix | 🟡 Medium |
+| 101 | Add alt text to all images for accessibility | a11y | 🟢 Easy |
+| 102 | Add loading skeleton to dashboard page | feature | 🟡 Medium |
+| 103 | Add hover effect to feature cards | style | 🟢 Easy |
+| 104 | Lazy load heavy components with React.lazy | perf | 🟡 Medium |
+| 105 | Add keyboard navigation to dropdown menus | a11y | 🟡 Medium |
+| 106 | Optimize image sizes - convert to WebP | perf | 🟢 Easy |
+| 107 | Add error boundaries to page components | feature | 🟡 Medium |
+| 108 | Fix focus order in forms for accessibility | a11y | 🟡 Medium |
+| 109 | Add API examples to API_REFERENCE.md | docs | 🟢 Easy |
+| 110 | Create README for examples folder | docs | 🟢 Easy |
+| 111 | Improve button contrast in dark mode | style | 🟢 Easy |
+| 112 | Add unit tests for validation utilities | test | 🟢 Easy |
+| 113 | Add FeatureFlag component tests | test | 🟡 Medium |
+| 114 | Fix broken links in CONTRIBUTING.md | docs | 🟢 Easy |
+
+**How to pick:**
+1. Click any issue above
+2. Comment "I'd like to work on this!"
+3. Create a fork and start coding
+4. Submit PR with `fixes #<issue-number>`
+
+---
+
 ## 🏆 Contributor Recognition
 
 ### After Your First PR
