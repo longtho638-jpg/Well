@@ -3,7 +3,7 @@
 # WellNexus Navigation Test Script
 # Usage: ./scripts/test-navigation.sh https://your-project.vercel.app
 
-BASE_URL=${1:-"https://wellnexus-mvp.vercel.app"}
+BASE_URL=${1:-"https://wellnexus-raas.vercel.app"}
 
 echo "Testing navigation paths for: $BASE_URL"
 echo "========================================="

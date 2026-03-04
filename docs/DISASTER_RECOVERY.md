@@ -205,11 +205,11 @@ This document defines recovery procedures for WellNexus 2.0 in the event of syst
 2. **Restore from Local Clone** (1 hour)
    ```bash
    # If repo deleted: Create new repo
-   gh repo create wellnexus-vn/wellnexus-mvp --private
+   gh repo create wellnexus-vn/wellnexus-raas --private
 
    # Push from local clone
    cd /path/to/local/wellnexus
-   git remote set-url origin git@github.com:wellnexus-vn/wellnexus-mvp.git
+   git remote set-url origin git@github.com:wellnexus-vn/wellnexus-raas.git
    git push --all origin
    git push --tags origin
    ```
@@ -291,7 +291,7 @@ This document defines recovery procedures for WellNexus 2.0 in the event of syst
 - [ ] **Code Repository Health** (10 minutes)
   ```bash
   # Verify branch protection rules
-  gh api repos/wellnexus-vn/wellnexus-mvp/branches/main/protection
+  gh api repos/wellnexus-vn/wellnexus-raas/branches/main/protection
 
   # Check backup remotes (if configured)
   git remote -v

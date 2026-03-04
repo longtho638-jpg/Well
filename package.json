@@ -1,7 +1,7 @@
 {
-  "name": "wellnexus-mvp",
-  "private": true,
-  "version": "1.0.0-seed",
+  "name": "wellnexus-raas",
+  "private": false,
+  "version": "3.0.0-open-source",
   "type": "module",
   "scripts": {
     "dev": "vite",

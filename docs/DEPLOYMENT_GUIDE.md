@@ -56,7 +56,7 @@ firebase --version
 
 1. Go to [Firebase Console](https://console.firebase.google.com)
 2. Click "Add project"
-3. Enter project name: `wellnexus-mvp`
+3. Enter project name: `wellnexus-raas`
 4. Disable Google Analytics (optional for MVP)
 5. Click "Create project"
 
@@ -78,7 +78,7 @@ firebase init hosting
 
 **Configuration Prompts:**
 
-1. **Select project:** Choose "Use an existing project" → Select `wellnexus-mvp`
+1. **Select project:** Choose "Use an existing project" → Select `wellnexus-raas`
 2. **Public directory:** Enter `dist` (Vite's output directory)
 3. **Configure as single-page app:** Yes
 4. **Set up automatic builds with GitHub:** No (we'll set up CI/CD separately)
@@ -187,8 +187,8 @@ firebase deploy --only hosting
 ```
 ✔  Deploy complete!
 
-Project Console: https://console.firebase.google.com/project/wellnexus-mvp/overview
-Hosting URL: https://wellnexus-mvp.web.app
+Project Console: https://console.firebase.google.com/project/wellnexus-raas/overview
+Hosting URL: https://wellnexus-raas.web.app
 ```
 
 Your application is now live at the provided Hosting URL!

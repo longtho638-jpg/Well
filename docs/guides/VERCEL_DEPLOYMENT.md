@@ -183,7 +183,7 @@ vercel --prod
    - ❌ **Error** - Deployment failed
 
 **Deployment URL:**
-- Production: `https://wellnexus-mvp.vercel.app` (or custom domain)
+- Production: `https://wellnexus-raas.vercel.app` (or custom domain)
 - Preview: `https://well-[git-branch]-[username].vercel.app`
 
 ---
@@ -243,7 +243,7 @@ Create `scripts/test-navigation.sh`:
 # WellNexus Navigation Test Script
 # Usage: ./scripts/test-navigation.sh https://your-project.vercel.app
 
-BASE_URL=${1:-"https://wellnexus-mvp.vercel.app"}
+BASE_URL=${1:-"https://wellnexus-raas.vercel.app"}
 
 echo "Testing navigation paths for: $BASE_URL"
 echo "========================================="

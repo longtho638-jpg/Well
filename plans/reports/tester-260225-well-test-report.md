@@ -1,7 +1,7 @@
 # Báo cáo Kiểm thử Dự án Well
 
 **Ngày thực hiện**: 25/02/2026
-**Dự án**: Well (wellnexus-mvp)
+**Dự án**: Well (wellnexus-raas)
 **Môi trường**: local (darwin-arm64)
 
 ## 📊 Tổng quan kết quả

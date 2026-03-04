@@ -9,8 +9,10 @@
 [![Vite](https://img.shields.io/badge/Vite-7.3.1-646cff)](https://vitejs.dev/)
 [![Tests](https://img.shields.io/badge/tests-440%20passed-brightgreen)](./__tests__/)
 [![Audit](https://img.shields.io/badge/audit-97/100-success)](./docs/)
+[![Contributions Welcome](https://img.shields.io/badge/contributions-welcome-blue.svg)](./CONTRIBUTING.md)
+[![Status](https://img.shields.io/badge/status-ready%20to%20ship-brightgreen)](./docs/OPEN_SOURCE_SUMMARY.md)
 
-🌐 **Production:** [wellnexus.vn](https://wellnexus.vn) | 📚 **Docs:** [Documentation](./docs/) | 💬 **Discussions:** [GitHub Discussions](https://github.com/longtho638-jpg/Well/discussions)
+🌐 **Production:** [wellnexus.vn](https://wellnexus.vn) | 📚 **Docs:** [Documentation](./docs/) | 💬 **Discussions:** [GitHub Discussions](https://github.com/longtho638-jpg/Well/discussions) | 🤝 **Contribute:** [Contributing Guide](./CONTRIBUTING.md)
 
 ---
 
@@ -202,6 +204,12 @@ npm run test:run  # All tests must pass
 
 Looking for a place to start? Check out our [good first issues](https://github.com/longtho638-jpg/Well/issues?q=is%3Aissue+is%3Aopen+label%3A%22good+first+issue%22).
 
+### Open-Source Documentation
+
+- [**Open-Source Audit Report**](./docs/OPEN_SOURCE_AUDIT.md) — 100/100 readiness score
+- [**Open-Source Launch Guide**](./docs/OPEN_SOURCE_LAUNCH.md) — Templates & timelines
+- [**Quick Summary**](./docs/OPEN_SOURCE_SUMMARY.md) — 1.5 giờ để launch
+
 ---
 
 ## 📧 Email Setup (Resend Integration)
@@ -248,7 +256,7 @@ WellNexus uses **Resend** for transactional emails (100 emails/day free tier).
 - XSS prevention (React auto-escape)
 - CORS properly configured
 
-To report a security issue, please email [security@wellnexus.vn](mailto:security@wellnexus.vn).
+To report a security issue, please email [security@wellnexus.vn](mailto:security@wellnexus.vn) or see our [Security Policy](./SECURITY.md).
 
 ---
 
