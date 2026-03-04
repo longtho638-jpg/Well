@@ -1,6 +1,7 @@
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 
+// Prevent EPIPE errors by configuring build options appropriately
 export default defineConfig({
   // Safari 14+ compatibility — without this, Vite defaults to 'esnext' which
   // emits ES2022+ syntax that Safari cannot parse, causing production crash
@@ -18,9 +19,14 @@ export default defineConfig({
   },
   build: {
     target: ['es2020', 'safari14', 'chrome87', 'firefox78'],
+    // Optimize build for stability and prevent EPIPE errors
+    cssMinify: 'lightningcss',
+    // Reduce parallelism to prevent resource exhaustion
+    ssr: false,
+    cssCodeSplit: false,
     // PDF chunk is intentionally large (react-pdf/pdfkit) — suppress warning
     chunkSizeWarningLimit: 1600,
-    // Workbox chunk no longer used — remove dead reference
+    // Reduce memory pressure during build
     rollupOptions: {
       output: {
         manualChunks(id) {

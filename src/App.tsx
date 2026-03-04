@@ -11,7 +11,7 @@ import {
   NetworkPage, WithdrawalPage, Leaderboard, MarketingTools,
   Admin, TestPage, DebuggerPage, SystemStatus, AgentDashboard,
   CheckoutPage, OrderSuccess, SettingsPage, ProfilePage,
-  SubscriptionPage, NotFoundPage,
+  SubscriptionPage, NotFoundPage, VendorDashboard,
   Overview, CMS, Partners, Finance, PolicyEngine,
   OrderManagement, AdminProducts, AuditLog,
   PageSpinner, SectionSpinner, AdminSpinner,

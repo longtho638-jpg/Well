@@ -630,5 +630,96 @@ export const marketing = {
     urgency: "Only 157 slots remaining in your area",
     noThanks: "No thanks, maybe later",
     closeLabel: "Close popup"
+  },
+  vendor: {
+    dashboard: {
+      title: "Vendor Dashboard",
+      subtitle: "Manage products, track sales and grow your business",
+      tabs: {
+        products: "My Products",
+        analytics: "Analytics",
+        settings: "Store"
+      },
+      stats: {
+        totalSales: "Total Sales",
+        products: "Products",
+        commissions: "Commissions",
+        orders: "Orders"
+      },
+      products: {
+        title: "Your Products",
+        addProduct: "Add Product",
+        loading: "Loading products...",
+        commission: "comm",
+        sales: "Sales",
+        stock: "Stock",
+        edit: "Edit",
+        delete: "Delete",
+        deleteConfirm: "Are you sure you want to delete this product?"
+      },
+      empty: {
+        noProducts: "No products yet",
+        addFirst: "Add your first product"
+      }
+    },
+    analytics: {
+      title: "Analytics",
+      dateRange: {
+        "7d": "7 days",
+        "30d": "30 days",
+        "90d": "90 days"
+      },
+      stats: {
+        totalSales: "Total Sales",
+        totalCommission: "Total Commission",
+        totalOrders: "Total Orders"
+      },
+      charts: {
+        salesOverTime: "Sales Over Time",
+        topProducts: "Top Products",
+        commissionVsRevenue: "Commission vs Revenue"
+      }
+    },
+    settings: {
+      title: "Store Settings",
+      subtitle: "Customize Your Storefront",
+      storeName: "Store Name",
+      storeDescription: "Store Description",
+      saveButton: "Save Settings",
+      saveSuccess: "Settings saved successfully!",
+      saveError: "Failed to save settings",
+      defaultDescription: "Welcome to my store! Quality health and wellness products for your wellbeing."
+    },
+    actions: {
+      addProduct: "Add Product",
+      edit: "Edit",
+      delete: "Delete",
+      cancel: "Cancel",
+      save: "Save"
+    },
+    addProduct: {
+      title: "Add New Product",
+      name: "Product Name",
+      price: "Price",
+      commissionRate: "Commission Rate",
+      imageUrl: "Image URL",
+      description: "Description",
+      add: "Add Product",
+      cancel: "Cancel",
+      validation: {
+        nameRequired: "Product name is required",
+        priceRequired: "Price is required",
+        pricePositive: "Price must be greater than 0",
+        commissionRange: "Commission rate must be between 0 and 1",
+        invalidUrl: "Invalid image URL"
+      }
+    },
+    toasts: {
+      loadError: "Failed to load products",
+      addError: "Failed to add product",
+      updateError: "Failed to update product",
+      deleteError: "Failed to delete product",
+      saveSuccess: "Saved successfully!"
+    }
   }
 };

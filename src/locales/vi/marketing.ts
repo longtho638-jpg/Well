@@ -1,5 +1,5 @@
 export const marketing = {
-marketing: {
+  marketing: {
     title: "Marketing Tools",
     subtitle: "Công cụ hỗ trợ bán hàng và marketing chuyên nghiệp",
     stats: {
@@ -76,7 +76,7 @@ marketing: {
       }
     }
   },
-marketingtools: {
+  marketingtools: {
     "4_9": "4.9",
     ai_landing_builder: "AI Landing Builder",
     new: "Mới",
@@ -104,7 +104,7 @@ marketingtools: {
     views: "Views",
     conversions: "Conversions"
   },
-landingpage: {
+  landingpage: {
     ultimate_level_wellness: "ULTIMATE LEVEL WELLNESS",
     hu_n_luy_n_vi_n_ai: "Huấn luyện viên AI",
     h_ng_d_n_c_nh_n_h_a_b_i_gemi: "Hướng dẫn cá nhân hóa bởi Gemini",
@@ -124,7 +124,7 @@ landingpage: {
     partner_n_i_g_v_wellnexus: "Partner nói gì về WellNexus",
     h_ng_ng_n_partner_thay_i: "Hàng ngàn Partner đã thay đổi cuộc sống với WellNexus"
   },
-landing: {
+  landing: {
     hero: {
       title: "Thu Nhập 12 Triệu/Tháng",
       badge: "Hành Trình Thịnh Vượng",
@@ -386,7 +386,7 @@ landing: {
       community: "1,243+ đối tác"
     }
   },
-sharebuttons: {
+  sharebuttons: {
     zalo: "Zalo",
     facebook: "Facebook",
     telegram: "Telegram",
@@ -394,11 +394,11 @@ sharebuttons: {
     hideQR: "Ẩn mã QR",
     showQR: "Hiện mã QR"
   },
-stickyCta: {
+  stickyCta: {
     label: "157 suất còn lại — Đăng ký ngay hôm nay",
     cta: "Nhận Slot Của Tôi"
   },
-faq: {
+  faq: {
     title: "Câu hỏi thường gặp",
     subtitle: "Giải đáp những băn khoăn phổ biến nhất",
     q1: "Tôi có cần bỏ vốn hay mua hàng tồn kho không?",
@@ -408,13 +408,13 @@ faq: {
     q3: "Nếu tôi không có kinh nghiệm kinh doanh thì có làm được không?",
     a3: "Hoàn toàn được. AI Coach của WellNexus hướng dẫn từng bước."
   },
-trust: {
+  trust: {
     noInventory: "Không tồn kho",
     freeToJoin: "Gia nhập miễn phí",
     certified: "Sản phẩm chứng nhận",
     community: "1,243+ đối tác"
   },
-eastasiabrand: {
+  eastasiabrand: {
     wellnexus: "WellNexus",
     v_ch_ng_t_i: "Về chúng tôi",
     s_n_ph_m: "Sản phẩm",
@@ -439,7 +439,7 @@ eastasiabrand: {
       }
     }
   },
-agencyos: {
+  agencyos: {
     categories: {
       marketing: "Marketing",
       sales: "Sales (Bán hàng)",
@@ -449,7 +449,7 @@ agencyos: {
       agents: "AI Agents (Đại lý AI)"
     }
   },
-agencyosdemo: {
+  agencyosdemo: {
     "85_ai_powered_automation_comm": "85% Tự Động Hóa AI",
     agencyos_integration: "Tích Hợp AgencyOS",
     agent_kpis: "KPI Đại Lý",
@@ -460,7 +460,7 @@ agencyosdemo: {
     no_commands_executed_yet_clic: "Chưa có lệnh nào được thực thi. Nhấp để chạy.",
     open_command_palette_k: "Mở Bảng Lệnh (⌘K)"
   },
-cms: {
+  cms: {
     action: "Hành Động",
     content_orchestrator: "Điều Phối Nội Dung",
     create: "Tạo",
@@ -479,7 +479,7 @@ cms: {
     archive: "Lưu Trữ",
     enable: "Kích Hoạt"
   },
-founderrevenuegoal: {
+  founderrevenuegoal: {
     "1m_founder_journey": "Hành Trình $1M Founder",
     current_stage: "Giai Đoạn Hiện Tại",
     projected_yoy_growth: "Tăng Trưởng YoY Dự Kiến",
@@ -492,11 +492,11 @@ founderrevenuegoal: {
     of_goal: "của Mục Tiêu",
     v_t_ti_n: "Vượt Tiến Độ"
   },
-valuationcard: {
+  valuationcard: {
     "12_5_pe_ratio": "Tỷ Lệ P/E 12.5",
     mom_growth: "Tăng Trưởng MoM"
   },
-venture: {
+  venture: {
     hero: {
       badge: "Giao Thức Tuyển Dụng Co-Founder v4.0",
       headline: "Venture Builder:",
@@ -595,29 +595,29 @@ venture: {
       terms: "Tuân Thủ Bảng Điều Khoản"
     }
   },
-venturefooter: {
+  venturefooter: {
     strategic_ecosystem_builder: "Strategic Ecosystem Builder",
     subscribe_for_exclusive_intake: "Subscribe for Exclusive Intake"
   },
-venturemarketmap: {
+  venturemarketmap: {
     init_sea_expansion_protocol: "Init SEA Expansion Protocol",
     total_addressable_market: "Total Addressable Market",
     velocity: "Velocity"
   },
-venturenavigation: {
+  venturenavigation: {
     apply_recruitment: "Apply / Recruitment",
     venture_builder: "Venture Builder"
   },
-ventureportfolio: {
+  ventureportfolio: {
     arr_node: "ARR Node",
     growth: "Growth",
     val: "Val"
   },
-portfoliosection: {
+  portfoliosection: {
     arr: "ARR",
     growth: "Growth"
   },
-exitIntent: {
+  exitIntent: {
     headline: "Khoan! Đừng bỏ lỡ cơ hội",
     subheadline: "Mở khóa quyền lợi Pro độc quyền và tham gia cùng 1,243+ nhà phân phối thành công đang xây dựng thu nhập bền vững với WellNexus.",
     benefits: {
@@ -630,5 +630,96 @@ exitIntent: {
     urgency: "Chỉ còn 157 suất trong khu vực của bạn",
     noThanks: "Để sau, cảm ơn",
     closeLabel: "Đóng popup"
+  },
+  vendor: {
+    dashboard: {
+      title: "Vendor Dashboard",
+      subtitle: "Quản lý sản phẩm, theo dõi doanh số và phát triển doanh nghiệp của bạn",
+      tabs: {
+        products: "Sản Phẩm Của Tôi",
+        analytics: "Phân Tích",
+        settings: "Cửa Hàng"
+      },
+      stats: {
+        totalSales: "Tổng Doanh Số",
+        products: "Sản Phẩm",
+        commissions: "Hoa Hồng",
+        orders: "Đơn Hàng"
+      },
+      products: {
+        title: "Sản Phẩm Của Bạn",
+        addProduct: "Thêm Sản Phẩm",
+        loading: "Đang tải sản phẩm...",
+        commission: "% hoa hồng",
+        sales: "Đã bán",
+        stock: "Tồn kho",
+        edit: "Sửa",
+        delete: "Xóa",
+        deleteConfirm: "Bạn có chắc chắn muốn xóa sản phẩm này?"
+      },
+      empty: {
+        noProducts: "Chưa có sản phẩm nào",
+        addFirst: "Thêm sản phẩm đầu tiên của bạn"
+      }
+    },
+    analytics: {
+      title: "Phân Tích",
+      dateRange: {
+        "7d": "7 ngày",
+        "30d": "30 ngày",
+        "90d": "90 ngày"
+      },
+      stats: {
+        totalSales: "Tổng Doanh Số",
+        totalCommission: "Tổng Hoa Hồng",
+        totalOrders: "Tổng Đơn Hàng"
+      },
+      charts: {
+        salesOverTime: "Doanh Số Theo Thời Gian",
+        topProducts: "Sản Phẩm Bán Chạy",
+        commissionVsRevenue: "Hoa Hồng vs Doanh Thu"
+      }
+    },
+    settings: {
+      title: "Cửa Hàng",
+      subtitle: "Tùy Chỉnh Cửa Hàng Của Bạn",
+      storeName: "Tên Cửa Hàng",
+      storeDescription: "Mô Tả Cửa Hàng",
+      saveButton: "Lưu Cài Đặt",
+      saveSuccess: "Đã lưu cài đặt thành công!",
+      saveError: "Không thể lưu cài đặt",
+      defaultDescription: "Chào mừng đến với cửa hàng của tôi! Sản phẩm sức khỏe và wellness chất lượng cao."
+    },
+    actions: {
+      addProduct: "Thêm Sản Phẩm",
+      edit: "Sửa",
+      delete: "Xóa",
+      cancel: "Hủy",
+      save: "Lưu"
+    },
+    addProduct: {
+      title: "Thêm Sản Phẩm Mới",
+      name: "Tên Sản Phẩm",
+      price: "Giá (₫)",
+      commissionRate: "Tỷ Lệ Hoa Hồng",
+      imageUrl: "URL Hình Ảnh",
+      description: "Mô Tả",
+      add: "Thêm",
+      cancel: "Hủy",
+      validation: {
+        nameRequired: "Tên sản phẩm là bắt buộc",
+        priceRequired: "Giá là bắt buộc",
+        pricePositive: "Giá phải lớn hơn 0",
+        commissionRange: "Hoa hồng phải từ 0 đến 1",
+        invalidUrl: "URL hình ảnh không hợp lệ"
+      }
+    },
+    toasts: {
+      loadError: "Không thể tải sản phẩm",
+      addError: "Không thể thêm sản phẩm",
+      updateError: "Không thể cập nhật sản phẩm",
+      deleteError: "Không thể xóa sản phẩm",
+      saveSuccess: "Đã lưu thành công!"
+    }
   }
 };

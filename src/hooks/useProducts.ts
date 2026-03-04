@@ -39,10 +39,14 @@ export function useProducts() {
         outOfStock: products.filter(p => p.stock === 0).length
     }), [products]);
 
-    const handleUpdate = async (id: string, updates: Partial<Product>) => {
+    const handleUpdate = async (id: string, updates: Partial<Product>, vendorId?: string) => {
         setActionLoading(id);
         try {
-            await productService.updateProduct(id, updates);
+            if (vendorId) {
+                await productService.updateProduct(id, updates, vendorId);
+            } else {
+                await productService.updateProduct(id, updates, 'system');
+            }
             setProducts(prev => prev.map(p => p.id === id ? { ...p, ...updates } : p));
             showToast('Product updated', 'success');
             return true;
@@ -69,11 +73,15 @@ export function useProducts() {
         }
     };
 
-    const handleDelete = async (id: string, name: string) => {
+    const handleDelete = async (id: string, name: string, vendorId?: string) => {
         if (!confirm(`Delete "${name}"?`)) return;
         setActionLoading(id);
         try {
-            await productService.deleteProduct(id);
+            if (vendorId) {
+                await productService.deleteProduct(id, vendorId);
+            } else {
+                await productService.deleteProduct(id, 'system');
+            }
             setProducts(prev => prev.filter(p => p.id !== id));
             showToast('Product deleted', 'info');
         } catch {

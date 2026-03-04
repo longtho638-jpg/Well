@@ -78,6 +78,7 @@ export interface Product {
   description: string;
   salesCount: number;
   stock: number;
+  vendorId?: string;
 }
 
 export interface Transaction {

@@ -41,6 +41,7 @@ export const SettingsPage = lazy(() => import('../pages/SettingsPage'));
 export const ProfilePage = lazy(() => import('../pages/ProfilePage'));
 export const SubscriptionPage = lazy(() => import('../pages/SubscriptionPage'));
 export const NotFoundPage = lazy(() => import('../pages/NotFoundPage'));
+export const VendorDashboard = lazy(() => import('../components/marketplace/VendorDashboard').then(m => ({ default: m.VendorDashboard })));
 
 // Admin sub-pages
 export const Overview = lazy(() => import('../pages/Admin/Overview'));
