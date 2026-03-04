@@ -48,14 +48,33 @@ export function useConfirmEmailVerificationFlow() {
           return;
         }
 
-        // Strategy 2: hash fragment (implicit flow) or PKCE code param
-        const hash = window.location.hash;
+        // Strategy 2: PKCE code exchange (priority) or hash fragment (implicit flow)
         const code = searchParams.get('code');
+        const hash = window.location.hash;
 
-        if ((hash && hash.includes('access_token')) || code) {
+        // 2a. PKCE code exchange - explicit OAuth2 flow
+        if (code) {
+          authLogger.info('Exchanging PKCE code for session...');
+          const { error } = await supabase.auth.exchangeCodeForSession(code);
+          if (error) {
+            authLogger.error('PKCE code exchange failed', error);
+            setState('error');
+            setErrorMessage(error.message);
+          } else {
+            authLogger.info('PKCE code exchanged successfully');
+            setState('success');
+            setTimeout(() => navigate('/login'), 2000);
+          }
+          return;
+        }
+
+        // 2b. Hash fragment (implicit flow) - wait for session via listener
+        if (hash && hash.includes('access_token')) {
+          // Register listener FIRST to avoid race condition
           const { data: { subscription } } = supabase.auth.onAuthStateChange(
             (event, session) => {
               if (event === 'SIGNED_IN' && session) {
+                authLogger.info('Auth state changed to SIGNED_IN via hash flow');
                 subscription.unsubscribe();
                 if (timeoutId) clearTimeout(timeoutId);
                 setState('success');
@@ -65,9 +84,10 @@ export function useConfirmEmailVerificationFlow() {
           );
           authSubscription = subscription;
 
-          // Check if Supabase already processed the URL before listener was attached
+          // Check if session already exists (Supabase auto-processed URL)
           const { data: { session } } = await supabase.auth.getSession();
           if (session) {
+            authLogger.info('Session already exists from hash');
             subscription.unsubscribe();
             authSubscription = null;
             setState('success');
@@ -75,13 +95,14 @@ export function useConfirmEmailVerificationFlow() {
             return;
           }
 
-          // Timeout after 10s if session never establishes
+          // Timeout after 60s (increased from 10s to handle slow email providers)
           timeoutId = setTimeout(() => {
+            authLogger.warn('Hash fragment verification timed out');
             subscription.unsubscribe();
             authSubscription = null;
             setState('error');
             setErrorMessage('Confirmation timed out. Please try again.');
-          }, 10000);
+          }, 60000);
           return;
         }
 
