@@ -1,242 +1,170 @@
-# WellNexus Distributor Portal - Tài Liệu Tổng Quan
+# WellNexus Documentation Hub
 
-## Mô Tả Dự Án
+> 📚 Trung tâm tài liệu chính thức của WellNexus - Open-Source RaaS Platform
 
-WellNexus là nền tảng sức khỏe RaaS (Retail-as-a-Service) mã nguồn mở dành cho Việt Nam, được xây dựng với hệ điều hành Agent-OS mạnh mẽ và backend Supabase. Dự án được thiết kế cho mô hình RaaS (Retail-as-a-Service) các sản phẩm sức khỏe.
+---
 
-### Đặc Điểm Chính
-- 🤖 **Hệ Thống Agent-OS** - 24+ AI agents (Huấn luyện viên, Trợ lý Bán hàng, Bộ máy Phần thưởng)
-- ⚡ **Tích Hợp AgencyOS** - 85+ lệnh tự động hóa
-- 🔍 **Tối Ưu Hóa SEO** - Thẻ meta, sơ đồ trang web, robots.txt, JSON-LD
-- ♿ **Khả Năng Truy Cập** - Vai trò ARIA, hỗ trợ điều hướng bàn phím
-- 🛍️ **Thương Mại Xã Hội** - MLM/Đại lý với hoa hồng 8 cấp (21–25%)
-- 💰 **Ví HealthFi** - Hệ thống token kép (SHOP + GROW)
-- 📱 **Hỗ Trợ PWA** - Có thể cài đặt trên thiết bị di động/máy tính
-- 🌙 **Chủ Đề Tối/Sáng** - Chuyển đổi có hoạt ảnh và lưu trạng thái
-- ⚡ **Tách Mã** - Tải trang theo yêu cầu cho tốc độ tải ban đầu nhanh
-- 💀 **Tải Skeleton** - Trạng thái tải cao cấp
-- ⚛️ **React 19 & Vite 7** - Cập nhật công nghệ frontend cho hiệu suất tối đa
-- 🔒 **An Toàn Kiểu** - Tuân thủ TypeScript Strict Mode 100%
+## 🎯 Bắt đầu nhanh
 
-## Kiến Trúc Công Nghệ
+| Tôi muốn... | Tài liệu |
+|-------------|----------|
+| Cài đặt WellNexus | [Getting Started](./GETTING_STARTED.md) |
+| Đóng góp code | [Contributing Guide](../CONTRIBUTING.md) |
+| Xem kiến trúc | [Architecture](./ARCHITECTURE.md) |
+| Tìm hiểu pricing | [Pricing](./PRICING.md) |
+| Báo cáo bug | [Issue Template](https://github.com/longtho638-jpg/Well/issues/new?template=bug_report.md) |
+| Đặt câu hỏi | [Q&A Template](https://github.com/longtho638-jpg/Well/issues/new?template=question.md) |
 
-### Frontend
-- **Framework:** React 19.2.4
-- **Ngôn ngữ:** TypeScript 5.9.3
-- **Build Tool:** Vite 7.3.1
-- **UI Framework:** TailwindCSS
-- **Quản Lý Trạng Thái:** Zustand
-- **Hiệu Ứng:** Framer Motion
+---
 
-### Backend
-- **Backend-as-a-Service:** Supabase
-- **Cơ Sở Dữ Liệu:** PostgreSQL với RLS (Row Level Security)
-- **Xác Thực:** Supabase Auth
-- **Real-time:** Supabase Realtime
-- **Edge Functions:** Supabase Edge Functions
+## 📖 Mục lục
 
-### Công Cụ Phát Triển
-- **Kiểm Thử:** Vitest, React Testing Library, Playwright
-- **Phân Tích Mã:** ESLint, TypeScript
-- **Tự Động Hóa:** Husky, lint-staged
-- **Triển Khai:** Vercel
+### 📘 Tài liệu chính
 
-## Thiết Kế Aura Elite
+| Tài liệu | Mô tả |
+|----------|-------|
+| [README](../README.md) | Giới thiệu tổng quan về WellNexus |
+| [Getting Started](./GETTING_STARTED.md) | Hướng dẫn cài đặt và sử dụng cơ bản |
+| [Architecture](./ARCHITECTURE.md) | Kiến trúc hệ thống và design patterns |
+| [API Reference](./API_REFERENCE.md) | API documentation |
+| [Code Standards](./code-standards.md) | Quy chuẩn code |
+| [Tech Stack](./tech-stack.md) | Công nghệ sử dụng |
+| [System Architecture](./system-architecture.md) | Kiến trúc hệ thống chi tiết |
 
-Dự án sử dụng phong cách thiết kế Aura Elite với các đặc điểm:
-- **Glassmorphism** - Hiệu ứng kính trong suốt
-- **Dark Gradients** - Gradient tối làm nền
-- **Hiệu Ứng Chuyển Động** - Sử dụng Framer Motion
-- **Responsive Design** - Hỗ trợ mọi kích thước màn hình
+### 💰 Business & Pricing
 
-## Hệ Thống Hoa Hồng (Bee 2.0)
+| Tài liệu | Mô tả |
+|----------|-------|
+| [Pricing](./PRICING.md) | Chi tiết các gói pricing (Free/Pro/Enterprise) |
+| [Open Source](./OPEN_SOURCE.md) | Tài liệu open-source RaaS |
+| [Feature Flags](./FEATURE_FLAGS.md) | Hệ thống feature gating |
+| [Roadmap](./ROADMAP.md) | Lộ trình phát triển |
 
-- **Cấp độ 1-6 (THIEN_LONG → DAI_SU):** 25%
-- **Cấp độ 7 (KHOI_NGHIEP):** 25%
-- **Cấp độ 8 (CTV):** 21%
+### 🤝 Cộng đồng
 
-## Cài Đặt
+| Tài liệu | Mô tả |
+|----------|-------|
+| [Contributing](../CONTRIBUTING.md) | Hướng dẫn đóng góp code |
+| [Code of Conduct](../CODE_OF_CONDUCT.md) | Quy tắc ứng xử cộng đồng |
+| [Good First Issues](./GOOD_FIRST_ISSUES.md) | Issues dành cho người mới |
+| [Community PR Guide](./COMMUNITY_PR_GUIDE.md) | Hướng dẫn tạo PR |
+| [Discussion Guidelines](./DISCUSSION_GUIDELINES.md) | Hướng dẫn thảo luận |
 
-### Điều Kiện Tiên Quyết
-- Node.js 18+ và npm 9+
-- Tài khoản Supabase (có thể dùng bản miễn phí)
-- Git
+### 🚀 Deployment & Ops
 
-### 1. Sao Chép Kho
-```bash
-git clone https://github.com/longtho638-jpg/Well.git
-cd Well
-```
+| Tài liệu | Mô tả |
+|----------|-------|
+| [Deployment Guide](./DEPLOYMENT_GUIDE.md) | Hướng dẫn deployment |
+| [Supabase Setup](./supabase-setup-guide.md) | Cấu hình database |
+| [Email Setup](./email-dns-configuration-guide.md) | Cấu hình email (Resend) |
+| [Disaster Recovery](./DISASTER_RECOVERY.md) | Kế hoạch phục hồi thảm họa |
 
-### 2. Cài Đặt Thư Viện Phụ Thuộc
-```bash
-npm install
-```
+### 👥 SOPs (Standard Operating Procedures)
 
-### 3. Thiết Lập Môi Trường
-```bash
-# Sao chép file cấu hình môi trường
-cp .env.example .env.local
+| Tài liệu | Mô tả |
+|----------|-------|
+| [CEO SOPs](./ceo-sops.md) | Quy trình CEO |
+| [CTO SOPs](./cto-sops.md) | Quy trình CTO |
+| [COO SOPs](./coo-sops.md) | Quy trình COO |
+| [CMO SOPs](./cmo-sops.md) | Quy trình CMO |
+| [CFO SOPs](./cfo-sops.md) | Quy trình CFO |
+| [CHRO SOPs](./chro-sops.md) | Quy trình HR |
+| [CISO SOPs](./ciso-sops.md) | Quy trình bảo mật |
+| [CAIO SOPs](./caio-sops.md) | Quy trình AI Officer |
+| [CCO SOPs](./cco-sops.md) | Quy trình Content |
+| [CSO SOPs](./cso-sops.md) | Quy trình Sales |
+| [CXO SOPs](./cxo-sops.md) | Quy trình Experience |
+| [User SOPs](./user-sops.md) | Quy trình người dùng |
+| [Founder SOPs](./founder-sops.md) | Quy trình Founder |
+| [Payment SOPs](./payment-sops.md) | Quy trình thanh toán |
+| [Admin SOPs](./admin-sops.md) | Quy trình admin |
 
-# Chỉnh sửa .env.local và thêm các biến bắt buộc:
-# VITE_SUPABASE_URL=https://jcbahdioqoepvoliplqy.supabase.co
-# VITE_SUPABASE_ANON_KEY=<khóa-chung-từ-bảng-điều-khiển-supabase>
-```
+### 🎨 Design System
 
-**Lấy thông tin xác thực Supabase:**
-1. Truy cập [Bảng điều khiển Supabase](https://supabase.com/dashboard)
-2. Chọn dự án của bạn (hoặc tạo mới)
-3. Vào Settings → API
-4. Sao chép `Project URL` → `VITE_SUPABASE_URL`
-5. Sao chép khóa `anon public` → `VITE_SUPABASE_ANON_KEY`
+| Tài liệu | Mô tả |
+|----------|-------|
+| [Design Guidelines](./design-guidelines.md) | Nguyên tắc thiết kế |
+| [Design System](./design-system/) | Component library |
+| [Wireframes](./wireframes/) | Wireframes & prototypes |
 
-### 4. Thiết Lập Cơ Sở Dữ Liệu
-```bash
-# Chạy các bản cập nhật cơ sở dữ liệu bằng Supabase CLI
-npx supabase db push
+### 📊 Development
 
-# Hoặc thực hiện thủ công:
-# 1. Mở Bảng điều khiển Supabase → Trình soạn thảo SQL
-# 2. Sao chép nội dung từ supabase/migrations/20260113_recursive_referral.sql
-# 3. Dán và Chạy
-```
+| Tài liệu | Mô tả |
+|----------|-------|
+| [Project Changelog](./project-changelog.md) | Lịch sử thay đổi |
+| [Development Roadmap](./project-roadmap.md) | Lộ trình phát triển |
+| [Architecture](./architecture/) | Tài liệu kiến trúc chi tiết |
+| [Tasks](./tasks/) | Task specifications |
+| [Product Hunt Launch](./PRODUCT_HUNT_LAUNCH.md) | Kế hoạch ra mắt Product Hunt |
+| [HackerNews Show HN](./hackernews-show-hn.md) | Hướng dẫn Show HN |
+| [Reddit Launch](./reddit-launch-posts.md) | Bài đăng Reddit |
 
-### 5. Máy Chủ Phát Triển
-```bash
-npm run dev
-```
+### 🧪 Testing
 
-Mở [http://localhost:5173](http://localhost:5173) trong trình duyệt của bạn.
+| Tài liệu | Mô tả |
+|----------|-------|
+| [Test Coverage](./code-standards.md#testing) | Coverage requirements |
+| [E2E Tests](../e2e/) | End-to-end tests |
+| [Lighthouse](../.lighthouserc.json) | Performance benchmarks |
 
-### 6. Chạy Kiểm Thử
-```bash
-# Chạy tất cả kiểm thử
-npm run test:run
+---
 
-# Chạy với độ bao phủ
-npm run test:coverage
-
-# Chạy ở chế độ theo dõi (phát triển)
-npm run test
-```
-
-### 7. Xây Dựng cho Sản Xuất
-```bash
-npm run build
-
-# Xem trước bản dựng sản xuất
-npm run preview
-```
-
-**Xác minh bản dựng:**
-- ✅ 0 lỗi TypeScript
-- ✅ Tất cả kiểm thử vượt qua
-- ✅ Kích thước bundle < 500KB (đã nén)
-- ✅ Thời gian xây dựng < 5s
-
-## Cấu Trúc Dự Án
-```
-src/
-├── agents/         # Hệ thống Agent-OS (24+ agents)
-├── components/     # React UI components
-├── hooks/          # useAuth, useWallet, useAgentOS
-├── pages/          # Dashboard, Marketplace, Admin
-├── utils/          # Tokenomics, Tax, Format
-└── __tests__/      # 307+ tests (30 files)
-```
-
-## Kiểm Thử
-
-| Module | Số Lượng |
-|--------|-----------|
-| Logic Hoa Hồng | 24 |
-| Trang Dashboard | 26 |
-| Logic Quản Trị | 18 |
-| Tokenomics | 14 |
-| Logic Đại Lý | 12 |
-| Thanh Toán (PayOS) | 18 |
-| Components UI | 24 |
-| Dịch Vụ Giới Thiệu | 15 |
-| Khác | 156 |
-| **Tổng Cộng** | **307+** |
-
-## Schema Cơ Sở Dữ Liệu
-
-| Bảng | RLS | Mục Đích |
-|------|-----|----------|
-| users | ✅ | Hồ sơ người dùng và số dư |
-| products | ✅ | Sản phẩm trên thị trường |
-| transactions | ✅ | Chuyển nhượng SHOP/GROW |
-| team_members | ✅ | Mạng lưới MLM |
-| agent_logs | ✅ | Hoạt động của AI agent |
-
-## Tích Hợp Email (Resend)
-
-WellNexus sử dụng **Resend** cho email giao dịch với gói miễn phí hào phóng (100 email/ngày, 3,000/tháng).
-
-### Mẫu Email
-- ✅ Email chào mừng (đăng ký người dùng mới)
-- ✅ Xác nhận đơn hàng (đơn hàng đã hoàn thành)
-- ✅ Hoa hồng kiếm được (trực tiếp + hoa hồng F1 giới thiệu)
-- ✅ Thông báo thăng cấp chức vụ
-
-### Thiết Lập
-
-1. **Lấy Khóa API Resend**
-   - Đăng ký tại [resend.com](https://resend.com)
-   - Điều hướng đến trang API Keys
-   - Tạo khóa API mới (bắt đầu với `re_`)
-
-2. **Cấu Hình Chức Năng Edge của Supabase**
-   ```bash
-   # Đặt khóa bí mật trong Bảng điều khiển Supabase
-   # Vào: Cài đặt dự án > Chức năng Edge > Bí mật
-   # Thêm: RESEND_API_KEY = re_xxxxxxxxxxxxxxxxxxxxxxxxxxxx
-
-   # Hoặc qua CLI của Supabase:
-   supabase secrets set RESEND_API_KEY=re_xxxxxxxxxxxxxxxxxxxxxxxxxxxx
-   ```
-
-3. **Xác Minh Tên Miền (Sản Xuất)**
-   - Thêm tên miền của bạn vào Resend
-   - Thêm bản ghi DNS (SPF, DKIM, DMARC)
-   - Đối với kiểm thử, dùng mặc định `onboarding@resend.dev`
-
-4. **Kiểm Tra Gửi Email**
-   ```typescript
-   import { emailService } from './src/services/email-service-client-side-trigger';
-
-   // Gửi email chào mừng kiểm tra
-   await emailService.sendWelcome('user@example.com', {
-     userName: 'Test User',
-     userEmail: 'user@example.com',
-   });
-   ```
-
-### Trình Kích Hoạt Email
-Email được gửi tự động khi:
-- ✅ Người dùng hoàn tất đơn hàng → Thông báo hoa hồng kiếm được
-- ✅ Người giới thiệu kiếm hoa hồng F1 → Thông báo hoa hồng F1 giới thiệu
-- ✅ Người dùng đạt cấp độ mới → Email chúc mừng với số liệu
-
-Tất cả việc gửi email được xử lý bởi Chức năng Edge của Supabase `send-email` với cách ly lỗi (lỗi email không làm hỏng quá trình xử lý phần thưởng).
-
-## Tài Liệu Liên Quan
-
-- [Kiến Trúc Hệ Thống](./system-architecture.md) - Mô tả chi tiết kiến trúc
-- [Tiêu Chuẩn Lập Trình](./code-standards.md) - Quy tắc và tiêu chuẩn lập trình
-- [Bản Đồ Phát Triển](./project-roadmap.md) - Kế hoạch phát triển trong tương lai
-- [Hướng Dẫn Thiết Kế](./design-guidelines.md) - Hướng dẫn thiết kế UI/UX
-- [Tài Liệu Tech Stack](./tech-stack.md) - Chi tiết công nghệ sử dụng
-
-## Đóng Góp
+## 🔧 Quick Commands
 
 ```bash
-# Đảm bảo bản dựng vượt qua
-npm run build     # Yêu cầu 0 lỗi
-npm run test:run  # Tất cả kiểm thử phải vượt qua
+# Development
+npm run dev              # Chạy dev server
+npm run build            # Build production
+npm run preview          # Preview build
+
+# Testing
+npm run test             # Run tests (watch mode)
+npm run test:run         # Run tests một lần
+npm run test:coverage    # Run với coverage
+npm run test:e2e         # E2E tests (Playwright)
+
+# Code Quality
+npm run lint             # ESLint
+npm run format           # Prettier
+npm run typecheck        # TypeScript check
+
+# Database
+npx supabase db push     # Push migrations
+npx supabase status      # Check status
 ```
 
 ---
 
-**Cập Nhật Lần Cuối:** 2026-02-11 | **Phiên Bản:** 2.4.0 | **Trạng Thái:** ✅ Sẵn Sàng Sản Xuất
+## 📧 Liên hệ & Hỗ trợ
+
+| Kênh | Link |
+|------|------|
+| 🐛 Báo cáo bug | [GitHub Issues](https://github.com/longtho638-jpg/Well/issues) |
+| 💬 Thảo luận | [GitHub Discussions](https://github.com/longtho638-jpg/Well/discussions) |
+| 📧 Email support | support@wellnexus.vn |
+| 🏢 Enterprise sales | sales@wellnexus.vn |
+| 🔒 Security issues | security@wellnexus.vn |
+
+---
+
+## 🌟 Đóng góp
+
+WellNexus là dự án open-source! Chúng tôi hoan nghênh mọi đóng góp:
+
+- 🐛 Báo cáo bug
+- 💡 Đề xuất tính năng
+- 📝 Cải thiện tài liệu
+- 🔨 Gửi PR code
+- ⭐ Star repository
+
+Xem [Contributing Guide](../CONTRIBUTING.md) để bắt đầu.
+
+---
+
+## 📄 License
+
+WellNexus được phát hành theo [MIT License](../LICENSE).
+
+---
+
+**Cập nhật:** 2026-03-04 | **Version:** 3.0.0 (Open-Source RaaS)
