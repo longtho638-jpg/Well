@@ -1,14 +1,15 @@
-import { expect, afterEach, vi, beforeAll } from 'vitest';
+import { expect, afterEach, vi, beforeAll, afterAll } from 'vitest';
+import { cleanup } from '@testing-library/react';
+import * as matchers from '@testing-library/jest-dom/matchers';
+import { TransformStream } from 'node:stream/web';
 
 // Polyfill TransformStream for jsdom (required by ai SDK / eventsource-parser)
-beforeAll(async () => {
+// Synchronous polyfill to avoid async initialization issues
+beforeAll(() => {
   if (typeof globalThis.TransformStream === 'undefined') {
-    const { TransformStream } = await import('node:stream/web');
     Object.assign(globalThis, { TransformStream });
   }
 });
-import { cleanup } from '@testing-library/react';
-import * as matchers from '@testing-library/jest-dom/matchers';
 
 // Extend Vitest's expect with jest-dom matchers
 expect.extend(matchers);
@@ -29,8 +30,11 @@ vi.mock('react-i18next', () => ({
   Trans: ({ children }: { children: React.ReactNode }) => children,
 }));
 
-// Mock React Router future flags to suppress warnings
+// Store original console methods
 const originalWarn = console.warn;
+const originalError = console.error;
+
+// Mock React Router future flags to suppress warnings
 console.warn = (...args) => {
   if (
     typeof args[0] === 'string' &&
@@ -44,7 +48,6 @@ console.warn = (...args) => {
 };
 
 // Suppress act() warnings from testing-library async state updates
-const originalError = console.error;
 console.error = (...args) => {
   if (
     typeof args[0] === 'string' &&
@@ -56,6 +59,12 @@ console.error = (...args) => {
   }
   originalError(...args);
 };
+
+// Restore console methods after all tests
+afterAll(() => {
+  console.warn = originalWarn;
+  console.error = originalError;
+});
 
 // Cleanup DOM after each test to prevent state leaking between tests
 afterEach(() => {
