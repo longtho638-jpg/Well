@@ -37,19 +37,15 @@ jobs:
 
       - name: Validate file sizes (strict)
         run: node scripts/validate-file-sizes-for-build-enforcement.mjs --strict
-        working-directory: apps/well
 
       - name: Security audit
         run: pnpm audit --severity high || true
-        working-directory: apps/well
 
       - name: Validate i18n keys
         run: pnpm run i18n:validate
-        working-directory: apps/well
 
       - name: Run linter
         run: pnpm run lint || echo "Lint script not found, skipping"
-        working-directory: apps/well
 
       - name: Run tests with coverage (Part 1)
         # Single-threaded to prevent esbuild resource crashes (CI/CD fix 2026-03-04)
@@ -60,18 +56,17 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: coverage-report-part-1
-          path: apps/well/coverage/
+          path: coverage/
           retention-days: 7
 
       - name: Build project
         run: pnpm run build
-        working-directory: apps/well
 
       - name: Upload build artifacts
         uses: actions/upload-artifact@v4
         with:
           name: build-artifacts
-          path: apps/well/dist/
+          path: dist/
           retention-days: 7
 
   test-part-2:
@@ -99,6 +94,7 @@ jobs:
       - name: Run tests (Part 2)
         # Single-threaded to prevent esbuild resource crashes (CI/CD fix 2026-03-04)
         run: pnpm test --filter wellnexus-mvp -- src/agents/ src/components/ --maxWorkers=1
+        working-directory: .
 
   e2e:
     name: E2E Tests (Chromium)
@@ -128,14 +124,13 @@ jobs:
 
       - name: Run E2E tests
         run: pnpm exec playwright test --project=chromium
-        working-directory: apps/well
 
       - name: Upload E2E report
         if: always()
         uses: actions/upload-artifact@v4
         with:
           name: e2e-report
-          path: apps/well/playwright-report/
+          path: playwright-report/
           retention-days: 7
 
   smoke-test:
