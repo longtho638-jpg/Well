@@ -61,9 +61,9 @@ export default defineConfig({
             // DOMPurify (Sanitization)
             if (id.includes('dompurify')) return 'dompurify';
 
-            // Recharts + d3: DO NOT manually chunk — TDZ bug from circular d3 deps (2026-02-08)
-            // Vite handles naturally via lazy() boundaries
-            if (id.includes('recharts') || id.includes('d3-') || id.includes('victory')) return undefined;
+            // Recharts + d3: Lazy load at component level (avoid TDZ bug from circular d3 deps)
+            // See: src/components/charts/lazy-charts.ts for lazy-loaded chart components
+            if (id.includes('recharts') || id.includes('d3-') || id.includes('victory')) return 'charts';
 
             // Catch-all: Let Vite handle the rest automatically
             // Do NOT force a 'deps' bucket which creates monoliths
