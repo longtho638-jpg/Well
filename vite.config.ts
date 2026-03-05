@@ -3,7 +3,7 @@ import react from '@vitejs/plugin-react'
 
 export default defineConfig({
   esbuild: {
-    target: 'es2020',
+    target: 'esnext',
     keepNames: true,
     legalComments: 'none',
   },
@@ -15,13 +15,20 @@ export default defineConfig({
     },
   },
   build: {
-    target: ['es2020', 'safari14', 'chrome87', 'firefox78'],
+    target: 'esnext',
     cssMinify: 'esbuild',
     cssCodeSplit: true,
     ssr: false,
-    chunkSizeWarningLimit: 2000,
+    chunkSizeWarningLimit: 500,
+    minify: 'esbuild',
+    sourcemap: false,
+    reportCompressedSize: false,
+    modulePreload: {
+      polyfill: true,
+    },
     rollupOptions: {
       output: {
+        inlineDynamicImports: false,
         manualChunks(id) {
           if (id.includes('node_modules')) {
             if (
@@ -40,20 +47,18 @@ export default defineConfig({
             if (id.includes('zustand')) return 'state';
             if (id.includes('@sentry')) return 'sentry';
             if (id.includes('@react-pdf') || id.includes('pdfkit')) return 'react-pdf';
+            if (id.includes('recharts') || id.includes('react-js-geometry') || id.includes('react-js-surface')) return 'charts';
           }
           return undefined;
         },
       },
     },
-    minify: 'esbuild',
-    sourcemap: false,
-    reportCompressedSize: false,
   },
   optimizeDeps: {
     include: ['react', 'react-dom', 'react-router-dom', 'zustand'],
     exclude: ['@react-pdf/renderer', 'recharts', 'pdfkit', '@ai-sdk/*', 'ai'],
     esbuildOptions: {
-      target: 'es2020',
+      target: 'esnext',
     },
   },
 })
