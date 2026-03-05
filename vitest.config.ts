@@ -13,5 +13,7 @@ export default defineConfig({
     restoreMocks: true,
     clearMocks: true,
     mockReset: true,
+    globals: true,
+    setupFiles: ['./src/__tests__/setup.ts'],
   },
 });
