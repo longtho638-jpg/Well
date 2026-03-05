@@ -6,8 +6,6 @@ export default defineConfig({
     target: 'es2020',
     keepNames: true,
     legalComments: 'none',
-    drop: ['console', 'debugger'],
-    pure: ['console.log', 'console.warn', 'console.error'],
   },
   cacheDir: '.vite',
   plugins: [react()],
@@ -22,27 +20,15 @@ export default defineConfig({
     cssCodeSplit: true,
     ssr: false,
     chunkSizeWarningLimit: 2000,
-    // Optimized for M1 Max: 8 parallel ops (vs 4 default)
     rollupOptions: {
-      maxParallelFileOps: 4,
       output: {
         manualChunks(id) {
           if (id.includes('node_modules')) {
-            // AI packages
-            if (
-              id.includes('@ai-sdk/') ||
-              id.includes('ai/')
-            ) {
-              return 'ai';
-            }
-            // React core
             if (
               id.includes('node_modules/react/') ||
               id.includes('node_modules/react-dom/') ||
               id.includes('node_modules/react-router-dom/') ||
-              id.includes('node_modules/react-router/') ||
-              id.includes('node_modules/scheduler/') ||
-              id.includes('node_modules/@remix-run/')
+              id.includes('node_modules/scheduler/')
             ) {
               return 'react-vendor';
             }
@@ -50,13 +36,9 @@ export default defineConfig({
             if (id.includes('@supabase')) return 'supabase';
             if (id.includes('lucide-react')) return 'icons';
             if (id.includes('i18next')) return 'i18n';
-            if (id.includes('zod') || id.includes('react-hook-form') || id.includes('@hookform')) return 'forms';
+            if (id.includes('zod') || id.includes('react-hook-form')) return 'forms';
             if (id.includes('zustand')) return 'state';
-            if (id.includes('@react-pdf') || id.includes('pdfkit') || id.includes('fontkit')) return 'pdf';
             if (id.includes('@sentry')) return 'sentry';
-            if (id.includes('dompurify')) return 'dompurify';
-            if (id.includes('recharts') || id.includes('d3-') || id.includes('victory')) return 'charts';
-            if (id.includes('lodash')) return 'lodash';
           }
           return undefined;
         },
