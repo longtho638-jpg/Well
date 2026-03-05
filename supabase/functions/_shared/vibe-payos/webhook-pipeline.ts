@@ -10,10 +10,26 @@
  * Usage:
  *   import { handlePayOSWebhook } from '../_shared/vibe-payos/mod.ts'
  *   serve((req) => handlePayOSWebhook(req, supabase, callbacks))
+ *
+ * RaaS License Gate:
+ *   Production webhooks require valid RAAS_LICENSE_KEY env var.
+ *   Development mode bypasses license check.
  */
 
 import type { PayOSWebhookData, PayOSWebhookPayload } from './types.ts'
 import { verifyWebhookSignature } from './crypto.ts'
+
+// RaaS License Gate — check if PayOS webhook is enabled
+function isPayosWebhookEnabled(): boolean {
+  const licenseKey = Deno.env.get('RAAS_LICENSE_KEY')
+  if (!licenseKey) {
+    // Allow in development (no license key = dev mode)
+    return Deno.env.get('DENO_DEPLOYMENT_ID') === undefined
+  }
+  // Validate license format: RAAS-{timestamp}-{hash}
+  const LICENSE_PATTERN = /^RAAS-\d{10}-[a-zA-Z0-9]{6,}$/
+  return LICENSE_PATTERN.test(licenseKey)
+}
 
 // ─── Types ──────────────────────────────────────────────────────
 
@@ -65,6 +81,10 @@ export interface WebhookCallbacks {
 /**
  * Full PayOS webhook pipeline — drop-in for any Edge Function.
  * Returns a Response ready to send back to PayOS.
+ *
+ * RaaS License Check:
+ *   - Production: Requires valid RAAS_LICENSE_KEY
+ *   - Development: License check bypassed
  */
 export async function handlePayOSWebhook(
   req: Request,
@@ -72,6 +92,16 @@ export async function handlePayOSWebhook(
   config: WebhookPipelineConfig = {},
 ): Promise<Response> {
   const { webhookSecretEnv = 'WEBHOOK_SECRET', checksumKeyEnv = 'PAYOS_CHECKSUM_KEY' } = config
+
+  // RaaS License Gate — Block production webhooks without valid license
+  if (!isPayosWebhookEnabled()) {
+    console.error('[vibe-payos] RaaS License Gate: PayOS webhook disabled - invalid or missing RAAS_LICENSE_KEY')
+    await callbacks.logAudit?.(null, 'RAAS_LICENSE_BLOCKED', {
+      reason: 'Invalid or missing RAAS_LICENSE_KEY',
+      isProduction: Deno.env.get('DENO_DEPLOYMENT_ID') !== undefined,
+    }, 'failure')
+    return jsonResponse({ error: 'PayOS webhook disabled - invalid RaaS license' }, 403)
+  }
 
   // GET = PayOS URL verification ping
   if (req.method === 'GET') {
