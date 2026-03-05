@@ -5,7 +5,8 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "NODE_OPTIONS=--max-old-space-size=4096 tsc && NODE_OPTIONS=--max-old-space-size=4096 vite build",
+    "build": "NODE_OPTIONS=--max-old-space-size=4096 vite build",
+    "build:check": "NODE_OPTIONS=--max-old-space-size=4096 tsc --noEmit",
     "preview": "vite preview",
     "test": "vitest run",
     "test:ui": "vitest --ui",

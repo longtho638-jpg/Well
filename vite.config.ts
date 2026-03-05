@@ -1,17 +1,11 @@
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 
-// Prevent EPIPE errors by configuring build options appropriately
 export default defineConfig({
-  // Safari 14+ compatibility — without this, Vite defaults to 'esnext' which
-  // emits ES2022+ syntax that Safari cannot parse, causing production crash
   esbuild: {
     target: 'es2020',
   },
-  plugins: [
-    react(),
-  ],
-
+  plugins: [react()],
   resolve: {
     alias: {
       '@': '/src',
@@ -19,19 +13,15 @@ export default defineConfig({
   },
   build: {
     target: ['es2020', 'safari14', 'chrome87', 'firefox78'],
-    // Optimize build for stability and prevent EPIPE errors
-    cssMinify: 'lightningcss',
-    // Reduce parallelism to prevent resource exhaustion
+    cssMinify: 'esbuild',
+    cssCodeSplit: true,
     ssr: false,
-    cssCodeSplit: false,
-    // PDF chunk is intentionally large (react-pdf/pdfkit) — suppress warning
     chunkSizeWarningLimit: 1600,
-    // Reduce memory pressure during build
     rollupOptions: {
       output: {
         manualChunks(id) {
           if (id.includes('node_modules')) {
-            // React core — precise matching to avoid catching react-hook-form, react-i18next, etc.
+            // React core
             if (
               id.includes('node_modules/react/') ||
               id.includes('node_modules/react-dom/') ||
@@ -42,35 +32,27 @@ export default defineConfig({
             ) {
               return 'react-vendor';
             }
-            // Animation
             if (id.includes('framer-motion')) return 'animation';
-            // Supabase
             if (id.includes('@supabase')) return 'supabase';
-            // Icons
             if (id.includes('lucide-react')) return 'icons';
-            // i18n
             if (id.includes('i18next')) return 'i18n';
-            // Forms
             if (id.includes('zod') || id.includes('react-hook-form') || id.includes('@hookform')) return 'forms';
-            // State management
             if (id.includes('zustand')) return 'state';
-            // PDF generation (heavy — @react-pdf includes pdfkit, fontkit, etc.)
             if (id.includes('@react-pdf') || id.includes('pdfkit') || id.includes('fontkit')) return 'pdf';
-            // Sentry (Monitoring)
             if (id.includes('@sentry')) return 'sentry';
-            // DOMPurify (Sanitization)
             if (id.includes('dompurify')) return 'dompurify';
-
-            // Recharts + d3: Lazy load at component level (avoid TDZ bug from circular d3 deps)
-            // See: src/components/charts/lazy-charts.ts for lazy-loaded chart components
             if (id.includes('recharts') || id.includes('d3-') || id.includes('victory')) return 'charts';
-
-            // Catch-all: Let Vite handle the rest automatically
-            // Do NOT force a 'deps' bucket which creates monoliths
-            return undefined;
+            if (id.includes('lodash')) return 'lodash';
           }
+          return undefined;
         },
       },
     },
+    minify: 'esbuild',
+    sourcemap: false,
+  },
+  optimizeDeps: {
+    include: ['react', 'react-dom', 'react-router-dom', 'zustand'],
+    exclude: ['@react-pdf/renderer', 'recharts', 'pdfkit'],
   },
 })
