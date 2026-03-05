@@ -1,0 +1,99 @@
+# Supabase Local Development
+# Run: docker-compose up -d
+# Stop: docker-compose down
+# Reset: docker-compose down -v && docker-compose up -d
+version: "3.8"
+
+services:
+  # PostgreSQL Database
+  db:
+    image: supabase/postgres:15.1.1.78
+    container_name: well-supabase-db
+    ports:
+      - "54322:5432"
+    environment:
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: postgres
+    volumes:
+      - supabase_db_data:/var/lib/postgresql/data
+    healthcheck:
+      test: pg_isready -U postgres
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # GoTrue Auth
+  auth:
+    image: supabase/gotrue:v2.164.0
+    container_name: well-supabase-auth
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      GOTRUE_API_HOST: 0.0.0.0
+      GOTRUE_API_PORT: 9999
+      GOTRUE_DB_DRIVER: postgres
+      GOTRUE_DATABASE_URL: postgres://postgres:postgres@db:5432/postgres
+      GOTRUE_JWT_SECRET: your-super-secret-jwt-token-with-at-least-32-characters
+      GOTRUE_JWT_EXP: 3600
+      GOTRUE_SITE_URL: http://localhost:5173
+      GOTRUE_URI_ALLOW_LIST: http://localhost:5173
+      GOTRUE_EXTERNAL_EMAIL_ENABLED: true
+      GOTRUE_SMTP_ADMIN_EMAIL: admin@example.com
+      GOTRUE_SMTP_HOST: mail
+      GOTRUE_SMTP_PORT: 2500
+      GOTRUE_SMTP_USER: fake
+      GOTRUE_SMTP_PASS: fake
+      GOTRUE_MAILER_AUTOCONFIRM: true
+    ports:
+      - "9999:9999"
+
+  # PostgREST API
+  rest:
+    image: postgrest/postgrest:v12.2.0
+    container_name: well-supabase-rest
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      PGRST_DB_URI: postgres://postgres:postgres@db:5432/postgres
+      PGRST_DB_SCHEMAS: public,storage
+      PGRST_DB_ANON_ROLE: anon
+      PGRST_JWT_SECRET: your-super-secret-jwt-token-with-at-least-32-characters
+    ports:
+      - "54323:3000"
+
+  # Storage API
+  storage:
+    image: supabase/storage-api:v1.11.13
+    container_name: well-supabase-storage
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      ANON_KEY: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZS1kZW1vIiwicm9sZSI6ImFub24iLCJleHAiOjE5ODM4MTI5OTZ9.CRXP1A7WOeoJeXxjNni43kdQwgnWNReilDMblYTn_I0
+      SERVICE_KEY: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZS1kZW1vIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImV4cCI6MTk4MzgxMjk5Nn0.EGIM96RAZx35lJzdJsyH-qQwv8Hdp7fsn3W0YpN81IU
+      DATABASE_URL: postgres://postgres:postgres@db:5432/postgres
+      PGRST_JWT_SECRET: your-super-secret-jwt-token-with-at-least-32-characters
+      FILE_SIZE_LIMIT: 52428800
+      STORAGE_BACKEND: file
+      FILE_STORAGE_BACKEND_PATH: /var/lib/storage
+      TENANT_ID: stub
+      REGION: stub
+      GLOBAL_S3_BUCKET: stub
+    volumes:
+      - supabase_storage_data:/var/lib/storage
+    ports:
+      - "54324:5000"
+
+  # Local SMTP (MailHog for testing emails)
+  mail:
+    image: mailhog/mailhog:v1.0.1
+    container_name: well-supabase-mail
+    ports:
+      - "2500:2500"
+      - "8025:8025"
+
+volumes:
+  supabase_db_data:
+  supabase_storage_data:

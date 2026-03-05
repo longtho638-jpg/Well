@@ -5,12 +5,12 @@
 
 import { useMemo } from 'react';
 import { useStore } from '../../store';
-import { useCommissionPDFReport } from '@/hooks/use-commission-pdf-report-generator';
+import { useLazyCommissionPDF } from '@/hooks/use-lazy-commission-pdf';
 import { calculatePIT } from '../../utils/tax';
 
 export function useCommissionWalletExportHandlers() {
     const { transactions, user } = useStore();
-    const { generatePDF, isGenerating } = useCommissionPDFReport();
+    const { generatePDF, isGenerating } = useLazyCommissionPDF();
 
     const processedTransactions = useMemo(() => transactions.map(tx => {
         const { taxAmount, isTaxable } = calculatePIT(tx.amount);
