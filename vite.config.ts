@@ -39,6 +39,7 @@ export default defineConfig({
             if (id.includes('zod') || id.includes('react-hook-form')) return 'forms';
             if (id.includes('zustand')) return 'state';
             if (id.includes('@sentry')) return 'sentry';
+            if (id.includes('@react-pdf') || id.includes('pdfkit')) return 'react-pdf';
           }
           return undefined;
         },
