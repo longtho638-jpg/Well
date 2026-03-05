@@ -24,7 +24,7 @@ export default defineConfig({
     chunkSizeWarningLimit: 2000,
     // Optimized for M1 Max: 8 parallel ops (vs 4 default)
     rollupOptions: {
-      maxParallelFileOps: 8,
+      maxParallelFileOps: 4,
       output: {
         manualChunks(id) {
           if (id.includes('node_modules')) {
