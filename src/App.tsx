@@ -2,6 +2,7 @@ import React, { Suspense } from 'react';
 import { Routes, Route, Navigate } from 'react-router-dom';
 import { AppLayout } from './components/AppLayout';
 import { AdminRoute } from './components/AdminRoute';
+import { LicenseGate } from './components/raas/LicenseGate';
 import { ErrorBoundary } from './components/ErrorBoundary';
 import {
   LandingPage, Login, Signup, ConfirmEmail, ReferralRedirect,
@@ -125,12 +126,14 @@ const App: React.FC = () => {
               }
             />
 
-            {/* Commission Dashboard */}
+            {/* Commission Dashboard - Gated behind RaaS license */}
             <Route
               path="commission"
               element={
                 <SafePage fallback={SectionSpinner}>
-                  <CommissionDashboard />
+                  <LicenseGate feature="commissionDistribution">
+                    <CommissionDashboard />
+                  </LicenseGate>
                 </SafePage>
               }
             />
@@ -146,7 +149,7 @@ const App: React.FC = () => {
             <Route path="leaderboard" element={<SafePage fallback={SectionSpinner}><Leaderboard /></SafePage>} />
             <Route path="marketing-tools" element={<SafePage fallback={SectionSpinner}><MarketingTools /></SafePage>} />
             <Route path="agents" element={<SafePage fallback={SectionSpinner}><AgentDashboard /></SafePage>} />
-            <Route path="subscription" element={<SafePage fallback={SectionSpinner}><SubscriptionPage /></SafePage>} />
+            <Route path="subscription" element={<SafePage fallback={SectionSpinner}><LicenseGate feature="payosWebhook"><SubscriptionPage /></LicenseGate></SafePage>} />
             <Route path="settings" element={<SafePage fallback={SectionSpinner}><SettingsPage /></SafePage>} />
             <Route path="profile" element={<SafePage fallback={SectionSpinner}><ProfilePage /></SafePage>} />
           </Route>
