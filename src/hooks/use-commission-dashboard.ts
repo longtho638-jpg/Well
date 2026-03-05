@@ -14,6 +14,7 @@ import { useStore } from '../store';
 import { walletService } from '../services/walletService';
 import { createLogger } from '../utils/logger';
 import { calculatePIT } from '../utils/tax';
+import type { Transaction } from '../types';
 
 const logger = createLogger('useCommissionDashboard');
 
@@ -45,6 +46,7 @@ interface DashboardData {
   error: string | null;
 }
 
+
 /**
  * Calculate period start/end dates
  */
@@ -72,19 +74,19 @@ function getPeriodDates(periodIndex: number): { start: Date; end: Date; label: s
  * Calculate commission for a specific period
  */
 function calculatePeriodCommission(
-  transactions: Record<string, unknown>[],
+  transactions: Transaction[],
   start: Date,
   end: Date
 ): { amount: number; directSales: number; teamVolume: number; bonusRevenue: number } {
   const filtered = transactions.filter(tx => {
-    const txDate = new Date(tx.date || tx.created_at);
+    const txDate = new Date(tx.date);
     return txDate >= start && txDate <= end;
   });
 
   return filtered.reduce(
     (acc, tx) => {
-      const amount = tx.amount || 0;
-      const type = (tx.type || '').toLowerCase();
+      const amount = typeof tx.amount === 'number' ? tx.amount : 0;
+      const type = typeof tx.type === 'string' ? tx.type.toLowerCase() : '';
       const metadata = tx.metadata || {};
 
       acc.amount += amount;

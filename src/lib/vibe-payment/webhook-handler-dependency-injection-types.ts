@@ -9,6 +9,29 @@ export interface DeadLetterQueueRecord {
   max_retries?: number;
 }
 
+export interface OrderRecord {
+  id: string;
+  userId: string | null;
+  orderCode: number;
+  orgId?: string;
+  status: string;
+  amount: number;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface SubscriptionIntentRecord {
+  id: string;
+  userId: string;
+  planId: string;
+  billingCycle: 'monthly' | 'yearly';
+  status: string;
+  orderCode: number;
+  orgId?: string;
+  createdAt: string;
+  updatedAt: string;
+}
+
 export interface WebhookHandlerDeps {
   /** Find order by orderCode */
   findOrder: (orderCode: number) => Promise<OrderRecord | null>;
@@ -38,7 +61,8 @@ export interface WebhookHandlerDeps {
 
 // Subscription webhook processor type
 export type ProcessSubscriptionWebhookFn = (
-  event: { type: string; orderCode: number; amount: number; raw: Record<string, unknown> },
+  event: { type: string; orderCode: number;
+  orgId?: string; amount: number; raw: Record<string, unknown> },
   intent: SubscriptionIntentRecord,
   config: { onSubscriptionPaid?: (intent: SubscriptionIntentRecord, data: Record<string, unknown>) => Promise<void> },
   deps: WebhookHandlerDeps

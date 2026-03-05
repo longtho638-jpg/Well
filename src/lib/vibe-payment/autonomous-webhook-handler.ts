@@ -144,7 +144,7 @@ export async function processWebhookEvent(
     // Queue to DLQ on signature failure
     await deps.queueToDeadLetterQueue({
       event_type: "webhook.failed",
-      order_code: event.orderCode || 0,
+      order_code: 0,
       raw_payload: rawPayload as Record<string, unknown>,
       signature,
       error_message: "Invalid signature",
@@ -215,14 +215,14 @@ async function processOrderWebhook(
   // Fire side-effect callbacks with retry
   if (newStatus === 'PAID' && config.onOrderPaid) {
     await retryWithBackoff(
-      () => config.onOrderPaid(event, order.id),
+      () => config.onOrderPaid!(event, order.id),
       { maxRetries: 3, backoffMs: 1000, name: 'onOrderPaid', deps, userId: order.userId }
     );
   }
 
   if (newStatus === 'CANCELLED' && config.onOrderCancelled) {
     await retryWithBackoff(
-      () => config.onOrderCancelled(event, order.id),
+      () => config.onOrderCancelled!(event, order.id),
       { maxRetries: 3, backoffMs: 1000, name: 'onOrderCancelled', deps, userId: order.userId }
     );
   }
@@ -251,20 +251,20 @@ async function processSubscriptionWebhook(
   intent: SubscriptionIntentRecord,
   config: { onSubscriptionPaid?: (intent: SubscriptionIntentRecord, data: Record<string, unknown>) => Promise<void> },
   deps: WebhookHandlerDeps
-): Promise<{ status: string; message?: string; subscriptionStatus?: string }> {
+): Promise<WebhookProcessingResult> {
   if (intent.status !== 'pending') {
-    return { status: 'ignored', message: 'Subscription already processed' };
+    return { status: 'ignored', orderCode: event.orderCode, reason: 'Subscription already processed' };
   }
 
   const isPaid = event.type === 'payment.paid';
-  const newStatus = isPaid ? 'paid' : 'pending';
+  const newStatus = isPaid ? 'PAID' : 'PENDING';
 
-  await deps.updateSubscriptionIntent(intent.id, newStatus);
+  await deps.updateSubscriptionIntent(intent.id, newStatus.toLowerCase());
 
   if (isPaid && config.onSubscriptionPaid) {
     await deps.updateSubscriptionIntent(intent.id, 'active');
-    config.onSubscriptionPaid(intent, event.raw).catch(console.error);
+    await config.onSubscriptionPaid(intent, event.raw);
   }
 
-  return { status: 'processed', subscriptionStatus: newStatus };
+  return { status: 'processed', orderCode: event.orderCode, newStatus };
 }

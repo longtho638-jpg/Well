@@ -31,7 +31,7 @@ export class DLQScheduledRetryJob {
   /**
    * Get DLQ items ready for retry based on exponential backoff
    */
-  async getItemsReadyForRetry(limit = 50): Promise<Array<{ id: string; event_type: string; order_code: number; raw_payload: unknown; failure_count: number }>> {
+  async getItemsReadyForRetry(limit = 50): Promise<Array<{ id: string; event_type: string; order_code: number; raw_payload: Record<string, unknown>; failure_count: number }>> {
     const now = new Date().toISOString();
     
     // Calculate delay threshold: baseDelay * 2^(failure_count - 1)
@@ -39,14 +39,14 @@ export class DLQScheduledRetryJob {
       .from('dead_letter_queue')
       .select('id, event_type, order_code, raw_payload, failure_count, last_error_at')
       .eq('status', 'pending')
-      .lte('failure_count', this.config.maxRetries)
+      .select('failure_count', '<=', this.config.maxRetries)
       .order('created_at', { ascending: true })
       .limit(limit);
 
     if (error) throw error;
 
     // Filter by exponential backoff delay
-    return (data || []).filter(item => {
+    return ((data || []) as Array<{ id: string; event_type: string; order_code: number; raw_payload: Record<string, unknown>; failure_count: number; last_error_at?: string }>).filter(item => {
       const delay = Math.min(
         this.config.baseDelayMs * Math.pow(2, (item.failure_count || 1) - 1),
         this.config.maxDelayMs
@@ -78,7 +78,7 @@ export class DLQScheduledRetryJob {
 
       if (error) throw error;
 
-      const success = await processor(data.raw_payload);
+      const success = await processor((data as { raw_payload: Record<string, unknown> }).raw_payload);
 
       if (success) {
         await this.supabase
@@ -105,7 +105,7 @@ export class DLQScheduledRetryJob {
         .eq('id', itemId)
         .single();
 
-      const newFailureCount = (item?.failure_count || 0) + 1;
+      const newFailureCount = ((item as { failure_count?: number })?.failure_count || 0) + 1;
 
       if (newFailureCount >= this.config.maxRetries) {
         // Max retries exceeded - mark as discarded
@@ -150,7 +150,7 @@ export class DLQScheduledRetryJob {
         });
 
         if (error) throw error;
-        return data?.success || false;
+        return (data as { success?: boolean })?.success || false;
       });
 
       if (result.success) {

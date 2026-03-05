@@ -1,6 +1,6 @@
 /**
  * Dead Letter Queue Service for Failed Webhooks
- * 
+ *
  * Usage:
  *   const dlq = new DeadLetterQueueService(supabase);
  *   await dlq.queue({ event_type: 'payment.failed', order_code: 123, ... });
@@ -41,7 +41,7 @@ export class DeadLetterQueueService {
     return (data as { id: string }).id;
   }
 
-  async getPending(limit = 100): Promise<Array<{ id: string; event_type: string; order_code: number; raw_payload: unknown }>> {
+  async getPending(limit = 100): Promise<Array<{ id: string; event_type: string; order_code: number; raw_payload: Record<string, unknown> }>> {
     const { data, error } = await this.supabase
       .from('dead_letter_queue')
       .select('id, event_type, order_code, raw_payload')
@@ -50,7 +50,7 @@ export class DeadLetterQueueService {
       .limit(limit);
 
     if (error) throw error;
-    return data || [];
+    return (data || []) as Array<{ id: string; event_type: string; order_code: number; raw_payload: Record<string, unknown> }>;
   }
 
   async markProcessing(id: string): Promise<void> {

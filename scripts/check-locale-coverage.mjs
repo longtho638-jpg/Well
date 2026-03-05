@@ -13,11 +13,11 @@ function extractBalancedBraces(str, startIdx) {
   let i = startIdx;
   while (i < str.length && str[i] !== '{') i++;
   if (i >= str.length) return null;
-  
+
   let depth = 1, inStr = false, strCh = '';
   const start = i;
   i++; // Skip opening brace
-  
+
   for (; i < str.length; i++) {
     const ch = str[i];
     if (inStr) { if (ch === strCh && str[i-1] !== '\\') inStr = false; continue; }
@@ -89,15 +89,37 @@ function flattenKeys(obj, prefix = '') {
 }
 
 function parseSubModuleKeys(content, expectedVarName) {
-  const exportRe = new RegExp(`export\\s+const\\s+${expectedVarName}\\s*(?::[^=]*)?\\s*=\\s*`, 's');
-  const exportMatch = exportRe.exec(content);
-  if (!exportMatch) return [];
-  const startIdx = exportMatch.index + exportMatch[0].length;
-  const objStr = extractBalancedBraces(content, startIdx);
-  if (!objStr) return [];
-  const parsed = parseObjectKeys(objStr);
-  const innerObj = parsed[expectedVarName] || parsed;
-  return flattenKeys(innerObj).map(k => `${expectedVarName}.${k}`);
+  // Find ALL export const statements in the file
+  const allKeys = [];
+  const exportRe = /export\s+const\s+(\w+)\s*(?::[^=]*)?\s*=\s*/g;
+  let match;
+
+  while ((match = exportRe.exec(content)) !== null) {
+    const varName = match[1];
+    const startIdx = match.index + match[0].length;
+    const objStr = extractBalancedBraces(content, startIdx);
+    if (!objStr) continue;
+    const parsed = parseObjectKeys(objStr);
+    const innerObj = parsed[varName] || parsed;
+    const keys = flattenKeys(innerObj).map(k => `${varName}.${k}`);
+    allKeys.push(...keys);
+  }
+
+  // Fallback: if no exports found, try the original method
+  if (allKeys.length === 0) {
+    const exportMatch = new RegExp(`export\\s+const\\s+${expectedVarName}\\s*(?::[^=]*)?\\s*=\\s*`, 's').exec(content);
+    if (exportMatch) {
+      const startIdx = exportMatch.index + exportMatch[0].length;
+      const objStr = extractBalancedBraces(content, startIdx);
+      if (objStr) {
+        const parsed = parseObjectKeys(objStr);
+        const innerObj = parsed[expectedVarName] || parsed;
+        return flattenKeys(innerObj).map(k => `${expectedVarName}.${k}`);
+      }
+    }
+  }
+
+  return allKeys;
 }
 
 function parseLocaleFileRegex(content, filePath) {

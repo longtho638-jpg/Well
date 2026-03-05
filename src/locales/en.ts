@@ -12,6 +12,7 @@ import { wallet } from './en/wallet';
 import { network } from './en/network';
 import { misc } from './en/misc';
 import { raas } from './en/raas';
+import { agent } from './en/agent';
 
 export const en = {
   ...admin,
@@ -28,4 +29,5 @@ export const en = {
   ...network,
   ...misc,
   ...raas,
+  ...agent,
 };
