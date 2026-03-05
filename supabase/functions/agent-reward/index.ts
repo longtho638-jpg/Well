@@ -3,6 +3,7 @@ import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 import { createClient, SupabaseClient } from "https://esm.sh/@supabase/supabase-js@2";
 import { calculateOverrideCommissions } from "../_shared/commission/override-calculator.ts";
 import { checkAndPerformRankUpgrade } from "../_shared/commission/rank-upgrade.ts";
+import { distributePartnerSplit } from "../_shared/commission/partner-split.ts";
 
 // --- POLICY ENGINE v3.0 ---
 const DEFAULT_POLICY = {
@@ -108,6 +109,7 @@ serve(async (req) => {
         }
 
         await calculateOverrideCommissions(supabase, userId, buyer.sponsor_id, orderTotal, orderId, POLICY);
+        await distributePartnerSplit(supabase, orderId, userId, orderTotal);
         await checkAndPerformRankUpgrade(supabase, userId, buyerRoleId, POLICY.rankUpgrades);
 
         return new Response(JSON.stringify({ success: true, message: "Reward processed" }), { headers: { "Content-Type": "application/json" } });
