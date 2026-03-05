@@ -17,28 +17,21 @@ export default defineConfig({
     pool: 'forks' as const,
     maxWorkers: 1,
     fileParallelism: false,
-    // Memory optimization for M1 16GB
-    isolate: false, // Disable worker isolation to reduce memory overhead
-    poolOptions: {
-      forks: {
-        singleFork: true, // Reuse same worker process
-        isolate: false, // No isolation between tests
-      },
-    },
-    // Fail fast to avoid wasting resources on cascading failures
-    bail: 5, // Stop after 5 failures
-    retry: 1, // Retry failed tests once (handles flaky timing issues)
-    testTimeout: 10000, // 10s timeout to prevent hanging tests
+    isolate: false,
+    // Vitest 4: poolOptions moved to top-level options
+    singleFork: true,
+    bail: 5,
+    retry: 1,
+    testTimeout: 10000,
     exclude: [
       '**/node_modules/**',
       '**/dist/**',
-      '**/chrome-devtools/scripts/**', // Uses Node.js test runner
+      '**/chrome-devtools/scripts/**',
       '**/e2e/**',
-      '**/.claude/**', // Playwright tests - run with `npx playwright test`
-      '**/.claude.bak*/**', // Backup folders - not tests
-      '**/admin-panel/**', // Has its own test suite and React version
-      '**/n8n_codebase/**', // Separate project with its own test suite
-      '**/scripts/**', // Build/utility scripts
+      '**/.claude/**',
+      '**/admin-panel/**',
+      '**/n8n_codebase/**',
+      '**/scripts/**',
     ],
     coverage: {
       provider: 'v8',
