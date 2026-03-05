@@ -52,10 +52,14 @@ vi.mock('@supabase/supabase-js', () => ({
 // Suppress console warnings during tests
 const originalWarn = console.warn;
 console.warn = (...args) => {
+  const msg = args[0];
   if (
-    args[0]?.includes?.('framer-motion') ||
-    args[0]?.includes?.('act(') ||
-    args[0]?.includes?.('TestingLibraryElementError')
+    typeof msg === 'string' &&
+    (msg.includes('framer-motion') ||
+    msg.includes('act(') ||
+    msg.includes('act(...)') ||
+    msg.includes('wrap-tests-with-act') ||
+    msg.includes('TestingLibraryElementError'))
   ) {
     return;
   }

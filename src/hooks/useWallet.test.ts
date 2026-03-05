@@ -3,19 +3,26 @@ import { useWallet } from './useWallet';
 import { walletService, WalletData } from '../services/walletService';
 import { vi, describe, it, expect, beforeEach, Mock } from 'vitest';
 
-// Mock với promises có thể resolve thủ công để control timing
-vi.mock('../services/walletService', () => ({
-  walletService: {
-    getTransactions: vi.fn(),
-    getWallet: vi.fn(),
-    subscribeToWallet: vi.fn().mockReturnValue(vi.fn()),
-    requestPayout: vi.fn(),
-  },
-}));
+// Mock walletService - vitest 4.0 syntax
+vi.mock('../services/walletService', async () => {
+  const actual = await vi.importActual('../services/walletService');
+  return {
+    ...actual,
+    walletService: {
+      getTransactions: vi.fn(),
+      getWallet: vi.fn(),
+      subscribeToWallet: vi.fn(() => () => {}), // Return unsubscribe function
+      requestPayout: vi.fn(),
+    },
+  };
+});
 
+// Mock logger
 vi.mock('../../utils/logger', () => ({
   createLogger: () => ({
     error: vi.fn(),
+    warn: vi.fn(),
+    info: vi.fn(),
   }),
 }));
 
