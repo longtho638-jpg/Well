@@ -2,7 +2,8 @@
  * UI Slice Tests
  */
 
-import { describe, it, expect, beforeEach, vi } from 'vitest';
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import { describe, it, expect, beforeEach, afterAll, vi } from 'vitest';
 import { createUISlice } from '../uiSlice';
 
 vi.useFakeTimers();
@@ -12,6 +13,8 @@ describe('UISlice', () => {
   const mockInitialState = { landingPageTemplates: [], userLandingPages: [], redemptionItems: [], redemptionOrders: [] };
 
   beforeEach(() => { vi.clearAllTimers(); });
+
+  afterAll(() => { vi.useRealTimers(); });
 
   it('should initialize with empty state', () => {
     const slice = createUISlice(() => {}, () => ({}) as any, {} as any);
@@ -24,7 +27,12 @@ describe('UISlice', () => {
   it('should create landing page with correct data', async () => {
     let state: any = { user: mockUser, ...mockInitialState };
     const slice = createUISlice((updates) => { state = { ...state, ...updates }; }, () => state, {} as any);
-    const newPage = await slice.createLandingPage('template-a', 'https://example.com/portrait.jpg');
+    const newPagePromise = slice.createLandingPage('template-a', 'https://example.com/portrait.jpg');
+
+    // Fast-forward timers to complete the 2000ms setTimeout
+    vi.advanceTimersByTime(2100);
+
+    const newPage = await newPagePromise;
     expect(newPage).toMatchObject({ userId: 'user-123', template: 'template-a', portraitUrl: 'https://example.com/portrait.jpg', isPublished: false, views: 0, conversions: 0 });
     expect(newPage.id).toMatch(/LP-\d{6}/);
     expect(newPage.aiGeneratedBio).toContain('Test User');
@@ -33,8 +41,15 @@ describe('UISlice', () => {
   it('should publish landing page by ID', () => {
     const existingPage = { id: 'LP-001', userId: 'user-123', template: 'template-a' as const, isPublished: false };
     let state: any = { user: mockUser, ...mockInitialState, userLandingPages: [existingPage] };
-    const slice = createUISlice((updates) => { state = { ...state, ...updates }; }, () => state, {} as any);
+    const setMock = vi.fn((updater) => {
+      const updates = typeof updater === 'function' ? updater(state) : updater;
+      state = { ...state, ...updates };
+    });
+    const slice = createUISlice(setMock, () => state, {} as any);
+
     slice.publishLandingPage('LP-001');
+
+    expect(setMock).toHaveBeenCalledTimes(1);
     expect(state.userLandingPages[0].isPublished).toBe(true);
   });
 
