@@ -11,6 +11,7 @@ import { team } from './en/team';
 import { wallet } from './en/wallet';
 import { network } from './en/network';
 import { misc } from './en/misc';
+import { raas } from './en/raas';
 
 export const en = {
   ...admin,
@@ -26,4 +27,5 @@ export const en = {
   ...wallet,
   ...network,
   ...misc,
+  ...raas,
 };

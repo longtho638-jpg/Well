@@ -11,6 +11,7 @@ import { team } from './vi/team';
 import { wallet } from './vi/wallet';
 import { network } from './vi/network';
 import { misc } from './vi/misc';
+import { raas } from './vi/raas';
 
 export const vi = {
   ...admin,
@@ -26,4 +27,5 @@ export const vi = {
   ...wallet,
   ...network,
   ...misc,
+  ...raas,
 };

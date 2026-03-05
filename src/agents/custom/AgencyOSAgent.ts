@@ -196,4 +196,11 @@ export class AgencyOSAgent extends BaseAgent {
     getCommandHistory(): CommandHistoryEntry[] {
         return [...this.commandHistory];
     }
+
+    /**
+     * Clear command history (for testing)
+     */
+    clearCommandHistory(): void {
+        this.commandHistory = [];
+    }
 }
