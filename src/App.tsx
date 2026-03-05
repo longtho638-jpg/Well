@@ -15,6 +15,7 @@ import {
   Overview, CMS, Partners, Finance, PolicyEngine,
   OrderManagement, AdminProducts, AuditLog,
   PageSpinner, SectionSpinner, AdminSpinner,
+  CommissionDashboard,
 } from './config/app-lazy-routes-and-suspense-fallbacks';
 
 import { useStore } from './store';
@@ -120,6 +121,16 @@ const App: React.FC = () => {
                     <h2 className="text-2xl md:text-3xl font-bold text-[#1F2937]">{t('app.commission_wallet')}</h2>
                     <CommissionWallet />
                   </div>
+                </SafePage>
+              }
+            />
+
+            {/* Commission Dashboard */}
+            <Route
+              path="commission"
+              element={
+                <SafePage fallback={SectionSpinner}>
+                  <CommissionDashboard />
                 </SafePage>
               }
             />
