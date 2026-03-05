@@ -4,6 +4,7 @@ import { ReactNode } from 'react';
 import { authLogger } from '@/utils/logger';
 import { evaluateRouteGuard, checkAdminAccess } from '@/lib/vibe-auth';
 import { getAdminEmails } from '@/utils/admin-check';
+import { checkRaasLicenseGuard } from '@/lib/raas-gate';
 
 interface AdminRouteProps {
     children: ReactNode;
@@ -16,6 +17,7 @@ interface AdminRouteProps {
  * 1. Auth must be initialized (prevents redirect flash on page reload)
  * 2. User must be authenticated
  * 3. User must have admin role (via vibe-auth checkAdminAccess)
+ * 4. RaaS license must be valid (production only)
  */
 export function AdminRoute({ children }: AdminRouteProps) {
     const { user, isAuthenticated, isInitialized } = useStore();
@@ -23,6 +25,9 @@ export function AdminRoute({ children }: AdminRouteProps) {
     if (!isInitialized) {
         return null;
     }
+
+    // Check RaaS license guard (dev always allowed)
+    const licenseValid = checkRaasLicenseGuard();
 
     const verdict = evaluateRouteGuard(
         { requireAuth: true, requiredRoles: ['admin', 'super_admin'] },
@@ -46,8 +51,12 @@ export function AdminRoute({ children }: AdminRouteProps) {
         return <Navigate to="/dashboard" replace />;
     }
 
+    if (!licenseValid) {
+        authLogger.warn('Access denied: RaaS license not valid');
+        return <Navigate to="/" replace />;
+    }
+
     return <>{children}</>;
 }
 
 export default AdminRoute;
-
