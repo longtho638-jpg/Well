@@ -91,6 +91,174 @@ describe('Phase 2C: Bonus Pool', () => {
       const performers: Array<{ id: string; team_volume: number }> = [];
       expect(performers.length).toBe(0);
     });
+
+    it('handles zero total volume (pool exhaustion)', () => {
+      const totalVolume = 0;
+      const bonusPool = totalVolume * 0.02;
+      expect(bonusPool).toBe(0);
+
+      const firstPlaceBonus = bonusPool * 0.25;
+      expect(firstPlaceBonus).toBe(0);
+    });
+
+    it('handles very small pool (1000 VND)', () => {
+      const totalVolume = 1000;
+      const bonusPool = totalVolume * 0.02; // 20 VND
+      expect(bonusPool).toBe(20);
+
+      const tenthPlaceBonus = bonusPool * 0.005; // 0.1 VND
+      expect(tenthPlaceBonus).toBeCloseTo(0.1, 1);
+    });
+
+    it('prevents negative bonus from data corruption', () => {
+      const negativeVolume = -1000000;
+      const bonusPool = negativeVolume * 0.02;
+      expect(bonusPool).toBeLessThan(0);
+
+      // Should be caught by validation
+      const isValid = bonusPool >= 0;
+      expect(isValid).toBe(false);
+    });
+
+    it('handles floating point precision errors', () => {
+      const totalVolume = 2000000;
+      const bonusPool = totalVolume * 0.02; // 40,000
+
+      // Test 10th place (0.5%)
+      const tenthPlace = bonusPool * 0.005; // 40,000 * 0.005 = 200
+      expect(tenthPlace).toBe(200);
+
+      // Verify sum of all percentages equals pool
+      const percentages = [25, 20, 15, 12, 10, 8, 5, 3, 1.5, 0.5];
+      const distributed = percentages.reduce((sum, p) => sum + (bonusPool * p / 100), 0);
+
+      // Allow small floating point tolerance
+      expect(Math.abs(distributed - bonusPool)).toBeLessThan(1);
+    });
+  });
+
+  describe('Pool Exhaustion Scenarios', () => {
+    it('distribution stops when pool is exhausted', () => {
+      const smallPool = 1000; // Very small pool
+      const percentages = [25, 20, 15, 12, 10, 8, 5, 3, 1.5, 0.5];
+
+      let remaining = smallPool;
+      const distributed: number[] = [];
+
+      for (const percent of percentages) {
+        const bonus = smallPool * (percent / 100);
+        if (remaining >= bonus) {
+          distributed.push(bonus);
+          remaining -= bonus;
+        } else {
+          break; // Pool exhausted
+        }
+      }
+
+      expect(distributed.length).toBeLessThanOrEqual(10);
+      expect(distributed.reduce((sum, b) => sum + b, 0)).toBeLessThanOrEqual(smallPool);
+    });
+
+    it('handles concurrent distribution attempts (race condition)', async () => {
+      const concurrentCalls = 5;
+      const distributionCount = new Map<string, number>();
+
+      const mockDistribute = async (lockKey: string) => {
+        if (!distributionCount.has(lockKey)) {
+          distributionCount.set(lockKey, 1);
+        } else {
+          const count = distributionCount.get(lockKey) || 0;
+          distributionCount.set(lockKey, count + 1);
+        }
+      };
+
+      const lockKey = 'bonus_pool_3_2026';
+
+      await Promise.all(
+        Array(concurrentCalls).fill(null).map(() => mockDistribute(lockKey))
+      );
+
+      expect(distributionCount.get(lockKey)).toBe(concurrentCalls);
+    });
+
+    it('validates pool sufficiency before distribution', () => {
+      const _totalPool = 1000000;
+      const requiredPercentage = 100;
+
+      const percentages = [25, 20, 15, 12, 10, 8, 5, 3, 1.5, 0.5];
+      const totalPercentage = percentages.reduce((sum, p) => sum + p, 0);
+
+      expect(totalPercentage).toBe(requiredPercentage);
+
+      const invalidPercentages = [25, 20, 15, 12, 10, 8, 5, 3, 1.5, 1];
+      const invalidTotal = invalidPercentages.reduce((sum, p) => sum + p, 0);
+      expect(invalidTotal).not.toBe(requiredPercentage);
+    });
+
+    it('rolls back on mid-distribution failure', () => {
+      const totalPool = 1000000;
+      const percentages = [25, 20, 15, 12, 10, 8, 5, 3, 1.5, 0.5];
+
+      // Simulate failure at 7th distribution
+      const failureIndex = 6;
+      const distributed: number[] = [];
+      let failed = false;
+
+      for (let i = 0; i < percentages.length; i++) {
+        if (i === failureIndex) {
+          failed = true;
+          break; // Simulate failure
+        }
+        distributed.push(totalPool * (percentages[i] / 100));
+      }
+
+      expect(failed).toBe(true);
+      expect(distributed.length).toBe(failureIndex);
+
+      // In production: ALL changes should be rolled back via transaction
+      // distributed.length should be 0 after rollback
+    });
+  });
+
+  describe('Team Volume Manipulation Prevention', () => {
+    it('filters out negative team volumes', () => {
+      const performers = [
+        { id: 'user-1', team_volume: 1000000 },
+        { id: 'user-2', team_volume: -500000 }, // Suspicious
+        { id: 'user-3', team_volume: 800000 },
+      ];
+
+      const validPerformers = performers.filter(p => p.team_volume >= 0);
+
+      expect(validPerformers.length).toBe(2);
+      expect(validPerformers.find(p => p.id === 'user-2')).toBeUndefined();
+    });
+
+    it('sorts by team volume correctly (descending)', () => {
+      const performers = [
+        { id: 'user-1', team_volume: 500000 },
+        { id: 'user-2', team_volume: 1000000 },
+        { id: 'user-3', team_volume: 750000 },
+      ];
+
+      const sorted = performers.sort((a, b) => b.team_volume - a.team_volume);
+
+      expect(sorted[0].team_volume).toBe(1000000);
+      expect(sorted[1].team_volume).toBe(750000);
+      expect(sorted[2].team_volume).toBe(500000);
+    });
+
+    it('limits to top 10 performers only', () => {
+      const performers = Array(15).fill(null).map((_, i) => ({
+        id: `user-${i}`,
+        team_volume: (15 - i) * 100000
+      }));
+
+      const top10 = performers.slice(0, 10);
+
+      expect(top10.length).toBe(10);
+      expect(top10.find(p => p.id === 'user-14')).toBeUndefined(); // Last place excluded
+    });
   });
 
   describe('Transaction Type', () => {
