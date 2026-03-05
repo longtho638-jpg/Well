@@ -3,7 +3,7 @@ import react from '@vitejs/plugin-react'
 
 export default defineConfig({
   esbuild: {
-    target: 'esnext',
+    target: 'es2020',
     keepNames: true,
     legalComments: 'none',
   },
@@ -15,7 +15,7 @@ export default defineConfig({
     },
   },
   build: {
-    target: 'esnext',
+    target: 'es2020',
     cssMinify: 'esbuild',
     cssCodeSplit: true,
     ssr: false,
@@ -23,12 +23,8 @@ export default defineConfig({
     minify: 'esbuild',
     sourcemap: false,
     reportCompressedSize: false,
-    modulePreload: {
-      polyfill: true,
-    },
     rollupOptions: {
       output: {
-        inlineDynamicImports: false,
         manualChunks(id) {
           if (id.includes('node_modules')) {
             if (
@@ -46,8 +42,8 @@ export default defineConfig({
             if (id.includes('zod') || id.includes('react-hook-form')) return 'forms';
             if (id.includes('zustand')) return 'state';
             if (id.includes('@sentry')) return 'sentry';
-            if (id.includes('@react-pdf') || id.includes('pdfkit')) return 'react-pdf';
-            if (id.includes('recharts') || id.includes('react-js-geometry') || id.includes('react-js-surface')) return 'charts';
+            // NOTE: @react-pdf NOT separated — lazy loaded via dynamic import
+            if (id.includes('recharts') || id.includes('react-js-geometry')) return 'charts';
           }
           return undefined;
         },
@@ -58,7 +54,7 @@ export default defineConfig({
     include: ['react', 'react-dom', 'react-router-dom', 'zustand'],
     exclude: ['@react-pdf/renderer', 'recharts', 'pdfkit', '@ai-sdk/*', 'ai'],
     esbuildOptions: {
-      target: 'esnext',
+      target: 'es2020',
     },
   },
 })
