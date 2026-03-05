@@ -84,6 +84,8 @@ export function usePrefetch(urls: string[]): void {
             links.push(link);
         });
 
-        return () => { links.forEach(link => link.remove()); };
+        return () => {
+            links.forEach(link => link.remove());
+        };
     }, [urls]);
 }

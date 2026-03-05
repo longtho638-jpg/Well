@@ -7,7 +7,12 @@ export function useHeroCard(user: User) {
     const { t } = useTranslation();
     const [copied, setCopied] = useState(false);
     const mountedRef = useRef(true);
-    useEffect(() => () => { mountedRef.current = false; }, []);
+    const timeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+    useEffect(() => () => {
+        mountedRef.current = false;
+        if (timeoutRef.current) clearTimeout(timeoutRef.current);
+    }, []);
 
     // Gamification Logic: Founder Club Quest
     const TARGET_VOLUME = 100000000; // 100M VND
@@ -30,11 +35,10 @@ export function useHeroCard(user: User) {
             await navigator.clipboard.writeText(referralLink);
             if (!mountedRef.current) return;
             setCopied(true);
-            const _timer = setTimeout(() => {
+            if (timeoutRef.current) clearTimeout(timeoutRef.current);
+            timeoutRef.current = setTimeout(() => {
                 if (mountedRef.current) setCopied(false);
             }, 2000);
-            // Cleanup handled by mountedRef guard above — no need to return cleanup fn
-            // (returning from useCallback is unused and causes TS7030)
         } catch (err) {
             uiLogger.error('Failed to copy', err);
         }
