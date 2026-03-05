@@ -147,8 +147,8 @@ export function useAuth() {
       // 2. User profile is auto-created by Postgres trigger `on_auth_user_created`
       //    on auth.users INSERT → public.users INSERT (SECURITY DEFINER)
       //    Name is passed via auth metadata above: options.data.name
+      //    Sponsor assignment handled via sessionStorage (set during signup flow)
       if (data.user) {
-        // TODO: Handle sponsor_id assignment via separate RPC or edge function
         const sponsorId = sessionStorage.getItem('wellnexus_sponsor_id');
         if (sponsorId) {
           // Update sponsor after trigger creates the profile

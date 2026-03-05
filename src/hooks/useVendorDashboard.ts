@@ -10,6 +10,9 @@ import { productService } from '../services/productService';
 import { useToast } from '../components/ui/Toast';
 import { useTranslation } from '../hooks';
 import { checkRateLimit, getRateLimitRemaining, logAuditEvent, isUserVendor } from '../utils/auth';
+import { createLogger } from '../utils/logger';
+
+const logger = createLogger('VendorDashboard');
 
 export const useVendorDashboard = (vendorId: string) => {
   const { user } = useStore();
@@ -27,7 +30,7 @@ export const useVendorDashboard = (vendorId: string) => {
     setRateLimitRemaining(getRateLimitRemaining(user.id));
 
     if (exceeded) {
-      showToast('Rate limit exceeded. Please try again in 1 minute.', 'error');
+      showToast(t('vendor.toasts.rateLimitExceeded'), 'error');
       return false;
     }
     return true;
@@ -36,19 +39,19 @@ export const useVendorDashboard = (vendorId: string) => {
   // Verify user is authorized vendor
   const verifyVendorAuthorization = async (): Promise<boolean> => {
     if (!user?.id) {
-      showToast('You must be logged in to manage products', 'error');
+      showToast(t('vendor.errors.notLoggedIn'), 'error');
       return false;
     }
 
     const isVendor = await isUserVendor(user.id);
     if (!isVendor) {
-      showToast('Only vendors can access this feature', 'error');
+      showToast(t('vendor.errors.vendorOnly'), 'error');
       return false;
     }
 
     if (user.id !== vendorId) {
       logAuditEvent(user.id, 'UNAUTHORIZED_ACCESS', 'vendor_dashboard', vendorId);
-      showToast('You can only access your own vendor dashboard', 'error');
+      showToast(t('vendor.errors.accessDenied'), 'error');
       return false;
     }
 
@@ -82,7 +85,7 @@ export const useVendorDashboard = (vendorId: string) => {
       }));
       return convertedProducts;
     } catch (error) {
-      console.error('Error loading vendor products:', error);
+      logger.error('Error loading vendor products', { error: error instanceof Error ? error.message : String(error) });
       showToast(t('vendor.toasts.loadError'), 'error');
       return [];
     } finally {
@@ -109,7 +112,7 @@ export const useVendorDashboard = (vendorId: string) => {
       showToast(t('vendor.toasts.saveSuccess'), 'success');
       setShowAddProduct(false);
     } catch (error) {
-      console.error('Error adding product:', error);
+      logger.error('Error adding product', { error: error instanceof Error ? error.message : String(error) });
       showToast(t('vendor.toasts.addError'), 'error');
     }
   };
@@ -131,7 +134,7 @@ export const useVendorDashboard = (vendorId: string) => {
       await useStore.getState().fetchProducts();
       showToast(t('vendor.toasts.saveSuccess'), 'success');
     } catch (error) {
-      console.error('Error updating product:', error);
+      logger.error('Error updating product', { error: error instanceof Error ? error.message : String(error) });
       showToast(t('vendor.toasts.updateError'), 'error');
     }
   };
@@ -149,7 +152,7 @@ export const useVendorDashboard = (vendorId: string) => {
       await useStore.getState().fetchProducts();
       showToast(t('vendor.toasts.saveSuccess'), 'success');
     } catch (error) {
-      console.error('Error deleting product:', error);
+      logger.error('Error deleting product', { error: error instanceof Error ? error.message : String(error) });
       showToast(t('vendor.toasts.deleteError'), 'error');
     }
   };

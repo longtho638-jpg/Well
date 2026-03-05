@@ -719,7 +719,13 @@ export const marketing = {
       addError: "Không thể thêm sản phẩm",
       updateError: "Không thể cập nhật sản phẩm",
       deleteError: "Không thể xóa sản phẩm",
-      saveSuccess: "Đã lưu thành công!"
+      saveSuccess: "Đã lưu thành công!",
+      rateLimitExceeded: "Vượt quá giới hạn tốc độ. Vui lòng thử lại sau 1 phút."
+    },
+    errors: {
+      notLoggedIn: "Bạn phải đăng nhập để quản lý sản phẩm",
+      vendorOnly: "Chỉ vendors mới có thể truy cập tính năng này",
+      accessDenied: "Bạn chỉ có thể truy cập vendor dashboard của chính mình"
     }
   }
 };

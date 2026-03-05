@@ -9,6 +9,7 @@ import { useToast } from '../../components/ui/Toast';
 import { isUserVendor, logAuditEvent } from '../../utils/auth';
 import { productService } from '../../services/productService';
 import { useStore } from '../../store';
+import type { Product } from '../../types';
 
 vi.mock('../../utils/auth', async (importOriginal) => ({
   ...(await importOriginal()) as object,
@@ -49,7 +50,7 @@ describe('useVendorDashboard - Authorization', () => {
       const { result } = renderHook(() => useVendorDashboard(mockVendorId));
       await act(async () => { await result.current.loadProducts(); });
       expect(result.current.loading).toBe(false);
-      expect(mockShowToast).toHaveBeenCalledWith('You must be logged in to manage products', 'error');
+      expect(mockShowToast).toHaveBeenCalledWith('vendor.errors.notLoggedIn', 'error');
     });
 
     it('fails when user ID is undefined', async () => {
@@ -57,7 +58,7 @@ describe('useVendorDashboard - Authorization', () => {
       const { result } = renderHook(() => useVendorDashboard(mockVendorId));
       await act(async () => { await result.current.loadProducts(); });
       expect(result.current.loading).toBe(false);
-      expect(mockShowToast).toHaveBeenCalledWith('You must be logged in to manage products', 'error');
+      expect(mockShowToast).toHaveBeenCalledWith('vendor.errors.notLoggedIn', 'error');
     });
 
     it('fails when user is not a vendor (non-vendor access)', async () => {
@@ -66,7 +67,7 @@ describe('useVendorDashboard - Authorization', () => {
       const { result } = renderHook(() => useVendorDashboard(mockVendorId));
       await act(async () => { await result.current.loadProducts(); });
       expect(result.current.loading).toBe(false);
-      expect(mockShowToast).toHaveBeenCalledWith('Only vendors can access this feature', 'error');
+      expect(mockShowToast).toHaveBeenCalledWith('vendor.errors.vendorOnly', 'error');
       expect(isUserVendor).toHaveBeenCalledWith(mockUserId);
     });
 
@@ -77,7 +78,7 @@ describe('useVendorDashboard - Authorization', () => {
       const { result } = renderHook(() => useVendorDashboard(differentVendorId));
       await act(async () => { await result.current.loadProducts(); });
       expect(result.current.loading).toBe(false);
-      expect(mockShowToast).toHaveBeenCalledWith('You can only access your own vendor dashboard', 'error');
+      expect(mockShowToast).toHaveBeenCalledWith('vendor.errors.accessDenied', 'error');
       expect(logAuditEvent).toHaveBeenCalledWith(mockUserId, 'UNAUTHORIZED_ACCESS', 'vendor_dashboard', differentVendorId);
     });
 
@@ -88,7 +89,7 @@ describe('useVendorDashboard - Authorization', () => {
       const { result } = renderHook(() => useVendorDashboard(anotherVendorId));
       await act(async () => { await result.current.loadProducts(); });
       expect(result.current.loading).toBe(false);
-      expect(mockShowToast).toHaveBeenCalledWith('You can only access your own vendor dashboard', 'error');
+      expect(mockShowToast).toHaveBeenCalledWith('vendor.errors.accessDenied', 'error');
       expect(logAuditEvent).toHaveBeenCalledWith(mockUserId, 'UNAUTHORIZED_ACCESS', 'vendor_dashboard', anotherVendorId);
     });
 
@@ -100,7 +101,7 @@ describe('useVendorDashboard - Authorization', () => {
         description: 'Test', bonus_revenue: 0, commission_rate: 0.2, image_url: '', sales_count: 0, stock: 10
       }]);
       const { result } = renderHook(() => useVendorDashboard(mockVendorId));
-      let products: any;
+      let products: Product[] | undefined;
       await act(async () => { products = await result.current.loadProducts(); });
       expect(result.current.loading).toBe(false);
       expect(mockShowToast).not.toHaveBeenCalledWith(expect.any(String), 'error');
@@ -115,7 +116,7 @@ describe('useVendorDashboard - Authorization', () => {
       const { result } = renderHook(() => useVendorDashboard(mockVendorId));
       await act(async () => { await result.current.loadProducts(); });
       expect(result.current.loading).toBe(false);
-      expect(mockShowToast).toHaveBeenCalledWith('Only vendors can access this feature', 'error');
+      expect(mockShowToast).toHaveBeenCalledWith('vendor.errors.vendorOnly', 'error');
     });
 
     it('checks auth before calling productService', async () => {
@@ -147,7 +148,7 @@ describe('useVendorDashboard - Authorization', () => {
         });
       });
       expect(productService.createProductForVendor).not.toHaveBeenCalled();
-      expect(mockShowToast).toHaveBeenCalledWith('You must be logged in to manage products', 'error');
+      expect(mockShowToast).toHaveBeenCalledWith('vendor.errors.notLoggedIn', 'error');
     });
 
     it('blocks update product when vendor ID mismatches', async () => {
@@ -156,7 +157,7 @@ describe('useVendorDashboard - Authorization', () => {
       const { result } = renderHook(() => useVendorDashboard(mockVendorId));
       await act(async () => { await result.current.handleUpdateProduct('prod-123', { name: 'Updated' }); });
       expect(productService.updateProduct).not.toHaveBeenCalled();
-      expect(mockShowToast).toHaveBeenCalledWith('You can only access your own vendor dashboard', 'error');
+      expect(mockShowToast).toHaveBeenCalledWith('vendor.errors.accessDenied', 'error');
     });
 
     it('blocks delete product when not a vendor', async () => {
@@ -167,7 +168,7 @@ describe('useVendorDashboard - Authorization', () => {
       window.confirm = vi.fn(() => true);
       await act(async () => { await result.current.handleDeleteProduct('prod-123'); });
       expect(productService.deleteProduct).not.toHaveBeenCalled();
-      expect(mockShowToast).toHaveBeenCalledWith('Only vendors can access this feature', 'error');
+      expect(mockShowToast).toHaveBeenCalledWith('vendor.errors.vendorOnly', 'error');
       window.confirm = originalConfirm;
     });
   });

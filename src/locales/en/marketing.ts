@@ -719,7 +719,13 @@ export const marketing = {
       addError: "Failed to add product",
       updateError: "Failed to update product",
       deleteError: "Failed to delete product",
-      saveSuccess: "Saved successfully!"
+      saveSuccess: "Saved successfully!",
+      rateLimitExceeded: "Rate limit exceeded. Please try again in 1 minute."
+    },
+    errors: {
+      notLoggedIn: "You must be logged in to manage products",
+      vendorOnly: "Only vendors can access this feature",
+      accessDenied: "You can only access your own vendor dashboard"
     }
   }
 };

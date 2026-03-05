@@ -17,12 +17,25 @@ export default defineConfig({
     pool: 'forks' as const,
     maxWorkers: 1,
     fileParallelism: false,
+    // Memory optimization for M1 16GB
+    isolate: false, // Disable worker isolation to reduce memory overhead
+    poolOptions: {
+      forks: {
+        singleFork: true, // Reuse same worker process
+        isolate: false, // No isolation between tests
+      },
+    },
+    // Fail fast to avoid wasting resources on cascading failures
+    bail: 5, // Stop after 5 failures
+    retry: 1, // Retry failed tests once (handles flaky timing issues)
+    testTimeout: 10000, // 10s timeout to prevent hanging tests
     exclude: [
       '**/node_modules/**',
       '**/dist/**',
       '**/chrome-devtools/scripts/**', // Uses Node.js test runner
       '**/e2e/**',
       '**/.claude/**', // Playwright tests - run with `npx playwright test`
+      '**/.claude.bak*/**', // Backup folders - not tests
       '**/admin-panel/**', // Has its own test suite and React version
       '**/n8n_codebase/**', // Separate project with its own test suite
       '**/scripts/**', // Build/utility scripts

@@ -5,6 +5,9 @@
 
 import { secureTokenStorage } from './secure-token-storage';
 import { supabase } from '@/lib/supabase';
+import { createLogger } from './logger';
+
+const logger = createLogger('Auth');
 
 // ============================================================================
 // TOKEN MANAGEMENT
@@ -174,13 +177,13 @@ export const checkProductAuthorization = async (productId: string, userId: strin
         await logAuditEvent(userId, 'UNAUTHORIZED_ACCESS', 'products', productId);
         return false;
       }
-      console.error('Error checking product authorization:', error);
+      logger.error('Error checking product authorization', { error: error instanceof Error ? error.message : String(error) });
       return false;
     }
 
     return !!data;
   } catch (error) {
-    console.error('Unexpected error in checkProductAuthorization:', error);
+    logger.error('Unexpected error in checkProductAuthorization', { error: error instanceof Error ? error.message : String(error) });
     return false;
   }
 };
@@ -199,13 +202,13 @@ export const isUserVendor = async (userId: string): Promise<boolean> => {
       .single();
 
     if (error) {
-      console.error('Error checking user role:', error);
+      logger.error('Error checking user role', { error: error instanceof Error ? error.message : String(error) });
       return false;
     }
 
     return data?.role === 'vendor' || data?.role === 'admin';
   } catch (error) {
-    console.error('Unexpected error in isUserVendor:', error);
+    logger.error('Unexpected error in isUserVendor', { error: error instanceof Error ? error.message : String(error) });
     return false;
   }
 };
@@ -224,13 +227,13 @@ export const getProductVendorId = async (productId: string): Promise<string | nu
       .single();
 
     if (error) {
-      console.error('Error getting product vendor ID:', error);
+      logger.error('Error getting product vendor ID', { error: error instanceof Error ? error.message : String(error) });
       return null;
     }
 
     return data?.vendor_id || null;
   } catch (error) {
-    console.error('Unexpected error in getProductVendorId:', error);
+    logger.error('Unexpected error in getProductVendorId', { error: error instanceof Error ? error.message : String(error) });
     return null;
   }
 };
@@ -273,7 +276,7 @@ export const logAuditEvent = async (
       timestamp: new Date().toISOString()
     });
   } catch (error) {
-    console.error('Failed to log audit event:', error);
+    logger.error('Failed to log audit event', { error: error instanceof Error ? error.message : String(error) });
   }
 };
 
