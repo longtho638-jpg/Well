@@ -1,7 +1,13 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { TrendingUp } from 'lucide-react';
-import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
+import { LineChart } from 'recharts';
+import { Line } from 'recharts';
+import { XAxis } from 'recharts';
+import { YAxis } from 'recharts';
+import { CartesianGrid } from 'recharts';
+import { Tooltip } from 'recharts';
+import { ResponsiveContainer } from 'recharts';
 import { formatVND } from '@/utils/format';
 import { useTranslation } from '../../hooks';
 

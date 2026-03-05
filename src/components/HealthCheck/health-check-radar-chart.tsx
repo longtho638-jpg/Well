@@ -11,15 +11,13 @@
 import { motion } from 'framer-motion';
 import { TrendingUp } from 'lucide-react';
 import { useTranslation } from '@/hooks';
-import {
-  Radar,
-  RadarChart,
-  PolarGrid,
-  PolarAngleAxis,
-  PolarRadiusAxis,
-  ResponsiveContainer,
-  Tooltip
-} from 'recharts';
+import { Radar } from 'recharts';
+import { RadarChart } from 'recharts';
+import { PolarGrid } from 'recharts';
+import { PolarAngleAxis } from 'recharts';
+import { PolarRadiusAxis } from 'recharts';
+import { ResponsiveContainer } from 'recharts';
+import { Tooltip } from 'recharts';
 
 interface HealthDimension {
   dimension: string;

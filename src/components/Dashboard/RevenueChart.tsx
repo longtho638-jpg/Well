@@ -1,6 +1,12 @@
 
 import React, { useState } from 'react';
-import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
+import { AreaChart } from 'recharts';
+import { Area } from 'recharts';
+import { XAxis } from 'recharts';
+import { YAxis } from 'recharts';
+import { CartesianGrid } from 'recharts';
+import { Tooltip } from 'recharts';
+import { ResponsiveContainer } from 'recharts';
 import { ChartDataPoint } from '../../types';
 import { formatVND, formatCompact } from '../../utils/format';
 import { motion } from 'framer-motion';

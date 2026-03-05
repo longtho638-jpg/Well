@@ -16,7 +16,9 @@ import {
   RefreshCw,
   Settings
 } from 'lucide-react';
-import { AreaChart, Area, ResponsiveContainer } from 'recharts';
+import { AreaChart } from 'recharts';
+import { Area } from 'recharts';
+import { ResponsiveContainer } from 'recharts';
 
 // Hooks & Utils
 import { useAdminOverview } from '@/hooks/useAdminOverview';

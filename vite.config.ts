@@ -3,7 +3,7 @@ import react from '@vitejs/plugin-react'
 
 export default defineConfig({
   esbuild: {
-    target: 'esnext',
+    target: 'es2020',
     keepNames: true,
     legalComments: 'none',
   },
@@ -15,7 +15,7 @@ export default defineConfig({
     },
   },
   build: {
-    target: 'esnext',
+    target: 'es2020',
     cssMinify: 'esbuild',
     cssCodeSplit: true,
     ssr: false,
@@ -25,7 +25,6 @@ export default defineConfig({
     reportCompressedSize: false,
     rollupOptions: {
       output: {
-        inlineDynamicImports: false,
         manualChunks(id) {
           if (id.includes('node_modules')) {
             if (
@@ -54,7 +53,7 @@ export default defineConfig({
     include: ['react', 'react-dom', 'react-router-dom', 'zustand'],
     exclude: ['@react-pdf/renderer', 'recharts', 'pdfkit', '@ai-sdk/*', 'ai'],
     esbuildOptions: {
-      target: 'esnext',
+      target: 'es2020',
     },
   },
 })

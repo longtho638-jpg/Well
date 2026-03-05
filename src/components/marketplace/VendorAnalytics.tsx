@@ -1,5 +1,18 @@
 import React, { useState } from 'react';
-import { BarChart, Bar, Line, PieChart, Pie, Cell, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, Area, AreaChart } from 'recharts';
+import { BarChart } from 'recharts';
+import { Bar } from 'recharts';
+import { Line } from 'recharts';
+import { PieChart } from 'recharts';
+import { Pie } from 'recharts';
+import { Cell } from 'recharts';
+import { XAxis } from 'recharts';
+import { YAxis } from 'recharts';
+import { CartesianGrid } from 'recharts';
+import { Tooltip } from 'recharts';
+import { Legend } from 'recharts';
+import { ResponsiveContainer } from 'recharts';
+import { Area } from 'recharts';
+import { AreaChart } from 'recharts';
 import { motion } from 'framer-motion';
 import { useTranslation } from '@/hooks';
 
