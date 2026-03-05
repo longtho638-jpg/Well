@@ -1,4 +1,4 @@
-import { useState, useCallback, useMemo } from 'react';
+import { useState, useCallback, useMemo, useRef, useEffect } from 'react';
 
 export type AuditActionType =
     | 'partner_approved'
@@ -41,13 +41,23 @@ export function useAuditLog() {
     const [searchQuery, setSearchQuery] = useState('');
     const [actionFilter, setActionFilter] = useState('all');
     const [adminFilter, setAdminFilter] = useState('all');
+    const fetchTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+    // Cleanup timeout on unmount
+    useEffect(() => {
+        return () => {
+            if (fetchTimeoutRef.current) clearTimeout(fetchTimeoutRef.current);
+        };
+    }, []);
 
     const fetchLogs = useCallback(async () => {
         setLoading(true);
         // Sync logic could be added here
-        await new Promise(r => setTimeout(r, 600));
-        setLogs(MOCK_AUDIT_LOGS);
-        setLoading(false);
+        if (fetchTimeoutRef.current) clearTimeout(fetchTimeoutRef.current);
+        fetchTimeoutRef.current = setTimeout(() => {
+            setLogs(MOCK_AUDIT_LOGS);
+            setLoading(false);
+        }, 600);
     }, []);
 
     const filteredLogs = useMemo(() => {
