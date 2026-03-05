@@ -1,0 +1,69 @@
+# Supabase Local Config - Security Hardening
+# Date: 2026-03-05
+
+[api]
+# Add security headers to all API responses
+extra_headers = [
+  "X-Content-Type-Options: nosniff",
+  "X-Frame-Options: DENY",
+  "X-XSS-Protection: 1; mode=block",
+  "Referrer-Policy: strict-origin-when-cross-origin"
+]
+
+[db]
+# Enable pg_cron for scheduled jobs (rate limit cleanup, etc.)
+enable_pg_cron = true
+
+[db.pooler]
+# Connection pooling configuration
+pool_mode = "transaction"
+default_pool_size = 20
+max_client_conn = 200
+
+[realtime]
+# Secure realtime connections
+max_concurrent_users = 1000
+
+[studio]
+# Studio security settings
+enabled = true
+
+[auth]
+# MFA/2FA Configuration
+enable_mfa = true
+
+# TOTP (Time-based One-Time Password) settings
+[auth.mfa]
+totp_enabled = true
+totp_issuer = "WellNexus"
+
+# MFA enforcement for admin emails
+# Note: Actual enforcement done via RLS policies
+[auth.mfa.admin_policy]
+# Admin emails that MUST enable MFA
+required_for_emails = [
+  "wellnexusvn@gmail.com",
+  "doanhnhancaotuan@gmail.com",
+  "billwill.mentor@gmail.com"
+]
+
+# Session configuration
+[auth.sessions]
+# Force MFA after this duration (30 minutes)
+mfa_required_after = "30m"
+# Single session per user (optional)
+single_session = false
+
+# Password policy (already strong, reinforcing)
+[auth.password]
+min_length = 8
+required_chars = "uppercase,lowercase,number,special"
+
+# Rate limiting for auth endpoints (built-in)
+[auth.rate_limits]
+sms_otp_send = 3
+email_otp_send = 5
+token_refresh = 10
+
+[analytics]
+enabled = false
