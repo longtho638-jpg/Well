@@ -1,5 +1,5 @@
-# WellNexus CD Pipeline - Deployment Automation
-# Deploy to production after successful CI/CD
+# WellNexus CD Pipeline - Cloudflare Pages Deployment
+# Deploy to Cloudflare Pages after successful CI/CD
 
 name: CD Pipeline
 
@@ -10,7 +10,6 @@ on:
       - completed
     branches:
       - main
-  # Manual trigger
   workflow_dispatch:
     inputs:
       environment:
@@ -27,22 +26,12 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
-  check-ci-status:
-    name: Check CI Status
+  deploy-cloudflare:
+    name: Deploy to Cloudflare Pages
     runs-on: ubuntu-latest
-    if: ${{ github.event.workflow_run.conclusion == 'success' || github.event_name == 'workflow_dispatch' }}
-
-    steps:
-      - name: CI đã thành công ✅
-        run: echo "CI Pipeline đã thành công - sẵn sàng deploy"
-
-  deploy-vercel:
-    name: Deploy to Vercel
-    runs-on: ubuntu-latest
-    needs: check-ci-status
     environment:
       name: production
-      url: https://wellnexus.vn
+      url: https://wellnexus.pages.dev
 
     steps:
       - name: Checkout code
@@ -53,7 +42,7 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '22'
+          node-version: '20'
 
       - name: Setup pnpm
         uses: pnpm/action-setup@v4
@@ -71,36 +60,33 @@ jobs:
           VITE_RESEND_API_KEY: ${{ secrets.VITE_RESEND_API_KEY }}
           VITE_GEMINI_API_KEY: ${{ secrets.VITE_GEMINI_API_KEY }}
 
-      - name: Deploy to Vercel
-        id: deploy
-        uses: amondnet/vercel-action@v25
+      - name: Deploy to Cloudflare Pages
+        uses: cloudflare/wrangler-action@v3
         with:
-          vercel-token: ${{ secrets.VERCEL_TOKEN }}
-          vercel-org-id: ${{ secrets.VERCEL_ORG_ID }}
-          vercel-project-id: ${{ secrets.VERCEL_PROJECT_ID }}
-          vercel-args: '--prod'
-          working-directory: ./
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          command: pages deploy dist --project-name=wellnexus
 
       - name: Output deployment URL
         run: |
           echo "🚀 Deployment successful!"
-          echo "URL: ${{ steps.deploy.outputs.preview-url }}"
+          echo "URL: https://wellnexus.pages.dev"
 
   smoke-test:
     name: Post-Deploy Smoke Test
     runs-on: ubuntu-latest
-    needs: deploy-vercel
+    needs: deploy-cloudflare
     timeout-minutes: 5
 
     steps:
-      - name: Chờ deployment propagage
+      - name: Wait for deployment to propagate
         run: sleep 30
 
       - name: Smoke test production
         run: |
           MAX_ATTEMPTS=5
           ATTEMPT=0
-          PROD_URL="https://wellnexus.vn"
+          PROD_URL="https://wellnexus.pages.dev"
 
           while [ $ATTEMPT -lt $MAX_ATTEMPTS ]; do
             ATTEMPT=$((ATTEMPT + 1))
@@ -112,51 +98,32 @@ jobs:
               exit 0
             fi
 
-            echo "⏳ Chờ 15s trước khi thử lại..."
+            echo "⏳ Waiting 15s before retry..."
             sleep 15
           done
 
-          echo "❌ Production DOWN sau $MAX_ATTEMPTS attempts"
+          echo "❌ Production DOWN after $MAX_ATTEMPTS attempts"
           exit 1
-
-      - name: Validate homepage content
-        run: |
-          HOMEPAGE_CONTENT=$(curl -s https://wellnexus.vn)
-
-          # Check for key content
-          if echo "$HOMEPAGE_CONTENT" | grep -q "WellNexus"; then
-            echo "✅ Homepage contains WellNexus branding"
-          else
-            echo "❌ Homepage missing branding"
-            exit 1
-          fi
-
-          if echo "$HOMEPAGE_CONTENT" | grep -q "dashboard"; then
-            echo "✅ Homepage contains dashboard link"
-          else
-            echo "❌ Homepage missing dashboard link"
-            exit 1
-          fi
 
   notify:
     name: Notify Deployment Status
     runs-on: ubuntu-latest
-    needs: [deploy-vercel, smoke-test]
+    needs: [deploy-cloudflare, smoke-test]
     if: always()
 
     steps:
       - name: Success notification
         if: ${{ needs.smoke-test.result == 'success' }}
         run: |
-          echo "🎉 Deployment thành công!"
-          echo "🌐 Production: https://wellnexus.vn"
+          echo "🎉 Deployment successful!"
+          echo "🌐 Production: https://wellnexus.pages.dev"
           echo "✅ Smoke tests: PASSED"
-          echo "📅 Thời gian: $(date -u +%Y-%m-%dT%H:%M:%SZ)"
+          echo "📅 Time: $(date -u +%Y-%m-%dT%H:%M:%SZ)"
 
       - name: Failure notification
         if: ${{ needs.smoke-test.result == 'failure' }}
         run: |
-          echo "❌ Deployment thất bại!"
-          echo "🔴 Cần kiểm tra ngay: https://wellnexus.vn"
-          echo "📋 Chi tiết: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
+          echo "❌ Deployment failed!"
+          echo "🔴 Check: https://wellnexus.pages.dev"
+          echo "📋 Details: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
           exit 1

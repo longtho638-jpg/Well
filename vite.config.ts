@@ -6,8 +6,6 @@ export default defineConfig({
     target: 'es2020',
     keepNames: true,
     legalComments: 'none',
-    // Fix EPIPE on Apple Silicon: increase worker timeout
-    pure: ['console.log'],
   },
   plugins: [react()],
   resolve: {
@@ -20,10 +18,10 @@ export default defineConfig({
     cssMinify: 'esbuild',
     cssCodeSplit: true,
     ssr: false,
-    chunkSizeWarningLimit: 1600,
-    // Fix EPIPE on Apple Silicon: limit parallel file operations
+    chunkSizeWarningLimit: 2000,
+    // Optimized for Apple Silicon: balanced parallel ops
     rollupOptions: {
-      maxParallelFileOps: 2,
+      maxParallelFileOps: 4,
       output: {
         manualChunks(id) {
           if (id.includes('node_modules')) {
