@@ -7,7 +7,7 @@ import { agentRegistry, BaseAgent } from '@/agents';
 // Mock dependencies
 vi.mock('../../utils/tokenomics', () => ({
   generateTxHash: vi.fn(() => 'mock-tx-hash'),
-  calculateStakingReward: vi.fn((amount) => amount * 0.1),
+  calculateStakingReward: vi.fn((amount, apy, days) => Number((amount * apy * days / 365).toFixed(4))),
 }));
 
 vi.mock('../../utils/tax', () => ({
@@ -104,8 +104,8 @@ describe('walletSlice', () => {
 
     const state = useStore.getState();
     expect(state.user.stakedGrowBalance).toBe(400);
-    // 100 principal + 10 reward (from mock) = 110 added to growBalance
-    expect(state.user.growBalance).toBe(1110);
+    // 100 principal + reward (100 * 0.12 * 30/365 = 0.9863)
+    expect(state.user.growBalance).toBe(1000.9863);
     expect(state.transactions).toHaveLength(1);
   });
 
