@@ -50,8 +50,8 @@ describe('useWallet', () => {
     const { result } = renderHook(() => useWallet('user-1'));
 
     // Resolve both promises (simulating parallel completion)
-    resolveTxs!(mockTransactions);
-    resolveWallet!(mockWallet);
+    resolveTxs!(mockTransactions);  // eslint-disable-line @typescript-eslint/no-non-null-assertion
+    resolveWallet!(mockWallet);  // eslint-disable-line @typescript-eslint/no-non-null-assertion
 
     // Wait for loading to become false (both promises resolved)
     await waitFor(() => {
@@ -79,7 +79,7 @@ describe('useWallet', () => {
     const { result } = renderHook(() => useWallet('user-1'));
 
     // Resolve wallet to complete loading
-    resolveWallet!(mockWallet);
+    resolveWallet!(mockWallet);  // eslint-disable-line @typescript-eslint/no-non-null-assertion
 
     // Wait for error to be set
     await waitFor(() => {
