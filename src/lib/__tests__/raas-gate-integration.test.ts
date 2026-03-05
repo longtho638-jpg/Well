@@ -6,36 +6,32 @@
 
 import { describe, it, expect, beforeEach, vi } from 'vitest';
 import {
-  validateRaasLicense,
+  validateRaaSLicense,
   checkRaasLicenseGuard,
-  isAdminDashboardEnabled,
-  isPayosWebhookEnabled,
-  getLicenseStatus,
   getCachedLicenseResult,
-  clearCachedLicenseResult,
+  clearLicenseCache,
 } from '@/lib/raas-gate';
 
 describe('RaaS License Gate - Integration', () => {
   beforeEach(() => {
     vi.clearAllMocks();
-    clearCachedLicenseResult();
+    clearLicenseCache();
   });
 
   describe('License Guard - Production Mode (No License)', () => {
     it('should block admin access without license in production', () => {
-      const result = validateRaasLicense();
+      const result = validateRaaSLicense();
       expect(result).toBeDefined();
     });
 
     it('should have correct feature flags structure', () => {
-      const result = validateRaasLicense();
+      const result = validateRaaSLicense();
 
       expect(result).toHaveProperty('isValid');
+      expect(result).toHaveProperty('tier');
       expect(result).toHaveProperty('features');
       expect(result.features).toHaveProperty('adminDashboard');
-      expect(result.features).toHaveProperty('payosWebhook');
-      expect(result.features).toHaveProperty('commissionDistribution');
-      expect(result.features).toHaveProperty('policyEngine');
+      expect(result.features).toHaveProperty('payosAutomation');
     });
   });
 
@@ -69,14 +65,7 @@ describe('RaaS License Gate - Integration', () => {
     });
   });
 
-  describe('License Status', () => {
-    it('should return status object with correct shape', () => {
-      const status = getLicenseStatus();
-
-      expect(status).toHaveProperty('isActive');
-      // expiresAt and daysRemaining only present when isActive: true
-    });
-
+  describe('License Cache', () => {
     it('should cache validation result', () => {
       const result1 = getCachedLicenseResult();
       const result2 = getCachedLicenseResult();
@@ -86,26 +75,21 @@ describe('RaaS License Gate - Integration', () => {
 
     it('should clear cache on demand', () => {
       getCachedLicenseResult();
-      clearCachedLicenseResult();
+      clearLicenseCache();
       const newResult = getCachedLicenseResult();
 
       expect(newResult).toBeDefined();
     });
   });
 
-  describe('Feature Flags Helper Functions', () => {
-    it('isAdminDashboardEnabled returns boolean', () => {
-      const enabled = isAdminDashboardEnabled();
-      expect(typeof enabled).toBe('boolean');
-    });
-
-    it('isPayosWebhookEnabled returns boolean', () => {
-      const enabled = isPayosWebhookEnabled();
-      expect(typeof enabled).toBe('boolean');
-    });
-
+  describe('Feature Guard Helper', () => {
     it('checkRaasLicenseGuard returns boolean', () => {
       const valid = checkRaasLicenseGuard();
+      expect(typeof valid).toBe('boolean');
+    });
+
+    it('checkRaasLicenseGuard with feature returns boolean', () => {
+      const valid = checkRaasLicenseGuard('adminDashboard');
       expect(typeof valid).toBe('boolean');
     });
   });
