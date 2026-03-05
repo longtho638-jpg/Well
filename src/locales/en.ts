@@ -22,7 +22,12 @@ import { copilotsuggestions } from './en/copilotsuggestions';
 import { achievementgrid } from './en/achievementgrid';
 import { herocard } from './en/herocard';
 import { dailyquesthub } from './en/dailyquesthub';
-import { liveActivities, liveactivitiesticker, quickactionscard, recentactivitylist, revenuebreakdown, revenuechart } from './en/dashboard-additional';
+import { liveActivities } from './en/liveActivities';
+import { liveactivitiesticker } from './en/liveactivitiesticker';
+import { quickactionscard } from './en/quickactionscard';
+import { recentactivitylist } from './en/recentactivitylist';
+import { revenuebreakdown } from './en/revenuebreakdown';
+import { revenuechart } from './en/revenuechart';
 
 export const en = {
   ...admin,

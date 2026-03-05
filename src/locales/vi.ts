@@ -22,7 +22,12 @@ import { copilotsuggestions } from './vi/copilotsuggestions';
 import { achievementgrid } from './vi/achievementgrid';
 import { herocard } from './vi/herocard';
 import { dailyquesthub } from './vi/dailyquesthub';
-import { liveActivities, liveactivitiesticker, quickactionscard, recentactivitylist, revenuebreakdown, revenuechart } from './vi/dashboard-additional';
+import { liveActivities } from './vi/liveActivities';
+import { liveactivitiesticker } from './vi/liveactivitiesticker';
+import { quickactionscard } from './vi/quickactionscard';
+import { recentactivitylist } from './vi/recentactivitylist';
+import { revenuebreakdown } from './vi/revenuebreakdown';
+import { revenuechart } from './vi/revenuechart';
 
 export const vi = {
   ...admin,
