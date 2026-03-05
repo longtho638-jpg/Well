@@ -3,7 +3,7 @@
  * Uses react-hook-form + zod for validation and password update logic.
  */
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -17,8 +17,9 @@ export function useResetPassword() {
     const [success, setSuccess] = useState(false);
     const [showPassword, setShowPassword] = useState(false);
     const [showConfirmPassword, setShowConfirmPassword] = useState(false);
-    const { t } = useTranslation();
     const navigate = useNavigate();
+    const { t } = useTranslation();
+    const redirectTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
     const form = useForm<ResetPasswordFormValues>({
         resolver: zodResolver(resetPasswordSchema),
@@ -28,6 +29,11 @@ export function useResetPassword() {
         },
         mode: 'onTouched',
     });
+
+    // Cleanup on unmount
+    useEffect(() => () => {
+        if (redirectTimeoutRef.current) clearTimeout(redirectTimeoutRef.current);
+    }, []);
 
     // Listen for PASSWORD_RECOVERY event from Supabase (recovery token in URL hash)
     useEffect(() => {
@@ -68,7 +74,8 @@ export function useResetPassword() {
             setSuccess(true);
 
             // Redirect to login after 2 seconds
-            setTimeout(() => {
+            if (redirectTimeoutRef.current) clearTimeout(redirectTimeoutRef.current);
+            redirectTimeoutRef.current = setTimeout(() => {
                 navigate('/login');
             }, 2000);
         } catch {

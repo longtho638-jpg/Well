@@ -3,7 +3,7 @@
  * Uses react-hook-form + zod for validation and login logic.
  */
 
-import { useState } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -18,6 +18,7 @@ export const useLogin = () => {
     const [loading, setLoading] = useState(false);
     const [showPassword, setShowPassword] = useState(false);
     const [success, setSuccess] = useState(false);
+    const timeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
     const { t } = useTranslation();
 
     const { signIn: _signIn } = useAuth();
@@ -32,20 +33,25 @@ export const useLogin = () => {
         },
     });
 
+    // Cleanup on unmount
+    useEffect(() => () => {
+        if (timeoutRef.current) clearTimeout(timeoutRef.current);
+    }, []);
+
     /**
      * Role-based navigation logic
      */
     const navigateAfterLogin = (userEmail: string) => {
         const userIsAdmin = isAdmin(userEmail);
         setSuccess(true);
-        const timer = setTimeout(() => {
+        if (timeoutRef.current) clearTimeout(timeoutRef.current);
+        timeoutRef.current = setTimeout(() => {
             if (userIsAdmin) {
                 navigate('/admin');
             } else {
                 navigate('/dashboard');
             }
         }, 800);
-        return () => clearTimeout(timer);
     };
 
     /**
@@ -58,7 +64,7 @@ export const useLogin = () => {
         let timeoutId: ReturnType<typeof setTimeout> | undefined = undefined;
 
         try {
-            const timeoutPromise = new Promise((_, reject) => {
+            const timeoutPromise = new Promise<unknown>((_, reject) => {
                 timeoutId = setTimeout(() => reject(new Error('TIMEOUT')), 30000);
             });
 
