@@ -97,12 +97,14 @@ export async function calculateMonthlyBonusPool(
     console.log(`[Phase2C] Lock acquired for ${lockKey}`);
 
     // Calculate monthly volume
+    const nextMonth = month === 12 ? 1 : month + 1;
+    const nextYear = month === 12 ? year + 1 : year;
     const { data: orders, error: ordersError } = await supabase
       .from('orders')
       .select('total_vnd')
       .eq('status', 'completed')
       .gte('created_at', `${year}-${month.toString().padStart(2, '0')}-01`)
-      .lt('created_at', `${year}-${(month + 1).toString().padStart(2, '0')}-01`);
+      .lt('created_at', `${nextYear}-${nextMonth.toString().padStart(2, '0')}-01`);
 
     if (ordersError) {
       throw new Error(`Failed to fetch orders: ${ordersError.message}`);
