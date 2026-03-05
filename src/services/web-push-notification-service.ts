@@ -156,8 +156,8 @@ export async function showTestNotification(title: string, body: string): Promise
   const registration = await navigator.serviceWorker.ready;
   await registration.showNotification(title, {
     body,
-    icon: '/pwa-192x192.png',
-    badge: '/pwa-192x192.png',
+    icon: '/pwa-192x192.webp',
+    badge: '/pwa-192x192.webp',
     tag: 'test-notification',
     requireInteraction: false,
   });

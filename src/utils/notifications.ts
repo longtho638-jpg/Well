@@ -65,7 +65,7 @@ export function sendNotification(
     try {
         const notification = new Notification(title, {
             ...notificationOptions,
-            icon: notificationOptions.icon || '/icon-192.png',
+            icon: notificationOptions.icon || '/icon-192.webp',
         });
 
         if (onClick) {
