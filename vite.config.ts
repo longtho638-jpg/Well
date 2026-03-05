@@ -6,7 +6,10 @@ export default defineConfig({
     target: 'es2020',
     keepNames: true,
     legalComments: 'none',
+    drop: ['console', 'debugger'],
+    pure: ['console.log', 'console.warn', 'console.error'],
   },
+  cacheDir: '.vite',
   plugins: [react()],
   resolve: {
     alias: {
@@ -19,12 +22,19 @@ export default defineConfig({
     cssCodeSplit: true,
     ssr: false,
     chunkSizeWarningLimit: 2000,
-    // Optimized for Apple Silicon: balanced parallel ops
+    // Optimized for M1 Max: 8 parallel ops (vs 4 default)
     rollupOptions: {
-      maxParallelFileOps: 4,
+      maxParallelFileOps: 8,
       output: {
         manualChunks(id) {
           if (id.includes('node_modules')) {
+            // AI packages
+            if (
+              id.includes('@ai-sdk/') ||
+              id.includes('ai/')
+            ) {
+              return 'ai';
+            }
             // React core
             if (
               id.includes('node_modules/react/') ||
@@ -54,9 +64,13 @@ export default defineConfig({
     },
     minify: 'esbuild',
     sourcemap: false,
+    reportCompressedSize: false,
   },
   optimizeDeps: {
     include: ['react', 'react-dom', 'react-router-dom', 'zustand'],
-    exclude: ['@react-pdf/renderer', 'recharts', 'pdfkit'],
+    exclude: ['@react-pdf/renderer', 'recharts', 'pdfkit', '@ai-sdk/*', 'ai'],
+    esbuildOptions: {
+      target: 'es2020',
+    },
   },
 })

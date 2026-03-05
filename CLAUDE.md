@@ -120,3 +120,20 @@ gh run list -L 1 --json status,conclusion -q ".[0]"
 # Báo cáo kết quả và tiếp tục task khác
 ```
 
+
+
+## 📜 HIẾN PHÁP ROIaaS — DNA TỐI THƯỢNG (BẮT BUỘC MỌI PHIÊN)
+
+> **R = ROI = RaaS = ROIaaS** — Mọi dòng code phải quy đổi thành ROI.
+> Chi tiết: `docs/HIEN_PHAP_ROIAAS.md` | Chiến lược: `docs/BINH_PHAP_MASTER.md`
+
+**DUAL-STREAM BẮT BUỘC:** Mọi dự án PHẢI có 2 dòng doanh thu:
+1. **Engineering ROI (Dev Key):** `RAAS_LICENSE_KEY` gate premium CLI/agents/models
+2. **Operational ROI (User UI):** Subscription trên Web UI cho business users
+
+**HƯ-THỰC (Binh Pháp Ch.6):**
+- HƯ (Open): Source code, base patterns → Public GitHub, viral marketing
+- THỰC (Closed): AI Brain, prod keys, trained models → Gated, thu tiền
+
+**QUÂN LỆNH:** Mission nào không phục vụ ít nhất 1 dòng ROI → **REJECT**.
+
