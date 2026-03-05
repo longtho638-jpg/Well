@@ -66,11 +66,14 @@ export const subscriptionService = {
         if (!params.extendsMonths || params.extendsMonths <= 0) throw new Error('extendsMonths must be a positive number');
         const { data, error } = await supabase.from('user_subscriptions').select('*').eq('id', params.subscriptionId).single();
         if (error || !data) throw new Error('Subscription not found');
-        const currentEnd = new Date(data.end_date);
+        const subscription = data as UserSubscription & { end_date?: string | null; metadata?: Record<string, unknown> | null };
+        if (!subscription.end_date) throw new Error('Subscription end_date is missing');
+        const currentEnd = new Date(subscription.end_date);
         const newEnd = new Date(currentEnd);
         newEnd.setMonth(newEnd.getMonth() + params.extendsMonths);
         if (newEnd.getMonth() !== (currentEnd.getMonth() + params.extendsMonths) % 12) newEnd.setDate(0);
-        const { data: updated, error: updateError } = await supabase.from('user_subscriptions').update({ end_date: newEnd.toISOString(), status: 'active', metadata: { ...data.metadata, lastRenewalDate: new Date().toISOString(), renewalOrderCode: params.payosOrderCode } }).eq('id', params.subscriptionId).select().single();
+        const currentMetadata = subscription.metadata || {};
+        const { data: updated, error: updateError } = await supabase.from('user_subscriptions').update({ end_date: newEnd.toISOString(), status: 'active', metadata: { ...currentMetadata, lastRenewalDate: new Date().toISOString(), renewalOrderCode: params.payosOrderCode } }).eq('id', params.subscriptionId).select().single();
         if (updateError) throw new Error('Failed to renew subscription');
         return updated as UserSubscription;
     },
@@ -78,10 +81,10 @@ export const subscriptionService = {
     async activateLicenseOnRenewal(params: { userId: string; subscriptionId: string; features: Record<string, boolean>; expiresAt: string }): Promise<{ success: boolean; licenseId?: string }> {
         const { data: existing } = await supabase.from('raas_licenses').select('id').eq('user_id', params.userId).eq('status', 'active').single();
         if (existing) {
-            const { error } = await supabase.from('raas_licenses').update({ expires_at: params.expiresAt, features: params.features, metadata: { renewed_at: new Date().toISOString(), subscription_id: params.subscriptionId } }).eq('id', existing.id);
-            return { success: !error, licenseId: existing.id };
+            const { error } = await supabase.from('raas_licenses').update({ expires_at: params.expiresAt, features: params.features, metadata: { renewed_at: new Date().toISOString(), subscription_id: params.subscriptionId } }).eq('id', (existing as { id: string }).id);
+            return { success: !error, licenseId: (existing as { id: string }).id };
         }
         const { data: newLicense, error } = await supabase.from('raas_licenses').insert({ user_id: params.userId, license_key: `RAAS-${Date.now()}-${Math.random().toString(36).substring(2, 8).toUpperCase()}`, status: 'active', features: params.features, expires_at: params.expiresAt, metadata: { created_via: 'subscription_renewal', subscription_id: params.subscriptionId } }).select().single();
-        return { success: !error, licenseId: newLicense?.id };
+        return { success: !error, licenseId: (newLicense as { id?: string })?.id };
     },
 };
