@@ -142,6 +142,17 @@ export async function processWebhookEvent(
   const event = await provider.parseWebhookEvent(rawPayload, signature, config.checksumKey);
 
   if (!event) {
+    // Queue to DLQ on signature failure
+    await deps.queueToDeadLetterQueue({
+      event_type: "webhook.failed",
+      order_code: event.orderCode || 0,
+      raw_payload: rawPayload as Record<string, unknown>,
+      signature,
+      error_message: "Invalid signature",
+      failure_count: 1,
+      max_retries: 0,
+    });
+
     await deps.logAudit(null, 'WEBHOOK_SIGNATURE_FAILED', { provider: provider.name }, 'failure');
     return { status: 'error', message: 'Invalid signature' };
   }
