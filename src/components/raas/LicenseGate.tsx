@@ -6,10 +6,10 @@
  */
 
 import React from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import { Shield, Lock, Crown, Zap } from 'lucide-react';
-import { useTranslation } from '@/hooks';
+import { AnimatePresence } from 'framer-motion';
+import { Lock, Crown, Zap } from 'lucide-react';
 import { LicenseRequiredModal } from './LicenseRequiredModal';
+import { useTranslation } from '@/hooks';
 import { getCachedLicenseResult } from '@/lib/raas-gate';
 
 interface LicenseGateProps {
@@ -45,66 +45,38 @@ export function LicenseGate({
   feature = 'adminDashboard',
   skip = false,
 }: LicenseGateProps) {
-  const { t } = useTranslation();
+  // PERFORMANCE OPTIMIZATION: Synchronous check — no useEffect needed
+  // getCachedLicenseResult() uses module-level singleton cache (O(1) lookup)
   const [showModal, setShowModal] = React.useState(false);
-  const [isChecking, setIsChecking] = React.useState(true);
-  const [hasAccess, setHasAccess] = React.useState(false);
 
+  // Instant check — cached at module level, no async/db lookup
+  const result = getCachedLicenseResult();
+  const hasAccess = skip || (result.isValid && result.features[feature]);
+
+  // Show modal on mount if no access (batched update)
   React.useEffect(() => {
-    if (skip) {
-      setHasAccess(true);
-      setIsChecking(false);
-      return;
-    }
-
-    // Check license
-    const result = getCachedLicenseResult();
-    setHasAccess(result.isValid && result.features[feature]);
-    setIsChecking(false);
-  }, [skip, feature]);
-
-  // Show upgrade modal when accessing without license
-  React.useEffect(() => {
-    if (!isChecking && !hasAccess && !skip) {
+    if (!hasAccess && !skip) {
       setShowModal(true);
     }
-  }, [isChecking, hasAccess, skip]);
+  }, [hasAccess, skip]);
 
-  // Loading state
-  if (isChecking) {
-    return (
-      <div className="flex items-center justify-center min-h-[400px]">
-        <motion.div
-          initial={{ opacity: 0, scale: 0.8 }}
-          animate={{ opacity: 1, scale: 1 }}
-          className="text-center space-y-4"
-        >
-          <Shield className="w-16 h-16 text-[#00575A] mx-auto animate-pulse" />
-          <p className="text-zinc-500 dark:text-zinc-400 font-medium">
-            {t('raas.verifying_license')}
-          </p>
-        </motion.div>
-      </div>
-    );
-  }
-
-  // Has access - render children
-  if (hasAccess || skip) {
+  // Has access - render children (no loading state needed - sync check)
+  if (hasAccess) {
     return <>{children}</>;
   }
 
-  // No access - show modal
+  // No access - show modal (if not already showing)
   return (
     <>
-      <AnimatePresence>
-        {showModal && (
+      {showModal ? (
+        <AnimatePresence>
           <LicenseRequiredModal
             isOpen={showModal}
             onClose={() => setShowModal(false)}
             feature={feature}
           />
-        )}
-      </AnimatePresence>
+        </AnimatePresence>
+      ) : null}
       {/* Blurred background content */}
       <div className="relative filter blur-sm pointer-events-none select-none">
         {children}
