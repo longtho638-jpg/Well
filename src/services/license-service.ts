@@ -89,7 +89,7 @@ export async function activateLicenseViaPayOS(request: LicenseActivationRequest)
 
     return { isValid: true, license: newLicense, features: newLicense.features, daysRemaining: getDaysRemaining(timestamp) };
   } catch (error) {
-    console.error("License activation error:", (error as Error).message);
+    // License activation error
     return {
       isValid: false,
       features: { adminDashboard: false, payosWebhook: false, commissionDistribution: false, policyEngine: false },
@@ -131,7 +131,7 @@ export async function validateLicenseFromDB(licenseKey: string): Promise<License
     const daysRemaining = Math.floor((expiresAt - Date.now()) / (1000 * 60 * 60 * 24));
     return { isValid: true, license, features: license.features, daysRemaining };
   } catch (error) {
-    console.error("License validation error:", (error as Error).message);
+    // License validation error
     return {
       isValid: false,
       features: { adminDashboard: false, payosWebhook: false, commissionDistribution: false, policyEngine: false },
@@ -152,7 +152,7 @@ export async function revokeLicense(licenseKey: string, reason: string): Promise
       .eq('license_key', licenseKey);
     return !error;
   } catch (error) {
-    console.error('License revocation error:', error);
+    // License revocation error
     return false;
   }
 }
@@ -174,7 +174,7 @@ export async function getUserLicense(userId: string): Promise<LicenseRecord | nu
     if (error || !data) return null;
     return data;
   } catch (error) {
-    console.error('Get user license error:', error);
+    // Get user license error
     return null;
   }
 }

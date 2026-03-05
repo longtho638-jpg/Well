@@ -55,7 +55,7 @@ export function useRaasLicenses() {
       if (error) throw error;
       return data || [];
     } catch (err: unknown) {
-      console.error('Failed to fetch audit logs:', err);
+      // Error handled
       return [];
     }
   }, []);

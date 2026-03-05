@@ -12,7 +12,7 @@ import { wallet } from './vi/wallet';
 import { network } from './vi/network';
 import { misc } from './vi/misc';
 import { raas } from './vi/raas';
-import { agent } from './vi/agent';
+import { agent, agentDashboard, agentdetailsmodal, agentgridcard, agentdashboard } from './vi/agent';
 import { app } from './vi/app';
 import { commissionwallet } from './vi/commissionwallet';
 import { copilotcoaching } from './vi/copilotcoaching';
@@ -37,6 +37,11 @@ import { healthcheck } from './vi/healthcheck';
 import { errorboundary } from './vi/errorboundary';
 
 export const vi = {
+  ...agent,
+  ...agentDashboard,
+  ...agentdetailsmodal,
+  ...agentgridcard,
+  ...agentdashboard,
   ...admin,
   ...auth,
   ...common,
@@ -51,7 +56,6 @@ export const vi = {
   ...network,
   ...misc,
   ...raas,
-  ...agent,
   ...app,
   ...commissionwallet,
   ...copilotcoaching,

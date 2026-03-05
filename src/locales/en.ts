@@ -12,7 +12,7 @@ import { wallet } from './en/wallet';
 import { network } from './en/network';
 import { misc } from './en/misc';
 import { raas } from './en/raas';
-import { agent } from './en/agent';
+import { agent, agentDashboard, agentdetailsmodal, agentgridcard, agentdashboard } from './en/agent';
 import { app } from './en/app';
 import { commissionwallet } from './en/commissionwallet';
 import { copilotcoaching } from './en/copilotcoaching';
@@ -37,6 +37,11 @@ import { healthcheck } from './en/healthcheck';
 import { errorboundary } from './en/errorboundary';
 
 export const en = {
+  ...agent,
+  ...agentDashboard,
+  ...agentdetailsmodal,
+  ...agentgridcard,
+  ...agentdashboard,
   ...admin,
   ...auth,
   ...common,
@@ -51,7 +56,6 @@ export const en = {
   ...network,
   ...misc,
   ...raas,
-  ...agent,
   ...app,
   ...commissionwallet,
   ...copilotcoaching,

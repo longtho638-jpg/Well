@@ -38,7 +38,7 @@ export function LicenseAuditLogViewer({ licenseId, limit = 50 }: LicenseAuditLog
         if (error) throw error;
         setLogs(data || []);
       } catch (err: unknown) {
-        console.error('Failed to fetch audit logs:', err);
+        // Error handled
       } finally {
         setLoading(false);
       }

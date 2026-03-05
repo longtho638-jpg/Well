@@ -34,7 +34,7 @@ export class DeadLetterQueueService {
       .single();
 
     if (error) {
-      console.error('Failed to queue to DLQ:', error);
+      // DLQ error handled
       throw error;
     }
 
