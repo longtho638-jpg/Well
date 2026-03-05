@@ -139,8 +139,8 @@ describe('useWallet - Integration Tests', () => {
 
   describe('Real-time Subscription', () => {
     it('should subscribe to wallet updates on mount', async () => {
-      const _subscriptionCallback: ((data: WalletData) => void) | null = null;
-      const _errorCallback: ((err: Error) => void) | null = null;
+      let subscriptionCallback: ((data: WalletData) => void) | null = null;
+      let errorCallback: ((err: Error) => void) | null = null;
 
       (walletService.subscribeToWallet as Mock).mockImplementation(
         (userId: string, onWallet: (data: WalletData) => void, onError: (err: Error) => void) => {
@@ -165,7 +165,7 @@ describe('useWallet - Integration Tests', () => {
     });
 
     it('should update wallet state on subscription callback', async () => {
-      const _subscriptionCallback: ((data: WalletData) => void) | null = null;
+      let subscriptionCallback: ((data: WalletData) => void) | null = null;
 
       (walletService.subscribeToWallet as Mock).mockImplementation(
         (userId: string, onWallet: (data: WalletData) => void) => {
@@ -197,7 +197,7 @@ describe('useWallet - Integration Tests', () => {
     });
 
     it('should handle subscription errors', async () => {
-      const _errorCallback: ((err: Error) => void) | null = null;
+      let errorCallback: ((err: Error) => void) | null = null;
 
       (walletService.subscribeToWallet as Mock).mockImplementation(
         (userId: string, _onWallet: (data: WalletData) => void, onError: (err: Error) => void) => {
@@ -349,7 +349,7 @@ describe('useWallet - Integration Tests', () => {
     });
 
     it('should prevent state updates after unmount', async () => {
-      const _subscriptionCallback: ((data: WalletData) => void) | null = null;
+      let subscriptionCallback: ((data: WalletData) => void) | null = null;
 
       (walletService.subscribeToWallet as Mock).mockImplementation(
         (userId: string, onWallet: (data: WalletData) => void) => {
