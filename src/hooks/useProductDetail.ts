@@ -18,8 +18,12 @@ export function useProductDetail() {
     const [showSuccess, setShowSuccess] = useState(false);
 
     const mountedRef = useRef(true);
+    const buyTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
     useEffect(() => {
-        return () => { mountedRef.current = false; };
+        return () => {
+            mountedRef.current = false;
+            if (buyTimeoutRef.current) clearTimeout(buyTimeoutRef.current);
+        };
     }, []);
 
     const handleBuy = useCallback(async () => {
@@ -33,10 +37,10 @@ export function useProductDetail() {
         if (!mountedRef.current) return;
         setIsBuying(false);
         setShowSuccess(true);
-        const timer = setTimeout(() => {
+        if (buyTimeoutRef.current) clearTimeout(buyTimeoutRef.current);
+        buyTimeoutRef.current = setTimeout(() => {
             if (mountedRef.current) setShowSuccess(false);
         }, 2000);
-        return () => clearTimeout(timer);
     }, [product, simulateOrder]);
 
     const handleShare = useCallback(() => {

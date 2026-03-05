@@ -1,4 +1,4 @@
-import { useState, useMemo, useEffect } from 'react';
+import { useState, useMemo, useEffect, useRef } from 'react';
 import { useStore } from '@/store';
 import { Referral, ReferralStats } from '@/types';
 import { supabase } from '@/lib/supabase';
@@ -25,6 +25,7 @@ export const useReferral = () => {
     const [copiedLink, setCopiedLink] = useState(false);
     const [selectedTab, setSelectedTab] = useState<'overview' | 'network'>('overview');
     const [showQRCode, setShowQRCode] = useState(false);
+    const copyTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
     const referralUrl = useMemo(() => {
         const link = user.referralLink || `wellnexus.vn/ref/${user.id}`;
@@ -43,7 +44,14 @@ export const useReferral = () => {
 
     const qrCodeUrl = useMemo(() => generateQRCodeUrl(), [generateQRCodeUrl]);
 
-    // Fetch Real Referrals from Supabase (Optimized F1-F7 Tree)
+    // Cleanup timeout on unmount
+    useEffect(() => {
+        return () => {
+            if (copyTimeoutRef.current) clearTimeout(copyTimeoutRef.current);
+        };
+    }, []);
+
+    // Fetch Real Referrals from Supabase
     useEffect(() => {
         if (!user.id) return;
 
@@ -143,7 +151,10 @@ export const useReferral = () => {
     const handleCopy = () => {
         copyToClipboard();
         setCopiedLink(true);
-        setTimeout(() => setCopiedLink(false), 2000);
+        if (copyTimeoutRef.current) clearTimeout(copyTimeoutRef.current);
+        copyTimeoutRef.current = setTimeout(() => {
+            setCopiedLink(false);
+        }, 2000);
     };
 
     const handleShareZalo = () => shareViaZalo(`🌟 Tham gia WellNexus cùng tôi!`);

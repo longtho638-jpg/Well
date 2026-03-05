@@ -1,4 +1,4 @@
-import { useState, useCallback, useMemo, useRef } from 'react';
+import { useState, useEffect, useCallback, useMemo, useRef } from 'react';
 import { useStore } from '@/store';
 import { questService } from '@/services/questService';
 import { Quest } from '@/types';
@@ -91,6 +91,14 @@ export function useQuests() {
 
     const handleTokenAnimationComplete = useCallback((tokenId: string) => {
         setFlyingTokens(prev => prev.filter(t => t.id !== tokenId));
+    }, []);
+
+    // Cleanup all timers on unmount
+    useEffect(() => {
+        return () => {
+            timerRefs.current.forEach(timer => clearTimeout(timer));
+            timerRefs.current = [];
+        };
     }, []);
 
     return {
