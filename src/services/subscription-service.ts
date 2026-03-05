@@ -181,4 +181,102 @@ export const subscriptionService = {
     ): Promise<UsageQuota> {
         return _checkOrgQuota(supabase, orgId, feature, planLimit, periodStart, periodEnd);
     },
+
+    // ── Auto-renewal logic ─────────────────────────────────────
+
+    /**
+     * Extend subscription expiration date on successful payment.
+     * Called from webhook handler when payment status = PAID.
+     */
+    async renewSubscription(params: {
+        subscriptionId: string;
+        extendsMonths: number;
+        payosOrderCode: number;
+    }): Promise<UserSubscription> {
+        const { data, error } = await supabase
+            .from('user_subscriptions')
+            .select('*')
+            .eq('id', params.subscriptionId)
+            .single();
+
+        if (error || !data) {
+            throw new Error('Subscription not found');
+        }
+
+        const currentEnd = new Date(data.end_date);
+        const newEnd = new Date(currentEnd.setMonth(currentEnd.getMonth() + params.extendsMonths));
+
+        const { data: updated, error: updateError } = await supabase
+            .from('user_subscriptions')
+            .update({
+                end_date: newEnd.toISOString(),
+                status: 'active',
+                metadata: {
+                    ...data.metadata,
+                    lastRenewalDate: new Date().toISOString(),
+                    renewalOrderCode: params.payosOrderCode,
+                },
+            })
+            .eq('id', params.subscriptionId)
+            .select()
+            .single();
+
+        if (updateError) {
+            throw new Error('Failed to renew subscription');
+        }
+
+        return updated as UserSubscription;
+    },
+
+    /**
+     * Activate RaaS license on subscription renewal.
+     * Links subscription to raas_licenses table.
+     */
+    async activateLicenseOnRenewal(params: {
+        userId: string;
+        subscriptionId: string;
+        features: Record<string, boolean>;
+        expiresAt: string;
+    }): Promise<{ success: boolean; licenseId?: string }> {
+        const { data: existing } = await supabase
+            .from('raas_licenses')
+            .select('id')
+            .eq('user_id', params.userId)
+            .eq('status', 'active')
+            .single();
+
+        if (existing) {
+            const { error } = await supabase
+                .from('raas_licenses')
+                .update({
+                    expires_at: params.expiresAt,
+                    features: params.features,
+                    metadata: {
+                        renewed_at: new Date().toISOString(),
+                        subscription_id: params.subscriptionId,
+                    },
+                })
+                .eq('id', existing.id);
+
+            return { success: !error, licenseId: existing.id };
+        }
+
+        const { data: newLicense, error } = await supabase
+            .from('raas_licenses')
+            .insert({
+                user_id: params.userId,
+                license_key: `RAAS-${Date.now()}-${Math.random().toString(36).substring(2, 8).toUpperCase()}`,
+                status: 'active',
+                features: params.features,
+                expires_at: params.expiresAt,
+                metadata: {
+                    created_via: 'subscription_renewal',
+                    subscription_id: params.subscriptionId,
+                },
+            })
+            .select()
+            .single();
+
+        return { success: !error, licenseId: newLicense?.id };
+    },
 };
