@@ -1,5 +1,5 @@
 export const common = {
-pwa: {
+  pwa: {
     install: {
       title: "Cài đặt WellNexus",
       description: "Cài đặt ứng dụng để có trải nghiệm tốt hơn với chế độ offline và tốc độ nhanh hơn.",
@@ -17,7 +17,8 @@ pwa: {
       description: "Vui lòng kiểm tra kết nối internet của bạn."
     }
   },
-common: {
+  common: {
+    hello: "Xin chào",
     access_restricted: "Quyền truy cập bị hạn chế",
     unknown_agent: "Chuyên viên không xác định",
     loading: "Đang tải...",
