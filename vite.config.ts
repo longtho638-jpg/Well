@@ -4,6 +4,10 @@ import react from '@vitejs/plugin-react'
 export default defineConfig({
   esbuild: {
     target: 'es2020',
+    keepNames: true,
+    legalComments: 'none',
+    // Fix EPIPE on Apple Silicon: increase worker timeout
+    pure: ['console.log'],
   },
   plugins: [react()],
   resolve: {
@@ -17,7 +21,9 @@ export default defineConfig({
     cssCodeSplit: true,
     ssr: false,
     chunkSizeWarningLimit: 1600,
+    // Fix EPIPE on Apple Silicon: limit parallel file operations
     rollupOptions: {
+      maxParallelFileOps: 2,
       output: {
         manualChunks(id) {
           if (id.includes('node_modules')) {
