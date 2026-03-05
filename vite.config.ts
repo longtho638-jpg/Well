@@ -1,14 +1,48 @@
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
+import { ViteImageOptimizer } from 'vite-plugin-image-optimizer'
 
 export default defineConfig({
   esbuild: {
     target: 'es2020',
     keepNames: true,
     legalComments: 'none',
+    pure: ['console.log'], // Remove console.log in production
   },
   cacheDir: '.vite',
-  plugins: [react()],
+  plugins: [
+    react(),
+    ViteImageOptimizer({
+      // Convert images to WebP/AVIF for better compression
+      includePublic: false,
+      logStats: true,
+      svg: {
+        multipass: true,
+        plugins: [{
+          name: 'preset-default',
+          params: {
+            overrides: { cleanupNumericValues: false }
+          }
+        }]
+      },
+      png: {
+        // Lossless compression
+        quality: 80
+      },
+      jpeg: {
+        // Convert to WebP
+        quality: 80
+      },
+      jpg: {
+        // Convert to WebP
+        quality: 80
+      },
+      webp: {
+        // AVIF alternative
+        quality: 85
+      }
+    })
+  ],
   resolve: {
     alias: {
       '@': '/src',
@@ -23,6 +57,7 @@ export default defineConfig({
     minify: 'esbuild',
     sourcemap: false,
     reportCompressedSize: false,
+    // Rollup optimization
     rollupOptions: {
       output: {
         manualChunks(id) {
@@ -46,6 +81,8 @@ export default defineConfig({
           }
           return undefined;
         },
+        // Optimize chunk loading
+        inlineDynamicImports: false,
       },
     },
   },

@@ -15,6 +15,16 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 
+  <!-- DNS Prefetch for external origins -->
+  <link rel="dns-prefetch" href="https://wellnexus.supabase.co">
+  <link rel="dns-prefetch" href="https://fonts.googleapis.com">
+  <link rel="dns-prefetch" href="https://fonts.gstatic.com">
+  <link rel="dns-prefetch" href="https://api.fontshare.com">
+
+  <!-- Preload critical fonts (LCP optimization) -->
+  <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap">
+  <link rel="preload" as="style" href="https://api.fontshare.com/v2/css?f[]=clash-display@600,700&display=swap">
+
   <!-- Font Loading: Non-blocking via media="print" onload trick (est. -150ms render delay) -->
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
     rel="stylesheet" media="print" onload="this.media='all'">
