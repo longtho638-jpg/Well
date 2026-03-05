@@ -1,32 +1,17 @@
 # Cloudflare Pages configuration for WellNexus
-# Build command: npm run build
-# Output directory: dist
+# For Pages, use wrangler.toml only for vars and secrets
+# Build and deploy handled by GitHub Actions + Vercel
 
 name = "wellnexus"
 compatibility_date = "2024-01-01"
-pages_build_output_dir = "dist"
-
-[build]
-command = "npm run build"
-outputDirectory = "dist"
-
-[site]
-bucket = "dist"
 
 [vars]
 NODE_ENV = "production"
 VITE_APP_NAME = "WellNexus"
 
-# Secrets (configure in Cloudflare dashboard or via wrangler secret)
-# [secrets]
-# SUPABASE_URL
-# SUPABASE_ANON_KEY
-# SENTRY_DSN
-# POLAR_PUBLIC_KEY
-
-# Staging environment
-[env.staging]
-name = "wellnexus-staging"
-
-[env.staging.vars]
-NODE_ENV = "staging"
+# Secrets (configure via Cloudflare dashboard or wrangler secret):
+# - SUPABASE_URL
+# - SUPABASE_ANON_KEY
+# - SENTRY_DSN
+# - POLAR_PUBLIC_KEY
+# - VITE_RAAS_LICENSE_KEY
