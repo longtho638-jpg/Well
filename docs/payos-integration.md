@@ -4,6 +4,21 @@
 PayOS được sử dụng làm cổng thanh toán chính cho nền tảng WellNexus RaaS Health.
 Nó cung cấp khả năng tạo link thanh toán, webhook để cập nhật trạng thái đơn hàng tự động và chuyển khoản bằng mã QR (VietQR).
 
+## 🔒 RaaS License Gating (ROIaaS Phase 1)
+**PayOS Webhook & Commission Distribution bị gate behind RaaS license:**
+
+- **License format:** `RAAS-{timestamp}-{hash}` (ví dụ: `RAAS-1709337600-a1b2c3d4e5f6`)
+- **Env var:** `VITE_RAAS_LICENSE_KEY` trong `.env` hoặc `.env.production.local`
+- **Features gated:**
+  - `payosWebhook` - PayOS webhook handling
+  - `commissionDistribution` - Commission dashboard & MLM distribution
+- **Components:**
+  - `src/lib/raas-gate.ts` - Core validation logic
+  - `src/components/raas/LicenseGate.tsx` - Gate wrapper component
+  - `src/pages/SubscriptionPage.tsx` - Wrapped với LicenseGate
+  - `src/pages/CommissionDashboard.tsx` - Wrapped với LicenseGate
+- **Behavior:** Users without valid license thấy upgrade modal với options "Contact Support" hoặc "Upgrade Now"
+
 ## Cấu hình (Environment Variables)
 Cần cấu hình các biến môi trường sau trong Supabase Edge Functions và `.env.production.local` / `.env.local`:
 
@@ -12,6 +27,9 @@ Cần cấu hình các biến môi trường sau trong Supabase Edge Functions v
 PAYOS_CLIENT_ID=your_client_id
 PAYOS_API_KEY=your_api_key
 PAYOS_CHECKSUM_KEY=your_checksum_key
+
+# RaaS License (ROIaaS Phase 1 - REQUIRED for production)
+VITE_RAAS_LICENSE_KEY=RAAS-XXXXXXXXXX-your-license-hash
 
 # URL Callback & Cancel cho thanh toán
 VITE_SITE_URL=https://wellnexus.vn
