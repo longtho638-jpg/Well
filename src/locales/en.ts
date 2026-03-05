@@ -13,6 +13,16 @@ import { network } from './en/network';
 import { misc } from './en/misc';
 import { raas } from './en/raas';
 import { agent } from './en/agent';
+import { app } from './en/app';
+import { commissionwallet } from './en/commissionwallet';
+import { copilotcoaching } from './en/copilotcoaching';
+import { copilotheader } from './en/copilotheader';
+import { copilotmessageitem } from './en/copilotmessageitem';
+import { copilotsuggestions } from './en/copilotsuggestions';
+import { achievementgrid } from './en/achievementgrid';
+import { herocard } from './en/herocard';
+import { dailyquesthub } from './en/dailyquesthub';
+import { liveActivities, liveactivitiesticker, quickactionscard, recentactivitylist, revenuebreakdown, revenuechart } from './en/dashboard-additional';
 
 export const en = {
   ...admin,
@@ -30,4 +40,19 @@ export const en = {
   ...misc,
   ...raas,
   ...agent,
+  ...app,
+  ...commissionwallet,
+  ...copilotcoaching,
+  ...copilotheader,
+  ...copilotmessageitem,
+  ...copilotsuggestions,
+  ...achievementgrid,
+  ...herocard,
+  ...dailyquesthub,
+  ...liveActivities,
+  ...liveactivitiesticker,
+  ...quickactionscard,
+  ...recentactivitylist,
+  ...revenuebreakdown,
+  ...revenuechart,
 };

@@ -13,6 +13,16 @@ import { network } from './vi/network';
 import { misc } from './vi/misc';
 import { raas } from './vi/raas';
 import { agent } from './vi/agent';
+import { app } from './vi/app';
+import { commissionwallet } from './vi/commissionwallet';
+import { copilotcoaching } from './vi/copilotcoaching';
+import { copilotheader } from './vi/copilotheader';
+import { copilotmessageitem } from './vi/copilotmessageitem';
+import { copilotsuggestions } from './vi/copilotsuggestions';
+import { achievementgrid } from './vi/achievementgrid';
+import { herocard } from './vi/herocard';
+import { dailyquesthub } from './vi/dailyquesthub';
+import { liveActivities, liveactivitiesticker, quickactionscard, recentactivitylist, revenuebreakdown, revenuechart } from './vi/dashboard-additional';
 
 export const vi = {
   ...admin,
@@ -30,4 +40,19 @@ export const vi = {
   ...misc,
   ...raas,
   ...agent,
+  ...app,
+  ...commissionwallet,
+  ...copilotcoaching,
+  ...copilotheader,
+  ...copilotmessageitem,
+  ...copilotsuggestions,
+  ...achievementgrid,
+  ...herocard,
+  ...dailyquesthub,
+  ...liveActivities,
+  ...liveactivitiesticker,
+  ...quickactionscard,
+  ...recentactivitylist,
+  ...revenuebreakdown,
+  ...revenuechart,
 };
