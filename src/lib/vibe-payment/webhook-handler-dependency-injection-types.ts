@@ -35,3 +35,11 @@ export interface WebhookHandlerDeps {
   /** Queue failed event to dead letter queue */
   queueToDeadLetterQueue: (record: DeadLetterQueueRecord) => Promise<string>;
 }
+
+// Subscription webhook processor type
+export type ProcessSubscriptionWebhookFn = (
+  event: { type: string; orderCode: number; amount: number; raw: Record<string, unknown> },
+  intent: SubscriptionIntentRecord,
+  config: { onSubscriptionPaid?: (intent: SubscriptionIntentRecord, data: Record<string, unknown>) => Promise<void> },
+  deps: WebhookHandlerDeps
+) => Promise<{ status: string; message?: string; subscriptionStatus?: string }>;

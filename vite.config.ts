@@ -1,6 +1,7 @@
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 import { ViteImageOptimizer } from 'vite-plugin-image-optimizer'
+import { visualizer } from 'rollup-plugin-visualizer'
 
 export default defineConfig({
   esbuild: {
@@ -8,11 +9,20 @@ export default defineConfig({
     keepNames: true,
     legalComments: 'none',
     pure: ['console.log'], // Remove console.log in production
+    drop: ['debugger'], // Remove debugger statements
   },
   cacheDir: '.vite',
   plugins: [
     react(),
+    process.env.ANALYZE === 'true' ? visualizer({
+      filename: 'dist/stats.html',
+      open: false,
+      gzipSize: true,
+      brotliSize: true,
+    }) : null,
     ViteImageOptimizer({
+      // Bundle analysis (generate report.html)
+      reportCompressedSize: true,
       // Convert images to WebP/AVIF for better compression
       includePublic: false,
       logStats: true,

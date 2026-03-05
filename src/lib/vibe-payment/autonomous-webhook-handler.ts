@@ -20,7 +20,6 @@ import type {
   SubscriptionIntentRecord,
   WebhookHandlerDeps,
 } from './webhook-handler-dependency-injection-types';
-import { processSubscriptionWebhook } from './webhook-handler-dependency-injection-types';
 
 // ─── Rate Limiting ──────────────────────────────────────────────
 
@@ -245,3 +244,27 @@ function eventTypeToStatus(type: string): VibePaymentStatusCode {
 
 export type { WebhookHandlerDeps, OrderRecord, SubscriptionIntentRecord };
 export { isValidTransition, VALID_TRANSITIONS, checkRateLimit, validateWebhookPayload, retryWithBackoff };
+
+// Inline subscription webhook processor
+async function processSubscriptionWebhook(
+  event: { type: string; orderCode: number; amount: number; raw: Record<string, unknown> },
+  intent: SubscriptionIntentRecord,
+  config: { onSubscriptionPaid?: (intent: SubscriptionIntentRecord, data: Record<string, unknown>) => Promise<void> },
+  deps: WebhookHandlerDeps
+): Promise<{ status: string; message?: string; subscriptionStatus?: string }> {
+  if (intent.status !== 'pending') {
+    return { status: 'ignored', message: 'Subscription already processed' };
+  }
+
+  const isPaid = event.type === 'payment.paid';
+  const newStatus = isPaid ? 'paid' : 'pending';
+
+  await deps.updateSubscriptionIntent(intent.id, newStatus);
+
+  if (isPaid && config.onSubscriptionPaid) {
+    await deps.updateSubscriptionIntent(intent.id, 'active');
+    config.onSubscriptionPaid(intent, event.raw).catch(console.error);
+  }
+
+  return { status: 'processed', subscriptionStatus: newStatus };
+}

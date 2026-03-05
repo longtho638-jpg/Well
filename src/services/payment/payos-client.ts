@@ -1,9 +1,7 @@
 /**
  * PayOS Payment Gateway Client
  * Thin wrapper over vibe-payment SDK with circuit breaker resilience.
- *
- * Backward-compatible: all existing imports continue to work.
- * Internally delegates to vibe-payment PayOSAdapter.
+ * RaaS GATED: Requires valid license key
  */
 
 import { supabase as supabaseClient } from '@/lib/supabase';
@@ -16,6 +14,7 @@ import type {
 } from '@/lib/vibe-payment';
 import { PaymentError } from '@/utils/errors';
 import { paymentBreaker } from '@/utils/circuit-breaker';
+import { hasFeature } from '@/lib/raas-gate';
 
 // SDK provider instance (singleton)
 const provider = createPaymentProvider('payos', supabaseClient as unknown as SupabaseLike);
@@ -95,17 +94,29 @@ export function isPayOSConfigured(): boolean {
     return provider.isConfigured();
 }
 
-/** @deprecated Webhook verification handled server-side */
-export async function verifyWebhook(
-    webhookBody: { data?: Record<string, unknown>; signature?: string },
-): Promise<Record<string, unknown>> {
-    return webhookBody.data || {};
+/**
+ * Check if PayOS is licensed and configured
+ */
+export function isPayOSLicensed(): boolean {
+    return hasFeature('payosAutomation') && isPayOSConfigured();
+}
+
+/**
+ * Create payment with license check
+ * Throws if license is invalid
+ */
+export async function createPaymentLicensed(request: VibePaymentRequest): Promise<PaymentResponse> {
+    if (!hasFeature('payosAutomation')) {
+        throw new PaymentError('PayOS automation requires valid RaaS license', { orderCode: request.orderCode });
+    }
+    return createPayment(request);
 }
 
 export default {
     createPayment,
     getPaymentStatus,
     cancelPayment,
-    verifyWebhook,
+    isPayOSLicensed,
+    createPaymentLicensed,
     isPayOSConfigured,
 };

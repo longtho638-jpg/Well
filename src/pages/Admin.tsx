@@ -1,24 +1,29 @@
 /**
  * WellNexus Admin Layout (Mission Control Aura Elite)
- * High-fidelity command interface with kinetic navigation and depth orchestration.
+ * RaaS GATED: Requires valid license key
  */
 
 import React, { useState } from 'react';
-import { Outlet, useLocation } from 'react-router-dom';
+import { Outlet, useLocation, Navigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
-import {
-  Search,
-  Menu,
-} from 'lucide-react';
+import { Search, Menu } from 'lucide-react';
 import { useTranslation } from '@/hooks';
 import { NotificationCenter } from '@/components/admin/NotificationCenter';
 import { AdminSidebarNav } from './Admin/admin-sidebar-nav';
+import { hasFeature } from '@/lib/raas-gate';
 
 const Admin: React.FC = () => {
   const { t } = useTranslation();
   const location = useLocation();
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+
+  // RaaS License Gate - deny access without valid license
+  const hasAdminAccess = hasFeature('adminDashboard');
+
+  if (!hasAdminAccess) {
+    return <Navigate to="/" replace />;
+  }
 
   const navItems = [
     { id: 'overview', path: '/admin', label: t('admin.nav.overview') },
@@ -46,12 +51,10 @@ const Admin: React.FC = () => {
         setMobileMenuOpen={setMobileMenuOpen}
       />
 
-      {/* MAIN COMMAND CENTER */}
       <div
         className="flex-1 transition-all duration-300"
         style={{ marginLeft: sidebarCollapsed ? (typeof window !== 'undefined' && window.innerWidth < 768 ? 0 : 100) : (typeof window !== 'undefined' && window.innerWidth < 768 ? 0 : 300) }}
       >
-        {/* Recon Header */}
         <header className="h-24 bg-zinc-950/80 backdrop-blur-2xl border-b border-white/5 flex items-center justify-between px-10 sticky top-0 z-30 shadow-xl">
           <div className="flex items-center gap-8">
             <button className="md:hidden p-3 bg-zinc-900 rounded-xl text-zinc-400 shadow-xl" onClick={() => setMobileMenuOpen(true)}>
@@ -87,7 +90,6 @@ const Admin: React.FC = () => {
           </div>
         </header>
 
-        {/* Intelligence Viewport */}
         <main className="p-10 relative">
           <div className="absolute top-0 right-0 w-[50rem] h-[50rem] bg-teal-500/5 rounded-full blur-[150px] -mr-64 -mt-64 pointer-events-none" />
           <div className="relative z-10">

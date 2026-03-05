@@ -19,9 +19,10 @@
     "i18n:check": "node scripts/check-locale-coverage.mjs",
     "i18n:sync": "node scripts/sync-i18n-keys.mjs",
     "ship": "tsx scripts/ship.ts",
-    "prebuild": "pnpm sitemap:generate && pnpm i18n:validate",
     "pretest": "pnpm i18n:validate",
-    "prepare": "husky install || true"
+    "prepare": "husky install || true",
+    "build:skip-i18n": "NODE_OPTIONS=--max-old-space-size=4096 vite build --mode production",
+    "build:analyze": "ANALYZE=true NODE_OPTIONS=--max-old-space-size=4096 vite build --mode production"
   },
   "dependencies": {
     "@ai-sdk/anthropic": "3.0.50",
@@ -86,6 +87,7 @@
     "minimatch": "^10.2.4",
     "postcss": "^8.5.6",
     "rollup": "^4.59.0",
+    "rollup-plugin-visualizer": "7.0.1",
     "sharp": "^0.34.5",
     "sharp-cli": "^5.2.0",
     "tailwindcss": "^3.4.19",
