@@ -54,13 +54,16 @@ dashboard: {
     commission: {
       title: "Hoa Hồng",
       subtitle: "Thu nhập theo thời gian thực",
+      description: "Theo dõi thu nhập và sao kê chi tiết",
       today: "Hôm nay",
       thisWeek: "Tuần này",
       thisMonth: "Tháng này",
       availableBalance: "Số dư khả dụng",
       breakdown: "Chi tiết thu nhập",
+      breakdownSubtitle: "Phân loại theo nguồn thu nhập",
       directSales: "Bán hàng trực tiếp",
       teamVolume: "Doanh số đội nhóm",
+      bonusRevenue: "Thưởng The Bee",
       total: "Tổng thu nhập",
       withdraw: "Rút tiền",
       viewDetails: "Xem chi tiết"

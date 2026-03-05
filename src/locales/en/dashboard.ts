@@ -54,13 +54,16 @@ export const dashboard = {
     commission: {
       title: "Commission",
       subtitle: "Real-time earnings",
+      description: "Track earnings and detailed breakdown",
       today: "Today",
       thisWeek: "This Week",
       thisMonth: "This Month",
       availableBalance: "Available Balance",
       breakdown: "Earnings Breakdown",
+      breakdownSubtitle: "Breakdown by income source",
       directSales: "Direct Sales",
       teamVolume: "Team Volume",
+      bonusRevenue: "The Bee Bonus",
       total: "Total",
       withdraw: "Withdraw",
       viewDetails: "View Details"
