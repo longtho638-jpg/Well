@@ -104,8 +104,8 @@ describe('walletSlice', () => {
 
     const state = useStore.getState();
     expect(state.user.stakedGrowBalance).toBe(400);
-    // 100 principal + reward (100 * 0.12 * 30/365 = 0.9863)
-    expect(state.user.growBalance).toBe(1000.9863);
+    // 100 principal returned + 0.9863 reward (100 * 0.12 * 30/365)
+    expect(state.user.growBalance).toBe(1100.9863);
     expect(state.transactions).toHaveLength(1);
   });
 
