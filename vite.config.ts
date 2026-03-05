@@ -21,8 +21,6 @@ export default defineConfig({
       brotliSize: true,
     }) : null,
     ViteImageOptimizer({
-      // Bundle analysis (generate report.html)
-      reportCompressedSize: true,
       // Convert images to WebP/AVIF for better compression
       includePublic: false,
       logStats: true,
@@ -63,7 +61,7 @@ export default defineConfig({
     cssMinify: 'esbuild',
     cssCodeSplit: true,
     ssr: false,
-    chunkSizeWarningLimit: 500,
+    chunkSizeWarningLimit: 1000, // Increased limit for heavy charts
     minify: 'esbuild',
     sourcemap: false,
     reportCompressedSize: false,
@@ -88,6 +86,8 @@ export default defineConfig({
             if (id.includes('zustand')) return 'state';
             if (id.includes('@sentry')) return 'sentry';
             if (id.includes('recharts') || id.includes('react-js-geometry') || id.includes('react-js-surface')) return 'charts';
+            // Heavy PDF library - separate chunk for lazy loading
+            if (id.includes('@react-pdf') || id.includes('pdfkit') || id.includes('react-pdf')) return 'pdf';
           }
           return undefined;
         },
