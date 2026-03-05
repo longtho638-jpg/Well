@@ -1,0 +1,18 @@
+export const healthCheck = {
+  start_health_check: "Start Health Check",
+  complete_healthcheck: "Complete Health Check",
+  get_personalized_recommendations: "Get personalized recommendations",
+  question: "Question",
+  of: "of",
+  skip: "Skip",
+  next: "Next",
+  previous: "Previous",
+  submit: "Submit",
+  calculating_results: "Calculating results...",
+  your_health_score: "Your Health Score",
+  see_recommendations: "See Recommendations",
+  retake_quiz: "Retake Quiz",
+  share_results: "Share Results",
+  congratulations: "Congratulations!",
+  you_completed_the_health_check: "You completed the health check",
+};

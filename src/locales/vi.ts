@@ -28,6 +28,13 @@ import { quickactionscard } from './vi/quickactionscard';
 import { recentactivitylist } from './vi/recentactivitylist';
 import { revenuebreakdown } from './vi/revenuebreakdown';
 import { revenuechart } from './vi/revenuechart';
+import { revenueprogresswidget } from './vi/revenueprogresswidget';
+import { statsgrid } from './vi/statsgrid';
+import { topproducts } from './vi/topproducts';
+import { valuationcard } from './vi/valuationcard';
+import { healthCheck } from './vi/health-check';
+import { healthcheck } from './vi/healthcheck';
+import { errorboundary } from './vi/errorboundary';
 
 export const vi = {
   ...admin,
@@ -60,4 +67,11 @@ export const vi = {
   ...recentactivitylist,
   ...revenuebreakdown,
   ...revenuechart,
+  ...revenueprogresswidget,
+  ...statsgrid,
+  ...topproducts,
+  ...valuationcard,
+  ...healthCheck,
+  ...healthcheck,
+  ...errorboundary,
 };

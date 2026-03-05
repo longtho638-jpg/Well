@@ -1,0 +1,12 @@
+export const errorboundary = {
+  something_went_wrong: "Có gì đó không ổn",
+  page_could_not_be_loaded: "Không thể tải trang",
+  go_back: "Quay lại",
+  refresh_page: "Làm mới trang",
+  contact_support: "Liên hệ hỗ trợ",
+  error_details: "Chi tiết lỗi",
+  copy_error: "Sao chép lỗi",
+  copied: "Đã sao chép",
+  try_again: "Thử lại",
+  report_issue: "Báo cáo sự cố",
+};
