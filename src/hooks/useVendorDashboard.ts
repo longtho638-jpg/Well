@@ -9,7 +9,7 @@ import { useStore } from '../store';
 import { productService } from '../services/productService';
 import { useToast } from '../components/ui/Toast';
 import { useTranslation } from '../hooks';
-import { checkRateLimit, getRateLimitRemaining, logAuditEvent, isUserVendor } from '../utils/auth';
+import { checkRateLimit, logAuditEvent, isUserVendor } from '../utils/auth';
 import { createLogger } from '../utils/logger';
 
 const logger = createLogger('VendorDashboard');
@@ -20,14 +20,12 @@ export const useVendorDashboard = (vendorId: string) => {
   const { t } = useTranslation();
   const [loading, setLoading] = useState(true);
   const [showAddProduct, setShowAddProduct] = useState(false);
-  const [rateLimitRemaining, setRateLimitRemaining] = useState<number>(100);
 
   // Check rate limit before any API call
   const checkRateLimitAndNotify = () => {
     if (!user?.id) return true;
 
     const exceeded = checkRateLimit(user.id);
-    setRateLimitRemaining(getRateLimitRemaining(user.id));
 
     if (exceeded) {
       showToast(t('vendor.toasts.rateLimitExceeded'), 'error');

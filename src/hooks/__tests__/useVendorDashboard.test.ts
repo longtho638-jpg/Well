@@ -9,7 +9,8 @@ import { useToast } from '../../components/ui/Toast';
 import { isUserVendor, logAuditEvent } from '../../utils/auth';
 import { productService } from '../../services/productService';
 import { useStore } from '../../store';
-import type { Product } from '../../types';
+import type { Product, User } from '../../types';
+import type { AppState } from '../../store';
 
 vi.mock('../../utils/auth', async (importOriginal) => ({
   ...(await importOriginal()) as object,
@@ -35,9 +36,11 @@ describe('useVendorDashboard - Authorization', () => {
   const mockVendorId = 'vendor-123', mockUserId = 'user-456';
   const mockShowToast = vi.fn();
 
+  const createMockStore = (user: Partial<User> | null): Partial<AppState> => ({ user });
+
   beforeEach(() => {
     vi.clearAllMocks();
-    vi.mocked(useStore).mockReturnValue({ user: null } as any);
+    vi.mocked(useStore).mockReturnValue(createMockStore(null));
     vi.mocked(useToast).mockReturnValue({ showToast: mockShowToast });
     vi.mocked(isUserVendor).mockResolvedValue(false);
     vi.mocked(logAuditEvent).mockResolvedValue(undefined);
@@ -46,7 +49,7 @@ describe('useVendorDashboard - Authorization', () => {
 
   describe('verifyVendorAuthorization - Edge Cases', () => {
     it('fails when user not logged in (missing user ID)', async () => {
-      vi.mocked(useStore).mockReturnValue({ user: null } as any);
+      vi.mocked(useStore).mockReturnValue(createMockStore(null));
       const { result } = renderHook(() => useVendorDashboard(mockVendorId));
       await act(async () => { await result.current.loadProducts(); });
       expect(result.current.loading).toBe(false);
@@ -54,7 +57,7 @@ describe('useVendorDashboard - Authorization', () => {
     });
 
     it('fails when user ID is undefined', async () => {
-      vi.mocked(useStore).mockReturnValue({ user: { id: undefined, email: 'test@example.com' } } as any);
+      vi.mocked(useStore).mockReturnValue(createMockStore({ id: undefined, email: 'test@example.com' }));
       const { result } = renderHook(() => useVendorDashboard(mockVendorId));
       await act(async () => { await result.current.loadProducts(); });
       expect(result.current.loading).toBe(false);
@@ -62,7 +65,7 @@ describe('useVendorDashboard - Authorization', () => {
     });
 
     it('fails when user is not a vendor (non-vendor access)', async () => {
-      vi.mocked(useStore).mockReturnValue({ user: { id: mockUserId, email: 'test@example.com' } } as any);
+      vi.mocked(useStore).mockReturnValue(createMockStore({ id: mockUserId, email: 'test@example.com' }));
       vi.mocked(isUserVendor).mockResolvedValue(false);
       const { result } = renderHook(() => useVendorDashboard(mockVendorId));
       await act(async () => { await result.current.loadProducts(); });
@@ -73,7 +76,7 @@ describe('useVendorDashboard - Authorization', () => {
 
     it('fails when admin accesses another vendor dashboard', async () => {
       const differentVendorId = 'vendor-789';
-      vi.mocked(useStore).mockReturnValue({ user: { id: mockUserId, email: 'admin@example.com' } } as any);
+      vi.mocked(useStore).mockReturnValue(createMockStore({ id: mockUserId, email: 'admin@example.com' }));
       vi.mocked(isUserVendor).mockResolvedValue(true);
       const { result } = renderHook(() => useVendorDashboard(differentVendorId));
       await act(async () => { await result.current.loadProducts(); });
@@ -84,7 +87,7 @@ describe('useVendorDashboard - Authorization', () => {
 
     it('fails when vendor IDs mismatch (impersonation attempt)', async () => {
       const anotherVendorId = 'vendor-999';
-      vi.mocked(useStore).mockReturnValue({ user: { id: mockUserId, email: 'vendor@example.com' } } as any);
+      vi.mocked(useStore).mockReturnValue(createMockStore({ id: mockUserId, email: 'vendor@example.com' }));
       vi.mocked(isUserVendor).mockResolvedValue(true);
       const { result } = renderHook(() => useVendorDashboard(anotherVendorId));
       await act(async () => { await result.current.loadProducts(); });
@@ -94,7 +97,7 @@ describe('useVendorDashboard - Authorization', () => {
     });
 
     it('succeeds for legitimate vendor owner', async () => {
-      vi.mocked(useStore).mockReturnValue({ user: { id: mockVendorId, email: 'vendor@example.com' } } as any);
+      vi.mocked(useStore).mockReturnValue(createMockStore({ id: mockVendorId, email: 'vendor@example.com' }));
       vi.mocked(isUserVendor).mockResolvedValue(true);
       vi.mocked(productService.getVendorProducts).mockResolvedValue([{
         id: 'prod-1', name: 'Test Product', price: 100, vendor_id: mockVendorId,
@@ -111,7 +114,7 @@ describe('useVendorDashboard - Authorization', () => {
     });
 
     it('handles supabase error gracefully', async () => {
-      vi.mocked(useStore).mockReturnValue({ user: { id: mockUserId } } as any);
+      vi.mocked(useStore).mockReturnValue(createMockStore({ id: mockUserId }));
       vi.mocked(isUserVendor).mockResolvedValue(false);
       const { result } = renderHook(() => useVendorDashboard(mockVendorId));
       await act(async () => { await result.current.loadProducts(); });
@@ -120,7 +123,7 @@ describe('useVendorDashboard - Authorization', () => {
     });
 
     it('checks auth before calling productService', async () => {
-      vi.mocked(useStore).mockReturnValue({ user: { id: mockUserId } } as any);
+      vi.mocked(useStore).mockReturnValue(createMockStore({ id: mockUserId }));
       vi.mocked(isUserVendor).mockResolvedValue(false);
       const { result } = renderHook(() => useVendorDashboard(mockVendorId));
       await act(async () => { await result.current.loadProducts(); });
@@ -128,7 +131,7 @@ describe('useVendorDashboard - Authorization', () => {
     });
 
     it('calls productService only after successful auth', async () => {
-      vi.mocked(useStore).mockReturnValue({ user: { id: mockVendorId } } as any);
+      vi.mocked(useStore).mockReturnValue(createMockStore({ id: mockVendorId }));
       vi.mocked(isUserVendor).mockResolvedValue(true);
       const { result } = renderHook(() => useVendorDashboard(mockVendorId));
       await act(async () => { await result.current.loadProducts(); });
@@ -139,7 +142,7 @@ describe('useVendorDashboard - Authorization', () => {
 
   describe('verifyVendorAuthorization - Other Operations', () => {
     it('blocks add product when not authorized', async () => {
-      vi.mocked(useStore).mockReturnValue({ user: null } as any);
+      vi.mocked(useStore).mockReturnValue(createMockStore(null));
       const { result } = renderHook(() => useVendorDashboard(mockVendorId));
       await act(async () => {
         await result.current.handleAddProduct({
@@ -152,7 +155,7 @@ describe('useVendorDashboard - Authorization', () => {
     });
 
     it('blocks update product when vendor ID mismatches', async () => {
-      vi.mocked(useStore).mockReturnValue({ user: { id: mockUserId } } as any);
+      vi.mocked(useStore).mockReturnValue(createMockStore({ id: mockUserId }));
       vi.mocked(isUserVendor).mockResolvedValue(true);
       const { result } = renderHook(() => useVendorDashboard(mockVendorId));
       await act(async () => { await result.current.handleUpdateProduct('prod-123', { name: 'Updated' }); });
@@ -161,7 +164,7 @@ describe('useVendorDashboard - Authorization', () => {
     });
 
     it('blocks delete product when not a vendor', async () => {
-      vi.mocked(useStore).mockReturnValue({ user: { id: mockUserId } } as any);
+      vi.mocked(useStore).mockReturnValue(createMockStore({ id: mockUserId }));
       vi.mocked(isUserVendor).mockResolvedValue(false);
       const { result } = renderHook(() => useVendorDashboard(mockVendorId));
       const originalConfirm = window.confirm;
