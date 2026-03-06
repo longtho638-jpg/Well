@@ -12,20 +12,20 @@ export const marketplace = {
       supplements: "Supplements",
       wellness: "Wellness",
       beauty: "Beauty",
-      starter: "Starter Kit"
+      starter: "Starter Kit",
     },
     sort: {
       popular: "Most Popular",
       newest: "Newest",
       priceLow: "Price: Low to High",
       priceHigh: "Price: High to Low",
-      commission: "Highest Commission"
+      commission: "Highest Commission",
     },
     aiRecommendation: {
       title: "AI Opportunity Radar",
       loading: "Analyzing {count} market signals...",
       live: "LIVE",
-      suggestion: "Based on current market trends and your sales history, **{productName}** is the hottest product right now! Commission up to {commission}%."
+      suggestion: "Based on current market trends and your sales history, **{productName}** is the hottest product right now! Commission up to {commission}%.",
     },
     product: {
       commission: "Commission",
@@ -35,7 +35,7 @@ export const marketplace = {
       addToCart: "Add to Cart",
       buyNow: "Buy Now",
       shareProduct: "Share",
-      viewDetails: "View Details"
+      viewDetails: "View Details",
     },
     productDetail: {
       description: "Product Description",
@@ -45,7 +45,7 @@ export const marketplace = {
       benefits: "Benefits",
       reviews: "Reviews",
       rating: "{score} / 5",
-      reviewCount: "{count} reviews"
+      reviewCount: "{count} reviews",
     },
     quickBuy: {
       title: "Quick Buy",
@@ -59,8 +59,8 @@ export const marketplace = {
       viewFullMarketplace: "View All Products →",
       buyNow: "Buy Now",
       purchased: "Purchased!",
-      commission: "Commission: {rate}%"
-    }
+      commission: "Commission: {rate}%",
+    },
   },
   productcard: {
     earn: "Earn",
@@ -75,7 +75,7 @@ export const marketplace = {
     add_to_cart: "Add to Cart",
     ai_pick: "AI Pick",
     commission: "Commission",
-    price: "Price"
+    price: "Price",
   },
   productgrid: {
     ai_recommended: "AI Recommended",
@@ -83,28 +83,27 @@ export const marketplace = {
     price: "Price",
     commission: "Commission",
     empty_title: "No products found",
-    empty_message: "Try adjusting your filters or search terms"
+    empty_message: "Try adjusting your filters or search terms",
   },
   marketplacefilters: {
     categories: {
       all: "All",
       health: "Health",
       wellness: "Wellness",
-      nutrition: "Nutrition"
+      nutrition: "Nutrition",
     },
     prices: {
       all: "All Prices",
       under5m: "Under 5M",
-      "5to15m": "5M - 15M",
-      over15m: "Over 15M"
+      over15m: "Over 15M",
     },
     b_l_c: "Filter",
     danh_m_c: "Category",
     kho_ng_gi: "Price Range",
-    t_l_i_b_l_c: "Reset Filters"
+    t_l_i_b_l_c: "Reset Filters",
   },
   marketplaceheader: {
-    items_available: "items available"
+    items_available: "items available",
   },
   cart: {
     empty: "Your cart is empty",
@@ -116,52 +115,52 @@ export const marketplace = {
     shippingFree: "Free Shipping",
     total: "Total",
     viewCart: "View Cart",
-    checkout: "Checkout"
+    checkout: "Checkout",
   },
   checkout: {
     guestInfo: "Guest Information",
     guestForm: {
       fullName: {
         label: "Full Name",
-        placeholder: "Enter your full name"
+        placeholder: "Enter your full name",
       },
       phone: {
         label: "Phone",
-        placeholder: "Enter phone number"
+        placeholder: "Enter phone number",
       },
       email: {
         label: "Email",
-        placeholder: "Enter email address"
+        placeholder: "Enter email address",
       },
       address: {
         city: {
           label: "City/Province",
-          placeholder: "Select city"
+          placeholder: "Select city",
         },
         district: {
           label: "District",
-          placeholder: "Select district"
+          placeholder: "Select district",
         },
         ward: {
           label: "Ward",
-          placeholder: "Select ward"
+          placeholder: "Select ward",
         },
         street: {
           label: "Street Address",
-          placeholder: "Enter street address"
-        }
+          placeholder: "Enter street address",
+        },
       },
       note: {
         label: "Note",
-        placeholder: "Add delivery note (optional)"
-      }
+        placeholder: "Add delivery note (optional)",
+      },
     },
     shippingAddress: "Shipping Address",
     successPage: {
       title: "Order Placed!",
       message: "Your order has been placed successfully",
       continueShopping: "Continue Shopping",
-      backToHome: "Back to Home"
+      backToHome: "Back to Home",
     },
     payment: {
       confirm_close: "Are you sure you want to close?",
@@ -179,7 +178,7 @@ export const marketplace = {
       failed_message: "Payment could not be processed. Please try again.",
       title: "Payment",
       cod: "Cash on Delivery",
-      banking: "Bank Transfer"
+      banking: "Bank Transfer",
     },
     error: "An error occurred",
     success: "Order placed successfully",
@@ -204,7 +203,7 @@ export const marketplace = {
       cityPlaceholder: "Select city",
       districtPlaceholder: "Select district",
       wardPlaceholder: "Select ward",
-      streetPlaceholder: "Enter street address"
+      streetPlaceholder: "Enter street address",
     },
     validation: {
       fullNameRequired: "Full name is required",
@@ -213,8 +212,8 @@ export const marketplace = {
       streetRequired: "Street address is required",
       wardRequired: "Ward is required",
       districtRequired: "District is required",
-      cityRequired: "City is required"
-    }
+      cityRequired: "City is required",
+    },
   },
   cartdrawer: {
     your_cart: "Your Cart",
@@ -223,7 +222,7 @@ export const marketplace = {
     start_adding_premium_products: "Start adding premium products",
     subtotal: "Subtotal",
     total: "Total",
-    proceed_to_checkout: "Proceed to Checkout"
+    proceed_to_checkout: "Proceed to Checkout",
   },
   productdetail: {
     identity_missing: "Product Not Found",
@@ -231,58 +230,57 @@ export const marketplace = {
     revert_to_marketplace: "Back to Marketplace",
     back_to_command_registry: "Back to Product List",
     verified_node: "Verified",
-    premium_tier: "Premium Tier"
+    premium_tier: "Premium Tier",
   },
   producthero: {
-    logistics_depleted: "Out of Stock"
+    logistics_depleted: "Out of Stock",
   },
   productinfo: {
     bio_optic_optimization: "Bio-Optic Optimization",
-    "4_9_core_rating": "4.9 Core Rating",
     available_capacity: "Available Capacity",
-    units: "Units"
+    units: "Units",
   },
   productpricing: {
     market_valuation: "Market Valuation",
-    node_yield_profit: "Node Yield (Profit)"
+    node_yield_profit: "Node Yield (Profit)",
   },
   producttabs: {
     primary_yield: "Primary Yield",
     composition: "Composition",
     protocol: "Protocol",
-    standard_engagement_protocol: "Standard Engagement Protocol"
+    standard_engagement_protocol: "Standard Engagement Protocol",
   },
   productactions: {
     copy_ref_node: "Copy Referral Link",
     logistics_offline: "Currently Unavailable",
     allocated_successfully: "Added Successfully",
-    order_prototype: "Order Template"
+    order_prototype: "Order Template",
   },
   redemptionzone: {
     categories: {
       all: "All",
       tech: "Tech",
       travel: "Travel",
-      courses: "Courses"
+      courses: "Courses",
     },
     grow_rewards: "GROW Rewards",
     s_d_ng_grow_token_t_ch_l_y_t: "Use GROW tokens earned to redeem rewards",
     s_d_hi_n_t_i: "Current Balance",
     grow_tokens: "GROW Tokens",
     redeem_reward: "Redeem Reward",
-    not_enough_grow: "Not enough GROW tokens"
+    not_enough_grow: "Not enough GROW tokens",
   },
   orderimagemodal: {
     evidence_inspection: "Evidence Inspection",
     payment_verification_system_v3: "Payment Verification System v3",
     external_view: "External View",
-    security_protocol_cross_verif: "Security Protocol: Cross-verification"
+    security_protocol_cross_verif: "Security Protocol: Cross-verification",
   },
   topproducts: {
     top_products: "Top Products",
     based_on_units_sold: "Based on Units Sold",
     sold: "Sold",
-    earn: "Earn"
+    earn: "Earn",
   },
   products: {
     title: "Products",
@@ -315,7 +313,7 @@ export const marketplace = {
     partner_comm: "Partner Comm.",
     commit: "Commit",
     esc: "ESC",
-    edit_config: "Edit Config"
+    edit_config: "Edit Config",
   },
   ordertable: {
     approve: "Approve",
@@ -330,7 +328,7 @@ export const marketplace = {
     col_governance: "Governance",
     anonymous_partner: "Anonymous Partner",
     unverified_email: "unverified@network.node",
-    empty_state: "No pending orders found"
+    empty_state: "No pending orders found",
   },
   ordermanagement: {
     actions: "Actions",
@@ -358,6 +356,6 @@ export const marketplace = {
     sync: "Sync",
     syncing_global_ledgers: "Syncing Global Ledgers...",
     verify_transactions_and: "Verify Transactions and",
-    without_verified_bank_clearanc: "Without Verified Bank Clearance"
-  }
+    without_verified_bank_clearanc: "Without Verified Bank Clearance",
+  },
 };

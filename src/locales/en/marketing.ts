@@ -7,7 +7,7 @@ export const marketing = {
       cta: "Get My Slot",
       learnMore: "View Roadmap",
       badge_ultimate: "157 Slots Remaining Today",
-      headlineAccent: "Start Passive Income"
+      headlineAccent: "Start Passive Income",
     },
     features: {
       sectionBadge: "Core Features",
@@ -15,32 +15,32 @@ export const marketing = {
       title: "Key Features",
       ai: {
         title: "Smart AI Assistant",
-        description: "24/7 sales support with advanced AI technology"
+        description: "24/7 sales support with advanced AI technology",
       },
       token: {
         title: "Dual Token System",
-        description: "SHOP and GROW tokens with staking yield"
+        description: "SHOP and GROW tokens with staking yield",
       },
       compliance: {
         title: "Automated Tax Compliance",
-        description: "Automatically calculate and report taxes per Vietnam regulations"
+        description: "Automatically calculate and report taxes per Vietnam regulations",
       },
       aiCoach: {
         title: "AI Health Coach",
-        description: "Personalized Gemini AI guidance"
+        description: "Personalized Gemini AI guidance",
       },
       commission: {
         title: "Real-time Tracking",
-        description: "Monitor growth metrics live"
+        description: "Monitor growth metrics live",
       },
       community: {
         title: "Global Community",
-        description: "1,000+ wellness entrepreneurs"
+        description: "1,000+ wellness entrepreneurs",
       },
       marketplace: {
         title: "Integrated Marketplace",
-        description: "Curated wellness products"
-      }
+        description: "Curated wellness products",
+      },
     },
     roadmap: {
       sectionBadge: "Development Roadmap",
@@ -59,8 +59,8 @@ export const marketing = {
             income: "Active sales income",
             founder: "Founders commission",
             ai: "Basic AI tools",
-            support: "1-on-1 support"
-          }
+            support: "1-on-1 support",
+          },
         },
         tree: {
           name: "TREE",
@@ -74,8 +74,8 @@ export const marketing = {
             rewards: "Performance bonuses",
             copilot: "AI Sales Copilot",
             marketing: "Marketing automation",
-            dashboard: "Advanced analytics dashboard"
-          }
+            dashboard: "Advanced analytics dashboard",
+          },
         },
         forest: {
           name: "FOREST",
@@ -90,8 +90,8 @@ export const marketing = {
             platform: "Platform access",
             market: "Market expansion",
             data: "Data analytics",
-            equity: "Equity share"
-          }
+            equity: "Equity share",
+          },
         },
         metropolis: {
           name: "METROPOLIS",
@@ -102,10 +102,10 @@ export const marketing = {
             franchise: "Global franchise",
             global: "10+ countries",
             diversified: "Product portfolio",
-            legacy: "Lasting legacy"
-          }
-        }
-      }
+            legacy: "Lasting legacy",
+          },
+        },
+      },
     },
     testimonials: {
       sectionBadge: "Success Stories",
@@ -116,19 +116,19 @@ export const marketing = {
         item1: {
           name: "Nguyen Minh Anh",
           role: "Ambassador Partner",
-          content: "WellNexus changed my life. The AI Coach helped me build a team of 50+ in just 3 months."
+          content: "WellNexus changed my life. The AI Coach helped me build a team of 50+ in just 3 months.",
         },
         item2: {
           name: "Tran Duc Huy",
           role: "Startup Partner",
-          content: "From zero experience to $800/month in passive income. The platform makes everything easy."
+          content: "From zero experience to $800/month in passive income. The platform makes everything easy.",
         },
         item3: {
           name: "Le Thi Mai",
           role: "Gold Partner",
-          content: "The community support is incredible. I never feel alone on this journey."
-        }
-      }
+          content: "The community support is incredible. I never feel alone on this journey.",
+        },
+      },
     },
     cta: {
       sectionBadge: "Ready to Start?",
@@ -136,7 +136,7 @@ export const marketing = {
       subtitle: "Limited spots - 157 left",
       button: "Register Free",
       primaryButton: "Become Partner",
-      secondaryButton: "Schedule Demo"
+      secondaryButton: "Schedule Demo",
     },
     footer: {
       description: "AI health venture platform",
@@ -146,25 +146,25 @@ export const marketing = {
         about: "About",
         features: "Features",
         pricing: "Pricing",
-        contact: "Contact"
+        contact: "Contact",
       },
       legal: {
         title: "Legal",
         privacy: "Privacy",
         terms: "Terms",
-        compliance: "Compliance"
+        compliance: "Compliance",
       },
       contact: {
         title: "Contact",
         email: "Email",
         phone: "Phone",
         address: "Address",
-        placeholder: "comm_channel@secure.vn"
+        placeholder: "comm_channel@secure.vn",
       },
       subscribe_for_exclusive_intake: "Subscribe Updates",
       copyright: "© 2026 WellNexus // Zero Debt",
       privacy: "Privacy",
-      terms: "Terms"
+      terms: "Terms",
     },
     featured: {
       badge: "Featured Products",
@@ -172,33 +172,33 @@ export const marketing = {
       subtitle: "Our most popular health products",
       viewAll: "View All",
       addToCart: "Add to Cart",
-      price: "Price"
+      price: "Price",
     },
     bento: {
       ai_coach: {
         title: "AI Health Coach",
-        description: "Get personalized wellness guidance powered by Gemini AI"
+        description: "Get personalized wellness guidance powered by Gemini AI",
       },
       passive_income: {
         title: "Passive Income",
         description: "Build recurring revenue streams",
         amount: "12,450,000₫",
-        label: "Avg Monthly Income"
+        label: "Avg Monthly Income",
       },
       community: {
         title: "Global Community",
-        description: "Join 1,000+ wellness entrepreneurs worldwide"
+        description: "Join 1,000+ wellness entrepreneurs worldwide",
       },
       global: {
         title: "Global Expansion",
-        description: "Expanding across Southeast Asia markets"
-      }
+        description: "Expanding across Southeast Asia markets",
+      },
     },
     heroStats: {
       partnersActive: "Active Partners",
       gmvTotal: "Total GMV",
       yoyGrowth: "YoY Growth",
-      slotsRemaining: "Slots Remaining"
+      slotsRemaining: "Slots Remaining",
     },
     socialProof: {
       actions: {
@@ -206,19 +206,19 @@ export const marketing = {
         silver: "reached Silver rank",
         withdraw: "withdrew commission",
         team: "built a team of 10+",
-        order: "placed an order"
+        order: "placed an order",
       },
       times: {
         min2: "2 min ago",
         min5: "5 min ago",
         min8: "8 min ago",
         min12: "12 min ago",
-        min15: "15 min ago"
-      }
+        min15: "15 min ago",
+      },
     },
     stickyCta: {
       label: "157 slots remaining — Register today",
-      cta: "Get My Slot"
+      cta: "Get My Slot",
     },
     faq: {
       title: "Frequently Asked Questions",
@@ -228,13 +228,13 @@ export const marketing = {
       q2: "Is the income real and stable, or just marketing?",
       a2: "1,243 active partners earn an average of $500/month — figures updated in real-time from the system. Commissions are calculated automatically and withdrawn to your bank account weekly.",
       q3: "Can I succeed with zero business experience?",
-      a3: "Absolutely. WellNexus AI Coach guides you step by step — from approaching customers to building your network and optimizing sales. 68% of current partners started with zero experience."
+      a3: "Absolutely. WellNexus AI Coach guides you step by step — from approaching customers to building your network and optimizing sales. 68% of current partners started with zero experience.",
     },
     trust: {
       noInventory: "Zero Inventory",
       freeToJoin: "Free to Join",
       certified: "Certified Products",
-      community: "1,243+ Partners"
+      community: "1,243+ Partners",
     },
     whyNow: {
       sectionBadge: "First-Mover Advantage",
@@ -244,22 +244,22 @@ export const marketing = {
       benefits: {
         founders: {
           title: "Founders Club Bonus",
-          description: "Special commission and equity allocation for first 200 Partners"
+          description: "Special commission and equity allocation for first 200 Partners",
         },
         growth: {
           title: "Early Growth",
-          description: "Build team from scratch, benefit from network effect as system scales"
+          description: "Build team from scratch, benefit from network effect as system scales",
         },
         tech: {
           title: "Exclusive AI Technology",
-          description: "Early access to Agentic OS and AI tools exclusively for Founders"
+          description: "Early access to Agentic OS and AI tools exclusively for Founders",
         },
         market: {
           title: "SEA Market First-Mover",
-          description: "Lead in the $12B market, expand to 4 SEA countries"
-        }
-      }
-    }
+          description: "Lead in the $12B market, expand to 4 SEA countries",
+        },
+      },
+    },
   },
   marketing: {
     affiliate: {
@@ -271,7 +271,7 @@ export const marketing = {
         clicks: "Clicks",
         signups: "Sign-ups",
         conversion: "Conversion",
-        conversionValue: "Conversion Value"
+        conversionValue: "Conversion Value",
       },
       tip: "Share your link on social media for best results",
       partnerLabel: "Partner ID",
@@ -280,7 +280,7 @@ export const marketing = {
       qrTip: "Print this QR code on your business card",
       shareTitle: "Join WellNexus",
       shareText: "Join WellNexus and start your wellness business today!",
-      qrCodeAlt: "QR Code"
+      qrCodeAlt: "QR Code",
     },
     contentLibrary: {
       title: "Content Library",
@@ -289,11 +289,11 @@ export const marketing = {
         product: "Product",
         testimonial: "Testimonial",
         tips: "Tips",
-        promotion: "Promotion"
+        promotion: "Promotion",
       },
       copied: "Copied!",
       copyText: "Copy Text",
-      downloadImage: "Download Image"
+      downloadImage: "Download Image",
     },
     giftCards: {
       title: "Gift Cards",
@@ -309,7 +309,7 @@ export const marketing = {
       createButton: "Create Gift Card",
       cancel: "Cancel",
       usageCount: "Usage Count",
-      createdDate: "Created Date"
+      createdDate: "Created Date",
     },
     title: "Marketing Tools",
     subtitle: "Grow your business with powerful marketing tools",
@@ -317,29 +317,28 @@ export const marketing = {
       giftCards: "Gift Cards",
       contentTemplates: "Content Templates",
       affiliateLink: "Affiliate Link",
-      active: "Active"
+      active: "Active",
     },
     templates: {
       t1: {
         title: "Product Launch",
-        content: "Introducing our newest health product! Try it today and feel the difference."
+        content: "Introducing our newest health product! Try it today and feel the difference.",
       },
       t2: {
         title: "Success Story",
-        content: "See how our partners are building wealth with WellNexus. Join the movement!"
+        content: "See how our partners are building wealth with WellNexus. Join the movement!",
       },
       t3: {
         title: "Health Tips",
-        content: "Daily wellness tips to keep you energized and focused. Your health matters!"
+        content: "Daily wellness tips to keep you energized and focused. Your health matters!",
       },
       t4: {
         title: "Special Offer",
-        content: "Limited time offer! Get started with WellNexus today and unlock exclusive benefits."
-      }
-    }
+        content: "Limited time offer! Get started with WellNexus today and unlock exclusive benefits.",
+      },
+    },
   },
   marketingtools: {
-    "4_9": "4.9",
     ai_landing_builder: "AI Landing Builder",
     new: "NEW",
     t_o_trang_tuy_n_d_ng_chuy_n_ng: "Create professional recruitment pages",
@@ -364,7 +363,7 @@ export const marketing = {
     landing_pages_t_o: "Landing Pages Created",
     live: "LIVE",
     views: "Views",
-    conversions: "Conversions"
+    conversions: "Conversions",
   },
   landingpage: {
     ultimate_level_wellness: "ULTIMATE LEVEL WELLNESS",
@@ -372,7 +371,6 @@ export const marketing = {
     h_ng_d_n_c_nh_n_h_a_b_i_gemi: "Personalized guidance by Gemini",
     thu_nh_p_th_ng: "Passive Income",
     theo_d_i_hoa_h_ng_t_ng_v_p: "Real-time commission tracking",
-    "12_450": "12,450,000₫",
     thu_nh_p_tb_partner: "Avg Income/Partner",
     c_ng_ng: "Community",
     tham_gia_c_ng_1_000_founders: "Join 1,000+ successful Founders",
@@ -384,7 +382,7 @@ export const marketing = {
     tham_gia_ngay_ch_c_n_157_sl: "Join now - Only 157 slots left",
     c_u_chuy_n_th_nh_c_ng: "Success stories",
     partner_n_i_g_v_wellnexus: "What Partners say",
-    h_ng_ng_n_partner_thay_i: "Thousands transformed with WellNexus"
+    h_ng_ng_n_partner_thay_i: "Thousands transformed with WellNexus",
   },
   sharebuttons: {
     zalo: "Zalo",
@@ -392,15 +390,15 @@ export const marketing = {
     telegram: "Telegram",
     email: "Email",
     hideQR: "Hide QR",
-    showQR: "Show QR"
+    showQR: "Show QR",
   },
   portfoliosection: {
     growth: "Growth",
-    arr: "ARR"
+    arr: "ARR",
   },
   stickyCta: {
     label: "157 slots remaining — Register today",
-    cta: "Get My Slot"
+    cta: "Get My Slot",
   },
   faq: {
     title: "Frequently Asked Questions",
@@ -410,13 +408,13 @@ export const marketing = {
     q2: "Is the income real and stable, or just marketing?",
     a2: "1,243 active partners earn an average of $500/month — figures updated in real-time from the system. Commissions are calculated automatically and withdrawn to your bank account weekly.",
     q3: "Can I succeed with zero business experience?",
-    a3: "Absolutely. WellNexus AI Coach guides you step by step — from approaching customers to building your network and optimizing sales. 68% of current partners started with zero experience."
+    a3: "Absolutely. WellNexus AI Coach guides you step by step — from approaching customers to building your network and optimizing sales. 68% of current partners started with zero experience.",
   },
   trust: {
     noInventory: "Zero Inventory",
     freeToJoin: "Free to Join",
     certified: "Certified Products",
-    community: "1,243+ Partners"
+    community: "1,243+ Partners",
   },
   agencyos: {
     categories: {
@@ -425,8 +423,8 @@ export const marketing = {
       finance: "Finance",
       operations: "Operations",
       strategy: "Strategy",
-      agents: "AI Agents"
-    }
+      agents: "AI Agents",
+    },
   },
   eastasiabrand: {
     wellnexus: "WellNexus",
@@ -437,24 +435,23 @@ export const marketing = {
     awards: {
       top10: {
         title: "Top 10 Startup",
-        subtitle: "Vietnam 2025"
+        subtitle: "Vietnam 2025",
       },
       sea: {
         title: "SEA Expansion",
-        subtitle: "4 Countries"
+        subtitle: "4 Countries",
       },
       partner: {
         title: "Premium Partner",
-        subtitle: "Grade A+"
+        subtitle: "Grade A+",
       },
       iso: {
         title: "ISO 27001",
-        subtitle: "Security Certified"
-      }
-    }
+        subtitle: "Security Certified",
+      },
+    },
   },
   agencyosdemo: {
-    "85_ai_powered_automation_comm": "85% AI Automation",
     agencyos_integration: "AgencyOS Integration",
     agent_kpis: "Agent KPIs",
     all_commands: "All Commands",
@@ -462,7 +459,7 @@ export const marketing = {
     commands: "Commands",
     execution_history: "Execution History",
     no_commands_executed_yet_clic: "No commands executed yet. Click to run.",
-    open_command_palette_k: "Open Command Palette (⌘K)"
+    open_command_palette_k: "Open Command Palette (⌘K)",
   },
   cms: {
     action: "Action",
@@ -481,24 +478,21 @@ export const marketing = {
     tab_templates: "Templates",
     search_placeholder: "Search by keyword...",
     archive: "Archive",
-    enable: "Enable"
+    enable: "Enable",
   },
   founderrevenuegoal: {
-    "1m_founder_journey": "$1M Founder Journey",
     current_stage: "Current Stage",
     projected_yoy_growth: "Projected YoY Growth",
     revenue_milestone: "Revenue Milestone",
-    "1_000_000_usd": "$1,000,000 USD",
     ai_xu_t_h_nh_ng: "AI Suggested Actions",
     c_n_t_ng_t_c: "Needs to Accelerate",
     doanh_thu_hi_n_t_i: "Current Revenue",
     m_c_ti_u_2026: "2026 Target",
     of_goal: "of Goal",
-    v_t_ti_n: "Ahead of Schedule"
+    v_t_ti_n: "Ahead of Schedule",
   },
   valuationcard: {
-    "12_5_pe_ratio": "12.5x PE Ratio",
-    mom_growth: "MoM Growth"
+    mom_growth: "MoM Growth",
   },
   venture: {
     hero: {
@@ -511,8 +505,8 @@ export const marketing = {
       stats: {
         valuation_label: "Cumulative Valuation",
         nodes_label: "Target Nodes",
-        market_label: "Primary Market"
-      }
+        market_label: "Primary Market",
+      },
     },
     navigation: {
       apply_recruitment: "Apply / Recruitment",
@@ -520,8 +514,8 @@ export const marketing = {
       menu: {
         portfolio: "Portfolio",
         deal: "Deal",
-        market: "SEA Market"
-      }
+        market: "SEA Market",
+      },
     },
     deal: {
       sectionBadge: "Protocol Document Pack",
@@ -531,22 +525,22 @@ export const marketing = {
         category: "Capital Node",
         item1: "Zero initial liquidity inventory sync",
         item2: "Working capital pool backed by the network",
-        item3: "Credit expansion based on performance metrics"
+        item3: "Credit expansion based on performance metrics",
       },
       techStack: {
         category: "Tech Stack 2.0",
         item1: "Agentic OS - Native AI orchestration",
         item2: "Real-time pricing & productivity telemetry",
         item3: "Dynamic tax compliance abstraction",
-        item4: "Distributed ledger integration"
+        item4: "Distributed ledger integration",
       },
       ownership: {
         category: "Ownership Matrix",
         item1: "ESOP - Direct equity ownership",
         item2: "GROW Delta - Incentive-aligned productivity",
         item3: "4-year linear vesting // 1-year cliff",
-        item4: "IPO-indexed valuation milestones"
-      }
+        item4: "IPO-indexed valuation milestones",
+      },
     },
     portfolio: {
       sectionBadge: "Active Founder Nodes",
@@ -555,16 +549,16 @@ export const marketing = {
       roles: {
         ceo: "Co-Founder // CEO",
         cmo: "Co-Founder // CMO",
-        cto: "Co-Founder // CTO"
+        cto: "Co-Founder // CTO",
       },
       regions: {
         hanoi: "Hanoi",
         hcmc: "Ho Chi Minh City",
-        danang: "Da Nang"
+        danang: "Da Nang",
       },
       val: "Val",
       growth: "Growth",
-      arr_node: "ARR Node"
+      arr_node: "ARR Node",
     },
     market: {
       sectionBadge: "Ecosystem Expansion",
@@ -574,48 +568,48 @@ export const marketing = {
         vietnam: "Vietnam",
         thailand: "Thailand",
         indonesia: "Indonesia",
-        philippines: "Philippines"
+        philippines: "Philippines",
       },
       status: {
         active: "Active",
         expanding: "Expanding",
         protocol_init: "Protocol Init",
-        pending: "Pending"
+        pending: "Pending",
       },
       total_addressable_market: "Total Addressable Market",
       velocity: "Velocity",
-      init_sea_expansion_protocol: "Init SEA Expansion Protocol"
+      init_sea_expansion_protocol: "Init SEA Expansion Protocol",
     },
     footer: {
       tagline: "Venture Builder powering high-fidelity governance surfaces and decentralized health commerce across Southeast Asia.",
       strategic_ecosystem_builder: "Strategic Ecosystem Builder",
       newsletter: {
         title: "Transmission Sync",
-        placeholder: "comm_channel@secure.vn"
+        placeholder: "comm_channel@secure.vn",
       },
       subscribe_for_exclusive_intake: "Subscribe for Exclusive Intake",
       copyright: "© 2026 WellNexus Venture Builder // Zero Absolute Debt",
       privacy: "Ecosystem Privacy",
-      terms: "Terms Compliance"
-    }
+      terms: "Terms Compliance",
+    },
   },
   venturefooter: {
     strategic_ecosystem_builder: "Strategic Ecosystem Builder",
-    subscribe_for_exclusive_intake: "Subscribe for Exclusive Intake"
+    subscribe_for_exclusive_intake: "Subscribe for Exclusive Intake",
   },
   venturemarketmap: {
     init_sea_expansion_protocol: "Init SEA Expansion Protocol",
     total_addressable_market: "Total Addressable Market",
-    velocity: "Velocity"
+    velocity: "Velocity",
   },
   venturenavigation: {
     apply_recruitment: "Apply / Recruitment",
-    venture_builder: "Venture Builder"
+    venture_builder: "Venture Builder",
   },
   ventureportfolio: {
     arr_node: "ARR Node",
     growth: "Growth",
-    val: "Val"
+    val: "Val",
   },
   exitIntent: {
     headline: "Wait! Don't Leave Yet",
@@ -624,12 +618,12 @@ export const marketing = {
       aiCoaching: "AI-powered business coaching",
       passiveIncome: "Passive income potential",
       zeroRisk: "Zero inventory risk",
-      premiumProducts: "Premium product portfolio"
+      premiumProducts: "Premium product portfolio",
     },
     cta: "Register Now - Limited Slots",
     urgency: "Only 157 slots remaining in your area",
     noThanks: "No thanks, maybe later",
-    closeLabel: "Close popup"
+    closeLabel: "Close popup",
   },
   vendor: {
     dashboard: {
@@ -638,13 +632,13 @@ export const marketing = {
       tabs: {
         products: "My Products",
         analytics: "Analytics",
-        settings: "Store"
+        settings: "Store",
       },
       stats: {
         totalSales: "Total Sales",
         products: "Products",
         commissions: "Commissions",
-        orders: "Orders"
+        orders: "Orders",
       },
       products: {
         title: "Your Products",
@@ -655,30 +649,28 @@ export const marketing = {
         stock: "Stock",
         edit: "Edit",
         delete: "Delete",
-        deleteConfirm: "Are you sure you want to delete this product?"
+        deleteConfirm: "Are you sure you want to delete this product?",
       },
       empty: {
         noProducts: "No products yet",
-        addFirst: "Add your first product"
-      }
+        addFirst: "Add your first product",
+      },
     },
     analytics: {
       title: "Analytics",
       dateRange: {
-        "7d": "7 days",
-        "30d": "30 days",
-        "90d": "90 days"
+
       },
       stats: {
         totalSales: "Total Sales",
         totalCommission: "Total Commission",
-        totalOrders: "Total Orders"
+        totalOrders: "Total Orders",
       },
       charts: {
         salesOverTime: "Sales Over Time",
         topProducts: "Top Products",
-        commissionVsRevenue: "Commission vs Revenue"
-      }
+        commissionVsRevenue: "Commission vs Revenue",
+      },
     },
     settings: {
       title: "Store Settings",
@@ -688,14 +680,14 @@ export const marketing = {
       saveButton: "Save Settings",
       saveSuccess: "Settings saved successfully!",
       saveError: "Failed to save settings",
-      defaultDescription: "Welcome to my store! Quality health and wellness products for your wellbeing."
+      defaultDescription: "Welcome to my store! Quality health and wellness products for your wellbeing.",
     },
     actions: {
       addProduct: "Add Product",
       edit: "Edit",
       delete: "Delete",
       cancel: "Cancel",
-      save: "Save"
+      save: "Save",
     },
     addProduct: {
       title: "Add New Product",
@@ -711,8 +703,8 @@ export const marketing = {
         priceRequired: "Price is required",
         pricePositive: "Price must be greater than 0",
         commissionRange: "Commission rate must be between 0 and 1",
-        invalidUrl: "Invalid image URL"
-      }
+        invalidUrl: "Invalid image URL",
+      },
     },
     toasts: {
       loadError: "Failed to load products",
@@ -720,12 +712,12 @@ export const marketing = {
       updateError: "Failed to update product",
       deleteError: "Failed to delete product",
       saveSuccess: "Saved successfully!",
-      rateLimitExceeded: "Rate limit exceeded. Please try again in 1 minute."
+      rateLimitExceeded: "Rate limit exceeded. Please try again in 1 minute.",
     },
     errors: {
       notLoggedIn: "You must be logged in to manage products",
       vendorOnly: "Only vendors can access this feature",
-      accessDenied: "You can only access your own vendor dashboard"
-    }
-  }
+      accessDenied: "You can only access your own vendor dashboard",
+    },
+  },
 };

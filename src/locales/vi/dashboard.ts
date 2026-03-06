@@ -1,5 +1,5 @@
 export const dashboard = {
-dashboard: {
+  dashboard: {
     title: "Trang chủ",
     welcome: "Chào mừng trở lại, {name}!",
     serverTime: "Giờ hệ thống",
@@ -16,7 +16,7 @@ dashboard: {
       onTrack: "Đúng tiến độ",
       needsBoost: "Cần tăng tốc",
       description: "Theo dõi tăng trưởng kinh doanh theo thời gian thực",
-      shareButton: "Chia sẻ Link Giới Thiệu"
+      shareButton: "Chia sẻ Link Giới Thiệu",
     },
     valuation: {
       title: "Định Giá Doanh Nghiệp",
@@ -31,7 +31,7 @@ dashboard: {
       monthlyProfit: "Lợi nhuận tháng",
       annualizedRevenue: "Doanh thu hàng năm",
       assetGrowth: "Tăng trưởng tài sản",
-      valuationMethod: "Phương pháp định giá: DCF & Comparable"
+      valuationMethod: "Phương pháp định giá: DCF & Comparable",
     },
     stats: {
       totalSales: "Tổng Dòng Tiền (Cashflow)",
@@ -49,7 +49,7 @@ dashboard: {
       activeMembers: "Thành Viên Đang Hoạt Động",
       conversionRate: "Tỷ Lệ Chuyển Đổi",
       pendingOrders: "Đơn Hàng Chờ",
-      completedOrders: "Đơn Hàng Hoàn Thành"
+      completedOrders: "Đơn Hàng Hoàn Thành",
     },
     commission: {
       title: "Hoa Hồng",
@@ -66,21 +66,21 @@ dashboard: {
       bonusRevenue: "Thưởng The Bee",
       total: "Tổng thu nhập",
       withdraw: "Rút tiền",
-      viewDetails: "Xem chi tiết"
+      viewDetails: "Xem chi tiết",
     },
     revenue: {
       title: "7 ngày Asset Performance",
       subtitle: "Biểu đồ tăng trưởng tài sản",
       total: "Tổng",
       average: "Trung bình",
-      peak: "Cao nhất"
+      peak: "Cao nhất",
     },
     revenueBreakdown: {
       title: "Nguồn Thu Nhập (Income Streams)",
       directSales: "Direct Income",
       teamBonus: "Portfolio Bonus",
       referral: "Referral Income",
-      yield: "Doanh thu"
+      yield: "Doanh thu",
     },
     topProducts: {
       title: "Sản phẩm bán chạy",
@@ -88,7 +88,7 @@ dashboard: {
       commission: "Hoa hồng",
       stock: "Còn {count}",
       outOfStock: "Hết hàng",
-      buyNow: "Mua ngay"
+      buyNow: "Mua ngay",
     },
     quickActions: {
       title: "Hành động nhanh",
@@ -104,7 +104,7 @@ dashboard: {
       shareAchievementDesc: "Khoe thành tích của bạn",
       addMember: "Thêm Thành Viên",
       viewReports: "Xem Báo Cáo",
-      manageProducts: "Quản Lý Sản Phẩm"
+      manageProducts: "Quản Lý Sản Phẩm",
     },
     dailyQuest: {
       title: "Nhiệm vụ hàng ngày",
@@ -123,22 +123,22 @@ dashboard: {
       types: {
         onboarding: "Khởi động",
         sales: "Bán hàng",
-        learning: "Học tập"
+        learning: "Học tập",
       },
       quests: {
         dailyCheckIn: {
           title: "Khởi động ngày mới",
-          description: "Check-in App hàng ngày"
+          description: "Check-in App hàng ngày",
         },
         shareHealthCheck: {
           title: "Lan tỏa giá trị",
-          description: "Chia sẻ 1 link Health Check"
+          description: "Chia sẻ 1 link Health Check",
         },
         watchTraining: {
           title: "Học tập",
-          description: "Xem 1 video đào tạo"
-        }
-      }
+          description: "Xem 1 video đào tạo",
+        },
+      },
     },
     liveActivities: {
       title: "Hoạt động trực tiếp",
@@ -167,8 +167,8 @@ dashboard: {
         transferredSuccess: "chuyển {amount} thành công",
         referredPartner: "giới thiệu thành công 1 Partner mới",
         referralBonus: "nhận bonus giới thiệu {amount}",
-        teamExpanded: "team mở rộng thêm 1 thành viên"
-      }
+        teamExpanded: "team mở rộng thêm 1 thành viên",
+      },
     },
     recentActivity: {
       title: "Hoạt động gần đây",
@@ -177,7 +177,7 @@ dashboard: {
       productShipped: "Đã gửi sản phẩm cho khách hàng",
       reachedRank: "Đạt cấp bậc Partner",
       hoursAgo: "{hours} giờ trước",
-      daysAgo: "{days} ngày trước"
+      daysAgo: "{days} ngày trước",
     },
     achievements: {
       title: "Thành tựu",
@@ -186,17 +186,17 @@ dashboard: {
       teamLeader: "Trưởng nhóm",
       speedDemon: "Tốc độ ánh sáng",
       unlocked: "{count} / {total} đã mở khóa",
-      locked: "Chưa mở khóa"
+      locked: "Chưa mở khóa",
     },
     quickStats: {
       title: "Thống kê nhanh",
       totalTransactions: "Tổng giao dịch",
       activeProducts: "Sản phẩm đang bán",
-      currentRank: "Cấp bậc hiện tại"
+      currentRank: "Cấp bậc hiện tại",
     },
-    system_online: "Hệ thống Online"
+    system_online: "Hệ thống Online",
   },
-overview: {
+  overview: {
     active_nodes: "Nút Hoạt Động",
     agent_cluster: "Cụm Đại Lý",
     certified: "Đã Chứng Nhận",
@@ -242,17 +242,16 @@ overview: {
     evt_policy_locked: "Chính sách: Hoa hồng bán lẻ khóa 25%",
     evt_2m_ago: "2 phút trước",
     evt_zero_fraud: "Bảo mật: Không phát hiện gian lận",
-    evt_5m_ago: "5 phút trước"
+    evt_5m_ago: "5 phút trước",
   },
-statsgrid: {
-    "10_pit": "10% PIT",
+  statsgrid: {
     next_cycle: "Next Cycle",
-    reserved_tier_gt_2m: "Reserved Tier >2M"
+    reserved_tier_gt_2m: "Reserved Tier >2M",
   },
-useStatsGrid: {
-    tbd: "Chưa Xác Định"
+  useStatsGrid: {
+    tbd: "Chưa Xác Định",
   },
-quickactionscard: {
+  quickactionscard: {
     achievement_copied: "Thành tích đã được sao chép vào clipboard!",
     achievement_share_text: "🎉 Thành tích WellNexus của tôi:\n\n🏆 Cấp bậc: {{rank}}\n💰 Doanh số: {{sales}}\n👥 Team Volume: {{team}}\n\nTham gia cùng tôi tại WellNexus! 💪",
     achievement_title: "Thành tích WellNexus",
@@ -263,9 +262,9 @@ quickactionscard: {
     send_gift_card: "Gửi Gift Card",
     share_health_check: "Chia sẻ Link Health Check",
     share_health_check_desc: "Gửi link kiểm tra sức khỏe",
-    tip_s_d_ng_c_c_c_ng_c_n: "Tip: Sử dụng các công cụ này để tăng tương tác với khách hàng"
+    tip_s_d_ng_c_c_c_ng_c_n: "Tip: Sử dụng các công cụ này để tăng tương tác với khách hàng",
   },
-herocard: {
+  herocard: {
     commission: "Commission",
     h_ng_n_m: "Hàng năm",
     live_commission: "Live Commission",
@@ -274,7 +273,6 @@ herocard: {
     th_ng: "Tháng",
     total_yield: "Total Yield",
     welcome: "Welcome",
-    "100m_vnd_revenue": "Doanh Thu 100 Triệu VND",
     access_secured: "Quyền Truy Cập Bảo Mật",
     achievement_logic: "Công Thức Thành Tích",
     ecosystem_scaling: "Ecosystem Scaling",
@@ -283,32 +281,31 @@ herocard: {
     reach: "Reach",
     to_hit_next_milestone: "to hit next milestone",
     to_unlock: "to unlock",
-    venture_partner_status: "Venture Partner Status"
+    venture_partner_status: "Venture Partner Status",
   },
-useHeroCard: {
+  useHeroCard: {
     share_title: "Tiêu Đề Chia Sẻ",
-    share_text: "Nội Dung Chia Sẻ"
+    share_text: "Nội Dung Chia Sẻ",
   },
-heroenhancements: {
-    c_tin_t_ng_b_i: "Được tin tưởng bởi"
+  heroenhancements: {
+    c_tin_t_ng_b_i: "Được tin tưởng bởi",
   },
-recentactivitylist: {
-    view_digital_audit_trace: "View Digital Audit Trace"
+  recentactivitylist: {
+    view_digital_audit_trace: "View Digital Audit Trace",
   },
-liveActivities: {
+  liveActivities: {
     in: "trong",
     just_now: "Vừa xong",
-    vnd: "VNĐ"
+    vnd: "VNĐ",
   },
-liveactivitiesticker: {
+  liveactivitiesticker: {
     recent: "Gần đây: ",
-    nodes: " hoạt động"
+    nodes: " hoạt động",
   },
-valuationcard: {
+  valuationcard: {
     mom_growth: "Tăng Trưởng MoM",
-    "12_5_pe_ratio": "Tỷ Lệ P/E 12.5"
   },
-revenueprogresswidget: {
+  revenueprogresswidget: {
     revenue_milestone: "Mốc Doanh Thu",
     global_ecosystem_velocity: "Tốc Độ Hệ Sinh Thái Toàn Cầu",
     benchmark: "Chuẩn",
@@ -320,9 +317,9 @@ revenueprogresswidget: {
     verified_partners: "Đối Tác Đã Xác Minh",
     annualized_run_rate_arr: "Tỷ Lệ Hoạt Động Hàng Năm (ARR)",
     benchmark_achieved: "Đã Đạt Chuẩn",
-    days_to_benchmark: "Ngày Đến Chuẩn"
+    days_to_benchmark: "Ngày Đến Chuẩn",
   },
-liveconsole: {
+  liveconsole: {
     autonomous_agents_real_time_l: "Nhật Ký Thời Gian Thực Đại Lý Tự Động",
     intelligence_console: "Bảng Điều Khiển Thông Minh",
     live: "TRỰC TIẾP",
@@ -333,6 +330,6 @@ liveconsole: {
     live_operations_node_agent: "Đại Lý Nút Hoạt Động Trực Tiếp",
     sync_active: "Đồng Bộ Hoạt Động",
     tx: "Tx",
-    wellnexus_bee: "WellNexus BEE"
-  }
+    wellnexus_bee: "WellNexus BEE",
+  },
 };

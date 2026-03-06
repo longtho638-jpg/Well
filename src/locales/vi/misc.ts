@@ -19,13 +19,12 @@ export const misc = {
     social_commerce_2_0_1: "Thương mại xã hội 2.0",
     h_sinh_th_i_social_commerce_t: "Hệ sinh thái Social Commerce tiên tiến nhất Việt Nam",
     hello_wellnexus_vn: "wellnexusvn@gmail.com",
-    "84_901_234_567": "0918 876 586",
     q1_tp_hcm_vietnam: "286 Nguyễn Xiển, Thanh Liệt, Hà Nội",
     email_placeholder: "email@example.com",
     wellnexus_all_rights_reserved: "WellNexus. Bảo lưu mọi quyền.",
     made_with_in_vietnam: "Được làm với ❤️ tại Việt Nam",
     ssl_secured: "Bảo mật SSL",
-    top_10_east_asia: "Top 10 Đông Á"
+    top_10_east_asia: "Top 10 Đông Á",
   },
   commandpalette: {
     agencyos_85_commands: "AgencyOS: 85 Lệnh",
@@ -34,7 +33,7 @@ export const misc = {
     executing_command: "Đang thực thi lệnh",
     no_commands_found: "Không tìm thấy lệnh nào",
     command_list: "Danh sách lệnh",
-    to_open: "để mở"
+    to_open: "để mở",
   },
   sidebar: {
     wellnexus: "WellNexus",
@@ -46,7 +45,7 @@ export const misc = {
     get_ai_advice: "Nhận lời khuyên AI",
     coachFallback: "Hãy tập trung chia sẻ giá trị hôm nay. Doanh số sẽ theo sau!",
     getAiAdviceLabel: "Nhận lời khuyên AI cá nhân hóa",
-    questList: "Danh sách nhiệm vụ"
+    questList: "Danh sách nhiệm vụ",
   },
   dailyquesthub: {
     accumulated_today: "Tích lũy hôm nay",
@@ -57,7 +56,7 @@ export const misc = {
     grow_1: "GROW",
     mastered: "Đã thành thạo",
     start_quest: "Bắt đầu nhiệm vụ",
-    yield: "Lợi nhuận"
+    yield: "Lợi nhuận",
   },
   sharebuttons: {
     email: "Email",
@@ -65,10 +64,10 @@ export const misc = {
     telegram: "Telegram",
     zalo: "Zalo",
     hideQR: "Ẩn mã QR",
-    showQR: "Hiện mã QR"
+    showQR: "Hiện mã QR",
   },
   successanimation: {
-    success: "Thành công"
+    success: "Thành công",
   },
   subscription: {
     title: "Gói Dịch Vụ",
@@ -115,14 +114,14 @@ export const misc = {
     xp: "XP",
     fallback_advice: "Hãy tiếp tục chia sẻ năng lượng tích cực! Doanh số sẽ đến.",
     analyzing: "Đang phân tích dữ liệu...",
-    get_ai_advice: "Nhận tư vấn AI"
+    get_ai_advice: "Nhận tư vấn AI",
   },
   eastasiabrand: {
     wellnexus: "WellNexus",
     v_ch_ng_t_i: "Về chúng tôi",
     s_n_ph_m: "Sản phẩm",
     i_t_c: "Đối tác",
-    b_t_u: "Bắt đầu"
+    b_t_u: "Bắt đầu",
   },
   venture: {
     footer: {
@@ -133,9 +132,9 @@ export const misc = {
       tagline: "Xây dựng tương lai của thương mại sức khỏe",
       newsletter: {
         title: "Bản Tin",
-        placeholder: "Nhập email của bạn"
+        placeholder: "Nhập email của bạn",
       },
-      copyright: "© 2026 WellNexus"
+      copyright: "© 2026 WellNexus",
     },
     market: {
       total_addressable_market: "Tổng Thị Trường Có Thể Tiếp Cận",
@@ -148,23 +147,23 @@ export const misc = {
         vietnam: "Việt Nam",
         thailand: "Thái Lan",
         indonesia: "Indonesia",
-        philippines: "Philippines"
+        philippines: "Philippines",
       },
       status: {
         active: "Đang Hoạt Động",
         expanding: "Đang Mở Rộng",
         protocol_init: "Khởi Động Giao Thức",
-        pending: "Đang Chờ"
-      }
+        pending: "Đang Chờ",
+      },
     },
     navigation: {
       venture_builder: "Venture Builder",
       menu: {
         portfolio: "Danh Mục",
         deal: "Phòng Giao Dịch",
-        market: "Thị Trường"
+        market: "Thị Trường",
       },
-      apply_recruitment: "Ứng Tuyển / Tuyển Dụng"
+      apply_recruitment: "Ứng Tuyển / Tuyển Dụng",
     },
     portfolio: {
       val: "Định Giá",
@@ -176,13 +175,13 @@ export const misc = {
       roles: {
         ceo: "CEO",
         cmo: "CMO",
-        cto: "CTO"
+        cto: "CTO",
       },
       regions: {
         hanoi: "Hà Nội",
         hcmc: "TP.HCM",
-        danang: "Đà Nẵng"
-      }
+        danang: "Đà Nẵng",
+      },
     },
     hero: {
       badge: "Venture Builder",
@@ -194,8 +193,8 @@ export const misc = {
       stats: {
         valuation_label: "Định Giá",
         nodes_label: "Nút Hoạt Động",
-        market_label: "Vốn Hóa Thị Trường"
-      }
+        market_label: "Vốn Hóa Thị Trường",
+      },
     },
     deal: {
       sectionBadge: "Phòng Giao Dịch",
@@ -205,28 +204,28 @@ export const misc = {
         category: "Nút Vốn",
         item1: "Hạt giống có sẵn",
         item2: "Pipeline Series A",
-        item3: "Tài chính dựa trên doanh thu"
+        item3: "Tài chính dựa trên doanh thu",
       },
       techStack: {
         category: "Ngăn Xếp Công Nghệ",
         item1: "Nền tảng hỗ trợ AI",
         item2: "Phân tích thời gian thực",
         item3: "Sổ cái blockchain",
-        item4: "Thiết kế ưu tiên di động"
+        item4: "Thiết kế ưu tiên di động",
       },
       ownership: {
         category: "Quyền Sở Hữu",
         item1: "Tham gia vốn chủ sở hữu",
         item2: "Mô hình chia sẻ doanh thu",
         item3: "Lịch vesting",
-        item4: "Tư vấn hội đồng quản trị"
-      }
-    }
+        item4: "Tư vấn hội đồng quản trị",
+      },
+    },
   },
   fraudbadge: {
     critical_risk: "Rủi Ro Nghiêm Trọng",
     suspected: "Bị Nghi Ngờ",
-    verified: "Đã Xác Minh"
+    verified: "Đã Xác Minh",
   },
   profilepage: {
     personal_information: "Thông Tin Cá Nhân",
@@ -240,18 +239,17 @@ export const misc = {
     email_verified: "Email Đã Xác Minh",
     security_strength: "Độ Mạnh Bảo Mật",
     edit: "Chỉnh Sửa",
-    joined: "Tham Gia"
+    joined: "Tham Gia",
   },
   agencyosdemo: {
     agencyos_integration: "Tích Hợp AgencyOS",
-    "85_ai_powered_automation_comm": "85 lệnh tự động hóa AI",
     open_command_palette_k: "Mở Bảng Lệnh (⌘K)",
     command_categories: "Danh Mục Lệnh",
     commands: "Lệnh",
     agent_kpis: "KPI Đại Lý",
     all_commands: "Tất Cả Lệnh",
     execution_history: "Lịch Sử Thực Thi",
-    no_commands_executed_yet_clic: "Chưa có lệnh nào được thực thi. Nhấp để bắt đầu."
+    no_commands_executed_yet_clic: "Chưa có lệnh nào được thực thi. Nhấp để bắt đầu.",
   },
   debuggerpage: {
     system_debugger: "Trình Gỡ Lỗi Hệ Thống",
@@ -260,12 +258,12 @@ export const misc = {
     environment_window: "Cửa Sổ Môi Trường",
     window_props: "Props Cửa Sổ",
     local_storage_keys: "Khóa Local Storage",
-    empty: "Trống"
+    empty: "Trống",
   },
   testpage: {
     well_test_page: "Trang Kiểm Tra Well",
     connectivity_check: "Kiểm Tra Kết Nối",
     client_status: "Trạng Thái Client",
-    active: "Đang Hoạt Động"
+    active: "Đang Hoạt Động",
   },
 };

@@ -6,7 +6,7 @@ export const marketing = {
       giftCards: "Gift Cards",
       contentTemplates: "Content Templates",
       affiliateLink: "Affiliate Link",
-      active: "Active"
+      active: "Active",
     },
     giftCards: {
       title: "Gift Cards",
@@ -22,7 +22,7 @@ export const marketing = {
       createButton: "Tạo ngay",
       cancel: "Hủy",
       usageCount: "Lượt sử dụng:",
-      createdDate: "Ngày tạo:"
+      createdDate: "Ngày tạo:",
     },
     contentLibrary: {
       title: "Content Library",
@@ -31,11 +31,11 @@ export const marketing = {
         product: "📦 Sản phẩm",
         testimonial: "⭐ Review",
         tips: "💡 Tips",
-        promotion: "🎉 Khuyến mãi"
+        promotion: "🎉 Khuyến mãi",
       },
       copyText: "Copy text",
       copied: "Đã copy",
-      downloadImage: "Tải ảnh"
+      downloadImage: "Tải ảnh",
     },
     affiliate: {
       title: "Affiliate Link & QR Code",
@@ -46,7 +46,7 @@ export const marketing = {
         clicks: "Lượt click:",
         signups: "Đăng ký mới:",
         conversion: "Tỷ lệ chuyển đổi:",
-        conversionValue: "Giá Trị Chuyển Đổi"
+        conversionValue: "Giá Trị Chuyển Đổi",
       },
       tip: "💡 Tip: Chia sẻ link này trên Facebook, Zalo, hoặc website cá nhân của bạn để nhận hoa hồng từ mỗi đơn hàng!",
       partnerLabel: "WellNexus Partner",
@@ -55,29 +55,28 @@ export const marketing = {
       qrTip: "In QR code này ra giấy và dán tại cửa hàng, hoặc chia sẻ online để khách hàng dễ dàng truy cập!",
       shareTitle: "QR Code của tôi - WellNexus",
       shareText: "Quét QR code này để truy cập link giới thiệu của tôi!",
-      qrCodeAlt: "Mã QR"
+      qrCodeAlt: "Mã QR",
     },
     templates: {
       t1: {
         title: "Giới thiệu ANIMA 119",
-        content: "🌿 ANIMA 119 - Giải pháp vàng cho giấc ngủ ngon!\n\n✨ Bạn đang gặp khó khăn với giấc ngủ?\n✨ Thường xuyên lo âu, căng thẳng?\n✨ Muốn cải thiện sức khỏe thần kinh?\n\n💊 ANIMA 119 là câu trả lời hoàn hảo:\n✅ Giúp ngủ sâu, ngủ ngon\n✅ Giảm stress, lo âu\n✅ Cân bằng cảm xúc\n✅ 100% thành phần tự nhiên\n\n💰 Giá: 15.900.000đ\n🎁 Ưu đãi đặc biệt cho khách hàng mới!\n\n📱 Liên hệ ngay để được tư vấn miễn phí!"
+        content: "🌿 ANIMA 119 - Giải pháp vàng cho giấc ngủ ngon!\n\n✨ Bạn đang gặp khó khăn với giấc ngủ?\n✨ Thường xuyên lo âu, căng thẳng?\n✨ Muốn cải thiện sức khỏe thần kinh?\n\n💊 ANIMA 119 là câu trả lời hoàn hảo:\n✅ Giúp ngủ sâu, ngủ ngon\n✅ Giảm stress, lo âu\n✅ Cân bằng cảm xúc\n✅ 100% thành phần tự nhiên\n\n💰 Giá: 15.900.000đ\n🎁 Ưu đãi đặc biệt cho khách hàng mới!\n\n📱 Liên hệ ngay để được tư vấn miễn phí!",
       },
       t2: {
         title: "Câu chuyện thành công",
-        content: "💪 Câu chuyện của chị Mai - 35 tuổi\n\n\"Trước đây, tôi thường xuyên mất ngủ, mệt mỏi suốt ngày. Sau 2 tuần sử dụng ANIMA 119, tôi đã có những đêm ngủ ngon hơn rất nhiều. Cảm ơn ANIMA đã giúp tôi lấy lại sức khỏe!\"\n\n🌟 Bạn cũng có thể thay đổi cuộc sống như chị Mai!\n\n📞 Inbox để được tư vấn và nhận ưu đãi đặc biệt!"
+        content: "💪 Câu chuyện của chị Mai - 35 tuổi\n\n\"Trước đây, tôi thường xuyên mất ngủ, mệt mỏi suốt ngày. Sau 2 tuần sử dụng ANIMA 119, tôi đã có những đêm ngủ ngon hơn rất nhiều. Cảm ơn ANIMA đã giúp tôi lấy lại sức khỏe!\"\n\n🌟 Bạn cũng có thể thay đổi cuộc sống như chị Mai!\n\n📞 Inbox để được tư vấn và nhận ưu đãi đặc biệt!",
       },
       t3: {
         title: "Tips sức khỏe",
-        content: "🌙 5 Tips để có giấc ngủ ngon:\n\n1️⃣ Tắt điện thoại trước khi ngủ 30 phút\n2️⃣ Uống trà thảo mộc\n3️⃣ Tạo không gian ngủ thoải mái\n4️⃣ Tập yoga hoặc thiền trước khi ngủ\n5️⃣ Sử dụng ANIMA 119 để hỗ trợ giấc ngủ sâu\n\n💚 Chăm sóc sức khỏe là chăm sóc bản thân!\n\n#SứcKhỏe #GiấcNgủNgon #ANIMA"
+        content: "🌙 5 Tips để có giấc ngủ ngon:\n\n1️⃣ Tắt điện thoại trước khi ngủ 30 phút\n2️⃣ Uống trà thảo mộc\n3️⃣ Tạo không gian ngủ thoải mái\n4️⃣ Tập yoga hoặc thiền trước khi ngủ\n5️⃣ Sử dụng ANIMA 119 để hỗ trợ giấc ngủ sâu\n\n💚 Chăm sóc sức khỏe là chăm sóc bản thân!\n\n#SứcKhỏe #GiấcNgủNgon #ANIMA",
       },
       t4: {
         title: "Khuyến mãi đặc biệt",
-        content: "🎉 FLASH SALE - Chỉ 3 ngày!\n\n🔥 GIẢM 20% toàn bộ sản phẩm ANIMA\n🎁 Tặng kèm quà tặng trị giá 500.000đ\n🚚 Miễn phí vận chuyển toàn quốc\n\n⏰ Chương trình kết thúc sau:\n📅 72 giờ nữa!\n\n💰 Đặt hàng ngay:\n👉 Nhắn tin để được hỗ trợ\n👉 Số lượng có hạn!\n\n#FlashSale #KhuyếnMãi #ANIMA"
-      }
-    }
+        content: "🎉 FLASH SALE - Chỉ 3 ngày!\n\n🔥 GIẢM 20% toàn bộ sản phẩm ANIMA\n🎁 Tặng kèm quà tặng trị giá 500.000đ\n🚚 Miễn phí vận chuyển toàn quốc\n\n⏰ Chương trình kết thúc sau:\n📅 72 giờ nữa!\n\n💰 Đặt hàng ngay:\n👉 Nhắn tin để được hỗ trợ\n👉 Số lượng có hạn!\n\n#FlashSale #KhuyếnMãi #ANIMA",
+      },
+    },
   },
   marketingtools: {
-    "4_9": "4.9",
     ai_landing_builder: "AI Landing Builder",
     new: "Mới",
     t_o_trang_tuy_n_d_ng_chuy_n_ng: "Tạo trang tuyển dụng chuyên nghiệp trong tích tắc",
@@ -102,7 +101,7 @@ export const marketing = {
     landing_pages_t_o: "Landing Pages đã tạo (",
     live: "LIVE",
     views: "Views",
-    conversions: "Conversions"
+    conversions: "Conversions",
   },
   landingpage: {
     ultimate_level_wellness: "ULTIMATE LEVEL WELLNESS",
@@ -110,7 +109,6 @@ export const marketing = {
     h_ng_d_n_c_nh_n_h_a_b_i_gemi: "Hướng dẫn cá nhân hóa bởi Gemini",
     thu_nh_p_th_ng: "Thu nhập thụ động",
     theo_d_i_hoa_h_ng_t_ng_v_p: "Theo dõi hoa hồng tăng vọt theo thời gian thực",
-    "12_450": "12.450.000đ",
     thu_nh_p_tb_partner: "Thu nhập TB/Partner",
     c_ng_ng: "Cộng đồng",
     tham_gia_c_ng_1_000_founders: "Tham gia cùng 1.000+ Founders thành công",
@@ -122,7 +120,7 @@ export const marketing = {
     tham_gia_ngay_ch_c_n_157_sl: "Tham gia ngay - Chỉ còn 157 slot",
     c_u_chuy_n_th_nh_c_ng: "Câu chuyện thành công",
     partner_n_i_g_v_wellnexus: "Partner nói gì về WellNexus",
-    h_ng_ng_n_partner_thay_i: "Hàng ngàn Partner đã thay đổi cuộc sống với WellNexus"
+    h_ng_ng_n_partner_thay_i: "Hàng ngàn Partner đã thay đổi cuộc sống với WellNexus",
   },
   landing: {
     hero: {
@@ -132,27 +130,27 @@ export const marketing = {
       headlineAccent: "Bắt Đầu Thu Nhập Thụ Động",
       subtitle: "1,243 đối tác đang kiếm trung bình 12,450,000₫/tháng với AI coaching — không cần vốn tồn kho.",
       cta: "Nhận Slot Của Tôi",
-      learnMore: "Xem Lộ Trình"
+      learnMore: "Xem Lộ Trình",
     },
     bento: {
       ai_coach: {
         title: "Trợ lý AI",
-        description: "Hướng dẫn cá nhân hóa bởi Gemini"
+        description: "Hướng dẫn cá nhân hóa bởi Gemini",
       },
       passive_income: {
         title: "Thu Nhập Thụ Động",
         description: "Theo dõi hoa hồng theo thời gian thực",
         amount: "12,450,000₫",
-        label: "Thu nhập TB/Đối tác"
+        label: "Thu nhập TB/Đối tác",
       },
       community: {
         title: "Cộng Đồng",
-        description: "Tham gia cùng 1,000+ Founder thành công"
+        description: "Tham gia cùng 1,000+ Founder thành công",
       },
       global: {
         title: "Mở Rộng Toàn Cầu",
-        description: "Sẵn sàng chinh phục thị trường Đông Nam Á"
-      }
+        description: "Sẵn sàng chinh phục thị trường Đông Nam Á",
+      },
     },
     featured: {
       badge: "Nổi bật",
@@ -160,7 +158,7 @@ export const marketing = {
       subtitle: "Được tin dùng bởi hơn 5,000+ khách hàng và chuyên gia y tế",
       viewAll: "Xem tất cả sản phẩm",
       addToCart: "Thêm vào giỏ",
-      price: "Giá bán"
+      price: "Giá bán",
     },
     features: {
       title: "Tính năng nổi bật",
@@ -168,32 +166,32 @@ export const marketing = {
       sectionTitle: "Tất Cả Những Gì Bạn Cần",
       ai: {
         title: "Trợ lý AI thông minh",
-        description: "Hỗ trợ bán hàng 24/7 với công nghệ AI tiên tiến"
+        description: "Hỗ trợ bán hàng 24/7 với công nghệ AI tiên tiến",
       },
       aiCoach: {
         title: "Huấn Luyện Viên Sức Khỏe AI",
-        description: "Hướng dẫn cá nhân hóa bởi Gemini AI"
+        description: "Hướng dẫn cá nhân hóa bởi Gemini AI",
       },
       token: {
         title: "Hệ thống Dual Token",
-        description: "SHOP và GROW token với khả năng staking sinh lời"
+        description: "SHOP và GROW token với khả năng staking sinh lời",
       },
       commission: {
         title: "Theo Dõi Thời Gian Thực",
-        description: "Giám sát các chỉ số tăng trưởng trực tiếp"
+        description: "Giám sát các chỉ số tăng trưởng trực tiếp",
       },
       compliance: {
         title: "Tuân thủ thuế tự động",
-        description: "Tự động tính toán và báo cáo thuế theo quy định Việt Nam"
+        description: "Tự động tính toán và báo cáo thuế theo quy định Việt Nam",
       },
       community: {
         title: "Cộng đồng mạnh mẽ",
-        description: "Kết nối với hàng nghìn seller trên toàn quốc"
+        description: "Kết nối với hàng nghìn seller trên toàn quốc",
       },
       marketplace: {
         title: "Sàn Thương Mại Tích Hợp",
-        description: "Sản phẩm sức khỏe được tuyển chọn"
-      }
+        description: "Sản phẩm sức khỏe được tuyển chọn",
+      },
     },
     testimonials: {
       title: "Câu chuyện thành công",
@@ -204,25 +202,25 @@ export const marketing = {
         item1: {
           name: "Nguyễn Minh Anh",
           role: "Gold Partner • TP.HCM",
-          content: "Từ khi tham gia WellNexus, thu nhập của mình tăng 3 lần chỉ sau 6 tháng. Công nghệ AI giúp mình bán hàng hiệu quả hơn rất nhiều!"
+          content: "Từ khi tham gia WellNexus, thu nhập của mình tăng 3 lần chỉ sau 6 tháng. Công nghệ AI giúp mình bán hàng hiệu quả hơn rất nhiều!",
         },
         item2: {
           name: "Trần Hoàng Nam",
           role: "Platinum Partner • Hà Nội",
-          content: "Mô hình Social Commerce của WellNexus rất khác biệt. Mình có thể xây dựng đội ngũ và có thu nhập thụ động thực sự."
+          content: "Mô hình Social Commerce của WellNexus rất khác biệt. Mình có thể xây dựng đội ngũ và có thu nhập thụ động thực sự.",
         },
         item3: {
           name: "Lê Thanh Hà",
           role: "Diamond Partner • Đà Nẵng",
-          content: "Team hỗ trợ rất tận tâm, sản phẩm chất lượng cao. Đây là cơ hội kinh doanh tốt nhất mình từng gặp!"
-        }
-      }
+          content: "Team hỗ trợ rất tận tâm, sản phẩm chất lượng cao. Đây là cơ hội kinh doanh tốt nhất mình từng gặp!",
+        },
+      },
     },
     heroStats: {
       partnersActive: "Partners Active",
       gmvTotal: "GMV Total",
       yoyGrowth: "Tăng trưởng YoY",
-      slotsRemaining: "Slots còn lại"
+      slotsRemaining: "Slots còn lại",
     },
     socialProof: {
       actions: {
@@ -230,15 +228,15 @@ export const marketing = {
         silver: "đạt hạng Silver Partner",
         withdraw: "rút hoa hồng ₫12,500,000",
         team: "xây dựng team 15 người",
-        order: "đặt hàng ₫2,800,000"
+        order: "đặt hàng ₫2,800,000",
       },
       times: {
         min2: "2 phút trước",
         min5: "5 phút trước",
         min8: "8 phút trước",
         min12: "12 phút trước",
-        min15: "15 phút trước"
-      }
+        min15: "15 phút trước",
+      },
     },
     cta: {
       title: "Sẵn sàng bắt đầu?",
@@ -246,7 +244,7 @@ export const marketing = {
       button: "Đăng ký miễn phí",
       sectionBadge: "Sẵn sàng bắt đầu?",
       primaryButton: "Trở thành Đối Tác",
-      secondaryButton: "Đặt lịch Demo"
+      secondaryButton: "Đặt lịch Demo",
     },
     roadmap: {
       sectionBadge: "Lộ Trình Phát Triển",
@@ -265,8 +263,8 @@ export const marketing = {
             income: "Thu nhập chủ động từ bán hàng",
             founder: "Hoa hồng Founders Club",
             ai: "Công cụ AI cơ bản",
-            support: "Đào tạo & Hỗ trợ 1-1"
-          }
+            support: "Đào tạo & Hỗ trợ 1-1",
+          },
         },
         tree: {
           name: "CÂY",
@@ -280,8 +278,8 @@ export const marketing = {
             passive: "Thu nhập thụ động từ đội nhóm",
             ai: "AI Coach đầy đủ",
             team: "Bảng điều khiển nhóm",
-            rewards: "Thưởng hiệu suất"
-          }
+            rewards: "Thưởng hiệu suất",
+          },
         },
         forest: {
           name: "RỪNG",
@@ -296,8 +294,8 @@ export const marketing = {
             ecosystem: "Hệ sinh thái đầy đủ",
             leadership: "Thưởng lãnh đạo",
             training: "Đào tạo nâng cao",
-            recognition: "Giải thưởng performer xuất sắc"
-          }
+            recognition: "Giải thưởng performer xuất sắc",
+          },
         },
         metropolis: {
           name: "ĐÔ THỊ",
@@ -308,10 +306,10 @@ export const marketing = {
             franchise: "Mô hình Franchise toàn cầu",
             global: "Mở rộng 10+ quốc gia",
             diversified: "Danh mục sản phẩm đa dạng",
-            legacy: "Xây dựng di sản lâu dài"
-          }
-        }
-      }
+            legacy: "Xây dựng di sản lâu dài",
+          },
+        },
+      },
     },
     whyNow: {
       sectionBadge: "Lợi Thế Tiên Phong",
@@ -321,25 +319,25 @@ export const marketing = {
       benefits: {
         founders: {
           title: "Founders Club Bonus",
-          description: "Hoa hồng đặc biệt và equity allocation cho 200 Partner đầu tiên"
+          description: "Hoa hồng đặc biệt và equity allocation cho 200 Partner đầu tiên",
         },
         growth: {
           title: "Tăng Trưởng Sớm",
-          description: "Xây dựng team từ đầu, hưởng lợi từ network effect khi hệ thống scale"
+          description: "Xây dựng team từ đầu, hưởng lợi từ network effect khi hệ thống scale",
         },
         tech: {
           title: "Công Nghệ AI Độc Quyền",
-          description: "Truy cập sớm vào Agentic OS và AI tools chỉ dành cho Founders"
+          description: "Truy cập sớm vào Agentic OS và AI tools chỉ dành cho Founders",
         },
         market: {
           title: "SEA Market First-Mover",
-          description: "Đi đầu trong thị trường $12B, mở rộng sang 4 quốc gia SEA"
-        }
-      }
+          description: "Đi đầu trong thị trường $12B, mở rộng sang 4 quốc gia SEA",
+        },
+      },
     },
     stickyCta: {
       label: "157 suất còn lại — Đăng ký ngay hôm nay",
-      cta: "Nhận Slot Của Tôi"
+      cta: "Nhận Slot Của Tôi",
     },
     faq: {
       title: "Câu hỏi thường gặp",
@@ -349,7 +347,7 @@ export const marketing = {
       q2: "Thu nhập có thực sự ổn định không hay chỉ là quảng cáo?",
       a2: "1,243 đối tác đang hoạt động với mức thu nhập trung bình 12,450,000₫/tháng — số liệu được cập nhật theo thời gian thực từ hệ thống. Hoa hồng được tính tự động và rút về tài khoản ngân hàng mỗi tuần.",
       q3: "Nếu tôi không có kinh nghiệm kinh doanh thì có làm được không?",
-      a3: "Hoàn toàn được. AI Coach của WellNexus hướng dẫn từng bước — từ cách tiếp cận khách hàng, xây dựng mạng lưới, đến tối ưu doanh số. 68% đối tác hiện tại bắt đầu hoàn toàn không có kinh nghiệm."
+      a3: "Hoàn toàn được. AI Coach của WellNexus hướng dẫn từng bước — từ cách tiếp cận khách hàng, xây dựng mạng lưới, đến tối ưu doanh số. 68% đối tác hiện tại bắt đầu hoàn toàn không có kinh nghiệm.",
     },
     footer: {
       description: "Nền tảng venture sức khỏe AI",
@@ -359,32 +357,32 @@ export const marketing = {
         about: "Giới Thiệu",
         features: "Tính Năng",
         pricing: "Bảng Giá",
-        contact: "Liên Hệ"
+        contact: "Liên Hệ",
       },
       legal: {
         title: "Pháp Lý",
         privacy: "Bảo Mật",
         terms: "Điều Khoản",
-        compliance: "Tuân Thủ"
+        compliance: "Tuân Thủ",
       },
       contact: {
         title: "Liên Hệ",
         email: "Email",
         phone: "Điện Thoại",
         address: "Địa Chỉ",
-        placeholder: "comm_channel@secure.vn"
+        placeholder: "comm_channel@secure.vn",
       },
       subscribe_for_exclusive_intake: "Đăng Ký Cập Nhật",
       copyright: "© 2026 WellNexus // Không Nợ",
       privacy: "Bảo Mật",
-      terms: "Điều Khoản"
+      terms: "Điều Khoản",
     },
     trust: {
       noInventory: "Không tồn kho",
       freeToJoin: "Gia nhập miễn phí",
       certified: "Sản phẩm chứng nhận",
-      community: "1,243+ đối tác"
-    }
+      community: "1,243+ đối tác",
+    },
   },
   sharebuttons: {
     zalo: "Zalo",
@@ -392,11 +390,11 @@ export const marketing = {
     telegram: "Telegram",
     email: "Email",
     hideQR: "Ẩn mã QR",
-    showQR: "Hiện mã QR"
+    showQR: "Hiện mã QR",
   },
   stickyCta: {
     label: "157 suất còn lại — Đăng ký ngay hôm nay",
-    cta: "Nhận Slot Của Tôi"
+    cta: "Nhận Slot Của Tôi",
   },
   faq: {
     title: "Câu hỏi thường gặp",
@@ -406,13 +404,13 @@ export const marketing = {
     q2: "Thu nhập có thực sự ổn định không hay chỉ là quảng cáo?",
     a2: "1,243 đối tác đang hoạt động với mức thu nhập trung bình 12,450,000₫/tháng.",
     q3: "Nếu tôi không có kinh nghiệm kinh doanh thì có làm được không?",
-    a3: "Hoàn toàn được. AI Coach của WellNexus hướng dẫn từng bước."
+    a3: "Hoàn toàn được. AI Coach của WellNexus hướng dẫn từng bước.",
   },
   trust: {
     noInventory: "Không tồn kho",
     freeToJoin: "Gia nhập miễn phí",
     certified: "Sản phẩm chứng nhận",
-    community: "1,243+ đối tác"
+    community: "1,243+ đối tác",
   },
   eastasiabrand: {
     wellnexus: "WellNexus",
@@ -423,21 +421,21 @@ export const marketing = {
     awards: {
       top10: {
         title: "Top 10 Startup",
-        subtitle: "Việt Nam 2025"
+        subtitle: "Việt Nam 2025",
       },
       sea: {
         title: "Mở Rộng SEA",
-        subtitle: "4 Quốc Gia"
+        subtitle: "4 Quốc Gia",
       },
       partner: {
         title: "Đối Tác Cao Cấp",
-        subtitle: "Hạng A+"
+        subtitle: "Hạng A+",
       },
       iso: {
         title: "ISO 27001",
-        subtitle: "Chứng Nhận Bảo Mật"
-      }
-    }
+        subtitle: "Chứng Nhận Bảo Mật",
+      },
+    },
   },
   agencyos: {
     categories: {
@@ -446,11 +444,10 @@ export const marketing = {
       finance: "Finance (Tài chính)",
       operations: "Operations (Vận hành)",
       strategy: "Strategy (Binh Pháp)",
-      agents: "AI Agents (Đại lý AI)"
-    }
+      agents: "AI Agents (Đại lý AI)",
+    },
   },
   agencyosdemo: {
-    "85_ai_powered_automation_comm": "85% Tự Động Hóa AI",
     agencyos_integration: "Tích Hợp AgencyOS",
     agent_kpis: "KPI Đại Lý",
     all_commands: "Tất Cả Lệnh",
@@ -458,7 +455,7 @@ export const marketing = {
     commands: "Lệnh",
     execution_history: "Lịch Sử Thực Thi",
     no_commands_executed_yet_clic: "Chưa có lệnh nào được thực thi. Nhấp để chạy.",
-    open_command_palette_k: "Mở Bảng Lệnh (⌘K)"
+    open_command_palette_k: "Mở Bảng Lệnh (⌘K)",
   },
   cms: {
     action: "Hành Động",
@@ -477,24 +474,21 @@ export const marketing = {
     tab_templates: "Mẫu",
     search_placeholder: "Tìm kiếm theo từ khóa...",
     archive: "Lưu Trữ",
-    enable: "Kích Hoạt"
+    enable: "Kích Hoạt",
   },
   founderrevenuegoal: {
-    "1m_founder_journey": "Hành Trình $1M Founder",
     current_stage: "Giai Đoạn Hiện Tại",
     projected_yoy_growth: "Tăng Trưởng YoY Dự Kiến",
     revenue_milestone: "Mốc Doanh Thu",
-    "1_000_000_usd": "$1,000,000 USD",
     ai_xu_t_h_nh_ng: "AI Đề Xuất Hành Động",
     c_n_t_ng_t_c: "Cần Tăng Tốc",
     doanh_thu_hi_n_t_i: "Doanh Thu Hiện Tại",
     m_c_ti_u_2026: "Mục Tiêu 2026",
     of_goal: "của Mục Tiêu",
-    v_t_ti_n: "Vượt Tiến Độ"
+    v_t_ti_n: "Vượt Tiến Độ",
   },
   valuationcard: {
-    "12_5_pe_ratio": "Tỷ Lệ P/E 12.5",
-    mom_growth: "Tăng Trưởng MoM"
+    mom_growth: "Tăng Trưởng MoM",
   },
   venture: {
     hero: {
@@ -507,8 +501,8 @@ export const marketing = {
       stats: {
         valuation_label: "Giá Trị Tích Lũy",
         nodes_label: "Nút Mục Tiêu",
-        market_label: "Thị Trường Chính"
-      }
+        market_label: "Thị Trường Chính",
+      },
     },
     navigation: {
       apply_recruitment: "Ứng Tuyển / Tuyển Dụng",
@@ -516,8 +510,8 @@ export const marketing = {
       menu: {
         portfolio: "Danh Mục",
         deal: "Thỏa Thuận",
-        market: "Thị Trường SEA"
-      }
+        market: "Thị Trường SEA",
+      },
     },
     deal: {
       sectionBadge: "Bộ Tài Liệu Giao Thức",
@@ -527,22 +521,22 @@ export const marketing = {
         category: "Nút Vốn",
         item1: "Đồng bộ hàng tồn kho với thanh khoản ban đầu bằng không",
         item2: "Nhóm vốn lưu động được mạng lưới hỗ trợ",
-        item3: "Mở rộng tín dụng theo chỉ số hiệu suất"
+        item3: "Mở rộng tín dụng theo chỉ số hiệu suất",
       },
       techStack: {
         category: "Ngăn Xếp Công Nghệ 2.0",
         item1: "Agentic OS - Điều phối AI gốc",
         item2: "Định giá thời gian thực & đo xa năng suất",
         item3: "Trừu tượng hóa tuân thủ thuế động",
-        item4: "Tích hợp sổ cái phân tán"
+        item4: "Tích hợp sổ cái phân tán",
       },
       ownership: {
         category: "Ma Trận Sở Hữu",
         item1: "ESOP - Quyền sở hữu vốn chủ sở hữu trực tiếp",
         item2: "GROW Delta - Năng suất được căn chỉnh khuyến khích",
         item3: "Tuyến tính 4 năm vesting // 1 năm cliff",
-        item4: "Mốc định giá được lập chỉ mục IPO"
-      }
+        item4: "Mốc định giá được lập chỉ mục IPO",
+      },
     },
     portfolio: {
       sectionBadge: "Nút Founder Hoạt Động",
@@ -551,16 +545,16 @@ export const marketing = {
       roles: {
         ceo: "Co-Founder // CEO",
         cmo: "Co-Founder // CMO",
-        cto: "Co-Founder // CTO"
+        cto: "Co-Founder // CTO",
       },
       regions: {
         hanoi: "Hà Nội",
         hcmc: "TP. HCM",
-        danang: "Đà Nẵng"
+        danang: "Đà Nẵng",
       },
       val: "Giá Trị",
       growth: "Tăng Trưởng",
-      arr_node: "ARR Node"
+      arr_node: "ARR Node",
     },
     market: {
       sectionBadge: "Mở Rộng Hệ Sinh Thái",
@@ -570,52 +564,52 @@ export const marketing = {
         vietnam: "Việt Nam",
         thailand: "Thái Lan",
         indonesia: "Indonesia",
-        philippines: "Philippines"
+        philippines: "Philippines",
       },
       status: {
         active: "Đang Hoạt Động",
         expanding: "Đang Mở Rộng",
         protocol_init: "Khởi Động Giao Thức",
-        pending: "Đang Chờ"
+        pending: "Đang Chờ",
       },
       total_addressable_market: "Tổng Thị Trường Có Thể Tiếp Cận",
       velocity: "Tốc Độ",
-      init_sea_expansion_protocol: "Khởi Động Giao Thức Mở Rộng SEA"
+      init_sea_expansion_protocol: "Khởi Động Giao Thức Mở Rộng SEA",
     },
     footer: {
       tagline: "Venture Builder cung cấp năng lượng cho các bề mặt quản trị độ trung thực cao và thương mại y tế phi tập trung xuyên suốt Đông Nam Á.",
       strategic_ecosystem_builder: "Nhà Xây Dựng Hệ Sinh Thái Chiến Lược",
       newsletter: {
         title: "Đồng Bộ Truyền Tải",
-        placeholder: "comm_channel@secure.vn"
+        placeholder: "comm_channel@secure.vn",
       },
       subscribe_for_exclusive_intake: "Đăng Ký Nhận Thông Tin Độc Quyền",
       copyright: "© 2026 WellNexus Venture Builder // Nợ Tuyệt Đối Bằng Không",
       privacy: "Quyền Riêng Tư Hệ Sinh Thái",
-      terms: "Tuân Thủ Bảng Điều Khoản"
-    }
+      terms: "Tuân Thủ Bảng Điều Khoản",
+    },
   },
   venturefooter: {
     strategic_ecosystem_builder: "Strategic Ecosystem Builder",
-    subscribe_for_exclusive_intake: "Subscribe for Exclusive Intake"
+    subscribe_for_exclusive_intake: "Subscribe for Exclusive Intake",
   },
   venturemarketmap: {
     init_sea_expansion_protocol: "Init SEA Expansion Protocol",
     total_addressable_market: "Total Addressable Market",
-    velocity: "Velocity"
+    velocity: "Velocity",
   },
   venturenavigation: {
     apply_recruitment: "Apply / Recruitment",
-    venture_builder: "Venture Builder"
+    venture_builder: "Venture Builder",
   },
   ventureportfolio: {
     arr_node: "ARR Node",
     growth: "Growth",
-    val: "Val"
+    val: "Val",
   },
   portfoliosection: {
     arr: "ARR",
-    growth: "Growth"
+    growth: "Growth",
   },
   exitIntent: {
     headline: "Khoan! Đừng bỏ lỡ cơ hội",
@@ -624,12 +618,12 @@ export const marketing = {
       aiCoaching: "AI huấn luyện kinh doanh thông minh",
       passiveIncome: "Tiềm năng thu nhập thụ động",
       zeroRisk: "Không rủi ro tồn kho",
-      premiumProducts: "Danh mục sản phẩm cao cấp"
+      premiumProducts: "Danh mục sản phẩm cao cấp",
     },
     cta: "Đăng ký ngay - Suất có hạn",
     urgency: "Chỉ còn 157 suất trong khu vực của bạn",
     noThanks: "Để sau, cảm ơn",
-    closeLabel: "Đóng popup"
+    closeLabel: "Đóng popup",
   },
   vendor: {
     dashboard: {
@@ -638,13 +632,13 @@ export const marketing = {
       tabs: {
         products: "Sản Phẩm Của Tôi",
         analytics: "Phân Tích",
-        settings: "Cửa Hàng"
+        settings: "Cửa Hàng",
       },
       stats: {
         totalSales: "Tổng Doanh Số",
         products: "Sản Phẩm",
         commissions: "Hoa Hồng",
-        orders: "Đơn Hàng"
+        orders: "Đơn Hàng",
       },
       products: {
         title: "Sản Phẩm Của Bạn",
@@ -655,30 +649,28 @@ export const marketing = {
         stock: "Tồn kho",
         edit: "Sửa",
         delete: "Xóa",
-        deleteConfirm: "Bạn có chắc chắn muốn xóa sản phẩm này?"
+        deleteConfirm: "Bạn có chắc chắn muốn xóa sản phẩm này?",
       },
       empty: {
         noProducts: "Chưa có sản phẩm nào",
-        addFirst: "Thêm sản phẩm đầu tiên của bạn"
-      }
+        addFirst: "Thêm sản phẩm đầu tiên của bạn",
+      },
     },
     analytics: {
       title: "Phân Tích",
       dateRange: {
-        "7d": "7 ngày",
-        "30d": "30 ngày",
-        "90d": "90 ngày"
+
       },
       stats: {
         totalSales: "Tổng Doanh Số",
         totalCommission: "Tổng Hoa Hồng",
-        totalOrders: "Tổng Đơn Hàng"
+        totalOrders: "Tổng Đơn Hàng",
       },
       charts: {
         salesOverTime: "Doanh Số Theo Thời Gian",
         topProducts: "Sản Phẩm Bán Chạy",
-        commissionVsRevenue: "Hoa Hồng vs Doanh Thu"
-      }
+        commissionVsRevenue: "Hoa Hồng vs Doanh Thu",
+      },
     },
     settings: {
       title: "Cửa Hàng",
@@ -688,14 +680,14 @@ export const marketing = {
       saveButton: "Lưu Cài Đặt",
       saveSuccess: "Đã lưu cài đặt thành công!",
       saveError: "Không thể lưu cài đặt",
-      defaultDescription: "Chào mừng đến với cửa hàng của tôi! Sản phẩm sức khỏe và wellness chất lượng cao."
+      defaultDescription: "Chào mừng đến với cửa hàng của tôi! Sản phẩm sức khỏe và wellness chất lượng cao.",
     },
     actions: {
       addProduct: "Thêm Sản Phẩm",
       edit: "Sửa",
       delete: "Xóa",
       cancel: "Hủy",
-      save: "Lưu"
+      save: "Lưu",
     },
     addProduct: {
       title: "Thêm Sản Phẩm Mới",
@@ -711,8 +703,8 @@ export const marketing = {
         priceRequired: "Giá là bắt buộc",
         pricePositive: "Giá phải lớn hơn 0",
         commissionRange: "Hoa hồng phải từ 0 đến 1",
-        invalidUrl: "URL hình ảnh không hợp lệ"
-      }
+        invalidUrl: "URL hình ảnh không hợp lệ",
+      },
     },
     toasts: {
       loadError: "Không thể tải sản phẩm",
@@ -720,12 +712,12 @@ export const marketing = {
       updateError: "Không thể cập nhật sản phẩm",
       deleteError: "Không thể xóa sản phẩm",
       saveSuccess: "Đã lưu thành công!",
-      rateLimitExceeded: "Vượt quá giới hạn tốc độ. Vui lòng thử lại sau 1 phút."
+      rateLimitExceeded: "Vượt quá giới hạn tốc độ. Vui lòng thử lại sau 1 phút.",
     },
     errors: {
       notLoggedIn: "Bạn phải đăng nhập để quản lý sản phẩm",
       vendorOnly: "Chỉ vendors mới có thể truy cập tính năng này",
-      accessDenied: "Bạn chỉ có thể truy cập vendor dashboard của chính mình"
-    }
-  }
+      accessDenied: "Bạn chỉ có thể truy cập vendor dashboard của chính mình",
+    },
+  },
 };

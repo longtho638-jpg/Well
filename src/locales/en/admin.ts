@@ -11,7 +11,7 @@ export const admin = {
       orders: "Orders",
       products: "Products",
       strategy: "Strategy",
-      auditLog: "Audit Log"
+      auditLog: "Audit Log",
     },
     adminLabel: "Admin",
     superUser: "Super User",
@@ -30,7 +30,7 @@ export const admin = {
       cms: "CMS",
       partners: "Partners",
       finance: "Finance",
-      strategy: "Strategy"
+      strategy: "Strategy",
     },
     overview: {
       title: "System Overview",
@@ -39,7 +39,7 @@ export const admin = {
       activePartners: "Active Partners",
       pendingPayouts: "Pending Payouts",
       systemHealth: "System Health",
-      chartTitle: "7-Day Revenue Trend"
+      chartTitle: "7-Day Revenue Trend",
     },
     cms: {
       title: "Content Management",
@@ -53,7 +53,7 @@ export const admin = {
       stat_content_banners: "Content Banners",
       stat_live_banners: "Live Banners",
       stat_broadcasts: "Broadcasts",
-      stat_total_templates: "Total Templates"
+      stat_total_templates: "Total Templates",
     },
     partners: {
       title: "Partner Operations",
@@ -64,8 +64,8 @@ export const admin = {
         rank: "Rank",
         sales: "Sales",
         status: "Status",
-        actions: "Actions"
-      }
+        actions: "Actions",
+      },
     },
     finance: {
       title: "Financial Operations",
@@ -77,7 +77,7 @@ export const admin = {
       net: "Net:",
       approve: "Approve",
       reject: "Reject",
-      noRequests: "No withdrawal requests at this time"
+      noRequests: "No withdrawal requests at this time",
     },
     users: {
       title: "User Management",
@@ -91,8 +91,8 @@ export const admin = {
         ban: "Ban",
         unban: "Unban",
         verify: "Verify",
-        delete: "Delete"
-      }
+        delete: "Delete",
+      },
     },
     products: {
       title: "Product Management",
@@ -100,7 +100,7 @@ export const admin = {
       editProduct: "Edit Product",
       deleteProduct: "Delete Product",
       activeProducts: "Active",
-      draftProducts: "Draft"
+      draftProducts: "Draft",
     },
     policy: {
       title: "Policy System",
@@ -113,7 +113,7 @@ export const admin = {
       active: "Active",
       inactive: "Inactive",
       createRule: "Create Rule",
-      editRule: "Edit Rule"
+      editRule: "Edit Rule",
     },
     settings: {
       title: "System Settings",
@@ -121,7 +121,7 @@ export const admin = {
       security: "Security",
       notifications: "Notifications",
       integrations: "Integrations",
-      backup: "Backup"
+      backup: "Backup",
     },
     analyze_all: "Analyze All",
     automated_fraud_detection: "Automated Fraud Detection",
@@ -143,7 +143,7 @@ export const admin = {
     target: "Target",
     partner_recon_crm: "Partner Recon CRM",
     precision_orchestration_of_net: "Precision Orchestration of Network",
-    rank_intelligence: "Rank Intelligence"
+    rank_intelligence: "Rank Intelligence",
   },
   cms: {
     content_orchestrator: "Content Orchestrator",
@@ -162,7 +162,7 @@ export const admin = {
     stat_content_banners: "Content Banners",
     stat_live_banners: "Live Banners",
     stat_broadcasts: "Broadcasts",
-    stat_total_templates: "Total Templates"
+    stat_total_templates: "Total Templates",
   },
   auditlog: {
     audit_trail: "Audit Trail",
@@ -185,7 +185,7 @@ export const admin = {
     network_origin: "Network Origin",
     browser_api_gateway_node: "Browser / API Gateway Node",
     payload_metadata: "Payload Metadata",
-    close_inspection: "Close Inspection"
+    close_inspection: "Close Inspection",
   },
   finance: {
     treasury_control: "Treasury Control",
@@ -198,7 +198,7 @@ export const admin = {
     security_batch_commit: "Security Batch Commit",
     verifying_digital_ledgers: "Verifying digital ledgers...",
     ledger_synchronized: "Ledger Synchronized",
-    no_items_in_the_current_filter: "No items in the current filter"
+    no_items_in_the_current_filter: "No items in the current filter",
   },
   ordermanagement: {
     cashflow_hub: "Cashflow Hub",
@@ -210,7 +210,7 @@ export const admin = {
     operational_risk_protocol: "Operational Risk Protocol",
     strict_compliance_rule: "Strict Compliance Rule",
     never_approve: "Never approve",
-    without_verified_bank_clearanc: "without verified bank clearance"
+    without_verified_bank_clearanc: "without verified bank clearance",
   },
   overview: {
     risk: "Risk",
@@ -227,12 +227,12 @@ export const admin = {
     ai_agent_has_autonomously_reso: "AI agent has autonomously resolved all items",
     live_pulse: "Live Pulse",
     growth_trajectory: "Growth Trajectory",
-    ecosystem_scale: "Ecosystem Scale"
+    ecosystem_scale: "Ecosystem Scale",
   },
   partners: {
     partner_recon_crm: "Partner Recon CRM",
     precision_orchestration_of_net: "Precision Orchestration of Network",
-    rank_intelligence: "Rank Intelligence"
+    rank_intelligence: "Rank Intelligence",
   },
   policyEngine: {
     synchronizingPolicyCore: "Synchronizing Policy Core...",
@@ -242,14 +242,14 @@ export const admin = {
     sync: "Sync",
     projectionSimulator: "Projection Simulator",
     realTime: "Real-Time",
-    policyChangesAreCryptographicallySigned: "Policy changes are cryptographically signed"
+    policyChangesAreCryptographicallySigned: "Policy changes are cryptographically signed",
   },
   bulkactionsbar: {
     activate: "Activate",
     ban: "Ban",
     export_csv: "Export CSV",
     partner: "Partner",
-    selected: "Selected"
+    selected: "Selected",
   },
   debuggerpage: {
     empty: "Empty",
@@ -258,13 +258,13 @@ export const admin = {
     system_debugger: "System Debugger",
     v_debug_1_0: "v.Debug 1.0",
     window_props: "Window Props",
-    zustand_store_state: "Zustand Store State"
+    zustand_store_state: "Zustand Store State",
   },
   testpage: {
     active: "Active",
     client_status: "Client Status",
     connectivity_check: "Connectivity Check",
-    well_test_page: "Well Test Page"
+    well_test_page: "Well Test Page",
   },
   simulationpanel: {
     active_distribution_node: "Active Distribution Nodes",
@@ -279,22 +279,21 @@ export const admin = {
     strategic_forecast: "Strategic Forecast",
     strategic_candidates: "Strategic Candidates",
     projected_saas_revenue: "Projected SaaS Revenue",
-    partners: "Partners"
+    partners: "Partners",
   },
   fraudbadge: {
     critical_risk: "Critical Risk",
     suspected: "Suspected",
-    verified: "Verified"
+    verified: "Verified",
   },
   partnerfilters: {
     search_placeholder: "Search identity by name, email, or UID...",
     filter_all: "All Identity Nodes",
     filter_active: "Active Status",
     filter_banned: "Banned Status",
-    filter_dormant: "Dormant Status"
+    filter_dormant: "Dormant Status",
   },
   adminsecuritysettings: {
-    "100": "100",
     b_o_m_t_t_i_kho_n: "Account Security",
     qu_n_l_c_i_t_b_o_m_t_c_a_b: "Manage your security settings",
     i_m_b_o_m_t: "Security Score",
@@ -310,15 +309,11 @@ export const admin = {
     th_i_gian_phi_n: "Session Duration",
     t_ng_ng_xu_t_sau: "Auto sign-out after",
     ph_t: "minutes",
-    "15_ph_t": "15 minutes",
-    "30_ph_t": "30 minutes",
-    "1_gi": "1 hour",
-    "2_gi": "2 hours",
     l_ch_s_ng_nh_p: "Login History",
     ho_t_ng: "Activity",
     thi_t_l_p_2fa: "Set Up 2FA",
     qu_t_m_qr_v_i_ng_d_ng_x_c_th: "Scan QR code with your authenticator app",
     h_y: "Cancel",
-    x_c_nh_n: "Confirm"
-  }
+    x_c_nh_n: "Confirm",
+  },
 };

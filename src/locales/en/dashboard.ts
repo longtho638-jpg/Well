@@ -16,7 +16,7 @@ export const dashboard = {
       onTrack: "On Track",
       needsBoost: "Needs Boost",
       description: "Track your business growth in real-time",
-      shareButton: "Share Referral Link"
+      shareButton: "Share Referral Link",
     },
     valuation: {
       title: "Business Valuation",
@@ -31,7 +31,7 @@ export const dashboard = {
       monthlyProfit: "Monthly Profit",
       annualizedRevenue: "Annualized Revenue",
       assetGrowth: "Asset Growth",
-      valuationMethod: "Valuation Method: DCF & Comparable"
+      valuationMethod: "Valuation Method: DCF & Comparable",
     },
     stats: {
       totalSales: "Total Cashflow",
@@ -49,7 +49,7 @@ export const dashboard = {
       activeMembers: "Active Members",
       conversionRate: "Conversion Rate",
       pendingOrders: "Pending Orders",
-      completedOrders: "Completed Orders"
+      completedOrders: "Completed Orders",
     },
     commission: {
       title: "Commission",
@@ -66,21 +66,21 @@ export const dashboard = {
       bonusRevenue: "The Bee Bonus",
       total: "Total",
       withdraw: "Withdraw",
-      viewDetails: "View Details"
+      viewDetails: "View Details",
     },
     revenue: {
       title: "7-Day Asset Performance",
       subtitle: "Asset growth chart",
       total: "Total",
       average: "Average",
-      peak: "Peak"
+      peak: "Peak",
     },
     revenueBreakdown: {
       title: "Income Streams",
       directSales: "Direct Income",
       teamBonus: "Portfolio Bonus",
       referral: "Referral Income",
-      yield: "Yield"
+      yield: "Yield",
     },
     topProducts: {
       title: "Top Selling Products",
@@ -88,7 +88,7 @@ export const dashboard = {
       commission: "Commission",
       stock: "{count} in stock",
       outOfStock: "Out of stock",
-      buyNow: "Buy Now"
+      buyNow: "Buy Now",
     },
     quickActions: {
       title: "Quick Actions",
@@ -104,7 +104,7 @@ export const dashboard = {
       shareAchievementDesc: "Show off your achievements",
       addMember: "Add Member",
       viewReports: "View Reports",
-      manageProducts: "Manage Products"
+      manageProducts: "Manage Products",
     },
     dailyQuest: {
       title: "Daily Quests",
@@ -123,22 +123,22 @@ export const dashboard = {
       types: {
         onboarding: "Onboarding",
         sales: "Sales",
-        learning: "Learning"
+        learning: "Learning",
       },
       quests: {
         dailyCheckIn: {
           title: "Start the Day",
-          description: "Daily app check-in"
+          description: "Daily app check-in",
         },
         shareHealthCheck: {
           title: "Spread the Value",
-          description: "Share 1 Health Check link"
+          description: "Share 1 Health Check link",
         },
         watchTraining: {
           title: "Learn",
-          description: "Watch 1 training video"
-        }
-      }
+          description: "Watch 1 training video",
+        },
+      },
     },
     liveActivities: {
       title: "Live Activities",
@@ -167,8 +167,8 @@ export const dashboard = {
         transferredSuccess: "transferred {amount} successfully",
         referredPartner: "successfully referred 1 new Partner",
         referralBonus: "received referral bonus {amount}",
-        teamExpanded: "team expanded by 1 member"
-      }
+        teamExpanded: "team expanded by 1 member",
+      },
     },
     recentActivity: {
       title: "Recent Activity",
@@ -177,7 +177,7 @@ export const dashboard = {
       productShipped: "Product shipped to customer",
       reachedRank: "Reached Partner rank",
       hoursAgo: "{hours} hours ago",
-      daysAgo: "{days} days ago"
+      daysAgo: "{days} days ago",
     },
     achievements: {
       title: "Achievements",
@@ -186,32 +186,30 @@ export const dashboard = {
       teamLeader: "Team Leader",
       speedDemon: "Speed Demon",
       unlocked: "{count} / {total} unlocked",
-      locked: "Locked"
+      locked: "Locked",
     },
     quickStats: {
       title: "Quick Stats",
       totalTransactions: "Total Transactions",
       activeProducts: "Active Products",
-      currentRank: "Current Rank"
+      currentRank: "Current Rank",
     },
-    system_online: "System Online"
+    system_online: "System Online",
   },
   statsgrid: {
     next_cycle: "Next Cycle",
-    "10_pit": "10% PIT",
-    reserved_tier_gt_2m: "Reserved Tier >2M"
+    reserved_tier_gt_2m: "Reserved Tier >2M",
   },
   useStatsGrid: {
-    tbd: "TBD"
+    tbd: "TBD",
   },
   useHeroCard: {
     share_title: "Share Title",
-    share_text: "Share Text"
+    share_text: "Share Text",
   },
   herocard: {
     founders_pathway: "Founder's Pathway",
     reach: "Reach",
-    "100m_vnd_revenue": "100M VND Revenue",
     to_unlock: "to unlock",
     venture_partner_status: "Venture Partner Status",
     achievement_logic: "Achievement Logic",
@@ -226,7 +224,7 @@ export const dashboard = {
     t_ng_tr_ng: "Growth",
     th_ng: "Month",
     total_yield: "Total Yield",
-    welcome: "Welcome"
+    welcome: "Welcome",
   },
   quickactionscard: {
     health_check_share_text: "Check your health score with WellNexus!",
@@ -239,14 +237,13 @@ export const dashboard = {
     share_health_check: "Share Health Check",
     share_health_check_desc: "Share health check link",
     c_ng_c_h_tr_kinh_doanh: "Business Support Tools",
-    tip_s_d_ng_c_c_c_ng_c_n: "Tip: Use these tools to boost your business"
+    tip_s_d_ng_c_c_c_ng_c_n: "Tip: Use these tools to boost your business",
   },
   recentactivitylist: {
-    view_digital_audit_trace: "View Digital Audit Trace"
+    view_digital_audit_trace: "View Digital Audit Trace",
   },
   valuationcard: {
     mom_growth: "MoM Growth",
-    "12_5_pe_ratio": "12.5x PE Ratio"
   },
   overview: {
     active_nodes: "Active Nodes",
@@ -294,19 +291,19 @@ export const dashboard = {
     evt_policy_locked: "Policy: Retail commission locked at 25%",
     evt_2m_ago: "2 minutes ago",
     evt_zero_fraud: "Security: No fraud detected",
-    evt_5m_ago: "5 minutes ago"
+    evt_5m_ago: "5 minutes ago",
   },
   liveActivities: {
     in: "in",
     just_now: "Just now",
-    vnd: "VND"
+    vnd: "VND",
   },
   liveactivitiesticker: {
     recent: "Recent: ",
-    nodes: " active"
+    nodes: " active",
   },
   heroenhancements: {
-    c_tin_t_ng_b_i: "Trusted by"
+    c_tin_t_ng_b_i: "Trusted by",
   },
   liveconsole: {
     autonomous_agents_real_time_l: "Autonomous Agents Real-Time Log",
@@ -319,7 +316,7 @@ export const dashboard = {
     live_operations_node_agent: "Live Operations Node Agent",
     sync_active: "Sync Active",
     tx: "TX",
-    wellnexus_bee: "WellNexus BEE"
+    wellnexus_bee: "WellNexus BEE",
   },
   revenueprogresswidget: {
     revenue_milestone: "Revenue Milestone",
@@ -333,6 +330,6 @@ export const dashboard = {
     verified_partners: "Verified Partners",
     annualized_run_rate_arr: "Annualized Run Rate (ARR)",
     benchmark_achieved: "Benchmark Achieved",
-    days_to_benchmark: "Days to Benchmark"
-  }
+    days_to_benchmark: "Days to Benchmark",
+  },
 };

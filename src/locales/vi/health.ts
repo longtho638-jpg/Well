@@ -1,5 +1,5 @@
 export const health = {
-healthCoach: {
+  healthCoach: {
     title: "Health Coach AI",
     subtitle: "Trợ lý sức khỏe thông minh - Tư vấn sản phẩm cá nhân hóa",
     greeting: "Xin chào! Tôi là **WellNexus Health Coach** 🌿\n\nHãy chia sẻ với tôi về tình trạng sức khỏe hoặc triệu chứng bạn đang gặp phải. Tôi sẽ tư vấn combo sản phẩm phù hợp nhất cho bạn.\n\n**Ví dụ:** \"Tôi hay bị mất ngủ và đau đầu\" hoặc \"Tôi thường xuyên cảm thấy mệt mỏi\".",
@@ -20,19 +20,19 @@ healthCoach: {
     suggestions: {
       sleep: "Tôi hay bị mất ngủ",
       fatigue: "Tôi cảm thấy mệt mỏi",
-      immunity: "Tăng cường miễn dịch"
+      immunity: "Tăng cường miễn dịch",
     },
     disclaimerTech: "💡 Health Coach AI sử dụng công nghệ phân tích triệu chứng để đề xuất sản phẩm phù hợp.",
     disclaimerMedical: "Lưu ý: Đây là công cụ hỗ trợ, không thay thế tư vấn y tế chuyên nghiệp.",
-    analyzing: "Đang phân tích..."
+    analyzing: "Đang phân tích...",
   },
-healthCheck: {
+  healthCheck: {
     dimensions: {
       sleep: "Giấc ngủ",
       stress: "Căng thẳng",
       energy: "Năng lượng",
       exercise: "Vận động",
-      goal: "Mục tiêu"
+      goal: "Mục tiêu",
     },
     questions: {
       sleep: {
@@ -42,8 +42,8 @@ healthCheck: {
           _5to6: "5-6 tiếng",
           _6to7: "6-7 tiếng",
           _7to8: "7-8 tiếng",
-          over8: "Trên 8 tiếng"
-        }
+          over8: "Trên 8 tiếng",
+        },
       },
       stress: {
         question: "Bạn có hay bị stress hoặc lo âu không?",
@@ -52,8 +52,8 @@ healthCheck: {
           often: "Thường xuyên",
           sometimes: "Thỉnh thoảng",
           rarely: "Hiếm khi",
-          never: "Không bao giờ"
-        }
+          never: "Không bao giờ",
+        },
       },
       energy: {
         question: "Mức năng lượng của bạn trong ngày như thế nào?",
@@ -62,8 +62,8 @@ healthCheck: {
           tired: "Thường xuyên mệt",
           normal: "Bình thường",
           energetic: "Tràn đầy năng lượng",
-          veryEnergetic: "Luôn năng động"
-        }
+          veryEnergetic: "Luôn năng động",
+        },
       },
       exercise: {
         question: "Bạn tập thể dục bao nhiêu lần mỗi tuần?",
@@ -71,8 +71,8 @@ healthCheck: {
           never: "Không bao giờ",
           _1to2: "1-2 lần/tuần",
           _3to4: "3-4 lần/tuần",
-          _5plus: "5+ lần/tuần"
-        }
+          _5plus: "5+ lần/tuần",
+        },
       },
       goal: {
         question: "Mục tiêu sức khỏe chính của bạn là gì?",
@@ -81,9 +81,9 @@ healthCheck: {
           reduceStress: "Giảm stress",
           increaseEnergy: "Tăng năng lượng",
           boostImmunity: "Tăng cường miễn dịch",
-          overallHealth: "Sức khỏe tổng thể"
-        }
-      }
+          overallHealth: "Sức khỏe tổng thể",
+        },
+      },
     },
     questionProgress: "Câu hỏi {current} / {total}",
     back: "Quay lại",
@@ -96,13 +96,13 @@ healthCheck: {
       excellent: "Xuất sắc",
       good: "Tốt",
       average: "Trung bình",
-      needsImprovement: "Cần cải thiện"
+      needsImprovement: "Cần cải thiện",
     },
     scoreDescriptions: {
       excellent: "Tuyệt vời! Bạn đang duy trì lối sống rất khỏe mạnh. Hãy tiếp tục!",
       good: "Sức khỏe của bạn ở mức tốt, nhưng vẫn có thể cải thiện thêm.",
       average: "Sức khỏe của bạn cần được quan tâm nhiều hơn. Hãy bắt đầu thay đổi ngay!",
-      poor: "Sức khỏe của bạn đang cần được cải thiện khẩn cấp. Hãy tham khảo các giải pháp dưới đây!"
+      poor: "Sức khỏe của bạn đang cần được cải thiện khẩn cấp. Hãy tham khảo các giải pháp dưới đây!",
     },
     radarTitle: "Điểm Sức Khỏe",
     recommendationsTitle: "Gợi ý sản phẩm phù hợp",
@@ -116,8 +116,8 @@ healthCheck: {
           sleep: "Giúp ngủ sâu, ngủ ngon hơn",
           stress: "Giảm lo âu, stress",
           emotion: "Cân bằng cảm xúc",
-          memory: "Tăng cường trí nhớ"
-        }
+          memory: "Tăng cường trí nhớ",
+        },
       },
       immuneBoost: {
         name: "Combo Năng Lượng & Miễn Dịch",
@@ -126,8 +126,8 @@ healthCheck: {
           immunity: "Tăng sức đề kháng",
           fatigue: "Giảm mệt mỏi",
           antioxidant: "Chống oxy hóa",
-          recovery: "Phục hồi sức khỏe nhanh"
-        }
+          recovery: "Phục hồi sức khỏe nhanh",
+        },
       },
       starterKit: {
         name: "Starter Kit",
@@ -136,9 +136,9 @@ healthCheck: {
           nutrition: "Bổ sung dinh dưỡng đầy đủ",
           balance: "Cân bằng cơ thể",
           health: "Tăng cường sức khỏe",
-          allAges: "Phù hợp mọi lứa tuổi"
-        }
-      }
+          allAges: "Phù hợp mọi lứa tuổi",
+        },
+      },
     },
     zaloMessage: "Xin chào! Tôi vừa làm bài kiểm tra sức khỏe và đạt {{score}} điểm. Tôi muốn tư vấn thêm.",
     consultationTitle: "Cần tư vấn chuyên sâu hơn?",
@@ -161,14 +161,13 @@ healthCheck: {
     out_of_stock: "Out of Stock",
     partner_comm: "Partner Comm",
     retail_msrp: "Retail (MSRP)",
-    sku: "SKU"
+    sku: "SKU",
   },
-healthcheck: {
-    "100": "100%",
+  healthcheck: {
     i_m_s_t_ng_kh_a_c_nh_s_c_kh: "Điểm số từng khía cạnh sức khỏe",
     l_i_ch_kh_c: "Lợi ích khác",
     ph_n_t_ch_chi_ti_t: "Phân tích chi tiết",
     s_n_ph_m_c_ai_xu_t_d_nh: "Sản phẩm được AI đề xuất dành cho bạn",
-    u_ti_n: "Ưu tiên"
-  }
+    u_ti_n: "Ưu tiên",
+  },
 };

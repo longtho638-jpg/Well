@@ -1,7 +1,5 @@
 export const wallet = {
-wallet: {
-    "12": "12%",
-    "90": "90",
+  wallet: {
     title: "Asset Management",
     subtitle: "Quản lý danh mục tài sản của bạn",
     balance: {
@@ -15,13 +13,13 @@ wallet: {
       growToken: "GROW Token - Equity",
       vnd_stablecoin: "VND Stablecoin 1:1",
       governance_token: "Governance Token",
-      currency: "Tiền tệ"
+      currency: "Tiền tệ",
     },
     stats: {
       growth_12_5: "+12.5%",
       apy_12_0: "12.0%",
       apy_12_percent: "12%",
-      days_90: "90 Ngày"
+      days_90: "90 Ngày",
     },
     actions: {
       deposit_shop: "Nạp SHOP",
@@ -29,7 +27,7 @@ wallet: {
       stake: "Gửi tiết kiệm",
       unstake: "Rút tiết kiệm",
       transfer: "Chuyển khoản",
-      history: "Lịch sử giao dịch"
+      history: "Lịch sử giao dịch",
     },
     staking_tiers: "Các Gói Staking",
     total_staked: "Tổng Đã Stake",
@@ -48,7 +46,7 @@ wallet: {
       unstakeNow: "Rút ngay",
       stakingInfo: "Thông tin staking",
       stakedAmount: "Đã stake",
-      rewards: "Phần thưởng"
+      rewards: "Phần thưởng",
     },
     transactions: {
       title: "Lịch sử giao dịch",
@@ -70,14 +68,14 @@ wallet: {
         withdrawal: "Rút tiền",
         quest: "Nhiệm vụ",
         staking: "Gửi tiết kiệm",
-        unstaking: "Rút tiết kiệm"
+        unstaking: "Rút tiết kiệm",
       },
       statusValues: {
         pending: "Đang xử lý",
         completed: "Hoàn thành",
         failed: "Thất bại",
-        cancelled: "Đã hủy"
-      }
+        cancelled: "Đã hủy",
+      },
     },
     withdrawal: {
       title: "Rút tiền",
@@ -107,10 +105,8 @@ wallet: {
       accountNumberRequired: "Số tài khoản không hợp lệ",
       accountNameRequired: "Vui lòng nhập tên chủ tài khoản",
       successMessage: "Gửi yêu cầu rút tiền thành công",
-      errorMessage: "Gửi yêu cầu rút tiền thất bại"
+      errorMessage: "Gửi yêu cầu rút tiền thất bại",
     },
-    "12_0": "12.0%",
-    "12_5": "12.5%",
     apy_staking: "APY Staking",
     blockchain_explorer: "Blockchain Explorer",
     currency: "Currency",
@@ -118,12 +114,11 @@ wallet: {
     t_ng_t_i_s_n: "Tổng tài sản",
     th_ng_n_y: "Tháng này",
     n_p_shop: "Nạp SHOP",
-    vnd_stablecoin_1_1000: "VND Stablecoin 1:1000"
+    vnd_stablecoin_1_1000: "VND Stablecoin 1:1000",
   },
-commissionwallet: {
-    generating: 'Đang tạo...',
-    export_pdf: 'Xuất PDF',
-    "10_pit": "10% TNCN",
+  commissionwallet: {
+    generating: "Đang tạo...",
+    export_pdf: "Xuất PDF",
     bonus_revenue: "Doanh Số Thưởng: ",
     commission_calculation: "Cách Tính Hoa Hồng",
     date_ref: "Ngày / Mã",
@@ -143,17 +138,14 @@ commissionwallet: {
     type: "Loại",
     wellnexus_automatically_deduct: "WellNexus tự động khấu trừ ",
     withdrawable_balance: "Số Dư Có Thể Rút",
-    withheld_tax_pit_10: "Thuế Khấu Trừ (TNCN 10%)"
+    withheld_tax_pit_10: "Thuế Khấu Trừ (TNCN 10%)",
   },
-commissionsection: {
+  commissionsection: {
     commission_architecture: "Kiến Trúc Hoa Hồng",
     max_risk_operational_margin_c: "Giới Hạn Biên Lợi Nhuận Hoạt Động Tối Đa",
-    total_system_payout_threshold: "Ngưỡng Chi Trả Toàn Hệ Thống"
+    total_system_payout_threshold: "Ngưỡng Chi Trả Toàn Hệ Thống",
   },
-withdrawalmodal: {
-    "25": "25%",
-    "50": "50%",
-    "75": "75%",
+  withdrawalmodal: {
     request_submitted: "Yêu cầu đã gửi!",
     your_withdrawal_request_has_be: "Yêu cầu rút tiền đã được gửi thành công.",
     processing_time_1_3_business: "Thời gian xử lý: 1-3 ngày làm việc",
@@ -175,10 +167,10 @@ withdrawalmodal: {
       bank_name_required: "Vui lòng nhập tên ngân hàng",
       account_number_required: "Vui lòng nhập số tài khoản",
       account_number_numeric: "Số tài khoản chỉ được chứa số",
-      account_name_required: "Vui lòng nhập tên chủ tài khoản"
-    }
+      account_name_required: "Vui lòng nhập tên chủ tài khoản",
+    },
   },
-transactioncard: {
+  transactioncard: {
     commit_approval: "Phê Duyệt Commit",
     flagged_for_behavioral_anomaly: "Đánh Dấu Bất Thường Hành Vi",
     gross: "Tổng",
@@ -188,9 +180,9 @@ transactioncard: {
     retention: "Duy Trì",
     security_engine_quarantine: "Hệ Thống Bảo Mật Cách Ly",
     system_yield_injected: "Lợi Nhuận Hệ Thống Tiêm Vào",
-    uid: "UID"
+    uid: "UID",
   },
-finance: {
+  finance: {
     action: "Hành Động",
     approve: "Phê Duyệt",
     approve_1: "Phê Duyệt",
@@ -221,20 +213,19 @@ finance: {
     security_batch_commit: "Cam Kết Lô Bảo Mật",
     verifying_digital_ledgers: "Xác Minh Sổ Cái Số",
     ledger_synchronized: "Sổ Cái Đã Đồng Bộ",
-    no_items_in_the_current_filter: "Không có mục nào trong bộ lọc hiện tại"
+    no_items_in_the_current_filter: "Không có mục nào trong bộ lọc hiện tại",
   },
-revenuebreakdown: {
-    "100": "100%",
-    total_yield: "Total Yield"
+  revenuebreakdown: {
+    total_yield: "Total Yield",
   },
-revenuechart: {
+  revenuechart: {
     revenue_growth: "Tăng trưởng doanh thu",
     last_7_days_performance: "Hiệu suất 7 ngày qua",
     last_7_days: "7 ngày qua",
     last_30_days: "30 ngày qua",
-    revenue: "Doanh thu"
+    revenue: "Doanh thu",
   },
-revenueprogresswidget: {
+  revenueprogresswidget: {
     annualized_run_rate_arr: "Annualized Run Rate (ARR)",
     avg_unit_order: "Avg Unit Order",
     baseline_0: "Baseline $0",
@@ -246,9 +237,9 @@ revenueprogresswidget: {
     monthly_liquidity_flow: "Monthly Liquidity Flow",
     revenue_milestone: "Revenue Milestone",
     target: "Target: ",
-    verified_partners: "Verified Partners"
+    verified_partners: "Verified Partners",
   },
-withdrawal: {
+  withdrawal: {
     title: "Rút Tiền",
     availableBalance: "Số Dư Khả Dụng",
     minimumAmount: "Tối thiểu: 100.000₫",
@@ -260,13 +251,13 @@ withdrawal: {
       approved: "Đã Duyệt",
       rejected: "Bị Từ Chối",
       completed: "Hoàn Thành",
-      cancelled: "Đã Hủy"
+      cancelled: "Đã Hủy",
     },
     errors: {
       insufficientBalance: "Số dư không đủ",
       belowMinimum: "Dưới mức tối thiểu",
       invalidAccount: "Tài khoản không hợp lệ",
-      selectBank: "Chọn ngân hàng"
+      selectBank: "Chọn ngân hàng",
     },
     selectBank: "Chọn ngân hàng",
     accountNumber: "Số tài khoản",
@@ -291,9 +282,9 @@ withdrawal: {
     minLabel: "Tối thiểu",
     availableLabel: "Khả dụng",
     policyTitle: "Chính sách rút tiền",
-    policyDescription: "Yêu cầu rút tiền được xử lý trong 24-48 giờ. Vui lòng đảm bảo tên tài khoản ngân hàng trùng khớp với thông tin xác minh danh tính."
+    policyDescription: "Yêu cầu rút tiền được xử lý trong 24-48 giờ. Vui lòng đảm bảo tên tài khoản ngân hàng trùng khớp với thông tin xác minh danh tính.",
   },
-commissionWallet: {
+  commissionWallet: {
     title: "Ví Hoa Hồng",
     totalEarned: "Tổng Đã Kiếm",
     availableBalance: "Số Dư Khả Dụng",
@@ -310,10 +301,10 @@ commissionWallet: {
       commission: "Hoa Hồng",
       bonus: "Thưởng",
       withdrawal: "Rút Tiền",
-      refund: "Hoàn Tiền"
-    }
+      refund: "Hoàn Tiền",
+    },
   },
-ordertable: {
+  ordertable: {
     transaction_logged: "Giao Dịch Đã Ghi",
     asset: "Tài Sản",
     inspect_bill: "Kiểm Tra Hóa Đơn",
@@ -326,32 +317,31 @@ ordertable: {
     col_governance: "Quản Trị",
     anonymous_partner: "Đối Tác Ẩn Danh",
     unverified_email: "chưa-xác-minh@mạng.node",
-    empty_state: "Không có đơn hàng chờ xử lý"
+    empty_state: "Không có đơn hàng chờ xử lý",
   },
-bulkactionsbar: {
+  bulkactionsbar: {
     partner: "Đối Tác",
     selected: "Đã Chọn",
     activate: "Kích Hoạt",
     ban: "Cấm",
-    export_csv: "Xuất CSV"
+    export_csv: "Xuất CSV",
   },
-founderrevenuegoal: {
+  founderrevenuegoal: {
     of_goal: "của Mục Tiêu",
     m_c_ti_u_2026: "Mục Tiêu 2026",
-    "1_000_000_usd": "$1,000,000 USD",
     v_t_ti_n: "Vượt Tiến Độ",
     c_n_t_ng_t_c: "Cần Tăng Tốc",
     doanh_thu_hi_n_t_i: "Doanh Thu Hiện Tại",
-    ai_xu_t_h_nh_ng: "AI Đề Xuất Hành Động"
+    ai_xu_t_h_nh_ng: "AI Đề Xuất Hành Động",
   },
-beeautomationsection: {
+  beeautomationsection: {
     bee_engine_automation: "Hệ Thống Tự Động BEE",
     ctv_commission_r_8: "Hoa Hồng CTV: ₫8",
     sponsor_bonus_amb: "Thưởng Người Giới Thiệu (AMB)",
     auto_upgrade_threshold: "Ngưỡng Nâng Cấp Tự Động",
-    vnd_sales_ctv_startup: "Doanh Số VND CTV→Startup"
+    vnd_sales_ctv_startup: "Doanh Số VND CTV→Startup",
   },
-simulationpanel: {
+  simulationpanel: {
     vc_simulation_engine: "Công Cụ Mô Phỏng VC",
     active_distribution_node: "Nút Phân Phối Hoạt Động",
     nodes: "Nút",
@@ -364,6 +354,6 @@ simulationpanel: {
     strategic_forecast: "Dự Báo Chiến Lược",
     strategic_candidates: "Ứng Viên Chiến Lược",
     projected_saas_revenue: "Doanh Thu SaaS Dự Kiến",
-    partners: "Đối Tác"
-  }
+    partners: "Đối Tác",
+  },
 };

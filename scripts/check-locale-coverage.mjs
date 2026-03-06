@@ -124,10 +124,15 @@ function parseSubModuleKeys(content, expectedVarName) {
 
 function parseLocaleFileRegex(content, filePath) {
   const importMap = {};
-  const importRe = /import\s+\{\s*(\w+)\s*\}\s+from\s+['"]([^'"]+)['"]/g;
+  // Match both single and multiple named imports: import { a } from and import { a, b, c } from
+  const importRe = /import\s+\{([^}]+)\}\s+from\s+['"]([^'"]+)['"]/g;
   let m;
   while ((m = importRe.exec(content)) !== null) {
-    importMap[m[1]] = m[2];
+    const names = m[1].split(',').map(n => n.trim());
+    const path = m[2];
+    for (const name of names) {
+      importMap[name] = path;
+    }
   }
   const spreadRe = /\.\.\.(\w+)/g;
   const spreads = [];

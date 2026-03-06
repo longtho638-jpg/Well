@@ -4,18 +4,18 @@ export const common = {
       title: "Cài đặt WellNexus",
       description: "Cài đặt ứng dụng để có trải nghiệm tốt hơn với chế độ offline và tốc độ nhanh hơn.",
       install: "Cài đặt",
-      dismiss: "Để sau"
+      dismiss: "Để sau",
     },
     update: {
       title: "Có phiên bản mới",
       description: "Phiên bản mới của WellNexus đã sẵn sàng. Cập nhật ngay để có tính năng mới nhất.",
       update: "Cập nhật",
-      dismiss: "Để sau"
+      dismiss: "Để sau",
     },
     offline: {
       title: "Bạn đang offline",
-      description: "Vui lòng kiểm tra kết nối internet của bạn."
-    }
+      description: "Vui lòng kiểm tra kết nối internet của bạn.",
+    },
   },
   common: {
     hello: "Xin chào",
@@ -29,7 +29,7 @@ export const common = {
     priority: {
       high: "Quan trọng",
       medium: "Trung bình",
-      low: "Thấp"
+      low: "Thấp",
     },
     save: "Lưu",
     cancel: "Hủy",
@@ -52,19 +52,19 @@ export const common = {
     currency: {
       vnd: "đ",
       grow: "Token",
-      shop: "SHOP"
+      shop: "SHOP",
     },
     location: {
-      vietnam: "Việt Nam"
+      vietnam: "Việt Nam",
     },
     rank: {
       daisu: "Đại Sứ",
-      ctv: "Cộng Tác Viên"
+      ctv: "Cộng Tác Viên",
     },
     pending: "Chờ xử lý",
-    you: "Bạn"
+    you: "Bạn",
   },
-nav: {
+  nav: {
     home: "Trang chủ",
     commission_wallet: "Ví hoa hồng",
     orders: "Đơn hàng",
@@ -107,9 +107,9 @@ nav: {
     switchToLight: "Chuyển sang giao diện sáng",
     switchToDark: "Chuyển sang giao diện tối",
     rankLabel: "Hạng: {{rank}}",
-    profilePicture: "Ảnh đại diện"
+    profilePicture: "Ảnh đại diện",
   },
-errors: {
+  errors: {
     passwordsDoNotMatch: "Mật khẩu không khớp",
     signupFailed: "Đăng ký thất bại. Vui lòng thử lại.",
     emailAlreadyRegistered: "Email này đã được đăng ký. Vui lòng đăng nhập.",
@@ -129,10 +129,10 @@ errors: {
       passwordMatch: "Mật khẩu không khớp",
       minAmount: "Số tiền tối thiểu {amount}",
       maxAmount: "Số tiền tối đa {amount}",
-      insufficientBalance: "Số dư không đủ"
-    }
+      insufficientBalance: "Số dư không đủ",
+    },
   },
-success: {
+  success: {
     saved: "Đã lưu thành công!",
     updated: "Đã cập nhật thành công!",
     deleted: "Đã xóa thành công!",
@@ -142,21 +142,21 @@ success: {
     purchaseSuccess: "Mua hàng thành công!",
     withdrawalSuccess: "Yêu cầu rút tiền thành công!",
     stakingSuccess: "Gửi tiết kiệm thành công!",
-    unstakingSuccess: "Rút tiết kiệm thành công!"
+    unstakingSuccess: "Rút tiết kiệm thành công!",
   },
-errorboundary: {
+  errorboundary: {
     oops_something_went_wrong: "Rất tiếc! Đã xảy ra lỗi",
     we_ve_encountered_an_unexpecte: "Chúng tôi gặp phải lỗi không mong muốn. Vui lòng thử lại.",
     error_details_dev_only: "Chi Tiết Lỗi (Chỉ Dành Cho Nhà Phát Triển)",
     retry: "Thử Lại",
     reload: "Tải Lại",
     reload_page: "Tải Lại Trang",
-    go_home: "Về Trang Chủ"
+    go_home: "Về Trang Chủ",
   },
-button: {
-    loading: "Đang tải..."
+  button: {
+    loading: "Đang tải...",
   },
-sidebar: {
+  sidebar: {
     wellnexus: "WellNexus",
     wellnexus_home: "Trang Chủ WellNexus",
     social_commerce: "Thương Mại Xã Hội",
@@ -166,32 +166,32 @@ sidebar: {
     get_ai_advice: "Nhận Tư Vấn AI",
     coachFallback: "Hãy tập trung chia sẻ giá trị hôm nay. Doanh số sẽ theo sau!",
     getAiAdviceLabel: "Nhận tư vấn từ huấn luyện viên AI",
-    questList: "Danh sách nhiệm vụ"
+    questList: "Danh sách nhiệm vụ",
   },
-notification: {
-    dismiss: "Dismiss"
+  notification: {
+    dismiss: "Dismiss",
   },
-notfound: {
+  notfound: {
     title: "404 - Không tìm thấy trang",
     description: "Rất tiếc, trang bạn đang tìm kiếm không tồn tại hoặc đã bị di chuyển.",
-    back_home: "Quay lại trang chủ"
+    back_home: "Quay lại trang chủ",
   },
-app: {
-    commission_wallet: "Ví Hoa Hồng"
+  app: {
+    commission_wallet: "Ví Hoa Hồng",
   },
-patterns: {
+  patterns: {
     th_l_i: "Thử lại",
-    x_y_ra_l_i: "Xảy ra lỗi"
+    x_y_ra_l_i: "Xảy ra lỗi",
   },
-notificationcenter: {
+  notificationcenter: {
     actions_required: "Hành Động Cần Thực Hiện",
     audit_center: "Trung Tâm Kiểm Toán",
     clear_history: "Xóa Lịch Sử",
     no_new_activity: "Không Có Hoạt Động Mới",
     notifications: "Thông Báo",
-    we_ll_notify_you_when_somethin: "Chúng tôi sẽ thông báo khi có hoạt động mới"
+    we_ll_notify_you_when_somethin: "Chúng tôi sẽ thông báo khi có hoạt động mới",
   },
-settings: {
+  settings: {
     title: "Cài đặt",
     subtitle: "Quản lý tùy chọn tài khoản và bảo mật của bạn.",
     sign_out: "Đăng Xuất",
@@ -199,7 +199,7 @@ settings: {
     sections: {
       preferences: "Tùy chọn",
       notifications: "Thông báo",
-      security: "Bảo mật"
+      security: "Bảo mật",
     },
     items: {
       dark_mode: "Chế độ tối",
@@ -213,11 +213,11 @@ settings: {
       change_password: "Đổi mật khẩu",
       change_password_description: "Cập nhật mật khẩu an toàn",
       two_factor: "Xác thực hai yếu tố",
-      two_factor_description: "Thêm lớp bảo mật cho tài khoản"
+      two_factor_description: "Thêm lớp bảo mật cho tài khoản",
     },
     actions: {
       update: "Cập nhật",
-      enable: "Bật"
-    }
-  }
+      enable: "Bật",
+    },
+  },
 };

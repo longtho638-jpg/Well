@@ -9,13 +9,13 @@ export const team = {
       teamVolume: "Network Portfolio Value",
       averageSales: "Avg. Profit / Partner",
       topPerformers: "Top Earners",
-      active: "Active"
+      active: "Active",
     },
     charts: {
       teamPerformance: "Hiệu Suất Team (Top 5)",
       rankDistribution: "Phân Bổ Rank",
       personalSales: "Personal Sales",
-      teamVolumeChart: "Team Volume"
+      teamVolumeChart: "Team Volume",
     },
     overview: {
       title: "Tổng quan đội nhóm",
@@ -23,7 +23,7 @@ export const team = {
       activeMembers: "Đang hoạt động",
       totalTeamVolume: "Doanh số đội nhóm",
       monthlyGrowth: "Tăng trưởng tháng",
-      averageSales: "Doanh số trung bình/người"
+      averageSales: "Doanh số trung bình/người",
     },
     members: {
       title: "Thành viên",
@@ -40,39 +40,39 @@ export const team = {
       actions: "Hành Động",
       lastActive: "Hoạt động gần nhất",
       viewProfile: "Xem hồ sơ",
-      sendMessage: "Nhắn tin"
+      sendMessage: "Nhắn tin",
     },
     filters: {
       allRanks: "Tất cả Rank",
       sortSales: "Sắp xếp: Sales",
       sortGrowth: "Sắp xếp: Tăng trưởng",
       sortTeam: "Sắp xếp: Team Volume",
-      export: "Export"
+      export: "Export",
     },
     actions: {
       sendEmail: "Send email",
       call: "Call",
-      moreActions: "More actions"
+      moreActions: "More actions",
     },
     topPerformers: {
       title: "Thành viên xuất sắc",
       thisMonth: "Tháng này",
-      allTime: "Tất cả thời gian"
+      allTime: "Tất cả thời gian",
     },
     analytics: {
       title: "Phân tích đội nhóm",
       recruitmentTrend: "xu hướng tuyển dụng",
       salesTrend: "Xu hướng doanh số",
       rankDistribution: "Phân bố cấp bậc",
-      activityHeatmap: "Biểu đồ hoạt động"
-    }
+      activityHeatmap: "Biểu đồ hoạt động",
+    },
   },
   teamcharts: {
-    network_health: "Network Health"
+    network_health: "Network Health",
   },
   teammemberstable: {
     member: "Member",
-    partner: "Partner"
+    partner: "Partner",
   },
   partners: {
     all_partners: "All Partners",
@@ -91,12 +91,12 @@ export const team = {
     filter_active: "Trạng Thái Hoạt Động",
     filter_banned: "Trạng Thái Bị Cấm",
     filter_dormant: "Trạng Thái Không Hoạt Động",
-    search_placeholder: "Tìm kiếm theo tên, email hoặc UID..."
+    search_placeholder: "Tìm kiếm theo tên, email hoặc UID...",
   },
   partnercrm: {
     partner_crm: "Partner CRM",
     search: "Search",
-    search_partner_id_name_email: "Search Partner ID, Name, Email"
+    search_partner_id_name_email: "Search Partner ID, Name, Email",
   },
   partnermanagement: {
     action: "Action",
@@ -110,11 +110,11 @@ export const team = {
     revenue: "Revenue",
     search_id_name_email: "Search ID, Name, Email",
     status: "Status",
-    verified: "Verified"
+    verified: "Verified",
   },
   partnerrow: {
     member: "Member",
-    partner: "Partner"
+    partner: "Partner",
   },
   partnerstable: {
     auth_pending: "Chờ Xác Thực",
@@ -126,7 +126,7 @@ export const team = {
     no_partner_nodes_matching_curr: "Không có nút đối tác nào khớp với bộ lọc hiện tại",
     ops: "Ops",
     points_buffer: "Bộ Đệm Điểm",
-    synchronizing_crm_ledger: "Đang Đồng Bộ Sổ Cái CRM"
+    synchronizing_crm_ledger: "Đang Đồng Bộ Sổ Cái CRM",
   },
   partnerdetailmodal: {
     cancel: "Hủy",
@@ -141,7 +141,7 @@ export const team = {
     pending_cashback: "Hoàn Tiền Chờ",
     point_balance: "Số Dư Điểm",
     update_success: "Cập nhật đối tác thành công",
-    update_failed: "Cập nhật đối tác thất bại"
+    update_failed: "Cập nhật đối tác thất bại",
   },
   partnerprofilemodal: {
     close: "Close",
@@ -154,17 +154,16 @@ export const team = {
     phone: "Phone",
     rank: "Rank",
     total_revenue: "Total Revenue",
-    verified: "Verified"
+    verified: "Verified",
   },
   agentgridcard: {
-    "0x": "0x",
     neural_training: "Neural Training",
     node_id: "Node ID",
-    telemetry_stream_active: "Telemetry Stream Active"
+    telemetry_stream_active: "Telemetry Stream Active",
   },
   agentdetailsmodal: {
     enforcement: "Enforcement",
-    intelligence_node_context: "Intelligence Node Context"
+    intelligence_node_context: "Intelligence Node Context",
   },
   leaderboard: {
     title: "Bảng Xếp Hạng",
@@ -193,7 +192,7 @@ export const team = {
     motivation1: "💪 Bạn có thể làm được điều này!",
     motivation2: "🔥 Mỗi đơn hàng đưa bạn gần hơn với mục tiêu",
     motivation3: "🚀 Tiếp tục phấn đấu để leo hạng!",
-    readyToFight: "Sẵn sàng chiến đấu! 💪"
+    readyToFight: "Sẵn sàng chiến đấu! 💪",
   },
   leaderdashboard: {
     export_report: "Export Report",
@@ -225,58 +224,56 @@ export const team = {
     status: {
       active: "Hoạt động",
       at_risk: "Rủi ro",
-      inactive: "Không hoạt động"
+      inactive: "Không hoạt động",
     },
     ranks: {
       dai_su: "Đại sứ",
       ctv: "Cộng tác viên",
-      unknown: "Không Rõ"
+      unknown: "Không Rõ",
     },
     alerts: {
       reminder_success: "Đã gửi nhắc nhở thành công!",
       reminder_failed: "Gửi nhắc nhở thất bại",
       gift_success: "Đã gửi quà thành công!",
-      gift_failed: "Gửi quà thất bại"
+      gift_failed: "Gửi quà thất bại",
     },
     risk_levels: {
       high: "Rủi ro cao",
       medium: "Rủi ro trung bình",
-      low: "Rủi ro thấp"
-    }
+      low: "Rủi ro thấp",
+    },
   },
   leadershipladder: {
     leadership_ladder: "Leadership Ladder",
-    strategic_rank_progression_map: "Strategic Rank Progression Map"
+    strategic_rank_progression_map: "Strategic Rank Progression Map",
   },
   top3podium: {
     doanh_s: "Doanh số",
     doanh_s_cao_nh_t_th_ng_n_y: "Doanh số cao nhất tháng này",
-    top_3_t_ng_t_i: "Top 3 tổng tài"
+    top_3_t_ng_t_i: "Top 3 tổng tài",
   },
   ranks: {
-    unknown: "Chưa xác định"
+    unknown: "Chưa xác định",
   },
   rankprogressbar: {
     rank_upgrade_progress: "Tiến độ nâng hạng",
     upgrade_to: "Nâng lên ",
     kh_i_nghi_p: "Khởi nghiệp",
-    "25_commission": "- Hoa hồng 25%",
     complete: "Hoàn thành",
     remaining: "Còn lại",
     after_upgrade: "Sau nâng hạng",
-    "25_rate": "25% Hoa hồng",
     almost_there_just: "Sắp đạt rồi! Chỉ còn ",
-    more_to_kh_i_nghi_p_rank: " nữa để lên hạng Khởi nghiệp!"
+    more_to_kh_i_nghi_p_rank: " nữa để lên hạng Khởi nghiệp!",
   },
   rankladdersection: {
     downlines: "Tuyến Dưới",
     rank_migration_ladder: "Thang Nâng Cấp Hạng",
     sales_req_vnd: "Doanh Số Yêu Cầu (VND)",
     target_rank: "Hạng Mục Tiêu",
-    team_volume: "Khối Lượng Nhóm"
+    team_volume: "Khối Lượng Nhóm",
   },
   achievementgrid: {
-    ecosystem_standing: "Ecosystem Standing"
+    ecosystem_standing: "Ecosystem Standing",
   },
   agentdashboard: {
     establishing_node_sync: "Establishing node sync...",
@@ -296,11 +293,11 @@ export const team = {
     performance: "Hiệu Suất",
     total_actions: "Tổng Hành Động",
     total_agents: "Tổng Đại Lý",
-    total_kpis: "Tổng KPI"
+    total_kpis: "Tổng KPI",
   },
   networktree: {
     toast: {
-      add_failed: "Thêm thành viên thất bại"
+      add_failed: "Thêm thành viên thất bại",
     },
     nh_p_c_y_add_member: "Điền thông tin để thêm thành viên",
     sponsor: "Người giới thiệu",
@@ -322,7 +319,7 @@ export const team = {
     s_h_th_ng_network_tree: "Sơ đồ Network Tree",
     visual_representation_of_your: "Biểu đồ trực quan cấu trúc mạng lưới của bạn",
     loading_network_data: "Đang tải dữ liệu mạng lưới...",
-    no_data_available: "Không có dữ liệu"
+    no_data_available: "Không có dữ liệu",
   },
   agentDashboard: {
     title: "Hệ Điều Hành Agent",
@@ -343,21 +340,21 @@ export const team = {
     stats: {
       totalAgents: "Tổng số Agent",
       activeFunctions: "Phân hệ nghiệp vụ",
-      customAgents: "Expert Agents"
+      customAgents: "Expert Agents",
     },
     grid: {
       neuralSync: "Đang đồng bộ Neural Link...",
       statusActive: "Hoạt động",
       statusTraining: "Đang huấn luyện",
-      statusStandby: "Chế độ chờ"
+      statusStandby: "Chế độ chờ",
     },
     details: {
       efficiency: "Hiệu suất xử lý",
       accuracy: "Độ chính xác",
       latency: "Độ trễ phản hồi",
       capabilities: "Khả năng nghiệp vụ",
-      trainingHistory: "Lịch sử huấn luyện"
+      trainingHistory: "Lịch sử huấn luyện",
     },
-    training: "Huấn luyện"
-  }
+    training: "Huấn luyện",
+  },
 };

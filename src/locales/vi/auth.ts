@@ -1,5 +1,5 @@
 export const auth = {
-auth: {
+  auth: {
     login: {
       title: "Đăng nhập",
       subtitle: "Chào mừng trở lại WellNexus",
@@ -14,7 +14,7 @@ auth: {
       demo: "Đăng nhập demo",
       backToHome: "Về trang chủ WellNexus",
       showPassword: "Hiện mật khẩu",
-      hidePassword: "Ẩn mật khẩu"
+      hidePassword: "Ẩn mật khẩu",
     },
     signup: {
       title: "Tạo tài khoản",
@@ -27,7 +27,7 @@ auth: {
       agreeToTerms: "Tôi đồng ý với điều khoản",
       signupButton: "Tạo tài khoản",
       haveAccount: "Đã có tài khoản?",
-      signIn: "Đăng nhập"
+      signIn: "Đăng nhập",
     },
     register: {
       title: "Đăng ký",
@@ -50,12 +50,12 @@ auth: {
       login: "Đăng nhập",
       placeholders: {
         name: "Nhập họ và tên đầy đủ",
-        email: "ten@congty.com"
+        email: "ten@congty.com",
       },
       checkEmail: "Kiểm tra Email của bạn!",
       emailSentMessage: "Chúng tôi đã gửi liên kết xác nhận đến {{email}}. Nhấn liên kết để kích hoạt tài khoản.",
       didntReceive: "Không nhận được? Kiểm tra thư mục spam hoặc",
-      resendEmail: "gửi lại email xác nhận"
+      resendEmail: "gửi lại email xác nhận",
     },
     forgotPassword: {
       title: "Quên mật khẩu",
@@ -64,7 +64,7 @@ auth: {
       submitButton: "Gửi link đặt lại",
       backToLogin: "Quay lại đăng nhập",
       successMessage: "Email đặt lại mật khẩu đã được gửi! Vui lòng kiểm tra hộp thư.",
-      errorMessage: "Không thể gửi email đặt lại mật khẩu. Vui lòng thử lại."
+      errorMessage: "Không thể gửi email đặt lại mật khẩu. Vui lòng thử lại.",
     },
     resetPassword: {
       title: "Đặt lại mật khẩu",
@@ -76,41 +76,41 @@ auth: {
       errorMessage: "Không thể đặt lại mật khẩu. Vui lòng thử lại.",
       invalidLink: "Liên kết đặt lại mật khẩu không hợp lệ hoặc đã hết hạn. Vui lòng yêu cầu lại.",
       passwordMismatch: "Mật khẩu không khớp",
-      weakPassword: "Mật khẩu quá yếu. Vui lòng chọn mật khẩu mạnh hơn."
+      weakPassword: "Mật khẩu quá yếu. Vui lòng chọn mật khẩu mạnh hơn.",
     },
     password: {
       strength: {
         weak: "Yếu",
         fair: "Trung bình",
         good: "Tốt",
-        strong: "Mạnh"
+        strong: "Mạnh",
       },
       requirements: {
         length: "Tối thiểu 8 ký tự",
         uppercase: "Ít nhất 1 chữ hoa",
         lowercase: "Ít nhất 1 chữ thường",
         number: "Ít nhất 1 số",
-        special: "Ít nhất 1 ký tự đặc biệt"
-      }
+        special: "Ít nhất 1 ký tự đặc biệt",
+      },
     },
     confirmEmail: {
       invalidLink: "Liên kết xác thực không hợp lệ hoặc đã hết hạn.",
-      unexpectedError: "Đã xảy ra lỗi không mong muốn. Vui lòng thử lại."
+      unexpectedError: "Đã xảy ra lỗi không mong muốn. Vui lòng thử lại.",
     },
-    demo: "Demo"
+    demo: "Demo",
   },
-signup: {
-    early_access_2_0: "Early Access 2.0"
+  signup: {
+    early_access_2_0: "Early Access 2.0",
   },
-signupform: {
+  signupform: {
     email_business: "Email doanh nghiệp",
     h_v_t_n: "Họ và tên",
     m_t_kh_u: "Mật khẩu",
     ng_k_ngay: "Đăng ký ngay",
     processing_account: "Đang xử lý tài khoản",
-    x_c_nh_n: "Xác nhận"
+    x_c_nh_n: "Xác nhận",
   },
-loginactivitylog: {
+  loginactivitylog: {
     detected: "Đã Phát Hiện",
     device: "Thiết Bị",
     failed_login_attempt: "Đăng Nhập Thất Bại",
@@ -123,9 +123,9 @@ loginactivitylog: {
     recent_sign_in_attempts_to_you: "Các lần đăng nhập gần đây vào tài khoản của bạn",
     status: "Trạng Thái",
     time: "Thời Gian",
-    export_activity_log: "Xuất nhật ký đăng nhập"
+    export_activity_log: "Xuất nhật ký đăng nhập",
   },
-sessionmanager: {
+  sessionmanager: {
     active_now: "Hoạt Động",
     active_sessions: "Phiên Hoạt Động",
     connected: "Đã Kết Nối",
@@ -136,9 +136,9 @@ sessionmanager: {
     this_device: "Thiết Bị Này",
     revoked_success: "Phiên đã được thu hồi thành công",
     revoked_all_success: "Tất cả phiên khác đã được thu hồi",
-    sign_out_all_others: "Đăng xuất tất cả thiết bị khác"
+    sign_out_all_others: "Đăng xuất tất cả thiết bị khác",
   },
-onboardingquest: {
+  onboardingquest: {
     the_coach: "Huấn Luyện Viên",
     powered_by_gemini_ai: "Được hỗ trợ bởi Gemini AI",
     day_3_30: "Ngày 3/30",
@@ -147,9 +147,9 @@ onboardingquest: {
     stuck_ask_your_ai_coach_for_a: "Gặp khó khăn? Hỏi Huấn luyện viên AI của bạn để nhận gợi ý",
     fallback_advice: "Hãy tiếp tục chia sẻ năng lượng tích cực! Doanh số sẽ đến.",
     analyzing: "Đang phân tích dữ liệu...",
-    get_ai_advice: "Nhận tư vấn AI"
+    get_ai_advice: "Nhận tư vấn AI",
   },
-profilepage: {
+  profilepage: {
     personal_information: "Thông Tin Cá Nhân",
     account_status: "Trạng Thái Tài Khoản",
     full_name: "Họ và Tên",
@@ -161,6 +161,6 @@ profilepage: {
     email_verified: "Email Đã Xác Minh",
     security_strength: "Độ Mạnh Bảo Mật",
     edit: "Chỉnh Sửa",
-    joined: "Tham Gia"
-  }
+    joined: "Tham Gia",
+  },
 };

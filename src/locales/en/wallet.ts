@@ -1,7 +1,5 @@
 export const wallet = {
   wallet: {
-    "12": "12%",
-    "90": "90",
     title: "Asset Management",
     subtitle: "Manage your asset portfolio",
     balance: {
@@ -15,13 +13,13 @@ export const wallet = {
       growToken: "GROW Token - Equity",
       vnd_stablecoin: "VND Stablecoin 1:1",
       governance_token: "Governance Token",
-      currency: "Currency"
+      currency: "Currency",
     },
     stats: {
       growth_12_5: "+12.5%",
       apy_12_0: "12.0%",
       apy_12_percent: "12%",
-      days_90: "90 Days"
+      days_90: "90 Days",
     },
     actions: {
       deposit_shop: "Deposit SHOP",
@@ -29,7 +27,7 @@ export const wallet = {
       stake: "Stake",
       unstake: "Unstake",
       transfer: "Transfer",
-      history: "Transaction History"
+      history: "Transaction History",
     },
     staking_tiers: "Staking Tiers",
     total_staked: "Total Staked",
@@ -48,7 +46,7 @@ export const wallet = {
       unstakeNow: "Unstake Now",
       stakingInfo: "Staking Info",
       stakedAmount: "Staked",
-      rewards: "Rewards"
+      rewards: "Rewards",
     },
     transactions: {
       title: "Transaction History",
@@ -70,14 +68,14 @@ export const wallet = {
         withdrawal: "Withdrawal",
         quest: "Quest",
         staking: "Staking",
-        unstaking: "Unstaking"
+        unstaking: "Unstaking",
       },
       statusValues: {
         pending: "Processing",
         completed: "Completed",
         failed: "Failed",
-        cancelled: "Cancelled"
-      }
+        cancelled: "Cancelled",
+      },
     },
     withdrawal: {
       title: "Withdraw",
@@ -107,10 +105,8 @@ export const wallet = {
       accountNumberRequired: "Invalid account number",
       accountNameRequired: "Please enter account holder name",
       successMessage: "Withdrawal request submitted successfully",
-      errorMessage: "Failed to submit withdrawal request"
+      errorMessage: "Failed to submit withdrawal request",
     },
-    "12_0": "12.0%",
-    "12_5": "12.5%",
     apy_staking: "APY Staking",
     blockchain_explorer: "Blockchain Explorer",
     currency: "Currency",
@@ -118,7 +114,7 @@ export const wallet = {
     t_ng_t_i_s_n: "Total Assets",
     th_ng_n_y: "This Month",
     n_p_shop: "Deposit SHOP",
-    vnd_stablecoin_1_1000: "VND Stablecoin 1:1000"
+    vnd_stablecoin_1_1000: "VND Stablecoin 1:1000",
   },
   withdrawal: {
     title: "Withdrawal",
@@ -136,13 +132,13 @@ export const wallet = {
       approved: "Approved",
       rejected: "Rejected",
       completed: "Completed",
-      cancelled: "Cancelled"
+      cancelled: "Cancelled",
     },
     errors: {
       insufficientBalance: "Insufficient balance",
       belowMinimum: "Below minimum",
       invalidAccount: "Invalid account",
-      selectBank: "Select bank"
+      selectBank: "Select bank",
     },
     bankName: "Bank Name",
     minAmountError: "Amount below minimum withdrawal limit",
@@ -163,7 +159,7 @@ export const wallet = {
     minLabel: "Min",
     availableLabel: "Available",
     policyTitle: "Withdrawal Policy",
-    policyDescription: "Withdrawals are processed within 24-48 hours. Please ensure your bank account name matches your KYC identity."
+    policyDescription: "Withdrawals are processed within 24-48 hours. Please ensure your bank account name matches your KYC identity.",
   },
   commissionWallet: {
     title: "Commission Wallet",
@@ -182,18 +178,17 @@ export const wallet = {
       commission: "Commission",
       bonus: "Bonus",
       withdrawal: "Withdrawal",
-      refund: "Refund"
-    }
+      refund: "Refund",
+    },
   },
   commissionwallet: {
-    generating: 'Generating...',
-    export_pdf: 'Export PDF',
+    generating: "Generating...",
+    export_pdf: "Export PDF",
     withdrawable_balance: "Withdrawable Balance",
     total_earnings_gross: "Total Earnings (Gross)",
     withheld_tax_pit_10: "Withheld Tax (PIT 10%)",
     tax_compliance_mode: "Tax Compliance Mode",
     wellnexus_automatically_deduct: "WellNexus automatically deducts ",
-    "10_pit": "10% PIT",
     for_income_exceeding_2_000_000: "for income exceeding 2,000,000₫",
     request_withdrawal: "Request Withdrawal",
     earnings_history: "Earnings History",
@@ -208,23 +203,19 @@ export const wallet = {
     source: "Source",
     commission_calculation: "Commission Calculation",
     bonus_revenue: "Bonus Revenue",
-    rate: "Rate"
+    rate: "Rate",
   },
   revenuebreakdown: {
-    "100": "100%",
-    total_yield: "Total Yield"
+    total_yield: "Total Yield",
   },
   revenuechart: {
     revenue_growth: "Revenue Growth",
     last_7_days_performance: "Last 7 Days Performance",
     last_7_days: "Last 7 Days",
     last_30_days: "Last 30 Days",
-    revenue: "Revenue"
+    revenue: "Revenue",
   },
   withdrawalmodal: {
-    "25": "25%",
-    "50": "50%",
-    "75": "75%",
     validation: {
       amount_required: "Amount is required",
       min_withdrawal: "Minimum withdrawal amount is {amount}",
@@ -232,7 +223,7 @@ export const wallet = {
       bank_name_required: "Bank name is required",
       account_number_required: "Account number is required",
       account_number_numeric: "Account number must be numeric",
-      account_name_required: "Account holder name is required"
+      account_name_required: "Account holder name is required",
     },
     request_submitted: "Request Submitted!",
     your_withdrawal_request_has_be: "Your withdrawal request has been submitted successfully.",
@@ -247,7 +238,7 @@ export const wallet = {
     processing_time: "Processing Time",
     withdrawal_requests_are_proces: "Withdrawal requests are processed within 1-3 business days.",
     cancel: "Cancel",
-    submit_request: "Submit Request"
+    submit_request: "Submit Request",
   },
   finance: {
     action: "Action",
@@ -280,7 +271,7 @@ export const wallet = {
     security_batch_commit: "Security Batch Commit",
     verifying_digital_ledgers: "Verifying Digital Ledgers...",
     ledger_synchronized: "Ledger Synchronized",
-    no_items_in_the_current_filter: "No items in the current filter"
+    no_items_in_the_current_filter: "No items in the current filter",
   },
   revenueprogresswidget: {
     annualized_run_rate_arr: "Annualized Run Rate (ARR)",
@@ -294,7 +285,7 @@ export const wallet = {
     monthly_liquidity_flow: "Monthly Liquidity Flow",
     revenue_milestone: "Revenue Milestone",
     target: "Target: ",
-    verified_partners: "Verified Partners"
+    verified_partners: "Verified Partners",
   },
   transactioncard: {
     uid: "UID",
@@ -306,7 +297,7 @@ export const wallet = {
     system_yield_injected: "System Yield Injected",
     commit_approval: "Commit Approval",
     security_engine_quarantine: "Security Engine Quarantine",
-    flagged_for_behavioral_anomaly: "Flagged for behavioral anomaly"
+    flagged_for_behavioral_anomaly: "Flagged for behavioral anomaly",
   },
   ordertable: {
     transaction_logged: "Transaction Logged",
@@ -321,35 +312,34 @@ export const wallet = {
     col_governance: "Governance",
     anonymous_partner: "Anonymous Partner",
     unverified_email: "unverified@network.node",
-    empty_state: "No pending orders found"
+    empty_state: "No pending orders found",
   },
   bulkactionsbar: {
     partner: "Partner",
     selected: "Selected",
     activate: "Activate",
     ban: "Ban",
-    export_csv: "Export CSV"
+    export_csv: "Export CSV",
   },
   founderrevenuegoal: {
     of_goal: "of goal",
     m_c_ti_u_2026: "2026 Target",
-    "1_000_000_usd": "$1,000,000 USD",
     v_t_ti_n: "Exceeded Target",
     c_n_t_ng_t_c: "Keep Growing",
     doanh_thu_hi_n_t_i: "Current Revenue",
-    ai_xu_t_h_nh_ng: "AI Suggested Actions"
+    ai_xu_t_h_nh_ng: "AI Suggested Actions",
   },
   beeautomationsection: {
     bee_engine_automation: "Bee Engine Automation",
     ctv_commission_r_8: "CTV Commission (R8)",
     sponsor_bonus_amb: "Sponsor Bonus (AMB)",
     auto_upgrade_threshold: "Auto Upgrade Threshold",
-    vnd_sales_ctv_startup: "VND Sales CTV→Startup"
+    vnd_sales_ctv_startup: "VND Sales CTV→Startup",
   },
   commissionsection: {
     commission_architecture: "Commission Architecture",
     total_system_payout_threshold: "Total System Payout Threshold",
-    max_risk_operational_margin_c: "Max Risk Operational Margin"
+    max_risk_operational_margin_c: "Max Risk Operational Margin",
   },
   simulationpanel: {
     vc_simulation_engine: "VC Simulation Engine",
@@ -364,6 +354,6 @@ export const wallet = {
     strategic_forecast: "Strategic Forecast",
     strategic_candidates: "Strategic Candidates",
     projected_saas_revenue: "Projected SaaS Revenue",
-    partners: "Partners"
-  }
+    partners: "Partners",
+  },
 };

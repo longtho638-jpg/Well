@@ -4,7 +4,6 @@ export const commissionwallet = {
   withheld_tax_pit_10: "Thuế giữ lại PIT 10%",
   tax_compliance_mode: "Chế độ tuân thủ thuế",
   wellnexus_automatically_deduct: "WellNexus tự động khấu trừ",
-  "10_pit": "10% PIT",
   for_income_exceeding_2_000_000: "Cho thu nhập vượt quá 2.000.000₫",
   request_withdrawal: "Yêu cầu rút tiền",
   earnings_history: "Lịch sử thu nhập",

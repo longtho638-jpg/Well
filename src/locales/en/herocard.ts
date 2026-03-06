@@ -1,7 +1,6 @@
 export const herocard = {
   founders_pathway: "Founder's Pathway",
   reach: "Reach",
-  "100m_vnd_revenue": "100M VND Revenue",
   access_secured: "Access Secured",
   achievement_logic: "Achievement Logic",
   ecosystem_scaling: "Ecosystem Scaling",

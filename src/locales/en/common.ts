@@ -4,18 +4,18 @@ export const common = {
       title: "Install WellNexus",
       description: "Install our app for a better experience with offline access and faster loading.",
       install: "Install",
-      dismiss: "Later"
+      dismiss: "Later",
     },
     update: {
       title: "New Version Available",
       description: "A new version of WellNexus is available. Update now to get the latest features.",
       update: "Update Now",
-      dismiss: "Later"
+      dismiss: "Later",
     },
     offline: {
       title: "You are offline",
-      description: "Please check your internet connection."
-    }
+      description: "Please check your internet connection.",
+    },
   },
   common: {
     hello: "Hello",
@@ -29,7 +29,7 @@ export const common = {
     priority: {
       high: "High",
       medium: "Medium",
-      low: "Low"
+      low: "Low",
     },
     save: "Save",
     cancel: "Cancel",
@@ -51,18 +51,18 @@ export const common = {
     currency: {
       vnd: "₫",
       grow: "Token",
-      shop: "SHOP"
+      shop: "SHOP",
     },
     location: {
-      vietnam: "Vietnam"
+      vietnam: "Vietnam",
     },
     rank: {
       daisu: "Ambassador",
-      ctv: "Collaborator"
+      ctv: "Collaborator",
     },
     delete: "Delete",
     pending: "Pending",
-    you: "You"
+    you: "You",
   },
   nav: {
     home: "Home",
@@ -107,7 +107,7 @@ export const common = {
     switchToLight: "Switch to light mode",
     switchToDark: "Switch to dark mode",
     rankLabel: "Rank: {{rank}}",
-    profilePicture: "Profile picture"
+    profilePicture: "Profile picture",
   },
   errors: {
     passwordsDoNotMatch: "Passwords do not match",
@@ -129,8 +129,8 @@ export const common = {
       passwordMatch: "Passwords do not match",
       minAmount: "Minimum amount {amount}",
       maxAmount: "Maximum amount {amount}",
-      insufficientBalance: "Insufficient balance"
-    }
+      insufficientBalance: "Insufficient balance",
+    },
   },
   success: {
     saved: "Saved successfully!",
@@ -142,7 +142,7 @@ export const common = {
     purchaseSuccess: "Purchase successful!",
     withdrawalSuccess: "Withdrawal request successful!",
     stakingSuccess: "Staking successful!",
-    unstakingSuccess: "Unstaking successful!"
+    unstakingSuccess: "Unstaking successful!",
   },
   errorboundary: {
     oops_something_went_wrong: "Oops! Something went wrong",
@@ -151,10 +151,10 @@ export const common = {
     retry: "Retry",
     reload: "Reload",
     reload_page: "Reload Page",
-    go_home: "Go Home"
+    go_home: "Go Home",
   },
   button: {
-    loading: "Loading..."
+    loading: "Loading...",
   },
   sidebar: {
     wellnexus: "WellNexus",
@@ -166,22 +166,22 @@ export const common = {
     get_ai_advice: "Get AI Advice",
     coachFallback: "Focus on sharing value today. Sales will follow!",
     getAiAdviceLabel: "Get advice from AI coach",
-    questList: "Quest list"
+    questList: "Quest list",
   },
   notification: {
-    dismiss: "Dismiss"
+    dismiss: "Dismiss",
   },
   notfound: {
     title: "404 - Page Not Found",
     description: "Sorry, the page you are looking for does not exist or has been moved.",
-    back_home: "Back to Home"
+    back_home: "Back to Home",
   },
   app: {
-    commission_wallet: "Commission Wallet"
+    commission_wallet: "Commission Wallet",
   },
   patterns: {
     th_l_i: "Try again",
-    x_y_ra_l_i: "An error occurred"
+    x_y_ra_l_i: "An error occurred",
   },
   notificationcenter: {
     notifications: "Notifications",
@@ -189,7 +189,7 @@ export const common = {
     no_new_activity: "No New Activity",
     we_ll_notify_you_when_somethin: "We'll notify you when something new happens",
     clear_history: "Clear History",
-    audit_center: "Audit Center"
+    audit_center: "Audit Center",
   },
   settings: {
     title: "Settings",
@@ -199,7 +199,7 @@ export const common = {
     sections: {
       preferences: "Preferences",
       notifications: "Notifications",
-      security: "Security"
+      security: "Security",
     },
     items: {
       dark_mode: "Dark Mode",
@@ -213,11 +213,11 @@ export const common = {
       change_password: "Change Password",
       change_password_description: "Update your password securely",
       two_factor: "Two-Factor Authentication",
-      two_factor_description: "Add an extra layer of security"
+      two_factor_description: "Add an extra layer of security",
     },
     actions: {
       update: "Update",
-      enable: "Enable"
-    }
-  }
+      enable: "Enable",
+    },
+  },
 };

@@ -1,7 +1,7 @@
 export const network = {
   network: {
-    export_json: 'Export JSON',
-    export_csv: 'Export CSV',
+    export_json: "Export JSON",
+    export_csv: "Export CSV",
     title: "My Network",
     totalMembers: "Total Members",
     activeMembers: "Active",
@@ -19,7 +19,7 @@ export const network = {
     invite_member: "Invite Member",
     manage_team_subtitle: "Manage and visualize your team structure",
     empty_title: "No network data available",
-    empty_subtitle: "Start inviting members to build your team!"
+    empty_subtitle: "Start inviting members to build your team!",
   },
   liveconsole: {
     live_operations_node_agent: "Live Operations Node Agent",
@@ -29,6 +29,6 @@ export const network = {
     wellnexus_bee: "WellNexus Bee",
     bee_agent_core_v4_2_0_stable: "Bee Agent Core v4.2.0 Stable",
     tx: "TX",
-    bps: "BPS"
-  }
+    bps: "BPS",
+  },
 };

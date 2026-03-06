@@ -1,11 +1,10 @@
 export const health = {
   healthcheck: {
-    "100": "100",
     s_n_ph_m_c_ai_xu_t_d_nh: "AI-recommended products for you",
     u_ti_n: "Priority",
     l_i_ch_kh_c: "Other Benefits",
     ph_n_t_ch_chi_ti_t: "Detailed Analysis",
-    i_m_s_t_ng_kh_a_c_nh_s_c_kh: "Score across all health dimensions"
+    i_m_s_t_ng_kh_a_c_nh_s_c_kh: "Score across all health dimensions",
   },
   healthCheck: {
     questionProgress: "Question {current} / {total}",
@@ -31,8 +30,8 @@ export const health = {
           _5to6: "5-6 hours",
           _6to7: "6-7 hours",
           _7to8: "7-8 hours",
-          over8: "Over 8 hours"
-        }
+          over8: "Over 8 hours",
+        },
       },
       stress: {
         question: "How often do you feel stressed?",
@@ -41,8 +40,8 @@ export const health = {
           often: "Often",
           sometimes: "Sometimes",
           rarely: "Rarely",
-          never: "Never"
-        }
+          never: "Never",
+        },
       },
       energy: {
         question: "How would you describe your energy level?",
@@ -51,8 +50,8 @@ export const health = {
           tired: "Tired",
           normal: "Normal",
           energetic: "Energetic",
-          veryEnergetic: "Very Energetic"
-        }
+          veryEnergetic: "Very Energetic",
+        },
       },
       exercise: {
         question: "How many times per week do you exercise?",
@@ -60,8 +59,8 @@ export const health = {
           never: "Never",
           _1to2: "1-2 times",
           _3to4: "3-4 times",
-          _5plus: "5+ times"
-        }
+          _5plus: "5+ times",
+        },
       },
       goal: {
         question: "What is your primary health goal?",
@@ -70,16 +69,16 @@ export const health = {
           reduceStress: "Reduce Stress",
           increaseEnergy: "Increase Energy",
           boostImmunity: "Boost Immunity",
-          overallHealth: "Overall Health"
-        }
-      }
+          overallHealth: "Overall Health",
+        },
+      },
     },
     dimensions: {
       sleep: "Sleep",
       stress: "Stress",
       energy: "Energy",
       exercise: "Exercise",
-      goal: "Goal"
+      goal: "Goal",
     },
     products: {
       anima119: {
@@ -89,8 +88,8 @@ export const health = {
           sleep: "Improve sleep quality",
           stress: "Reduce stress levels",
           emotion: "Balance emotions",
-          memory: "Enhance memory"
-        }
+          memory: "Enhance memory",
+        },
       },
       immuneBoost: {
         name: "Immune Boost",
@@ -99,8 +98,8 @@ export const health = {
           immunity: "Boost immunity",
           fatigue: "Reduce fatigue",
           antioxidant: "Rich in antioxidants",
-          recovery: "Faster recovery"
-        }
+          recovery: "Faster recovery",
+        },
       },
       starterKit: {
         name: "Starter Kit",
@@ -109,21 +108,21 @@ export const health = {
           nutrition: "Essential nutrition",
           balance: "Body balance",
           health: "Overall health",
-          allAges: "Suitable for all ages"
-        }
-      }
+          allAges: "Suitable for all ages",
+        },
+      },
     },
     scoreLabels: {
       excellent: "Excellent",
       good: "Good",
       average: "Average",
-      needsImprovement: "Needs Improvement"
+      needsImprovement: "Needs Improvement",
     },
     scoreDescriptions: {
       excellent: "Your health is in great shape! Keep it up.",
       good: "You're doing well. Small improvements can make a big difference.",
       average: "There's room for improvement. Let's work on it together.",
-      poor: "Your health needs attention. We recommend consulting our AI Coach."
+      poor: "Your health needs attention. We recommend consulting our AI Coach.",
     },
     restartQuiz: "Restart Quiz",
     add_product: "Add Product",
@@ -142,7 +141,7 @@ export const health = {
     out_of_stock: "Out of Stock",
     partner_comm: "Partner Comm",
     retail_msrp: "Retail (MSRP)",
-    sku: "SKU"
+    sku: "SKU",
   },
   healthCoach: {
     title: "Health Coach AI",
@@ -165,10 +164,10 @@ export const health = {
     suggestions: {
       sleep: "I often have insomnia",
       fatigue: "I feel tired",
-      immunity: "Boost my immunity"
+      immunity: "Boost my immunity",
     },
     disclaimerTech: "💡 Health Coach AI uses symptom analysis technology to suggest suitable products.",
     disclaimerMedical: "Note: This is a support tool, not a substitute for professional medical advice.",
-    analyzing: "Analyzing..."
-  }
+    analyzing: "Analyzing...",
+  },
 };

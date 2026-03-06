@@ -9,13 +9,13 @@ export const team = {
       teamVolume: "Network Portfolio Value",
       averageSales: "Avg. Profit / Partner",
       topPerformers: "Top Earners",
-      active: "Active"
+      active: "Active",
     },
     charts: {
       teamPerformance: "Team Performance (Top 5)",
       rankDistribution: "Rank Distribution",
       personalSales: "Personal Sales",
-      teamVolumeChart: "Team Volume"
+      teamVolumeChart: "Team Volume",
     },
     overview: {
       title: "Team Overview",
@@ -23,7 +23,7 @@ export const team = {
       activeMembers: "Active",
       totalTeamVolume: "Team Volume",
       monthlyGrowth: "Monthly Growth",
-      averageSales: "Average Sales/Person"
+      averageSales: "Average Sales/Person",
     },
     members: {
       title: "Members",
@@ -40,32 +40,32 @@ export const team = {
       actions: "Actions",
       lastActive: "Last Active",
       viewProfile: "View Profile",
-      sendMessage: "Send Message"
+      sendMessage: "Send Message",
     },
     filters: {
       allRanks: "All Ranks",
       sortSales: "Sort: Sales",
       sortGrowth: "Sort: Growth",
       sortTeam: "Sort: Team Volume",
-      export: "Export"
+      export: "Export",
     },
     actions: {
       sendEmail: "Send Email",
       call: "Call",
-      moreActions: "More Actions"
+      moreActions: "More Actions",
     },
     topPerformers: {
       title: "Top Performers",
       thisMonth: "This Month",
-      allTime: "All Time"
+      allTime: "All Time",
     },
     analytics: {
       title: "Team Analytics",
       recruitmentTrend: "Recruitment Trend",
       salesTrend: "Sales Trend",
       rankDistribution: "Rank Distribution",
-      activityHeatmap: "Activity Heatmap"
-    }
+      activityHeatmap: "Activity Heatmap",
+    },
   },
   leaderdashboard: {
     export_report: "Export Report",
@@ -81,7 +81,7 @@ export const team = {
     risk_levels: {
       high: "High Risk",
       medium: "Medium Risk",
-      low: "Low Risk"
+      low: "Low Risk",
     },
     l_do_c_n_ch: "Reason for Attention",
     ai_xu_t: "AI Suggestion",
@@ -99,22 +99,22 @@ export const team = {
     status: {
       active: "Active",
       at_risk: "At Risk",
-      inactive: "Inactive"
+      inactive: "Inactive",
     },
     ranks: {
       dai_su: "Ambassador",
       ctv: "CTV",
-      unknown: "Unknown"
+      unknown: "Unknown",
     },
     alerts: {
       reminder_success: "Reminder sent successfully",
       reminder_failed: "Failed to send reminder",
       gift_success: "Gift sent successfully",
-      gift_failed: "Failed to send gift"
+      gift_failed: "Failed to send gift",
     },
     qu_n_l_i_nh_m: "Team Management",
     s_h_th_ng: "Network Map",
-    all_ranks: "All Ranks"
+    all_ranks: "All Ranks",
   },
   partners: {
     all_partners: "All Partners",
@@ -133,12 +133,12 @@ export const team = {
     filter_active: "Active Status",
     filter_banned: "Banned Status",
     filter_dormant: "Dormant Status",
-    search_placeholder: "Search by name, email or UID..."
+    search_placeholder: "Search by name, email or UID...",
   },
   partnercrm: {
     partner_crm: "Partner CRM",
     search: "Search",
-    search_partner_id_name_email: "Search Partner ID, Name, Email"
+    search_partner_id_name_email: "Search Partner ID, Name, Email",
   },
   partnermanagement: {
     action: "Action",
@@ -152,11 +152,11 @@ export const team = {
     revenue: "Revenue",
     search_id_name_email: "Search ID, Name, Email",
     status: "Status",
-    verified: "Verified"
+    verified: "Verified",
   },
   partnerrow: {
     member: "Member",
-    partner: "Partner"
+    partner: "Partner",
   },
   leaderboard: {
     title: "Leaderboard",
@@ -185,16 +185,16 @@ export const team = {
     motivation1: "💪 You can do this!",
     motivation2: "🔥 Every order brings you closer to your goal",
     motivation3: "🚀 Keep pushing to climb the ranks!",
-    readyToFight: "Ready to fight! 💪"
+    readyToFight: "Ready to fight! 💪",
   },
   leadershipladder: {
     leadership_ladder: "Leadership Ladder",
-    strategic_rank_progression_map: "Strategic Rank Progression Map"
+    strategic_rank_progression_map: "Strategic Rank Progression Map",
   },
   top3podium: {
     doanh_s: "Sales",
     doanh_s_cao_nh_t_th_ng_n_y: "Highest sales this month",
-    top_3_t_ng_t_i: "Top 3 Overall"
+    top_3_t_ng_t_i: "Top 3 Overall",
   },
   partnerdetailmodal: {
     partner_details: "Partner Details",
@@ -209,7 +209,7 @@ export const team = {
     pending_cashback: "Pending Cashback",
     point_balance: "Point Balance",
     update_success: "Partner updated successfully",
-    update_failed: "Failed to update partner"
+    update_failed: "Failed to update partner",
   },
   agentDashboard: {
     title: "Agent Operating System",
@@ -230,26 +230,26 @@ export const team = {
     stats: {
       totalAgents: "Total Agents",
       activeFunctions: "Business Functions",
-      customAgents: "Expert Agents"
+      customAgents: "Expert Agents",
     },
     grid: {
       neuralSync: "Syncing Neural Link...",
       statusActive: "Active",
       statusTraining: "Training",
-      statusStandby: "Standby"
+      statusStandby: "Standby",
     },
     details: {
       efficiency: "Processing Efficiency",
       accuracy: "Accuracy",
       latency: "Response Latency",
       capabilities: "Business Capabilities",
-      trainingHistory: "Training History"
+      trainingHistory: "Training History",
     },
-    training: "Training"
+    training: "Training",
   },
   networktree: {
     toast: {
-      add_failed: "Failed to add member"
+      add_failed: "Failed to add member",
     },
     nh_p_c_y_add_member: "Fill in to add member",
     sponsor: "Sponsor",
@@ -271,22 +271,20 @@ export const team = {
     s_h_th_ng_network_tree: "Network Tree",
     visual_representation_of_your: "Visual representation of your network",
     loading_network_data: "Loading network data...",
-    no_data_available: "No data available"
+    no_data_available: "No data available",
   },
   ranks: {
-    unknown: "Unknown"
+    unknown: "Unknown",
   },
   rankprogressbar: {
     rank_upgrade_progress: "Rank Upgrade Progress",
     upgrade_to: "Upgrade to ",
     kh_i_nghi_p: "Startup",
-    "25_commission": "25% Commission",
     complete: "Complete",
     remaining: "Remaining",
     after_upgrade: "After upgrade",
-    "25_rate": "25% Rate",
     almost_there_just: "Almost there! Just",
-    more_to_kh_i_nghi_p_rank: "more to reach Startup rank"
+    more_to_kh_i_nghi_p_rank: "more to reach Startup rank",
   },
   partnerstable: {
     identity_node: "Identity Node",
@@ -298,24 +296,23 @@ export const team = {
     ops: "Ops",
     synchronizing_crm_ledger: "Synchronizing CRM Ledger...",
     ghost_network_detected: "Ghost network detected",
-    no_partner_nodes_matching_curr: "No partner nodes matching current filter"
+    no_partner_nodes_matching_curr: "No partner nodes matching current filter",
   },
   rankladdersection: {
     rank_migration_ladder: "Rank Migration Ladder",
     target_rank: "Target Rank",
     sales_req_vnd: "Sales Req (VND)",
     team_volume: "Team Volume",
-    downlines: "Downlines"
+    downlines: "Downlines",
   },
   agentdetailsmodal: {
     intelligence_node_context: "Intelligence Node Context",
-    enforcement: "Enforcement"
+    enforcement: "Enforcement",
   },
   agentgridcard: {
     node_id: "Node ID",
-    "0x": "0x",
     telemetry_stream_active: "Telemetry Stream Active",
-    neural_training: "Neural Training"
+    neural_training: "Neural Training",
   },
   agentdashboard: {
     agent_ecosystem: "Agent Ecosystem",
@@ -335,14 +332,14 @@ export const team = {
     registry: "Registry",
     nodes: "Nodes",
     strategic_simulator_offline: "Strategic Simulator Offline",
-    connect_to_the_policy_engine_r: "Connect to the Policy Engine to run real-time market simulations."
+    connect_to_the_policy_engine_r: "Connect to the Policy Engine to run real-time market simulations.",
   },
   teamcharts: {
-    network_health: "Network Health"
+    network_health: "Network Health",
   },
   teammemberstable: {
     member: "Member",
-    partner: "Partner"
+    partner: "Partner",
   },
   partnerprofilemodal: {
     close: "Close",
@@ -355,9 +352,9 @@ export const team = {
     phone: "Phone",
     rank: "Rank",
     total_revenue: "Total Revenue",
-    verified: "Verified"
+    verified: "Verified",
   },
   achievementgrid: {
-    ecosystem_standing: "Ecosystem Standing"
-  }
+    ecosystem_standing: "Ecosystem Standing",
+  },
 };

@@ -4,7 +4,7 @@ export const misc = {
     v_ch_ng_t_i: "About Us",
     s_n_ph_m: "Products",
     i_t_c: "Partners",
-    b_t_u: "Get Started"
+    b_t_u: "Get Started",
   },
   premiumnavigation: {
     premium_member: "Premium Member",
@@ -16,7 +16,6 @@ export const misc = {
     social_commerce_2_0_1: "Social Commerce 2.0",
     h_sinh_th_i_social_commerce_t: "Next-gen Social Commerce Ecosystem",
     hello_wellnexus_vn: "wellnexusvn@gmail.com",
-    "84_901_234_567": "0918 876 586",
     q1_tp_hcm_vietnam: "286 Nguyễn Xuyển, Thanh Liệt, Hà Nội",
     wellnexus: "WellNexus",
     social_commerce_2_0: "Social Commerce 2.0",
@@ -32,7 +31,7 @@ export const misc = {
     ng_k_nh_n_tin_t_c_u: "Subscribe for early news & updates",
     email_placeholder: "Enter your email",
     ng_k: "Subscribe",
-    ng_k_1: "Subscribe"
+    ng_k_1: "Subscribe",
   },
   commandpalette: {
     agencyos_85_commands: "AgencyOS: 85 Commands",
@@ -41,7 +40,7 @@ export const misc = {
     error: "Error",
     executing_command: "Executing Command",
     no_commands_found: "No Commands Found",
-    to_open: "to open"
+    to_open: "to open",
   },
   dailyquesthub: {
     accumulated_today: "Accumulated Today",
@@ -52,7 +51,7 @@ export const misc = {
     grow_1: "GROW",
     mastered: "Mastered",
     start_quest: "Start Quest",
-    yield: "Yield"
+    yield: "Yield",
   },
   sharebuttons: {
     email: "Email",
@@ -60,10 +59,10 @@ export const misc = {
     telegram: "Telegram",
     zalo: "Zalo",
     hideQR: "Hide QR",
-    showQR: "Show QR"
+    showQR: "Show QR",
   },
   successanimation: {
-    success: "Success"
+    success: "Success",
   },
   subscription: {
     title: "Subscription Plans",
@@ -110,7 +109,7 @@ export const misc = {
     xp: "XP",
     fallback_advice: "Keep sharing your positivity! The sales will follow.",
     analyzing: "Analyzing sales data...",
-    get_ai_advice: "Get AI Advice"
+    get_ai_advice: "Get AI Advice",
   },
   sidebar: {
     wellnexus: "WellNexus",
@@ -122,7 +121,7 @@ export const misc = {
     get_ai_advice: "Get AI Advice",
     coachFallback: "Focus on sharing value today. Sales will follow!",
     getAiAdviceLabel: "Get personalized AI advice",
-    questList: "Quest list"
+    questList: "Quest list",
   },
   venture: {
     footer: {
@@ -133,9 +132,9 @@ export const misc = {
       tagline: "Building the future of health commerce",
       newsletter: {
         title: "Newsletter",
-        placeholder: "Enter your email"
+        placeholder: "Enter your email",
       },
-      copyright: "© 2026 WellNexus"
+      copyright: "© 2026 WellNexus",
     },
     market: {
       total_addressable_market: "Total Addressable Market",
@@ -148,23 +147,23 @@ export const misc = {
         vietnam: "Vietnam",
         thailand: "Thailand",
         indonesia: "Indonesia",
-        philippines: "Philippines"
+        philippines: "Philippines",
       },
       status: {
         active: "Active",
         expanding: "Expanding",
         protocol_init: "Protocol Init",
-        pending: "Pending"
-      }
+        pending: "Pending",
+      },
     },
     navigation: {
       venture_builder: "Venture Builder",
       menu: {
         portfolio: "Portfolio",
         deal: "Deal Room",
-        market: "Market"
+        market: "Market",
       },
-      apply_recruitment: "Apply / Recruitment"
+      apply_recruitment: "Apply / Recruitment",
     },
     portfolio: {
       val: "Valuation",
@@ -176,13 +175,13 @@ export const misc = {
       roles: {
         ceo: "CEO",
         cmo: "CMO",
-        cto: "CTO"
+        cto: "CTO",
       },
       regions: {
         hanoi: "Hanoi",
         hcmc: "HCMC",
-        danang: "Da Nang"
-      }
+        danang: "Da Nang",
+      },
     },
     hero: {
       badge: "Venture Builder",
@@ -194,8 +193,8 @@ export const misc = {
       stats: {
         valuation_label: "Valuation",
         nodes_label: "Active Nodes",
-        market_label: "Market Cap"
-      }
+        market_label: "Market Cap",
+      },
     },
     deal: {
       sectionBadge: "Deal Room",
@@ -205,28 +204,28 @@ export const misc = {
         category: "Capital Node",
         item1: "Seed funding available",
         item2: "Series A pipeline",
-        item3: "Revenue-based financing"
+        item3: "Revenue-based financing",
       },
       techStack: {
         category: "Tech Stack",
         item1: "AI-powered platform",
         item2: "Real-time analytics",
         item3: "Blockchain ledger",
-        item4: "Mobile-first design"
+        item4: "Mobile-first design",
       },
       ownership: {
         category: "Ownership",
         item1: "Equity participation",
         item2: "Revenue share model",
         item3: "Vesting schedule",
-        item4: "Board advisory"
-      }
-    }
+        item4: "Board advisory",
+      },
+    },
   },
   fraudbadge: {
     critical_risk: "Critical Risk",
     suspected: "Suspected",
-    verified: "Verified"
+    verified: "Verified",
   },
   profilepage: {
     personal_information: "Personal Information",
@@ -240,18 +239,17 @@ export const misc = {
     email_verified: "Email Verified",
     security_strength: "Security Strength",
     edit: "Edit",
-    joined: "Joined"
+    joined: "Joined",
   },
   agencyosdemo: {
     agencyos_integration: "AgencyOS Integration",
-    "85_ai_powered_automation_comm": "85 AI-powered automation commands",
     open_command_palette_k: "Open Command Palette (⌘K)",
     command_categories: "Command Categories",
     commands: "Commands",
     agent_kpis: "Agent KPIs",
     all_commands: "All Commands",
     execution_history: "Execution History",
-    no_commands_executed_yet_clic: "No commands executed yet. Click a command to start."
+    no_commands_executed_yet_clic: "No commands executed yet. Click a command to start.",
   },
   debuggerpage: {
     system_debugger: "System Debugger",
@@ -260,12 +258,12 @@ export const misc = {
     environment_window: "Environment Window",
     window_props: "Window Props",
     local_storage_keys: "Local Storage Keys",
-    empty: "Empty"
+    empty: "Empty",
   },
   testpage: {
     well_test_page: "Well Test Page",
     connectivity_check: "Connectivity Check",
     client_status: "Client Status",
-    active: "Active"
+    active: "Active",
   },
 };

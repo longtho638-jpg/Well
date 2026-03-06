@@ -4,7 +4,7 @@ export const agent = {
     startConversation: "Bắt đầu trò chuyện với {{name}}",
     messagePlaceholder: "Nhắn tin {{name}}...",
     errorTitle: "Lỗi Kết Nối",
-    errorMessage: "Đại lý gặp lỗi. Vui lòng thử lại."
+    errorMessage: "Đại lý gặp lỗi. Vui lòng thử lại.",
   },
   reasoning: {
     thought: "Suy nghĩ",
@@ -12,15 +12,15 @@ export const agent = {
     observation: "Quan sát",
     tool: "Công cụ",
     result: "Kết quả",
-    chainTitle: "Chuỗi Suy Luận AGI"
+    chainTitle: "Chuỗi Suy Luận AGI",
   },
   toolcall: {
     running: "Đang chạy",
     done: "Xong",
     error: "Lỗi",
     inputs: "Đầu vào",
-    output: "Đầu ra"
-  }
+    output: "Đầu ra",
+  },
 };
 
 export const agentDashboard = {
@@ -29,19 +29,18 @@ export const agentDashboard = {
   operational_telemetry: "Đo Từ Xa Vận Hành",
   inputs_data_streams: "Luồng Dữ Liệu Đầu Vào",
   active_node: "Node Đang Hoạt Động",
-  training: "Huấn Luyện"
+  training: "Huấn Luyện",
 };
 
 export const agentdetailsmodal = {
   intelligence_node_context: "Ngữ Cảnh Node Tình Báo",
-  enforcement: "Thực Thi"
+  enforcement: "Thực Thi",
 };
 
 export const agentgridcard = {
   node_id: "Node ID",
-  "0x": "0x",
   telemetry_stream_active: "Telemetry Stream Đang Hoạt Động",
-  neural_training: "Huấn Luyện Neural"
+  neural_training: "Huấn Luyện Neural",
 };
 
 export const agentdashboard = {
@@ -53,5 +52,5 @@ export const agentdashboard = {
   total_kpis: "Tổng KPI",
   total_actions: "Tổng Hành Động",
   performance: "Hiệu Suất",
-  action: "Hành Động"
+  action: "Hành Động",
 };

@@ -1,7 +1,6 @@
 export const herocard = {
   founders_pathway: "Lối Đi Nhà Sáng Lập",
   reach: "Tầm Ảnh Hưởng",
-  "100m_vnd_revenue": "Doanh Thu 100 Triệu",
   access_secured: "Truy Cập Được Bảo Vệ",
   achievement_logic: "Logic Thành Tựu",
   ecosystem_scaling: "Mở Rộng Hệ Sinh Thái",

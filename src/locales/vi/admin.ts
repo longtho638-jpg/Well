@@ -1,5 +1,5 @@
 export const admin = {
-admin: {
+  admin: {
     title: "Quản trị hệ thống",
     subtitle: "Cấu hình và quản lý toàn hệ thống",
     sidebarTitle: "Mission Control",
@@ -11,7 +11,7 @@ admin: {
       orders: "Đơn Hàng",
       products: "Sản Phẩm",
       strategy: "Chiến Lược",
-      auditLog: "Nhật Ký Kiểm Toán"
+      auditLog: "Nhật Ký Kiểm Toán",
     },
     adminLabel: "Admin",
     superUser: "Super User",
@@ -28,7 +28,7 @@ admin: {
       cms: "CMS",
       partners: "Partners",
       finance: "Finance",
-      strategy: "Strategy"
+      strategy: "Strategy",
     },
     overview: {
       title: "System Overview",
@@ -37,7 +37,7 @@ admin: {
       activePartners: "Active Partners",
       pendingPayouts: "Pending Payouts",
       systemHealth: "System Health",
-      chartTitle: "7-Day Revenue Trend"
+      chartTitle: "7-Day Revenue Trend",
     },
     cms: {
       title: "Content Management",
@@ -51,7 +51,7 @@ admin: {
       stat_content_banners: "Biểu ngữ",
       stat_live_banners: "Đang hiển thị",
       stat_broadcasts: "Phát sóng",
-      stat_total_templates: "Tổng mẫu"
+      stat_total_templates: "Tổng mẫu",
     },
     partners: {
       title: "Partner Operations",
@@ -62,8 +62,8 @@ admin: {
         rank: "Rank",
         sales: "Sales",
         status: "Status",
-        actions: "Actions"
-      }
+        actions: "Actions",
+      },
     },
     finance: {
       title: "Hoạt Động Tài Chính",
@@ -75,7 +75,7 @@ admin: {
       net: "Thực nhận:",
       approve: "Phê duyệt",
       reject: "Từ chối",
-      noRequests: "Hiện không có yêu cầu rút tiền nào"
+      noRequests: "Hiện không có yêu cầu rút tiền nào",
     },
     users: {
       title: "Quản lý người dùng",
@@ -89,8 +89,8 @@ admin: {
         ban: "Cấm",
         unban: "Mở cấm",
         verify: "Xác minh",
-        delete: "Xóa"
-      }
+        delete: "Xóa",
+      },
     },
     products: {
       title: "Quản lý sản phẩm",
@@ -98,7 +98,7 @@ admin: {
       editProduct: "Sửa sản phẩm",
       deleteProduct: "Xóa sản phẩm",
       activeProducts: "Đang bán",
-      draftProducts: "Nháp"
+      draftProducts: "Nháp",
     },
     policy: {
       title: "Hệ thống chính sách",
@@ -111,7 +111,7 @@ admin: {
       active: "Đang áp dụng",
       inactive: "Không áp dụng",
       createRule: "Tạo quy tắc",
-      editRule: "Sửa quy tắc"
+      editRule: "Sửa quy tắc",
     },
     settings: {
       title: "Cài đặt hệ thống",
@@ -119,7 +119,7 @@ admin: {
       security: "Bảo mật",
       notifications: "Thông báo",
       integrations: "Tích hợp",
-      backup: "Sao lưu"
+      backup: "Sao lưu",
     },
     mission: "Mission",
     analyze_all: "Analyze All",
@@ -143,7 +143,7 @@ admin: {
     partner_recon_crm: "Partner Recon CRM",
     precision_orchestration_of_net: "Precision Orchestration of Network",
     rank_intelligence: "Rank Intelligence",
-    mission_control: "Trung Tâm Điều Khiển"
+    mission_control: "Trung Tâm Điều Khiển",
   },
   cms: {
     content_orchestrator: "Điều Phối Nội Dung",
@@ -162,21 +162,16 @@ admin: {
     stat_content_banners: "Biểu ngữ",
     stat_live_banners: "Đang hiển thị",
     stat_broadcasts: "Phát sóng",
-    stat_total_templates: "Tổng mẫu"
+    stat_total_templates: "Tổng mẫu",
   },
   partnerfilters: {
     search_placeholder: "Tìm danh tính theo tên, email hoặc UID...",
     filter_all: "Tất Cả Nút Định Danh",
     filter_active: "Trạng Thái Hoạt Động",
     filter_banned: "Trạng Thái Bị Cấm",
-    filter_dormant: "Trạng Thái Không Hoạt Động"
+    filter_dormant: "Trạng Thái Không Hoạt Động",
   },
   adminsecuritysettings: {
-    "100": "100",
-    "15_ph_t": "15 phút",
-    "1_gi": "1 giờ",
-    "2_gi": "2 giờ",
-    "30_ph_t": "30 phút",
     b_o_m_t_t_i_kho_n: "Bảo mật tài khoản",
     b_t_2fa_t_ng_i_m: "Bật 2FA tăng điểm",
     b_t_2fa_b_o_v: "Bật 2FA Bảo Vệ",
@@ -197,7 +192,7 @@ admin: {
     th_i_gian_phi_n: "Thời gian phiên",
     thi_t_l_p_2fa: "Thiết lập 2FA",
     x_c_nh_n: "Xác nhận",
-    x_c_th_c_2_y_u_t: "Xác thực 2 yếu tố"
+    x_c_th_c_2_y_u_t: "Xác thực 2 yếu tố",
   },
   auditlog: {
     all_administrators: "Tất Cả Quản Trị Viên",
@@ -220,14 +215,14 @@ admin: {
     temporal_signature: "Chữ Ký Thời Gian",
     timeline: "Dòng Thời Gian",
     tracing: "Truy Vết",
-    utc_synchronization_active: "Đồng Bộ UTC Hoạt Động"
+    utc_synchronization_active: "Đồng Bộ UTC Hoạt Động",
   },
   bulkactionsbar: {
     activate: "Kích Hoạt",
     ban: "Cấm",
     export_csv: "Xuất CSV",
     partner: "Đối Tác",
-    selected: "Đã Chọn"
+    selected: "Đã Chọn",
   },
   policyEngine: {
     title: "Policy Engine",
@@ -237,7 +232,7 @@ admin: {
     sync: "Đồng bộ:",
     projectionSimulator: "Mô phỏng dự báo",
     realTime: "Thời gian thực",
-    policyChangesAreCryptographicallySigned: "Thay đổi chính sách được ký bảo mật"
+    policyChangesAreCryptographicallySigned: "Thay đổi chính sách được ký bảo mật",
   },
   debuggerpage: {
     empty: "Empty",
@@ -246,13 +241,13 @@ admin: {
     system_debugger: "System Debugger",
     v_debug_1_0: "v.Debug 1.0",
     window_props: "Window Props",
-    zustand_store_state: "Zustand Store State"
+    zustand_store_state: "Zustand Store State",
   },
   testpage: {
     active: "Active",
     client_status: "Client Status",
     connectivity_check: "Connectivity Check",
-    well_test_page: "Well Test Page"
+    well_test_page: "Well Test Page",
   },
   simulationpanel: {
     active_distribution_node: "Nút Phân Phối Hoạt Động",
@@ -267,12 +262,12 @@ admin: {
     strategic_forecast: "Dự Báo Chiến Lược",
     strategic_candidates: "Ứng Viên Chiến Lược",
     projected_saas_revenue: "Doanh Thu SaaS Dự Kiến",
-    partners: "Đối Tác"
+    partners: "Đối Tác",
   },
   fraudbadge: {
     critical_risk: "Critical Risk",
     suspected: "Suspected",
-    verified: "Verified"
+    verified: "Verified",
   },
   finance: {
     treasury_control: "Kiểm Soát Ngân Quỹ",
@@ -285,7 +280,7 @@ admin: {
     security_batch_commit: "Cam Kết Lô Bảo Mật",
     verifying_digital_ledgers: "Đang xác minh sổ cái số...",
     ledger_synchronized: "Sổ Cái Đã Đồng Bộ",
-    no_items_in_the_current_filter: "Không có mục nào trong bộ lọc hiện tại"
+    no_items_in_the_current_filter: "Không có mục nào trong bộ lọc hiện tại",
   },
   ordermanagement: {
     cashflow_hub: "Trung Tâm Luồng Tiền",
@@ -297,7 +292,7 @@ admin: {
     operational_risk_protocol: "Giao Thức Rủi Ro Hoạt Động",
     strict_compliance_rule: "Quy Tắc Tuân Thủ Nghiêm Ngặt",
     never_approve: "Không bao giờ duyệt",
-    without_verified_bank_clearanc: "khi chưa có xác nhận ngân hàng"
+    without_verified_bank_clearanc: "khi chưa có xác nhận ngân hàng",
   },
   overview: {
     risk: "Rủi Ro",
@@ -314,11 +309,11 @@ admin: {
     ai_agent_has_autonomously_reso: "Đại lý AI đã tự động giải quyết tất cả các mục",
     live_pulse: "Nhịp Đập Trực Tiếp",
     growth_trajectory: "Quỹ Đạo Tăng Trưởng",
-    ecosystem_scale: "Quy Mô Hệ Sinh Thái"
+    ecosystem_scale: "Quy Mô Hệ Sinh Thái",
   },
   partners: {
     partner_recon_crm: "CRM Đối Soát Đối Tác",
     precision_orchestration_of_net: "Điều Phối Chính Xác Mạng Lưới",
-    rank_intelligence: "Thông Minh Cấp Bậc"
-  }
+    rank_intelligence: "Thông Minh Cấp Bậc",
+  },
 };

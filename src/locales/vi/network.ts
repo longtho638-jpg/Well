@@ -1,7 +1,7 @@
 export const network = {
   network: {
-    export_json: 'Xuất JSON',
-    export_csv: 'Xuất CSV',
+    export_json: "Xuất JSON",
+    export_csv: "Xuất CSV",
     title: "Mạng lưới của tôi",
     totalMembers: "Tổng thành viên",
     activeMembers: "Đang hoạt động",
@@ -19,7 +19,7 @@ export const network = {
     invite_member: "Mời Thành Viên",
     manage_team_subtitle: "Quản lý và trực quan hóa cấu trúc đội nhóm",
     empty_title: "Không có dữ liệu mạng lưới",
-    empty_subtitle: "Hãy bắt đầu mời thành viên để xây dựng đội nhóm!"
+    empty_subtitle: "Hãy bắt đầu mời thành viên để xây dựng đội nhóm!",
   },
   liveconsole: {
     live_operations_node_agent: "Đại Lý Vận Hành Trực Tiếp",
@@ -29,6 +29,6 @@ export const network = {
     wellnexus_bee: "WellNexus Bee",
     bee_agent_core_v4_2_0_stable: "Bee Agent Core v4.2.0 Stable",
     tx: "TX",
-    bps: "BPS"
-  }
+    bps: "BPS",
+  },
 };

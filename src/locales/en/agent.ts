@@ -4,7 +4,7 @@ export const agent = {
     startConversation: "Start a conversation with {{name}}",
     messagePlaceholder: "Message {{name}}...",
     errorTitle: "Connection Error",
-    errorMessage: "The agent encountered an error. Please try again."
+    errorMessage: "The agent encountered an error. Please try again.",
   },
   reasoning: {
     thought: "Thought",
@@ -12,15 +12,15 @@ export const agent = {
     observation: "Observation",
     tool: "Tool",
     result: "Result",
-    chainTitle: "AGI Reasoning Chain"
+    chainTitle: "AGI Reasoning Chain",
   },
   toolcall: {
     running: "Running",
     done: "Done",
     error: "Error",
     inputs: "Inputs",
-    output: "Output"
-  }
+    output: "Output",
+  },
 };
 
 export const agentDashboard = {
@@ -29,19 +29,18 @@ export const agentDashboard = {
   operational_telemetry: "Operational Telemetry",
   inputs_data_streams: "Inputs / Data Streams",
   active_node: "Active Node",
-  training: "Training"
+  training: "Training",
 };
 
 export const agentdetailsmodal = {
   intelligence_node_context: "Intelligence Node Context",
-  enforcement: "Enforcement"
+  enforcement: "Enforcement",
 };
 
 export const agentgridcard = {
   node_id: "Node ID",
-  "0x": "0x",
   telemetry_stream_active: "Telemetry Stream Active",
-  neural_training: "Neural Training"
+  neural_training: "Neural Training",
 };
 
 export const agentdashboard = {
@@ -53,5 +52,5 @@ export const agentdashboard = {
   total_kpis: "Total KPIs",
   total_actions: "Total Actions",
   performance: "Performance",
-  action: "Action"
+  action: "Action",
 };

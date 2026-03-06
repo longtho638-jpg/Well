@@ -7,7 +7,7 @@ export const referral = {
       overview: "Overview",
       referrals: "List",
       network: "Network Topology",
-      propagation: "Propagation Analysis"
+      propagation: "Propagation Analysis",
     },
     stats: {
       totalReferrals: "Total Referrals",
@@ -18,7 +18,7 @@ export const referral = {
       totalRevenue: "Total Revenue",
       totalBonus: "Total Bonus",
       monthlyReferrals: "Monthly Referrals",
-      growth_spike: "Growth Spike 🎉"
+      growth_spike: "Growth Spike 🎉",
     },
     link: {
       title: "Your Referral Link",
@@ -34,14 +34,14 @@ export const referral = {
       more: "More",
       qrCode: "QR Code",
       generate_visual_key: "Generate Visual Key",
-      dismiss_visual_key: "Dismiss Visual Key"
+      dismiss_visual_key: "Dismiss Visual Key",
     },
     qrcode: {
       visual_id_key: "Visual ID Key",
       wellnexus_network: "WELLNEXUS NETWORK",
       scanning_initiates_sync: "Scanning initiates secure identity sync",
       commit_to_local_storage: "Save to Local Storage",
-      recommended_for_high_conversio: "Recommended for high-conversion physical touchpoints"
+      recommended_for_high_conversio: "Recommended for high-conversion physical touchpoints",
     },
     chart: {
       title: "Referral Trends",
@@ -50,7 +50,7 @@ export const referral = {
       propagation_velocity: "Propagation Velocity",
       growth_yield_trajectory: "Growth & Yield Trajectory",
       nodes: "Nodes",
-      yield: "Yield"
+      yield: "Yield",
     },
     network: {
       export_json: "Export JSON",
@@ -67,8 +67,8 @@ export const referral = {
         registered: "Identity Verified",
         pending: "Handshake Pending",
         expired: "Link Disconnected",
-        unknown: "Unknown"
-      }
+        unknown: "Unknown",
+      },
     },
     list: {
       title: "Referral List",
@@ -82,8 +82,8 @@ export const referral = {
         pending: "Pending",
         registered: "Registered",
         active: "Active",
-        expired: "Expired"
-      }
+        expired: "Expired",
+      },
     },
     rewards: {
       title: "Referral Rewards",
@@ -93,38 +93,38 @@ export const referral = {
       description: {
         signup: "Earned when the referred person registers",
         firstPurchase: "Earned when the referred person makes first purchase",
-        milestone: "Earned when reaching sales milestones"
+        milestone: "Earned when reaching sales milestones",
       },
       yield_mechanics: "Yield Mechanics",
       incentive_algorithm: "Incentive Algorithm",
       activation: {
         title: "Activation Milestone",
         desc: "Instant liquidity on successful identity sync",
-        sub: "per node"
+        sub: "per node",
       },
       revenue: {
         title: "Revenue Override",
         desc: "Secondary yield from ecosystem commerce",
-        sub: "override"
+        sub: "override",
       },
       expansion: {
         title: "Expansion Bonus",
         desc: "Achieved when 10 active sentinel nodes reached",
-        sub: "one-time"
-      }
+        sub: "one-time",
+      },
     },
     analytics: {
       propagation: "Propagation Analysis",
-      node_topology: "Node Topology"
+      node_topology: "Node Topology",
     },
     hero: {
       accumulated_revenue: "Accumulated Revenue",
-      this_month: "This Month"
-    }
+      this_month: "This Month",
+    },
   },
   referralhero: {
     accumulated_revenue: "Accumulated Revenue",
-    this_month: "This Month"
+    this_month: "This Month",
   },
   referralqrcode: {
     visual_id_key: "Visual ID Key",
@@ -132,11 +132,11 @@ export const referral = {
     scanning_initiates_sync: "Scanning initiates sync",
     commit_to_local_storage: "Commit to Local Storage",
     recommended_for_high_conversio: "Recommended for high conversion",
-    qr_code_alt: "Referral QR Code"
+    qr_code_alt: "Referral QR Code",
   },
   referraltrendchart: {
     propagation_velocity: "Propagation Velocity",
-    growth_yield_trajectory: "Growth & Yield Trajectory"
+    growth_yield_trajectory: "Growth & Yield Trajectory",
   },
   referralnetworkview: {
     f1_sentinel_nodes: "F1 Sentinel Nodes",
@@ -146,14 +146,14 @@ export const referral = {
     nodes: "Nodes",
     nodes_1: "Nodes",
     tier_1_tier_2_visualization: "Tier 1 & Tier 2 Visualization",
-    yield: "Yield"
+    yield: "Yield",
   },
   referralrewardslist: {
     incentive_algorithm: "Incentive Algorithm",
-    yield_mechanics: "Yield Mechanics"
+    yield_mechanics: "Yield Mechanics",
   },
   affiliatelinksection: {
-    "4_9": "4.9%"
+
   },
   networktree: {
     add_member: "Add Member",
@@ -179,8 +179,8 @@ export const referral = {
     password_placeholder: "••••••••",
     toast: {
       added_success: "Added {name} to the team!",
-      add_failed: "Failed to add member"
-    }
+      add_failed: "Failed to add member",
+    },
   },
   inviteflowmodal: {
     g_i: "Send",
@@ -189,10 +189,10 @@ export const referral = {
     l_i_m_i_c_a_b_n: "Your Invitation",
     m_i_th_m_th_nh_vi_n: "Invite More Members",
     nh_p_email_ng_nghi_p: "Enter colleague's email",
-    x_c_nh_n_l_i_m_i: "Confirm Invitation"
+    x_c_nh_n_l_i_m_i: "Confirm Invitation",
   },
   achievementgrid: {
-    ecosystem_standing: "Ecosystem Standing"
+    ecosystem_standing: "Ecosystem Standing",
   },
   dailyquesthub: {
     grow: "GROW",
@@ -203,6 +203,6 @@ export const referral = {
     completed_1: "Completed",
     yield: "Yield",
     grow_1: "GROW",
-    accumulated_today: "Accumulated Today"
-  }
+    accumulated_today: "Accumulated Today",
+  },
 };

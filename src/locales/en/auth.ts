@@ -14,7 +14,7 @@ export const auth = {
       demo: "Demo Sign In",
       backToHome: "Back to WellNexus home",
       showPassword: "Show password",
-      hidePassword: "Hide password"
+      hidePassword: "Hide password",
     },
     signup: {
       title: "Create Account",
@@ -27,7 +27,7 @@ export const auth = {
       agreeToTerms: "I agree to Terms",
       signupButton: "Create Account",
       haveAccount: "Already have account?",
-      signIn: "Sign In"
+      signIn: "Sign In",
     },
     register: {
       title: "Register",
@@ -50,12 +50,12 @@ export const auth = {
       login: "Log In",
       placeholders: {
         name: "Enter your full name",
-        email: "Enter your email"
+        email: "Enter your email",
       },
       checkEmail: "Check Your Email!",
       emailSentMessage: "We've sent a confirmation link to {{email}}. Click the link to activate your account.",
       didntReceive: "Didn't receive it? Check your spam folder or",
-      resendEmail: "resend confirmation email"
+      resendEmail: "resend confirmation email",
     },
     demo: "Demo",
     password: {
@@ -63,19 +63,19 @@ export const auth = {
         weak: "Weak",
         fair: "Fair",
         good: "Good",
-        strong: "Strong"
+        strong: "Strong",
       },
       requirements: {
         length: "At least 8 characters",
         uppercase: "One uppercase letter",
         lowercase: "One lowercase letter",
         number: "One number",
-        special: "One special character"
-      }
+        special: "One special character",
+      },
     },
     confirmEmail: {
       invalidLink: "Invalid or expired confirmation link",
-      unexpectedError: "An unexpected error occurred"
+      unexpectedError: "An unexpected error occurred",
     },
     forgotPassword: {
       errorMessage: "Failed to send reset email. Please try again.",
@@ -84,7 +84,7 @@ export const auth = {
       successMessage: "Reset link sent! Check your email.",
       backToLogin: "Back to Login",
       emailPlaceholder: "Enter your email",
-      submitButton: "Send Reset Link"
+      submitButton: "Send Reset Link",
     },
     resetPassword: {
       passwordMismatch: "Passwords do not match",
@@ -96,11 +96,11 @@ export const auth = {
       successMessage: "Password reset successfully!",
       newPasswordPlaceholder: "New password",
       confirmPasswordPlaceholder: "Confirm new password",
-      submitButton: "Reset Password"
-    }
+      submitButton: "Reset Password",
+    },
   },
   signup: {
-    early_access_2_0: "Early Access 2.0"
+    early_access_2_0: "Early Access 2.0",
   },
   signupform: {
     email_business: "Business Email",
@@ -108,7 +108,7 @@ export const auth = {
     m_t_kh_u: "Password",
     ng_k_ngay: "Register Now",
     processing_account: "Processing account",
-    x_c_nh_n: "Confirm"
+    x_c_nh_n: "Confirm",
   },
   profilepage: {
     personal_information: "Personal Information",
@@ -122,7 +122,7 @@ export const auth = {
     email_verified: "Email Verified",
     security_strength: "Security Strength",
     edit: "Edit",
-    joined: "Joined"
+    joined: "Joined",
   },
   onboardingquest: {
     the_coach: "The Coach",
@@ -133,7 +133,7 @@ export const auth = {
     stuck_ask_your_ai_coach_for_a: "Stuck? Ask your AI Coach for advice",
     fallback_advice: "Keep sharing your positivity! The sales will follow.",
     analyzing: "Analyzing sales data...",
-    get_ai_advice: "Get AI Advice"
+    get_ai_advice: "Get AI Advice",
   },
   sessionmanager: {
     active_sessions: "Active Sessions",
@@ -146,7 +146,7 @@ export const auth = {
     if_you_don_t_recognize_a_sessi: "If you don't recognize a session, revoke it immediately.",
     revoked_success: "Session revoked successfully",
     revoked_all_success: "All other sessions revoked",
-    sign_out_all_others: "Sign out all other devices"
+    sign_out_all_others: "Sign out all other devices",
   },
   loginactivitylog: {
     login_activity: "Login Activity",
@@ -161,6 +161,6 @@ export const auth = {
     no_login_attempts_found: "No login attempts found",
     export_json: "Export JSON",
     export_csv: "Export CSV",
-    export_activity_log: "Export activity log"
-  }
+    export_activity_log: "Export activity log",
+  },
 };
