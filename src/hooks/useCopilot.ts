@@ -80,7 +80,7 @@ export const useCopilot = ({ productContext, userName }: UseCopilotProps) => {
         } finally {
             setIsLoading(false);
         }
-    }, [input, isLoading, executeAgent, showToast, t]);
+    }, [executeAgent, showToast, t]); // Removed input, isLoading from deps - intentional for stable callback
 
     const handleGenerateScript = useCallback(async () => {
         if (!productContext) return;

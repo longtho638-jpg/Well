@@ -22,8 +22,17 @@ export function useMarketplace() {
     const cartItemCount = useCartStore(state => state.getItemCount());
 
     const [searchTerm, setSearchTerm] = useState('');
+    const [debouncedSearchTerm, setDebouncedSearchTerm] = useState('');
     const [aiSuggestion, setAiSuggestion] = useState<{ text: string; productIds: string[] } | null>(null);
     const [loadingAi, setLoadingAi] = useState(false);
+
+    // Debounce search to prevent filter re-computation on every keystroke
+    useEffect(() => {
+        const timer = setTimeout(() => {
+            setDebouncedSearchTerm(searchTerm);
+        }, 300);
+        return () => clearTimeout(timer);
+    }, [searchTerm]);
 
     // UI State
     const [showRedemption, setShowRedemption] = useState(false);
@@ -34,10 +43,10 @@ export function useMarketplace() {
     const [priceRange, setPriceRange] = useState<PriceRange>('all');
     const [category, setCategory] = useState<ProductCategory>('all');
 
-    // Derived: Filtered Products
+    // Derived: Filtered Products - uses debounced search term
     const filteredProducts = useMemo(() => {
         return products.filter(p => {
-            const matchesSearch = p.name.toLowerCase().includes(searchTerm.toLowerCase());
+            const matchesSearch = p.name.toLowerCase().includes(debouncedSearchTerm.toLowerCase());
 
             let matchesPrice = true;
             if (priceRange === 'low') matchesPrice = p.price < 5000000;
@@ -51,7 +60,7 @@ export function useMarketplace() {
 
             return matchesSearch && matchesPrice && matchesCat;
         });
-    }, [products, searchTerm, priceRange, category]);
+    }, [products, debouncedSearchTerm, priceRange, category]);
 
     // AI Logic
     useEffect(() => {

@@ -142,7 +142,7 @@ serve(async (req) => {
       ...(replyTo && { reply_to: replyTo }),
     };
 
-    console.log('[SendEmail] Sending email to:', to, 'Template:', templateType || 'custom');
+    console.warn('[SendEmail] Sending email template: ' + templateType);
 
     const response = await fetch(RESEND_API_ENDPOINT, {
       method: 'POST',
@@ -166,7 +166,7 @@ serve(async (req) => {
       );
     }
 
-    console.log('[SendEmail] Email sent successfully:', responseData.id);
+    console.warn('[SendEmail] Email sent: ' + responseData.id);
 
     return new Response(
       JSON.stringify({

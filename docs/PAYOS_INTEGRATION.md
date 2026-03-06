@@ -76,4 +76,31 @@ PAYOS_WEBHOOK_URL=           # Your webhook endpoint
 
 ---
 
-**Status:** ⏳ Waiting for API credentials
+**Status:** ✅ IMPLEMENTED
+
+## Payment Providers
+
+### Stripe Integration
+- **Webhook Endpoint:** `/functions/v1/stripe-webhook`
+- **Events:** subscription.created/updated/deleted, checkout.session.completed, invoice.payment_succeeded/failed
+- **Security:** Stripe SDK signature verification
+
+### Polar.sh Integration
+- **Webhook Endpoint:** `/functions/v1/polar-webhook`
+- **Events:** subscription.activated/canceled/expired, payment.succeeded/failed
+- **Security:** HMAC-SHA256 + 5-min timestamp validation
+
+### PayOS Integration
+- **Webhook Endpoint:** `/functions/v1/payos-webhook`
+- **Events:** payment status updates (code 00=paid, 01=canceled)
+- **Security:** Custom webhook secret header + HMAC checksum
+
+## License Provisioning
+
+All three providers auto-provision RaaS licenses on successful payment:
+- License key generated with tier-based format
+- Stored in `raas_licenses` table
+- Email notification sent with license key
+- Audit logging for compliance
+
+See `supabase/functions/_shared/raas-license-provision.ts` for implementation.

@@ -27,8 +27,8 @@ export const ParticleBackground: React.FC = () => {
     const colors = ['rgba(0, 137, 123, 0.5)', 'rgba(159, 122, 234, 0.5)', 'rgba(255, 107, 88, 0.5)'];
     let isMounted = true;
 
-    // Create particles
-    for (let i = 0; i < 80; i++) {
+    // Create particles - Optimized from 80 to 30 for performance
+    for (let i = 0; i < 30; i++) {
       particles.push({
         x: Math.random() * canvas.width,
         y: Math.random() * canvas.height,

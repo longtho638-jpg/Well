@@ -70,6 +70,24 @@ WellNexus là nền tảng sức khỏe RaaS (Retail-as-a-Service) sử dụng h
 - Biểu đồ hiệu suất và thống kê
 - Công cụ quản lý sản phẩm và người dùng
 
+### 6. Hệ Thống Thanh Toán & License (RaaS)
+- Stripe webhook integration (customer subscriptions, invoices)
+- Polar.sh webhook integration (subscriptions, payments)
+- PayOS webhook pipeline (Vietnamese payments, 0% fee)
+- Auto license provisioning on payment
+- License revocation on cancel/expire
+- Audit logging for all payment events
+
+### 7. Hệ ThốngUsage Metering (AI Tracking & Quotas)
+- Real-time usage tracking via `UsageMeter` SDK
+- AI inference tracking: model, provider, prompt/completion tokens
+- Agent execution tracking: Planner, Researcher, Developer types
+- TimescaleDB optimization with hypertables (day-based chunks)
+- Continuous aggregations (hourly, daily materialized views)
+- Real-time quota enforcement via Edge Functions
+- 5-tier limits: free, basic, premium, enterprise, master (unlimited)
+- Usage analytics API with current usage, quotas, and breakdowns
+
 ## Luồng Dữ Liệu
 
 ### Luồng Giao Dịch Chính
@@ -88,6 +106,38 @@ WellNexus là nền tảng sức khỏe RaaS (Retail-as-a-Service) sử dụng h
 3. Tính toán hoa hồng theo tỷ lệ Bee 2.0
 4. Ghi nhận vào tài khoản tương ứng
 5. Cập nhật bảng xếp hạng và thông báo
+```
+
+### Luồng Usage Metering & Quota Enforcement
+```
+1. Học viên thực hiện request qua SDK (UsageMeter)
+2. Track metric: api_call, tokens, model_inference, agent_execution
+3. Insert vào usage_records table với metadata
+4. Edge Function check-quota kiểm tra real-time:
+   - Tính usage hiện tại (今天 UTC midnight)
+   - Compare với tier limit
+   - Return 429 nếu vượt quota
+   - Warning ở 80%, 90%
+5. TimescaleDB tự động:
+   - Chunk data theo ngày
+   - Aggregate hourly/daily
+   - Compress sau 7 ngày
+   - Retain 90 ngày
+```
+
+### Luồng Thanh Toán & License (RaaS)
+```
+1. Người dùng chọn gói subscription
+2. thanh toán qua Stripe/Polar/PayOS
+3. Webhook nhận notification → verify signature
+4. License auto-provisioning:
+   - Generate license key (tier-based)
+   - Store in raas_licenses table
+   - Send email với license key
+5. subscription activated
+   - Update user_subscriptions table
+   - Set period_end date
+   - Fire-and-forget email notification
 ```
 
 ## Hướng Dẫn Phát Triển

@@ -33,15 +33,15 @@ export class DLQScheduledRetryJob {
    */
   async getItemsReadyForRetry(limit = 50): Promise<Array<{ id: string; event_type: string; order_code: number; raw_payload: Record<string, unknown>; failure_count: number }>> {
     const now = new Date().toISOString();
-    
-    // Calculate delay threshold: baseDelay * 2^(failure_count - 1)
+
+    // Fetch all pending items and filter by exponential backoff at client side
+    // (Supabase Like interface doesn't have lte/gte comparison operators)
     const { data, error } = await this.supabase
       .from('dead_letter_queue')
       .select('id, event_type, order_code, raw_payload, failure_count, last_error_at')
       .eq('status', 'pending')
-      .select('failure_count', '<=', this.config.maxRetries)
       .order('created_at', { ascending: true })
-      .limit(limit);
+      .limit(limit * 2); // Fetch more to have enough after filtering
 
     if (error) throw error;
 

@@ -379,6 +379,120 @@ await monthlyBillingSync();
 
 ---
 
+## 📈 Real-time Analytics API
+
+> **RaaS Feature:** Real-time usage analytics dashboard with hourly trends, top users, and trend data.
+
+### Edge Function: Usage Analytics
+
+```http
+GET /functions/v1/usage-analytics
+  ?org_id=<uuid>
+  &period=day|week|month
+  &feature=<optional-filter>
+  &start_date=<optional>
+  &end_date=<optional>
+```
+
+**Query Parameters:**
+- `org_id` (required): Organization UUID
+- `period` (optional): Time period - `day`, `week`, or `month` (default: `day`)
+- `feature` (optional): Filter by feature name (e.g., `api_call`, `tokens`)
+- `start_date` (optional): Start date in ISO format (overrides `period`)
+- `end_date` (optional): End date in ISO format
+
+**Response:**
+```json
+{
+  "summary": {
+    "total_usage": 1250,
+    "total_events": 45,
+    "unique_users": 8,
+    "period": {
+      "start": "2026-03-05T00:00:00.000Z",
+      "end": "2026-03-06T23:59:59.999Z"
+    }
+  },
+  "by_feature": [
+    {
+      "feature": "api_call",
+      "total": 800,
+      "count": 30
+    },
+    {
+      "feature": "tokens",
+      "total": 450,
+      "count": 15
+    }
+  ],
+  "by_hour": [
+    {
+      "hour": 10,
+      "usage": 300
+    },
+    {
+      "hour": 11,
+      "usage": 450
+    }
+  ],
+  "top_users": [
+    {
+      "user_id": "user-1",
+      "total_usage": 600
+    },
+    {
+      "user_id": "user-2",
+      "total_usage": 450
+    }
+  ],
+  "trend": [
+    {
+      "date": "2026-03-05",
+      "usage": 800
+    },
+    {
+      "date": "2026-03-06",
+      "usage": 450
+    }
+  ],
+  "metadata": {
+    "org_id": "xxx",
+    "feature_filter": null,
+    "generated_at": "2026-03-06T..."
+  }
+}
+```
+
+**Response Fields:**
+- `summary.total_usage`: Total quantity used
+- `summary.total_events`: Number of usage events
+- `summary.unique_users`: Count of unique users
+- `by_feature`: Usage breakdown by feature name
+- `by_hour`: Hourly usage distribution (0-23)
+- `top_users`: Top 10 users by total usage
+- `trend`: Daily usage over the period
+- `metadata`: Generation info and filters
+
+**Usage Example (Frontend):**
+```typescript
+import { createClient } from '@supabase/supabase-js';
+
+const supabase = createClient(
+  import.meta.env.VITE_SUPABASE_URL,
+  import.meta.env.VITE_SUPABASE_ANON_KEY
+);
+
+async function fetchAnalytics(orgId: string) {
+  const { data, error } = await supabase.functions.invoke('usage-analytics', {
+    body: {},
+    query: { org_id: orgId, period: 'week' },
+  });
+  return data;
+}
+```
+
+---
+
 ## 🏢 Organizations API
 
 ## 🏢 Organizations API

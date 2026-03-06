@@ -11,12 +11,12 @@ interface AgentGridCardProps {
     getKPIs: (agentName: string) => AgentKPI[];
 }
 
-export const AgentGridCard: React.FC<AgentGridCardProps> = ({ agent, isSelected, onClick, getKPIs }) => {
+export const AgentGridCard: React.FC<AgentGridCardProps> = React.memo(({ agent, isSelected, onClick, getKPIs }) => {
     const { t } = useTranslation();
     const kpis = getKPIs(agent.agent_name);
     const isActive = agent.agent_name === 'The Bee' || agent.agent_name === 'Project Manager';
 
-    // Fake Training Progress for Aura effect
+    // Fake Training Progress for Aura effect - memoized to prevent re-computation
     const trainingProgress = useMemo(() => Math.floor(Math.random() * 30) + 60, []);
 
     return (
@@ -110,4 +110,8 @@ export const AgentGridCard: React.FC<AgentGridCardProps> = ({ agent, isSelected,
             </div>
         </motion.div>
     );
-};
+}, (prevProps, nextProps) => {
+    // Only re-render if agent data changes
+    return prevProps.agent.agent_name === nextProps.agent.agent_name &&
+           prevProps.isSelected === nextProps.isSelected;
+});

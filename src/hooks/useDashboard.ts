@@ -36,7 +36,7 @@ export function useDashboard() {
         available: user.shopBalance,
         pending: user.estimatedBonus || 0,
         teamVolume: user.teamVolume || 0,
-    }), [user]);
+    }), [user.shopBalance, user.estimatedBonus, user.teamVolume]); // Removed entire user object dep
 
     const revenueBreakdown = useMemo(() => {
         if (!transactions || transactions.length === 0) {

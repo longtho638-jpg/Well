@@ -2,6 +2,7 @@ import { serve } from 'https://deno.land/std@0.168.0/http/server.ts'
 import { handlePayOSWebhook, computeSubscriptionPeriodEnd, createAdminClient } from '../_shared/vibe-payos/mod.ts'
 import type { WebhookCallbacks, WebhookOrderRecord, WebhookSubscriptionIntent } from '../_shared/vibe-payos/mod.ts'
 import type { PayOSWebhookData } from '../_shared/vibe-payos/mod.ts'
+import { provisionLicenseOnPayment } from '../_shared/raas-license-provision.ts'
 
 interface OrderItem {
   product_name: string
@@ -83,6 +84,38 @@ serve(async (req) => {
         await callbacks.logAudit(intent.user_id, 'SUBSCRIPTION_ACTIVATED', {
           planId: intent.plan_id, billingCycle: intent.billing_cycle, periodEnd: periodEndIso,
         }, 'success')
+
+        // ════════════════════════════════════════════════════════════
+        // ROIaaS PHASE 3: Auto-provision license on subscription
+        // ════════════════════════════════════════════════════════════
+        try {
+          const provisionResult = await provisionLicenseOnPayment(
+            {
+              userId: intent.user_id,
+              planId: intent.plan_id,
+              billingCycle: intent.billing_cycle as 'monthly' | 'yearly',
+              paymentAmount: data.amount,
+              paymentId: String(data.orderCode),
+              orgId: intent.org_id ?? undefined,
+            },
+            supabase
+          )
+
+          if (provisionResult.success) {
+            await callbacks.logAudit(intent.user_id, 'LICENSE_PROVISIONED', {
+              licenseNonce: provisionResult.license?.nonce,
+              tier: provisionResult.license?.tier,
+            }, 'success')
+          } else {
+            await callbacks.logAudit(intent.user_id, 'LICENSE_PROVISION_FAILED', {
+              error: provisionResult.error,
+            }, 'failure')
+          }
+        } catch (err) {
+          await callbacks.logAudit(intent.user_id, 'LICENSE_PROVISION_ERROR', {
+            error: String(err),
+          }, 'failure')
+        }
       }
     },
 
