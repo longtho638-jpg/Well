@@ -5,6 +5,7 @@
 
 import { captureException } from './performance';
 import { csrfToken } from './security-csrf-token-generator-and-session-store';
+import { UsageMeter } from '@/lib/usage-metering';
 
 // ============================================================================
 // API CONFIGURATION
@@ -14,6 +15,7 @@ interface ApiConfig {
     baseUrl: string;
     timeout: number;
     headers: Record<string, string>;
+    usageMeter?: UsageMeter;
 }
 
 const defaultConfig: ApiConfig = {
@@ -61,7 +63,11 @@ class ApiClient {
         this.authToken = token;
     }
 
-    private getHeaders(method: string): Record<string, string> {
+    setUsageMeter(meter: UsageMeter): void {
+        this.config.usageMeter = meter;
+    }
+
+    protected getHeaders(method: string): Record<string, string> {
         const headers = { ...this.config.headers };
         if (this.authToken) {
             headers['Authorization'] = `Bearer ${this.authToken}`;
@@ -80,6 +86,7 @@ class ApiClient {
     ): Promise<ApiResult<T>> {
         const controller = new AbortController();
         const timeoutId = setTimeout(() => controller.abort(), this.config.timeout);
+        const startTime = Date.now();
 
         try {
             const response = await fetch(`${this.config.baseUrl}${endpoint}`, {
@@ -90,10 +97,20 @@ class ApiClient {
             });
 
             clearTimeout(timeoutId);
+            const duration = Date.now() - startTime;
 
             const data = await response.json();
 
             if (!response.ok) {
+                // Track failed API call
+                if (this.config.usageMeter) {
+                    await this.config.usageMeter.trackApiCall(endpoint, method, {
+                        statusCode: response.status,
+                        duration,
+                        error: data.message || 'Request failed',
+                    }).catch(console.error);
+                }
+
                 return {
                     success: false,
                     error: {
@@ -105,6 +122,14 @@ class ApiClient {
                 };
             }
 
+            // Track successful API call
+            if (this.config.usageMeter) {
+                await this.config.usageMeter.trackApiCall(endpoint, method, {
+                    statusCode: response.status,
+                    duration,
+                }).catch(console.error);
+            }
+
             return { success: true, data: data as T };
         } catch (error) {
             clearTimeout(timeoutId);
@@ -112,6 +137,13 @@ class ApiClient {
             const isAborted = error instanceof Error && error.name === 'AbortError';
 
             captureException(error as Error, { endpoint, method });
+
+            // Track failed request
+            if (this.config.usageMeter) {
+                await this.config.usageMeter.trackApiCall(endpoint, method, {
+                    error: isAborted ? 'Timeout' : 'Network error',
+                }).catch(console.error);
+            }
 
             return {
                 success: false,

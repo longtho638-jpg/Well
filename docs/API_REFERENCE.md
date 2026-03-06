@@ -125,7 +125,75 @@ GET /api/features/check/:flag_key
 
 ## 📊 Usage Metering API
 
-### Get Usage Status
+> **RaaS Feature:** Usage-based billing integrated with Polar.sh for automatic metered billing.
+
+---
+
+### SDK Usage (Client-Side)
+
+WellNexus provides a comprehensive `UsageMeter` SDK for tracking usage across API calls, tokens, and compute time.
+
+**Installation:**
+```typescript
+import { UsageMeter } from '@/lib/usage-metering';
+import { supabase } from '@/lib/supabase-client';
+
+// Initialize
+const meter = new UsageMeter(supabase, {
+  userId: 'user_123',
+  orgId: 'org_456',
+  licenseId: 'license_789',
+  tier: 'premium', // free | basic | premium | enterprise | master
+});
+```
+
+**Track API Calls:**
+```typescript
+// Track a single API call
+await meter.trackApiCall('/api/products', 'GET');
+
+// Track with metadata
+await meter.trackApiCall('/api/users', 'POST', {
+  userId: 'abc123',
+  action: 'create_user',
+});
+```
+
+**Track Token Usage (AI/LLM):**
+```typescript
+// Track LLM token usage
+await meter.trackTokens(1500, {
+  model: 'gpt-4',
+  provider: 'openai',
+  direction: 'output',
+});
+
+// Track compute time (milliseconds)
+await meter.trackCompute(2500, {
+  operation: 'image-generation',
+  gpu: true,
+});
+```
+
+**Get Usage Status:**
+```typescript
+const status = await meter.getUsageStatus();
+
+console.log(status.api_calls);
+// { used: 500, limit: 1000, remaining: 500, percentage: 50 }
+
+console.log(status.tokens);
+// { used: 50000, limit: 100000, remaining: 50000, percentage: 50 }
+
+console.log(status.isLimited);
+// true | false
+```
+
+---
+
+### API Endpoints (Server-Side)
+
+#### Get Usage Status
 
 ```http
 GET /api/usage/:metric_type
@@ -145,7 +213,7 @@ GET /api/usage/:metric_type
 }
 ```
 
-### Track Usage
+#### Track Usage
 
 ```http
 POST /api/usage/track
@@ -169,7 +237,149 @@ Content-Type: application/json
 }
 ```
 
+#### Edge Function: Usage Track
+
+Secure usage tracking endpoint with HMAC signature verification.
+
+```http
+POST /functions/v1/usage-track
+X-Signature: hmac-sha256-hexdigest
+X-Timestamp: ISO8601-timestamp
+Authorization: Bearer service-role-key
+Content-Type: application/json
+
+{
+  "org_id": "uuid",
+  "user_id": "uuid",
+  "license_id": "uuid",
+  "feature": "api_call",
+  "quantity": 1,
+  "metadata": {}
+}
+```
+
+**Security:**
+- HMAC-SHA256 signature verification
+- 5-minute timestamp window
+- Service role authentication required
+
+#### Edge Function: Usage Summary
+
+Get aggregated usage for billing period.
+
+```http
+POST /functions/v1/usage-summary
+X-Signature: hmac-sha256-hexdigest
+X-Timestamp: ISO8601-timestamp
+Authorization: Bearer service-role-key
+Content-Type: application/json
+
+{
+  "org_id": "uuid",
+  "license_id": "uuid",
+  "period_start": "2026-03-01T00:00:00Z",
+  "period_end": "2026-03-31T23:59:59Z"
+}
+```
+
+**Response:**
+```json
+{
+  "org_id": "uuid",
+  "license_id": "uuid",
+  "period_start": "2026-03-01T00:00:00Z",
+  "period_end": "2026-03-31T23:59:59Z",
+  "tier": "premium",
+  "metrics": {
+    "api_calls": 5000,
+    "tokens": 250000,
+    "compute_ms": 1500000,
+    "storage_mb": 500,
+    "bandwidth_mb": 2500
+  },
+  "overage": {
+    "api_calls": 0,
+    "tokens": 0,
+    "compute_minutes": 0
+  },
+  "calculated_cost": 0.00
+}
+```
+
 ---
+
+### Usage Metering SDK (src/lib/usage-metering.ts)
+
+Core tracking SDK with tier-based limits and rate limiting.
+
+**Features:**
+- Tiered quota management (free, basic, premium, enterprise, master)
+- Automatic rate limiting with sliding window
+- Batch tracking for performance
+- Integration with Supabase PostgreSQL
+
+**Tier Limits:**
+
+| Tier | API Calls/min | API Calls/day | Tokens/day | Compute/min | Storage/GB |
+|------|---------------|---------------|------------|-------------|------------|
+| free | 5 | 100 | 10,000 | 10 | 0.1 |
+| basic | 20 | 1,000 | 100,000 | 60 | 1 |
+| premium | 60 | 10,000 | 1,000,000 | 300 | 10 |
+| enterprise | 200 | 100,000 | 10,000,000 | 1,440 | 100 |
+| master | -1 (unlimited) | -1 | -1 | -1 | 1,000 |
+
+---
+
+### Usage-Based Billing (Edge Functions + Polar.sh)
+
+**Billing Sync Webhook** (`src/lib/vibe-payment/usage-billing-webhook.ts`)
+
+Automated monthly billing sync to Polar.sh:
+
+```typescript
+import { sendUsageToBilling } from '@/lib/vibe-payment/usage-billing-webhook';
+
+// Send usage for specific period
+await sendUsageToBilling({
+  orgId: 'org_123',
+  licenseId: 'license_456',
+  periodStart: '2026-03-01T00:00:00Z',
+  periodEnd: '2026-03-31T23:59:59Z',
+});
+```
+
+**Monthly Cron Job:**
+```typescript
+import { monthlyBillingSync } from '@/lib/vibe-payment/usage-billing-webhook';
+
+// Run on 1st of each month at 00:00 UTC
+await monthlyBillingSync();
+// Returns: { success: 15, failed: 2, total: 17 }
+```
+
+**Database: `usage_billing_sync_log`**
+
+| Column | Type | Description |
+|--------|------|-------------|
+| id | UUID | Primary key |
+| org_id | TEXT | Organization ID |
+| license_id | TEXT | License ID (FK to raas_licenses) |
+| period_start | TIMESTAMP | Billing period start |
+| period_end | TIMESTAMP | Billing period end |
+| status | TEXT | success/failed/pending |
+| polar_usage_id | TEXT | External billing record ID |
+| calculated_cost | DECIMAL | Total cost in USD |
+| error_message | TEXT | Error details if failed |
+| synced_at | TIMESTAMP | Sync timestamp |
+
+**Security:**
+- HMAC-SHA256 signature verification for Edge Functions
+- 5-minute timestamp window prevents replay attacks
+- RLS policies restrict access to users' own org data
+
+---
+
+## 🏢 Organizations API
 
 ## 🏢 Organizations API
 

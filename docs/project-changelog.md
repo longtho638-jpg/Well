@@ -1,5 +1,72 @@
 # Project Changelog
 
+## [2.6.0] - 2026-03-06
+
+### 🚀 Usage Metering Implementation (RaaS Phase 2)
+
+Complete usage tracking and billing integration for ROIaaS model with Polar.sh.
+
+#### Added
+
+- **Usage Metering SDK** (`src/lib/usage-metering.ts`):
+  - Comprehensive SDK for tracking API calls, tokens, and compute time
+  - Tier-based quota management (free, basic, premium, enterprise, master)
+  - Automatic rate limiting with sliding window algorithm
+  - Batch tracking for performance optimization
+
+- **API Interceptor** (`src/utils/api.ts`):
+  - Auto-track all API calls throughApiClient
+  - Track successful and failed requests with metadata
+  - Integrate with UsageMeter SDK
+
+- **Usage Track Edge Function** (`supabase/functions/v1/usage-track/`):
+  - Secure usage tracking endpoint
+  - HMAC-SHA256 signature verification
+  - 5-minute timestamp window for replay protection
+  - Service role authentication
+
+- **Usage Summary Edge Function** (`supabase/functions/v1/usage-summary/`):
+  - Aggregated usage for billing periods
+  - Returns overage calculations
+  - Cost estimation based on tier
+
+- **Billing Webhook Handler** (`src/lib/vibe-payment/usage-billing-webhook.ts`):
+  - Monthly billing sync to Polar.sh
+  - Usage summary fetching from Edge Functions
+  - Billing sync logging for audit trail
+
+- **Database Schema** (`supabase/migrations/20260306_*.sql`):
+  - `usage_records` table for granular usage events
+  - `usage_billing_sync_log` table for billing sync history
+  - RLS policies for security
+  - Performance indexes
+
+- **Tests** (`src/lib/__tests__/usage-metering.test.ts`):
+  - 19 unit tests covering all usage metering features
+  - Tier limits validation
+  - Rate limiting checks
+  - Batch tracking tests
+
+#### Changed
+
+- **Rate Limiter**: Integrated with UsageMeter SDK for tier-aware limits
+- **API Client**: Auto-tracking enabled via UsageMeter integration
+
+#### Security
+
+- HMAC-SHA256 signature verification for Edge Functions
+- 5-minute timestamp window prevents replay attacks
+- RLS policies restrict access to users' own org data
+- No API keys or secrets in client code
+
+#### Testing
+
+- 19/19 unit tests passing
+- 60.25% statement coverage
+- Integration with Supabase test environment
+
+---
+
 ## [2.5.0] - 2026-02-28
 
 ### 🚀 AGI Go Live Optimization
