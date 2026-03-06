@@ -22,7 +22,17 @@ function extractKeysFromModule(content, varName) {
   if (!objStr) return [];
   const innerObj = parseObjectKeys(objStr);
   const result = innerObj[varName] || innerObj;
-  return flattenKeys(result).map(k => `${varName}.${k}`);
+
+  // Check if this is a flat structure (misc.ts style) or nested
+  const hasNestedChildren = Object.values(result).some(v => typeof v === 'object' && v !== null);
+
+  if (hasNestedChildren) {
+    // Nested structure: use flattenKeys
+    return flattenKeys(result).map(k => `${varName}.${k}`);
+  } else {
+    // Flat structure (misc.ts): return keys directly
+    return Object.keys(result).map(k => `${varName}.${k}`);
+  }
 }
 
 function extractBalancedBraces(str, startIdx) {

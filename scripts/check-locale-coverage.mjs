@@ -6,7 +6,31 @@ const require = createRequire(import.meta.url);
 
 function parseLocaleFile(filePath) {
   const content = readFileSync(filePath, 'utf-8');
-  return parseLocaleFileRegex(content, filePath);
+  const keys = parseLocaleFileRegex(content, filePath);
+
+  // Also extract flat keys from misc.ts if this is vi.ts or en.ts
+  // This handles the fallback pattern where orphan keys are stored as module_key in misc.ts
+  if (filePath.endsWith('vi.ts') || filePath.endsWith('en.ts')) {
+    const miscPath = filePath.endsWith('vi.ts')
+      ? join(dirname(filePath), 'vi/misc.ts')
+      : join(dirname(filePath), 'en/misc.ts');
+    try {
+      const miscContent = readFileSync(miscPath, 'utf-8');
+      const miscKeys = parseSubModuleKeys(miscContent, 'misc');
+      // Convert misc.key_name format to module.key format for matching
+      // e.g., misc.agentgridcard_0x → also matches agentgridcard.0x
+      for (const miscKey of miscKeys) {
+        if (miscKey.includes('_')) {
+          // Convert underscore to dot for alternative matching
+          const keyWithoutPrefix = miscKey.replace(/^misc\./, '');
+          const dotNotation = keyWithoutPrefix.replace(/_([a-zA-Z0-9])/g, (m, g) => '.' + g);
+          keys.push(dotNotation);
+        }
+      }
+    } catch { /* skip if misc.ts doesn't exist */ }
+  }
+
+  return keys;
 }
 
 function extractBalancedBraces(str, startIdx) {
@@ -88,6 +112,24 @@ function flattenKeys(obj, prefix = '') {
   return keys;
 }
 
+function parseFlatKeys(content, varName) {
+  // Parse flat key format: key_name: "value" (used in misc.ts)
+  const keys = [];
+  // Match patterns like: key_name: "value" or key_name: 'value'
+  const flatKeyRe = /^\s*(\w+)\s*:\s*['"`]/gm;
+  let match;
+  while ((match = flatKeyRe.exec(content)) !== null) {
+    const key = match[1];
+    // Skip if it looks like a nested object key (has children)
+    // Check if this key is followed by a colon and then an opening brace
+    const afterMatch = content.slice(match.index + match[0].length);
+    if (!/^\s*\{/.test(afterMatch)) {
+      keys.push(`${varName}.${key}`);
+    }
+  }
+  return keys;
+}
+
 function parseSubModuleKeys(content, expectedVarName) {
   // Find ALL export const statements in the file
   const allKeys = [];
@@ -99,10 +141,22 @@ function parseSubModuleKeys(content, expectedVarName) {
     const startIdx = match.index + match[0].length;
     const objStr = extractBalancedBraces(content, startIdx);
     if (!objStr) continue;
+
     const parsed = parseObjectKeys(objStr);
     const innerObj = parsed[varName] || parsed;
-    const keys = flattenKeys(innerObj).map(k => `${varName}.${k}`);
-    allKeys.push(...keys);
+
+    // Check if this is a flat structure (misc.ts style) or nested
+    const hasNestedChildren = Object.values(innerObj).some(v => typeof v === 'object' && v !== null);
+
+    if (hasNestedChildren) {
+      // Nested structure: use flattenKeys
+      const keys = flattenKeys(innerObj).map(k => `${varName}.${k}`);
+      allKeys.push(...keys);
+    } else {
+      // Flat structure (misc.ts): extract flat keys directly
+      const flatKeys = Object.keys(innerObj).map(k => `${varName}.${k}`);
+      allKeys.push(...flatKeys);
+    }
   }
 
   // Fallback: if no exports found, try the original method
@@ -114,7 +168,12 @@ function parseSubModuleKeys(content, expectedVarName) {
       if (objStr) {
         const parsed = parseObjectKeys(objStr);
         const innerObj = parsed[expectedVarName] || parsed;
-        return flattenKeys(innerObj).map(k => `${expectedVarName}.${k}`);
+        const hasNestedChildren = Object.values(innerObj).some(v => typeof v === 'object' && v !== null);
+        if (hasNestedChildren) {
+          return flattenKeys(innerObj).map(k => `${expectedVarName}.${k}`);
+        } else {
+          return Object.keys(innerObj).map(k => `${expectedVarName}.${k}`);
+        }
       }
     }
   }
