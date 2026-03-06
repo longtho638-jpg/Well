@@ -8,4 +8,5 @@ export const herocard = {
   to_hit_next_milestone: "để đạt mốc tiếp theo",
   to_unlock: "để mở khóa",
   venture_partner_status: "Trạng Thái Đối Tác Mạo Hiểm",
+  _100m_vnd_revenue: "100m Vnd Revenue",
 };

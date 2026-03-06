@@ -172,4 +172,48 @@ export const copilot = {
     sponsor_bonus_amb: "Thưởng Người Giới Thiệu (AMB)",
     vnd_sales_ctv_startup: "Doanh Số VND CTV→Startup",
   },
+  suggestions: {
+    script: "Suggestions script",
+    price: "Suggestions price",
+    trust: "Suggestions trust",
+    competitor: "Suggestions competitor",
+  },
+  input: {
+    placeholder: "Input placeholder",
+    send: "Input send",
+  },
+  objectionTypes: {
+    price: "ObjectionTypes price",
+    skepticism: "ObjectionTypes skepticism",
+    competition: "ObjectionTypes competition",
+    timing: "ObjectionTypes timing",
+    need: "ObjectionTypes need",
+    general: "ObjectionTypes general",
+  },
+  title: "Title",
+  subtitle: "Subtitle",
+  description: "Description",
+  stats: {
+    title: "Stats title",
+    objectionsHandled: "Stats objectionsHandled",
+    scriptsCreated: "Stats scriptsCreated",
+    conversionRate: "Stats conversionRate",
+  },
+  tips: {
+    title: "Tips title",
+  },
+  features: {
+    objectionHandling: {
+      title: "Features objectionHandling title",
+      description: "Features objectionHandling description",
+    },
+    salesScript: {
+      title: "Features salesScript title",
+      description: "Features salesScript description",
+    },
+    realtimeCoaching: {
+      title: "Features realtimeCoaching title",
+      description: "Features realtimeCoaching description",
+    },
+  },
 };

@@ -8,4 +8,5 @@ export const herocard = {
   to_hit_next_milestone: "to hit next milestone",
   to_unlock: "to unlock",
   venture_partner_status: "Venture Partner Status",
+  _100m_vnd_revenue: "100m Vnd Revenue",
 };

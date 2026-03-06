@@ -4,4 +4,8 @@ export const dailyquesthub = {
   yield: "Lợi Nhuận",
   grow_1: "GROW",
   accumulated_today: "Tích Lũy Hôm Nay",
+  grow: "Grow",
+  completed: "Completed",
+  claim_reward: "Claim Reward",
+  start_quest: "Start Quest",
 };

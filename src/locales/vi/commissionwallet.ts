@@ -20,4 +20,5 @@ export const commissionwallet = {
   bonus_revenue: "Doanh thu thưởng",
   rate: "Tỷ lệ",
   wellnexus_headquarters: "Trụ sở WellNexus",
+  _10_pit: "10 Pit",
 };

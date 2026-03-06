@@ -9,4 +9,11 @@ export const errorboundary = {
   copied: "Copied",
   try_again: "Try Again",
   report_issue: "Report Issue",
+  oops_something_went_wrong: "Oops Something Went Wrong",
+  we_ve_encountered_an_unexpecte: "We Ve Encountered An Unexpecte",
+  error_details_dev_only: "Error Details Dev Only",
+  reload_page: "Reload Page",
+  go_home: "Go Home",
+  retry: "Retry",
+  reload: "Reload",
 };
