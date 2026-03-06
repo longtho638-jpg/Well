@@ -20,5 +20,5 @@ export const commissionwallet = {
   bonus_revenue: "Bonus Revenue",
   rate: "Rate",
   wellnexus_headquarters: "WellNexus Headquarters",
-  _10_pit: "10 Pit",
+  _10_pit: "10% PIT",
 };

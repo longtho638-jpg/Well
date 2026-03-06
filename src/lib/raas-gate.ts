@@ -1,6 +1,17 @@
 /**
- * RaaS License Gate - ROIaaS Phase 1
- * Gate premium features behind license key validation
+ * RaaS License Gate - HIẾN PHÁP ROIaaS PHASE 1
+ *
+ * Dual-Stream Revenue Gate:
+ * 1. Engineering ROI: Gate admin dashboard & PayOS automation behind license
+ * 2. Operational ROI: Subscription UI for business users
+ *
+ * Features gated:
+ * - adminDashboard: Access to /admin/* routes (AdminRoute.tsx)
+ * - payosAutomation: PayOS payment flows (payos-client.ts)
+ * - premiumAgents: Premium AI agents (Pro/Enterprise tiers)
+ * - advancedAnalytics: Advanced analytics dashboard
+ *
+ * Reference: /mekong-cli/docs/HIEN_PHAP_ROIAAS.md
  */
 
 const RAAS_LICENSE_KEY = import.meta.env.VITE_RAAS_LICENSE_KEY;
@@ -34,7 +45,7 @@ export function validateRaaSLicense(key?: string): LicenseValidationResult {
         };
     }
 
-    const licensePattern = /^RAAS-\d+-[A-Z0-9]+$/;
+    const licensePattern = /^RAAS-\d{10}-[A-Z0-9]{6,}$/;
     const isValidFormat = licensePattern.test(licenseKey);
     if (!isValidFormat) {
         return {
