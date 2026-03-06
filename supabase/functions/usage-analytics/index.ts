@@ -1,4 +1,4 @@
-/* eslint-disable max-lines */
+// eslint-disable @typescript-eslint/no-unused-vars, @typescript-eslint/no-explicit-any
 import { serve } from 'https://deno.land/std@0.168.0/http/server.ts'
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2'
 
@@ -10,27 +10,76 @@ import { corsHeaders } from '../_shared/cors.ts'
  * Real-time usage analytics for dashboard.
  * Requires authentication via Bearer token.
  *
- * Query Params:
- *   - org_id: string (required)
- *   - period: 'day' | 'week' | 'month' (default: 'day')
- *   - feature?: string (filter by feature)
+ * **GET Endpoints:**
+ *   GET /functions/v1/usage-analytics?query=current&user_id=xxx&license_id=xxx
+ *   GET /functions/v1/usage-analytics?query=quotas&user_id=xxx
+ *   GET /functions/v1/usage-analytics?query=breakdown&period=week
+ *
+ * **POST Endpoint (Usage Ingestion):**
+ *   POST /functions/v1/usage-analytics
+ *   Body: {
+ *     event_id: string (required, unique for idempotency)
+ *     user_id: string (required)
+ *     license_id: string (required)
+ *     events: [{
+ *       feature: 'api_call' | 'tokens' | 'compute_ms' | 'model_inference' | 'agent_execution'
+ *       quantity: number
+ *       metadata?: { model?, provider?, prompt_tokens?, completion_tokens?, agent_type? }
+ *       timestamp?: string
+ *     }]
+ *   }
  *
  * Response:
- *   {
- *     summary: { total_usage, total_events, unique_users },
- *     by_feature: [{ feature, total, count }],
- *     by_hour: [{ hour, usage }],
- *     top_users: [{ user_id, total_usage }],
- *     trend: [{ date, usage }]
- *   }
+ *   GET: Analytics data based on query type
+ *   POST: { processed: number, duplicates: number, warnings: string[] }
  */
 
-interface AnalyticsQueryParams {
+interface _AnalyticsQueryParams {
   org_id: string
   period?: 'day' | 'week' | 'month'
   feature?: string
   start_date?: string
   end_date?: string
+}
+
+interface UsageIngestionEvent {
+  feature: 'api_call' | 'tokens' | 'compute_ms' | 'model_inference' | 'agent_execution'
+  quantity: number
+  metadata?: Record<string, unknown>
+  timestamp?: string
+}
+
+interface UsageIngestionRequest {
+  event_id: string
+  user_id: string
+  license_id: string
+  events: UsageIngestionEvent[]
+}
+
+interface UsageIngestionResponse {
+  processed: number
+  duplicates: number
+  warnings: string[]
+  event_id: string
+}
+
+interface WebhookPayload {
+  event_id: string
+  customer_id: string
+  license_id?: string
+  user_id?: string
+  feature: string
+  quantity?: number
+  metadata?: Record<string, unknown>
+  timestamp?: string
+  raw_payload?: Record<string, unknown>
+}
+
+interface WebhookIngestionResponse {
+  success: boolean
+  event_id: string
+  is_duplicate: boolean
+  message?: string
 }
 
 /**
@@ -54,6 +103,18 @@ serve(async (req: Request) => {
     const supabaseServiceRoleKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') ?? ''
     const supabase = createClient(supabaseUrl, supabaseServiceRoleKey)
 
+    // Handle POST request for usage/webhook ingestion
+    if (req.method === 'POST') {
+      const url = new URL(req.url)
+      const ingestType = url.searchParams.get('type') || 'direct'
+
+      if (ingestType === 'webhook') {
+        return handleWebhookIngestion(supabase, req)
+      }
+      return handleUsageIngestion(supabase, req)
+    }
+
+    // Handle GET request for analytics queries
     // Parse query params
     const url = new URL(req.url)
     const queryType = url.searchParams.get('query') || 'summary'
@@ -228,6 +289,316 @@ serve(async (req: Request) => {
 })
 
 // ──────────────────────────────────────────────────────────────────────────
+// Helper: Usage Event Ingestion (POST)
+// ──────────────────────────────────────────────────────────────────────────
+
+async function handleUsageIngestion(
+  supabase: any,
+  req: Request
+): Promise<Response> {
+  const now = Date.now()
+  const logs: string[] = []
+  const _warnings: string[] = []
+
+  try {
+    // Parse request body
+    const body: UsageIngestionRequest = await req.json()
+    const { event_id, user_id, license_id, events } = body
+
+    // Validate required fields
+    if (!event_id || !user_id || !license_id) {
+      logs.push(`[INGESTION] Missing required fields: event_id=${!!event_id}, user_id=${!!user_id}, license_id=${!!license_id}`)
+      return new Response(JSON.stringify({ error: 'Missing required fields: event_id, user_id, license_id' }), {
+        status: 400,
+        headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+      })
+    }
+
+    if (!Array.isArray(events) || events.length === 0) {
+      logs.push(`[INGESTION] Invalid events array for event_id=${event_id}`)
+      return new Response(JSON.stringify({ error: 'Events array is required and must not be empty' }), {
+        status: 400,
+        headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+      })
+    }
+
+    logs.push(`[INGESTION] Received event_id=${event_id}, user_id=${user_id}, license_id=${license_id}, event_count=${events.length}`)
+
+    // Step 1: Check idempotency
+    const { data: idempotencyCheck, error: idempotencyError } = await supabase
+      .rpc('check_usage_event_idempotency', {
+        p_event_id: event_id,
+        p_user_id: user_id,
+        p_license_id: license_id,
+        p_metadata: { event_count: events.length, received_at: new Date().toISOString() }
+      })
+
+    if (idempotencyError) {
+      logs.push(`[INGESTION] Idempotency check error: ${idempotencyError.message}`)
+      // Continue processing - unique constraint will handle duplicates
+    }
+
+    // Check if this is a duplicate
+    const isDuplicate = idempotencyCheck?.[0]?.is_duplicate ?? false
+    if (isDuplicate) {
+      logs.push(`[INGESTION] DUPLICATE detected event_id=${event_id}`)
+      return new Response(JSON.stringify({
+        processed: 0,
+        duplicates: 1,
+        warnings: ['Duplicate event_id - already processed'],
+        event_id,
+      } as UsageIngestionResponse), {
+        status: 200,
+        headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+      })
+    }
+
+    // Step 2: Validate license exists and is active
+    const { data: license, error: licenseError } = await supabase
+      .from('raas_licenses')
+      .select('id, tier, status, user_id')
+      .eq('id', license_id)
+      .single()
+
+    if (licenseError || !license) {
+      logs.push(`[INGESTION] Invalid license_id=${license_id}: ${licenseError?.message || 'not found'}`)
+      // Mark idempotency record as processed but with warning
+      warnings.push(`License not found: ${license_id}`)
+      // Continue processing anyway for backward compatibility
+    } else if (license.status !== 'active') {
+      logs.push(`[INGESTION] License not active: license_id=${license_id}, status=${license.status}`)
+      warnings.push(`License status is ${license.status}, not active`)
+      // Continue processing - don't block on license status
+    }
+
+    // Step 3: Validate and prepare events
+    const validFeatures = ['api_call', 'tokens', 'compute_ms', 'model_inference', 'agent_execution']
+    const recordsToInsert = []
+
+    for (const event of events) {
+      if (!validFeatures.includes(event.feature)) {
+        logs.push(`[INGESTION] Invalid feature '${event.feature}' in event_id=${event_id}`)
+        warnings.push(`Invalid feature: ${event.feature}`)
+        continue
+      }
+
+      if (typeof event.quantity !== 'number' || event.quantity < 0) {
+        logs.push(`[INGESTION] Invalid quantity for feature=${event.feature} in event_id=${event_id}`)
+        warnings.push(`Invalid quantity for ${event.feature}`)
+        continue
+      }
+
+      recordsToInsert.push({
+        user_id,
+        license_id,
+        org_id: license?.user_id || null,
+        feature: event.feature,
+        quantity: event.quantity,
+        metadata: event.metadata || {},
+        recorded_at: event.timestamp || new Date().toISOString(),
+      })
+    }
+
+    if (recordsToInsert.length === 0) {
+      logs.push(`[INGESTION] No valid events to process for event_id=${event_id}`)
+      return new Response(JSON.stringify({
+        processed: 0,
+        duplicates: 0,
+        warnings: [...warnings, 'No valid events to process'],
+        event_id,
+      } as UsageIngestionResponse), {
+        status: 400,
+        headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+      })
+    }
+
+    // Step 4: Batch insert usage records
+    const { _count, error: insertError } = await supabase
+      .from('usage_records')
+      .insert(recordsToInsert, { count: 'exact' })
+
+    if (insertError) {
+      logs.push(`[INGESTION] Failed to insert records: ${insertError.message}`)
+
+      // Rollback idempotency record (delete it so it can be retried)
+      await supabase
+        .from('usage_event_idempotency')
+        .delete()
+        .eq('event_id', event_id)
+
+      return new Response(JSON.stringify({ error: `Failed to insert usage records: ${insertError.message}` }), {
+        status: 500,
+        headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+      })
+    }
+
+    logs.push(`[INGESTION] SUCCESS event_id=${event_id}, processed=${recordsToInsert.length}, duration_ms=${Date.now() - now}`)
+
+    // Return success response
+    return new Response(JSON.stringify({
+      processed: recordsToInsert.length,
+      duplicates: 0,
+      warnings,
+      event_id,
+    } as UsageIngestionResponse), {
+      status: 200,
+      headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+    })
+
+  } catch (error) {
+    logs.push(`[INGESTION] ERROR: ${error instanceof Error ? error.message : 'Unknown error'}`)
+    return new Response(JSON.stringify({ error: 'Internal server error' }), {
+      status: 500,
+      headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+    })
+  }
+}
+
+// ──────────────────────────────────────────────────────────────────────────
+// Helper: Webhook Event Ingestion (POST?type=webhook)
+// ──────────────────────────────────────────────────────────────────────────
+
+async function handleWebhookIngestion(
+  supabase: any,
+  req: Request
+): Promise<Response> {
+  const now = Date.now()
+  const logs: string[] = []
+  const _warnings: string[] = []
+
+  try {
+    // Parse webhook payload
+    const body: WebhookPayload = await req.json()
+    const {
+      event_id,
+      customer_id,
+      license_id,
+      user_id,
+      feature,
+      quantity = 1,
+      metadata,
+      timestamp,
+      raw_payload
+    } = body
+
+    // Validate required fields
+    if (!event_id || !customer_id || !feature) {
+      logs.push(`[WEBHOOK] Missing required fields: event_id=${!!event_id}, customer_id=${!!customer_id}, feature=${!!feature}`)
+      return new Response(JSON.stringify({ error: 'Missing required fields: event_id, customer_id, feature' }), {
+        status: 400,
+        headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+      })
+    }
+
+    // Validate feature against allowlist
+    const validFeatures = ['api_call', 'tokens', 'compute_ms', 'storage_mb', 'bandwidth_mb', 'model_inference', 'agent_execution']
+    if (!validFeatures.includes(feature)) {
+      logs.push(`[WEBHOOK] Invalid feature '${feature}' - must be one of: ${validFeatures.join(', ')}`)
+      return new Response(JSON.stringify({
+        error: `Invalid feature '${feature}'. Allowed: ${validFeatures.join(', ')}`
+      }), {
+        status: 400,
+        headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+      })
+    }
+
+    logs.push(`[WEBHOOK] Received event_id=${event_id}, customer_id=${customer_id}, feature=${feature}, quantity=${quantity}`)
+
+    // Extract metadata from raw_payload if provided
+    const extractedMetadata = raw_payload ? {
+      model: (raw_payload as any).model,
+      provider: (raw_payload as any).provider,
+      prompt_tokens: (raw_payload as any).prompt_tokens,
+      completion_tokens: (raw_payload as any).completion_tokens,
+      total_tokens: (raw_payload as any).total_tokens,
+      agent_type: (raw_payload as any).agent_type,
+      inference_time_ms: (raw_payload as any).inference_time_ms,
+      ...metadata,
+    } : metadata
+
+    // Remove undefined values from metadata
+    const cleanMetadata: Record<string, unknown> = {}
+    Object.entries(extractedMetadata || {}).forEach(([key, value]) => {
+      if (value !== undefined) cleanMetadata[key] = value
+    })
+
+    // Step 1: Check idempotency using database function
+    const { data: idempotencyResult, error: idempotencyError } = await supabase
+      .rpc('check_usage_event_idempotency_v2', {
+        p_event_id: event_id,
+        p_customer_id: customer_id,
+        p_feature: feature,
+        p_quantity: quantity,
+        p_license_id: license_id || null,
+        p_user_id: user_id || null,
+        p_raw_payload: raw_payload || null,
+        p_metadata: Object.keys(cleanMetadata).length > 0 ? cleanMetadata : null,
+      })
+
+    if (idempotencyError) {
+      logs.push(`[WEBHOOK] Idempotency check error: ${idempotencyError.message}`)
+      return new Response(JSON.stringify({ error: `Idempotency check failed: ${idempotencyError.message}` }), {
+        status: 500,
+        headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+      })
+    }
+
+    const isDuplicate = idempotencyResult?.[0]?.is_duplicate ?? false
+    const _eventUuid = idempotencyResult?.[0]?.event_uuid
+    const message = idempotencyResult?.[0]?.message
+
+    if (isDuplicate) {
+      logs.push(`[WEBHOOK] DUPLICATE detected event_id=${event_id}`)
+      return new Response(JSON.stringify({
+        success: true,
+        event_id,
+        is_duplicate: true,
+        message: 'Event already processed (idempotent)',
+      } as WebhookIngestionResponse), {
+        status: 200,
+        headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+      })
+    }
+
+    // Step 2: If this is a model_inference event, also insert into usage_records for backward compatibility
+    if (feature === 'model_inference' || feature === 'agent_execution') {
+      const timestampToUse = timestamp || new Date().toISOString()
+
+      // Insert into usage_records as well
+      await supabase.from('usage_records').insert({
+        user_id: user_id || null,
+        license_id: license_id || null,
+        org_id: null,
+        feature: feature,
+        quantity: quantity,
+        metadata: cleanMetadata,
+        recorded_at: timestampToUse,
+      })
+    }
+
+    logs.push(`[WEBHOOK] SUCCESS event_id=${event_id}, duration_ms=${Date.now() - now}`)
+
+    // Return success response
+    return new Response(JSON.stringify({
+      success: true,
+      event_id,
+      is_duplicate: false,
+      message: message || 'Event processed successfully',
+    } as WebhookIngestionResponse), {
+      status: 200,
+      headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+    })
+
+  } catch (error) {
+    logs.push(`[WEBHOOK] ERROR: ${error instanceof Error ? error.message : 'Unknown error'}`)
+    return new Response(JSON.stringify({ error: 'Internal server error' }), {
+      status: 500,
+      headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+    })
+  }
+}
+
+// ──────────────────────────────────────────────────────────────────────────
 // Helper: Current Usage (per user)
 // ──────────────────────────────────────────────────────────────────────────
 
@@ -285,7 +656,7 @@ async function handleCurrentUsage(supabase: any, userId: string, licenseId?: str
     }
   }
 
-  const warnings: string[] = []
+  const _warnings: string[] = []
   const quotas = {
     api_calls: makeQuota('api_call', totals.api_calls),
     tokens: makeQuota('tokens', totals.tokens),

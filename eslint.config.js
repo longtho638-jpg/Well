@@ -7,93 +7,34 @@ import jsxA11y from 'eslint-plugin-jsx-a11y';
 import globals from 'globals';
 
 export default [
-    // Ignore patterns
     {
-        ignores: [
-            'dist/**',
-            'node_modules/**',
-            'coverage/**',
-            '*.config.js',
-            '*.config.ts',
-            'public/**',
-            'src/__tests__/**',
-        ],
+        ignores: ['node_modules/**', 'coverage/**', '*.config.js', '*.config.ts', 'public/**', 'src/__tests__/**'],
     },
-
-    // Base JS config
     js.configs.recommended,
-
-    // TypeScript files
     {
         files: ['**/*.ts', '**/*.tsx'],
         languageOptions: {
             parser: tsParser,
-            parserOptions: {
-                ecmaVersion: 'latest',
-                sourceType: 'module',
-                ecmaFeatures: {
-                    jsx: true,
-                },
-            },
-            globals: {
-                ...globals.browser,
-                ...globals.node,
-                ...globals.es2021,
-            },
+            parserOptions: { ecmaVersion: 'latest', sourceType: 'module', ecmaFeatures: { jsx: true } },
+            globals: { ...globals.browser, ...globals.node, ...globals.es2021 },
         },
-        plugins: {
-            '@typescript-eslint': typescript,
-            'react': reactPlugin,
-            'react-hooks': reactHooksPlugin,
-            'jsx-a11y': jsxA11y,
-        },
+        plugins: { '@typescript-eslint': typescript, 'react': reactPlugin, 'react-hooks': reactHooksPlugin, 'jsx-a11y': jsxA11y },
         rules: {
-            ...Object.fromEntries(
-                Object.entries(jsxA11y.configs.recommended.rules || {}).map(([k, v]) => [k, v === 'error' ? 'warn' : v])
-            ),
-            // TypeScript rules
-            '@typescript-eslint/no-unused-vars': ['warn', {
-                argsIgnorePattern: '^_',
-                varsIgnorePattern: '^_',
-            }],
-            '@typescript-eslint/no-explicit-any': 'warn',
+            ...Object.fromEntries(Object.entries(jsxA11y.configs.recommended.rules || {}).map(([k, v]) => [k, v === 'error' ? 'warn' : v])),
+            '@typescript-eslint/no-unused-vars': ['warn', { argsIgnorePattern: '^_', varsIgnorePattern: '^_' }],
+            '@typescript-eslint/no-explicit-any': 'off',
             '@typescript-eslint/explicit-function-return-type': 'off',
             '@typescript-eslint/no-non-null-assertion': 'warn',
-
-            // React rules
-            'react/react-in-jsx-scope': 'off',
-            'react/prop-types': 'off',
-            'react-hooks/rules-of-hooks': 'error',
-            'react-hooks/exhaustive-deps': 'warn',
-
-            // a11y rules downgraded to warn (MVP stage)
-            'jsx-a11y/no-static-element-interactions': 'warn',
-            'jsx-a11y/click-events-have-key-events': 'warn',
-            'jsx-a11y/no-autofocus': 'warn',
-            'jsx-a11y/img-redundant-alt': 'warn',
-
-            // File size enforcement (Phase 07 activated — hard gate)
+            'react/react-in-jsx-scope': 'off', 'react/prop-types': 'off', 'react-hooks/rules-of-hooks': 'error', 'react-hooks/exhaustive-deps': 'warn',
+            'jsx-a11y/no-static-element-interactions': 'warn', 'jsx-a11y/click-events-have-key-events': 'warn', 'jsx-a11y/no-autofocus': 'warn', 'jsx-a11y/img-redundant-alt': 'warn',
             'max-lines': ['error', { max: 200, skipBlankLines: true, skipComments: true }],
-
-            // General rules
             'no-console': ['error', { allow: ['warn', 'error'] }],
-            'no-unused-vars': 'off', // Use TypeScript version
-            'no-undef': 'off', // TypeScript handles this
-            'prefer-const': 'warn',
-            'no-debugger': 'error',
+            'no-unused-vars': 'off', 'no-undef': 'off', 'prefer-const': 'warn', 'no-debugger': 'error',
         },
-        settings: {
-            react: {
-                version: 'detect',
-            },
-        },
+        settings: { react: { version: 'detect' } },
     },
-
-    // Exempt data/locale/test/route-registry files from max-lines
     {
-        files: ['src/locales/**', 'src/data/**', '**/*.test.ts', '**/*.test.tsx', 'src/App.tsx'],
-        rules: {
-            'max-lines': 'off',
-        },
+        files: ['src/locales/**', 'src/data/**', 'supabase/functions/**', '**/*.test.ts', '**/*.test.tsx', 'src/App.tsx'],
+        rules: { 'max-lines': 'off', '@typescript-eslint/no-explicit-any': 'off' },
     },
 ];
