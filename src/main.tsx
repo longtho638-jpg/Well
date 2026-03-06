@@ -1,6 +1,14 @@
 // Safari polyfills — MUST be first import (modules are hoisted in ESM)
 import './utils/safari-compat-polyfills';
 
+// RaaS HTTP Interceptor - Enable license gating for all API calls
+import { enableRAASInterceptor } from '@/lib/raas-http-interceptor';
+
+// Enable interceptor at app startup (before any API calls)
+if (typeof window !== 'undefined') {
+  enableRAASInterceptor();
+}
+
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import { BrowserRouter } from 'react-router-dom';
@@ -15,7 +23,8 @@ import './index.css';
 import { validateConfig } from './utils/validate-config';
 
 // Validate configuration before starting the app
-const configState = validateConfig();
+// Pass true to exit on license error (middleware mode)
+const configState = validateConfig(import.meta.env, true);
 
 // Initialize Sentry error tracking (production only)
 initSentry();

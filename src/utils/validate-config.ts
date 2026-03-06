@@ -1,17 +1,25 @@
 import { createLogger } from './logger';
+import { validateRaaSLicense } from '../lib/raas-gate';
 
 const configLogger = createLogger('Config');
 
 export interface ConfigState {
   isValid: boolean;
   missingKeys: string[];
+  licenseError?: string;
 }
 
 /**
  * Validates that all required environment variables are present.
- * Throws an error in production or logs a warning in development if keys are missing.
+ * Also validates RaaS license key if RAAS_LICENSE_KEY env var is defined.
+ *
+ * @param exitOnLicenseError - If true, process.exit(1) on invalid license (for middleware mode)
+ * @returns ConfigState with validation result
  */
-export function validateConfig(env: Record<string, string | boolean | undefined> = import.meta.env as Record<string, string | boolean | undefined>): ConfigState {
+export function validateConfig(
+  env: Record<string, string | boolean | undefined> = import.meta.env as Record<string, string | boolean | undefined>,
+  exitOnLicenseError: boolean = false
+): ConfigState {
   const requiredEnvVars = [
     'VITE_FIREBASE_API_KEY',
     'VITE_FIREBASE_AUTH_DOMAIN',
@@ -51,6 +59,48 @@ Please create a .env file in the project root with these values.
 
     return { isValid: false, missingKeys };
   }
+
+  // Validate RaaS license key if present in environment
+  const raasLicenseKey = env.VITE_RAAS_LICENSE_KEY;
+  // Check if license key is explicitly set as a valid non-empty string (not undefined, not empty)
+  // Empty string or undefined → treat as no license = free tier = valid
+  // Non-string values (e.g., boolean) also treated as missing = valid
+  if (raasLicenseKey !== undefined && typeof raasLicenseKey === 'string' && raasLicenseKey.length > 0) {
+    // Valid string, validate the license format
+    const licenseResult = validateRaaSLicense(raasLicenseKey);
+    if (!licenseResult.isValid) {
+      const licenseErrorMessage = `
+=================================================================
+❌ INVALID RAAS LICENSE KEY
+The RAAS_LICENSE_KEY environment variable is invalid: "${raasLicenseKey}"
+
+Please check your license key format:
+  - Must start with "RAAS-"
+  - Followed by 10 digits (timestamp)
+  - Followed by "-" and at least 6 uppercase alphanumeric characters
+  - Example: RAAS-1234567890-ABC123XYZ
+
+Application will exit with code 1 in middleware mode.
+=================================================================
+      `;
+
+      configLogger.error(licenseErrorMessage);
+
+      const result: ConfigState = {
+        isValid: false,
+        missingKeys,
+        licenseError: 'Invalid RAAS license key'
+      };
+
+      // Exit process if in middleware mode (for server-side validation)
+      if (exitOnLicenseError && typeof process !== 'undefined' && process.exit) {
+        process.exit(1);
+      }
+
+      return result;
+    }
+  }
+  // If raasLicenseKey is undefined or non-string (e.g., boolean), treat as no license = free tier = valid
 
   return { isValid: true, missingKeys: [] };
 }
