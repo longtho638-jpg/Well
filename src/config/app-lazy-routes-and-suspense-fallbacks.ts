@@ -53,6 +53,7 @@ export const PolicyEngine = lazy(() => import('../pages/Admin/PolicyEngine'));
 export const OrderManagement = lazy(() => import('../pages/Admin/OrderManagement'));
 export const AdminProducts = lazy(() => import('../pages/Admin/Products'));
 export const AuditLog = lazy(() => import('../pages/Admin/AuditLog'));
+export const LicensesAdminPage = lazy(() => import('../pages/Admin/LicensesAdminPage'));
 
 // ============================================================
 // SUSPENSE FALLBACK ELEMENTS

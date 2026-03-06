@@ -12,6 +12,7 @@ export const admin = {
       products: "Products",
       strategy: "Strategy",
       auditLog: "Audit Log",
+      licenses: "Licenses",
     },
     adminLabel: "Admin",
     superUser: "Super User",

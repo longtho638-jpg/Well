@@ -14,7 +14,7 @@ import {
   CheckoutPage, OrderSuccess, SettingsPage, ProfilePage,
   SubscriptionPage, NotFoundPage,
   Overview, CMS, Partners, Finance, PolicyEngine,
-  OrderManagement, AdminProducts, AuditLog,
+  OrderManagement, AdminProducts, AuditLog, LicensesAdminPage,
   PageSpinner, SectionSpinner, AdminSpinner,
   CommissionDashboard,
 } from './config/app-lazy-routes-and-suspense-fallbacks';
@@ -88,6 +88,7 @@ const App: React.FC = () => {
             <Route path="orders" element={<SafePage fallback={AdminSpinner}><OrderManagement /></SafePage>} />
             <Route path="products" element={<SafePage fallback={AdminSpinner}><AdminProducts /></SafePage>} />
             <Route path="audit-log" element={<SafePage fallback={AdminSpinner}><AuditLog /></SafePage>} />
+            <Route path="licenses" element={<SafePage fallback={AdminSpinner}><LicensesAdminPage /></SafePage>} />
           </Route>
 
           {/* ============================================================ */}

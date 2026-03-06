@@ -128,4 +128,5 @@ export const healthcheck = {
   ph_n_t_ch_chi_ti_t: "Ph N T Ch Chi Ti T",
   i_m_s_t_ng_kh_a_c_nh_s_c_kh: "I M S T Ng Kh A C Nh S C Kh",
   _100: "100",
+  100: "100",
 };

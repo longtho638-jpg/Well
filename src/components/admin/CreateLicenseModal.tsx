@@ -1,9 +1,11 @@
 /**
  * Create License Modal
+ * ROIaaS PHASE 2: Creates license + audit log with admin user ID and IP
  */
 
 import React, { useState } from 'react';
 import { createClient } from '@supabase/supabase-js';
+import { useStore } from '@/store';
 
 const supabase = createClient(
   import.meta.env.VITE_SUPABASE_URL,
@@ -17,12 +19,24 @@ interface CreateLicenseModalProps {
 }
 
 export function CreateLicenseModal({ isOpen, onClose, onSuccess }: CreateLicenseModalProps) {
+  const { user } = useStore();
   const [userId, setUserId] = useState('');
   const [email, setEmail] = useState('');
   const [expiresAt, setExpiresAt] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [createdKey, setCreatedKey] = useState<string | null>(null);
+
+  // Get client IP (from Supabase request context or fallback)
+  const getClientIp = async (): Promise<string> => {
+    try {
+      const response = await fetch('https://api.ipify.org?format=json');
+      const data = await response.json();
+      return data.ip || 'unknown';
+    } catch {
+      return 'unknown';
+    }
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -58,8 +72,11 @@ export function CreateLicenseModal({ isOpen, onClose, onSuccess }: CreateLicense
       const hashStr = Math.random().toString(36).substring(2, 8).toUpperCase();
       const licenseKey = `RAAS-${timestamp}-${hashStr}`;
 
+      // Get client IP
+      const ipAddress = await getClientIp();
+
       // Create license
-      const { error: createError } = await supabase
+      const { data: license, error: createError } = await supabase
         .from('raas_licenses')
         .insert({
           license_key: licenseKey,
@@ -72,12 +89,26 @@ export function CreateLicenseModal({ isOpen, onClose, onSuccess }: CreateLicense
             policyEngine: true,
           },
           expires_at: expiresAt,
-          metadata: { created_via: 'admin_dashboard' },
+          metadata: { created_via: 'admin_dashboard', created_by_email: user?.email || 'unknown' },
         })
         .select()
         .single();
 
       if (createError) throw createError;
+
+      // Create audit log
+      await supabase.from('raas_license_audit_logs').insert({
+        license_id: license.id,
+        action: 'created',
+        new_status: 'active',
+        created_by: user?.id || 'unknown',
+        metadata: {
+          created_via: 'admin_dashboard',
+          admin_email: user?.email || 'unknown',
+          ip_address: ipAddress,
+          features_enabled: ['adminDashboard', 'payosWebhook', 'commissionDistribution', 'policyEngine'],
+        },
+      });
 
       setCreatedKey(licenseKey);
       onSuccess?.();

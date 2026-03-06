@@ -46,7 +46,7 @@ export function validateRaaSLicense(key?: string): LicenseValidationResult {
     }
 
     const licensePattern = /^RAAS-\d{10}-[A-Z0-9]{6,}$/;
-    const isValidFormat = licensePattern.test(licenseKey);
+    const isValidFormat = typeof licenseKey === 'string' && licensePattern.test(licenseKey);
     if (!isValidFormat) {
         return {
             isValid: false,
