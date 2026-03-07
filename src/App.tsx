@@ -16,7 +16,7 @@ import {
   Overview, CMS, Partners, Finance, PolicyEngine,
   OrderManagement, AdminProducts, AuditLog, LicensesAdminPage,
   PageSpinner, SectionSpinner, AdminSpinner,
-  CommissionDashboard,
+  CommissionDashboard, UsageDashboardPage,
 } from './config/app-lazy-routes-and-suspense-fallbacks';
 
 import { useStore } from './store';
@@ -153,6 +153,7 @@ const App: React.FC = () => {
             <Route path="subscription" element={<SafePage fallback={SectionSpinner}><LicenseGate feature="payosWebhook"><SubscriptionPage /></LicenseGate></SafePage>} />
             <Route path="settings" element={<SafePage fallback={SectionSpinner}><SettingsPage /></SafePage>} />
             <Route path="profile" element={<SafePage fallback={SectionSpinner}><ProfilePage /></SafePage>} />
+            <Route path="usage" element={<SafePage fallback={SectionSpinner}><UsageDashboardPage /></SafePage>} />
           </Route>
 
           {/* ============================================================ */}

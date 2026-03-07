@@ -9,6 +9,60 @@ if (typeof window !== 'undefined') {
   enableRAASInterceptor();
 }
 
+// Usage Metering - Auto-track all API calls and feature usage
+import { createClient } from '@supabase/supabase-js';
+import { UsageInstrumentation } from '@/lib/usage-instrumentation';
+import { UsageProvider } from '@/hooks/use-usage-metering';
+
+// Initialize Usage Instrumentation at app startup
+if (typeof window !== 'undefined') {
+  const supabase = createClient(
+    import.meta.env.VITE_SUPABASE_URL,
+    import.meta.env.VITE_SUPABASE_ANON_KEY
+  );
+
+  // Get user ID from localStorage (set by auth system)
+  const getUserId = () => {
+    try {
+      const session = localStorage.getItem('@supabase/auth-token');
+      if (session) {
+        const parsed = JSON.parse(session);
+        return parsed?.user?.id;
+      }
+    } catch {
+      // Ignore errors
+    }
+    return null;
+  };
+
+  const userId = getUserId();
+  if (userId) {
+    const instrumentation = new UsageInstrumentation(supabase, {
+      userId,
+      tracking: {
+        apiCalls: true,
+        modelInferences: true,
+        agentExecutions: true,
+        featureUsage: true,
+      },
+      debug: import.meta.env.DEV,
+    });
+
+    // Install fetch interceptor to auto-track all HTTP requests
+    instrumentation.installFetchInterceptor();
+
+    // Start auto-flush (every 10s)
+    instrumentation.startAutoFlush();
+
+    // Cleanup on page unload
+    window.addEventListener('beforeunload', () => {
+      instrumentation.cleanup();
+    });
+
+    console.warn('[Usage Metering] Auto-tracking enabled for user:', userId);
+  }
+}
+
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import { BrowserRouter } from 'react-router-dom';
@@ -136,9 +190,11 @@ if (!configState.isValid) {
       <HelmetProvider>
         <ErrorBoundary>
           <LanguageProvider>
-            <BrowserRouter>
-              <App />
-            </BrowserRouter>
+            <UsageProvider>
+              <BrowserRouter>
+                <App />
+              </BrowserRouter>
+            </UsageProvider>
           </LanguageProvider>
         </ErrorBoundary>
       </HelmetProvider>

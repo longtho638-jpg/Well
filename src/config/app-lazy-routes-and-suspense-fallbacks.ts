@@ -43,6 +43,7 @@ export const SubscriptionPage = lazy(() => import('../pages/SubscriptionPage'));
 export const NotFoundPage = lazy(() => import('../pages/NotFoundPage'));
 export const CommissionDashboard = lazy(() => import('../pages/CommissionDashboard'));
 export const VendorDashboard = lazy(() => import('../components/marketplace/VendorDashboard').then(m => ({ default: m.VendorDashboard })));
+export const UsageDashboardPage = lazy(() => import('../pages/UsageDashboard').then(m => ({ default: m.UsageDashboardPage })));
 
 // Admin sub-pages
 export const Overview = lazy(() => import('../pages/Admin/Overview'));
