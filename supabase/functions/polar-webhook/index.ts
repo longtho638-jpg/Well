@@ -6,6 +6,11 @@
  * - subscription.canceled → schedule revoke (grace period)
  * - subscription.expired → revoke license
  *
+ * Analytics Tracking:
+ * - All events stored in polar_webhook_events for analytics
+ * - Customer cohorts updated on purchase/subscription events
+ * - Revenue attribution tracked per license
+ *
  * Security: HMAC-SHA256 signature verification with timestamp validation
  */
 
@@ -16,6 +21,54 @@ import { revokeLicenseOnCancel } from './_shared/raas-license-provision.ts'
 
 const webhookSecret = Deno.env.get('POLAR_WEBHOOK_SECRET') ?? ''
 const maxAgeSeconds = 300 // 5 minutes tolerance for replay attacks
+
+/**
+ * Map product/plan name to tier
+ */
+function mapPlanToTier(planName: string | undefined): string {
+  if (!planName) return 'free'
+  const name = planName.toLowerCase()
+  if (name.includes('master')) return 'master'
+  if (name.includes('enterprise')) return 'enterprise'
+  if (name.includes('premium')) return 'premium'
+  if (name.includes('basic') || name.includes('starter')) return 'basic'
+  return 'free'
+}
+
+/**
+ * Store webhook event for analytics
+ */
+async function storeWebhookEvent(
+  supabase: any,
+  eventType: string,
+  eventId: string,
+  eventData: Record<string, unknown>
+) {
+  try {
+    const customerId = eventData.user_id as string || eventData.customer_id as string
+    const subscriptionId = eventData.subscription_id as string
+    const amount = (eventData.amount as number) || 0
+    const currency = (eventData.currency as string) || 'USD'
+    const productName = (eventData.plan_name as string) || (eventData.product_name as string) || ''
+    const tier = mapPlanToTier(eventData.plan_name || eventData.tier as string)
+
+    await supabase.from('polar_webhook_events').insert({
+      event_id: eventId,
+      event_type: eventType,
+      customer_id: customerId,
+      subscription_id: subscriptionId,
+      amount_cents: amount,
+      currency: currency,
+      product_name: productName,
+      tier: tier,
+      payload: eventData,
+      processed: true,
+      processed_at: new Date().toISOString(),
+    })
+  } catch (err) {
+    console.error('[analytics] Failed to store webhook event:', err)
+  }
+}
 
 serve(async (req: Request) => {
   const supabase = createAdminClient()
@@ -67,6 +120,9 @@ serve(async (req: Request) => {
 
   // Handle events
   try {
+    // Store event for analytics (all event types)
+    await storeWebhookEvent(supabase, event.type, event.data.id as string || crypto.randomUUID(), event.data)
+
     switch (event.type) {
       case 'subscription.activated': {
         const { user_id, plan_id, billing_cycle, org_id } = event.data

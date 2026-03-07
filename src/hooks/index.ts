@@ -44,4 +44,4 @@ export * from './use-agent-chat';
 export * from './use-strategic-simulator';
 export * from './use-staking-rewards';
 export * from './use-usage-metering';
-export * from './use-revenue-analytics';
+export * from './use-polar-analytics';
