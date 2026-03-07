@@ -35,6 +35,7 @@ import { valuationcard } from './en/valuationcard';
 import { healthCheck } from './en/health-check';
 import { healthcheck } from './en/healthcheck';
 import { errorboundary } from './en/errorboundary';
+import { analytics } from './en/analytics';
 
 export const en = {
   ...agent,
@@ -78,4 +79,5 @@ export const en = {
   ...healthCheck,
   ...healthcheck,
   ...errorboundary,
+  ...analytics,
 };

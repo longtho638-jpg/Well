@@ -35,6 +35,7 @@ import { valuationcard } from './vi/valuationcard';
 import { healthCheck } from './vi/health-check';
 import { healthcheck } from './vi/healthcheck';
 import { errorboundary } from './vi/errorboundary';
+import { analytics } from './vi/analytics';
 
 export const vi = {
   ...agent,
@@ -78,4 +79,5 @@ export const vi = {
   ...healthCheck,
   ...healthcheck,
   ...errorboundary,
+  ...analytics,
 };

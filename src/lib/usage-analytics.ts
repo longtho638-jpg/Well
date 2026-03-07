@@ -5,6 +5,12 @@
  *   import { UsageAnalytics } from '@/lib/usage-analytics'
  *   const analytics = new UsageAnalytics(supabase, { userId, orgId, licenseId })
  *   const current = await analytics.getCurrentUsage()
+ *
+ * Advanced Analytics (Phase 5):
+ *   const trends = await analytics.getTrends({ granularity: 'day', days: 30 })
+ *   const topCustomers = await analytics.getTopCustomers({ limit: 10 })
+ *   const anomalies = await analytics.detectAnomalies()
+ *   const projection = await analytics.getBillingProjection()
  */
 
 import type { SupabaseClient } from '@supabase/supabase-js'

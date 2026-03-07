@@ -13,6 +13,7 @@ export const admin = {
       strategy: "Strategy",
       auditLog: "Audit Log",
       licenses: "Licenses",
+      analytics: "Analytics",
     },
     adminLabel: "Admin",
     superUser: "Super User",

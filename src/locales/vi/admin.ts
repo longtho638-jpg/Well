@@ -13,6 +13,7 @@ export const admin = {
       strategy: "Chiến Lược",
       auditLog: "Nhật Ký Kiểm Toán",
       licenses: "License RaaS",
+      analytics: "Analytics",
     },
     adminLabel: "Admin",
     superUser: "Super User",

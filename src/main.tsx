@@ -11,7 +11,7 @@ if (typeof window !== 'undefined') {
 
 // Usage Metering - Auto-track all API calls and feature usage
 import { createClient } from '@supabase/supabase-js';
-import { UsageInstrumentation } from '@/lib/usage-instrumentation';
+import { UsageInstrumentationService as UsageInstrumentation } from '@/lib/usage-instrumentation';
 import { UsageProvider } from '@/hooks/use-usage-metering';
 
 // Initialize Usage Instrumentation at app startup
