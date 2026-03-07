@@ -9,6 +9,8 @@ export interface RevenueMetrics { mrr_cents: number; arr_cents: number; gmv_cent
 export interface CohortRetention { cohort_month: string; cohort_size: number; periods: Array<{ day: number; active_users: number; retained_percentage: number; revenue: number }> }
 export interface LicenseUsage { license_id: string; tier: string; usage: Array<{ date: string; api_calls: number; tokens: number; agent_executions: number }>; roi: { revenue: number; cost: number; roi_percentage: number } }
 export interface CustomerSegment { segment: string; count: number; revenue: number; avg_mrr: number }
+export interface FunnelStep { step: number; name: string; count: number; drop_off_rate: number }
+export interface ConversionFunnel { steps: FunnelStep[]; overall_conversion_rate: number; period_days: number }
 
 export function useRevenue(options?: { days?: number; autoRefresh?: boolean }) {
   const [data, setData] = useState<RevenueMetrics | null>(null)
@@ -96,6 +98,82 @@ export function useLicenseUsage(options?: { licenseId?: string; days?: number })
     }
     fetchUsage()
   }, [licenseId, days])
+  return { data, loading, error }
+}
+
+export function useConversionFunnel(options?: { days?: number }) {
+  const [data, setData] = useState<ConversionFunnel | null>(null)
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState<string | null>(null)
+  const days = options?.days || 30
+
+  useEffect(() => {
+    async function fetchFunnel() {
+      try {
+        setLoading(true)
+        const sinceDate = new Date(Date.now() - days * 24 * 60 * 60 * 1000).toISOString()
+
+        // Step 1: Total licenses created
+        const { count: totalLicenses } = await supabase
+          .from('raas_licenses')
+          .select('*', { count: 'exact', head: true })
+          .gte('created_at', sinceDate)
+
+        // Step 2: Activated licenses
+        const { count: activatedLicenses } = await supabase
+          .from('raas_licenses')
+          .select('*', { count: 'exact', head: true })
+          .eq('status', 'active')
+          .gte('created_at', sinceDate)
+
+        // Step 3: Licenses with first API call
+        const { data: usageLicenses } = await supabase
+          .from('license_usage_aggregations')
+          .select('license_id')
+          .gte('aggregation_date', sinceDate)
+          .gt('api_calls', 0)
+
+        const uniqueUsageLicenses = new Set(usageLicenses?.map(l => l.license_id) || [])
+
+        // Step 4: Sustained usage (5+ API calls)
+        const { data: sustainedUsage } = await supabase
+          .from('license_usage_aggregations')
+          .select('license_id, api_calls')
+          .gte('aggregation_date', sinceDate)
+          .gt('api_calls', 4)
+
+        const uniqueSustainedLicenses = new Set(sustainedUsage?.map(l => l.license_id) || [])
+
+        // Step 5: Paying customers (has revenue)
+        const { data: payingData } = await supabase
+          .from('polar_webhook_events')
+          .select('subscription_id')
+          .gte('received_at', sinceDate)
+          .eq('event_type', 'subscription.active')
+
+        const payingCustomers = new Set(payingData?.map(p => p.subscription_id) || [])
+
+        const steps: FunnelStep[] = [
+          { step: 1, name: 'License Created', count: totalLicenses || 0, drop_off_rate: 0 },
+          { step: 2, name: 'Activated', count: activatedLicenses || 0, drop_off_rate: totalLicenses ? Math.round((1 - (activatedLicenses || 0) / totalLicenses) * 100) : 0 },
+          { step: 3, name: 'First API Call', count: uniqueUsageLicenses.size, drop_off_rate: activatedLicenses ? Math.round((1 - uniqueUsageLicenses.size / (activatedLicenses || 1)) * 100) : 0 },
+          { step: 4, name: 'Sustained Usage', count: uniqueSustainedLicenses.size, drop_off_rate: uniqueUsageLicenses.size ? Math.round((1 - uniqueSustainedLicenses.size / (uniqueUsageLicenses.size || 1)) * 100) : 0 },
+          { step: 5, name: 'Paying Customer', count: payingCustomers.size, drop_off_rate: uniqueSustainedLicenses.size ? Math.round((1 - payingCustomers.size / (uniqueSustainedLicenses.size || 1)) * 100) : 0 }
+        ]
+
+        const overallConversionRate = totalLicenses ? Math.round((payingCustomers.size / totalLicenses) * 100 * 100) / 100 : 0
+
+        setData({ steps, overall_conversion_rate: overallConversionRate, period_days: days })
+        setError(null)
+      } catch (err: any) {
+        setError(err.message)
+      } finally {
+        setLoading(false)
+      }
+    }
+    fetchFunnel()
+  }, [days])
+
   return { data, loading, error }
 }
 

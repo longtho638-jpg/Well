@@ -1,6 +1,7 @@
 import { useState, useMemo } from 'react'
 import { cn } from '@/lib/utils'
 import * as polarAnalytics from '@/hooks/use-polar-analytics'
+import { ConversionFunnelChart } from '@/components/analytics/ConversionFunnelChart'
 import {
   BarChart,
   Bar,
@@ -58,6 +59,7 @@ export function LicenseAnalyticsDashboard({ className }: { className?: string })
     <div className={cn('space-y-6', className)}>
       <HeaderSection dateRange={dateRange} setDateRange={setDateRange} />
       <StatisticsSection revenueData={revenueData} />
+      <ConversionFunnelChart />
       <DailyActiveLicensesChart data={dailyActiveLicensesData} />
       <RevenueOverTimeChart data={revenueOverTimeData} />
       <ChartsGrid topCustomersData={topCustomersData} tierDistributionData={tierDistributionData} />
