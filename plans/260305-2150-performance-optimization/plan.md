@@ -1,34 +1,56 @@
 ---
-title: "Performance Optimization Plan"
-description: "Build optimization, tree-shaking, image optimization, memoization"
-status: pending
-priority: P2
-effort: 2h
+title: "Resources Optimization 5→10"
+description: "Lazy loading, virtual scrolling, prefetching, bundle splitting"
+status: in-progress
+priority: P0
+effort: 4h
 branch: main
-tags: [performance, optimization, build]
+tags: [performance, optimization, resources, lazy-loading]
 created: 2026-03-05
+updated: 2026-03-07
 ---
 
-# Performance Optimization Plan
+# Resources Optimization 5→10
 
 ## Overview
-Build time ~15s với EPIPE errors. Target: <10s build, optimize bundle size.
+Score: 5/10 → Target: 10/10. Tập trung resource loading optimization.
+
+## Maintenance Scan Results (2026-03-07)
+
+**Report:** `plans/reports/code-reviewer-260307-2108-maintenance-scan.md`
+
+| Metric | Target | Actual | Status |
+|--------|--------|--------|--------|
+| Build Time | <10s | 7.77s | ✅ |
+| Max Chunk | <500KB | 1.6MB | ❌ |
+| TypeScript Errors | 0 | 12 | ❌ |
+| ESLint Errors | 0 | 29 | ❌ |
+| `: any` Types | 0 | 70+ | ⚠️ |
 
 ## Phases
 
 | Phase | Status | Effort | Dependencies |
 |-------|--------|--------|--------------|
-| [01-remove-unused-deps](./phase-01-remove-unused-deps.md) | pending | 15min | None |
-| [02-optimize-recharts-imports](./phase-02-optimize-recharts-imports.md) | pending | 30min | 01 |
-| [03-convert-png-to-webp](./phase-03-convert-png-to-webp.md) | pending | 20min | None |
-| [04-add-usememo-optimization](./phase-04-add-usememo-optimization.md) | pending | 45min | 01, 02 |
+| [01-lazy-heavy-libs](./phase-01-lazy-heavy-libs.md) | pending | 45min | None |
+| [02-virtual-scroll-tables](./phase-02-virtual-scroll-tables.md) | pending | 1h | None |
+| [03-react-query-prefetch](./phase-03-react-query-prefetch.md) | pending | 45min | None |
+| [04-font-image-preload](./phase-04-font-image-preload.md) | pending | 30min | None |
+
+## Critical Fixes Required
+
+1. **UpgradeModal.tsx syntax error** - Line 20 corrupted import
+2. **Missing type exports** - `use-cohort-analysis.ts` → `use-polar-analytics.ts`
+3. **CohortRetentionCharts.tsx** - Implicit `any` on lines 26, 97
+4. **Bundle splitting** - Add manualChunks for charts (482KB) + pdf (1.6MB)
 
 ## Verification
-- Build time < 10s
-- No EPIPE errors
-- Bundle size reduced
-- Lighthouse score ≥95
+- Initial bundle giảm 60%
+- FCP < 1.5s
+- Lighthouse Performance ≥95
+- Test pass 100%
+- TypeScript errors: 0
+- ESLint errors: 0
 
 ## Risks
-- Tree-shaking regression → test all charts
-- Image quality loss → verify visual fidelity
+- Loading states phức tạp → Dùng Suspense boundaries
+- Regression → Test critical paths
