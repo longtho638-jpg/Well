@@ -23,7 +23,7 @@ export async function exportToCSV(data: any[], filename: string) {
   window.URL.revokeObjectURL(url)
 }
 
-export async function exportToPDF(elementId: string, filename: string) {
+export async function exportToPDF(_elementId: string, _filename: string) {
   // In production, use a library like html2pdf or @react-pdf/renderer
   // Implementation would depend on chosen PDF library
 }
