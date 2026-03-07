@@ -8,7 +8,7 @@ import { useTranslation } from '@/hooks/useTranslation'
 import { cn } from '@/lib/utils'
 import { RevenueDashboard } from '@/components/analytics/RevenueMetricsCards'
 import { UserMetricsDashboard } from '@/components/analytics/UserMetricsDashboard'
-import { EngineeringROIDashboard } from '@/components/analytics/ROICalculator'
+import { ROICalculator } from '@/components/analytics/ROICalculator'
 import { TopConsumersTable } from '@/components/analytics/TopConsumersTable'
 import { UsageGaugeGrid } from '@/components/analytics/UsageGaugeGrid'
 import { Download, RefreshCw, BarChart3, Cpu } from 'lucide-react'
@@ -206,7 +206,15 @@ export function AnalyticsDashboardPage() {
         ) : (
           <>
             {/* Engineering ROI */}
-            <EngineeringROIDashboard />
+            <ROICalculator
+              revenue={MOCK_REVENUE_DATA.currentSnapshot.gmv.total}
+              usage={{
+                api_calls: 100000,
+                tokens: 500000,
+                compute_ms: 1000000,
+                agent_executions: 5000,
+              }}
+            />
 
             {/* Per-Key Analytics */}
             <div className="space-y-4">

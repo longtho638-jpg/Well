@@ -5,7 +5,18 @@
 
 import { useMemo } from 'react'
 import { cn } from '@/lib/utils'
-import { ResponsiveContainer, AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, Legend, BarChart, Bar, LineChart, Line } from 'recharts'
+import { ResponsiveContainer } from 'recharts';
+import { AreaChart } from 'recharts';
+import { Area } from 'recharts';
+import { XAxis } from 'recharts';
+import { YAxis } from 'recharts';
+import { CartesianGrid } from 'recharts';
+import { Tooltip } from 'recharts';
+import { Legend } from 'recharts';
+import { BarChart } from 'recharts';
+import { Bar } from 'recharts';
+import { LineChart } from 'recharts';
+import { Line } from 'recharts';
 import type { CohortRetention } from '@/hooks/analytics/use-cohort-retention'
 import { ChartCard } from './PremiumCharts'
 

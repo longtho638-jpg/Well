@@ -4,7 +4,13 @@
  */
 
 import { useState } from 'react'
-import { AreaChart, Area, XAxis, YAxis, Tooltip, ResponsiveContainer, Legend } from 'recharts'
+import { AreaChart } from 'recharts';
+import { Area } from 'recharts';
+import { XAxis } from 'recharts';
+import { YAxis } from 'recharts';
+import { Tooltip } from 'recharts';
+import { ResponsiveContainer } from 'recharts';
+import { Legend } from 'recharts';
 import { Download, TrendingUp, Users } from 'lucide-react'
 import { useCohortAnalysis } from '@/hooks/use-polar-analytics'
 

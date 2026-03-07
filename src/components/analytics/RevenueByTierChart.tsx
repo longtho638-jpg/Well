@@ -5,7 +5,12 @@
  */
 
 import { useState } from 'react'
-import { PieChart, Pie, Cell, Tooltip, Legend, ResponsiveContainer } from 'recharts'
+import { PieChart } from 'recharts';
+import { Pie } from 'recharts';
+import { Cell } from 'recharts';
+import { Tooltip } from 'recharts';
+import { Legend } from 'recharts';
+import { ResponsiveContainer } from 'recharts';
 import { DollarSign, TrendingUp } from 'lucide-react'
 import { useRevenueByTier } from '@/hooks/use-polar-analytics'
 import { cn } from '@/lib/utils'

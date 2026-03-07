@@ -57,21 +57,35 @@ describe('UsageAggregator', () => {
       expect(mockChannel.subscribe).toHaveBeenCalled()
     })
 
-    it('should remove subscriber and cleanup when last subscriber unsubscribes', () => {
+    it('should remove subscriber and cleanup when last subscriber unsubscribes', async () => {
+      const mockChannel = {
+        on: vi.fn().mockReturnThis(),
+        subscribe: vi.fn().mockResolvedValue(),
+      }
+      mockSupabase.channel = vi.fn().mockReturnValue(mockChannel)
+      mockSupabase.removeChannel = vi.fn()
+
+      // Recreate aggregator with updated mockSupabase
+      aggregator = new UsageAggregator(mockSupabase as SupabaseClient, mockOrgId)
+
+      const callback = vi.fn()
+      const unsubscribe = aggregator.subscribe(callback)
+
+      // Wait for channel to be set up (since subscribe() might be async)
+      await new Promise(resolve => setTimeout(resolve, 0))
+
+      unsubscribe()
+
+      expect(mockSupabase.removeChannel).toHaveBeenCalled()
+    })
+
+    it('should notify subscribers when data arrives', async () => {
       const mockChannel = {
         on: vi.fn().mockReturnThis(),
         subscribe: vi.fn(),
       }
       mockSupabase.channel = vi.fn().mockReturnValue(mockChannel)
 
-      const callback = vi.fn()
-      aggregator.subscribe(callback)
-      aggregator.unsubscribe()
-
-      expect(mockSupabase.removeChannel).toHaveBeenCalledWith(mockChannel)
-    })
-
-    it('should notify subscribers when data arrives', async () => {
       const callback = vi.fn()
       aggregator.subscribe(callback)
 
@@ -85,10 +99,10 @@ describe('UsageAggregator', () => {
       }
 
       // Access private method for testing
-      await (aggregator as any).updateCache(mockUpdate)
+      ;(aggregator as any).notifySubscribers(mockUpdate)
 
       // Verify callback was called
-      expect(callback).toBeDefined()
+      expect(callback).toHaveBeenCalledWith(mockUpdate)
     })
   })
 

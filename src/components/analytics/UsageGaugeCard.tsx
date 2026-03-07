@@ -2,7 +2,10 @@
  * Usage Gauge Card - displays quota utilization as circular gauge
  */
 
-import { PieChart, Pie, Cell, ResponsiveContainer } from 'recharts'
+import { PieChart } from 'recharts';
+import { Pie } from 'recharts';
+import { Cell } from 'recharts';
+import { ResponsiveContainer } from 'recharts';
 import { cn } from '@/lib/utils'
 
 interface UsageGaugeCardProps {

@@ -2,7 +2,14 @@
  * Usage Trends Chart - Time series visualization with Recharts
  */
 
-import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Legend } from 'recharts'
+import { AreaChart } from 'recharts';
+import { Area } from 'recharts';
+import { XAxis } from 'recharts';
+import { YAxis } from 'recharts';
+import { CartesianGrid } from 'recharts';
+import { Tooltip } from 'recharts';
+import { ResponsiveContainer } from 'recharts';
+import { Legend } from 'recharts';
 import { useState } from 'react'
 import { cn } from '@/lib/utils'
 

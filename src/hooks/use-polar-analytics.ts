@@ -10,15 +10,10 @@ export { useCustomerSegments } from './analytics/use-customer-segments'
 export { useRevenueByTier } from './analytics/use-revenue-by-tier'
 
 // Re-export all types
-export type {
-  RevenueMetrics,
-  RevenueByTier,
-  CohortRetention,
-  LicenseUsage,
-  CustomerSegment,
-  FunnelStep,
-  ConversionFunnel,
-  WeeklyRetention,
-  FeatureAdoption,
-  CohortAnalysis,
-} from './analytics/use-cohort-analysis'
+export type { RevenueMetrics } from './analytics/use-revenue'
+export type { RevenueByTier } from './analytics/use-revenue-by-tier'
+export type { CohortRetention } from './analytics/use-cohort-retention'
+export type { LicenseUsage } from './analytics/use-license-usage'
+export type { CustomerSegment } from './analytics/use-customer-segments'
+export type { FunnelStep, ConversionFunnel } from './analytics/use-conversion-funnel'
+export type { WeeklyRetention, FeatureAdoption, CohortAnalysis } from './analytics/use-cohort-analysis'

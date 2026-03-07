@@ -1,6 +1,10 @@
 import { motion } from 'framer-motion';
 import { Activity, Award } from 'lucide-react';
-import { PieChart, Pie, Cell, Tooltip, ResponsiveContainer } from 'recharts';
+import { PieChart } from 'recharts';
+import { Pie } from 'recharts';
+import { Cell } from 'recharts';
+import { Tooltip } from 'recharts';
+import { ResponsiveContainer } from 'recharts';
 import { useTranslation } from '@/hooks';
 
 interface ChartDataItem {
