@@ -1,7 +1,10 @@
-import { useState, useMemo } from 'react'
+import { useState, useMemo, useEffect, useCallback } from 'react'
 import { cn } from '@/lib/utils'
 import * as polarAnalytics from '@/hooks/use-polar-analytics'
 import { ConversionFunnelChart } from '@/components/analytics/ConversionFunnelChart'
+import { CohortAnalysisChart } from '@/components/analytics/CohortAnalysisChart'
+import { RevenueByTierChart } from '@/components/analytics/RevenueByTierChart'
+import { TopEndpointsChart } from '@/components/analytics/TopEndpointsChart'
 import {
   BarChart,
   Bar,
@@ -17,17 +20,38 @@ import {
   ResponsiveContainer,
   Legend,
 } from 'recharts'
-import { Calendar, TrendingUp, Users, DollarSign, AlertTriangle } from 'lucide-react'
+import { Calendar, TrendingUp, Users, DollarSign, AlertTriangle, RefreshCw } from 'lucide-react'
 import type { LicenseUsage } from '@/hooks/use-polar-analytics'
 
 const COLORS = ['#10b981', '#3b82f6', '#8b5cf6', '#f59e0b', '#ef4444']
 
 export function LicenseAnalyticsDashboard({ className }: { className?: string }) {
   const [dateRange, setDateRange] = useState<'7d' | '30d' | '90d'>('30d')
+  const [isRefreshing, setIsRefreshing] = useState(false)
   const days = dateRange === '7d' ? 7 : dateRange === '30d' ? 30 : 90
-  const { data: revenueData, loading: revenueLoading } = polarAnalytics.useRevenue({ days })
+
+  // Auto-refresh every 30 seconds
+  const { data: revenueData, loading: revenueLoading, refresh: refreshRevenue } = polarAnalytics.useRevenue({ days, autoRefresh: true })
   const { data: _cohortData, loading: cohortLoading } = polarAnalytics.useCohortRetention({ months: 6 })
-  const { data: usageData, loading: usageLoading } = polarAnalytics.useLicenseUsage({ days })
+  const { data: usageData, loading: usageLoading, refresh: refreshUsage } = polarAnalytics.useLicenseUsage({ days })
+  const { data: tierData } = polarAnalytics.useRevenueByTier({ days })
+
+  // Manual refresh handler
+  const handleRefresh = useCallback(async () => {
+    setIsRefreshing(true)
+    await Promise.all([refreshRevenue(), refreshUsage()])
+    setIsRefreshing(false)
+  }, [refreshRevenue, refreshUsage])
+
+  // Auto-refresh effect (30s interval)
+  useEffect(() => {
+    const interval = setInterval(() => {
+      refreshRevenue()
+      refreshUsage()
+    }, 30000)
+    return () => clearInterval(interval)
+  }, [refreshRevenue, refreshUsage])
+
   const dailyActiveLicensesData = useMemo(() => {
     if (!usageData) return []
     const byDate = new Map<string, { active: number; new: number; expired: number }>()
@@ -52,14 +76,20 @@ export function LicenseAnalyticsDashboard({ className }: { className?: string })
     })
     return Array.from(byLicense.values()).sort((a, b) => b.total_spend - a.total_spend).slice(0, 10).map(c => ({ name: c.license_id.slice(0, 8) + '...', spend: c.total_spend / 100, usage: c.total_usage }))
   }, [usageData])
+  const tierDistributionData = useMemo(() => {
+    if (!tierData || tierData.length === 0) return []
+    return tierData.map(t => ({ name: t.tier.charAt(0).toUpperCase() + t.tier.slice(1), value: t.license_count }))
+  }, [tierData])
   const expirationTimelineData = useMemo(() => { const months = ['T1', 'T2', 'T3', 'T4', 'T5', 'T6']; return months.map(month => ({ month, expiring: Math.floor(Math.random() * 20) + 5, renewals: Math.floor(Math.random() * 15) + 3 })) }, [])
-  const tierDistributionData = useMemo(() => { if (!revenueData) return []; return [{ name: 'Free', value: 100 }, { name: 'Basic', value: 80 }, { name: 'Premium', value: 50 }, { name: 'Enterprise', value: 15 }, { name: 'Master', value: 5 }] }, [revenueData])
   if (revenueLoading || cohortLoading || usageLoading) return (<div className="space-y-6 animate-pulse"><div className="h-64 bg-gray-800/30 rounded-2xl" /><div className="h-64 bg-gray-800/30 rounded-2xl" /><div className="h-64 bg-gray-800/30 rounded-2xl" /></div>)
   return (
     <div className={cn('space-y-6', className)}>
-      <HeaderSection dateRange={dateRange} setDateRange={setDateRange} />
+      <HeaderSection dateRange={dateRange} setDateRange={setDateRange} onRefresh={handleRefresh} isRefreshing={isRefreshing} />
       <StatisticsSection revenueData={revenueData} />
       <ConversionFunnelChart />
+      <CohortAnalysisChart />
+      <TopEndpointsChart />
+      <RevenueByTierChart />
       <DailyActiveLicensesChart data={dailyActiveLicensesData} />
       <RevenueOverTimeChart data={revenueOverTimeData} />
       <ChartsGrid topCustomersData={topCustomersData} tierDistributionData={tierDistributionData} />
@@ -68,10 +98,39 @@ export function LicenseAnalyticsDashboard({ className }: { className?: string })
   )
 }
 
-function HeaderSection({ dateRange, setDateRange }: { dateRange: '7d' | '30d' | '90d'; setDateRange: (r: any) => void }) {
+function HeaderSection({ dateRange, setDateRange, onRefresh, isRefreshing }: { dateRange: '7d' | '30d' | '90d'; setDateRange: (r: any) => void; onRefresh: () => void; isRefreshing: boolean }) {
   return (
-    <div className="flex items-center justify-between"><h2 className="text-xl font-semibold text-white">Phân Tích Giấy Phép</h2>
-      <div className="flex items-center gap-2">{(['7d', '30d', '90d'] as const).map(range => (<button key={range} onClick={() => setDateRange(range)} className={cn('px-3 py-1.5 rounded-lg text-sm font-medium transition-all', dateRange === range ? 'bg-blue-500/20 text-blue-400 border border-blue-500/30' : 'text-gray-400 hover:text-white border border-transparent')}>{range === '7d' ? '7 ngày' : range === '30d' ? '30 ngày' : '90 ngày'}</button>))}</div>
+    <div className="flex items-center justify-between">
+      <h2 className="text-xl font-semibold text-white">Phân Tích Giấy Phép</h2>
+      <div className="flex items-center gap-2">
+        {(['7d', '30d', '90d'] as const).map(range => (
+          <button
+            key={range}
+            onClick={() => setDateRange(range)}
+            className={cn(
+              'px-3 py-1.5 rounded-lg text-sm font-medium transition-all',
+              dateRange === range
+                ? 'bg-blue-500/20 text-blue-400 border border-blue-500/30'
+                : 'text-gray-400 hover:text-white border border-transparent'
+            )}
+          >
+            {range === '7d' ? '7 ngày' : range === '30d' ? '30 ngày' : '90 ngày'}
+          </button>
+        ))}
+        <button
+          onClick={onRefresh}
+          disabled={isRefreshing}
+          className={cn(
+            'p-2 rounded-lg transition-all',
+            isRefreshing
+              ? 'bg-gray-700/50 text-gray-500 cursor-not-allowed'
+              : 'bg-blue-500/20 text-blue-400 hover:bg-blue-500/30 border border-blue-500/30'
+          )}
+          title="Làm mới dữ liệu"
+        >
+          <RefreshCw className={cn('w-4 h-4', isRefreshing && 'animate-spin')} />
+        </button>
+      </div>
     </div>
   )
 }
@@ -112,7 +171,7 @@ function TopCustomersChart({ data }: { data: any[] }) {
 }
 
 function TierDistributionChart({ data }: { data: any[] }) {
-  return (<div className="p-6 rounded-2xl border border-white/10 bg-gradient-to-br from-gray-800/50 to-gray-900/50"><h3 className="text-lg font-semibold text-white mb-4">Phân Bố Gói Dịch Vụ</h3><div className="h-64"><ResponsiveContainer width="100%" height="100%"><PieChart><Pie data={data} cx="50%" cy="50%" innerRadius={60} outerRadius={80} paddingAngle={2} dataKey="value" label={({ name, percent }) => `${name} ${(percent * 100).toFixed(0)}%`}>{data.map((entry, index) => (<Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />))}</Pie><Tooltip contentStyle={{ backgroundColor: '#1f2937', border: '1px solid #374151', borderRadius: '0.5rem' }} /></PieChart></ResponsiveContainer></div></div>)
+  return (<div className="p-6 rounded-2xl border border-white/10 bg-gradient-to-br from-gray-800/50 to-gray-900/50"><h3 className="text-lg font-semibold text-white mb-4">Phân Bố Gói Dịch Vụ</h3><div className="h-64"><ResponsiveContainer width="100%" height="100%"><PieChart><Pie data={data} cx="50%" cy="50%" innerRadius={60} outerRadius={80} paddingAngle={2} dataKey="value" label={({ name, percent }) => `${name} ${(percent * 100).toFixed(0)}%`}>{data.map((_, index) => (<Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />))}</Pie><Tooltip contentStyle={{ backgroundColor: '#1f2937', border: '1px solid #374151', borderRadius: '0.5rem' }} /></PieChart></ResponsiveContainer></div></div>)
 }
 
 function ExpirationTimelineChart({ data }: { data: any[] }) {
