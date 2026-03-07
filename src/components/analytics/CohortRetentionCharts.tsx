@@ -6,7 +6,7 @@
 import { useMemo } from 'react'
 import { cn } from '@/lib/utils'
 import { ResponsiveContainer, AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, Legend, BarChart, Bar, LineChart, Line } from 'recharts'
-import type { CohortRetention } from '@/hooks/use-polar-analytics'
+import type { CohortRetention } from '@/hooks/analytics/use-cohort-retention'
 import { ChartCard } from './PremiumCharts'
 
 interface CohortRetentionMatrixProps {
@@ -23,7 +23,7 @@ export function CohortRetentionMatrix({ data, className }: CohortRetentionMatrix
       periods,
       getValue: (cohortMonth: string, period: number) => {
         const cohort = data.find(c => c.cohort_month === cohortMonth)
-        const periodData = cohort?.periods.find(p => p.day === period)
+        const periodData = cohort?.periods.find((p: { day: number }) => p.day === period)
         return periodData?.retained_percentage || 0
       },
     }
@@ -94,7 +94,7 @@ export function RetentionCurveChart({ data, className }: RetentionCurveChartProp
     return periods.map(period => {
       const point: Record<string, any> = { day: period }
       data.forEach(cohort => {
-        const periodData = cohort.periods.find(p => p.day === period)
+        const periodData = cohort.periods.find((p: { day: number }) => p.day === period)
         const cohortKey = new Date(cohort.cohort_month).toLocaleDateString('vi-VN', { month: 'short', year: '2-digit' })
         point[cohortKey] = periodData?.retained_percentage || 0
       })

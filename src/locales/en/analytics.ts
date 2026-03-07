@@ -81,8 +81,20 @@ export const analytics = {
     operational_roi: 'Operational ROI',
     export_pdf: 'Export PDF',
     export_csv: 'Export CSV',
+    export_dropdown: 'Export Data',
+    export_all_csv: 'Export All (CSV)',
     last_updated: 'Last Updated',
     refresh: 'Refresh',
+  },
+
+  // Export
+  export: {
+    top_customers: 'Top Customers',
+    tier_distribution: 'Tier Distribution',
+    revenue_over_time: 'Revenue Over Time',
+    daily_active_licenses: 'Daily Active Licenses',
+    full_dashboard: 'Full Dashboard',
+    generated_at: 'Generated at',
   },
 
   // Charts
@@ -107,6 +119,20 @@ export const analytics = {
     this_year: 'This Year',
   },
 
+  // Date Range Picker
+  dateRange: {
+    custom: 'Custom',
+    preset_7d: '7 days',
+    preset_30d: '30 days',
+    preset_90d: '90 days',
+    select_range: 'Select date range',
+    from: 'From',
+    to: 'To',
+    apply: 'Apply',
+    cancel: 'Cancel',
+    format: 'MM/dd/yyyy',
+  },
+
   // Actions
   actions: {
     view_details: 'View Details',
@@ -121,6 +147,39 @@ export const analytics = {
     quota_exceeded: 'Quota Exceeded',
     low_roi: 'Low ROI Warning',
     churn_risk: 'Churn Risk',
+  },
+
+  // Premium Tiers
+  premium: {
+    tier: {
+      free: 'Free',
+      pro: 'Pro',
+      enterprise: 'Enterprise',
+    },
+    badge: {
+      current_tier: 'Current Tier',
+    },
+    gate: {
+      title: 'Premium Feature',
+      description: 'Upgrade to unlock this feature',
+      upgrade_button: 'Upgrade Now',
+    },
+    upgrade: {
+      title: 'Upgrade Plan',
+      description: 'Unlock full analytics potential',
+      current_tier: 'Current plan',
+      features_title: 'Included Features',
+      cta_contact: 'Contact us for custom solutions',
+      contact_button: 'Contact',
+    },
+    features: {
+      basic_metrics: 'Basic Metrics (GMV, Active Licenses)',
+      advanced_analytics: 'Advanced Analytics (Cohort, Funnel)',
+      export_csv: 'Export CSV',
+      export_pdf: 'Export PDF',
+      real_time_sync: 'Real-time Sync (30s auto-refresh)',
+      custom_date_range: 'Custom Date Range Picker',
+    },
   },
 }
 

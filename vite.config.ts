@@ -58,10 +58,11 @@ export default defineConfig({
   },
   build: {
     target: 'es2020',
+    cssTarget: 'es2020',
     cssMinify: 'esbuild',
     cssCodeSplit: true,
     ssr: false,
-    chunkSizeWarningLimit: 1000, // Increased limit for heavy charts
+    chunkSizeWarningLimit: 500, // Aggressive splitting
     minify: 'esbuild',
     sourcemap: false,
     reportCompressedSize: false,
@@ -70,6 +71,7 @@ export default defineConfig({
       output: {
         manualChunks(id) {
           if (id.includes('node_modules')) {
+            // Core React stack
             if (
               id.includes('node_modules/react/') ||
               id.includes('node_modules/react-dom/') ||
@@ -78,26 +80,41 @@ export default defineConfig({
             ) {
               return 'react-vendor';
             }
+            // Query & caching
+            if (id.includes('@tanstack')) return 'tanstack';
+            // AI/ML libraries - heavy, separate chunk
+            if (id.includes('@ai-sdk') || id.includes('ai')) return 'ai-sdk';
+            // Animation
             if (id.includes('framer-motion')) return 'animation';
+            // Backend services
             if (id.includes('@supabase')) return 'supabase';
+            // Icons - tree-shakeable
             if (id.includes('lucide-react')) return 'icons';
+            // i18n
             if (id.includes('i18next')) return 'i18n';
+            // Forms & validation
             if (id.includes('zod') || id.includes('react-hook-form')) return 'forms';
+            // State management
             if (id.includes('zustand')) return 'state';
+            // Error tracking
             if (id.includes('@sentry')) return 'sentry';
+            // Charts - heavy visualization
             if (id.includes('recharts') || id.includes('react-js-geometry') || id.includes('react-js-surface')) return 'charts';
-            // Heavy PDF library - separate chunk for lazy loading
+            // PDF - very heavy, lazy load
             if (id.includes('@react-pdf') || id.includes('pdfkit') || id.includes('react-pdf')) return 'pdf';
           }
           return undefined;
         },
         // Optimize chunk loading
         inlineDynamicImports: false,
+        // Improve caching
+        entryFileNames: 'assets/[name].[hash].js',
+        chunkFileNames: 'assets/[name].[hash].js',
       },
     },
   },
   optimizeDeps: {
-    include: ['react', 'react-dom', 'react-router-dom', 'zustand'],
+    include: ['react', 'react-dom', 'react-router-dom', 'zustand', '@tanstack/react-query'],
     exclude: ['@react-pdf/renderer', 'recharts', 'pdfkit', '@ai-sdk/*', 'ai'],
     esbuildOptions: {
       target: 'es2020',

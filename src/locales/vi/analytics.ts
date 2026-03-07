@@ -81,8 +81,20 @@ export const analytics = {
     operational_roi: 'ROI Vận Hành',
     export_pdf: 'Xuất PDF',
     export_csv: 'Xuất CSV',
+    export_dropdown: 'Xuất Dữ Liệu',
+    export_all_csv: 'Xuất Tất Cả (CSV)',
     last_updated: 'Cập Nhật Lần Cuối',
     refresh: 'Làm Mới',
+  },
+
+  // Export
+  export: {
+    top_customers: 'Top Khách Hàng',
+    tier_distribution: 'Phân Bố Gói',
+    revenue_over_time: 'Doanh Thu Theo Thời Gian',
+    daily_active_licenses: 'Giấy Phép Hoạt Động Hàng Ngày',
+    full_dashboard: 'Toàn Bộ Dashboard',
+    generated_at: 'Tạo lúc',
   },
 
   // Charts
@@ -107,6 +119,20 @@ export const analytics = {
     this_year: 'Năm Nay',
   },
 
+  // Date Range Picker
+  dateRange: {
+    custom: 'Tùy chỉnh',
+    preset_7d: '7 ngày',
+    preset_30d: '30 ngày',
+    preset_90d: '90 ngày',
+    select_range: 'Chọn khoảng thời gian',
+    from: 'Từ',
+    to: 'Đến',
+    apply: 'Áp dụng',
+    cancel: 'Hủy',
+    format: 'dd/MM/yyyy',
+  },
+
   // Actions
   actions: {
     view_details: 'Xem Chi Tiết',
@@ -121,6 +147,39 @@ export const analytics = {
     quota_exceeded: 'Vượt Hạn Mức',
     low_roi: 'Cảnh Báo ROI Thấp',
     churn_risk: 'Nguy Cơ Hủy Dịch Vụ',
+  },
+
+  // Premium Tiers
+  premium: {
+    tier: {
+      free: 'Miễn Phí',
+      pro: 'Pro',
+      enterprise: 'Doanh Nghiệp',
+    },
+    badge: {
+      current_tier: 'Gói Hiện Tại',
+    },
+    gate: {
+      title: 'Tính Năng Premium',
+      description: 'Nâng cấp để mở khóa tính năng này',
+      upgrade_button: 'Nâng Cấp Ngay',
+    },
+    upgrade: {
+      title: 'Nâng Cấp Gói Dịch Vụ',
+      description: 'Mở khóa toàn bộ tiềm năng analytics',
+      current_tier: 'Gói hiện tại',
+      features_title: 'Tính năng bao gồm',
+      cta_contact: 'Liên hệ để có giải pháp phù hợp',
+      contact_button: 'Liên Hệ',
+    },
+    features: {
+      basic_metrics: 'Basic Metrics (GMV, Active Licenses)',
+      advanced_analytics: 'Advanced Analytics (Cohort, Funnel)',
+      export_csv: 'Export CSV',
+      export_pdf: 'Export PDF',
+      real_time_sync: 'Real-time Sync (30s auto-refresh)',
+      custom_date_range: 'Custom Date Range Picker',
+    },
   },
 }
 

@@ -88,6 +88,30 @@ WellNexus là nền tảng sức khỏe RaaS (Retail-as-a-Service) sử dụng h
 - 5-tier limits: free, basic, premium, enterprise, master (unlimited)
 - Usage analytics API with current usage, quotas, and breakdowns
 
+### 8. Hệ Thống Analytics Dashboard (ROIaaS Phase 5)
+- **LicenseAnalyticsDashboard**: Revenue metrics, cohort retention, conversion funnel, tier breakdown
+- Real-time polling (30s refresh interval)
+- Export features (CSV/PDF - Enterprise only)
+- Custom date range picker (Pro+ only)
+- Premium gate system với tier-based content gating
+
+**Premium Gate System:**
+- Free: Basic metrics (GMV, MRR, active licenses, tier distribution)
+- Pro: Advanced charts (cohort analysis, conversion funnel, revenue over time)
+- Enterprise: Full access + CSV/PDF export + custom date range
+
+**Data Flow:**
+```
+Polar.sh Webhooks → Edge Functions → Supabase → Analytics Hooks → Dashboard
+```
+
+**Analytics Hooks:**
+- `useRevenue`: GMV, MRR, ARR, growth rate, churn rate
+- `useCohortRetention`: 6-month retention curves
+- `useLicenseUsage`: API calls, daily active licenses
+- `useConversionFunnel`: 5-step funnel with drop-off tracking
+- `useRevenueByTier`: Breakdown by free/pro/enterprise
+
 ## Luồng Dữ Liệu
 
 ### Luồng Giao Dịch Chính

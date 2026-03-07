@@ -73,6 +73,7 @@ import { ErrorBoundary } from './components/ErrorBoundary';
 import { LanguageProvider } from './context/LanguageContext';
 import { initSentry } from './utils/sentry';
 import './styles/design-system.css';
+import './styles/print.css';
 import './index.css';
 import { validateConfig } from './utils/validate-config';
 

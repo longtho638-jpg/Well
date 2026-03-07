@@ -1,0 +1,137 @@
+/**
+ * Print styles for Analytics Dashboard
+ * WellNexus Distributor Portal
+ */
+
+@media print {
+  /* Hide non-essential elements */
+  nav,
+  header:not(.print-header),
+  aside,
+  .sidebar,
+  .navigation,
+  .no-print {
+    display: none !important;
+  }
+
+  /* Main container adjustments */
+  main,
+  .main-content {
+    width: 100% !important;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+
+  /* Dashboard container */
+  .print-view {
+    background: white !important;
+    color: black !important;
+    padding: 20px !important;
+  }
+
+  /* Cards and sections */
+  .print-view .rounded-2xl,
+  .print-view .rounded-xl {
+    border: 1px solid #e5e7eb !important;
+    background: white !important;
+    box-shadow: none !important;
+    page-break-inside: avoid;
+  }
+
+  /* Typography */
+  .print-view h2,
+  .print-view h3 {
+    color: black !important;
+    font-size: 16pt !important;
+  }
+
+  .print-view p,
+  .print-view span {
+    color: black !important;
+  }
+
+  /* Charts container */
+  .print-view .recharts-wrapper {
+    background: white !important;
+  }
+
+  /* Table styles */
+  .print-view table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+
+  .print-view th,
+  .print-view td {
+    border: 1px solid #e5e7eb;
+    padding: 8px;
+    text-align: left;
+  }
+
+  .print-view th {
+    background: #f3f4f6 !important;
+    font-weight: bold;
+  }
+
+  /* Page breaks between sections */
+  .print-section {
+    page-break-after: always;
+  }
+
+  .print-section:last-child {
+    page-break-after: auto;
+  }
+
+  /* Header branding for print */
+  .print-header {
+    display: block !important;
+    text-align: center;
+    margin-bottom: 20px;
+    padding-bottom: 20px;
+    border-bottom: 2px solid #e5e7eb;
+  }
+
+  .print-header h1 {
+    font-size: 24pt;
+    color: black;
+  }
+
+  .print-header .timestamp {
+    font-size: 10pt;
+    color: #6b7280;
+    margin-top: 8px;
+  }
+
+  /* Ensure charts render properly */
+  .print-view canvas,
+  .print-view svg {
+    max-width: 100%;
+    height: auto;
+  }
+
+  /* Remove interactive elements */
+  button,
+  input,
+  select {
+    display: none !important;
+  }
+
+  /* Remove gradients for print */
+  .print-view .bg-gradient-to-br {
+    background: #f9fafb !important;
+  }
+
+  /* Stat cards */
+  .print-view .stat-card {
+    border: 1px solid #e5e7eb;
+    padding: 16px;
+    margin: 8px 0;
+  }
+}
+
+/* Screen-only styles (hide when printing) */
+@media screen {
+  .print-only {
+    display: none;
+  }
+}

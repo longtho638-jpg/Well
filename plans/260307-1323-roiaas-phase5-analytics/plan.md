@@ -1,13 +1,14 @@
 ---
 title: ROIaaS Phase 5 - Analytics Dashboard
-description: Dual-stream revenue + usage analytics with ROI calculator and premium visualizations
+description: Dual-stream revenue + usage analytics with ROI calculator, premium visualizations, and 7 dashboard enhancements
 status: complete
 priority: P1
 effort: 4h
 branch: main
-tags: [roiaas, analytics, revenue, roi, dashboard, phase-5]
+tags: [roiaas, analytics, revenue, roi, dashboard, phase-5, phase-6]
 created: 2026-03-07
-completed: 2026-03-07T13:45+07:00
+completed: 2026-03-07T21:45+07:00
+progress: 100%
 ---
 
 # ROIaaS Phase 5: Analytics Dashboard
@@ -19,7 +20,7 @@ completed: 2026-03-07T13:45+07:00
 | Phase | Status | Files |
 |-------|--------|-------|
 | 1. Revenue Schema | ✅ | `supabase/migrations/202603071500_revenue_analytics_schema.sql` |
-| 2. Revenue Hooks | ✅ | `src/hooks/use-revenue-analytics.ts` |
+| 2. Revenue Hooks | ✅ | `src/hooks/analytics/use-revenue.ts` |
 | 3. Revenue Dashboard | ✅ | `src/components/analytics/RevenueMetricsCards.tsx` |
 | 4. User Metrics | ✅ | `src/components/analytics/UserMetricsDashboard.tsx` |
 | 5. ROI Calculator | ✅ | `src/components/analytics/ROICalculator.tsx` |
@@ -27,6 +28,7 @@ completed: 2026-03-07T13:45+07:00
 | Main Page | ✅ | `src/pages/AnalyticsDashboard.tsx` |
 | Types | ✅ | `src/types/revenue-analytics.ts` |
 | i18n | ✅ | `src/locales/en|vi/analytics.ts` |
+| 7. Analytics Dashboard Enhancements | ✅ | `src/hooks/use-top-endpoints.ts`, `src/components/analytics/TopEndpointsChart.tsx`, `src/components/analytics/RevenueByTierChart.tsx`, `src/components/admin/LicenseAnalyticsDashboard.tsx` |
 
 ## Verification
 
@@ -71,21 +73,21 @@ Build comprehensive analytics dashboard following HIẾN PHÁP ROIaaS dual-strea
 
 | # | Phase | Status | Deliverables | Effort |
 |---|-------|--------|--------------|--------|
-| 1 | Revenue Schema | pending | Revenue tables, ROI types, i18n keys | 2h |
-| 2 | Revenue Hooks | pending | `useRevenue`, `useMetrics`, `useROI` | 2.5h |
-| 3 | Revenue Dashboard | pending | GMV/MRR/ARR cards, revenue trends | 3h |
-| 4 | User Metrics | pending | DAU/MAU, cohorts, churn, funnels | 2.5h |
-| 5 | ROI Calculator | pending | ROI engine, cost calculator, margins | 2h |
-| 6 | Premium Viz | pending | Aura Elite charts, gauges, export | 2h |
+| 1 | Revenue Schema | complete | Revenue tables, ROI types, i18n keys | 2h |
+| 2 | Revenue Hooks | complete | `useRevenue`, `useMetrics`, `useROI` | 2.5h |
+| 3 | Revenue Dashboard | complete | GMV/MRR/ARR cards, revenue trends | 3h |
+| 4 | User Metrics | complete | DAU/MAU, cohorts, churn, funnels | 2.5h |
+| 5 | ROI Calculator | complete | ROI engine, cost calculator, margins | 2h |
+| 6 | Premium Viz | complete | Aura Elite charts, gauges, export | 2h |
 
 ## Effort Breakdown
 
-- **Phase 1:** 2h - Schema, types, i18n, views
-- **Phase 2:** 2.5h - Hooks, context, data fetching
-- **Phase 3:** 3h - Revenue dashboard UI components
-- **Phase 4:** 2.5h - User analytics, cohort analysis
-- **Phase 5:** 2h - ROI calculation engine + UI
-- **Phase 6:** 2h - Premium visualizations, export
+- **Phase 1:** 2h - Schema, types, i18n, views ✅
+- **Phase 2:** 2.5h - Hooks, context, data fetching ✅
+- **Phase 3:** 3h - Revenue dashboard UI components ✅
+- **Phase 4:** 2.5h - User analytics, cohort analysis ✅
+- **Phase 5:** 2h - ROI calculation engine + UI ✅
+- **Phase 6:** 2h - Premium visualizations, export ✅
 - **Total:** 14h
 
 ## Dependencies
@@ -148,15 +150,24 @@ Build comprehensive analytics dashboard following HIẾN PHÁP ROIaaS dual-strea
 - Admin-only access for Operational ROI
 - Audit log for all ROI calculations
 
+## Analytics Dashboard Enhancements (Phase 6)
+
+| Feature | Status | Description |
+|---------|--------|-------------|
+| AdminRoute Protection | ✅ | `/admin/analytics` protected |
+| Top Endpoints Chart | ✅ | Top 10 endpoints by call volume |
+| Revenue by Tier Chart | ✅ | Pie chart with tier breakdown |
+| Real-time Auto Refresh | ✅ | 30s polling interval |
+| Time Granularity Toggle | ✅ | Day/Week/Month views |
+| Real Tier Distribution | ✅ | DB data (not mock) |
+| Top Customers Toggle | ✅ | By Spend / By Usage |
+
 ## Next Steps
 
-1. Create Phase 1 detailed plan → Database schema
-2. Execute phases sequentially
-3. Run tests after each phase
-4. Verify production deployment
+**All phases complete. Production deployment ready.**
 
 ---
 
-_Last Updated: 2026-03-07_
-_Author: Planner Agent_
-_Status: Ready for Implementation_
+_Last Updated: 2026-03-07T21:45+07:00_
+_Author: Project Manager_
+_Status: COMPLETE - All phases implemented, tested, and verified_
