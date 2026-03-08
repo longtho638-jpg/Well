@@ -1,120 +1,531 @@
 /**
- * Stripe Dunning Management - Supabase Edge Function
+ * Stripe Dunning Webhook Handler - Supabase Edge Function
  *
- * Handles automatic payment retry logic and dunning email notifications.
- * Triggered by webhook events or scheduled cron job.
+ * Handles Stripe webhook events for payment failures and dunning management:
+ * - invoice.payment_failed: Trigger dunning sequence
+ * - customer.subscription.updated: Sync subscription status
+ * - invoice.upcoming: Send pre-renewal notifications
+ * - invoice.paid: Resolve dunning events
+ * - payment_intent.payment_failed: Notify users of failed payments
  *
  * POST /functions/v1/stripe-dunning
- * Body: { action: 'retry' | 'notify' | 'cancel', subscription_id: string }
+ * Headers:
+ *   Stripe-Signature: <webhook_signature>
+ *
+ * Body: Stripe webhook event payload
+ *
+ * Response:
+ * { received: true, event_type: string, processed: boolean }
  */
 
 import { serve } from 'https://deno.land/std@0.168.0/http/server.ts'
-import { createAdminClient, jsonRes } from './_shared/vibe-payos/edge-function-helpers.ts'
+import { createClient } from 'https://esm.sh/@supabase/supabase-js@2'
+import Stripe from 'https://esm.sh/stripe@11.18.0?dts'
+import { corsHeaders } from '../_shared/cors.ts'
+
+// Initialize Stripe
+const stripe = new Stripe(Deno.env.get('STRIPE_SECRET_KEY') || '', {
+  apiVersion: '2023-10-16',
+})
+
+// Dunning email sequence configuration
+const DUNNING_SEQUENCE = [
+  { stage: 'initial', day: 0, template: 'dunning-initial' },
+  { stage: 'reminder', day: 2, template: 'dunning-reminder' },
+  { stage: 'final', day: 5, template: 'dunning-final' },
+  { stage: 'cancel_notice', day: 10, template: 'dunning-cancel' },
+]
 
 const RESEND_API_KEY = Deno.env.get('RESEND_API_KEY')
-const STRIPE_SECRET_KEY = Deno.env.get('STRIPE_SECRET_KEY')
 const APP_URL = Deno.env.get('APP_URL') || 'https://wellnexus.vn'
+const RAAAS_GATEWAY_URL = Deno.env.get('RAAS_GATEWAY_URL') || 'https://raas.agencyos.network'
 
-serve(async (req) => {
+interface DetailedWebhookResponse {
+  success: boolean
+  event_type: string
+  processed: boolean
+  error?: string
+  dunning_id?: string
+  metadata?: any
+}
+
+serve(async (req: Request) => {
+  const supabaseUrl = Deno.env.get('SUPABASE_URL') ?? ''
+  const serviceRoleKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') ?? ''
+  const stripeWebhookSecret = Deno.env.get('STRIPE_WEBHOOK_SECRET') ?? ''
+
+  const supabase = createClient(supabaseUrl, serviceRoleKey)
+
+  // Handle CORS preflight
   if (req.method === 'OPTIONS') {
-    return new Response('ok', {
-      headers: {
-        'Access-Control-Allow-Origin': '*',
-        'Access-Control-Allow-Headers': 'authorization, content-type',
-      }
-    })
+    return new Response('ok', { headers: corsHeaders })
   }
 
   try {
-    const body = await req.json()
-    const { action, subscription_id } = body
-
-    if (!action || !subscription_id) {
-      return jsonRes({ error: 'Missing action or subscription_id' }, 400)
+    // Validate HTTP method
+    if (req.method !== 'POST') {
+      return new Response(JSON.stringify({ error: 'Method not allowed' }), {
+        status: 405,
+        headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+      })
     }
 
-    const supabase = createAdminClient()
-
-    // Get subscription details
-    const { data: subscription } = await supabase
-      .from('user_subscriptions')
-      .select('*, users(email, full_name)')
-      .eq('stripe_subscription_id', subscription_id)
-      .single()
-
-    if (!subscription) {
-      return jsonRes({ error: 'Subscription not found' }, 404)
+    // Get Stripe signature
+    const signature = req.headers.get('Stripe-Signature')
+    if (!signature) {
+      return new Response(JSON.stringify({ error: 'Missing Stripe-Signature header' }), {
+        status: 400,
+        headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+      })
     }
 
-    const user = subscription.users
-    const retryCount = (subscription.metadata as any)?.dunning_retry_count || 0
-    const maxRetries = 3
-    const retryIntervals = [1, 3, 7] // Days between retries
+    // Read and parse webhook payload
+    const body = await req.text()
 
-    switch (action) {
-      case 'retry': {
-        // Attempt payment retry
-        if (retryCount >= maxRetries) {
-          // Cancel subscription after max retries
-          await handleCancelSubscription(subscription_id, supabase)
-          await sendDunningEmail(user.email, user.full_name, subscription, 'cancelled')
-          return jsonRes({ status: 'cancelled', reason: 'max_retries_exceeded' })
-        }
+    // Verify webhook signature
+    let event: Stripe.Event
+    try {
+      event = stripe.webhooks.constructEvent(body, signature, stripeWebhookSecret)
+    } catch (err) {
+      console.error('[StripeDunning] Webhook signature verification failed:', err)
+      return new Response(JSON.stringify({ error: 'Invalid webhook signature' }), {
+        status: 400,
+        headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+      })
+    }
 
-        // Schedule retry via Stripe
-        const nextRetryDays = retryIntervals[retryCount] || 7
-        const nextRetryDate = new Date()
-        nextRetryDate.setDate(nextRetryDate.getDate() + nextRetryDays)
+    console.warn('[StripeDunning] Received event:', event.type, event.id)
 
-        await supabase
-          .from('user_subscriptions')
-          .update({
-            status: 'past_due',
-            metadata: {
-              ...((subscription.metadata as any) || {}),
-              dunning_retry_count: retryCount + 1,
-              next_retry_date: nextRetryDate.toISOString(),
-              last_dunning_action: 'retry_scheduled',
-            },
-          })
-          .eq('id', subscription.id)
+    // Process event by type
+    const result: DetailedWebhookResponse = {
+      success: true,
+      event_type: event.type,
+      processed: true,
+    }
 
-        // Send retry notification email
-        await sendDunningEmail(user.email, user.full_name, subscription, 'retry', nextRetryDays)
+    switch (event.type) {
+      case 'invoice.payment_failed':
+        await handleInvoicePaymentFailed(event, supabase, result)
+        break
 
-        return jsonRes({
-          status: 'retry_scheduled',
-          next_retry: nextRetryDate.toISOString(),
-          retry_count: retryCount + 1,
-        })
-      }
+      case 'customer.subscription.updated':
+        await handleSubscriptionUpdated(event, supabase, result)
+        break
 
-      case 'notify': {
-        // Send dunning notification without scheduling retry
-        await sendDunningEmail(user.email, user.full_name, subscription, 'notice')
-        return jsonRes({ status: 'notification_sent' })
-      }
+      case 'invoice.upcoming':
+        await handleInvoiceUpcoming(event, supabase, result)
+        break
 
-      case 'cancel': {
-        await handleCancelSubscription(subscription_id, supabase)
-        await sendDunningEmail(user.email, user.full_name, subscription, 'cancelled')
-        return jsonRes({ status: 'cancelled' })
-      }
+      case 'invoice.paid':
+        await handleInvoicePaid(event, supabase, result)
+        break
+
+      case 'customer.subscription.deleted':
+        await handleSubscriptionDeleted(event, supabase, result)
+        break
+
+      case 'payment_intent.payment_failed':
+        await handlePaymentIntentFailed(event, supabase, result)
+        break
 
       default:
-        return jsonRes({ error: 'Invalid action' }, 400)
+        console.warn('[StripeDunning] Unhandled event type:', event.type)
+        result.processed = false
     }
 
-  } catch (err) {
-    console.error('[StripeDunning] Error:', err)
-    return jsonRes({ error: 'Internal server error' }, 500)
+    return new Response(JSON.stringify(result), {
+      status: 200,
+      headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+    })
+
+  } catch (error) {
+    console.error('[StripeDunning] Error:', error)
+
+    // Log failed webhook
+    try {
+      const body = await req.text()
+      await supabase
+        .from('failed_webhooks')
+        .insert({
+          webhook_id: 'unknown',
+          event_type: 'unknown',
+          payload: JSON.parse(body || '{}'),
+          error_message: error instanceof Error ? error.message : 'Unknown error',
+          next_retry_at: new Date(Date.now() + 3600000).toISOString(),
+        })
+    } catch (logError) {
+      console.error('[StripeDunning] Failed to log error:', logError)
+    }
+
+    return new Response(JSON.stringify({
+      error: 'Internal server error',
+      details: error instanceof Error ? error.message : 'Unknown error',
+    }), {
+      status: 500,
+      headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+    })
   }
 })
 
+// ============================================================
+// Event Handlers
+// ============================================================
+
 /**
- * Cancel subscription and revoke license
+ * Handle invoice.payment_failed event
+ * Trigger: Payment for an invoice fails
  */
-async function handleCancelSubscription(subscriptionId: string, supabase: any) {
+async function handleInvoicePaymentFailed(
+  event: Stripe.Event,
+  supabase: any,
+  result: DetailedWebhookResponse
+) {
+  const invoice = event.data.object as Stripe.Invoice
+  console.warn('[StripeDunning] invoice.payment_failed:', invoice.id)
+
+  // Get customer details
+  const customer = await stripe.customers.retrieve(invoice.customer as string)
+  if (customer.deleted) {
+    console.warn('[StripeDunning] Customer deleted:', invoice.customer)
+    return
+  }
+
+  const orgId = customer.metadata?.org_id
+  const userId = customer.metadata?.user_id
+
+  if (!orgId) {
+    console.error('[StripeDunning] Missing org_id in customer metadata')
+    throw new Error('Missing org_id in customer metadata')
+  }
+
+  // Get dunning config
+  const { data: config } = await supabase.rpc('get_dunning_config', { p_org_id: orgId })
+  const dunningEnabled = config?.enabled !== false
+
+  if (!dunningEnabled) {
+    console.warn('[StripeDunning] Dunning disabled for org:', orgId)
+    result.metadata = { dunning_enabled: false }
+    return
+  }
+
+  // Create dunning event
+  const { data: dunningData, error: dunningError } = await supabase.rpc('log_dunning_event', {
+    p_org_id: orgId,
+    p_user_id: userId,
+    p_subscription_id: null,
+    p_stripe_invoice_id: invoice.id,
+    p_stripe_subscription_id: invoice.subscription as string,
+    p_stripe_customer_id: invoice.customer as string,
+    p_amount_owed: invoice.amount_remaining ? invoice.amount_remaining / 100 : 0,
+    p_currency: invoice.currency?.toUpperCase() || 'USD',
+    p_payment_url: invoice.hosted_invoice_url || null,
+  })
+
+  if (dunningError) {
+    console.error('[StripeDunning] Failed to log dunning event:', dunningError)
+    throw dunningError
+  }
+
+  result.dunning_id = dunningData
+  result.metadata = {
+    org_id: orgId,
+    user_id: userId,
+    amount_owed: invoice.amount_remaining / 100,
+    dunning_enabled: true,
+  }
+
+  // Update subscription status
+  await supabase
+    .from('user_subscriptions')
+    .update({
+      status: 'past_due',
+      metadata: {
+        ...((await supabase
+          .from('user_subscriptions')
+          .select('metadata')
+          .eq('stripe_subscription_id', invoice.subscription)
+          .single())
+          .data?.metadata || {}),
+        dunning_started_at: new Date().toISOString(),
+        last_payment_failed_at: new Date().toISOString(),
+      },
+    })
+    .eq('stripe_subscription_id', invoice.subscription)
+
+  // Create notification for user
+  if (userId) {
+    await supabase.rpc('create_user_notification', {
+      p_user_id: userId,
+      p_title: 'Thanh toán thất bại',
+      p_message: `Thanh toán của bạn cho hóa đơn ${invoice.id} đã thất bại. Số tiền: $${(invoice.amount_due || 0) / 100}. Vui lòng cập nhật phương thức thanh toán.`,
+      p_action_url: '/dashboard/billing',
+      p_type: 'payment_failed',
+    })
+  }
+
+  // Sync to RaaS Gateway for license state consistency
+  try {
+    await fetch(`${RAAAS_GATEWAY_URL}/api/v1/license/sync-billing`, {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${Deno.env.get('RAAS_GATEWAY_API_KEY')}`,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        org_id: orgId,
+        subscription_status: 'past_due',
+        stripe_subscription_id: invoice.subscription,
+        failed_invoice_id: invoice.id,
+        amount_owed: invoice.amount_remaining / 100,
+      }),
+    })
+    console.warn('[StripeDunning] Synced to RaaS Gateway:', orgId)
+  } catch (gatewayError) {
+    console.error('[StripeDunning] Failed to sync to RaaS Gateway:', gatewayError)
+    // Don't throw - gateway failure shouldn't fail the whole webhook
+  }
+
+  // Send dunning email (if enabled)
+  if (config?.auto_send_emails && invoice.customer_email) {
+    try {
+      await sendDunningEmail(supabase, {
+        to: invoice.customer_email,
+        template: 'dunning-initial',
+        orgId,
+        userId,
+        amount: (invoice.amount_due || 0) / 100,
+        invoiceId: invoice.id,
+        paymentUrl: invoice.hosted_invoice_url,
+      })
+
+      // Mark email as sent
+      await supabase.rpc('advance_dunning_stage', {
+        p_dunning_id: dunningData,
+        p_new_stage: 'initial',
+        p_email_template: 'dunning-initial',
+        p_email_sent: true,
+      })
+    } catch (emailError) {
+      console.error('[StripeDunning] Failed to send dunning email:', emailError)
+    }
+  }
+
+  console.warn('[StripeDunning] Dunning event created:', dunningData)
+}
+
+/**
+ * Handle customer.subscription.updated event
+ * Trigger: Subscription status changes
+ */
+async function handleSubscriptionUpdated(
+  event: Stripe.Event,
+  supabase: any,
+  result: DetailedWebhookResponse
+) {
+  const subscription = event.data.object as Stripe.Subscription
+  console.warn('[StripeDunning] customer.subscription.updated:', subscription.id)
+
+  // Map Stripe status to local status
+  const statusMap: Record<string, string> = {
+    'active': 'active',
+    'trialing': 'trialing',
+    'past_due': 'past_due',
+    'unpaid': 'past_due',
+    'canceled': 'canceled',
+    'incomplete': 'incomplete',
+    'incomplete_expired': 'canceled',
+  }
+
+  const localStatus = statusMap[subscription.status] || 'active'
+
+  // Get customer to find org_id
+  const customer = await stripe.customers.retrieve(subscription.customer as string)
+  const orgId = customer.metadata?.org_id
+
+  if (!orgId) {
+    console.warn('[StripeDunning] Missing org_id for subscription update')
+    result.metadata = { org_id_missing: true }
+    return
+  }
+
+  // Update subscription in database
+  const { error } = await supabase
+    .from('user_subscriptions')
+    .update({
+      status: localStatus,
+      current_period_end: new Date(subscription.current_period_end * 1000).toISOString(),
+      cancel_at_period_end: subscription.cancel_at_period_end,
+      canceled_at: subscription.ended_at
+        ? new Date(subscription.ended_at * 1000).toISOString()
+        : null,
+      metadata: {
+        ...((await supabase
+          .from('user_subscriptions')
+          .select('metadata')
+          .eq('stripe_subscription_id', subscription.id)
+          .single())
+          .data?.metadata || {}),
+        stripe_status: subscription.status,
+        updated_at: new Date().toISOString(),
+      },
+    })
+    .eq('stripe_subscription_id', subscription.id)
+
+  if (error) {
+    console.error('[StripeDunning] Failed to update subscription:', error)
+    throw error
+  }
+
+  // Handle transition from past_due to active (payment recovery)
+  if (subscription.status === 'active') {
+    // Resolve any open dunning events
+    const { data: openDunning } = await supabase
+      .from('dunning_events')
+      .select('id')
+      .eq('stripe_subscription_id', subscription.id)
+      .eq('resolved', false)
+      .single()
+
+    if (openDunning) {
+      await supabase.rpc('resolve_dunning_event', {
+        p_dunning_id: openDunning.id,
+        p_resolution_method: 'payment_success',
+      })
+      result.metadata = { dunning_resolved: true }
+    }
+
+    // Sync to RaaS Gateway - restore license
+    try {
+      await fetch(`${RAAAS_GATEWAY_URL}/api/v1/license/restore`, {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${Deno.env.get('RAAS_GATEWAY_API_KEY')}`,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          org_id: orgId,
+          subscription_status: 'active',
+          stripe_subscription_id: subscription.id,
+        }),
+      })
+    } catch (gatewayError) {
+      console.error('[StripeDunning] Failed to sync restore to RaaS Gateway:', gatewayError)
+    }
+  }
+
+  console.warn('[StripeDunning] Subscription updated:', subscription.id, '->', localStatus)
+}
+
+/**
+ * Handle invoice.upcoming event
+ * Trigger: Invoice preview generated before billing
+ */
+async function handleInvoiceUpcoming(
+  event: Stripe.Event,
+  supabase: any,
+  result: DetailedWebhookResponse
+) {
+  const invoice = event.data.object as Stripe.Invoice
+  console.warn('[StripeDunning] invoice.upcoming:', invoice.id)
+
+  // Get customer
+  const customer = await stripe.customers.retrieve(invoice.customer as string)
+  const orgId = customer.metadata?.org_id
+  const userId = customer.metadata?.user_id
+
+  if (!orgId) {
+    result.metadata = { org_id_missing: true }
+    return
+  }
+
+  // Send pre-renewal notification
+  if (userId && customer.email) {
+    await supabase.rpc('create_user_notification', {
+      p_user_id: userId,
+      p_title: 'Hóa đơn sắp đến hạn',
+      p_message: `Hóa đơn tiếp theo của bạn sẽ đến hạn vào ${new Date((invoice.lines?.data?.[0]?.period?.end || 0) * 1000).toLocaleDateString()}. Số tiền: $${(invoice.amount_due || 0) / 100}.`,
+      p_action_url: '/dashboard/billing',
+      p_type: 'invoice_upcoming',
+    })
+  }
+
+  console.warn('[StripeDunning] Invoice upcoming notification sent:', invoice.id)
+}
+
+/**
+ * Handle invoice.paid event
+ * Trigger: Invoice successfully paid
+ */
+async function handleInvoicePaid(
+  event: Stripe.Event,
+  supabase: any,
+  result: DetailedWebhookResponse
+) {
+  const invoice = event.data.object as Stripe.Invoice
+  console.warn('[StripeDunning] invoice.paid:', invoice.id)
+
+  // Resolve dunning event if exists
+  const { data: dunningEvent } = await supabase
+    .from('dunning_events')
+    .select('id, org_id, user_id')
+    .eq('stripe_invoice_id', invoice.id)
+    .single()
+
+  if (dunningEvent) {
+    await supabase.rpc('resolve_dunning_event', {
+      p_dunning_id: dunningEvent.id,
+      p_resolution_method: 'payment_success',
+    })
+    result.metadata = { dunning_resolved: true, dunning_id: dunningEvent.id }
+
+    // Sync to RaaS Gateway - restore license
+    if (dunningEvent.org_id) {
+      try {
+        await fetch(`${RAAAS_GATEWAY_URL}/api/v1/license/restore`, {
+          method: 'POST',
+          headers: {
+            'Authorization': `Bearer ${Deno.env.get('RAAS_GATEWAY_API_KEY')}`,
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            org_id: dunningEvent.org_id,
+            subscription_status: 'active',
+            paid_invoice_id: invoice.id,
+          }),
+        })
+      } catch (gatewayError) {
+        console.error('[StripeDunning] Failed to sync restore to RaaS Gateway:', gatewayError)
+      }
+    }
+
+    // Send payment confirmation email
+    const customer = await stripe.customers.retrieve(invoice.customer as string)
+    if (customer.email && !customer.deleted) {
+      await sendPaymentConfirmationEmail(supabase, {
+        to: customer.email,
+        orgId: dunningEvent.org_id,
+        userId: dunningEvent.user_id,
+        amount: invoice.amount_paid ? invoice.amount_paid / 100 : 0,
+        invoiceId: invoice.id,
+      })
+    }
+  }
+
+  console.warn('[StripeDunning] Invoice paid, dunning resolved:', invoice.id)
+}
+
+/**
+ * Handle customer.subscription.deleted event
+ * Trigger: Subscription canceled
+ */
+async function handleSubscriptionDeleted(
+  event: Stripe.Event,
+  supabase: any,
+  result: DetailedWebhookResponse
+) {
+  const subscription = event.data.object as Stripe.Subscription
+  console.warn('[StripeDunning] customer.subscription.deleted:', subscription.id)
+
   // Update subscription status
   await supabase
     .from('user_subscriptions')
@@ -122,195 +533,191 @@ async function handleCancelSubscription(subscriptionId: string, supabase: any) {
       status: 'canceled',
       canceled_at: new Date().toISOString(),
       metadata: {
-        cancel_reason: 'dunning_max_retries',
+        ...((await supabase
+          .from('user_subscriptions')
+          .select('metadata')
+          .eq('stripe_subscription_id', subscription.id)
+          .single())
+          .data?.metadata || {}),
+        stripe_status: 'canceled',
+        canceled_at: new Date().toISOString(),
       },
     })
-    .eq('stripe_subscription_id', subscriptionId)
+    .eq('stripe_subscription_id', subscription.id)
 
-  // Revoke license
-  await supabase
-    .from('raas_licenses')
-    .update({
-      status: 'revoked',
-      revoked_at: new Date().toISOString(),
-      metadata: {
-        revoke_reason: 'subscription_canceled_dunning',
-      },
+  // Resolve any open dunning events
+  const { data: openDunning } = await supabase
+    .from('dunning_events')
+    .select('id')
+    .eq('stripe_subscription_id', subscription.id)
+    .eq('resolved', false)
+    .single()
+
+  if (openDunning) {
+    await supabase.rpc('resolve_dunning_event', {
+      p_dunning_id: openDunning.id,
+      p_resolution_method: 'subscription_canceled',
     })
-    .eq('(metadata->>stripe_subscription_id)', subscriptionId)
+  }
 
-  console.log('[StripeDunning] Subscription cancelled:', subscriptionId)
+  // Sync to RaaS Gateway - revoke license
+  const customer = await stripe.customers.retrieve(subscription.customer as string)
+  const orgId = customer.metadata?.org_id
+  if (orgId) {
+    try {
+      await fetch(`${RAAAS_GATEWAY_URL}/api/v1/license/revoke`, {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${Deno.env.get('RAAS_GATEWAY_API_KEY')}`,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          org_id: orgId,
+          reason: 'subscription_canceled',
+          stripe_subscription_id: subscription.id,
+        }),
+      })
+    } catch (gatewayError) {
+      console.error('[StripeDunning] Failed to sync revoke to RaaS Gateway:', gatewayError)
+    }
+  }
+
+  console.warn('[StripeDunning] Subscription deleted:', subscription.id)
 }
 
 /**
- * Send dunning email notification
+ * Handle payment_intent.payment_failed event
+ * Trigger: Payment intent fails (for one-time payments)
  */
-async function sendDunningEmail(
-  to: string,
-  name: string,
-  subscription: any,
-  type: 'retry' | 'notice' | 'cancelled',
-  daysUntilRetry?: number
+async function handlePaymentIntentFailed(
+  event: Stripe.Event,
+  supabase: any,
+  result: DetailedWebhookResponse
 ) {
-  if (!RESEND_API_KEY) {
-    console.warn('[StripeDunning] RESEND_API_KEY not configured, skipping email')
+  const paymentIntent = event.data.object as Stripe.PaymentIntent
+  console.warn('[StripeDunning] payment_intent.payment_failed:', paymentIntent.id)
+
+  const customer = await stripe.customers.retrieve(paymentIntent.customer as string)
+  const orgId = customer.metadata?.org_id
+  const userId = customer.metadata?.user_id
+
+  if (!orgId) {
+    result.metadata = { org_id_missing: true }
     return
   }
 
-  const subjectMap = {
-    retry: `⚠️ Thanh toán thất bại - Vui lòng cập nhật phương thức thanh toán`,
-    notice: `🔔 Nhắc nhở: Subscription của bạn đang bị tạm ngưng`,
-    cancelled: `❌ Subscription đã bị hủy do thanh toán thất bại`,
-  }
-
-  const templateData = {
-    userName: name || 'Bạn',
-    subscriptionPlan: subscription?.plan_name || 'Subscription',
-    amountDue: '$9.00',
-    daysUntilRetry: daysUntilRetry?.toString() || '3',
-    updatePaymentUrl: `${APP_URL}/dashboard/subscription`,
-    contactSupportUrl: `${APP_URL}/support`,
-  }
-
-  const emailHtml = generateDunningEmailHTML(type, templateData)
-
-  try {
-    const response = await fetch('https://api.resend.com/emails', {
-      method: 'POST',
-      headers: {
-        'Authorization': `Bearer ${RESEND_API_KEY}`,
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        from: 'WellNexus <noreply@wellnexus.vn>',
-        to,
-        subject: subjectMap[type],
-        html: emailHtml,
-      }),
+  // Create notification for user
+  if (userId) {
+    await supabase.rpc('create_user_notification', {
+      p_user_id: userId,
+      p_title: 'Thanh toán thất bại',
+      p_message: `Thanh toán của bạn đã thất bại. Số tiền: $${(paymentIntent.amount || 0) / 100}. Vui lòng thử lại.`,
+      p_action_url: '/dashboard/billing',
+      p_type: 'payment_failed',
     })
+  }
 
-    if (!response.ok) {
-      const errorData = await response.json()
-      console.error('[StripeDunning] Email error:', errorData)
-    } else {
-      const result = await response.json()
-      console.log('[StripeDunning] Email sent:', result.id)
-    }
-  } catch (err) {
-    console.error('[StripeDunning] Send email error:', err)
+  console.warn('[StripeDunning] Payment intent failed notification sent:', paymentIntent.id)
+}
+
+// ============================================================
+// Email Helpers
+// ============================================================
+
+interface DunningEmailParams {
+  to: string
+  template: string
+  orgId: string
+  userId?: string
+  amount: number
+  invoiceId: string
+  paymentUrl?: string | null
+}
+
+async function sendDunningEmail(
+  supabase: any,
+  params: DunningEmailParams
+) {
+  const { to, template, orgId, userId, amount, invoiceId, paymentUrl } = params
+
+  // Get org/subscription details for email template
+  const { data: subscription } = await supabase
+    .from('user_subscriptions')
+    .select('metadata')
+    .eq('org_id', orgId)
+    .single()
+
+  const planName = subscription?.metadata?.plan_name || 'Subscription'
+
+  // Call email service
+  const { error } = await supabase.functions.invoke('send-email', {
+    body: {
+      to,
+      subject: getDunningEmailSubject(template, amount),
+      templateType: template,
+      data: {
+        userName: 'Bạn',
+        amount: `$${amount.toFixed(2)}`,
+        invoiceId,
+        planName,
+        paymentUrl: paymentUrl || '/dashboard/billing',
+        daysUntilSuspension: getDaysUntilSuspension(template),
+      },
+    },
+  })
+
+  if (error) {
+    throw new Error(`Failed to send dunning email: ${error.message}`)
   }
 }
 
-/**
- * Generate dunning email HTML
- */
-function generateDunningEmailHTML(type: string, data: any): string {
-  const baseStyles = `
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-    max-width: 600px;
-    margin: 0 auto;
-    padding: 20px;
-    background: #f9fafb;
-  `
+async function sendPaymentConfirmationEmail(
+  supabase: any,
+  params: { to: string; orgId: string; userId?: string; amount: number; invoiceId: string }
+) {
+  const { to, amount, invoiceId } = params
 
-  const cardStyles = `
-    background: white;
-    border-radius: 12px;
-    padding: 32px;
-    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-  `
+  const { error } = await supabase.functions.invoke('send-email', {
+    body: {
+      to,
+      subject: '✅ Thanh toán thành công - WellNexus',
+      templateType: 'payment-confirmation',
+      data: {
+        amount: `$${amount.toFixed(2)}`,
+        invoiceId,
+      },
+    },
+  })
 
-  const buttonStyles = `
-    display: inline-block;
-    padding: 12px 32px;
-    background: #10b981;
-    color: white;
-    text-decoration: none;
-    border-radius: 8px;
-    font-weight: 600;
-    margin-top: 20px;
-  `
-
-  const alertColors = {
-    retry: '#f59e0b',    // Amber
-    notice: '#3b82f6',   // Blue
-    cancelled: '#ef4444', // Red
+  if (error) {
+    console.error('[StripeDunning] Failed to send payment confirmation:', error)
   }
+}
 
-  const alertColor = alertColors[type as keyof typeof alertColors]
-
-  const contentMap = {
-    retry: `
-      <h2 style="color: ${alertColor}; margin-bottom: 16px;">⚠️ Thanh toán thất bại</h2>
-      <p style="color: #374151; line-height: 1.6;">
-        Chào ${data.userName},
-      </p>
-      <p style="color: #374151; line-height: 1.6;">
-        Hệ thống không thể xử lý thanh toán cho subscription <strong>${data.subscriptionPlan}</strong>
-        của bạn (số tiền: ${data.amountDue}).
-      </p>
-      <p style="color: #6b7280; font-size: 14px; line-height: 1.6;">
-        Chúng tôi sẽ tự động thử lại sau <strong>${data.daysUntilRetry} ngày</strong>.
-        Nếu vẫn thất bại, subscription sẽ bị hủy.
-      </p>
-      <div style="text-align: center; margin: 24px 0;">
-        <a href="${data.updatePaymentUrl}" style="${buttonStyles}">Cập nhật phương thức thanh toán</a>
-      </div>
-    `,
-    notice: `
-      <h2 style="color: ${alertColor}; margin-bottom: 16px;">🔔 Nhắc nhở Subscription</h2>
-      <p style="color: #374151; line-height: 1.6;">
-        Chào ${data.userName},
-      </p>
-      <p style="color: #374151; line-height: 1.6;">
-        Subscription <strong>${data.subscriptionPlan}</strong> của bạn đang ở trạng thái
-        <strong>past_due</strong> do thanh toán thất bại.
-      </p>
-      <p style="color: #6b7280; font-size: 14px; line-height: 1.6;">
-        Vui lòng cập nhật phương thức thanh toán để tiếp tục sử dụng dịch vụ.
-      </p>
-      <div style="text-align: center; margin: 24px 0;">
-        <a href="${data.updatePaymentUrl}" style="${buttonStyles}">Cập nhật ngay</a>
-      </div>
-    `,
-    cancelled: `
-      <h2 style="color: ${alertColor}; margin-bottom: 16px;">❌ Subscription đã hủy</h2>
-      <p style="color: #374151; line-height: 1.6;">
-        Chào ${data.userName},
-      </p>
-      <p style="color: #374151; line-height: 1.6;">
-        Subscription <strong>${data.subscriptionPlan}</strong> của bạn đã bị hủy do
-        thanh toán thất bại sau nhiều lần thử lại.
-      </p>
-      <p style="color: #6b7280; font-size: 14px; line-height: 1.6;">
-        Nếu đây là nhầm lẫn, vui lòng liên hệ hỗ trợ.
-      </p>
-      <div style="text-align: center; margin: 24px 0;">
-        <a href="${data.contactSupportUrl}" style="background: #6b7280; ${buttonStyles}">Liên hệ hỗ trợ</a>
-      </div>
-    `,
+function getDunningEmailSubject(template: string, amount: number): string {
+  switch (template) {
+    case 'dunning-initial':
+      return `⚠️ Thanh toán thất bại - $${amount.toFixed(2)}`
+    case 'dunning-reminder':
+      return `🔔 Nhắc nhở: Thanh toán quá hạn - $${amount.toFixed(2)}`
+    case 'dunning-final':
+      return `🚨 Cảnh báo cuối: Subscription sẽ bị đình chỉ`
+    case 'dunning-cancel':
+      return `❌ Subscription đã bị hủy`
+    default:
+      return `Thanh toán thất bại - $${amount.toFixed(2)}`
   }
+}
 
-  return `
-    <!DOCTYPE html>
-    <html>
-      <head>
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>WellNexus Billing Notification</title>
-      </head>
-      <body style="${baseStyles}">
-        <div style="${cardStyles}">
-          <div style="text-align: center; margin-bottom: 24px;">
-            <img src="https://wellnexus.vn/logo.png" alt="WellNexus" style="height: 40px;">
-          </div>
-          ${contentMap[type as keyof typeof contentMap]}
-          <hr style="border: none; border-top: 1px solid #e5e7eb; margin: 32px 0;">
-          <p style="color: #9ca3af; font-size: 12px; text-align: center;">
-            Email tự động từ WellNexus Billing System
-          </p>
-        </div>
-      </body>
-    </html>
-  `
+function getDaysUntilSuspension(template: string): string {
+  switch (template) {
+    case 'dunning-initial':
+      return '14'
+    case 'dunning-reminder':
+      return '12'
+    case 'dunning-final':
+      return '5'
+    default:
+      return '3'
+  }
 }

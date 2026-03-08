@@ -52,6 +52,10 @@ interface UsageReportRequest {
   dry_run?: boolean
   price_id?: string  // Stripe Price ID from env vars
   feature?: string   // Feature name for mapping
+  // Phase 7: Overage billing support
+  is_overage?: boolean
+  overage_transaction_id?: string
+  tenant_id?: string
 }
 
 interface DetailedUsageReportResponse {
@@ -229,6 +233,9 @@ serve(async (req: Request) => {
       dry_run,
       feature,
       price_id: effectivePriceId,
+      is_overage: body.is_overage,
+      overage_transaction_id: body.overage_transaction_id,
+      tenant_id: body.tenant_id,
     })
 
     // Dry run - don't actually call Stripe API
@@ -266,6 +273,15 @@ serve(async (req: Request) => {
 
     for (const record of usage_records) {
       let auditLogId: string | null = null
+      const subscriptionItem = record.subscription_item
+      if (!subscriptionItem) {
+        results.records_failed++
+        results.failed_records?.push({
+          record,
+          error: 'Missing subscription_item',
+        })
+        continue
+      }
 
       try {
         // Step 1: Generate idempotency key
@@ -321,6 +337,24 @@ serve(async (req: Request) => {
             p_stripe_response: usageRecord,
             p_stripe_usage_record_id: usageRecord.id,
           })
+        }
+
+        // Phase 7: Update overage transaction if this is an overage sync
+        if (body.is_overage && body.overage_transaction_id) {
+          try {
+            await supabase
+              .from('overage_transactions')
+              .update({
+                stripe_sync_status: 'synced',
+                stripe_synced_at: new Date().toISOString(),
+                stripe_usage_record_id: usageRecord.id,
+              })
+              .eq('id', body.overage_transaction_id)
+            console.warn('[StripeUsageRecord] Updated overage transaction:', body.overage_transaction_id)
+          } catch (ovgError) {
+            console.error('[StripeUsageRecord] Failed to update overage transaction:', ovgError)
+            // Don't fail the whole request - overage update is secondary
+          }
         }
 
         results.records_created++

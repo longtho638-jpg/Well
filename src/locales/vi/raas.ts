@@ -1,4 +1,5 @@
 export const raas = {
+  // License verification
   verifying_license: "Đang xác thực license...",
   license_required: "Yêu cầu license để truy cập tính năng này",
   license_active: "License đang hoạt động",
@@ -10,4 +11,96 @@ export const raas = {
   license_features: "Tính năng premium",
   upgrade_now: "Nâng cấp ngay",
   contact_support: "Liên hệ hỗ trợ",
-};
+
+  // License Key Input Component
+  license_key_input: {
+    title: "License Key RaaS",
+    description: "Nhập license key từ RaaS Gateway để truy cập AgencyOS Dashboard",
+    label: "License Key",
+    placeholder: "RAAS-XXXXX-XXXXX-XXXXX",
+    help: "License key bắt đầu bằng 'RAAS-' và có độ dài 32+ ký tự",
+    verifying: "Đang xác thực...",
+    verifying_description: "Kết nối với RaaS Gateway để xác thực license",
+    valid: "License hợp lệ!",
+    invalid: "License không hợp lệ",
+    expires_in: "Còn {{days}} ngày trước khi hết hạn",
+    included_features: "Tính năng bao gồm:",
+    need_license: "Chưa có license key?",
+    get_license: "Mua license",
+    documentation: "Tài liệu",
+    validate_button: "Xác thực License",
+    verifying_button: "Đang xác thực...",
+  },
+
+  // License Gate
+  license_gate: {
+    validating: "Đang xác thực license...",
+    welcome_title: "Chào mừng đến với AgencyOS",
+    welcome_description: "Nhập license key RaaS để tiếp tục truy cập dashboard",
+    bypass_dev: "Bypass (Development Only)",
+    features: {
+      secure_title: "Bảo mật cao",
+      secure_description: "Xác thực JWT + API key theo chuẩn RaaS",
+      compliant_title: "Tuân thủ",
+      compliant_description: "KV-based rate limiting và audit logging",
+      managed_title: "Quản lý tập trung",
+      managed_description: "License management từ RaaS Gateway",
+    },
+  },
+
+  // Features
+  features: {
+    admin_dashboard: "Admin Dashboard",
+    payos_automation: "PayOS Automation",
+    usage_metering: "Usage Metering",
+    multi_tenant: "Multi-tenant Support",
+    premium_agents: "Premium Agents",
+    advanced_analytics: "Advanced Analytics",
+  },
+
+  // License Management Admin
+  license_management: {
+    title: "Quản lý License",
+    description: "Quản lý license keys, xem audit logs, và theo dõi usage",
+    create_button: "Tạo License",
+    search_placeholder: "Tìm kiếm license...",
+    filter_status: "Lọc theo trạng thái",
+    stats: {
+      total_licenses: "Tổng License",
+      active: "Đang hoạt động",
+      revoked: "Đã thu hồi",
+      total_revenue: "Tổng doanh thu",
+      avg_revenue: "Doanh thu TB/license",
+      activity: "Hoạt động",
+      events_logged: "Sự kiện đã ghi",
+    },
+    tabs: {
+      licenses: "License Keys",
+      audit: "Audit Logs",
+    },
+    table: {
+      license_key: "License Key",
+      organization: "Tổ chức",
+      tier: "Gói",
+      status: "Trạng thái",
+      created: "Ngày tạo",
+      expires: "Ngày hết hạn",
+      actions: "Thao tác",
+      copy: "Sao chép",
+      revoke: "Thu hồi",
+    },
+    create_dialog: {
+      title: "Tạo License Key Mới",
+      description: "Tạo license key RaaS mới cho tổ chức",
+      org_label: "Tên tổ chức",
+      org_placeholder: "Nhập tên tổ chức",
+      tier_label: "Gói License",
+      generate_button: "Tạo License",
+      cancel_button: "Hủy",
+    },
+    no_licenses: "Không tìm thấy license",
+    no_audit_logs: "Không có audit logs",
+    admin_access_required: "Yêu cầu quyền Admin",
+    admin_access_description: "Bạn cần license với quyền admin dashboard",
+  },
+}

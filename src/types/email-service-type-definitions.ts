@@ -14,7 +14,12 @@ export type EmailTemplateType =
   | 'payment-failed'
   | 'payment-retry'
   | 'subscription-renewal'
-  | 'overage-notification';
+  | 'overage-notification'
+  | 'dunning-initial'
+  | 'dunning-reminder'
+  | 'dunning-final'
+  | 'dunning-cancel'
+  | 'payment-confirmation';
 
 export interface WelcomeEmailData {
   userName: string;

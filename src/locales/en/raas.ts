@@ -1,4 +1,5 @@
 export const raas = {
+  // License verification
   verifying_license: "Verifying license...",
   license_required: "License required to access this feature",
   license_active: "License active",
@@ -10,4 +11,96 @@ export const raas = {
   license_features: "Premium features",
   upgrade_now: "Upgrade now",
   contact_support: "Contact support",
-};
+
+  // License Key Input Component
+  license_key_input: {
+    title: "RaaS License Key",
+    description: "Enter your RaaS Gateway license key to access AgencyOS Dashboard",
+    label: "License Key",
+    placeholder: "RAAS-XXXXX-XXXXX-XXXXX",
+    help: "License key starts with 'RAAS-' and is 32+ characters long",
+    verifying: "Verifying...",
+    verifying_description: "Connecting to RaaS Gateway to validate license",
+    valid: "Valid license!",
+    invalid: "Invalid license",
+    expires_in: "Expires in {{days}} days",
+    included_features: "Included features:",
+    need_license: "Don't have a license key?",
+    get_license: "Get license",
+    documentation: "Documentation",
+    validate_button: "Validate License",
+    verifying_button: "Verifying...",
+  },
+
+  // License Gate
+  license_gate: {
+    validating: "Validating license...",
+    welcome_title: "Welcome to AgencyOS",
+    welcome_description: "Enter your RaaS license key to continue to dashboard",
+    bypass_dev: "Bypass (Development Only)",
+    features: {
+      secure_title: "Enterprise Security",
+      secure_description: "JWT + API key authentication per RaaS spec",
+      compliant_title: "Compliance Ready",
+      compliant_description: "KV-based rate limiting and audit logging",
+      managed_title: "Centrally Managed",
+      managed_description: "License management via RaaS Gateway",
+    },
+  },
+
+  // Features
+  features: {
+    admin_dashboard: "Admin Dashboard",
+    payos_automation: "PayOS Automation",
+    usage_metering: "Usage Metering",
+    multi_tenant: "Multi-tenant Support",
+    premium_agents: "Premium Agents",
+    advanced_analytics: "Advanced Analytics",
+  },
+
+  // License Management Admin
+  license_management: {
+    title: "License Management",
+    description: "Manage license keys, view audit logs, and track usage",
+    create_button: "Create License",
+    search_placeholder: "Search licenses...",
+    filter_status: "Filter by status",
+    stats: {
+      total_licenses: "Total Licenses",
+      active: "Active",
+      revoked: "Revoked",
+      total_revenue: "Total Revenue",
+      avg_revenue: "Avg Revenue/License",
+      activity: "Activity",
+      events_logged: "Events logged",
+    },
+    tabs: {
+      licenses: "License Keys",
+      audit: "Audit Logs",
+    },
+    table: {
+      license_key: "License Key",
+      organization: "Organization",
+      tier: "Tier",
+      status: "Status",
+      created: "Created",
+      expires: "Expires",
+      actions: "Actions",
+      copy: "Copy",
+      revoke: "Revoke",
+    },
+    create_dialog: {
+      title: "Create New License Key",
+      description: "Generate a new RaaS license key for an organization",
+      org_label: "Organization Name",
+      org_placeholder: "Enter organization name",
+      tier_label: "License Tier",
+      generate_button: "Generate License",
+      cancel_button: "Cancel",
+    },
+    no_licenses: "No licenses found",
+    no_audit_logs: "No audit logs found",
+    admin_access_required: "Admin Access Required",
+    admin_access_description: "You need an active license with admin dashboard access",
+  },
+}
