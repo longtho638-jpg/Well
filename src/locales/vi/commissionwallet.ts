@@ -21,4 +21,5 @@ export const commissionwallet = {
   rate: "Tỷ lệ",
   wellnexus_headquarters: "Trụ sở WellNexus",
   _10_pit: "10% PIT",
+  '10_pit': "10% PIT",
 };

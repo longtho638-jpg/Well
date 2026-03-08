@@ -71,7 +71,7 @@ function LeaderDashboard() {
           }`}
         >
           <Users className="w-5 h-5" />
-          {t('leaderdashboard.qu_n_l_i_nh_m')}
+          {t('leaderdashboard.quan_ly_nhom')}
         </button>
         <button
           onClick={() => setActiveTab('insights')}
@@ -96,7 +96,7 @@ function LeaderDashboard() {
           }`}
         >
           <Zap className="w-5 h-5" />
-          {t('leaderdashboard.s_h_th_ng')}
+          {t('leaderdashboard.so_huu')}
         </button>
       </motion.div>
 

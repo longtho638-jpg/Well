@@ -57,10 +57,10 @@ export default function AtRiskMembersListWithActions({
         <div className="bg-gradient-to-r from-orange-500/20 to-red-500/20 border-b border-white/10 p-6">
           <h3 className="font-bold text-zinc-900 dark:text-white flex items-center gap-2 text-xl">
             <AlertTriangle className="w-6 h-6 text-orange-400" />
-            {t('leaderdashboard.th_nh_vi_n_c_n_ch')} ({atRiskMembers.length})
+            {t('leaderdashboard.thanh_vien_can_ch')} ({atRiskMembers.length})
           </h3>
           <p className="text-sm text-zinc-500 dark:text-gray-300 mt-1">
-            {t('leaderdashboard.ai_ph_t_hi_n_nh_ng_th_nh_vi_n')}
+            {t('leaderdashboard.ai_phat_hien_nhung_thanh_vien')}
           </p>
         </div>
 
@@ -101,7 +101,7 @@ export default function AtRiskMembersListWithActions({
                   <div className="bg-orange-500/10 border border-orange-500/20 rounded-xl p-3 mb-3">
                     <p className="text-xs font-bold text-orange-300 mb-2 flex items-center gap-1">
                       <AlertTriangle className="w-3 h-3" />
-                      {t('leaderdashboard.l_do_c_n_ch')}
+                      {t('leaderdashboard.li_do_can_ch')}
                     </p>
                     <ul className="text-xs text-orange-200 space-y-1">
                       {atRiskMember.riskReasons.map((reason, idx) => (
@@ -117,7 +117,7 @@ export default function AtRiskMembersListWithActions({
                   <div className="bg-blue-500/10 border border-blue-500/20 rounded-xl p-3 mb-3">
                     <p className="text-xs font-bold text-blue-300 mb-2 flex items-center gap-1">
                       <Brain className="w-3 h-3" />
-                      {t('leaderdashboard.ai_xu_t')}
+                      {t('leaderdashboard.ai_xuat')}
                     </p>
                     <ul className="text-xs text-blue-200 space-y-1">
                       {atRiskMember.suggestedActions.map((action, idx) => (
@@ -141,7 +141,7 @@ export default function AtRiskMembersListWithActions({
                       ) : (
                         <Mail className="w-4 h-4" />
                       )}
-                      {t('leaderdashboard.g_i_nh_c_nh')}
+                      {t('leaderdashboard.goi_y_nhanh')}
                     </button>
                     <button
                       onClick={() => onSendGift(atRiskMember.member.id)}
@@ -153,7 +153,7 @@ export default function AtRiskMembersListWithActions({
                       ) : (
                         <GiftIcon className="w-4 h-4" />
                       )}
-                      {t('leaderdashboard.t_ng_qu_kh_ch_l')}
+                      {t('leaderdashboard.tong_quan_khach_lo')}
                     </button>
                   </div>
                 </div>

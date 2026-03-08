@@ -9,4 +9,5 @@ export const herocard = {
   to_unlock: "to unlock",
   venture_partner_status: "Venture Partner Status",
   _100m_vnd_revenue: "100M VND Revenue",
+  '100m_vnd_revenue': "100M VND Revenue",
 };

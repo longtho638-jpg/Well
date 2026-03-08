@@ -229,6 +229,70 @@ serve(async (req: Request) => {
       console.log('[UsageAlert] License compliance check triggered:', complianceCheckResult)
     }
 
+    // Send email notification
+    let emailSent = false
+    try {
+      const { data: userData } = await supabase
+        .from('user_profiles')
+        .select('email')
+        .eq('id', user_id)
+        .single()
+
+      if (userData?.email) {
+        await supabase.functions.invoke('send-email', {
+          body: {
+            to: userData.email,
+            subject: getAlertSubject(threshold_percentage, metric_type),
+            templateType: 'usage-alert',
+            data: {
+              metricName: getMetricName(metric_type),
+              threshold: threshold_percentage,
+              percentageUsed: Math.round((current_usage / quota_limit) * 100),
+              currentUsage: current_usage,
+              quotaLimit: quota_limit,
+              actionUrl: '/dashboard/usage',
+            },
+          },
+        })
+        emailSent = true
+        console.log('[UsageAlert] Email notification sent')
+      }
+    } catch (emailError) {
+      console.error('[UsageAlert] Failed to send email:', emailError)
+    }
+
+    // Send SMS notification
+    let smsSent = false
+    try {
+      const { data: userData } = await supabase
+        .from('user_profiles')
+        .select('phone')
+        .eq('id', user_id)
+        .single()
+
+      if (userData?.phone) {
+        await supabase.functions.invoke('send-sms', {
+          body: {
+            to: userData.phone,
+            template: 'usage-alert',
+            locale: 'vi',
+            orgId: null,
+            userId: user_id,
+            templateData: {
+              metric_name: getMetricName(metric_type),
+              percentage: Math.round((current_usage / quota_limit) * 100).toString(),
+              threshold: threshold_percentage.toString(),
+              action_url: '/dashboard/usage',
+            },
+          },
+        })
+        smsSent = true
+        console.log('[UsageAlert] SMS notification sent')
+      }
+    } catch (smsError) {
+      console.error('[UsageAlert] Failed to send SMS:', smsError)
+    }
+
     // Update alert record with delivery status
     const updateMetadata: Record<string, unknown> = {
       webhook_payload: webhookPayload,
@@ -285,7 +349,10 @@ serve(async (req: Request) => {
  * Sign JWT payload using HMAC-SHA256
  */
 async function signJWT(payload: AlertJWTPayload): Promise<string> {
-  const secret = Deno.env.get('RAAS_JWT_SECRET') || 'fallback-secret-change-in-production'
+  const secret = Deno.env.get('RAAS_JWT_SECRET')
+  if (!secret) {
+    throw new Error('RAAS_JWT_SECRET environment variable is required')
+  }
   const encoder = new TextEncoder()
 
   // Create header
@@ -478,4 +545,36 @@ async function callLicenseComplianceEnforcer(
     console.error('[UsageAlert] callLicenseComplianceEnforcer error:', error)
     return null
   }
+}
+
+/**
+ * Get alert email subject
+ */
+function getAlertSubject(threshold: number, metricType: string): string {
+  const metricName = getMetricName(metricType)
+  if (threshold >= 125) {
+    return `🚨 CRITICAL: Usage exceeded ${metricName} limit`
+  } else if (threshold >= 100) {
+    return `🔴 OVER LIMIT: ${metricName} quota exceeded`
+  } else if (threshold >= 90) {
+    return `⚠️ WARNING: ${metricName} at ${threshold}% of limit`
+  }
+  return `ℹ️ Usage Alert: ${metricName}`
+}
+
+/**
+ * Get human-readable metric name
+ */
+function getMetricName(metricType: string): string {
+  const metricNames: Record<string, string> = {
+    'api_calls': 'API Calls',
+    'ai_calls': 'AI Calls',
+    'tokens': 'Tokens',
+    'compute_minutes': 'Compute Minutes',
+    'storage_gb': 'Storage (GB)',
+    'emails': 'Emails',
+    'model_inferences': 'Model Inferences',
+    'agent_executions': 'Agent Executions',
+  }
+  return metricNames[metricType] || metricType
 }

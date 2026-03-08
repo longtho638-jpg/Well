@@ -1,30 +1,64 @@
 // Billing & Subscription translations
 export const billing = {
+  // General
+  title: 'Thanh toán & Subscription',
+  description: 'Quản lý subscription, phương thức thanh toán và usage',
+  loading: 'Đang tải...',
+  error: 'Lỗi',
+  no_organization: 'Không tìm thấy organization',
+  no_subscription: 'Không tìm thấy subscription',
+  load_error: 'Không thể tải thông tin thanh toán',
+  update_error: 'Không thể cập nhật phương thức thanh toán',
+
+  // Status
   status: {
     active: 'Hoạt động',
     past_due: 'Quá hạn',
     incomplete: 'Chưa hoàn tất',
     trialing: 'Dùng thử',
     canceled: 'Đã hủy',
+    suspended: 'Đã đình chỉ',
   },
+
+  // Payment Update Page
+  update_payment_title: 'Cập nhật Phương thức Thanh toán',
+  update_payment_description: 'Cập nhật phương thức thanh toán để tiếp tục sử dụng dịch vụ',
+  payment_overdue_title: 'Thanh toán quá hạn',
+  overdue_description: 'Thanh toán subscription của bạn đã thất bại. Vui lòng cập nhật phương thức thanh toán để tránh bị đình chỉ.',
+  amount_due_label: 'Số tiền cần thanh toán',
+  update_payment_method_btn: 'Cập nhật phương thức thanh toán',
+  current_payment_method: 'Phương thức thanh toán hiện tại',
+  change: 'Đổi',
+  expires: 'Hết hạn',
+  billing_info: 'Thông tin thanh toán',
+  next_billing_date: 'Ngày thanh toán tiếp theo',
+  status_label: 'Trạng thái',
+  portal_opened: 'Stripe Customer Portal đã được mở trong tab mới',
+  secure_payment: 'Thanh toán an toàn qua Stripe',
+  stripe_secure: 'Thông tin thanh toán của bạn được xử lý an toàn qua Stripe Customer Portal.',
+  stripe_privacy: 'Chính sách bảo mật Stripe',
+
+  // Legacy aliases (for backward compatibility)
   amount_due: 'Số tiền cần thanh toán',
+  update_payment_method: 'Cập nhật phương thức thanh toán',
+  payment_overdue: 'Thanh toán quá hạn',
   usage_this_period: 'Usage kỳ này',
   renews_on: 'Gia hạn vào',
   update_payment: 'Cập nhật thanh toán',
-  update_payment_method: 'Cập nhật phương thức thanh toán',
   overage_warning: 'Bạn đã vượt quá giới hạn - sẽ bị tính phí bổ sung',
   over_limit: 'Vượt giới hạn',
   used: 'Đã dùng',
   limit: 'Giới hạn',
   overage_charge: 'Phí vượt mức',
-  payment_overdue: 'Thanh toán quá hạn',
   overdue_message: 'Thanh toán subscription của bạn đã thất bại. Chúng tôi sẽ thử lại sau {{days}} ngày.',
   cancel_in: 'Hủy sau',
   days: 'ngày',
+
   billing_cycle: {
     monthly: 'Hàng tháng',
     yearly: 'Hàng năm',
   },
+
   // Dunning emails
   dunning: {
     initial: {
@@ -55,5 +89,14 @@ export const billing = {
       support: 'Nếu đây là nhầm lẫn, vui lòng liên hệ hỗ trợ.',
       cta: 'Liên hệ hỗ trợ',
     },
+  },
+
+  // SMS templates (short, concise messages)
+  sms: {
+    dunning_initial: '⚠️ WellNexus: Thanh toan that bai so tien {{amount}} cho goi {{plan_name}}. Cap nhat phuong thuc thanh toan: {{payment_url}}',
+    dunning_reminder: '🔔 WellNexus: Nhac nho: Thanh toan qua han {{amount}}. Dich vu se bi tam ngưng sau {{days}} ngay neu khong thanh toan. Cap nhat ngay: {{payment_url}}',
+    dunning_final: '🚨 WellNexus: Canh bao cuoi! Subscription cua ban se bi dinh chi trong {{days}} ngay. Thanh toan ngay: {{payment_url}}',
+    dunning_cancel: '❌ WellNexus: Subscription da bi huy do thanh toan that bai. Lien he support@wellnexus.vn de duoc ho tro.',
+    payment_confirmation: '✅ WellNexus: Da nhan thanh toan {{amount}}. Subscription cua ban da duoc kich hoat lai. Cam on ban!',
   },
 }

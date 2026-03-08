@@ -88,7 +88,41 @@ WellNexus là nền tảng sức khỏe RaaS (Retail-as-a-Service) sử dụng h
 - 5-tier limits: free, basic, premium, enterprise, master (unlimited)
 - Usage analytics API with current usage, quotas, and breakdowns
 
-### 8. Hệ Thống Analytics Dashboard (ROIaaS Phase 5)
+### 8. Hệ Thống Overage Billing & Dunning (RaaS Phase 6-9)
+- **Stripe Metered Usage Integration**: Automatic usage reporting with Stripe metered billing
+- **Overage Calculator Service**: 5-tier overage calculation (free, basic, premium, enterprise, master)
+- **Dunning Workflow Engine**: 4-stage email sequence (initial, reminder, final, cancel)
+- **SMS Notifications**: Twilio integration for payment failure alerts
+- **Unpaid Invoice Detection**: Cron job for automated unpaid invoice processing
+- **AgencyOS Analytics Sync**: Cloudflare KV usage data synchronization
+
+**Dunning Workflow:**
+```
+Over-quota Detected → Overage Calculated → Dunning Triggered
+                                    │
+                                    ├─▶ Stage 1: Initial email (Day 0)
+                                    ├─▶ Stage 2: Reminder email (Day 3)
+                                    ├─▶ Stage 3: Final notice (Day 10)
+                                    └─▶ Stage 4: Cancellation (Day 14)
+```
+
+**Billing Flow:**
+```
+Usage Records (Stripe) → Overage Calculation → Invoice Generated
+                                          │
+                                          ├─▶ Successful → License Extended
+                                          └─▶ Failed → Dunning Workflow
+```
+
+**Database Schema:**
+- `usage_records`: Granular usage events with metadata
+- `overage_calculation_logs`: Overage calculation history
+- `dunning_sequence`: Dunning workflow state tracking
+- `sms_tracking`: SMS delivery status and timestamps
+- `unpaid_invoices`: Invoice aging analysis (0-30, 30-60, 60-90, 90+ days)
+- `agencyos_sync_log`: Sync status for Cloudflare KV data
+
+### 9. Hệ Thống Analytics Dashboard (ROIaaS Phase 5)
 - **LicenseAnalyticsDashboard**: Revenue metrics, cohort retention, conversion funnel, tier breakdown
 - Real-time polling (30s refresh interval)
 - Export features (CSV/PDF - Enterprise only)

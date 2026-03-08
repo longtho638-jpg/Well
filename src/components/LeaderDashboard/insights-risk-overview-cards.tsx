@@ -38,7 +38,7 @@ export default function InsightsRiskOverviewCards({ teamInsights }: Props) {
         <div className="relative bg-gradient-to-br from-red-500 to-red-600 rounded-2xl p-6 text-white">
           <AlertTriangle className="w-8 h-8 mb-3 opacity-80" />
           <h3 className="text-4xl font-bold mb-1">{teamInsights.highRiskCount}</h3>
-          <p className="text-sm text-red-100">{t('leaderdashboard.th_nh_vi_n_r_i_ro_cao')}</p>
+          <p className="text-sm text-red-100">{t('leaderdashboard.thanh_vien_rui_ro_cao')}</p>
         </div>
       </motion.div>
 
@@ -53,7 +53,7 @@ export default function InsightsRiskOverviewCards({ teamInsights }: Props) {
         <div className="relative bg-gradient-to-br from-yellow-500 to-yellow-600 rounded-2xl p-6 text-white">
           <AlertCircle className="w-8 h-8 mb-3 opacity-80" />
           <h3 className="text-4xl font-bold mb-1">{teamInsights.mediumRiskCount}</h3>
-          <p className="text-sm text-yellow-100">{t('leaderdashboard.th_nh_vi_n_r_i_ro_trung_b_nh')}</p>
+          <p className="text-sm text-yellow-100">{t('leaderdashboard.thanh_vien_rui_ro_trung_binh')}</p>
         </div>
       </motion.div>
 
@@ -68,7 +68,7 @@ export default function InsightsRiskOverviewCards({ teamInsights }: Props) {
         <div className="relative bg-gradient-to-br from-green-500 to-green-600 rounded-2xl p-6 text-white">
           <CheckCircle2 className="w-8 h-8 mb-3 opacity-80" />
           <h3 className="text-4xl font-bold mb-1">{teamInsights.retentionRate.toFixed(1)}%</h3>
-          <p className="text-sm text-green-100">{t('leaderdashboard.t_l_gi_ch_n')}</p>
+          <p className="text-sm text-green-100">{t('leaderdashboard.ty_le_giu_chan')}</p>
         </div>
       </motion.div>
 
@@ -83,7 +83,7 @@ export default function InsightsRiskOverviewCards({ teamInsights }: Props) {
         <div className="relative bg-gradient-to-br from-blue-500 to-blue-600 rounded-2xl p-6 text-white">
           <Brain className="w-8 h-8 mb-3 opacity-80" />
           <h3 className="text-4xl font-bold mb-1">{teamInsights.totalAtRisk}</h3>
-          <p className="text-sm text-blue-100">{t('leaderdashboard.c_n_ch')}</p>
+          <p className="text-sm text-blue-100">{t('leaderdashboard.can_ch')}</p>
         </div>
       </motion.div>
     </div>

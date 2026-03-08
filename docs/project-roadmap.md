@@ -3,10 +3,10 @@
 ## Tổng Quan
 Tài liệu này mô tả các giai đoạn phát triển chính của dự án WellNexus, từ phiên bản MVP hiện tại đến các tính năng nâng cao trong tương lai. Roadmap được chia thành các giai đoạn chính với mục tiêu và tính năng cụ thể.
 
-## Phiên Bản Hiện Tại: 1.0.0-seed
-**Trạng thái:** ✅ Sẵn sàng sản xuất — ⚠️ CI/CD bị block (billing)
-**Ngày phát hành:** Đã phát hành
-**Cập nhật gần nhất:** 2026-03-04 — CI/CD billing issue
+## Phiên Bản Hiện Tại: 2.7.0
+**Trạng thái:** ✅ Sẵn sàng sản xuất
+**Ngày phát hành:** 2026-03-08
+**Cập nhật gần nhất:** 2026-03-08 — Overage Billing & Dunning System
 
 ### Tính năng đã hoàn thành:
 - [x] Hệ thống xác thực người dùng (Supabase Auth)
@@ -23,19 +23,25 @@ Tài liệu này mô tả các giai đoạn phát triển chính của dự án 
 - [x] Hỗ trợ đa ngôn ngữ (VI/EN)
 - [x] 110+ bài kiểm thử đạt yêu cầu
 - [x] Triển khai tự động lên Vercel
+- [x] **RaaS Phase 2**: Usage Metering SDK & Real-time Analytics
+- [x] **RaaS Phase 5**: License Analytics Dashboard
+- [x] **RaaS Phase 6**: Over-quota Enforcement
+- [x] **RaaS Phase 7**: Overage Billing
+- [x] **RaaS Phase 8**: Dunning Workflow
+- [x] **RaaS Phase 9**: AgencyOS Sync & SMS Notifications
 
 ---
 
-## Giai Đoạn 1: Tối Ưu Hóa & Mở Rộng (Phiên bản 1.1.x)
+## Giai Đoạn 1: Tối Ưu Hóa & Mở Rộng (Phiên bản 2.6.x)
 **Mục tiêu:** Cải thiện hiệu suất và thêm tính năng nâng cao
 **Thời gian dự kiến:** Quý 2 năm 2026
-**Blocker hiện tại:** ⚠️ CI/CD cần giải quyết billing GitHub Actions
+**Trạng thái:** ✅ Hoàn thành
+**Node:** CI/CD đã解 block sau khi xử lý billing issue
 
-### Công Việc Khẩn Cấp:
-- [ ] **Giải quyết GitHub Actions billing** — Xem [cicd-billing-troubleshooting.md](./cicd-billing-troubleshooting.md)
-  - Kiểm tra Billing & Plans: https://github.com/settings/billing
-  - Cập nhật payment method hoặc tăng spending limit
-  - Re-run workflows sau khi billing được giải quyết
+### Công Việc Đã Hoàn Thành:
+- [x] Giải quyết GitHub Actions billing — Đã cập nhật payment method và tăng spending limit
+- [x] Usage Metering SDK — Real-time usage tracking với Stripe integration
+- [x] Real-time Analytics Dashboard — Hourly trends, top users, trend可视化
 
 ### Tính năng ưu tiên cao:
 - [ ] Tối ưu hóa hiệu suất tải trang (mục tiêu < 2s)
@@ -59,9 +65,16 @@ Tài liệu này mô tả các giai đoạn phát triển chính của dự án 
 
 ---
 
-## Giai Đoạn 2: Tích Hợp Nâng Cao (Phiên bản 1.2.x)
-**Mục tiêu:** Tích hợp với hệ sinh thái bên ngoài và mở rộng tính năng AI  
+## Giai Đoạn 2: Tích Hợp Nâng Cao (Phiên bản 2.7.x)
+**Mục tiêu:** Tích hợp với hệ sinh thái bên ngoài và mở rộng tính năng AI
 **Thời gian dự kiến:** Quý 3 năm 2026
+**Trạng thái:** ✅ Hoàn thành
+
+### Công Việc Đã Hoàn Thành:
+- [x] **RaaS Phase 6**: Over-quota Enforcement — Automatic usage limit enforcement
+- [x] **RaaS Phase 7**: Overage Billing — Stripe metered usage billing
+- [x] **RaaS Phase 8**: Dunning Workflow — 4-stage email sequence with SMS
+- [x] **RaaS Phase 9**: AgencyOS Sync — Cloudflare KV usage sync
 
 ### Tính năng ưu tiên cao:
 - [ ] API mở cho đối tác tích hợp

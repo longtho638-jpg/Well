@@ -34,6 +34,12 @@ export interface BillingStatus {
   usageThisPeriod: number;
   invoiceDue: number | null;
   isOverage: boolean;
+  customerPortalUrl?: string;
+}
+
+export interface CustomerPortalSession {
+  url: string;
+  expiresAt: number;
 }
 
 /**
@@ -170,8 +176,78 @@ export async function getUsageSummary(
   }
 }
 
+/**
+ * Create Stripe Customer Portal session for self-service plan management
+ */
+export async function createCustomerPortalSession(
+  customerId: string,
+  returnUrl?: string
+): Promise<CustomerPortalSession | null> {
+  try {
+    const { data, error } = await supabase.functions.invoke('stripe-customer-portal', {
+      body: {
+        customer_id: customerId,
+        return_url: returnUrl || typeof window !== 'undefined' ? window.location.href : undefined,
+      },
+    });
+
+    if (error) {
+      console.error('[createCustomerPortalSession] Error:', error);
+      return null;
+    }
+
+    return data as CustomerPortalSession;
+  } catch (err) {
+    console.error('[createCustomerPortalSession] Error:', err);
+    return null;
+  }
+}
+
+/**
+ * Get or create Customer Portal URL
+ * Caches the URL for quick access (Stripe URLs expire but sessions can be reused)
+ */
+export async function getCustomerPortalUrl(
+  customerId: string
+): Promise<string | null> {
+  try {
+    // Try to get cached portal URL from localStorage
+    if (typeof window !== 'undefined') {
+      const cached = localStorage.getItem(`stripe_portal_url_${customerId}`);
+      const cachedData = cached ? JSON.parse(cached) : null;
+
+      // Use cached URL if still valid (check 1 hour before expiry)
+      if (cachedData && cachedData.expiresAt > Date.now() + 3600000) {
+        return cachedData.url;
+      }
+    }
+
+    // Create new session
+    const session = await createCustomerPortalSession(customerId);
+    if (!session?.url) {
+      return null;
+    }
+
+    // Cache the URL
+    if (typeof window !== 'undefined') {
+      localStorage.setItem(`stripe_portal_url_${customerId}`, JSON.stringify({
+        url: session.url,
+        expiresAt: session.expiresAt,
+        cachedAt: Date.now(),
+      }));
+    }
+
+    return session.url;
+  } catch (err) {
+    console.error('[getCustomerPortalUrl] Error:', err);
+    return null;
+  }
+}
+
 export const stripeBillingClient = {
   reportUsage,
   getBillingStatus,
   getUsageSummary,
+  createCustomerPortalSession,
+  getCustomerPortalUrl,
 };

@@ -36,8 +36,8 @@ export function Top3Podium({ performers }: Top3PodiumProps) {
                             <div className="p-2 bg-yellow-500/20 rounded-xl">
                                 <Award className="w-6 h-6 text-yellow-400" />
                             </div>
-                            {t('leaderdashboard.top_3_t_ng_t_i')}</h2>
-                        <p className="text-zinc-400 text-sm mt-1">{t('leaderdashboard.doanh_s_cao_nh_t_th_ng_n_y')}</p>
+                            {t('leaderdashboard.top_3_tang_tai')}</h2>
+                        <p className="text-zinc-400 text-sm mt-1">{t('leaderdashboard.doanh_s_cao_nhat_thang_nay')}</p>
                     </div>
                 </div>
 

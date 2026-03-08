@@ -310,6 +310,30 @@ async function handleInvoicePaymentFailed(
     }
   }
 
+  // Send SMS notification (if phone available)
+  if (userId && config?.auto_send_sms) {
+    const phone = await getUserPhoneNumber(supabase, userId)
+    if (phone) {
+      try {
+        await sendDunningSms(supabase, {
+          to: phone,
+          template: 'dunning-initial',
+          orgId,
+          userId,
+          dunningEventId: dunningData,
+          templateData: {
+            amount: `$${((invoice.amount_due || 0) / 100).toFixed(2)}`,
+            plan_name: 'Subscription',
+            payment_url: invoice.hosted_invoice_url || '/dashboard/billing',
+          },
+        })
+        console.warn('[StripeDunning] SMS sent:', phone)
+      } catch (smsError) {
+        console.error('[StripeDunning] Failed to send SMS:', smsError)
+      }
+    }
+  }
+
   console.warn('[StripeDunning] Dunning event created:', dunningData)
 }
 
@@ -719,5 +743,193 @@ function getDaysUntilSuspension(template: string): string {
       return '5'
     default:
       return '3'
+  }
+}
+
+// ============================================================
+// SMS Helpers - Twilio Integration
+// ============================================================
+
+interface SendSmsParams {
+  to: string
+  template: string
+  orgId: string
+  userId?: string
+  dunningEventId?: string
+  templateData?: Record<string, string>
+}
+
+async function sendDunningSms(
+  supabase: any,
+  params: SendSmsParams
+): Promise<{ success: boolean; smsId?: string; error?: string }> {
+  const { to, template, orgId, userId, dunningEventId, templateData } = params
+
+  try {
+    const { data, error } = await supabase.functions.invoke('send-sms', {
+      body: {
+        to,
+        template,
+        locale: 'vi',
+        orgId,
+        userId,
+        dunningEventId,
+        templateData,
+      },
+    })
+
+    if (error) {
+      console.error('[StripeDunning] Failed to send SMS:', error)
+      return { success: false, error: error.message }
+    }
+
+    return { success: true, smsId: data.smsId }
+  } catch (err) {
+    console.error('[StripeDunning] SMS error:', err)
+    return {
+      success: false,
+      error: err instanceof Error ? err.message : 'Unknown error',
+    }
+  }
+}
+
+async function getUserPhoneNumber(
+  supabase: any,
+  userId: string
+): Promise<string | null> {
+  try {
+    const { data, error } = await supabase
+      .from('user_profiles')
+      .select('phone')
+      .eq('id', userId)
+      .single()
+
+    if (error || !data?.phone) {
+      return null
+    }
+
+    return data.phone
+  } catch (err) {
+    console.error('[StripeDunning] Error getting phone:', err)
+    return null
+  }
+}
+
+/**
+ * Send SMS for dunning reminder stage
+ */
+async function sendDunningReminderSms(
+  supabase: any,
+  dunningEvent: any,
+  userId: string,
+  amount: number,
+  daysUntilCancel: string,
+  paymentUrl: string
+) {
+  const phone = await getUserPhoneNumber(supabase, userId)
+  if (!phone) return
+
+  try {
+    await sendDunningSms(supabase, {
+      to: phone,
+      template: 'dunning-reminder',
+      orgId: dunningEvent.org_id,
+      userId,
+      dunningEventId: dunningEvent.id,
+      templateData: {
+        amount: `$${amount.toFixed(2)}`,
+        days: daysUntilCancel,
+        payment_url: paymentUrl,
+      },
+    })
+  } catch (err) {
+    console.error('[StripeDunning] Failed to send reminder SMS:', err)
+  }
+}
+
+/**
+ * Send SMS for dunning final stage
+ */
+async function sendDunningFinalSms(
+  supabase: any,
+  dunningEvent: any,
+  userId: string,
+  amount: number,
+  daysUntilCancel: string,
+  paymentUrl: string
+) {
+  const phone = await getUserPhoneNumber(supabase, userId)
+  if (!phone) return
+
+  try {
+    await sendDunningSms(supabase, {
+      to: phone,
+      template: 'dunning-final',
+      orgId: dunningEvent.org_id,
+      userId,
+      dunningEventId: dunningEvent.id,
+      templateData: {
+        amount: `$${amount.toFixed(2)}`,
+        days: daysUntilCancel,
+        payment_url: paymentUrl,
+      },
+    })
+  } catch (err) {
+    console.error('[StripeDunning] Failed to send final SMS:', err)
+  }
+}
+
+/**
+ * Send SMS for dunning cancel stage
+ */
+async function sendDunningCancelSms(
+  supabase: any,
+  dunningEvent: any,
+  userId: string,
+  paymentUrl: string
+) {
+  const phone = await getUserPhoneNumber(supabase, userId)
+  if (!phone) return
+
+  try {
+    await sendDunningSms(supabase, {
+      to: phone,
+      template: 'dunning-cancel',
+      orgId: dunningEvent.org_id,
+      userId,
+      dunningEventId: dunningEvent.id,
+      templateData: {
+        payment_url: paymentUrl,
+      },
+    })
+  } catch (err) {
+    console.error('[StripeDunning] Failed to send cancel SMS:', err)
+  }
+}
+
+/**
+ * Send SMS for payment confirmation
+ */
+async function sendPaymentConfirmationSms(
+  supabase: any,
+  userId: string,
+  orgId: string,
+  amount: number
+) {
+  const phone = await getUserPhoneNumber(supabase, userId)
+  if (!phone) return
+
+  try {
+    await sendDunningSms(supabase, {
+      to: phone,
+      template: 'payment_confirmation',
+      orgId,
+      userId,
+      templateData: {
+        amount: `$${amount.toFixed(2)}`,
+      },
+    })
+  } catch (err) {
+    console.error('[StripeDunning] Failed to send payment confirmation SMS:', err)
   }
 }

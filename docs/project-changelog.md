@@ -1,5 +1,112 @@
 # Project Changelog
 
+## [2.7.0] - 2026-03-08
+
+### 🚀 Overage Billing & Dunning System (RaaS Phase 6-9)
+
+Complete overage billing system with Stripe metered usage, automated dunning workflows, and SMS notifications.
+
+#### Added
+
+- **Overage Calculator Service** (`src/services/overage-calculator.ts`):
+  - Tier-based overage calculation with 5-tier structure (free, basic, premium, enterprise, master)
+  - Stripe metered usage sync and billing integration
+  - Cost calculation with configurable rate per unit
+  - Period-based usage aggregation (monthly billing cycles)
+
+- **AgencyOS Analytics Sync** (`src/services/agencyos-usage-sync.ts`):
+  - Cloudflare KV usage data synchronization
+  - Usage data export for billing reconciliation
+  - Analytics integration for usage patterns
+
+- **Stripe Usage Sync Service** (`src/services/stripe-usage-sync.ts`):
+  - Automatic usage reporting to Stripe
+  - Metered billing integration
+  - Usage record deduplication
+
+- **4-Stage Dunning Email Sequence** (`supabase/functions/stripe-dunning/`):
+  - Stage 1: Initial payment failure notification
+  - Stage 2: First reminder (3 days later)
+  - Stage 3: Final reminder (7 days later)
+  - Stage 4: Subscription cancellation notice
+  - Configurable email templates with i18n support (VI/EN)
+
+- **SMS Notifications** (`supabase/functions/send-sms/`):
+  - Twilio SMS integration for payment failures
+  - Customizable SMS templates
+  - Delivery status tracking
+
+- **Unpaid Invoice Cron Job** (`supabase/functions/process-unpaid-invoices/`):
+  - Automated detection of unpaid invoices
+  - Invoice aging analysis (0-30, 30-60, 60-90, 90+ days)
+  - Automated dunning workflow initiation
+
+- **AgencyOS Usage Sync Cron** (`supabase/functions/sync-agencyos-usage/`):
+  - Scheduled Cloudflare KV data sync
+  - Usage reconciliation between systems
+
+- **Billing Components** (`src/components/billing/*`):
+  - Customer Portal Button for Stripe customer portal access
+  - Usage usage display components
+
+- **Database Migrations**:
+  - `260308194421_sms_service_schema.sql` - SMS tracking schema
+  - `2603082040_add_sms_tracking_to_dunning.sql` - Dunning SMS tracking
+  - `2603082045_unpaid_invoice_cron.sql` - Invoice processing cron
+  - `2603082100_cron_schedules.sql` - Cron job scheduling
+  - `2603082130_agencyos_analytics_sync.sql` - AgencyOS sync tables
+
+- **Documentation**:
+  - `docs/BILLING_SETUP.md` - Complete billing setup guide
+  - `docs/DUNNING_CONFIG.md` - Dunning workflow configuration
+  - `plans/260308-2009-overage-billing-dunning/` - Implementation plan
+
+- **Tests**:
+  - E2E test suite (`src/__tests__/e2e/`): 34 tests
+  - Unit tests (`src/services/__tests__/overage-calculator.test.ts`)
+  - Coverage: 85%+ statement coverage
+
+#### Changed
+
+- **Payment Flow**: EXTENDED - Now includes overage billing with stripe metered usage
+- **Usage Tracking**: Enhanced with overage detection and billing triggers
+
+#### Architecture
+
+```
+┌─────────────────┐     ┌──────────────────┐     ┌─────────────────┐
+│  Usage Records  │────▶│ Overage Caught   │────▶│ Stripe Billing  │
+│  (stripe_usage) │     │  (over-quota)    │     │   (metered)     │
+└─────────────────┘     └──────────────────┘     └─────────────────┘
+                                          │
+                                          ▼
+                                 ┌─────────────────┐
+                                 │   Dunning     ──┼────▶ 4-stage email
+                                 │   SMS Notify ───┼────▶ Twilio SMS
+                                 └─────────────────┘
+                                          │
+                                          ▼
+                                 ┌─────────────────┐
+                                 │  Unpaid八十───┼────▶ Cron job
+                                 │  Reconciliation│     AgencyOS sync
+                                 └─────────────────┘
+```
+
+#### Security
+
+- Stripe webhook signature verification
+- RLS policies for usage data access
+- No API keys in client code
+- Secure SMS sending via Edge Functions
+
+#### Testing
+
+- 34/34 E2E tests passing
+- 85%+ test coverage for overage calculator
+- Integration with Stripe test mode
+
+---
+
 ## [2.6.0] - 2026-03-06
 
 ### 🚀 Usage Metering Implementation (RaaS Phase 2)
