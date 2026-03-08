@@ -2,7 +2,7 @@
  * UI Slice Tests
  */
 
-/* eslint-disable @typescript-eslint/no-explicit-any */
+ 
 import { describe, it, expect, beforeEach, afterAll, vi } from 'vitest';
 import { createUISlice } from '../uiSlice';
 

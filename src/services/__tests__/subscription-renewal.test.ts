@@ -56,7 +56,7 @@ describe('Subscription Renewal', () => {
             }),
         };
 
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+         
         vi.mocked(supabase.from).mockReturnValue(mockFrom as any);
 
         const result = await subscriptionService.renewSubscription({
@@ -93,7 +93,7 @@ describe('Subscription Renewal', () => {
             }),
         };
 
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+         
         vi.mocked(supabase.from).mockReturnValue(mockFrom as any);
 
         const result = await subscriptionService.renewSubscription({
@@ -145,7 +145,7 @@ describe('Subscription Renewal', () => {
             }),
         };
 
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+         
         vi.mocked(supabase.from).mockReturnValue(mockFrom as any);
 
         await subscriptionService.renewSubscription({ subscriptionId: 'sub-3', extendsMonths: 1, payosOrderCode: 101 });
@@ -181,7 +181,7 @@ describe('Subscription Renewal', () => {
             }),
         };
 
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+         
         vi.mocked(supabase.from).mockReturnValue(mockFrom as any);
 
         const result = await subscriptionService.renewSubscription({
@@ -247,7 +247,7 @@ describe('Subscription Renewal', () => {
             }),
         };
 
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+         
         vi.mocked(supabase.from).mockReturnValue(mockFrom as any);
 
         const renewed = await subscriptionService.renewSubscription({
@@ -273,7 +273,7 @@ describe('Subscription Renewal', () => {
             }),
         };
 
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+         
         vi.mocked(supabase.from).mockReturnValue(mockFrom as any);
 
         await expect(
@@ -312,7 +312,7 @@ describe('Subscription Renewal', () => {
             }),
         };
 
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+         
         vi.mocked(supabase.from).mockReturnValue(mockFrom as any);
 
         await expect(

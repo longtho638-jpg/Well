@@ -48,7 +48,7 @@ export function RevenueChart({ data }: RevenueChartProps) {
               color: '#fff',
             }}
             itemStyle={{ color: '#14b8a6' }}
-            formatter={(value: number) => [new Intl.NumberFormat('vi-VN').format(Number(value || 0)), 'Doanh thu']}
+            formatter={(value: number | undefined) => [new Intl.NumberFormat('vi-VN').format(Number(value || 0)), 'Doanh thu']}
           />
           <Area
             type="monotone"
