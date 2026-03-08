@@ -236,7 +236,7 @@ export class UsageMeter {
       const tierDefaults = TIER_LIMITS[this.tier] || TIER_LIMITS.free
       return { ...tierDefaults, ...dbLimits } as TierLimits
     } catch (error) {
-      console.error('[UsageMeter] Failed to fetch DB limits:', error)
+      // DB limits fetch failed - will use hardcoded tier limits
       return null
     }
   }
@@ -244,3 +244,13 @@ export class UsageMeter {
 
 export { TIER_LIMITS }
 export default UsageMeter
+
+// Re-export UsageAlertEngine for convenient access
+export { UsageAlertEngine } from './usage-alert-engine'
+export type {
+  AlertMetricType,
+  AlertThreshold,
+  UsageAlertConfig,
+  AlertOptions,
+  AlertDeliveryResult,
+} from './usage-alert-engine'

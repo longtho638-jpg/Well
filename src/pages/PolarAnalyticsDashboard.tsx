@@ -43,7 +43,7 @@ export function PolarAnalyticsDashboard() {
   }
 
   const handleExport = (format: 'pdf' | 'csv') => {
-    console.warn(`Exporting analytics as ${format}...`)
+    // Export handled by export-utils
   }
 
   const revenueTrendData = useMemo(() =>

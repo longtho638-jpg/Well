@@ -6,6 +6,8 @@
  * - customer.subscription.updated → update license tier
  * - customer.subscription.deleted → revoke license
  * - checkout.session.completed → activate license
+ * - invoice.payment_failed → trigger dunning
+ * - invoice.payment_succeeded → clear dunning status
  *
  * Security: Stripe signature verification using Stripe SDK
  */
@@ -22,12 +24,105 @@ const stripe = new Stripe(Deno.env.get('STRIPE_SECRET_KEY') ?? '', {
 })
 
 const webhookSecret = Deno.env.get('STRIPE_WEBHOOK_SECRET') ?? ''
+const RESEND_API_KEY = Deno.env.get('RESEND_API_KEY')
+const APP_URL = Deno.env.get('APP_URL') || 'https://wellnexus.vn'
 
 interface Callbacks {
   logAudit: (userId: string, action: string, payload: Record<string, unknown>, severity: 'success' | 'failure') => Promise<void>
 }
 
-serve(async (req) => {
+/**
+ * Send dunning email notification via Resend
+ */
+async function sendDunningEmail(
+  to: string,
+  name: string,
+  subscriptionId: string,
+  supabase: any,
+  daysUntilRetry: number = 3
+) {
+  if (!RESEND_API_KEY) {
+    console.warn('[StripeWebhook] RESEND_API_KEY not configured, skipping email')
+    return
+  }
+
+  // Get subscription details
+  const { data: subscription } = await supabase
+    .from('user_subscriptions')
+    .select('*, subscription_plans(name)')
+    .eq('stripe_subscription_id', subscriptionId)
+    .single()
+
+  const planName = subscription?.subscription_plans?.name || 'Subscription'
+
+  const emailHtml = `
+    <!DOCTYPE html>
+    <html>
+      <head><meta charset="utf-8"><title>Payment Failed</title></head>
+      <body style="font-family: system-ui; max-width: 600px; margin: 0 auto; padding: 20px; background: #f9fafb;">
+        <div style="background: white; border-radius: 12px; padding: 32px; box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
+          <h2 style="color: #f59e0b; margin-bottom: 16px;">⚠️ Thanh toán thất bại</h2>
+          <p style="color: #374151; line-height: 1.6;">
+            Chào ${name || 'Bạn'},
+          </p>
+          <p style="color: #374151; line-height: 1.6;">
+            Hệ thống không thể xử lý thanh toán cho subscription <strong>${planName}</strong>.
+          </p>
+          <p style="color: #6b7280; font-size: 14px; line-height: 1.6;">
+            Chúng tôi sẽ tự động thử lại sau <strong>${daysUntilRetry} ngày</strong>.
+          </p>
+          <div style="text-align: center; margin: 24px 0;">
+            <a href="${APP_URL}/dashboard/subscription"
+               style="display: inline-block; padding: 12px 32px; background: #10b981; color: white; text-decoration: none; border-radius: 8px; font-weight: 600;">
+              Cập nhật phương thức thanh toán
+            </a>
+          </div>
+          <hr style="border: none; border-top: 1px solid #e5e7eb; margin: 32px 0;">
+          <p style="color: #9ca3af; font-size: 12px; text-align: center;">
+            WellNexus Billing System
+          </p>
+        </div>
+      </body>
+    </html>
+  `
+
+  try {
+    const response = await fetch('https://api.resend.com/emails', {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${RESEND_API_KEY}`,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        from: 'WellNexus <noreply@wellnexus.vn>',
+        to,
+        subject: '⚠️ Thanh toán thất bại - Vui lòng cập nhật phương thức thanh toán',
+        html: emailHtml,
+      }),
+    })
+
+    if (!response.ok) {
+      const errorData = await response.json()
+      console.error('[StripeWebhook] Email error:', errorData)
+    } else {
+      console.log('[StripeWebhook] Dunning email sent')
+    }
+  } catch (err) {
+    console.error('[StripeWebhook] Send email error:', err)
+  }
+}
+
+// Helper: Map Stripe plan ID to tier
+function getTierFromPlan(planId: string): 'basic' | 'premium' | 'enterprise' | 'master' {
+  const plan = planId.toLowerCase()
+  if (plan.includes('basic')) return 'basic'
+  if (plan.includes('premium')) return 'premium'
+  if (plan.includes('enterprise')) return 'enterprise'
+  if (plan.includes('master')) return 'master'
+  return 'basic'
+}
+
+serve(async (req: Request) => {
   const supabase = createAdminClient()
 
   const body = await req.text()
@@ -78,7 +173,7 @@ serve(async (req) => {
             userId,
             planId,
             billingCycle,
-            paymentAmount: 0, // Will be updated on payment
+            paymentAmount: 0,
             paymentId: subscription.id,
             orgId: subscription.metadata.org_id,
           },
@@ -159,7 +254,6 @@ serve(async (req) => {
 
         if (!userId) break
 
-        // If subscription exists, activate license
         if (subscriptionId) {
           const { data: subscription } = await supabase
             .from('user_subscriptions')
@@ -181,20 +275,20 @@ serve(async (req) => {
       case 'invoice.payment_succeeded': {
         const invoice = event.data.object as Stripe.Invoice
         const userId = invoice.metadata?.user_id
-        const subscriptionId = invoice.subscription as string
 
-        if (!userId || !subscriptionId) break
+        if (!userId) break
 
-        // Update subscription period end
-        const subscription = await stripe.subscriptions.retrieve(subscriptionId)
-
+        // Clear dunning status
         await supabase
           .from('user_subscriptions')
           .update({
-            current_period_end: new Date(subscription.current_period_end * 1000).toISOString(),
-            last_payment_at: new Date().toISOString(),
+            status: 'active',
+            metadata: {
+              last_payment_success: new Date().toISOString(),
+              dunning_retry_count: 0,
+            },
           })
-          .eq('stripe_subscription_id', subscriptionId)
+          .eq('(metadata->>user_id)', userId)
 
         await callbacks.logAudit(userId, 'PAYMENT_SUCCEEDED', {
           invoiceId: invoice.id,
@@ -208,6 +302,7 @@ serve(async (req) => {
       case 'invoice.payment_failed': {
         const invoice = event.data.object as Stripe.Invoice
         const userId = invoice.metadata?.user_id
+        const subscriptionId = invoice.subscription as string
 
         if (!userId) break
 
@@ -215,7 +310,18 @@ serve(async (req) => {
         await supabase
           .from('user_subscriptions')
           .update({ status: 'past_due' })
-          .eq('stripe_subscription_id', invoice.subscription)
+          .eq('stripe_subscription_id', subscriptionId)
+
+        // Get user email and send dunning notification
+        const { data: userData } = await supabase
+          .from('users')
+          .select('email, full_name')
+          .eq('id', userId)
+          .single()
+
+        if (userData?.email) {
+          await sendDunningEmail(userData.email, userData.full_name, subscriptionId, supabase)
+        }
 
         await callbacks.logAudit(userId, 'PAYMENT_FAILED', {
           invoiceId: invoice.id,
@@ -226,7 +332,7 @@ serve(async (req) => {
       }
 
       default:
-        console.warn('[StripeWebhook] Unhandled event type: {0}', event.type)
+        console.warn('[StripeWebhook] Unhandled event type:', event.type)
     }
 
     return jsonRes({ received: true, eventId: event.id }, 200)
@@ -236,13 +342,3 @@ serve(async (req) => {
     return jsonRes({ error: 'Processing failed' }, 500)
   }
 })
-
-// Helper: Map Stripe plan ID to tier
-function getTierFromPlan(planId: string): 'basic' | 'premium' | 'enterprise' | 'master' {
-  const plan = planId.toLowerCase()
-  if (plan.includes('basic')) return 'basic'
-  if (plan.includes('premium')) return 'premium'
-  if (plan.includes('enterprise')) return 'enterprise'
-  if (plan.includes('master')) return 'master'
-  return 'basic'
-}

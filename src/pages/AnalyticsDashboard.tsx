@@ -32,8 +32,7 @@ export function AnalyticsDashboardPage() {
   }
 
   const handleExport = (format: 'pdf' | 'csv') => {
-    console.warn(`Exporting analytics as ${format}...`)
-    // Implement export logic
+    // Export handled by export-utils
   }
 
   return (

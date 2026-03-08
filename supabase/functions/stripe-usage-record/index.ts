@@ -98,10 +98,12 @@ async function createUsageRecordWithRetry(
   stripeApiKey: string,
   maxRetries: number = 3
 ): Promise<{ success: boolean; data?: any; error?: string }> {
+  const stripeBaseUrl = Deno.env.get('STRIPE_BASE_URL') || 'https://api.stripe.com/v1'
+
   for (let attempt = 1; attempt <= maxRetries; attempt++) {
     try {
       const response = await fetch(
-        `https://api.stripe.com/v1/subscription_items/${subscriptionItem}/usage_records`,
+        `${stripeBaseUrl}/subscription_items/${subscriptionItem}/usage_records`,
         {
           method: 'POST',
           headers: {

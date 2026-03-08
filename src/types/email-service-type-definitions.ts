@@ -10,7 +10,11 @@ export type EmailTemplateType =
   | 'rank-upgrade'
   | 'withdrawal-approved'
   | 'withdrawal-rejected'
-  | 'withdrawal-pending';
+  | 'withdrawal-pending'
+  | 'payment-failed'
+  | 'payment-retry'
+  | 'subscription-renewal'
+  | 'overage-notification';
 
 export interface WelcomeEmailData {
   userName: string;
@@ -66,12 +70,25 @@ export interface WithdrawalEmailData {
   currentBalance?: string;
 }
 
+export interface BillingEmailData {
+  userName: string;
+  subscriptionPlan: string;
+  amount?: string;
+  nextRetryDays?: string;
+  retryCount?: string;
+  renewalDate?: string;
+  usageThisPeriod?: string;
+  planLimit?: string;
+  overageAmount?: string;
+}
+
 export type EmailData =
   | WelcomeEmailData
   | OrderConfirmationEmailData
   | CommissionEarnedEmailData
   | RankUpgradeEmailData
-  | WithdrawalEmailData;
+  | WithdrawalEmailData
+  | BillingEmailData;
 
 export interface SendEmailRequest {
   to: string | string[];

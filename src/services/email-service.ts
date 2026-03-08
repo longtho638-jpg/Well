@@ -169,6 +169,103 @@ export async function sendWithdrawalPendingEmail(
   });
 }
 
+// ─── Billing / Dunning Emails ────────────────────────────────────
+
+export async function sendPaymentFailedEmail(
+  to: string,
+  userName: string,
+  amount: number,
+  subscriptionPlan: string,
+  nextRetryDays: number
+): Promise<SendEmailResponse> {
+  const formattedAmount = new Intl.NumberFormat('vi-VN', {
+    style: 'currency',
+    currency: 'USD'
+  }).format(amount);
+
+  return sendEmail({
+    to,
+    subject: `⚠️ Thanh toán thất bại - ${subscriptionPlan}`,
+    templateType: 'payment-failed',
+    data: {
+      userName,
+      subscriptionPlan,
+      amount: formattedAmount,
+      nextRetryDays: nextRetryDays.toString(),
+    },
+  });
+}
+
+export async function sendPaymentRetryEmail(
+  to: string,
+  userName: string,
+  subscriptionPlan: string,
+  retryCount: number
+): Promise<SendEmailResponse> {
+  return sendEmail({
+    to,
+    subject: `🔄 Thử thanh toán lần ${retryCount} - ${subscriptionPlan}`,
+    templateType: 'payment-retry',
+    data: {
+      userName,
+      subscriptionPlan,
+      retryCount: retryCount.toString(),
+    },
+  });
+}
+
+export async function sendSubscriptionRenewalEmail(
+  to: string,
+  userName: string,
+  subscriptionPlan: string,
+  renewalDate: string,
+  amount: number
+): Promise<SendEmailResponse> {
+  const formattedAmount = new Intl.NumberFormat('vi-VN', {
+    style: 'currency',
+    currency: 'USD'
+  }).format(amount);
+
+  return sendEmail({
+    to,
+    subject: `📅 Subscription sắp gia hạn - ${subscriptionPlan}`,
+    templateType: 'subscription-renewal',
+    data: {
+      userName,
+      subscriptionPlan,
+      renewalDate,
+      amount: formattedAmount,
+    },
+  });
+}
+
+export async function sendOverageNotificationEmail(
+  to: string,
+  userName: string,
+  subscriptionPlan: string,
+  usageThisPeriod: number,
+  planLimit: number,
+  overageAmount: number
+): Promise<SendEmailResponse> {
+  const formattedOverage = new Intl.NumberFormat('vi-VN', {
+    style: 'currency',
+    currency: 'USD'
+  }).format(overageAmount);
+
+  return sendEmail({
+    to,
+    subject: `📊 Thông báo usage vượt mức - ${subscriptionPlan}`,
+    templateType: 'overage-notification',
+    data: {
+      userName,
+      subscriptionPlan,
+      usageThisPeriod: usageThisPeriod.toLocaleString(),
+      planLimit: planLimit.toLocaleString(),
+      overageAmount: formattedOverage,
+    },
+  });
+}
+
 // ─── Unified Export ──────────────────────────────────────────────
 
 export const emailService = {
@@ -187,6 +284,15 @@ export const emailService = {
   sendWithdrawalRejectedEmail,
   sendWithdrawalPending: sendWithdrawalPendingEmail,
   sendWithdrawalPendingEmail,
+  // Billing emails
+  sendPaymentFailed: sendPaymentFailedEmail,
+  sendPaymentFailedEmail,
+  sendPaymentRetry: sendPaymentRetryEmail,
+  sendPaymentRetryEmail,
+  sendSubscriptionRenewal: sendSubscriptionRenewalEmail,
+  sendSubscriptionRenewalEmail,
+  sendOverageNotification: sendOverageNotificationEmail,
+  sendOverageNotificationEmail,
 };
 
 export default emailService;

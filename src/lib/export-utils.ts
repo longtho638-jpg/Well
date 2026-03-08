@@ -10,7 +10,6 @@
  */
 export function exportToCSV(data: Record<string, unknown>[], _filename: string): void {
   if (!data || data.length === 0) {
-    console.warn('Không có dữ liệu để export')
     return
   }
 
@@ -50,7 +49,6 @@ export function exportToCSV(data: Record<string, unknown>[], _filename: string):
 export function exportToPDF(elementId: string, _filename: string): void {
   const element = document.getElementById(elementId)
   if (!element) {
-    console.warn(`Không tìm thấy element với ID: ${elementId}`)
     return
   }
 
