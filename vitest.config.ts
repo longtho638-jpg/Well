@@ -15,5 +15,9 @@ export default defineConfig({
     mockReset: true,
     globals: true,
     setupFiles: ['./src/__tests__/setup.ts'],
+    // Use 'forks' instead of 'threads' to avoid esbuild service crashes
+    pool: 'forks',
+    // Limit parallelism to avoid memory exhaustion (M1 16GB RAM)
+    maxConcurrency: 2,
   },
 });
