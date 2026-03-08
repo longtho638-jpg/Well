@@ -1,6 +1,5 @@
 import { readFileSync, writeFileSync } from 'fs';
 import { extractAllTranslationKeys } from './extract-translation-keys.mjs';
-import { checkCoverage } from './check-locale-coverage.mjs';
 
 // Configuration
 const LOCALE_FILES = [
@@ -72,12 +71,36 @@ async function syncLocaleFile(filePath, allKeys) {
 
   let currentObj;
   try {
-    // Eval is dangerous but we control the input (our own files)
-    // We need to handle the case where the file might reference other variables, but usually locles are static.
-    // Replace 'export const vi =' with '(' to verify validity if needed
-    currentObj = eval(`(${match[1]})`);
+    // Create a safe context with stubbed imports for the eval
+    // The locale files import from sub-modules like './vi/agent', './vi/admin', etc.
+    // We create stub objects for these imports
+    const sandbox = {
+      agent: {}, agentDashboard: {}, agentdetailsmodal: {}, agentgridcard: {}, agentdashboard: {},
+      admin: {}, auth: {}, common: {}, copilot: {}, dashboard: {},
+      health: {}, marketing: {}, marketplace: {}, referral: {},
+      team: {}, wallet: {}, network: {}, misc: {}, raas: {},
+      app: {}, commissionwallet: {}, copilotcoaching: {},
+      copilotheader: {}, copilotmessageitem: {}, copilotsuggestions: {},
+      achievementgrid: {}, herocard: {}, dailyquesthub: {},
+      liveActivities: {}, liveactivitiesticker: {}, quickactionscard: {},
+      recentactivitylist: {}, revenuebreakdown: {}, revenuechart: {},
+      revenueprogresswidget: {}, statsgrid: {}, topproducts: {},
+      valuationcard: {}, healthCheck: {}, healthcheck: {},
+      errorboundary: {}, analytics: {}
+    };
+
+    // Build a function that has all the imports as parameters and returns the object
+    const importNames = Object.keys(sandbox).join(', ');
+    const sandboxValues = Object.values(sandbox);
+
+    const fn = new Function(importNames, `return (${match[1]})`);
+    currentObj = fn(...sandboxValues);
+
   } catch (e) {
     console.error(`Error evaluating ${filePath}: ${e.message}`);
+    console.error(`  This usually means the file has complex imports that aren't stubbed.`);
+    console.error(`  Try running: pnpm i18n:extract`);
+    console.error(`  Then manually add missing keys or use a different sync approach.`);
     return;
   }
 
@@ -99,9 +122,6 @@ async function syncLocaleFile(filePath, allKeys) {
 
     // Serialize back
     const newObjStr = serializeObject(currentObj);
-    // Reconstruct file content: Keep header comments, replace object
-    // Find where the object starts and ends in the original file to try to preserve top comments
-    const exportPrefix = content.match(/export\s+(?:const\s+\w+\s*=\s*|default\s+)/)[0];
 
     // We'll just replace the whole match found earlier
     const newContent = content.replace(match[1], newObjStr);

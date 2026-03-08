@@ -46,19 +46,54 @@ export function useBreakpoint(breakpoint: Breakpoint): boolean {
     return useMediaQuery(`(min-width: ${BREAKPOINTS[breakpoint]}px)`);
 }
 
-export function useCurrentBreakpoint(): Breakpoint | 'xs' {
-    const isSm = useBreakpoint('sm');
-    const isMd = useBreakpoint('md');
-    const isLg = useBreakpoint('lg');
-    const isXl = useBreakpoint('xl');
-    const is2xl = useBreakpoint('2xl');
+// Cache for single breakpoint calculation
+let cachedBreakpoint: Breakpoint | 'xs' | null = null;
+let cachedWidth = 0;
 
-    if (is2xl) return '2xl';
-    if (isXl) return 'xl';
-    if (isLg) return 'lg';
-    if (isMd) return 'md';
-    if (isSm) return 'sm';
-    return 'xs';
+function getBreakpointFromWidth(width: number): Breakpoint | 'xs' {
+    // Simple cache: same width = same breakpoint
+    if (width === cachedWidth && cachedBreakpoint) return cachedBreakpoint;
+
+    let result: Breakpoint | 'xs' = 'xs';
+    if (width >= BREAKPOINTS['2xl']) result = '2xl';
+    else if (width >= BREAKPOINTS.xl) result = 'xl';
+    else if (width >= BREAKPOINTS.lg) result = 'lg';
+    else if (width >= BREAKPOINTS.md) result = 'md';
+    else if (width >= BREAKPOINTS.sm) result = 'sm';
+
+    cachedWidth = width;
+    cachedBreakpoint = result;
+    return result;
+}
+
+export function useCurrentBreakpoint(): Breakpoint | 'xs' {
+    const [breakpoint, setBreakpoint] = useState<Breakpoint | 'xs'>(() =>
+        typeof window !== 'undefined'
+            ? getBreakpointFromWidth(window.innerWidth)
+            : 'xs'
+    );
+
+    useEffect(() => {
+        if (typeof window === 'undefined') return;
+
+        // Single resize handler with RAF throttling
+        let rafId: number | null = null;
+        const handleResize = () => {
+            if (rafId !== null) return;
+            rafId = requestAnimationFrame(() => {
+                setBreakpoint(getBreakpointFromWidth(window.innerWidth));
+                rafId = null;
+            });
+        };
+
+        window.addEventListener('resize', handleResize);
+        return () => {
+            window.removeEventListener('resize', handleResize);
+            if (rafId !== null) cancelAnimationFrame(rafId);
+        };
+    }, []);
+
+    return breakpoint;
 }
 
 export function useIsMobile(): boolean { return !useBreakpoint('md'); }

@@ -4,17 +4,31 @@
 
 import { useState, useEffect, useCallback } from 'react';
 
+// Cache để tránh JSON.parse lặp lại cho cùng key
+const storageCache = new Map<string, unknown>();
+
 export function usePersistedState<T>(
     key: string,
     defaultValue: T
 ): [T, (value: T | ((prev: T) => T)) => void] {
+    // Khởi tạo từ cache hoặc localStorage
     const [state, setState] = useState<T>(() => {
+        // Check cache trước
+        if (storageCache.has(key)) {
+            return storageCache.get(key) as T;
+        }
+
         try {
             const stored = localStorage.getItem(key);
-            return stored ? JSON.parse(stored) : defaultValue;
+            if (stored) {
+                const parsed = JSON.parse(stored) as T;
+                storageCache.set(key, parsed);
+                return parsed;
+            }
         } catch {
-            return defaultValue;
+            // Ignore parse errors
         }
+        return defaultValue;
     });
 
     const setPersistedState = useCallback((value: T | ((prev: T) => T)) => {
@@ -22,7 +36,15 @@ export function usePersistedState<T>(
             const newValue = typeof value === 'function'
                 ? (value as (prev: T) => T)(prev)
                 : value;
-            localStorage.setItem(key, JSON.stringify(newValue));
+
+            // Update cache và localStorage
+            storageCache.set(key, newValue);
+            try {
+                localStorage.setItem(key, JSON.stringify(newValue));
+            } catch {
+                // Ignore quota errors
+            }
+
             return newValue;
         });
     }, [key]);
