@@ -103,4 +103,33 @@ export const raas = {
     admin_access_required: "Admin Access Required",
     admin_access_description: "You need an active license with admin dashboard access",
   },
+
+  // Suspension & 403 Response
+  suspension: {
+    title: "Request Forbidden",
+    subscription_canceled: "Subscription has been canceled",
+    subscription_expired: "Subscription has expired",
+    payment_past_due: "Payment is past due",
+    dunning_active: "Dunning process is active",
+    grace_period_expired: "Grace period has expired",
+    license_revoked: "License has been revoked",
+    license_expired: "License has expired",
+    non_payment: "Payment not received",
+    default: "Request forbidden due to billing issue",
+    daysPastDue: "Days past due",
+    amountOwed: "Amount owed",
+    gracePeriodRemaining: "Grace period remaining",
+    hours: "hours",
+    resolvePayment: "Resolve Payment",
+    upgradePlan: "Upgrade Plan",
+    contactSupport: "Contact Support",
+  },
+
+  // Admin Bypass
+  admin_bypass: {
+    available: "Admin bypass available",
+    bypass: "Bypass Suspension",
+    confirm: "Confirm bypass",
+    description: "Override suspension for this session",
+  },
 }

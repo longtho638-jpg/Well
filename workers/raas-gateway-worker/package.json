@@ -1,0 +1,20 @@
+{
+  "name": "raas-gateway-worker",
+  "version": "1.0.0",
+  "description": "Cloudflare Worker for RaaS Gateway API proxy and license validation",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "wrangler dev",
+    "deploy": "wrangler deploy --env production",
+    "deploy:staging": "wrangler deploy",
+    "typecheck": "tsc --noEmit",
+    "kv:create:license": "wrangler kv:namespace create LICENSE_CACHE",
+    "kv:create:suspension": "wrangler kv:namespace create SUSPENSION_LOG"
+  },
+  "devDependencies": {
+    "@cloudflare/workers-types": "^4.20240117.0",
+    "typescript": "^5.3.3",
+    "wrangler": "^4.24.0"
+  }
+}

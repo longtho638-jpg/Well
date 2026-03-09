@@ -23,10 +23,14 @@
 import type { SupabaseClient } from '@supabase/supabase-js'
 import { QuotaEnforcer } from '@/lib/quota-enforcer'
 import type { LicenseValidationResult } from '@/lib/raas-gate'
+import type {
+  LicenseEnforcementResult,
+  LicenseMiddlewareResult,
+} from '@/types/license-enforcement'
 
 export interface QuotaGateResult {
   allowed: boolean
-  license?: LicenseValidationResult
+  license?: LicenseValidationResult | LicenseEnforcementResult
   quotaStatus?: {
     metricType: string
     currentUsage: number
@@ -230,3 +234,52 @@ export const raasGateQuota = {
 }
 
 export default raasGateQuota
+
+/**
+ * Enhanced middleware combining license validation + quota check
+ * Uses new RaaS Gateway Client for license validation (Phase 6.2)
+ *
+ * Usage:
+ *   import { enhancedLicenseQuotaMiddleware } from '@/lib/raas-gate-quota'
+ *
+ *   export async function GET(req: Request) {
+ *     const result = await enhancedLicenseQuotaMiddleware(supabase, req)
+ *     if (!result.allowed) {
+ *       return licenseDeniedResponse(result)
+ *     }
+ *   }
+ */
+export async function enhancedLicenseQuotaMiddleware(
+  supabase: SupabaseClient,
+  request: Request,
+  options?: {
+    enforcementMode?: 'soft' | 'hard' | 'hybrid'
+    requireFeature?: string
+  }
+): Promise<QuotaGateResult> {
+  const apiKey = request.headers.get('X-API-Key') || ''
+
+  // Use new license validation middleware (Phase 6.2)
+  const { licenseValidationMiddleware } = await import(
+    '@/lib/raas-license-middleware'
+  )
+
+  const licenseResult = await licenseValidationMiddleware(request, {
+    requireFeature: options?.requireFeature,
+    enableGracePeriod: true,
+    failOpen: true,
+  })
+
+  if (!licenseResult.allowed) {
+    return {
+      allowed: false,
+      license: licenseResult.license,
+      error: licenseResult.error,
+      statusCode: licenseResult.statusCode,
+      retryAfter: licenseResult.retryAfter,
+    }
+  }
+
+  // License valid - now check quota
+  return checkLicenseAndQuotaMiddleware(supabase, request)
+}

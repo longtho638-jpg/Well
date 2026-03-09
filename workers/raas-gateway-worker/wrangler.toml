@@ -1,0 +1,34 @@
+name = "raas-gateway-worker"
+main = "src/index.ts"
+compatibility_date = "2024-01-01"
+compatibility_flags = ["nodejs_compat"]
+
+[vars]
+RAAS_API_URL = "https://raas.agencyos.network"
+CACHE_TTL_SECONDS = 300
+SUSPENSION_LOG_TTL_SECONDS = 2592000
+
+# Development
+[dev]
+port = 8788
+local_protocol = "http"
+
+# Production
+[env.production]
+route = { pattern = "raas-gateway.agencyos.network/*", zone_name = "agencyos.network" }
+
+# KV Namespaces
+# Create namespaces with: npx wrangler kv:namespace create LICENSE_CACHE
+# Then replace the preview_id with the actual namespace ID
+[[kv_namespaces]]
+binding = "LICENSE_CACHE"
+id = "replace-with-namespace-id"
+preview_id = "replace-with-preview-namespace-id"
+
+[[kv_namespaces]]
+binding = "SUSPENSION_LOG"
+id = "replace-with-namespace-id"
+preview_id = "replace-with-preview-namespace-id"
+
+# Secrets (set via `wrangler secret put <NAME>`)
+# - RAAS_API_KEY - RaaS Gateway API key for upstream validation

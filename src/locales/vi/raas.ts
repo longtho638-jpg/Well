@@ -103,4 +103,33 @@ export const raas = {
     admin_access_required: "Yêu cầu quyền Admin",
     admin_access_description: "Bạn cần license với quyền admin dashboard",
   },
+
+  // Suspension & 403 Response
+  suspension: {
+    title: "Yêu cầu bị từ chối",
+    subscription_canceled: "Gói đăng ký đã bị hủy",
+    subscription_expired: "Gói đăng ký đã hết hạn",
+    payment_past_due: "Thanh toán quá hạn",
+    dunning_active: "Quá trình nhắc nợ đang hoạt động",
+    grace_period_expired: "Thời gian ân hạn đã hết",
+    license_revoked: "Giấy phép đã bị thu hồi",
+    license_expired: "Giấy phép đã hết hạn",
+    non_payment: "Không nhận được thanh toán",
+    default: "Yêu cầu bị từ chối do vấn đề thanh toán",
+    daysPastDue: "Số ngày quá hạn",
+    amountOwed: "Số tiền nợ",
+    gracePeriodRemaining: "Thời gian ân hạn còn lại",
+    hours: "giờ",
+    resolvePayment: "Giải quyết thanh toán",
+    upgradePlan: "Nâng cấp gói",
+    contactSupport: "Liên hệ hỗ trợ",
+  },
+
+  // Admin Bypass
+  admin_bypass: {
+    available: "Admin bypass có sẵn",
+    bypass: "Bỏ qua treo",
+    confirm: "Xác nhận bypass",
+    description: "Ghi đè treo cho phiên này",
+  },
 }

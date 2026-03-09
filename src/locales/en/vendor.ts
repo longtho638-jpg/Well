@@ -22,8 +22,8 @@ export const vendor = {
   "dashboard.products.stock": "Stock",
   "dashboard.products.title": "Title",
   "dashboard.stats.${label}": "${label}",
-  "dashboard.subtitle": "Subtitle",
   "dashboard.tabs.${tab}": "${tab}",
+  "dashboard.subtitle": "Subtitle",
   "dashboard.title": "Title",
   "errors.accessDenied": "Access Denied",
   "errors.notLoggedIn": "Not Logged In",
@@ -39,4 +39,4 @@ export const vendor = {
   "toasts.rateLimitExceeded": "Rate Limit Exceeded",
   "toasts.saveSuccess": "Save Success",
   "toasts.updateError": "Update Error"
-};
+}
