@@ -63,7 +63,9 @@ const ALERT_COOLDOWN_MS = 60 * 60 * 1000
  * AgencyOS webhook endpoint
  * Configured via environment variable with fallback for development
  */
-const DEFAULT_AGENCYOS_WEBHOOK_URL = Deno.env.get('AGENCYOS_WEBHOOK_URL') || 'https://agencyos.network/api/webhooks/usage-alerts'
+const DEFAULT_AGENCYOS_WEBHOOK_URL = typeof Deno !== 'undefined'
+  ? Deno.env.get('AGENCYOS_WEBHOOK_URL') || 'https://agencyos.network/api/webhooks/usage-alerts'
+  : process.env.AGENCYOS_WEBHOOK_URL || 'https://agencyos.network/api/webhooks/usage-alerts'
 
 export class UsageAlertEngine {
   private supabase: SupabaseClient

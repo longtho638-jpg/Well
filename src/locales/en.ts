@@ -38,6 +38,8 @@ import { healthcheck } from './en/healthcheck';
 import { errorboundary } from './en/errorboundary';
 import { analytics } from './en/analytics';
 import { billing } from './en/billing';
+import { alerts } from './en/alerts';
+import { realtime } from './en/realtime';
 import { a } from './en/a';
 import { adminsecuritysettings } from './en/adminsecuritysettings';
 import { agencyos } from './en/agencyos';
@@ -2550,6 +2552,9 @@ export const en = {
     next_billing_date: "[MISSING] next billing date",
     secure_payment: "[MISSING] secure payment",
     stripe_secure: "[MISSING] stripe secure",
-    stripe_privacy: "[MISSING] stripe privacy"
+    stripe_privacy: "[MISSING] stripe privacy",
+    overage: {
+      status: "Overage Status"
+    }
   }
 };

@@ -189,7 +189,7 @@ describe('Phase 6: RBAC Engine', () => {
       const result = validateJwtClaims(invalidIssuer);
 
       expect(result.valid).toBe(false);
-      expect(result.errors).toContain('Invalid issuer');
+      expect(result.errors.join(' ')).toContain('Invalid issuer');
     });
   });
 

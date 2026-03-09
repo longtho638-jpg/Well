@@ -38,6 +38,8 @@ import { healthcheck } from './vi/healthcheck';
 import { errorboundary } from './vi/errorboundary';
 import { analytics } from './vi/analytics';
 import { billing } from './vi/billing';
+import { alerts } from './vi/alerts';
+import { realtime } from './vi/realtime';
 import { a } from './vi/a';
 import { achievementgrid } from './vi/achievementgrid';
 import { admin } from './vi/admin';
@@ -2590,6 +2592,9 @@ export const vi = {
     next_billing_date: "[MISSING] next billing date",
     secure_payment: "[MISSING] secure payment",
     stripe_secure: "[MISSING] stripe secure",
-    stripe_privacy: "[MISSING] stripe privacy"
+    stripe_privacy: "[MISSING] stripe privacy",
+    overage: {
+      status: "Trạng thái vượt mức"
+    }
   }
 };

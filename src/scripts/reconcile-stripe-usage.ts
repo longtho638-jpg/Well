@@ -33,20 +33,33 @@ export class StripeUsageReconciler {
    * Fetch usage from Supabase for the period
    */
   private async fetchSupabaseUsage(): Promise<Map<string, number>> {
-    // Note: In actual implementation, this would call Supabase REST API
-    // For now, returning structure for demonstration
     console.warn('[Reconciler] Fetching Supabase usage...')
 
-    // Simulated daily usage data
     const dailyUsage = new Map<string, number>()
 
-    // TODO: Implement actual Supabase API call
-    // const response = await fetch(`${this.config.supabaseUrl}/rest/v1/usage_records`, {
-    //   headers: {
-    //     'apikey': this.config.supabaseServiceKey,
-    //     'Authorization': `Bearer ${this.config.supabaseServiceKey}`,
-    //   },
-    // })
+    try {
+      const response = await fetch(`${this.config.supabaseUrl}/rest/v1/usage_records`, {
+        headers: {
+          'apikey': this.config.supabaseServiceKey,
+          'Authorization': `Bearer ${this.config.supabaseServiceKey}`,
+          'Content-Type': 'application/json',
+        },
+      })
+
+      if (!response.ok) {
+        console.warn('[Reconciler] Supabase API error:', response.status)
+        return dailyUsage
+      }
+
+      const records = await response.json()
+      for (const record of records) {
+        const date = new Date(record.timestamp).toISOString().split('T')[0]
+        const current = dailyUsage.get(date) || 0
+        dailyUsage.set(date, current + (record.tokens || 0))
+      }
+    } catch (error) {
+      console.error('[Reconciler] Supabase fetch error:', error)
+    }
 
     return dailyUsage
   }
@@ -59,17 +72,29 @@ export class StripeUsageReconciler {
 
     const dailyUsage = new Map<string, number>()
 
-    // TODO: Implement Stripe API call
-    // Step 1: Get usage record summaries for subscription item
-    // GET /v1/subscription_items/{subscription_item_id}/usage_record_summaries
-    // const response = await fetch(
-    //   `https://api.stripe.com/v1/subscription_items/${this.config.subscriptionItemId}/usage_record_summaries`,
-    //   {
-    //     headers: {
-    //       'Authorization': `Bearer ${this.config.stripeSecretKey}`,
-    //     },
-    //   }
-    // )
+    try {
+      const response = await fetch(
+        `https://api.stripe.com/v1/subscription_items/${this.config.subscriptionItemId}/usage_record_summaries`,
+        {
+          headers: {
+            'Authorization': `Bearer ${this.config.stripeSecretKey}`,
+          },
+        }
+      )
+
+      if (!response.ok) {
+        console.warn('[Reconciler] Stripe API error:', response.status)
+        return dailyUsage
+      }
+
+      const data = await response.json()
+      for (const item of data.data || []) {
+        const date = new Date(item.period.start * 1000).toISOString().split('T')[0]
+        dailyUsage.set(date, item.total_usage || 0)
+      }
+    } catch (error) {
+      console.error('[Reconciler] Stripe fetch error:', error)
+    }
 
     return dailyUsage
   }

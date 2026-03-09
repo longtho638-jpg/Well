@@ -29,6 +29,7 @@ interface Env {
 }
 
 import { modelQuotaGuard } from './middleware/model-quota-guard'
+import { raasProxyMiddleware, proxyToUpstream } from './middleware/raas-proxy'
 
 interface LicenseValidationRequest {
   licenseKey: string
@@ -89,6 +90,18 @@ export default {
       const guardResult = await modelQuotaGuard(request, env)
       if (!guardResult.allowed && guardResult.response) {
         return guardResult.response
+      }
+
+      // Phase 6: RaaS Proxy middleware for license enforcement
+      // Intercept all protected API routes and enforce license validity
+      const proxyResult = await raasProxyMiddleware(request, env)
+      if (!proxyResult.allowed && proxyResult.response) {
+        return proxyResult.response
+      }
+
+      // If proxy enriched the request, use it for upstream proxying
+      if (proxyResult.enrichedRequest) {
+        return proxyToUpstream(proxyResult.enrichedRequest, env, proxyResult.enrichedContext)
       }
 
       // 404 for unknown routes
@@ -251,7 +264,7 @@ async function validateWithUpstream(
   request: LicenseValidationRequest,
   env: Env
 ): Promise<LicenseValidationResult> {
-  const { licenseKey } = request
+  const { licenseKey, orgId } = request
 
   const headers: Record<string, string> = {
     'Content-Type': 'application/json',
@@ -533,7 +546,7 @@ async function getLicenseForQuotaCheck(
       return null
     }
 
-    const data = await response.json()
+    const data: any = await response.json()
 
     // Cache result
     await env.LICENSE_CACHE.put(cacheKey, JSON.stringify({
@@ -607,7 +620,7 @@ async function getQuotaStatus(
       return null
     }
 
-    const data = await response.json()
+    const data: any = await response.json()
 
     // Cache result
     await env.MODEL_QUOTA_CACHE?.put(
