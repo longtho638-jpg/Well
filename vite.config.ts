@@ -84,8 +84,8 @@ export default defineConfig({
             if (id.includes('@tanstack')) return 'tanstack';
             // AI/ML libraries - heavy, separate chunk
             if (id.includes('@ai-sdk') || id.includes('ai')) return 'ai-sdk';
-            // Animation
-            if (id.includes('framer-motion')) return 'animation';
+            // Animation - combine with ai-sdk to avoid circular dependency
+            if (id.includes('framer-motion')) return 'ai-animation';
             // Backend services
             if (id.includes('@supabase')) return 'supabase';
             // Icons - tree-shakeable
@@ -98,8 +98,9 @@ export default defineConfig({
             if (id.includes('zustand')) return 'state';
             // Error tracking
             if (id.includes('@sentry')) return 'sentry';
-            // Charts - heavy visualization
-            if (id.includes('recharts') || id.includes('react-js-geometry') || id.includes('react-js-surface')) return 'charts';
+            // Charts - heavy visualization (keep separate from ai-sdk)
+            if (id.includes('recharts')) return 'charts';
+            if (id.includes('react-js-geometry') || id.includes('react-js-surface')) return 'charts-utils';
             // PDF - very heavy, lazy load
             if (id.includes('@react-pdf') || id.includes('pdfkit') || id.includes('react-pdf')) return 'pdf';
           }
