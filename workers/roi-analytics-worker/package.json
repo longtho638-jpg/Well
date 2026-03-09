@@ -1,0 +1,19 @@
+{
+  "name": "roi-analytics-worker",
+  "version": "1.0.0",
+  "type": "module",
+  "private": true,
+  "scripts": {
+    "dev": "wrangler dev",
+    "deploy": "wrangler deploy",
+    "tail": "wrangler tail",
+    "secret:put": "wrangler secret put"
+  },
+  "devDependencies": {
+    "@cloudflare/workers-types": "^4.0.0",
+    "wrangler": "^3.0.0"
+  },
+  "dependencies": {
+    "jose": "^5.0.0"
+  }
+}

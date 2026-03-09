@@ -1,0 +1,48 @@
+name = "roi-analytics-worker"
+main = "src/index.ts"
+compatibility_date = "2024-01-01"
+compatibility_flags = ["nodejs_compat"]
+
+# Cron trigger - runs daily at midnight UTC
+[triggers]
+crons = ["0 0 * * *"]
+
+[vars]
+ENVIRONMENT = "production"
+ROI_CALCULATION_VERSION = "1.0.0"
+WEBHOOK_TIMEOUT_MS = 5000
+MAX_RETRIES = 3
+
+# Development
+[dev]
+port = 8789
+local_protocol = "http"
+
+# Production
+[env.production]
+route = { pattern = "roi-analytics.agencyos.network/*", zone_name = "agencyos.network" }
+
+# KV Namespaces (for rate limiting and caching)
+[[kv_namespaces]]
+binding = "ROI_CACHE"
+id = "replace-with-namespace-id"
+preview_id = "replace-with-preview-namespace-id"
+
+[[kv_namespaces]]
+binding = "WEBHOOK_RATE_LIMIT"
+id = "replace-with-namespace-id"
+preview_id = "replace-with-preview-namespace-id"
+
+# R2 Bucket for audit logs
+[[r2_buckets]]
+binding = "ROI_AUDIT_LOGS"
+bucket_name = "roi-audit-logs"
+
+# Secrets (set via `wrangler secret put <NAME>`)
+# - JWT_SECRET - For signing webhook JWTs
+# - WEBHOOK_URL - AgencyOS webhook endpoint
+# - ADMIN_API_KEY - For AgencyOS API calls
+# - STRIPE_SECRET_KEY - Stripe API key
+# - POLAR_ACCESS_TOKEN - Polar API token
+# - SUPABASE_URL - Supabase project URL
+# - SUPABASE_SERVICE_ROLE_KEY - Supabase service key
