@@ -1,0 +1,103 @@
+name: Zero-Regression Testing
+
+on:
+  pull_request:
+    branches: [main]
+  push:
+    branches: [main]
+  workflow_dispatch:
+    inputs:
+      test_mode:
+        description: 'Test mode (staging/production)'
+        required: true
+        default: 'staging'
+        type: choice
+        options:
+          - staging
+          - production
+
+env:
+  NODE_VERSION: '20'
+  PNPM_VERSION: '9'
+
+jobs:
+  zero-regression:
+    name: Zero-Regression Test Suite
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: ${{ env.PNPM_VERSION }}
+
+      - name: Install dependencies
+        run: pnpm install
+
+      - name: Install Playwright browsers
+        run: pnpm exec playwright install --with-deps
+
+      - name: Check gateway health
+        id: health
+        run: |
+          HEALTH=$(curl -s -o /dev/null -w "%{http_code}" "${{ vars.RAAS_GATEWAY_URL }}/health" || echo "000")
+          echo "gateway_health=$HEALTH" >> $GITHUB_OUTPUT
+          if [ "$HEALTH" != "200" ]; then
+            echo "::warning::Gateway health check failed (HTTP $HEALTH)"
+          fi
+
+      - name: Run unit tests
+        run: pnpm test:run -- src/lib/__tests__/raas-*.test.ts --reporter=verbose
+        continue-on-error: true
+
+      - name: Run E2E tests
+        run: pnpm exec playwright test e2e/raas-*.spec.ts --reporter=list
+        env:
+          RAAS_GATEWAY_URL: ${{ vars.RAAS_GATEWAY_URL || 'https://raas.agencyos.network' }}
+          DASHBOARD_URL: ${{ vars.DASHBOARD_URL || 'http://localhost:5173' }}
+          TEST_MK_API_KEY: ${{ secrets.TEST_MK_API_KEY }}
+          TEST_LICENSE_KEY: ${{ secrets.TEST_LICENSE_KEY }}
+          TEST_JWT_TOKEN: ${{ secrets.TEST_JWT_TOKEN }}
+          TEST_MODE: ${{ github.event.inputs.test_mode || 'staging' }}
+
+      - name: Upload test report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: playwright-report
+          path: playwright-report/
+          retention-days: 30
+
+      - name: Upload JSON report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-results
+          path: test-reports/
+          retention-days: 7
+
+      - name: Comment on PR
+        if: github.event_name == 'pull_request'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const success = ${{ job.status }} === 'success';
+            const comment = success
+              ? '✅ Zero-Regression tests passed!'
+              : '❌ Zero-Regression tests failed. Please review the test report.';
+
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: comment
+            });
