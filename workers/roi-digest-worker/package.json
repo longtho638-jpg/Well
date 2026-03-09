@@ -1,0 +1,21 @@
+{
+  "name": "roi-digest-worker",
+  "version": "1.0.0",
+  "description": "Cloudflare Worker for daily ROI digest aggregation and delivery",
+  "private": true,
+  "scripts": {
+    "dev": "wrangler dev",
+    "deploy": "wrangler deploy",
+    "test": "vitest",
+    "types": "wrangler types"
+  },
+  "dependencies": {
+    "hono": "^4.0.0"
+  },
+  "devDependencies": {
+    "@cloudflare/workers-types": "^4.0.0",
+    "wrangler": "^3.0.0",
+    "typescript": "^5.0.0",
+    "vitest": "^1.0.0"
+  }
+}
