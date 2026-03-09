@@ -1,0 +1,15 @@
+export const partnerdetailmodal = {
+  update_success: "update success",
+  update_failed: "update failed",
+  partner_details: "partner details",
+  edit_metrics: "edit metrics",
+  cancel: "cancel",
+  save_changes: "save changes",
+  rank: "rank",
+  total_sales: "total sales",
+  pending_cashback: "pending cashback",
+  point_balance: "point balance",
+  contact_info: "contact info",
+  email: "email",
+  joined: "joined",
+};

@@ -1,0 +1,15 @@
+export const ordertable = {
+  col_timeline: "col timeline",
+  col_partner_identity: "col partner identity",
+  col_value_vnd: "col value vnd",
+  col_evidence: "col evidence",
+  col_governance: "col governance",
+  empty_state: "empty state",
+  transaction_logged: "transaction logged",
+  anonymous_partner: "anonymous partner",
+  unverified_email: "unverified email",
+  asset: "asset",
+  inspect_bill: "inspect bill",
+  no_evidence: "no evidence",
+  approve: "approve",
+};

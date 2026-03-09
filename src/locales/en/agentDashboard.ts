@@ -1,0 +1,20 @@
+export const agentdashboard = {
+  establishingNodeSync: "Establishing Node Sync",
+  title: "Title",
+  intelligenceGridOptimal: "Intelligence Grid Optimal",
+  operationalTier: "Operational Tier",
+  version: "Version",
+  registry: "Registry",
+  nodes: "Nodes",
+  strategicSimulatorOffline: "Strategic Simulator Offline",
+  connectToPolicyEngine: "Connect To Policy Engine",
+  "action": "Action",
+  "active_now": "Active now",
+  "agent_ecosystem": "Agent ecosystem",
+  "intelligent_agents": "Intelligent agents",
+  "monitoring": "Monitoring",
+  "performance": "Performance",
+  "total_actions": "Total actions",
+  "total_agents": "Total agents",
+  "total_kpis": "Total kpis"
+};

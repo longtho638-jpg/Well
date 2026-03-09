@@ -1,5 +1,6 @@
 // Billing & Subscription translations
 export const billing = {
+  status: "status",
   // General
   title: 'Thanh toán & Subscription',
   description: 'Quản lý subscription, phương thức thanh toán và usage',

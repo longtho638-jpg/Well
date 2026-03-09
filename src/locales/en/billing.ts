@@ -1,5 +1,6 @@
 // Billing & Subscription translations
 export const billing = {
+  status: "Status",
   // General
   title: 'Billing & Subscription',
   description: 'Manage subscription, payment method, and usage',

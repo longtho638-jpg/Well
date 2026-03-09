@@ -1,0 +1,20 @@
+export const onboardingquest = {
+  fallback_advice: "Fallback Advice",
+  the_coach: "The Coach",
+  powered_by_gemini_ai: "Powered By Gemini Ai",
+  day_3_30: "Day 3 30",
+  xp: "Xp",
+  ai_strategy: "Ai Strategy",
+  stuck_ask_your_ai_coach_for_a: "Stuck Ask Your Ai Coach For A",
+  analyzing: "Analyzing",
+  get_ai_advice: "Get Ai Advice",
+  "ai_strategy": "Ai strategy",
+  "analyzing": "Analyzing",
+  "day_3_30": "Day 3 30",
+  "fallback_advice": "Fallback advice",
+  "get_ai_advice": "Get ai advice",
+  "powered_by_gemini_ai": "Powered by gemini ai",
+  "stuck_ask_your_ai_coach_for_a": "Stuck ask your ai coach for a",
+  "the_coach": "The coach",
+  "xp": "Xp"
+};

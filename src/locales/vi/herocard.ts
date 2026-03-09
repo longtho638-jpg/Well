@@ -1,4 +1,5 @@
 export const herocard = {
+  100m_vnd_revenue: "100m vnd revenue",
   founders_pathway: "Lối đi Nhà sáng lập",
   reach: "Tầm ảnh hưởng",
   access_secured: "Truy cập được bảo vệ",

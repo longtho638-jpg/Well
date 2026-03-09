@@ -1,6 +1,6 @@
 import { extractAllTranslationKeys } from './extract-translation-keys.mjs';
 import { checkCoverage } from './check-locale-coverage.mjs';
-import { readFileSync, existsSync } from 'fs';
+import { readFileSync, existsSync, writeFileSync } from 'fs';
 import { join, basename } from 'path';
 
 const LOCALE_FILES = ['src/locales/vi.ts', 'src/locales/en.ts'];
@@ -23,16 +23,23 @@ function extractKeysFromModule(content, varName) {
   const innerObj = parseObjectKeys(objStr);
   const result = innerObj[varName] || innerObj;
 
-  // Check if this is a flat structure (misc.ts style) or nested
-  const hasNestedChildren = Object.values(result).some(v => typeof v === 'object' && v !== null);
+  // Check if this is a flat structure with dot-notation keys (settings.ts style)
+  const hasDotKeys = Object.keys(result).some(k => k.includes('.'));
 
-  if (hasNestedChildren) {
+  if (hasDotKeys) {
+    // Flat keys with dot notation: prepend module name only
+    return Object.keys(result).map(k => `${varName}.${k}`);
+  } else if (hasNestedChildren(result)) {
     // Nested structure: use flattenKeys
     return flattenKeys(result).map(k => `${varName}.${k}`);
   } else {
     // Flat structure (misc.ts): return keys directly
     return Object.keys(result).map(k => `${varName}.${k}`);
   }
+}
+
+function hasNestedChildren(obj) {
+  return Object.values(obj).some(v => typeof v === 'object' && v !== null);
 }
 
 function extractBalancedBraces(str, startIdx) {
@@ -76,8 +83,9 @@ function parseObjectKeys(objStr) {
       const q = inner[i]; i++;
       while (i < inner.length && inner[i] !== q) { if (inner[i] === '\\') i++; key += inner[i]; i++; }
       i++;
-    } else if (/[\w$]/.test(inner[i])) {
-      while (i < inner.length && /[\w$]/.test(inner[i])) { key += inner[i]; i++; }
+    } else if (/[\w$.]/.test(inner[i])) {
+      // Support dot-notation keys like "items.dark_mode"
+      while (i < inner.length && /[\w$.]/.test(inner[i])) { key += inner[i]; i++; }
     } else { i++; continue; }
     if (!key) continue;
     while (i < inner.length && /\s/.test(inner[i])) i++;
@@ -118,21 +126,30 @@ const requiredKeys = extractAllTranslationKeys('src');
 console.log(`Found ${requiredKeys.length} unique translation keys\n`);
 
 let hasErrors = false;
+const allMissingKeys = [];
+
 for (const localeFile of LOCALE_FILES) {
   console.log(`Validating ${localeFile}...`);
   const missing = checkCoverage(requiredKeys, localeFile);
   if (missing.length > 0) {
     hasErrors = true;
+    allMissingKeys.push(...missing.map(m => ({ file: localeFile, ...m })));
     console.error(`\nMissing ${missing.length} keys in ${localeFile}:\n`);
-    missing.slice(0, 20).forEach(item => {
+    // Show ALL keys (not just first 20)
+    missing.forEach(item => {
       console.error(`  ${item.key}`);
       console.error(`    -> Used in: ${item.file}:${item.line}`);
     });
-    if (missing.length > 20) console.error(`  ... and ${missing.length - 20} more`);
     console.error('');
   } else {
     console.log(`OK — all keys present (${requiredKeys.length} keys checked)\n`);
   }
+}
+
+// Write all missing keys to file for programmatic access
+if (allMissingKeys.length > 0) {
+  writeFileSync('/tmp/validation-missing-keys.json', JSON.stringify(allMissingKeys, null, 2));
+  console.log(`\n💾 Written ${allMissingKeys.length} missing keys to /tmp/validation-missing-keys.json\n`);
 }
 
 // Phase 2: Symmetry check

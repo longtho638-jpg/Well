@@ -1,0 +1,18 @@
+export const exitintent = {
+  headline: "headline",
+  closeLabel: "close Label",
+  subheadline: "subheadline",
+  cta: "cta",
+  urgency: "urgency",
+  noThanks: "no Thanks",
+  benefits.aiCoaching: "ai Coaching",
+  benefits.passiveIncome: "passive Income",
+  benefits.zeroRisk: "zero Risk",
+  benefits.premiumProducts: "premium Products",
+  headline: "headline",
+  closeLabel: "close Label",
+  subheadline: "subheadline",
+  cta: "cta",
+  urgency: "urgency",
+  noThanks: "no Thanks",
+};

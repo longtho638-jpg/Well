@@ -1,0 +1,22 @@
+export const sidebar = {
+  coachFallback: "Coach Fallback",
+  wellnexus_home: "Wellnexus Home",
+  wellnexus: "Wellnexus",
+  social_commerce: "Social Commerce",
+  the_coach: "The Coach",
+  day_3_30: "Day 3 30",
+  questList: "Quest List",
+  xp: "Xp",
+  getAiAdviceLabel: "Get Ai Advice Label",
+  get_ai_advice: "Get Ai Advice",
+  "coachFallback": "Coach Fallback",
+  "day_3_30": "Day 3 30",
+  "getAiAdviceLabel": "Get Ai Advice Label",
+  "get_ai_advice": "Get ai advice",
+  "questList": "Quest List",
+  "social_commerce": "Social commerce",
+  "the_coach": "The coach",
+  "wellnexus": "Wellnexus",
+  "wellnexus_home": "Wellnexus home",
+  "xp": "Xp"
+};

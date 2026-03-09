@@ -76,8 +76,9 @@ function parseObjectKeys(objStr) {
       const q = inner[i]; i++;
       while (i < inner.length && inner[i] !== q) { if (inner[i] === '\\') i++; key += inner[i]; i++; }
       i++;
-    } else if (/[\w$]/.test(inner[i])) {
-      while (i < inner.length && /[\w$]/.test(inner[i])) { key += inner[i]; i++; }
+    } else if (/[\w$.]/.test(inner[i])) {
+      // Support dot-notation keys like "items.dark_mode"
+      while (i < inner.length && /[\w$.]/.test(inner[i])) { key += inner[i]; i++; }
     } else { i++; continue; }
     if (!key) continue;
     while (i < inner.length && /\s/.test(inner[i])) i++;
@@ -145,17 +146,27 @@ function parseSubModuleKeys(content, expectedVarName) {
     const parsed = parseObjectKeys(objStr);
     const innerObj = parsed[varName] || parsed;
 
-    // Check if this is a flat structure (misc.ts style) or nested
-    const hasNestedChildren = Object.values(innerObj).some(v => typeof v === 'object' && v !== null);
+    // Check if this is a flat structure with dot-notation keys (settings.ts style)
+    // e.g., { "items.dark_mode": "...", "items.language": "..." }
+    const hasDotKeys = Object.keys(innerObj).some(k => k.includes('.'));
 
-    if (hasNestedChildren) {
-      // Nested structure: use flattenKeys
-      const keys = flattenKeys(innerObj).map(k => `${varName}.${k}`);
-      allKeys.push(...keys);
-    } else {
-      // Flat structure (misc.ts): extract flat keys directly
+    if (hasDotKeys) {
+      // Flat keys with dot notation: prepend module name only
+      // e.g., "items.dark_mode" -> "settings.items.dark_mode"
       const flatKeys = Object.keys(innerObj).map(k => `${varName}.${k}`);
       allKeys.push(...flatKeys);
+    } else {
+      // Check if this is a nested structure (traditional style)
+      const hasNestedChildren = Object.values(innerObj).some(v => typeof v === 'object' && v !== null);
+      if (hasNestedChildren) {
+        // Nested structure: use flattenKeys
+        const keys = flattenKeys(innerObj).map(k => `${varName}.${k}`);
+        allKeys.push(...keys);
+      } else {
+        // Flat structure (misc.ts): extract flat keys directly
+        const flatKeys = Object.keys(innerObj).map(k => `${varName}.${k}`);
+        allKeys.push(...flatKeys);
+      }
     }
   }
 
@@ -168,6 +179,13 @@ function parseSubModuleKeys(content, expectedVarName) {
       if (objStr) {
         const parsed = parseObjectKeys(objStr);
         const innerObj = parsed[expectedVarName] || parsed;
+
+        // Check for dot-notation keys
+        const hasDotKeys = Object.keys(innerObj).some(k => k.includes('.'));
+        if (hasDotKeys) {
+          return Object.keys(innerObj).map(k => `${expectedVarName}.${k}`);
+        }
+
         const hasNestedChildren = Object.values(innerObj).some(v => typeof v === 'object' && v !== null);
         if (hasNestedChildren) {
           return flattenKeys(innerObj).map(k => `${expectedVarName}.${k}`);
@@ -193,25 +211,40 @@ function parseLocaleFileRegex(content, filePath) {
       importMap[name] = path;
     }
   }
+
+  const allKeys = [];
+
+  // Process spread imports (...module)
   const spreadRe = /\.\.\.(\w+)/g;
-  const spreads = [];
   while ((m = spreadRe.exec(content)) !== null) {
-    if (importMap[m[1]]) spreads.push(m[1]);
-  }
-  if (spreads.length > 0) {
-    const allKeys = [];
-    for (const name of spreads) {
-      let subPath = join(dirname(filePath), importMap[name]);
+    if (importMap[m[1]]) {
+      let subPath = join(dirname(filePath), importMap[m[1]]);
       if (!subPath.endsWith('.ts')) subPath += '.ts';
       try {
         const subContent = readFileSync(subPath, 'utf-8');
-        const subKeys = parseSubModuleKeys(subContent, name);
+        const subKeys = parseSubModuleKeys(subContent, m[1]);
         allKeys.push(...subKeys);
       } catch { /* skip */ }
     }
-    return allKeys;
   }
-  return [];
+
+  // Process named imports (module) - NEW: read keys from imported modules
+  for (const [name, path] of Object.entries(importMap)) {
+    let subPath = join(dirname(filePath), path);
+    if (!subPath.endsWith('.ts')) subPath += '.ts';
+    try {
+      const subContent = readFileSync(subPath, 'utf-8');
+      const subKeys = parseSubModuleKeys(subContent, name);
+      // Add keys with module prefix
+      for (const key of subKeys) {
+        if (!allKeys.includes(key)) {
+          allKeys.push(key);
+        }
+      }
+    } catch { /* skip */ }
+  }
+
+  return allKeys;
 }
 
 export function checkCoverage(requiredKeys, localeFile) {

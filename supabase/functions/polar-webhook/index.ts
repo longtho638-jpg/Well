@@ -253,8 +253,130 @@ serve(async (req: Request) => {
         break
       }
 
+      // Phase 6: Overage billing events
+      case 'usage.billing_sync': {
+        const { overage_transaction_id, polar_transaction_id, amount, customer_id, org_id } = event.data
+
+        if (!overage_transaction_id) {
+          console.error('[PolarWebhook] Missing overage_transaction_id')
+          break
+        }
+
+        // Update overage transaction with Polar transaction ID
+        const { error } = await supabase
+          .from('overage_transactions')
+          .update({
+            polar_transaction_id: polar_transaction_id,
+            stripe_sync_status: 'synced', // Reuse field for Polar sync status
+            polar_synced_at: new Date().toISOString(),
+          })
+          .eq('id', overage_transaction_id)
+
+        if (error) {
+          console.error('[PolarWebhook] Failed to update overage transaction:', error)
+          await logAudit(customer_id as string || 'unknown', 'OVERAGE_SYNC_FAILED', {
+            overage_transaction_id,
+            error: error.message,
+          }, 'failure')
+        } else {
+          console.log('[PolarWebhook] Overage transaction synced:', overage_transaction_id)
+          await logAudit(customer_id as string || 'unknown', 'OVERAGE_SYNCED', {
+            overage_transaction_id,
+            polar_transaction_id,
+            amount,
+          }, 'success')
+        }
+
+        break
+      }
+
+      case 'usage.overage_detected': {
+        const { customer_id, org_id, metric_type, current_usage, quota_limit, percentage } = event.data
+
+        if (!customer_id || !metric_type) {
+          console.error('[PolarWebhook] Missing customer_id or metric_type')
+          break
+        }
+
+        // Log overage detection for analytics
+        await supabase.from('alert_events').insert({
+          event_type: 'overage_detected',
+          customer_id,
+          org_id,
+          metric_type,
+          payload: event.data,
+        })
+
+        console.log('[PolarWebhook] Overage detected:', { customer_id, metric_type, percentage })
+
+        break
+      }
+
+      // Phase 6: Quota exhaustion alert
+      case 'usage.quota_exhausted': {
+        const { customer_id, org_id, metric_type, current_usage, quota_limit, percentage } = event.data
+
+        if (!org_id || !metric_type) {
+          console.error('[PolarWebhook] Missing org_id or metric_type for quota_exhausted')
+          break
+        }
+
+        // Update billing state in KV abstraction (billing_state table)
+        try {
+          await supabase.from('billing_state').upsert({
+            org_id: org_id,
+            metric_type: metric_type,
+            current_usage: current_usage || 0,
+            quota_limit: quota_limit || 0,
+            percentage_used: Math.round(percentage) || 100,
+            is_exhausted: true,
+            last_sync: new Date().toISOString(),
+          }, {
+            onConflict: 'org_id,metric_type',
+          })
+        } catch (err) {
+          console.error('[PolarWebhook] Failed to update billing_state:', err)
+        }
+
+        // Log critical alert
+        await supabase.from('alert_events').insert({
+          event_type: 'quota_exhausted',
+          customer_id: customer_id || 'unknown',
+          org_id,
+          metric_type,
+          severity: 'critical',
+          payload: event.data,
+        })
+
+        console.log('[PolarWebhook] Quota exhausted:', { org_id, metric_type, percentage })
+        break
+      }
+
+      // Phase 6: Threshold warning (80%, 90%)
+      case 'usage.threshold_warning': {
+        const { customer_id, org_id, metric_type, percentage, threshold } = event.data
+
+        if (!org_id || !metric_type) {
+          console.error('[PolarWebhook] Missing org_id or metric_type for threshold_warning')
+          break
+        }
+
+        // Log warning alert
+        await supabase.from('alert_events').insert({
+          event_type: 'threshold_warning',
+          customer_id: customer_id || 'unknown',
+          org_id,
+          metric_type,
+          severity: percentage >= 90 ? 'critical' : 'warning',
+          payload: event.data,
+        })
+
+        console.log('[PolarWebhook] Threshold warning:', { org_id, metric_type, threshold, percentage })
+        break
+      }
+
       default:
-        console.warn('[PolarWebhook] Unhandled event type: {0}', event.type)
+        console.warn('[PolarWebhook] Unhandled event type:', event.type)
     }
 
     return jsonRes({ received: true, eventType: event.type }, 200)

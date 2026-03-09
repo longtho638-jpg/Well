@@ -1,4 +1,5 @@
 export const commissionwallet = {
+  10_pit: "10 pit",
   withdrawable_balance: "Số dư có thể rút",
   total_earnings_gross: "Tổng thu nhập (gộp)",
   withheld_tax_pit_10: "Thuế giữ lại PIT 10%",

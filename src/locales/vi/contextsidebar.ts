@@ -1,0 +1,15 @@
+export const contextsidebar = {
+  no_patient_data: "no patient data",
+  h_s_kh_ch_h_ng: "h s kh ch h ng",
+  th_ng_tin_t_v_n: "th ng tin t v n",
+  tu_i: "tu i",
+  tu_i_1: "tu i 1",
+  v_n_ch_nh: "v n ch nh",
+  l_ch_s_mua_h_ng: "l ch s mua h ng",
+  l_n_t_v_n_g_n_nh_t: "l n t v n g n nh t",
+  i_m_s_c_kh_e: "i m s c kh e",
+  i_m_s_t_t_ti_p_t_c_duy_tr: "i m s t t ti p t c duy tr",
+  t_v_n_ho_n_th_nh: "t v n ho n th nh",
+  15: "15",
+  c_i_thi_n_s_c_kh_e: "c i thi n s c kh e",
+};

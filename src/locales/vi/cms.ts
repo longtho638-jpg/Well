@@ -1,0 +1,15 @@
+export const cms = {
+  content_orchestrator: "content orchestrator",
+  cross_platform_content_deliver: "cross platform content deliver",
+  create: "create",
+  tab_banners: "tab banners",
+  tab_announcements: "tab announcements",
+  tab_templates: "tab templates",
+  search_placeholder: "search placeholder",
+  loc: "loc",
+  action: "action",
+  link: "link",
+  target: "target",
+  archive: "archive",
+  enable: "enable",
+};

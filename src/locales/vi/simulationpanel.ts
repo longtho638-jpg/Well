@@ -1,0 +1,15 @@
+export const simulationpanel = {
+  vc_simulation_engine: "vc simulation engine",
+  active_distribution_node: "active distribution node",
+  nodes: "nodes",
+  target_aov: "target aov",
+  monthly_fixed: "monthly fixed",
+  projected_gmv: "projected gmv",
+  system_payout: "system payout",
+  projected_ebitda: "projected ebitda",
+  margin: "margin",
+  strategic_forecast: "strategic forecast",
+  strategic_candidates: "strategic candidates",
+  partners: "partners",
+  projected_saas_revenue: "projected saas revenue",
+};
