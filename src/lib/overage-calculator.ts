@@ -1,3 +1,4 @@
+/* eslint-disable max-lines */
 /**
  * Overage Calculator - Phase 7.1
  *
@@ -21,6 +22,7 @@
  */
 
 import type { SupabaseClient } from '@supabase/supabase-js'
+import { analyticsLogger } from '@/utils/logger'
 
 export type OverageMetricType =
   | 'api_calls'
@@ -199,7 +201,6 @@ export class OverageCalculator {
       // Check if already recorded (idempotency)
       const existing = await this.findExistingTransaction(idempotencyKey)
       if (existing) {
-        console.log('[OverageCalculator] Transaction already exists:', existing.id)
         return { success: true, transactionId: existing.id }
       }
 
@@ -250,14 +251,11 @@ export class OverageCalculator {
         .single()
 
       if (error) {
-        console.error('[OverageCalculator] Insert error:', error)
         return { success: false, error: error.message }
       }
 
-      console.log('[OverageCalculator] Transaction created:', data.id)
       return { success: true, transactionId: data.id }
     } catch (err) {
-      console.error('[OverageCalculator] Error:', err)
       return {
         success: false,
         error: err instanceof Error ? err.message : 'Unknown error',
@@ -302,7 +300,7 @@ export class OverageCalculator {
       const { data, error } = await query
 
       if (error) {
-        console.error('[OverageCalculator] Fetch error:', error)
+        analyticsLogger.error('[OverageCalculator] Fetch error', error)
         return []
       }
 
@@ -315,7 +313,7 @@ export class OverageCalculator {
         createdAt: item.created_at,
       }))
     } catch (err) {
-      console.error('[OverageCalculator] Error:', err)
+      analyticsLogger.error('[OverageCalculator] Error', err)
       return []
     }
   }
@@ -340,7 +338,7 @@ export class OverageCalculator {
       const { data, error } = await query
 
       if (error) {
-        console.error('[OverageCalculator] Fetch error:', error)
+        analyticsLogger.error('[OverageCalculator] Fetch error', error)
         return { totalCost: 0, totalTransactions: 0, breakdownByMetric: {} }
       }
 
@@ -359,7 +357,7 @@ export class OverageCalculator {
         breakdownByMetric,
       }
     } catch (err) {
-      console.error('[OverageCalculator] Error:', err)
+      analyticsLogger.error('[OverageCalculator] Error', err)
       return { totalCost: 0, totalTransactions: 0, breakdownByMetric: {} }
     }
   }
@@ -390,7 +388,6 @@ export class OverageCalculator {
         .single()
 
       if (override?.quota_limit) {
-        console.log('[OverageCalculator] Tenant override applied:', override.quota_limit)
         return override.quota_limit
       }
 
@@ -399,7 +396,7 @@ export class OverageCalculator {
       // return baseQuota + graceBoost;
 
       return baseQuota
-    } catch (err) {
+    } catch {
       // No override found, return base quota
       return baseQuota
     }
@@ -439,7 +436,7 @@ export class OverageCalculator {
       const rate = parseFloat((data as any)[rateField] || '0')
       this.setCache(cacheKey, rate)
       return rate
-    } catch (err) {
+    } catch {
       // Fallback to default rates
       const rate = this.getFallbackRate(metricType, tier)
       this.setCache(cacheKey, rate)
@@ -486,7 +483,7 @@ export class OverageCalculator {
         .single()
 
       return data || null
-    } catch (err) {
+    } catch {
       return null
     }
   }
@@ -511,7 +508,7 @@ export class OverageCalculator {
         .single()
 
       return data?.plan_slug || 'basic'
-    } catch (err) {
+    } catch {
       return 'basic'
     }
   }

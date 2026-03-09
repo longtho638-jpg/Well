@@ -5,8 +5,9 @@
  * Phase 1: License Gating for Admin Dashboard & PayOS
  */
 
-import { api } from '@/utils/api';
-import { getCachedLicenseResult } from './raas-gate';
+import { api } from '@/utils/api'
+import { getCachedLicenseResult } from './raas-gate'
+import { analyticsLogger } from '@/utils/logger'
 
 // ============================================================================
 // INTERCEPTOR STATE
@@ -80,12 +81,12 @@ export function enableRAASInterceptor(): void {
     }
 
     try {
-        patchApiClientHeaders();
-        interceptorEnabled = true;
-        console.warn('[RaaS Interceptor] Enabled - License gating active');
+        patchApiClientHeaders()
+        interceptorEnabled = true
+        interceptorEnabled = true
     } catch (error) {
-        console.error('[RaaS Interceptor] Failed to enable:', error);
-        interceptorEnabled = false;
+        analyticsLogger.error('[RaaS Interceptor] Failed to enable', error)
+        interceptorEnabled = false
     }
 }
 
