@@ -18,17 +18,25 @@ local_protocol = "http"
 route = { pattern = "raas-gateway.agencyos.network/*", zone_name = "agencyos.network" }
 
 # KV Namespaces
-# Create namespaces with: npx wrangler kv:namespace create LICENSE_CACHE
-# Then replace the preview_id with the actual namespace ID
 [[kv_namespaces]]
 binding = "LICENSE_CACHE"
-id = "replace-with-namespace-id"
-preview_id = "replace-with-preview-namespace-id"
+id = "b8ec26d288c64662b86bcd426563a46b"
+preview_id = "b8ec26d288c64662b86bcd426563a46b"
 
 [[kv_namespaces]]
 binding = "SUSPENSION_LOG"
-id = "replace-with-namespace-id"
-preview_id = "replace-with-preview-namespace-id"
+id = "a56aa94b992e4709a12c10a74cf739ff"
+preview_id = "a56aa94b992e4709a12c10a74cf739ff"
+
+[[kv_namespaces]]
+binding = "MODEL_QUOTA_CACHE"
+id = "fd0cf84a5b9740d0b48d6a79e456ed74"
+preview_id = "fd0cf84a5b9740d0b48d6a79e456ed74"
+
+[[kv_namespaces]]
+binding = "ALERT_STATE"
+id = "f548e31d6b4349fca090c8b6e15f717b"
+preview_id = "f548e31d6b4349fca090c8b6e15f717b"
 
 # Secrets (set via `wrangler secret put <NAME>`)
 # - RAAS_API_KEY - RaaS Gateway API key for upstream validation
