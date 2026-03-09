@@ -1899,10 +1899,6 @@ export const misc = {
   auth_resetPassword_newPasswordPlaceholder: "Auth ResetPassword NewPasswordPlaceholder",
   auth_resetPassword_confirmPasswordPlaceholder: "Auth ResetPassword ConfirmPasswordPlaceholder",
   auth_resetPassword_submitButton: "Auth ResetPassword SubmitButton",
-  auth_resetPassword_successMessage: "Auth ResetPassword SuccessMessage",
-  auth_resetPassword_newPasswordPlaceholder: "Auth ResetPassword NewPasswordPlaceholder",
-  auth_resetPassword_confirmPasswordPlaceholder: "Auth ResetPassword ConfirmPasswordPlaceholder",
-  auth_resetPassword_submitButton: "Auth ResetPassword SubmitButton",
 
   // LiveConsole keys
   liveconsole: {

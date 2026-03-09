@@ -1899,10 +1899,6 @@ export const misc = {
   auth_resetPassword_newPasswordPlaceholder: "[VI:AUTH RESETPASSWORD NEWPASSWORDPLACEHOLDER]",
   auth_resetPassword_confirmPasswordPlaceholder: "[VI:AUTH RESETPASSWORD CONFIRMPASSWORDPLACEHOLDER]",
   auth_resetPassword_submitButton: "[VI:AUTH RESETPASSWORD SUBMITBUTTON]",
-  auth_resetPassword_successMessage: "[VI:AUTH RESETPASSWORD SUCCESSMESSAGE]",
-  auth_resetPassword_newPasswordPlaceholder: "[VI:AUTH RESETPASSWORD NEWPASSWORDPLACEHOLDER]",
-  auth_resetPassword_confirmPasswordPlaceholder: "[VI:AUTH RESETPASSWORD CONFIRMPASSWORDPLACEHOLDER]",
-  auth_resetPassword_submitButton: "[VI:AUTH RESETPASSWORD SUBMITBUTTON]",
 
   // LiveConsole keys
   liveconsole: {
