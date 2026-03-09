@@ -181,6 +181,49 @@ export const analytics = {
       custom_date_range: 'Custom Date Range Picker',
     },
   },
+
+  // Real-time Analytics Widget (Phase 6.3)
+  realtime: {
+    title: 'Real-time Analytics',
+    live_feed: 'Live Event Feed',
+    usage_chart: 'Real-time Usage',
+    events_per_minute: 'Events/min',
+    no_events: 'No events yet',
+    watching: 'Watching',
+    connected: 'Connected',
+    reconnecting: 'Reconnecting...',
+    last_event: 'Last event',
+    ago: 'ago',
+    auto_scroll: 'Auto-scroll',
+    pause: 'Pause',
+    resume: 'Resume',
+    clear: 'Clear',
+  },
+
+  // Alert Badges
+  alerts: {
+    warning: 'Warning',
+    critical: 'Critical',
+    over_quota: 'Over Quota',
+    approaching_limit: 'Approaching Limit',
+    suspension_warning: 'Suspension Warning',
+    license_expired: 'License Expired',
+    payment_past_due: 'Payment Past Due',
+    view_details: 'View Details',
+    dismiss: 'Dismiss',
+  },
+
+  // Event Types
+  event_types: {
+    license_validated: 'License Validated',
+    license_expired: 'License Expired',
+    suspension_created: 'Suspension Created',
+    suspension_cleared: 'Suspension Cleared',
+    subscription_warning: 'Subscription Warning',
+    admin_bypass_used: 'Admin Bypass Used',
+    api_request: 'API Request',
+    quota_exceeded: 'Quota Exceeded',
+  },
 }
 
 export default analytics

@@ -1914,5 +1914,32 @@ export const misc = {
     bee_agent_core_v4_2_0_stable: "Bee Agent Core V4.2.0 Stable",
     tx: "TX",
     bps: "BPS"
+  },
+
+  // RaaS Realtime Analytics
+  realtime: {
+    title: "Real-time Analytics",
+    live_feed: "Live Feed",
+    events_per_minute: "Events/min",
+    connected: "Connected",
+    reconnecting: "Reconnecting",
+    pause: "Pause",
+    resume: "Resume",
+    paused: "Paused",
+    watching: "Watching",
+    auto_scroll: "Auto scroll",
+    clear: "Clear",
+    no_events: "No events",
+    usage_chart: "Usage Chart"
+  },
+
+  // RaaS Alerts
+  alerts: {
+    over_quota: "Over quota",
+    critical: "Critical",
+    approaching_limit: "Approaching limit",
+    suspension_warning: "Suspension warning",
+    view_details: "View details",
+    dismiss: "Dismiss"
   }
 };

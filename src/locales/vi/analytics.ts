@@ -181,6 +181,49 @@ export const analytics = {
       custom_date_range: 'Custom Date Range Picker',
     },
   },
+
+  // Real-time Analytics Widget (Phase 6.3)
+  realtime: {
+    title: 'Analytics Thời Gian Thực',
+    live_feed: 'Luồng Sự Kiện Trực Tiếp',
+    usage_chart: 'Mức Dùng Thời Gian Thực',
+    events_per_minute: 'Sự kiện/phút',
+    no_events: 'Chưa có sự kiện',
+    watching: 'Đang theo dõi',
+    connected: 'Đã kết nối',
+    reconnecting: 'Đang kết nối lại...',
+    last_event: 'Sự kiện cuối',
+    ago: 'trước',
+    auto_scroll: 'Tự động cuộn',
+    pause: 'Tạm dừng',
+    resume: 'Tiếp tục',
+    clear: 'Xóa',
+  },
+
+  // Alert Badges
+  alerts: {
+    warning: 'Cảnh Báo',
+    critical: 'Nghiêm Trọng',
+    over_quota: 'Vượt Hạn Mức',
+    approaching_limit: 'Sắp Đạt Giới Hạn',
+    suspension_warning: 'Cảnh Báo Đình Chỉ',
+    license_expired: 'Giấy Phép Hết Hạn',
+    payment_past_due: 'Thanh Toán Quá Hạn',
+    view_details: 'Xem Chi Tiết',
+    dismiss: 'Bỏ Qua',
+  },
+
+  // Event Types
+  event_types: {
+    license_validated: 'Giấy Phép Hợp Lệ',
+    license_expired: 'Giấy Phép Hết Hạn',
+    suspension_created: 'Đã Đình Chỉ',
+    suspension_cleared: 'Đã Hủy Đình Chỉ',
+    subscription_warning: 'Cảnh Báo Đăng Ký',
+    admin_bypass_used: 'Bỏ Qua Admin',
+    api_request: 'Yêu Cầu API',
+    quota_exceeded: 'Vượt Hạn Mức',
+  },
 }
 
 export default analytics

@@ -1914,5 +1914,32 @@ export const misc = {
     bee_agent_core_v4_2_0_stable: "[VI:Bee Agent Core V4.2.0 Stable]",
     tx: "[VI:TX]",
     bps: "[VI:BPS]"
+  },
+
+  // RaaS Realtime Analytics
+  realtime: {
+    title: "Phân tích Real-time",
+    live_feed: "Luồng trực tiếp",
+    events_per_minute: "Sự kiện/phút",
+    connected: "Đã kết nối",
+    reconnecting: "Đang kết nối lại",
+    pause: "Tạm dừng",
+    resume: "Tiếp tục",
+    paused: "Đã tạm dừng",
+    watching: "Đang xem",
+    auto_scroll: "Tự động cuộn",
+    clear: "Xóa",
+    no_events: "Chưa có sự kiện",
+    usage_chart: "Biểu đồ usage"
+  },
+
+  // RaaS Alerts
+  alerts: {
+    over_quota: "Vượt quota",
+    critical: "Nghiêm trọng",
+    approaching_limit: "Gần đạt giới hạn",
+    suspension_warning: "Cảnh báo đình chỉ",
+    view_details: "Xem chi tiết",
+    dismiss: "Bỏ qua"
   }
 };
