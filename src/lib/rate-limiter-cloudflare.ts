@@ -423,7 +423,7 @@ export function logRateLimitEvent(
     request_id,
   };
 
-  console.log('[Rate Limit Audit]', JSON.stringify(entry));
+  console.warn('[Rate Limit Audit]', JSON.stringify(entry));
 }
 
 /**

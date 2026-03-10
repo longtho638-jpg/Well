@@ -263,21 +263,31 @@ async function main() {
   const result = await reconciler.reconcile()
 
   // Output results
+  // eslint-disable-next-line no-console
   console.log('\n## Reconciliation Report')
+  // eslint-disable-next-line no-console
   console.log(`Period: ${result.period.start} to ${result.period.end}`)
+  // eslint-disable-next-line no-console
   console.log(`Status: ${result.status.toUpperCase()}`)
+  // eslint-disable-next-line no-console
   console.log(`Supabase Total: ${result.supabase_total.toLocaleString()}`)
+  // eslint-disable-next-line no-console
   console.log(`Stripe Total: ${result.stripe_total.toLocaleString()}`)
+  // eslint-disable-next-line no-console
   console.log(`Difference: ${result.difference.toLocaleString()} (${result.difference_percent}%)`)
 
   if (result.discrepancies.length > 0) {
+    // eslint-disable-next-line no-console
     console.log('\n## Discrepancies')
     result.discrepancies.forEach(d => {
+      // eslint-disable-next-line no-console
       console.log(`  ${d.date}: Supabase=${d.supabase_usage}, Stripe=${d.stripe_usage}, Diff=${d.difference}`)
     })
   }
 
+  // eslint-disable-next-line no-console
   console.log('\n## Recommendations')
+  // eslint-disable-next-line no-console
   result.recommendations.forEach(r => console.log(`  ${r}`))
 
   // TODO: Write report to file

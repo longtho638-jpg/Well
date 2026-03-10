@@ -409,7 +409,7 @@ export class UsageAggregator {
 
     const { start: periodStart, end: periodEnd } = getPeriodBoundaries(period, date)
 
-    console.log('[UsageAggregator] Starting billing aggregation:', {
+    console.warn('[UsageAggregator] Starting billing aggregation:', {
       period,
       periodStart,
       periodEnd,
@@ -440,7 +440,7 @@ export class UsageAggregator {
     }
 
     if (!events || events.length === 0) {
-      console.log('[UsageAggregator] No events to aggregate')
+      console.warn('[UsageAggregator] No events to aggregate')
       return {
         eventsProcessed: 0,
         aggregationsCreated: 0,
@@ -458,7 +458,7 @@ export class UsageAggregator {
       grouped.set(key, existing)
     }
 
-    console.log('[UsageAggregator] Grouped events:', {
+    console.warn('[UsageAggregator] Grouped events:', {
       totalEvents: events.length,
       groups: grouped.size,
     })
@@ -479,7 +479,7 @@ export class UsageAggregator {
       const aggregationKey = generateAggregationKey(lid, feat, periodStart, periodEnd)
 
       if (dryRun) {
-        console.log('[UsageAggregator] Dry run - would create aggregation:', {
+        console.warn('[UsageAggregator] Dry run - would create aggregation:', {
           aggregationKey,
           licenseId: lid,
           feature: feat,
@@ -502,7 +502,7 @@ export class UsageAggregator {
 
       if (existing) {
         // Already aggregated - skip or update if quantity changed
-        console.log('[UsageAggregator] Aggregation exists:', {
+        console.warn('[UsageAggregator] Aggregation exists:', {
           aggregationKey,
           existingQuantity: existing.total_quantity,
           newQuantity: totalQuantity,
@@ -546,7 +546,7 @@ export class UsageAggregator {
 
     result.eventsProcessed = events.length
 
-    console.log('[UsageAggregator] Aggregation complete:', {
+    console.warn('[UsageAggregator] Aggregation complete:', {
       eventsProcessed: result.eventsProcessed,
       aggregationsCreated: result.aggregationsCreated,
       duplicatesSkipped: result.duplicatesSkipped,

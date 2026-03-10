@@ -291,7 +291,7 @@ export class QuotaEnforcer {
       // Step 1: Get base quota from tier
       const tier = await this.getOrgTier()
       const tierQuotas = DEFAULT_TIER_QUOTAS[tier] || DEFAULT_TIER_QUOTAS.basic
-      let baseQuota = tierQuotas[metricType] || 0
+      const baseQuota = tierQuotas[metricType] || 0
 
       // Step 2: Get tenant override (Phase 6)
       let tenantOverride: number | undefined
