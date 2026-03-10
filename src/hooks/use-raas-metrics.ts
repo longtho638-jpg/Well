@@ -24,9 +24,11 @@ import type { UsageMetrics, QuotaStatus, OverageSummary, MetricData } from '@/li
 import {
   RaaSMetricsServiceImpl,
   MockRaaSMetricsService,
-  type IRaaSMetricsService,
-  type RaaSMetricsServiceConfig,
 } from '@/services/raas-metrics-service'
+import type {
+  IRaaSMetricsService,
+  RaaSMetricsServiceConfig,
+} from '@/services/raas-metrics-types'
 import { RaaSGatewayMetricsClient } from '@/lib/raas-gateway-metrics'
 import { analyticsLogger } from '@/utils/logger'
 
@@ -236,13 +238,13 @@ export function useRaaSMetrics(
   }, [getMetricData])
 
   return {
-    metrics,
+    data: metrics,
     quotaStatus,
     overageSummary,
-    loading,
+    isLoading: loading,
     error,
     isRefreshing,
-    refresh,
+    refetch: refresh,
     lastSyncedAt,
     percentageUsed,
     isOverLimit,

@@ -489,7 +489,11 @@ export class OverageBillingEngine {
         .limit(1)
         .single()
 
-      return data || null
+      if (!data) {
+        return null
+      }
+
+      return { stripeInvoiceId: data.stripe_invoice_id }
     } catch {
       return null
     }

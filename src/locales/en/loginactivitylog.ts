@@ -10,15 +10,4 @@ export const loginactivitylog = {
   location: "Location",
   status: "Status",
   no_login_attempts_found: "No Login Attempts Found",
-  "detected": "Detected",
-  "device": "Device",
-  "export_activity_log": "Export activity log",
-  "failed_login_attempt": "Failed login attempt",
-  "if_you_don_t_recognize_these_a": "If you don t recognize these a",
-  "location": "Location",
-  "login_activity": "Login activity",
-  "no_login_attempts_found": "No login attempts found",
-  "recent_sign_in_attempts_to_you": "Recent sign in attempts to you",
-  "status": "Status",
-  "time": "Time"
 };

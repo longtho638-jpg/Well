@@ -19,7 +19,7 @@ export interface SubscriptionHealthStatus {
   orgId: string
   healthScore: HealthScore
   healthPercentage: number
-  subscriptionStatus: 'active' | 'trialing' | 'past_due' | 'unpaid' | 'canceled' | 'incomplete'
+  subscriptionStatus: 'active' | 'trialing' | 'past_due' | 'unpaid' | 'canceled' | 'incomplete' | 'unknown'
   currentPeriodEnd: string | null
   hasOverage: boolean
   totalOverageCost: number
@@ -80,7 +80,7 @@ export async function getHealthScore(orgId: string): Promise<SubscriptionHealthS
       orgId,
       healthScore,
       healthPercentage,
-      subscriptionStatus: subscription?.status || 'unknown',
+      subscriptionStatus: (subscription?.status || 'unknown') as SubscriptionHealthStatus['subscriptionStatus'],
       currentPeriodEnd: subscription?.currentPeriodEnd || null,
       hasOverage: overageSummary.hasOverage,
       totalOverageCost: overageSummary.totalCost,

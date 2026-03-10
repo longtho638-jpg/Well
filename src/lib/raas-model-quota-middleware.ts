@@ -25,6 +25,7 @@
  */
 
 import { supabase } from '@/lib/supabase'
+import type { SupabaseClient } from '@supabase/supabase-js'
 import type {
   ProtectedEndpoint,
   LicenseTier,
@@ -79,7 +80,7 @@ export interface ModelQuotaResult {
  */
 export interface ModelQuotaOptions {
   /** Supabase client instance */
-  supabase: typeof supabase
+  supabase: SupabaseClient
   /** Environment variables */
   env?: Record<string, string>
   /** Require a specific model category (optional) */
@@ -140,18 +141,18 @@ function extractAuthToken(request: Request): string | null {
  * Decode and validate auth token
  *
  * @param token - Auth token (JWT or mk_ key)
- * @param supabase - Supabase client
+ * @param supabaseClient - Supabase client
  * @returns Decoded payload or null
  */
 async function decodeAuthToken(
   token: string,
-  supabase: typeof supabase
+  supabaseClient: SupabaseClient
 ): Promise<AuthTokenPayload | null> {
   try {
     // Handle mk_ API key format
     if (token.startsWith('mk_')) {
       // Query Supabase for API key
-      const { data, error } = await supabase
+      const { data, error } = await supabaseClient
         .from('raas_api_keys')
         .select('org_id, user_id, license_key, tier, features')
         .eq('key_hash', token)

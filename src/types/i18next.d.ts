@@ -25,6 +25,7 @@ declare module 'i18next' {
       auditlog: typeof en['auditlog'];
       realtime: typeof en['realtime'];
       alerts: typeof en['alerts'];
+      alert_settings: typeof en['alert_settings'];
     };
   }
 

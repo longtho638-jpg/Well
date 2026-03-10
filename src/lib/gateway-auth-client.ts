@@ -80,7 +80,7 @@ export class GatewayAuthClient {
    * @param licenseId - Optional license ID
    * @returns GatewayAuthResult with token and expiry
    */
-  generateToken(orgId: string, licenseId?: string): GatewayAuthResult {
+  async generateToken(orgId: string, licenseId?: string): Promise<GatewayAuthResult> {
     const now = Date.now()
     const nowSeconds = Math.floor(now / 1000)
     const expirySeconds = nowSeconds + this.tokenExpirySeconds
@@ -101,7 +101,7 @@ export class GatewayAuthClient {
     }
 
     // Generate JWT (HS256 signed)
-    const token = this.signJWT(payload)
+    const token = await this.signJWT(payload)
 
     const expiresAt = expirySeconds * 1000 // Convert to ms
 
@@ -125,7 +125,7 @@ export class GatewayAuthClient {
    * @param licenseId - Optional license ID
    * @returns GatewayAuthResult with valid token
    */
-  getValidToken(orgId: string, licenseId?: string): GatewayAuthResult {
+  async getValidToken(orgId: string, licenseId?: string): Promise<GatewayAuthResult> {
     const cacheKey = this.getCacheKey(orgId, licenseId)
     const cached = this.tokenCache.get(cacheKey)
 
@@ -139,7 +139,7 @@ export class GatewayAuthClient {
     }
 
     // Generate new token
-    const result = this.generateToken(orgId, licenseId)
+    const result = await this.generateToken(orgId, licenseId)
 
     // Cache the result
     this.tokenCache.set(cacheKey, result)
@@ -154,7 +154,7 @@ export class GatewayAuthClient {
    * @param licenseId - Optional license ID
    * @returns GatewayAuthResult (may be cached if still valid)
    */
-  refreshIfNeeded(orgId: string, licenseId?: string): GatewayAuthResult {
+  async refreshIfNeeded(orgId: string, licenseId?: string): Promise<GatewayAuthResult> {
     return this.getValidToken(orgId, licenseId)
   }
 

@@ -15,22 +15,5 @@ export const products = {
   add_product: "Add Product",
   dttt_commission_logic: "Dttt Commission Logic",
   bonus_revenue_dttt_represent: "Bonus Revenue Dttt Represent",
-  member_21_startup_25: "Member 21 Startup 25",
-  "add_product": "Add product",
-  "bonus_revenue_dttt_represent": "Bonus revenue dttt represent",
-  "commit": "Commit",
-  "dttt_basis": "Dttt basis",
-  "dttt_commission_logic": "Dttt commission logic",
-  "edit_config": "Edit config",
-  "esc": "Esc",
-  "global_catalog": "Global catalog",
-  "in_stock": "In stock",
-  "inventory_management_dttt_st": "Inventory management dttt st",
-  "low_stock": "Low stock",
-  "member_21_startup_25": "Member 21 startup 25",
-  "member_comm": "Member comm",
-  "out_of_stock": "Out of stock",
-  "partner_comm": "Partner comm",
-  "retail_msrp": "Retail msrp",
-  "sku": "Sku"
+  member_21_startup_25: "Member 21 Startup 25"
 };

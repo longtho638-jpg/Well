@@ -12,17 +12,4 @@ export const partnerdetailmodal = {
   contact_info: "Contact Info",
   email: "Email",
   joined: "Joined",
-  "cancel": "Cancel",
-  "contact_info": "Contact info",
-  "edit_metrics": "Edit metrics",
-  "email": "Email",
-  "joined": "Joined",
-  "partner_details": "Partner details",
-  "pending_cashback": "Pending cashback",
-  "point_balance": "Point balance",
-  "rank": "Rank",
-  "save_changes": "Save changes",
-  "total_sales": "Total sales",
-  "update_failed": "Update failed",
-  "update_success": "Update success"
 };

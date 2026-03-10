@@ -138,7 +138,7 @@ export function build403Response(
 
   // Add detailed metadata
   if (includeDetails) {
-    body.details = {
+    const details: Record<string, unknown> = {
       reason: status.reason,
       subscriptionStatus: status.subscriptionStatus,
       daysPastDue: status.daysPastDue,
@@ -151,11 +151,13 @@ export function build403Response(
     }
 
     // Remove undefined fields
-    Object.keys(body.details).forEach((key) => {
-      if (body.details[key as keyof typeof body.details] === undefined) {
-        delete body.details[key as keyof typeof body.details]
+    Object.keys(details).forEach((key) => {
+      if (details[key] === undefined) {
+        delete details[key]
       }
     })
+
+    body.details = details
   }
 
   // Add action buttons

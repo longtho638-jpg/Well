@@ -304,8 +304,12 @@ export class RaasAlertRulesEngine {
         return { success: false }
       }
 
-      // Cache in KV
-      await this.cacheRuleInKV(rule.org_id, data.id, data)
+      // Cache in KV - use the original rule object with the new id
+      const cachedRule: AlertRuleConfig = {
+        ...rule,
+        id: data.id,
+      }
+      await this.cacheRuleInKV(rule.org_id, data.id, cachedRule)
 
       return { success: true, ruleId: data.id }
     } catch (err) {

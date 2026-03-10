@@ -10,17 +10,5 @@ export const profilepage = {
   address: "Address",
   account_status: "Account Status",
   email_verified: "Email Verified",
-  security_strength: "Security Strength",
-  "account_status": "Account status",
-  "address": "Address",
-  "date_of_birth": "Date of birth",
-  "edit": "Edit",
-  "email_address": "Email address",
-  "email_verified": "Email verified",
-  "full_name": "Full name",
-  "joined": "Joined",
-  "kyc_verified": "Kyc verified",
-  "personal_information": "Personal information",
-  "phone_number": "Phone number",
-  "security_strength": "Security strength"
+  security_strength: "Security Strength"
 };

@@ -9,14 +9,4 @@ export const partnerstable = {
   synchronizing_crm_ledger: "Synchronizing Crm Ledger",
   ghost_network_detected: "Ghost Network Detected",
   no_partner_nodes_matching_curr: "No Partner Nodes Matching Curr",
-  "auth_pending": "Auth pending",
-  "auth_status": "Auth status",
-  "direct_yield": "Direct yield",
-  "ecosystem_rank": "Ecosystem rank",
-  "ghost_network_detected": "Ghost network detected",
-  "identity_node": "Identity node",
-  "no_partner_nodes_matching_curr": "No partner nodes matching curr",
-  "ops": "Ops",
-  "points_buffer": "Points buffer",
-  "synchronizing_crm_ledger": "Synchronizing crm ledger"
 };

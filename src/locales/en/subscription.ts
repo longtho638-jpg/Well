@@ -15,22 +15,5 @@ export const subscription = {
   downgrade: "Downgrade",
   upgrade: "Upgrade",
   cancel_confirm: "Cancel Confirm",
-  free: "Free",
-  "cancel": "Cancel",
-  "cancel_confirm": "Cancel confirm",
-  "current_plan": "Current plan",
-  "downgrade": "Downgrade",
-  "free": "Free",
-  "included": "Included",
-  "month": "Month",
-  "monthly": "Monthly",
-  "popular": "Popular",
-  "renews": "Renews",
-  "save_17": "Save 17",
-  "subtitle": "Subtitle",
-  "title": "Title",
-  "toggle_billing": "Toggle billing",
-  "upgrade": "Upgrade",
-  "year": "Year",
-  "yearly": "Yearly"
+  free: "Free"
 };

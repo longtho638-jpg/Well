@@ -10,18 +10,9 @@ export const healthCoach = {
   placeholder: "Placeholder",
   send: "Send",
   quickSuggestionsLabel: "Quick Suggestions Label",
-  "analyzing": "Analyzing",
-  "disclaimerMedical": "Disclaimer Medical",
-  "disclaimerTech": "Disclaimer Tech",
-  "greeting": "Greeting",
-  "orderNow": "Order Now",
-  "placeholder": "Placeholder",
-  "quickSuggestionsLabel": "Quick Suggestions Label",
-  "send": "Send",
-  "subtitle": "Subtitle",
-  "suggestions.fatigue": "Fatigue",
-  "suggestions.immunity": "Immunity",
-  "suggestions.sleep": "Sleep",
-  "title": "Title",
-  "totalLabel": "Total Label"
+  suggestions: {
+    fatigue: "Fatigue",
+    immunity: "Immunity",
+    sleep: "Sleep",
+  },
 };

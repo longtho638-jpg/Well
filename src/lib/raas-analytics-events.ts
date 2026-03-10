@@ -529,7 +529,7 @@ export async function emitSuspensionFromMiddleware(
     org_id: orgId,
     user_id: userId || undefined,
     reason: suspensionStatus.reason || 'unknown',
-    subscription_status: suspensionStatus.subscription_status,
+    subscription_status: suspensionStatus.subscriptionStatus,
     days_past_due: suspensionStatus.daysPastDue,
     amount_owed: suspensionStatus.amountOwed,
     dunning_stage: suspensionStatus.dunningStage,

@@ -6,11 +6,4 @@ export const cartdrawer = {
   subtotal: "Subtotal",
   total: "Total",
   proceed_to_checkout: "Proceed To Checkout",
-  "items_confirmed": "Items confirmed",
-  "proceed_to_checkout": "Proceed to checkout",
-  "start_adding_premium_products": "Start adding premium products",
-  "subtotal": "Subtotal",
-  "total": "Total",
-  "your_cart": "Your cart",
-  "your_cart_is_empty": "Your cart is empty"
 };

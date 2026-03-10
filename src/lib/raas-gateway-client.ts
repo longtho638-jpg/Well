@@ -44,7 +44,7 @@ export class RaasGatewayClient {
     this.options = {
       gatewayUrl:
         options.gatewayUrl ||
-        import.meta.env.VITE_RAAS_GATEWAY_URL ||
+        (import.meta.env.VITE_RAAS_GATEWAY_URL as string) ||
         'https://raas.agencyos.network',
       cacheTtlMs: options.cacheTtlMs || 5 * 60 * 1000, // 5 minutes
       maxCacheSize: options.maxCacheSize || 100,

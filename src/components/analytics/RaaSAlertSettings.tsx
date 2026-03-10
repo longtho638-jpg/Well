@@ -47,7 +47,7 @@ interface AlertRuleForm {
 // ============================================================================
 
 export function RaaSAlertSettings({ orgId, onRuleChange }: RaaSAlertSettingsProps) {
-  const { t } = useTranslation('alert_settings')
+  const { t } = useTranslation()
   const [rules, setRules] = useState<AlertRuleConfig[]>([])
   const [loading, setLoading] = useState(true)
   const [showForm, setShowForm] = useState(false)

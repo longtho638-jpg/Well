@@ -4,11 +4,5 @@ export const productgrid = {
   price: "Price",
   commission: "Commission",
   empty_title: "Empty Title",
-  empty_message: "Empty Message",
-  "add_to_cart": "Add to cart",
-  "ai_recommended": "Ai recommended",
-  "commission": "Commission",
-  "empty_message": "Empty message",
-  "empty_title": "Empty title",
-  "price": "Price"
+  empty_message: "Empty Message"
 };

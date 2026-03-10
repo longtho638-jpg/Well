@@ -6,11 +6,4 @@ export const debuggerpage = {
   window_props: "Window Props",
   local_storage_keys: "Local Storage Keys",
   empty: "Empty",
-  "empty": "Empty",
-  "environment_window": "Environment window",
-  "local_storage_keys": "Local storage keys",
-  "system_debugger": "System debugger",
-  "v_debug_1_0": "V debug 1 0",
-  "window_props": "Window props",
-  "zustand_store_state": "Zustand store state"
 };

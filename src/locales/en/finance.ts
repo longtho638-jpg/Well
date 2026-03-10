@@ -10,15 +10,4 @@ export const finance = {
   verifying_digital_ledgers: "Verifying Digital Ledgers",
   ledger_synchronized: "Ledger Synchronized",
   no_items_in_the_current_filter: "No Items In The Current Filter",
-  "analyze_all": "Analyze all",
-  "automated_fraud_detection": "Automated fraud detection",
-  "export_ledger": "Export ledger",
-  "ledger_synchronized": "Ledger synchronized",
-  "no_items_in_the_current_filter": "No items in the current filter",
-  "platform_liquidity_verificatio": "Platform liquidity verificatio",
-  "quarantined_items": "Quarantined items",
-  "security_batch_commit": "Security batch commit",
-  "security_passed": "Security passed",
-  "treasury_control": "Treasury control",
-  "verifying_digital_ledgers": "Verifying digital ledgers"
 };

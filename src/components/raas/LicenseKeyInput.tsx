@@ -13,57 +13,17 @@
 
 import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { Key, Check, X, Loader2, AlertCircle, ExternalLink } from 'lucide-react'
+import { Key, Check, X, Loader2, ExternalLink } from 'lucide-react'
 import { useRaaSLicense } from '@/hooks/use-raas-license'
 import { Button } from '@/components/ui/Button'
 import { Input } from '@/components/ui/Input'
-import { Label } from '@/components/ui/label'
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from '@/components/ui/card'
-import {
-  Alert,
-  AlertDescription,
-  AlertTitle,
-} from '@/components/ui/alert'
 
 export interface LicenseKeyInputProps {
-  /**
-   * Callback when license is successfully validated
-   */
   onSuccess?: () => void
-
-  /**
-   * Callback when validation fails
-   */
   onError?: (error: string) => void
-
-  /**
-   * Pre-fill license key (for testing/dev)
-   */
   defaultValue?: string
-
-  /**
-   * Show helper text and links
-   * Default: true
-   */
   showHelp?: boolean
-
-  /**
-   * Auto-focus on mount
-   * Default: true
-   */
   autoFocus?: boolean
-
-  /**
-   * Disable manual input (for read-only display)
-   * Default: false
-   */
   readOnly?: boolean
 }
 
@@ -109,11 +69,6 @@ export function LicenseKeyInput({
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value
     setLicenseKey(value)
-
-    // Clear error when user starts typing
-    if (error) {
-      // Will be cleared by validation
-    }
   }
 
   const getTierBadgeColor = (tier: string) => {
@@ -127,24 +82,24 @@ export function LicenseKeyInput({
   }
 
   return (
-    <Card className="w-full max-w-md">
-      <CardHeader>
-        <CardTitle className="flex items-center gap-2">
+    <div className="w-full max-w-md p-6 border rounded-lg bg-card">
+      <div className="mb-4">
+        <div className="flex items-center gap-2 mb-1">
           <Key className="h-5 w-5" />
-          {t('raas.license_key_input.title')}
-        </CardTitle>
-        <CardDescription>
+          <h3 className="text-lg font-semibold">{t('raas.license_key_input.title')}</h3>
+        </div>
+        <p className="text-sm text-muted-foreground">
           {t('raas.license_key_input.description')}
-        </CardDescription>
-      </CardHeader>
+        </p>
+      </div>
 
       <form onSubmit={handleSubmit}>
-        <CardContent className="space-y-4">
+        <div className="space-y-4">
           {/* License Key Input */}
           <div className="space-y-2">
-            <Label htmlFor="license-key">
+            <label htmlFor="license-key" className="text-sm font-medium">
               {t('raas.license_key_input.label')}
-            </Label>
+            </label>
 
             <div className="relative">
               <Input
@@ -181,44 +136,60 @@ export function LicenseKeyInput({
 
           {/* Validation Status */}
           {isVerifying && (
-            <Alert className="bg-blue-500/10 border-blue-500/20">
-              <Loader2 className="h-4 w-4 animate-spin" />
-              <AlertTitle>
-                {t('raas.license_key_input.verifying')}
-              </AlertTitle>
-              <AlertDescription>
-                {t('raas.license_key_input.verifying_description')}
-              </AlertDescription>
-            </Alert>
+            <div className="p-4 rounded-md bg-blue-500/10 border border-blue-500/20">
+              <div className="flex items-start gap-3">
+                <Loader2 className="h-4 w-4 animate-spin mt-0.5" />
+                <div>
+                  <p className="text-sm font-medium">
+                    {t('raas.license_key_input.verifying')}
+                  </p>
+                  <p className="text-xs text-muted-foreground">
+                    {t('raas.license_key_input.verifying_description')}
+                  </p>
+                </div>
+              </div>
+            </div>
           )}
 
           {isValid && (
-            <Alert className="bg-emerald-500/10 border-emerald-500/20">
-              <Check className="h-4 w-4" />
-              <AlertTitle className="flex items-center gap-2">
-                {t('raas.license_key_input.valid')}
-                <span
-                  className={`text-xs px-2 py-0.5 rounded-full border ${getTierBadgeColor(tier)}`}
-                >
-                  {tier.toUpperCase()}
-                </span>
-              </AlertTitle>
-              {daysRemaining && (
-                <AlertDescription>
-                  {t('raas.license_key_input.expires_in', {
-                    days: daysRemaining,
-                  })}
-                </AlertDescription>
-              )}
-            </Alert>
+            <div className="p-4 rounded-md bg-emerald-500/10 border border-emerald-500/20">
+              <div className="flex items-start gap-3">
+                <Check className="h-4 w-4 mt-0.5" />
+                <div className="flex-1">
+                  <div className="flex items-center gap-2">
+                    <p className="text-sm font-medium">
+                      {t('raas.license_key_input.valid')}
+                    </p>
+                    <span
+                      className={`text-xs px-2 py-0.5 rounded-full border ${getTierBadgeColor(tier)}`}
+                    >
+                      {tier.toUpperCase()}
+                    </span>
+                  </div>
+                  {daysRemaining && (
+                    <p className="text-xs text-muted-foreground mt-1">
+                      {t('raas.license_key_input.expires_in', {
+                        days: daysRemaining,
+                      })}
+                    </p>
+                  )}
+                </div>
+              </div>
+            </div>
           )}
 
           {error && !isVerifying && (
-            <Alert variant="destructive" className="bg-rose-500/10 border-rose-500/20">
-              <X className="h-4 w-4" />
-              <AlertTitle>{t('raas.license_key_input.invalid')}</AlertTitle>
-              <AlertDescription>{error}</AlertDescription>
-            </Alert>
+            <div className="p-4 rounded-md bg-rose-500/10 border border-rose-500/20">
+              <div className="flex items-start gap-3">
+                <X className="h-4 w-4 mt-0.5" />
+                <div>
+                  <p className="text-sm font-medium">
+                    {t('raas.license_key_input.invalid')}
+                  </p>
+                  <p className="text-xs text-muted-foreground mt-1">{error}</p>
+                </div>
+              </div>
+            </div>
           )}
 
           {/* Feature List */}
@@ -247,9 +218,9 @@ export function LicenseKeyInput({
               </ul>
             </div>
           )}
-        </CardContent>
+        </div>
 
-        <CardFooter className="flex flex-col gap-3">
+        <div className="flex flex-col gap-3 mt-6">
           {!readOnly && (
             <Button
               type="submit"
@@ -297,9 +268,9 @@ export function LicenseKeyInput({
               </div>
             </div>
           )}
-        </CardFooter>
+        </div>
       </form>
-    </Card>
+    </div>
   )
 }
 

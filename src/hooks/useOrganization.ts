@@ -57,15 +57,25 @@ export function useOrganization(): UseOrganizationResult {
           .eq('user_id', user.id)
           .single()
 
-        if (anySub?.organizations) {
-          setOrganization(anySub.organizations as Organization)
+        // Supabase relationships return array, extract first item
+        const orgData = Array.isArray(anySub?.organizations)
+          ? anySub.organizations[0]
+          : anySub?.organizations
+        if (orgData) {
+          setOrganization(orgData as Organization)
         } else {
           setOrganization(null)
         }
-      } else if (subscription?.organizations) {
-        setOrganization(subscription.organizations as Organization)
       } else {
-        setOrganization(null)
+        // Supabase relationships return array, extract first item
+        const orgData = Array.isArray(subscription?.organizations)
+          ? subscription.organizations[0]
+          : subscription?.organizations
+        if (orgData) {
+          setOrganization(orgData as Organization)
+        } else {
+          setOrganization(null)
+        }
       }
     } catch (err) {
       const errorObj = err instanceof Error ? err : new Error('Unknown error')

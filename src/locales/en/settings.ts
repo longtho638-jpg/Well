@@ -19,9 +19,5 @@ export const settings = {
   "items.two_factor_description": "Two factor description",
   "sections.notifications": "Notifications",
   "sections.preferences": "Preferences",
-  "sections.security": "Security",
-  "sign_out": "Sign out",
-  "sign_out_description": "Sign out description",
-  "subtitle": "Subtitle",
-  "title": "Title"
+  "sections.security": "Security"
 };

@@ -405,7 +405,7 @@ export class OverageCalculator {
   /**
    * Get rate per unit from database or cache
    */
-  private async getRatePerUnit(metricType: OverageMetricType, tier: string): Promise<number> {
+  async getRatePerUnit(metricType: OverageMetricType, tier: string): Promise<number> {
     const cacheKey = `${metricType}_${tier}`
 
     // Check cache first

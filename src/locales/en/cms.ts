@@ -12,17 +12,4 @@ export const cms = {
   target: "Target",
   archive: "Archive",
   enable: "Enable",
-  "action": "Action",
-  "archive": "Archive",
-  "content_orchestrator": "Content orchestrator",
-  "create": "Create",
-  "cross_platform_content_deliver": "Cross platform content deliver",
-  "enable": "Enable",
-  "link": "Link",
-  "loc": "Loc",
-  "search_placeholder": "Search placeholder",
-  "tab_announcements": "Tab announcements",
-  "tab_banners": "Tab banners",
-  "tab_templates": "Tab templates",
-  "target": "Target"
 };

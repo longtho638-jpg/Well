@@ -20,12 +20,9 @@ import { analyticsLogger } from '@/utils/logger'
 import { GatewayAuthClient } from '@/lib/gateway-auth-client'
 
 /**
- * Get environment variable (Deno or Node/browser)
+ * Get environment variable (Node/browser)
  */
 function getEnvVar(key: string): string | undefined {
-  if (typeof Deno !== 'undefined') {
-    return Deno.env.get(key)
-  }
   if (typeof process !== 'undefined' && process.env) {
     return process.env[key]
   }
@@ -333,7 +330,7 @@ export class AgencyOSClient {
       }
 
       // Get valid token (generates new or returns cached)
-      const authResult = this.authClient.getValidToken(orgId)
+      const authResult = await this.authClient.getValidToken(orgId)
 
       // Cache the token
       this.tokenCache = {

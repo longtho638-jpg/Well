@@ -231,7 +231,7 @@ export class RaasAuditExportService {
       if (format === 'json') {
         return JSON.stringify(records, null, 2)
       } else {
-        return convertToCSV(records)
+        return convertToCSV(records as unknown as Record<string, unknown>[])
       }
     } catch (err) {
       analyticsLogger.error('[RaasAuditExport] Suspension events error:', err)
@@ -277,7 +277,7 @@ export class RaasAuditExportService {
       if (format === 'json') {
         return JSON.stringify(records, null, 2)
       } else {
-        return convertToCSV(records)
+        return convertToCSV(records as unknown as Record<string, unknown>[])
       }
     } catch (err) {
       analyticsLogger.error('[RaasAuditExport] License events error:', err)
@@ -322,7 +322,7 @@ export class RaasAuditExportService {
       if (format === 'json') {
         return JSON.stringify(records, null, 2)
       } else {
-        return convertToCSV(records)
+        return convertToCSV(records as unknown as Record<string, unknown>[])
       }
     } catch (err) {
       analyticsLogger.error('[RaasAuditExport] Alert events error:', err)
@@ -371,7 +371,7 @@ export class RaasAuditExportService {
       if (format === 'json') {
         return JSON.stringify(records, null, 2)
       } else {
-        return convertToCSV(records)
+        return convertToCSV(records as unknown as Record<string, unknown>[])
       }
     } catch (err) {
       analyticsLogger.error('[RaasAuditExport] Analytics events error:', err)
@@ -417,7 +417,7 @@ export class RaasAuditExportService {
       for (const [eventType, records] of Object.entries(results)) {
         for (const record of records) {
           allRecords.push({
-            ...record,
+            ...(record as Record<string, unknown>),
             _event_source: eventType,
           })
         }

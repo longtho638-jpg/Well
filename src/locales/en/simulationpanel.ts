@@ -11,18 +11,5 @@ export const simulationpanel = {
   strategic_forecast: "Strategic Forecast",
   strategic_candidates: "Strategic Candidates",
   partners: "Partners",
-  projected_saas_revenue: "Projected Saas Revenue",
-  "active_distribution_node": "Active distribution node",
-  "margin": "Margin",
-  "monthly_fixed": "Monthly fixed",
-  "nodes": "Nodes",
-  "partners": "Partners",
-  "projected_ebitda": "Projected ebitda",
-  "projected_gmv": "Projected gmv",
-  "projected_saas_revenue": "Projected saas revenue",
-  "strategic_candidates": "Strategic candidates",
-  "strategic_forecast": "Strategic forecast",
-  "system_payout": "System payout",
-  "target_aov": "Target aov",
-  "vc_simulation_engine": "Vc simulation engine"
+  projected_saas_revenue: "Projected Saas Revenue"
 };

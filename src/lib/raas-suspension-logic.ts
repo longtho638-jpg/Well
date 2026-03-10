@@ -100,7 +100,7 @@ export async function getSuspensionConfig(
   try {
     const { data, error } = await supabase
       .from('raas_config')
-      .select('config_value')
+      .select('config_key, config_value')
       .eq('org_id', orgId)
       .in('config_key', [
         'grace_period_hours',

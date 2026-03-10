@@ -1,4 +1,3 @@
 export const ranks = {
-  unknown: "Unknown",
-  "unknown": "Unknown"
+  unknown: "Unknown"
 };

@@ -18,7 +18,9 @@
  */
 
 import { supabase } from '@/lib/supabase'
-import type { Json } from '@/types/database.types'
+
+// Json type for database compatibility
+type Json = string | number | boolean | null | { [key: string]: Json | undefined } | Json[]
 
 export interface DunningEvent {
   id: string
@@ -161,11 +163,13 @@ export async function getDunningConfig(orgId: string): Promise<DunningConfig> {
     return {
       ...data,
       orgId: data.org_id,
-      emailSequence: (data.email_sequence as Json)?.map((s: any) => ({
-        stage: s.stage,
-        day: s.day,
-        template: s.template,
-      })) || [],
+      emailSequence: Array.isArray(data.email_sequence)
+        ? data.email_sequence.map((s: any) => ({
+            stage: s.stage,
+            day: s.day,
+            template: s.template,
+          }))
+        : [],
       autoSendEmails: data.auto_send_emails,
       autoSuspend: data.auto_suspend,
       suspendAfterDays: data.suspend_after_days,

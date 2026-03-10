@@ -8,11 +8,5 @@ export const redemptionzone = {
   "categories.all": "All",
   "categories.courses": "Courses",
   "categories.tech": "Tech",
-  "categories.travel": "Travel",
-  "grow_rewards": "Grow rewards",
-  "grow_tokens": "Grow tokens",
-  "not_enough_grow": "Not enough grow",
-  "redeem_reward": "Redeem reward",
-  "s_d_hi_n_t_i": "S d hi n t i",
-  "s_d_ng_grow_token_t_ch_l_y_t": "S d ng grow token t ch l y t"
+  "categories.travel": "Travel"
 };

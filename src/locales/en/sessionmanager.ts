@@ -9,16 +9,5 @@ export const sessionmanager = {
   security_note: "Security Note",
   if_you_don_t_recognize_a_sessi: "If You Don T Recognize A Sessi",
   revoked_success: "Revoked Success",
-  revoked_all_success: "Revoked All Success",
-  "active_now": "Active now",
-  "active_sessions": "Active sessions",
-  "connected": "Connected",
-  "device": "Device",
-  "if_you_don_t_recognize_a_sessi": "If you don t recognize a sessi",
-  "last_active": "Last active",
-  "revoked_all_success": "Revoked all success",
-  "revoked_success": "Revoked success",
-  "security_note": "Security note",
-  "sign_out_all_others": "Sign out all others",
-  "this_device": "This device"
+  revoked_all_success: "Revoked All Success"
 };

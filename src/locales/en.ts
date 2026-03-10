@@ -13,7 +13,7 @@ import { wallet } from './en/wallet';
 import { network } from './en/network';
 import { misc } from './en/misc';
 import { raas } from './en/raas';
-import { agent, agentDashboard, agentdetailsmodal, agentgridcard, agentdashboard } from './en/agent';
+import { agent } from './en/agent';
 import { app } from './en/app';
 import { commissionwallet } from './en/commissionwallet';
 import { copilotcoaching } from './en/copilotcoaching';
@@ -41,13 +41,9 @@ import { billing } from './en/billing';
 import { alerts } from './en/alerts';
 import { realtime } from './en/realtime';
 import { alert_settings } from './en/alert_settings';
-import { a } from './en/a';
 import { adminsecuritysettings } from './en/adminsecuritysettings';
 import { agencyos } from './en/agencyos';
 import { agencyosdemo } from './en/agencyosdemo';
-import { agentDashboard } from './en/agentDashboard';
-import { agentdetailsmodal } from './en/agentdetailsmodal';
-import { agentgridcard } from './en/agentgridcard';
 import { airecommendation } from './en/airecommendation';
 import { auditlog } from './en/auditlog';
 import { beeautomationsection } from './en/beeautomationsection';
@@ -63,35 +59,24 @@ import { commandpalette } from './en/commandpalette';
 import { commissionsection } from './en/commissionsection';
 import { contextsidebar } from './en/contextsidebar';
 import { copilotpage } from './en/copilotpage';
-import { cust_reset } from './en/cust_reset';
 import { debuggerpage } from './en/debuggerpage';
-import { div } from './en/div';
-import { dunning_stage } from './en/dunning_stage';
 import { eastasiabrand } from './en/eastasiabrand';
-import { error } from './en/error';
 import { errors } from './en/errors';
 import { exitIntent } from './en/exitIntent';
 import { finance } from './en/finance';
 import { founderrevenuegoal } from './en/founderrevenuegoal';
 import { fraudbadge } from './en/fraudbadge';
 import { healthCoach } from './en/healthCoach';
-import { helper } from './en/helper';
 import { heroenhancements } from './en/heroenhancements';
-import { id } from './en/id';
-import { input } from './en/input';
-import { invalid } from './en/invalid';
 import { landing } from './en/landing';
-import { last_activity } from './en/last_activity';
 import { leaderboard } from './en/leaderboard';
 import { liveconsole } from './en/liveconsole';
 import { loginactivitylog } from './en/loginactivitylog';
 import { marketingtools } from './en/marketingtools';
 import { marketplacefilters } from './en/marketplacefilters';
 import { marketplaceheader } from './en/marketplaceheader';
-import { max } from './en/max';
 import { nav } from './en/nav';
 import { networktree } from './en/networktree';
-import { nonexistent } from './en/nonexistent';
 import { notfound } from './en/notfound';
 import { notificationcenter } from './en/notificationcenter';
 import { onboardingquest } from './en/onboardingquest';
@@ -118,18 +103,11 @@ import { producttabs } from './en/producttabs';
 import { profilepage } from './en/profilepage';
 import { pwa } from './en/pwa';
 import { quotaTracker } from './en/quotaTracker';
-import { quota_limit } from './en/quota_limit';
 import { rankladdersection } from './en/rankladdersection';
 import { rankprogressbar } from './en/rankprogressbar';
 import { ranks } from './en/ranks';
-import { rate_limit_config } from './en/rate_limit_config';
-import { react } from './en/react';
 import { redemptionzone } from './en/redemptionzone';
 import { referralqrcode } from './en/referralqrcode';
-import { resolution_method } from './en/resolution_method';
-import { resolved } from './en/resolved';
-import { role } from './en/role';
-import { script } from './en/script';
 import { sessionmanager } from './en/sessionmanager';
 import { settings } from './en/settings';
 import { sharebuttons } from './en/sharebuttons';
@@ -138,19 +116,12 @@ import { simulationpanel } from './en/simulationpanel';
 import { subscription } from './en/subscription';
 import { success } from './en/success';
 import { successanimation } from './en/successanimation';
-import { t } from './en/t';
 import { testpage } from './en/testpage';
-import { textarea } from './en/textarea';
-import { total_events } from './en/total_events';
-import { total_sales } from './en/total_sales';
-import { total_usage } from './en/total_usage';
 import { transactioncard } from './en/transactioncard';
 import { useCopilot } from './en/useCopilot';
 import { useHeroCard } from './en/useHeroCard';
 import { useStatsGrid } from './en/useStatsGrid';
-import { username } from './en/username';
 import { vendor } from './en/vendor';
-import { vendor_id } from './en/vendor_id';
 import { venture } from './en/venture';
 import { withdrawal } from './en/withdrawal';
 import { withdrawalmodal } from './en/withdrawalmodal';
@@ -2116,8 +2087,8 @@ export const en = {
     failed_coaching: "[MISSING] failed coaching"
   },
   useHeroCard: {
-    share_title: "[MISSING] share title",
-    share_text: "[MISSING] share text"
+    share_title: "Share Title",
+    share_text: "Share Text"
   },
   errors: {
     invalidCredentials: "[MISSING] invalidCredentials",

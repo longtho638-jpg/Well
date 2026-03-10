@@ -41,6 +41,7 @@ export interface QuotaGateResult {
     overageUnits: number
   }
   error?: string
+  statusCode?: number
   retryAfter?: number
 }
 

@@ -3,10 +3,5 @@ export const bulkactionsbar = {
   selected: "Selected",
   activate: "Activate",
   ban: "Ban",
-  export_csv: "Export Csv",
-  "activate": "Activate",
-  "ban": "Ban",
-  "export_csv": "Export csv",
-  "partner": "Partner",
-  "selected": "Selected"
+  export_csv: "Export CSV",
 };

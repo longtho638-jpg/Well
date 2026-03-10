@@ -19,6 +19,13 @@
  * ```
  */
 
+// Deno runtime type declaration for edge compatibility
+declare const Deno: {
+  env: {
+    get(key: string): string | undefined
+  }
+} | undefined
+
 import type { SupabaseClient } from '@supabase/supabase-js'
 import type { UsageStatus, TierLimits } from './usage-metering'
 
@@ -96,11 +103,11 @@ export class UsageAlertEngine {
     const limits = await this.getLimits()
 
     // Check each metric type
-    const metrics: AlertMetricType[] = ['api_calls', 'tokens', 'compute_minutes', 'model_inferences', 'agent_executions']
+    const metrics: (keyof UsageStatus)[] = ['api_calls', 'tokens', 'compute', 'model_inferences', 'agent_executions']
 
     for (const metric of metrics) {
       const metricStatus = status[metric]
-      if (!metricStatus || metricStatus.limit === 0 || metricStatus.limit === -1) {
+      if (!metricStatus || typeof metricStatus !== 'object' || metricStatus.limit === 0 || metricStatus.limit === -1) {
         continue // Skip if no limit or unlimited
       }
 
@@ -109,18 +116,18 @@ export class UsageAlertEngine {
       // Check against each threshold
       for (const threshold of DEFAULT_THRESHOLDS) {
         if (percentage >= threshold) {
-          const canAlert = await this.canSendAlert(metric, threshold)
+          const canAlert = await this.canSendAlert(metric as AlertMetricType, threshold)
           if (canAlert) {
             const result = await this.emitAlert({
-              metricType: metric,
+              metricType: metric as AlertMetricType,
               thresholdPercentage: threshold,
-              currentUsage: metricStatus.used,
+              currentUsage: (metricStatus as { used: number }).used,
               quotaLimit: metricStatus.limit,
             })
             results.push(result)
 
             // Update cache to prevent duplicate alerts
-            this.lastAlertCache.set(this.getCacheKey(metric, threshold), Date.now())
+            this.lastAlertCache.set(this.getCacheKey(metric as AlertMetricType, threshold), Date.now())
           }
         }
       }
@@ -142,9 +149,14 @@ export class UsageAlertEngine {
 
       if (usage === undefined || limit === undefined) {
         const status = await this.getCurrentUsageStatus()
-        const metricStatus = status[metricType]
-        usage = usage ?? metricStatus?.used ?? 0
-        limit = limit ?? metricStatus?.limit ?? 0
+        const metricStatus = status[metricType as keyof UsageStatus]
+        if (metricStatus && typeof metricStatus === 'object' && 'used' in metricStatus) {
+          usage = usage ?? (metricStatus as { used: number }).used ?? 0
+          limit = limit ?? (metricStatus as { used: number; limit: number }).limit ?? 0
+        } else {
+          usage = usage ?? 0
+          limit = limit ?? 0
+        }
       }
 
       // Get customer ID from license
@@ -216,10 +228,10 @@ export class UsageAlertEngine {
           p_threshold_percentage: threshold,
         })
 
-      return data === true
+      return Boolean(data === true)
     } catch (error) {
       console.error('[UsageAlertEngine] canSendAlert error:', error)
-      return true // Allow if check fails
+      return true // Allow if check fails (fail-open)
     }
   }
 
@@ -401,12 +413,15 @@ export class UsageAlertEngine {
     agentExecutions: number,
     limits: TierLimits
   ): boolean {
+    const modelInferencesLimit = limits.model_inferences_per_day ?? -1
+    const agentExecutionsLimit = limits.agent_executions_per_day ?? -1
+
     return (
       apiCalls > limits.api_calls_per_day ||
       tokens > limits.tokens_per_day ||
       computeMinutes > limits.compute_minutes_per_day ||
-      (limits.model_inferences_per_day && limits.model_inferences_per_day !== -1 && modelInferences > limits.model_inferences_per_day) ||
-      (limits.agent_executions_per_day && limits.agent_executions_per_day !== -1 && agentExecutions > limits.agent_executions_per_day)
+      (modelInferencesLimit !== -1 && modelInferences > modelInferencesLimit) ||
+      (agentExecutionsLimit !== -1 && agentExecutions > agentExecutionsLimit)
     )
   }
 

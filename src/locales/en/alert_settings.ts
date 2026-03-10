@@ -19,7 +19,7 @@ export const alert_settings = {
   rule_type: 'Rule Type',
   name: 'Rule Name',
   name_placeholder: 'Enter rule name',
-  description: 'Description',
+  description_label: 'Description',
   description_placeholder: 'Enter rule description',
   severity: 'Severity',
   severity_info: 'Info',

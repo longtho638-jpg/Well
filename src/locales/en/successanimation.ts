@@ -1,4 +1,3 @@
 export const successanimation = {
-  success: "Success",
-  "success": "Success"
+  success: "Success"
 };

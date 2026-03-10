@@ -16,38 +16,21 @@ export const quotaTracker = {
   transactions: "Transactions",
   metricsTracked: "Metrics Tracked",
   currentUsage: "Current Usage",
-  "title": "Usage & Quota",
-  "subtitle": "Track quota usage and overage costs in real-time",
-  "totalOverageCost": "Total Overage Cost",
-  "transactions": "Overage Transactions",
-  "metricsTracked": "Metrics Tracked",
-  "currentUsage": "Current Usage",
-  "remaining": "{{remaining}} remaining",
-  "upgradePrompt": "Upgrade to increase limits",
-  "billingPeriod": "Billing Period",
-  "breakdownByMetric": "Breakdown by Metric",
-  "transactionHistory": "Transaction History",
-  "noOverage": "No Overage",
-  "noOverageDescription": "You haven't exceeded quota this period",
-  "overageUnits": "{{units}} overage units",
-  "metric": "Metric",
-  "usage": "Usage",
-  "overage": "Overage",
-  "cost": "Cost",
-  "date": "Date",
-  "syncStatus": {
+  remaining: "{{remaining}} remaining",
+  overageUnits: "{{units}} units overage",
+  syncStatus: {
     "label": "Status",
     "pending": "Pending",
     "synced": "Synced",
     "failed": "Failed"
   },
-  "warning": {
+  warning: {
     "exhausted": "Quota exhausted - Upgrade to continue",
     "critical": "Critical: Near quota limit",
     "high": "Warning: Approaching quota limit"
   },
-  "error": "Error: {{error}}",
-  "metricTypes": {
+  error: "Error: {{error}}",
+  metricTypes: {
     "api_calls": "API Calls",
     "ai_calls": "AI Calls",
     "tokens": "Tokens",

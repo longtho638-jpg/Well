@@ -13,6 +13,13 @@
  * Usage: Edge Function at /supabase/functions/stripe-webhook/index.ts
  */
 
+// Deno runtime type declarations for Edge Function
+declare const Deno: {
+  env: {
+    get(key: string): string | undefined
+  }
+}
+
 import { serve } from 'https://deno.land/std@0.168.0/http/server.ts'
 import Stripe from 'https://esm.sh/stripe@14.0.0?target=deno'
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2.45.0?target=deno'
@@ -94,9 +101,10 @@ serve(async (req: Request) => {
       { status: 200, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
     )
   } catch (error) {
-    console.error('[StripeWebhook] Error:', error)
+    const errorMessage = error instanceof Error ? error.message : 'Unknown error'
+    console.error('[StripeWebhook] Error:', errorMessage)
     return new Response(
-      JSON.stringify({ error: error.message, success: false }),
+      JSON.stringify({ error: errorMessage, success: false }),
       { status: 500, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
     )
   }
@@ -191,8 +199,9 @@ async function handlePaymentFailed(
     console.log('[StripeWebhook] Dunning event created:', dunningId)
     return { success: true, message: 'Dunning event created', dunningId }
   } catch (err) {
-    console.error('[StripeWebhook] handlePaymentFailed error:', err)
-    return { success: false, message: err.message }
+    const errorMessage = err instanceof Error ? err.message : 'Unknown error'
+    console.error('[StripeWebhook] handlePaymentFailed error:', errorMessage)
+    return { success: false, message: errorMessage }
   }
 }
 
@@ -257,8 +266,9 @@ async function handlePaymentSucceeded(
 
     return { success: true, message: 'Payment recorded and dunning resolved' }
   } catch (err) {
-    console.error('[StripeWebhook] handlePaymentSucceeded error:', err)
-    return { success: false, message: err.message }
+    const errorMessage = err instanceof Error ? err.message : 'Unknown error'
+    console.error('[StripeWebhook] handlePaymentSucceeded error:', errorMessage)
+    return { success: false, message: errorMessage }
   }
 }
 
@@ -301,8 +311,9 @@ async function handleSubscriptionUpdated(
     console.log('[StripeWebhook] Subscription updated successfully')
     return { success: true, message: 'Subscription updated' }
   } catch (err) {
-    console.error('[StripeWebhook] handleSubscriptionUpdated error:', err)
-    return { success: false, message: err.message }
+    const errorMessage = err instanceof Error ? err.message : 'Unknown error'
+    console.error('[StripeWebhook] handleSubscriptionUpdated error:', errorMessage)
+    return { success: false, message: errorMessage }
   }
 }
 
@@ -341,7 +352,8 @@ async function handleSubscriptionDeleted(
     console.log('[StripeWebhook] Subscription canceled successfully')
     return { success: true, message: 'Subscription canceled' }
   } catch (err) {
-    console.error('[StripeWebhook] handleSubscriptionDeleted error:', err)
-    return { success: false, message: err.message }
+    const errorMessage = err instanceof Error ? err.message : 'Unknown error'
+    console.error('[StripeWebhook] handleSubscriptionDeleted error:', errorMessage)
+    return { success: false, message: errorMessage }
   }
 }

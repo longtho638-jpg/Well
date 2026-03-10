@@ -12,17 +12,4 @@ export const ordertable = {
   inspect_bill: "Inspect Bill",
   no_evidence: "No Evidence",
   approve: "Approve",
-  "anonymous_partner": "Anonymous partner",
-  "approve": "Approve",
-  "asset": "Asset",
-  "col_evidence": "Col evidence",
-  "col_governance": "Col governance",
-  "col_partner_identity": "Col partner identity",
-  "col_timeline": "Col timeline",
-  "col_value_vnd": "Col value vnd",
-  "empty_state": "Empty state",
-  "inspect_bill": "Inspect bill",
-  "no_evidence": "No evidence",
-  "transaction_logged": "Transaction logged",
-  "unverified_email": "Unverified email"
 };

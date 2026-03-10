@@ -7,12 +7,4 @@ export const cart = {
   shipping: "Shipping",
   shippingFree: "Shipping Free",
   total: "Total",
-  "empty": "Empty",
-  "quantity": "Quantity",
-  "removeItem": "Remove Item",
-  "shipping": "Shipping",
-  "shippingFree": "Shipping Free",
-  "subtotal": "Subtotal",
-  "total": "Total",
-  "yourOrder": "Your Order"
 };

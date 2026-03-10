@@ -5,10 +5,4 @@ export const errors = {
   timeout: "Timeout",
   network: "Network",
   emailNotConfirmed: "Email Not Confirmed",
-  "emailAlreadyRegistered": "Email Already Registered",
-  "emailNotConfirmed": "Email Not Confirmed",
-  "invalidCredentials": "Invalid Credentials",
-  "network": "Network",
-  "signupFailed": "Signup Failed",
-  "timeout": "Timeout"
 };

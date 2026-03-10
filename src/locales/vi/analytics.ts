@@ -23,7 +23,7 @@ export const analytics = {
     rule_type: 'Loại Quy Tắc',
     name: 'Tên Quy Tắc',
     name_placeholder: 'Nhập tên quy tắc',
-    description: 'Mô tả',
+    description_label: 'Mô tả',
     description_placeholder: 'Nhập mô tả quy tắc',
     severity: 'Mức Độ',
     severity_info: 'Thông Tin',

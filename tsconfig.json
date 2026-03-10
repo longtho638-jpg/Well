@@ -37,6 +37,7 @@
     "**/*.test.ts",
     "**/*.test.tsx",
     "**/*.spec.ts",
-    "**/*.spec.tsx"
+    "**/*.spec.tsx",
+    "src/lib/stripe-billing-webhook-handler.ts"
   ]
 }
