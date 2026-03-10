@@ -4,6 +4,7 @@
  */
 
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 
 export type ExtensionName = 'algo-trader' | 'agi-auto-pilot';
 export type ExtensionStatusType = 'approved' | 'pending' | 'denied' | 'none';
@@ -25,6 +26,7 @@ export const ExtensionStatus: React.FC<ExtensionStatusProps> = ({
   limit,
   resetAt,
 }) => {
+  const { t } = useTranslation();
   const statusColors: Record<ExtensionStatusType, string> = {
     approved: 'bg-emerald-100 text-emerald-800 border-emerald-200',
     pending: 'bg-amber-100 text-amber-800 border-amber-200',
@@ -98,10 +100,10 @@ export const ExtensionStatus: React.FC<ExtensionStatusProps> = ({
           {/* Usage Stats */}
           <div className="flex items-center justify-between text-sm">
             <span className="text-zinc-400">
-              Đã dùng: <span className={`font-medium ${isOverLimit ? 'text-red-400' : 'text-white'}`}>{usage.toLocaleString()}</span>
+              {t('quotaTracker.extension_usage')}: <span className={`font-medium ${isOverLimit ? 'text-red-400' : 'text-white'}`}>{usage.toLocaleString()}</span>
             </span>
             <span className="text-zinc-400">
-              Giới hạn: <span className="font-medium text-white">{limit.toLocaleString()} requests</span>
+              {t('quotaTracker.extension_limit')}: <span className="font-medium text-white">{limit.toLocaleString()} requests</span>
             </span>
           </div>
 
@@ -122,7 +124,7 @@ export const ExtensionStatus: React.FC<ExtensionStatusProps> = ({
           {/* Reset Time */}
           {resetAt && (
             <div className="text-xs text-zinc-500 text-right">
-              Làm mới vào: {formatResetTime(resetAt)}
+              {t('quotaTracker.reset_at')}: {formatResetTime(resetAt)}
             </div>
           )}
 
@@ -130,7 +132,7 @@ export const ExtensionStatus: React.FC<ExtensionStatusProps> = ({
           {isNearLimit && !isOverLimit && (
             <div className="mt-2 p-2 rounded-lg bg-amber-500/10 border border-amber-500/20">
               <p className="text-xs text-amber-400">
-                Cảnh báo: Bạn đã sử dụng {percentage.toFixed(0)}% giới hạn
+                {t('quotaTracker.near_limit_warning', { percentage: percentage.toFixed(0) })}
               </p>
             </div>
           )}
@@ -139,7 +141,7 @@ export const ExtensionStatus: React.FC<ExtensionStatusProps> = ({
           {isOverLimit && (
             <div className="mt-2 p-2 rounded-lg bg-red-500/10 border border-red-500/20">
               <p className="text-xs text-red-400">
-                Vượt giới hạn: {usage - limit} requests vượt mức
+                {t('quotaTracker.over_limit', { count: usage - limit })}
               </p>
             </div>
           )}

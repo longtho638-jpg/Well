@@ -16,6 +16,7 @@
 
 import React, { useState, useCallback } from 'react';
 import { Settings, TrendingUp, Calendar, Check, X } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 import { applyQuotaOverride } from '@/lib/tenant-license-client';
 
 interface QuotaOverrideForm {
@@ -52,6 +53,7 @@ export const TenantQuotaManager: React.FC<TenantQuotaManagerProps> = ({
   onOverrideApplied,
   onClose,
 }) => {
+  const { t } = useTranslation();
   const [formData, setFormData] = useState<QuotaOverrideForm>({
     metricType: 'api_calls',
     newLimit: 0,
@@ -108,8 +110,8 @@ export const TenantQuotaManager: React.FC<TenantQuotaManagerProps> = ({
             <Settings className="w-5 h-5 text-blue-400" />
           </div>
           <div>
-            <h3 className="text-base font-semibold text-white">Quota Override</h3>
-            <p className="text-xs text-zinc-400">Điều chỉnh giới hạn cho tenant</p>
+            <h3 className="text-base font-semibold text-white">{t('quotaTracker.quota_override')}</h3>
+            <p className="text-xs text-zinc-400">{t('quotaTracker.quota_override_description')}</p>
           </div>
         </div>
         {onClose && (
@@ -145,7 +147,7 @@ export const TenantQuotaManager: React.FC<TenantQuotaManagerProps> = ({
         {/* Current Limit Display */}
         <div className="p-3 rounded-lg bg-gray-900/50 border border-white/10">
           <div className="flex items-center justify-between text-xs">
-            <span className="text-zinc-400">Giới hạn hiện tại</span>
+            <span className="text-zinc-400">{t('quotaTracker.current_limit')}</span>
             <span className="text-white font-medium">
               {currentLimit.toLocaleString()} {selectedMetric?.unit}
             </span>
@@ -155,7 +157,7 @@ export const TenantQuotaManager: React.FC<TenantQuotaManagerProps> = ({
         {/* New Limit */}
         <div>
           <label className="block text-xs font-medium text-zinc-400 mb-1.5">
-            Giới hạn mới
+            {t('quotaTracker.new_limit')}
           </label>
           <div className="relative">
             <input
@@ -163,7 +165,7 @@ export const TenantQuotaManager: React.FC<TenantQuotaManagerProps> = ({
               value={formData.newLimit}
               onChange={(e) => setFormData({ ...formData, newLimit: parseInt(e.target.value) || 0 })}
               className="w-full px-3 py-2 rounded-lg bg-gray-900 border border-white/10 text-white text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/50"
-              placeholder="Enter new limit"
+              placeholder={t('quotaTracker.new_limit')}
               min="0"
             />
             {increasePercentage > 0 && (
@@ -180,7 +182,7 @@ export const TenantQuotaManager: React.FC<TenantQuotaManagerProps> = ({
           <label className="block text-xs font-medium text-zinc-400 mb-1.5">
             <div className="flex items-center gap-1.5">
               <Calendar className="w-3.5 h-3.5" />
-              Valid Until (optional)
+              {t('quotaTracker.valid_until')}
             </div>
           </label>
           <input
@@ -189,20 +191,20 @@ export const TenantQuotaManager: React.FC<TenantQuotaManagerProps> = ({
             onChange={(e) => setFormData({ ...formData, validUntil: e.target.value })}
             className="w-full px-3 py-2 rounded-lg bg-gray-900 border border-white/10 text-white text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/50"
           />
-          <p className="text-xs text-zinc-500 mt-1">Để trống nếu không có thời hạn</p>
+          <p className="text-xs text-zinc-500 mt-1">{t('quotaTracker.valid_until_hint')}</p>
         </div>
 
         {/* Reason */}
         <div>
           <label className="block text-xs font-medium text-zinc-400 mb-1.5">
-            Reason (optional)
+            {t('quotaTracker.reason')}
           </label>
           <textarea
             value={formData.reason}
             onChange={(e) => setFormData({ ...formData, reason: e.target.value })}
             className="w-full px-3 py-2 rounded-lg bg-gray-900 border border-white/10 text-white text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/50 resize-none"
             rows={2}
-            placeholder="Lý do điều chỉnh quota..."
+            placeholder={t('quotaTracker.reason_placeholder')}
           />
         </div>
 
@@ -217,7 +219,7 @@ export const TenantQuotaManager: React.FC<TenantQuotaManagerProps> = ({
           <div className="p-3 rounded-lg bg-emerald-500/10 border border-emerald-500/20">
             <div className="flex items-center gap-2 text-xs text-emerald-400">
               <Check className="w-4 h-4" />
-              <span>Override applied successfully!</span>
+              <span>{t('quotaTracker.override_applied')}</span>
             </div>
           </div>
         )}
@@ -229,7 +231,7 @@ export const TenantQuotaManager: React.FC<TenantQuotaManagerProps> = ({
             disabled={loading}
             className="flex-1 py-2.5 rounded-lg bg-blue-500 hover:bg-blue-400 disabled:bg-zinc-600 text-white font-medium text-sm transition-colors flex items-center justify-center gap-2"
           >
-            {loading ? 'Applying...' : 'Apply Override'}
+            {loading ? t('quotaTracker.applying') : t('quotaTracker.apply_override')}
           </button>
           {onClose && (
             <button

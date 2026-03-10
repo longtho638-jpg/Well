@@ -36,6 +36,30 @@ export interface RankUpgradeEvent {
   teamVolume: number;
 }
 
+export interface BookingCreatedEvent {
+  bookingId: string;
+  userId: string;
+  serviceType: string;
+  title: string;
+  startTime: Date;
+  endTime: Date;
+}
+
+export interface BookingRescheduledEvent {
+  bookingId: string;
+  userId: string;
+  oldStartTime: Date;
+  newStartTime: Date;
+  reason: string;
+}
+
+export interface BookingCancelledEvent {
+  bookingId: string;
+  userId: string;
+  reason: string;
+  cancelledAt: Date;
+}
+
 /** Map channel to payload type for type-safe dispatching */
 export interface DomainEventMap {
   'order:created': OrderEvent;
@@ -44,6 +68,9 @@ export interface DomainEventMap {
   'commission:calculated': CommissionEvent;
   'commission:paid': CommissionEvent;
   'rank:upgraded': RankUpgradeEvent;
+  'booking:created': BookingCreatedEvent;
+  'booking:rescheduled': BookingRescheduledEvent;
+  'booking:cancelled': BookingCancelledEvent;
 }
 
 type DomainChannel = keyof DomainEventMap;

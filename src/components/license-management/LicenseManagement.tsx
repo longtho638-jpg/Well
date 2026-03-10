@@ -4,6 +4,7 @@
  */
 
 import React, { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { ExtensionStatus, type ExtensionStatusType } from './ExtensionStatus';
 
 interface ExtensionData {
@@ -22,6 +23,7 @@ interface LicenseManagementResponse {
 }
 
 export const LicenseManagement: React.FC = () => {
+  const { t } = useTranslation();
   const [extensionStatus, setExtensionStatus] = useState<ExtensionData | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -77,7 +79,7 @@ export const LicenseManagement: React.FC = () => {
       <div className="max-w-2xl mx-auto p-6">
         <div className="flex items-center justify-center py-12">
           <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-emerald-500"></div>
-          <span className="ml-3 text-zinc-400">Đang tải...</span>
+          <span className="ml-3 text-zinc-400">{t('common.loading')}</span>
         </div>
       </div>
     );
@@ -97,9 +99,9 @@ export const LicenseManagement: React.FC = () => {
     <div className="max-w-2xl mx-auto p-6">
       {/* Header */}
       <div className="mb-6">
-        <h2 className="text-2xl font-bold text-white">Quản lý Giấy phép</h2>
+        <h2 className="text-2xl font-bold text-white">{t('quotaTracker.title')}</h2>
         <p className="text-sm text-zinc-400 mt-1">
-          Xem trạng thái gia hạn và giới hạn sử dụng extension
+          {t('quotaTracker.subtitle')}
         </p>
       </div>
 
@@ -117,11 +119,11 @@ export const LicenseManagement: React.FC = () => {
 
       {/* Help Section */}
       <div className="mt-6 p-4 rounded-lg bg-zinc-800/50 border border-white/10">
-        <h4 className="text-sm font-semibold text-white mb-2">Cần trợ giúp?</h4>
+        <h4 className="text-sm font-semibold text-white mb-2">{t('common.help')}</h4>
         <ul className="text-sm text-zinc-400 space-y-1">
-          <li>• Extension Algo Trader yêu cầu gói Pro hoặc Enterprise</li>
-          <li>• Giới hạn làm mới mỗi 24 giờ</li>
-          <li>• Liên hệ support@agencyos.network để nâng cấp</li>
+          <li>{t('quotaTracker.extension_help_1')}</li>
+          <li>{t('quotaTracker.extension_help_2')}</li>
+          <li>{t('quotaTracker.extension_help_3')}</li>
         </ul>
       </div>
     </div>
