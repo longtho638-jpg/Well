@@ -125,6 +125,7 @@ export const vi = {
   common: {
     loading: "[MISSING] loading",
     search: "[MISSING] search",
+    help: "Trợ giúp",
     location: {
       vietnam: "[MISSING] vietnam"
     },

@@ -48,6 +48,7 @@ export const common = {
     viewDetails: "View Details",
     notSupportedYet: "Coming Soon",
     blocked: "Blocked",
+    help: "Help",
     currency: {
       vnd: "₫",
       grow: "Token",
@@ -221,7 +222,6 @@ export const common = {
     },
   },
   loading: "Loading",
-  help: "Help",
   search: "Search",
   location: {
     vietnam: "Location vietnam",

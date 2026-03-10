@@ -138,6 +138,7 @@ export const en = {
   common: {
     loading: "[MISSING] loading",
     search: "[MISSING] search",
+    help: "Help",
     location: {
       vietnam: "[MISSING] vietnam"
     },
