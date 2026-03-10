@@ -12,7 +12,7 @@ export const withdrawal = {
   submitButton: "submit Button",
   bankName: "bank Name",
   selectBank: "select Bank",
-  status.cancelled: "cancelled",
+  "status.cancelled": "cancelled",
   historyTitle: "history Title",
   noTransactions: "no Transactions",
   rejectionNote: "rejection Note",

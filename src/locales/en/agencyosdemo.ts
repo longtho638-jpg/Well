@@ -1,6 +1,6 @@
 export const agencyosdemo = {
   agencyos_integration: "Agencyos Integration",
-  85_ai_powered_automation_comm: "85 Ai Powered Automation Comm",
+  "85_ai_powered_automation_comm": "85 Ai Powered Automation Comm",
   open_command_palette_k: "Open Command Palette K",
   command_categories: "Command Categories",
   commands: "Commands",
@@ -8,13 +8,4 @@ export const agencyosdemo = {
   all_commands: "All Commands",
   execution_history: "Execution History",
   no_commands_executed_yet_clic: "No Commands Executed Yet Clic",
-  "85_ai_powered_automation_comm": "85 ai powered automation comm",
-  "agencyos_integration": "Agencyos integration",
-  "agent_kpis": "Agent kpis",
-  "all_commands": "All commands",
-  "command_categories": "Command categories",
-  "commands": "Commands",
-  "execution_history": "Execution history",
-  "no_commands_executed_yet_clic": "No commands executed yet clic",
-  "open_command_palette_k": "Open command palette k"
 };

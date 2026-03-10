@@ -1,5 +1,5 @@
 export const herocard = {
-  100m_vnd_revenue: "100m Vnd Revenue",
+  "100m_vnd_revenue": "100M VND Revenue",
   founders_pathway: "Founder's Pathway",
   reach: "Reach",
   access_secured: "Access Secured",
@@ -10,5 +10,4 @@ export const herocard = {
   to_unlock: "to unlock",
   venture_partner_status: "Venture Partner Status",
   _100m_vnd_revenue: "100M VND Revenue",
-  '100m_vnd_revenue': "100M VND Revenue",
 };

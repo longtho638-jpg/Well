@@ -1,5 +1,5 @@
 export const commissionwallet = {
-  10_pit: "10 Pit",
+  "10_pit": "10 Pit",
   withdrawable_balance: "Withdrawable Balance",
   total_earnings_gross: "Total Earnings (Gross)",
   withheld_tax_pit_10: "Withheld Tax PIT 10%",
@@ -21,6 +21,5 @@ export const commissionwallet = {
   bonus_revenue: "Bonus Revenue",
   rate: "Rate",
   wellnexus_headquarters: "WellNexus Headquarters",
-  _10_pit: "10% PIT",
-  '10_pit': "10% PIT",
+  "_10_pit": "10% PIT",
 };

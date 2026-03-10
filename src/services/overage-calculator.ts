@@ -6,139 +6,23 @@
  */
 
 import { supabase } from '@/lib/supabase'
+import { analyticsLogger } from '@/utils/logger'
 import type {
   OverageCalculation,
   OverageResult,
   OverageTransaction,
   LicenseTier,
   MetricType,
-} from '@/types/overage'
-
-/**
- * Calculate overage units from total usage and quota
- */
-export function calculateOverageUnits(totalUsage: number, includedQuota: number): number {
-  return Math.max(0, totalUsage - includedQuota)
-}
-
-/**
- * Calculate overage cost from units and rate
- */
-export function calculateOverageCost(overageUnits: number, ratePerUnit: number): number {
-  return Math.round(overageUnits * ratePerUnit * 100) / 100 // Round to 2 decimal places
-}
-
-/**
- * Calculate percentage used
- */
-export function calculatePercentageUsed(totalUsage: number, includedQuota: number): number {
-  if (includedQuota <= 0) return 100
-  return Math.round((totalUsage / includedQuota) * 10000) / 100 // Round to 2 decimal places
-}
-
-/**
- * Get applicable overage rate for a metric type and tier
- */
-export async function getOverageRate(
-  metricType: MetricType,
-  tier: LicenseTier,
-  tenantId?: string
-): Promise<number> {
-  try {
-    // First check for custom tenant-specific rate
-    if (tenantId) {
-      const { data: rateData } = await supabase
-        .from('overage_rates')
-        .select('custom_rate')
-        .eq('metric_type', metricType)
-        .single()
-
-      if (rateData?.custom_rate && Array.isArray(rateData.custom_rate)) {
-        const customRate = rateData.custom_rate.find(
-          (r: any) => r.tenant_id === tenantId
-        )
-        if (customRate?.rate) {
-          return customRate.rate
-        }
-      }
-    }
-
-    // Fall back to tier-based rate
-    const { data, error } = await supabase
-      .from('overage_rates')
-      .select('*')
-      .eq('metric_type', metricType)
-      .single()
-
-    if (error || !data) {
-      // Silently return 0 - rate not found is not a critical error
-      return 0
-    }
-
-    const rateKey = `${tier}_rate` as keyof typeof data
-    const rate = data[rateKey] as number
-
-    return rate || 0
-  } catch (err) {
-    // Return default tier on error
-    return 'basic'
-  }
-}
-
-/**
- * Get tier from license ID
- */
-export async function getLicenseTier(licenseId: string): Promise<LicenseTier> {
-  try {
-    const { data, error } = await supabase
-      .from('raas_licenses')
-      .select('tier')
-      .eq('id', licenseId)
-      .single()
-
-    if (error || !data) {
-      return 'basic' // Default tier
-    }
-
-    return (data.tier as LicenseTier) || 'basic'
-  } catch (err) {
-    return 'basic'
-  }
-}
-
-/**
- * Get current usage vs quota for all metrics
- */
-export async function getUsageVsQuota(
-  orgId: string,
-  billingPeriod: string
-): Promise<
-  Array<{
-    metricType: MetricType
-    totalUsage: number
-    quotaLimit: number
-  }>
-> {
-  try {
-    const { data, error } = await supabase.rpc('get_usage_vs_quota', {
-      p_org_id: orgId,
-      p_billing_period: billingPeriod,
-    })
-
-    if (error) {
-      // Return empty on error - caller should handle
-      return []
-    }
-
-    return (data || []).map((row: { metric_type: string; total_usage: number; quota_limit: number }) => ({
-      metricType: row.metric_type as MetricType,
-      totalUsage: Number(row.total_usage) || 0,
-      quotaLimit: Number(row.quota_limit) || 0,
-    }))
-  } catch (err) {
-    return []
-  }
-}
+} from './overage-calculator-types'
+import {
+  calculateOverageUnits,
+  calculateOverageCost,
+  calculatePercentageUsed,
+  getOverageRate,
+  getLicenseTier,
+  getUsageVsQuota,
+  generateOverageIdempotencyKey,
+} from './overage-calculator-helpers'
 
 /**
  * Calculate overage for all metrics for an organization
@@ -153,16 +37,13 @@ export async function calculateOverageForOrg(
   let totalOverageCost = 0
 
   try {
-    // Get tier for rate lookup
     let tier: LicenseTier = 'basic'
     if (licenseId) {
       tier = await getLicenseTier(licenseId)
     }
 
-    // Get usage vs quota for all metrics
     const usageData = await getUsageVsQuota(orgId, billingPeriod)
 
-    // Calculate overage for each metric
     for (const usage of usageData) {
       const overageUnits = calculateOverageUnits(usage.totalUsage, usage.quotaLimit)
       const rate = await getOverageRate(usage.metricType, tier, tenantId)
@@ -191,8 +72,9 @@ export async function calculateOverageForOrg(
       hasOverage: totalOverageCost > 0,
       calculatedAt: new Date().toISOString(),
     }
-  } catch (err) {
-    throw err
+  } catch (error) {
+    analyticsLogger.error('[OverageCalculator] Failed to calculate overage', error)
+    throw error
   }
 }
 
@@ -200,35 +82,27 @@ export async function calculateOverageForOrg(
  * Calculate overage for a single metric
  */
 export async function calculateMetricOverage(
-  orgId: string,
+  _orgId: string,
   metricType: MetricType,
   totalUsage: number,
   quotaLimit: number,
   licenseId?: string,
   tenantId?: string
 ): Promise<OverageCalculation> {
-  try {
-    let tier: LicenseTier = 'basic'
-    if (licenseId) {
-      tier = await getLicenseTier(licenseId)
-    }
+  const tier: LicenseTier = licenseId ? await getLicenseTier(licenseId) : 'basic'
+  const overageUnits = calculateOverageUnits(totalUsage, quotaLimit)
+  const rate = await getOverageRate(metricType, tier, tenantId)
+  const cost = overageUnits > 0 ? calculateOverageCost(overageUnits, rate) : 0
 
-    const overageUnits = calculateOverageUnits(totalUsage, quotaLimit)
-    const rate = await getOverageRate(metricType, tier, tenantId)
-    const cost = overageUnits > 0 ? calculateOverageCost(overageUnits, rate) : 0
-
-    return {
-      metricType,
-      totalUsage,
-      includedQuota: quotaLimit,
-      overageUnits,
-      ratePerUnit: rate,
-      totalCost: cost,
-      isOverQuota: overageUnits > 0,
-      percentageUsed: calculatePercentageUsed(totalUsage, quotaLimit),
-    }
-  } catch (err) {
-    throw err
+  return {
+    metricType,
+    totalUsage,
+    includedQuota: quotaLimit,
+    overageUnits,
+    ratePerUnit: rate,
+    totalCost: cost,
+    isOverQuota: overageUnits > 0,
+    percentageUsed: calculatePercentageUsed(totalUsage, quotaLimit),
   }
 }
 
@@ -268,7 +142,8 @@ export async function createOverageTransaction(
     }
 
     return { id: data.id }
-  } catch (err) {
+  } catch (error) {
+    analyticsLogger.error('[OverageCalculator] Transaction error', error)
     return { id: '', error: 'Unknown error' }
   }
 }
@@ -298,7 +173,7 @@ export async function getPendingOverageTransactions(
     const { data, error } = await query
 
     if (error) {
-      console.error('[OverageCalculator] Error getting pending transactions:', error)
+      analyticsLogger.error('[OverageCalculator] Error getting pending transactions', error)
       return []
     }
 
@@ -325,21 +200,10 @@ export async function getPendingOverageTransactions(
       createdAt: row.created_at,
       updatedAt: row.updated_at,
     }))
-  } catch (err) {
-    console.error('[OverageCalculator] Error:', err)
+  } catch (error) {
+    analyticsLogger.error('[OverageCalculator] Error', error)
     return []
   }
-}
-
-/**
- * Generate idempotency key for overage record
- */
-export function generateOverageIdempotencyKey(
-  orgId: string,
-  metricType: string,
-  billingPeriod: string
-): string {
-  return `ovg_${orgId}_${metricType}_${billingPeriod}`
 }
 
 /**

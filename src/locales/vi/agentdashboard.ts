@@ -1,7 +1,7 @@
 export const agentdashboard = {
-  stats.totalAgents: "total Agents",
-  stats.activeFunctions: "active Functions",
-  stats.customAgents: "custom Agents",
+  "stats.totalAgents": "total Agents",
+  "stats.activeFunctions": "active Functions",
+  "stats.customAgents": "custom Agents",
   establishingNodeSync: "establishing Node Sync",
   title: "title",
   intelligenceGridOptimal: "intelligence Grid Optimal",

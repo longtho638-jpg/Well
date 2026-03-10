@@ -1,6 +1,6 @@
 export const agencyosdemo = {
   agencyos_integration: "agencyos integration",
-  85_ai_powered_automation_comm: "85 ai powered automation comm",
+  "85_ai_powered_automation_comm": "85 ai powered automation comm",
   open_command_palette_k: "open command palette k",
   command_categories: "command categories",
   commands: "commands",
