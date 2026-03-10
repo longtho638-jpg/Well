@@ -6,8 +6,7 @@
  */
 
 import { describe, it, expect, beforeEach, vi } from 'vitest'
-import { render, screen, fireEvent } from '@testing-library/react'
-import { I18nextProvider } from 'react-i18next'
+import { render, screen, fireEvent, act } from '@testing-library/react'
 import i18n from '@/i18n'
 import { OverageStatusCard } from '../billing/OverageStatusCard'
 import { useOverageBilling } from '@/hooks/use-overage-billing'
@@ -17,6 +16,15 @@ vi.mock('@/hooks/use-overage-billing', () => ({
   useOverageBilling: vi.fn(),
 }))
 
+// Mock react-i18next to avoid I18nextProvider issues
+vi.mock('react-i18next', async () => {
+  const actual = await vi.importActual('react-i18next')
+  return {
+    ...actual,
+    I18nextProvider: ({ children }: { children: React.ReactNode }) => children,
+  }
+})
+
 const mockUseOverageBilling = vi.mocked(useOverageBilling)
 
 describe('OverageStatusCard', () => {
@@ -25,12 +33,10 @@ describe('OverageStatusCard', () => {
   })
 
   const renderWithI18n = (ui: React.ReactElement, language = 'vi') => {
-    i18n.changeLanguage(language)
-    return render(
-      <I18nextProvider i18n={i18n}>
-        {ui}
-      </I18nextProvider>
-    )
+    return act(() => {
+      i18n.changeLanguage(language)
+      return render(ui)
+    })
   }
 
   describe('Loading State', () => {
@@ -48,9 +54,7 @@ describe('OverageStatusCard', () => {
       renderWithI18n(<OverageStatusCard orgId="org-123" />)
 
       // Check for loading skeleton (animate-pulse class)
-      const skeleton = screen.getByTestId('loading-skeleton', { exact: false }) ||
-                       screen.getByRole('status') ||
-                       document.querySelector('.animate-pulse')
+      const skeleton = document.querySelector('.animate-pulse')
       expect(skeleton).toBeInTheDocument()
     })
   })
@@ -67,10 +71,10 @@ describe('OverageStatusCard', () => {
         payOverage: vi.fn(),
       })
 
-      renderWithI18n(<OverageStatusCard orgId="org-123" />)
+      renderWithI18n(<OverageStatusCard orgId="org-123" />, 'vi')
 
-      // Component uses hardcoded text based on i18n.language
-      expect(screen.getByText(/Sử dụng trong giới hạn|Usage within limits/i)).toBeInTheDocument()
+      // Component uses hardcoded Vietnamese text
+      expect(screen.getByText('Sử dụng trong giới hạn')).toBeInTheDocument()
     })
   })
 
@@ -99,7 +103,7 @@ describe('OverageStatusCard', () => {
 
       renderWithI18n(<OverageStatusCard orgId="org-123" />, 'vi')
 
-      expect(screen.getByText(/Phí vượt mức/i)).toBeInTheDocument()
+      expect(screen.getByText('Phí vượt mức')).toBeInTheDocument()
       expect(screen.getByText('$2.50')).toBeInTheDocument()
     })
 
@@ -114,9 +118,9 @@ describe('OverageStatusCard', () => {
         payOverage: vi.fn(),
       })
 
-      renderWithI18n(<OverageStatusCard orgId="org-123" />)
+      renderWithI18n(<OverageStatusCard orgId="org-123" />, 'vi')
 
-      expect(screen.getByText(/Thanh toán ngay|Pay Now/i)).toBeInTheDocument()
+      expect(screen.getByText('Thanh toán ngay')).toBeInTheDocument()
     })
 
     it('calls payOverage when button is clicked', () => {
@@ -131,9 +135,9 @@ describe('OverageStatusCard', () => {
         payOverage: mockPayOverage,
       })
 
-      renderWithI18n(<OverageStatusCard orgId="org-123" />)
+      renderWithI18n(<OverageStatusCard orgId="org-123" />, 'vi')
 
-      const payButton = screen.getByText(/Thanh toán ngay|Pay Now/i)
+      const payButton = screen.getByText('Thanh toán ngay')
       fireEvent.click(payButton)
 
       expect(mockPayOverage).toHaveBeenCalled()
@@ -152,9 +156,9 @@ describe('OverageStatusCard', () => {
         payOverage: vi.fn(),
       })
 
-      renderWithI18n(<OverageStatusCard orgId="org-123" />)
+      renderWithI18n(<OverageStatusCard orgId="org-123" />, 'vi')
 
-      expect(screen.getByText(/Lỗi tải dữ liệu|Error loading data/i)).toBeInTheDocument()
+      expect(screen.getByText('Lỗi tải dữ liệu')).toBeInTheDocument()
     })
   })
 
@@ -170,9 +174,9 @@ describe('OverageStatusCard', () => {
         payOverage: vi.fn(),
       })
 
-      renderWithI18n(<OverageStatusCard orgId="org-123" compact />)
+      renderWithI18n(<OverageStatusCard orgId="org-123" compact />, 'vi')
 
-      expect(screen.getByText(/Tổng phí vượt mức|Total overage/i)).toBeInTheDocument()
+      expect(screen.getByText('Tổng phí vượt mức')).toBeInTheDocument()
     })
   })
 
@@ -209,7 +213,7 @@ describe('OverageStatusCard', () => {
         payOverage: vi.fn(),
       })
 
-      renderWithI18n(<OverageStatusCard orgId="org-123" />)
+      renderWithI18n(<OverageStatusCard orgId="org-123" />, 'vi')
 
       expect(screen.getByText('$3.50')).toBeInTheDocument()
     })
