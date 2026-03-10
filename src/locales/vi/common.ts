@@ -221,6 +221,7 @@ export const common = {
     },
   },
   loading: "Loading",
+  help: "Trợ giúp",
   search: "Search",
   location: {
     vietnam: "Location vietnam",
