@@ -15,8 +15,8 @@ import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Key, Check, X, Loader2, AlertCircle, ExternalLink } from 'lucide-react'
 import { useRaaSLicense } from '@/hooks/use-raas-license'
-import { Button } from '@/components/ui/button'
-import { Input } from '@/components/ui/input'
+import { Button } from '@/components/ui/Button'
+import { Input } from '@/components/ui/Input'
 import { Label } from '@/components/ui/label'
 import {
   Card,

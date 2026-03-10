@@ -100,10 +100,7 @@ export function RaaSRealtimeWidget({
     }
 
     // Warning alerts
-    if (
-      event.event_type === 'subscription_warning' ||
-      event.event_type === 'dunning_started'
-    ) {
+    if (event.event_type === 'subscription_warning') {
       setAlertLevel('warning')
       return
     }

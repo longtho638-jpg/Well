@@ -136,7 +136,7 @@ export const raas = {
   // Alert Settings
   alert_settings: {
     title: "Alert Rules",
-    description: "Configure alert thresholds and notifications",
+    subtitle: "Configure alert thresholds and notifications",
     add_rule: "Add Rule",
     no_rules: "No alert rules configured",
     no_rules_description: "Create your first alert rule to get notified of important events",
@@ -152,7 +152,7 @@ export const raas = {
     rule_type: "Rule Type",
     name: "Rule Name",
     name_placeholder: "Enter rule name",
-    description: "Description",
+    label_description: "Description",
     description_placeholder: "Enter rule description",
     severity: "Severity",
     severity_info: "Info",

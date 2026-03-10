@@ -15,6 +15,16 @@ export interface RevenueMetrics {
   trend: Array<{ date: string; mrr: number; revenue: number }>
 }
 
+// Alias for backward compatibility with LicenseAnalyticsDashboard
+export type RevenueData = RevenueMetrics
+
+export interface UseRevenueReturn {
+  data: RevenueMetrics | null
+  loading: boolean
+  error: string | null
+  refresh: () => Promise<void>
+}
+
 export function useRevenue(options?: { days?: number; autoRefresh?: boolean }) {
   const [data, setData] = useState<RevenueMetrics | null>(null)
   const [loading, setLoading] = useState(true)

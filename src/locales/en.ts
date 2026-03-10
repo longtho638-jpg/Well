@@ -40,6 +40,7 @@ import { analytics } from './en/analytics';
 import { billing } from './en/billing';
 import { alerts } from './en/alerts';
 import { realtime } from './en/realtime';
+import { alert_settings } from './en/alert_settings';
 import { a } from './en/a';
 import { adminsecuritysettings } from './en/adminsecuritysettings';
 import { agencyos } from './en/agencyos';
@@ -155,6 +156,14 @@ import { withdrawal } from './en/withdrawal';
 import { withdrawalmodal } from './en/withdrawalmodal';
 
 export const en = {
+  // Imported namespaces
+  alerts,
+  analytics,
+  raas,
+  realtime,
+  auditlog,
+  billing,
+  // Inline namespaces
   common: {
     loading: "[MISSING] loading",
     search: "[MISSING] search",
@@ -2073,81 +2082,6 @@ export const en = {
       dismiss: "[MISSING] dismiss"
     }
   },
-  raas: {
-    license_gate: {
-      validating: "[MISSING] validating",
-      welcome_title: "[MISSING] welcome title",
-      welcome_description: "[MISSING] welcome description",
-      features: {
-        secure_title: "[MISSING] secure title",
-        secure_description: "[MISSING] secure description",
-        compliant_title: "[MISSING] compliant title",
-        compliant_description: "[MISSING] compliant description",
-        managed_title: "[MISSING] managed title",
-        managed_description: "[MISSING] managed description"
-      },
-      bypass_dev: "[MISSING] bypass dev"
-    },
-    license_required: "[MISSING] license required",
-    license_active: "[MISSING] license active",
-    license_key_input: {
-      title: "[MISSING] title",
-      description: "[MISSING] description",
-      label: "[MISSING] label",
-      placeholder: "[MISSING] placeholder",
-      help: "[MISSING] help",
-      verifying: "[MISSING] verifying",
-      verifying_description: "[MISSING] verifying description",
-      valid: "[MISSING] valid",
-      invalid: "[MISSING] invalid",
-      included_features: "[MISSING] included features",
-      verifying_button: "[MISSING] verifying button",
-      validate_button: "[MISSING] validate button",
-      need_license: "[MISSING] need license",
-      get_license: "[MISSING] get license",
-      documentation: "[MISSING] documentation"
-    },
-    features: {
-      admin_dashboard: "[MISSING] admin dashboard",
-      payos_automation: "[MISSING] payos automation",
-      usage_metering: "[MISSING] usage metering",
-      multi_tenant: "[MISSING] multi tenant"
-    },
-    license_management: {
-      title: "[MISSING] title",
-      description: "[MISSING] description",
-      create_button: "[MISSING] create button",
-      search_placeholder: "[MISSING] search placeholder",
-      tabs: {
-        licenses: "[MISSING] licenses",
-        audit: "[MISSING] audit"
-      },
-      table: {
-        license_key: "[MISSING] license key",
-        organization: "[MISSING] organization",
-        tier: "[MISSING] tier",
-        status: "[MISSING] status",
-        created: "[MISSING] created",
-        expires: "[MISSING] expires",
-        actions: "[MISSING] actions",
-        copy: "[MISSING] copy",
-        revoke: "[MISSING] revoke"
-      },
-      no_licenses: "[MISSING] no licenses",
-      no_audit_logs: "[MISSING] no audit logs",
-      create_dialog: {
-        title: "[MISSING] title",
-        description: "[MISSING] description",
-        org_label: "[MISSING] org label",
-        org_placeholder: "[MISSING] org placeholder",
-        tier_label: "[MISSING] tier label",
-        cancel_button: "[MISSING] cancel button",
-        generate_button: "[MISSING] generate button"
-      }
-    },
-    contact_support: "[MISSING] contact support",
-    upgrade_now: "[MISSING] upgrade now"
-  },
   button: {
     loading: "[MISSING] loading"
   },
@@ -2198,27 +2132,6 @@ export const en = {
   },
   useStatsGrid: {
     tbd: "[MISSING] tbd"
-  },
-  auditlog: {
-    audit_trail: "[MISSING] audit trail",
-    immutable_ledger_of_administra: "[MISSING] immutable ledger of administra",
-    export_dataset: "[MISSING] export dataset",
-    analyze_all_actions: "[MISSING] analyze all actions",
-    all_administrators: "[MISSING] all administrators",
-    timeline: "[MISSING] timeline",
-    operator: "[MISSING] operator",
-    classification: "[MISSING] classification",
-    resource_node: "[MISSING] resource node",
-    tracing: "[MISSING] tracing",
-    no_telemetry_signals_detected: "[MISSING] no telemetry signals detected",
-    event_inspection: "[MISSING] event inspection",
-    detailed_forensics_for_trace: "[MISSING] detailed forensics for trace",
-    temporal_signature: "[MISSING] temporal signature",
-    utc_synchronization_active: "[MISSING] utc synchronization active",
-    network_origin: "[MISSING] network origin",
-    browser_api_gateway_node: "[MISSING] browser api gateway node",
-    payload_metadata: "[MISSING] payload metadata",
-    close_inspection: "[MISSING] close inspection"
   },
   cms: {
     content_orchestrator: "[MISSING] content orchestrator",
@@ -2436,12 +2349,6 @@ export const en = {
     description: "[MISSING] description",
     back_home: "[MISSING] back home"
   },
-  analytics: {
-    dashboard: {
-      title: "[MISSING] title",
-      last_updated: "[MISSING] last updated"
-    }
-  },
   productdetail: {
     identity_missing: "[MISSING] identity missing",
     the_requested_product_node_is: "[MISSING] the requested product node is",
@@ -2529,32 +2436,5 @@ export const en = {
   portfoliosection: {
     growth: "[MISSING] growth",
     arr: "[MISSING] arr"
-  },
-  billing: {
-    no_organization: "[MISSING] no organization",
-    no_subscription: "[MISSING] no subscription",
-    load_error: "[MISSING] load error",
-    portal_opened: "[MISSING] portal opened",
-    update_error: "[MISSING] update error",
-    error: "[MISSING] error",
-    update_payment_title: "[MISSING] update payment title",
-    update_payment_description: "[MISSING] update payment description",
-    payment_overdue: "[MISSING] payment overdue",
-    overdue_description: "[MISSING] overdue description",
-    amount_due: "[MISSING] amount due",
-    loading: "[MISSING] loading",
-    update_payment_method: "[MISSING] update payment method",
-    current_payment_method: "[MISSING] current payment method",
-    expires: "[MISSING] expires",
-    change: "[MISSING] change",
-    billing_info: "[MISSING] billing info",
-    status: "[MISSING] status",
-    next_billing_date: "[MISSING] next billing date",
-    secure_payment: "[MISSING] secure payment",
-    stripe_secure: "[MISSING] stripe secure",
-    stripe_privacy: "[MISSING] stripe privacy",
-    overage: {
-      status: "Overage Status"
-    }
   }
 };

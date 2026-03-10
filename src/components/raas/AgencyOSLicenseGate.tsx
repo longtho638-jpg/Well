@@ -22,7 +22,7 @@ import { Shield, Lock, AlertCircle } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
 import { useRaaSLicense } from '@/hooks/use-raas-license'
 import { LicenseKeyInput } from '@/components/raas/LicenseKeyInput'
-import { Button } from '@/components/ui/button'
+import { Button } from '@/components/ui/Button'
 
 interface AgencyOSLicenseGateProps {
   children: React.ReactNode

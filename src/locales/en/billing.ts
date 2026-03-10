@@ -1,6 +1,5 @@
 // Billing & Subscription translations
 export const billing = {
-  status: "Status",
   // General
   title: 'Billing & Subscription',
   description: 'Manage subscription, payment method, and usage',
@@ -10,6 +9,10 @@ export const billing = {
   no_subscription: 'No subscription found',
   load_error: 'Failed to load billing information',
   update_error: 'Failed to update payment method',
+  portal_opened: 'Stripe Customer Portal opened in new tab',
+  secure_payment: 'Secure Payment via Stripe',
+  stripe_secure: 'Your payment information is securely processed via Stripe Customer Portal.',
+  stripe_privacy: 'Stripe Privacy Policy',
 
   // Status
   status: {
@@ -34,12 +37,8 @@ export const billing = {
   billing_info: 'Billing Information',
   next_billing_date: 'Next Billing Date',
   status_label: 'Status',
-  portal_opened: 'Stripe Customer Portal opened in new tab',
-  secure_payment: 'Secure Payment via Stripe',
-  stripe_secure: 'Your payment information is securely processed via Stripe Customer Portal.',
-  stripe_privacy: 'Stripe Privacy Policy',
 
-  // Legacy aliases (for backward compatibility - do not duplicate keys above)
+  // Legacy aliases (for backward compatibility)
   amount_due: 'Amount Due',
   update_payment_method: 'Update Payment Method',
   payment_overdue: 'Payment Overdue',

@@ -4,6 +4,46 @@
  */
 
 export const analytics = {
+  // Alert Settings (for RaaSAlertSettings component)
+  alert_settings: {
+    delete_confirm: 'Are you sure you want to delete this rule?',
+    title: 'Alert Rules',
+    description: 'Configure alert thresholds and notifications',
+    add_rule: 'Add Rule',
+    no_rules: 'No alert rules configured',
+    no_rules_description: 'Create your first alert rule to get notified of important events',
+    disabled: 'Disabled',
+    no_description: 'No description',
+    threshold: 'Threshold',
+    cooldown: 'Cooldown',
+    edit: 'Edit rule',
+    delete: 'Delete rule',
+    edit_rule: 'Edit Rule',
+    create_rule: 'Create Rule',
+    rule_type: 'Rule Type',
+    name: 'Rule Name',
+    name_placeholder: 'Enter rule name',
+    description: 'Description',
+    description_placeholder: 'Enter rule description',
+    severity: 'Severity',
+    severity_info: 'Info',
+    severity_warning: 'Warning',
+    severity_critical: 'Critical',
+    operator: 'Operator',
+    seconds: 'seconds',
+    message_template: 'Message Template',
+    message_placeholder: 'Enter message template with {{variable}} placeholders',
+    message_help: 'Use {{percentage}}, {{featureName}}, {{currentValue}}, {{threshold}} for dynamic values',
+    enable_rule: 'Enable rule',
+    cancel: 'Cancel',
+    save: 'Save',
+    saving: 'Saving...',
+    types: {
+      quota_threshold: 'Quota Threshold',
+      spending_limit: 'Spending Limit',
+      feature_blocked: 'Feature Blocked',
+    },
+  },
   // Revenue Metrics
   revenue: {
     title: 'Revenue Analytics',
@@ -147,6 +187,16 @@ export const analytics = {
     quota_exceeded: 'Quota Exceeded',
     low_roi: 'Low ROI Warning',
     churn_risk: 'Churn Risk',
+    // Alert Badges
+    warning: 'Warning',
+    critical: 'Critical',
+    over_quota: 'Over Quota',
+    approaching_limit: 'Approaching Limit',
+    suspension_warning: 'Suspension Warning',
+    license_expired: 'License Expired',
+    payment_past_due: 'Payment Past Due',
+    view_details: 'View Details',
+    dismiss: 'Dismiss',
   },
 
   // Premium Tiers
@@ -198,19 +248,6 @@ export const analytics = {
     pause: 'Pause',
     resume: 'Resume',
     clear: 'Clear',
-  },
-
-  // Alert Badges
-  alerts: {
-    warning: 'Warning',
-    critical: 'Critical',
-    over_quota: 'Over Quota',
-    approaching_limit: 'Approaching Limit',
-    suspension_warning: 'Suspension Warning',
-    license_expired: 'License Expired',
-    payment_past_due: 'Payment Past Due',
-    view_details: 'View Details',
-    dismiss: 'Dismiss',
   },
 
   // Event Types

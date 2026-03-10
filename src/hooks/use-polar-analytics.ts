@@ -10,7 +10,7 @@ export { useCustomerSegments } from './analytics/use-customer-segments'
 export { useRevenueByTier } from './analytics/use-revenue-by-tier'
 
 // Re-export all types
-export type { RevenueMetrics } from './analytics/use-revenue'
+export type { RevenueMetrics, RevenueData } from './analytics/use-revenue'
 export type { RevenueByTier } from './analytics/use-revenue-by-tier'
 export type { CohortRetention } from './analytics/use-cohort-retention'
 export type { LicenseUsage } from './analytics/use-license-usage'

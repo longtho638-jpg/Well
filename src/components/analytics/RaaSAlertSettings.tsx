@@ -47,7 +47,7 @@ interface AlertRuleForm {
 // ============================================================================
 
 export function RaaSAlertSettings({ orgId, onRuleChange }: RaaSAlertSettingsProps) {
-  const { t } = useTranslation('raas')
+  const { t } = useTranslation('alert_settings')
   const [rules, setRules] = useState<AlertRuleConfig[]>([])
   const [loading, setLoading] = useState(true)
   const [showForm, setShowForm] = useState(false)
@@ -137,7 +137,7 @@ export function RaaSAlertSettings({ orgId, onRuleChange }: RaaSAlertSettingsProp
   }
 
   const handleDeleteRule = async (ruleId: string) => {
-    if (!confirm(t('raas.alert_settings.delete_confirm'))) {
+    if (!confirm(t('alert_settings.delete_confirm'))) {
       return
     }
 
@@ -189,15 +189,15 @@ export function RaaSAlertSettings({ orgId, onRuleChange }: RaaSAlertSettingsProp
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
-          <h2 className="text-xl font-semibold">{t('raas.alert_settings.title')}</h2>
-          <p className="text-sm text-muted-foreground">{t('raas.alert_settings.description')}</p>
+          <h2 className="text-xl font-semibold">{t('alert_settings.title')}</h2>
+          <p className="text-sm text-muted-foreground">{t('alert_settings.description')}</p>
         </div>
         <button
           onClick={handleCreateRule}
           className="flex items-center gap-2 px-4 py-2 bg-primary text-primary-foreground rounded-md hover:bg-primary/90"
         >
           <Plus className="w-4 h-4" />
-          {t('raas.alert_settings.add_rule')}
+          {t('alert_settings.add_rule')}
         </button>
       </div>
 
@@ -206,8 +206,8 @@ export function RaaSAlertSettings({ orgId, onRuleChange }: RaaSAlertSettingsProp
         {rules.length === 0 ? (
           <div className="text-center py-8 text-muted-foreground">
             <Bell className="w-12 h-12 mx-auto mb-2 opacity-50" />
-            <p>{t('raas.alert_settings.no_rules')}</p>
-            <p className="text-sm">{t('raas.alert_settings.no_rules_description')}</p>
+            <p>{t('alert_settings.no_rules')}</p>
+            <p className="text-sm">{t('alert_settings.no_rules_description')}</p>
           </div>
         ) : (
           rules.map((rule) => (
@@ -224,19 +224,19 @@ export function RaaSAlertSettings({ orgId, onRuleChange }: RaaSAlertSettingsProp
                     <h3 className="font-medium">{rule.name}</h3>
                     {!rule.enabled && (
                       <span className="text-xs px-2 py-0.5 rounded bg-muted text-muted-foreground">
-                        {t('raas.alert_settings.disabled')}
+                        {t('alert_settings.disabled')}
                       </span>
                     )}
                   </div>
                   <p className="text-sm text-muted-foreground">
-                    {rule.description || t('raas.alert_settings.no_description')}
+                    {rule.description || t('alert_settings.no_description')}
                   </p>
                   <div className="flex items-center gap-4 mt-1 text-xs text-muted-foreground">
                     <span>
-                      {t('raas.alert_settings.threshold')}: {rule.threshold} ({rule.operator})
+                      {t('alert_settings.threshold')}: {rule.threshold} ({rule.operator})
                     </span>
                     <span>
-                      {t('raas.alert_settings.cooldown')}: {Math.round((rule.cooldown_seconds || 0) / 60)}m
+                      {t('alert_settings.cooldown')}: {Math.round((rule.cooldown_seconds || 0) / 60)}m
                     </span>
                   </div>
                 </div>
@@ -245,14 +245,14 @@ export function RaaSAlertSettings({ orgId, onRuleChange }: RaaSAlertSettingsProp
                 <button
                   onClick={() => handleEditRule(rule)}
                   className="p-2 hover:bg-muted rounded"
-                  title={t('raas.alert_settings.edit')}
+                  title={t('alert_settings.edit')}
                 >
                   <Edit className="w-4 h-4" />
                 </button>
                 <button
                   onClick={() => handleDeleteRule(rule.id!)}
                   className="p-2 hover:bg-destructive/10 text-destructive rounded"
-                  title={t('raas.alert_settings.delete')}
+                  title={t('alert_settings.delete')}
                 >
                   <Trash2 className="w-4 h-4" />
                 </button>
@@ -268,7 +268,7 @@ export function RaaSAlertSettings({ orgId, onRuleChange }: RaaSAlertSettingsProp
           <div className="bg-card rounded-lg max-w-2xl w-full max-h-[90vh] overflow-y-auto">
             <div className="p-6 border-b flex items-center justify-between sticky top-0 bg-card z-10">
               <h3 className="text-lg font-semibold">
-                {editingRule ? t('raas.alert_settings.edit_rule') : t('raas.alert_settings.create_rule')}
+                {editingRule ? t('alert_settings.edit_rule') : t('alert_settings.create_rule')}
               </h3>
               <button onClick={() => setShowForm(false)} className="p-2 hover:bg-muted rounded">
                 <X className="w-5 h-5" />
@@ -279,7 +279,7 @@ export function RaaSAlertSettings({ orgId, onRuleChange }: RaaSAlertSettingsProp
               {/* Rule Type */}
               <div>
                 <label className="block text-sm font-medium mb-1">
-                  {t('raas.alert_settings.rule_type')}
+                  {t('alert_settings.rule_type')}
                 </label>
                 <select
                   value={form.rule_type}
@@ -287,53 +287,53 @@ export function RaaSAlertSettings({ orgId, onRuleChange }: RaaSAlertSettingsProp
                   className="w-full px-3 py-2 border rounded-md bg-background"
                   disabled={!!editingRule}
                 >
-                  <option value="quota_threshold">{t('raas.alert_settings.types.quota_threshold')}</option>
-                  <option value="spending_limit">{t('raas.alert_settings.types.spending_limit')}</option>
-                  <option value="feature_blocked">{t('raas.alert_settings.types.feature_blocked')}</option>
+                  <option value="quota_threshold">{t('alert_settings.types.quota_threshold')}</option>
+                  <option value="spending_limit">{t('alert_settings.types.spending_limit')}</option>
+                  <option value="feature_blocked">{t('alert_settings.types.feature_blocked')}</option>
                 </select>
               </div>
 
               {/* Name */}
               <div>
                 <label className="block text-sm font-medium mb-1">
-                  {t('raas.alert_settings.name')}
+                  {t('alert_settings.name')}
                 </label>
                 <input
                   type="text"
                   value={form.name}
                   onChange={(e) => setForm({ ...form, name: e.target.value })}
                   className="w-full px-3 py-2 border rounded-md bg-background"
-                  placeholder={t('raas.alert_settings.name_placeholder')}
+                  placeholder={t('alert_settings.name_placeholder')}
                 />
               </div>
 
               {/* Description */}
               <div>
                 <label className="block text-sm font-medium mb-1">
-                  {t('raas.alert_settings.description')}
+                  {t('alert_settings.description')}
                 </label>
                 <textarea
                   value={form.description}
                   onChange={(e) => setForm({ ...form, description: e.target.value })}
                   className="w-full px-3 py-2 border rounded-md bg-background"
                   rows={2}
-                  placeholder={t('raas.alert_settings.description_placeholder')}
+                  placeholder={t('alert_settings.description_placeholder')}
                 />
               </div>
 
               {/* Severity */}
               <div>
                 <label className="block text-sm font-medium mb-1">
-                  {t('raas.alert_settings.severity')}
+                  {t('alert_settings.severity')}
                 </label>
                 <select
                   value={form.severity}
                   onChange={(e) => setForm({ ...form, severity: e.target.value as AlertSeverity })}
                   className="w-full px-3 py-2 border rounded-md bg-background"
                 >
-                  <option value="info">{t('raas.alert_settings.severity_info')}</option>
-                  <option value="warning">{t('raas.alert_settings.severity_warning')}</option>
-                  <option value="critical">{t('raas.alert_settings.severity_critical')}</option>
+                  <option value="info">{t('alert_settings.severity_info')}</option>
+                  <option value="warning">{t('alert_settings.severity_warning')}</option>
+                  <option value="critical">{t('alert_settings.severity_critical')}</option>
                 </select>
               </div>
 
@@ -341,7 +341,7 @@ export function RaaSAlertSettings({ orgId, onRuleChange }: RaaSAlertSettingsProp
               <div className="grid grid-cols-2 gap-4">
                 <div>
                   <label className="block text-sm font-medium mb-1">
-                    {t('raas.alert_settings.threshold')}
+                    {t('alert_settings.threshold')}
                   </label>
                   <input
                     type="number"
@@ -352,7 +352,7 @@ export function RaaSAlertSettings({ orgId, onRuleChange }: RaaSAlertSettingsProp
                 </div>
                 <div>
                   <label className="block text-sm font-medium mb-1">
-                    {t('raas.alert_settings.operator')}
+                    {t('alert_settings.operator')}
                   </label>
                   <select
                     value={form.operator}
@@ -371,7 +371,7 @@ export function RaaSAlertSettings({ orgId, onRuleChange }: RaaSAlertSettingsProp
               {/* Cooldown */}
               <div>
                 <label className="block text-sm font-medium mb-1">
-                  {t('raas.alert_settings.cooldown')} ({t('raas.alert_settings.seconds')})
+                  {t('alert_settings.cooldown')} ({t('alert_settings.seconds')})
                 </label>
                 <input
                   type="number"
@@ -384,17 +384,17 @@ export function RaaSAlertSettings({ orgId, onRuleChange }: RaaSAlertSettingsProp
               {/* Message Template */}
               <div>
                 <label className="block text-sm font-medium mb-1">
-                  {t('raas.alert_settings.message_template')}
+                  {t('alert_settings.message_template')}
                 </label>
                 <textarea
                   value={form.message_template}
                   onChange={(e) => setForm({ ...form, message_template: e.target.value })}
                   className="w-full px-3 py-2 border rounded-md bg-background"
                   rows={2}
-                  placeholder={t('raas.alert_settings.message_placeholder')}
+                  placeholder={t('alert_settings.message_placeholder')}
                 />
                 <p className="text-xs text-muted-foreground mt-1">
-                  {t('raas.alert_settings.message_help')}
+                  {t('alert_settings.message_help')}
                 </p>
               </div>
 
@@ -408,7 +408,7 @@ export function RaaSAlertSettings({ orgId, onRuleChange }: RaaSAlertSettingsProp
                   className="rounded border-gray-300"
                 />
                 <label htmlFor="enabled" className="text-sm">
-                  {t('raas.alert_settings.enable_rule')}
+                  {t('alert_settings.enable_rule')}
                 </label>
               </div>
             </div>
@@ -419,7 +419,7 @@ export function RaaSAlertSettings({ orgId, onRuleChange }: RaaSAlertSettingsProp
                 onClick={() => setShowForm(false)}
                 className="px-4 py-2 border rounded-md hover:bg-muted"
               >
-                {t('raas.alert_settings.cancel')}
+                {t('alert_settings.cancel')}
               </button>
               <button
                 onClick={handleSaveRule}
@@ -427,7 +427,7 @@ export function RaaSAlertSettings({ orgId, onRuleChange }: RaaSAlertSettingsProp
                 className="px-4 py-2 bg-primary text-primary-foreground rounded-md hover:bg-primary/90 disabled:opacity-50 flex items-center gap-2"
               >
                 <Save className="w-4 h-4" />
-                {saving ? t('raas.alert_settings.saving') : t('raas.alert_settings.save')}
+                {saving ? t('alert_settings.saving') : t('alert_settings.save')}
               </button>
             </div>
           </div>

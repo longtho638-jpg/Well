@@ -136,7 +136,7 @@ export const raas = {
   // Alert Settings
   alert_settings: {
     title: "Quy Tắc Cảnh Báo",
-    description: "Cấu hình ngưỡng cảnh báo và thông báo",
+    subtitle: "Cấu hình ngưỡng cảnh báo và thông báo",
     add_rule: "Thêm Quy Tắc",
     no_rules: "Chưa có quy tắc cảnh báo",
     no_rules_description: "Tạo quy tắc cảnh báo đầu tiên để nhận thông báo sự kiện quan trọng",
@@ -152,7 +152,7 @@ export const raas = {
     rule_type: "Loại Quy Tắc",
     name: "Tên Quy Tắc",
     name_placeholder: "Nhập tên quy tắc",
-    description: "Mô tả",
+    label_description: "Mô tả",
     description_placeholder: "Nhập mô tả quy tắc",
     severity: "Mức Độ",
     severity_info: "Thông Tin",

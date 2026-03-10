@@ -4,6 +4,46 @@
  */
 
 export const analytics = {
+  // Alert Settings (for RaaSAlertSettings component)
+  alert_settings: {
+    delete_confirm: 'Bạn có chắc chắn muốn xóa quy tắc này?',
+    title: 'Quy Tắc Cảnh Báo',
+    description: 'Cấu hình ngưỡng cảnh báo và thông báo',
+    add_rule: 'Thêm Quy Tắc',
+    no_rules: 'Chưa có quy tắc cảnh báo',
+    no_rules_description: 'Tạo quy tắc cảnh báo đầu tiên để nhận thông báo sự kiện quan trọng',
+    disabled: 'Vô hiệu',
+    no_description: 'Không có mô tả',
+    threshold: 'Ngưỡng',
+    cooldown: 'Thời gian chờ',
+    edit: 'Sửa quy tắc',
+    delete: 'Xóa quy tắc',
+    edit_rule: 'Sửa Quy Tắc',
+    create_rule: 'Tạo Quy Tắc',
+    rule_type: 'Loại Quy Tắc',
+    name: 'Tên Quy Tắc',
+    name_placeholder: 'Nhập tên quy tắc',
+    description: 'Mô tả',
+    description_placeholder: 'Nhập mô tả quy tắc',
+    severity: 'Mức Độ',
+    severity_info: 'Thông Tin',
+    severity_warning: 'Cảnh Báo',
+    severity_critical: 'Nghiêm Trọng',
+    operator: 'Toán Tử',
+    seconds: 'giây',
+    message_template: 'Mẫu Tin Nhắn',
+    message_placeholder: 'Nhập mẫu tin nhắn với biến {{variable}}',
+    message_help: 'Dùng {{percentage}}, {{featureName}}, {{currentValue}}, {{threshold}} cho giá trị động',
+    enable_rule: 'Kích hoạt quy tắc',
+    cancel: 'Hủy',
+    save: 'Lưu',
+    saving: 'Đang lưu...',
+    types: {
+      quota_threshold: 'Ngưỡng Hạn Mức',
+      spending_limit: 'Giới Hạn Chi Tiêu',
+      feature_blocked: 'Tính Năng Bị Chặn',
+    },
+  },
   // Revenue Metrics
   revenue: {
     title: 'Phân Tích Doanh Thu',
@@ -147,6 +187,16 @@ export const analytics = {
     quota_exceeded: 'Vượt Hạn Mức',
     low_roi: 'Cảnh Báo ROI Thấp',
     churn_risk: 'Nguy Cơ Hủy Dịch Vụ',
+    // Alert Badges
+    warning: 'Cảnh Báo',
+    critical: 'Nghiêm Trọng',
+    over_quota: 'Vượt Hạn Mức',
+    approaching_limit: 'Sắp Đạt Giới Hạn',
+    suspension_warning: 'Cảnh Báo Đình Chỉ',
+    license_expired: 'Giấy Phép Hết Hạn',
+    payment_past_due: 'Thanh Toán Quá Hạn',
+    view_details: 'Xem Chi Tiết',
+    dismiss: 'Bỏ Qua',
   },
 
   // Premium Tiers
@@ -198,19 +248,6 @@ export const analytics = {
     pause: 'Tạm dừng',
     resume: 'Tiếp tục',
     clear: 'Xóa',
-  },
-
-  // Alert Badges
-  alerts: {
-    warning: 'Cảnh Báo',
-    critical: 'Nghiêm Trọng',
-    over_quota: 'Vượt Hạn Mức',
-    approaching_limit: 'Sắp Đạt Giới Hạn',
-    suspension_warning: 'Cảnh Báo Đình Chỉ',
-    license_expired: 'Giấy Phép Hết Hạn',
-    payment_past_due: 'Thanh Toán Quá Hạn',
-    view_details: 'Xem Chi Tiết',
-    dismiss: 'Bỏ Qua',
   },
 
   // Event Types

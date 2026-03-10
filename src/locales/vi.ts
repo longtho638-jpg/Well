@@ -40,6 +40,7 @@ import { analytics } from './vi/analytics';
 import { billing } from './vi/billing';
 import { alerts } from './vi/alerts';
 import { realtime } from './vi/realtime';
+import { alert_settings } from './vi/alert_settings';
 import { a } from './vi/a';
 import { achievementgrid } from './vi/achievementgrid';
 import { admin } from './vi/admin';
