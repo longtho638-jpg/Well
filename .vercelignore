@@ -1,0 +1,11 @@
+node_modules
+admin-panel/node_modules
+n8n_codebase/node_modules
+n8n_codebase
+admin-panel
+.git
+.gitignore
+*.md
+plans
+docs
+tests
