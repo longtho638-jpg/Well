@@ -22,7 +22,7 @@ import {
   sendOverageNotificationEmail,
 } from './email-service-billing'
 
-// Re-export types
+// Re-export types and functions
 export type {
   SendEmailRequest,
   SendEmailResponse,
@@ -31,6 +31,22 @@ export type {
   CommissionEarnedEmailData,
   RankUpgradeEmailData,
 } from '../types/email-service-type-definitions'
+
+// Re-export functions for direct import
+export {
+  sendEmail,
+  sendWelcomeEmail,
+  sendOrderConfirmationEmail,
+  sendCommissionEarnedEmail,
+  sendRankUpgradeEmail,
+  sendWithdrawalApprovedEmail,
+  sendWithdrawalRejectedEmail,
+  sendWithdrawalPendingEmail,
+  sendPaymentFailedEmail,
+  sendPaymentRetryEmail,
+  sendSubscriptionRenewalEmail,
+  sendOverageNotificationEmail,
+}
 
 // Unified Export
 export const emailService = {
