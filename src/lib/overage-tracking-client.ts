@@ -11,7 +11,29 @@
 
 import { useState, useEffect } from 'react'
 import { supabase } from '@/lib/supabase'
-import type { OverageMetricType } from './overage-calculator'
+import type { OverageMetricType } from './overage-calculator-types'
+import { createLogger } from '@/utils/logger'
+
+// Re-export OverageMetricType for consumers
+export type { OverageMetricType }
+
+const logger = createLogger('OverageTracking')
+
+/**
+ * Raw database row type for overage transactions
+ */
+interface OverageTransactionRow {
+  id: string
+  metric_type: string
+  total_usage: number
+  included_quota: number
+  overage_units: number
+  rate_per_unit: string | number
+  total_cost: string | number
+  billing_period: string
+  stripe_sync_status: string
+  created_at: string
+}
 
 export interface OverageTransaction {
   id: string
@@ -84,16 +106,16 @@ export function useOverageStatus(options: UseOverageStatusOptions = {}) {
 
       if (txError) throw txError
 
-      const transactions: OverageTransaction[] = (transactionsData || []).map((item: any) => ({
+      const transactions: OverageTransaction[] = (transactionsData || []).map((item: OverageTransactionRow) => ({
         id: item.id,
-        metricType: item.metric_type,
-        totalUsage: item.total_usage,
-        includedQuota: item.included_quota,
-        overageUnits: item.overage_units,
-        ratePerUnit: parseFloat(item.rate_per_unit),
-        totalCost: parseFloat(item.total_cost),
+        metricType: item.metric_type as OverageMetricType,
+        totalUsage: Number(item.total_usage),
+        includedQuota: Number(item.included_quota),
+        overageUnits: Number(item.overage_units),
+        ratePerUnit: Number(item.rate_per_unit),
+        totalCost: Number(item.total_cost),
         billingPeriod: item.billing_period,
-        stripeSyncStatus: item.stripe_sync_status,
+        stripeSyncStatus: item.stripe_sync_status as 'pending' | 'synced' | 'failed',
         createdAt: item.created_at,
       }))
 
@@ -113,7 +135,7 @@ export function useOverageStatus(options: UseOverageStatusOptions = {}) {
         isOverLimit: transactions.length > 0,
       })
     } catch (err) {
-      console.error('[useOverageStatus] Error:', err)
+      logger.error('Failed to fetch overage status', { error: err })
       setError(err instanceof Error ? err.message : 'Failed to fetch overages')
     } finally {
       setLoading(false)
@@ -171,22 +193,22 @@ export function useOverageHistory(options: UseOverageHistoryOptions = {}) {
 
         if (error) throw error
 
-        const transactions: OverageTransaction[] = (data || []).map((item: any) => ({
+        const transactions: OverageTransaction[] = (data || []).map((item: OverageTransactionRow) => ({
           id: item.id,
-          metricType: item.metric_type,
-          totalUsage: item.total_usage,
-          includedQuota: item.included_quota,
-          overageUnits: item.overage_units,
-          ratePerUnit: parseFloat(item.rate_per_unit),
-          totalCost: parseFloat(item.total_cost),
+          metricType: item.metric_type as OverageMetricType,
+          totalUsage: Number(item.total_usage),
+          includedQuota: Number(item.included_quota),
+          overageUnits: Number(item.overage_units),
+          ratePerUnit: Number(item.rate_per_unit),
+          totalCost: Number(item.total_cost),
           billingPeriod: item.billing_period,
-          stripeSyncStatus: item.stripe_sync_status,
+          stripeSyncStatus: item.stripe_sync_status as 'pending' | 'synced' | 'failed',
           createdAt: item.created_at,
         }))
 
         setHistory(transactions)
       } catch (err) {
-        console.error('[useOverageHistory] Error:', err)
+        logger.error('Failed to fetch overage history', { error: err })
         setError(err instanceof Error ? err.message : 'Failed to fetch history')
       } finally {
         setLoading(false)
@@ -222,7 +244,7 @@ export async function getOverageRate(metricType: OverageMetricType, tier: string
     const rateField = `${tier}_rate`
     return parseFloat((data as any)[rateField] || '0')
   } catch (err) {
-    console.error('[getOverageRate] Error:', err)
+    logger.error('Failed to fetch overage rate', { error: err })
     return getDefaultOverageRate(metricType, tier)
   }
 }

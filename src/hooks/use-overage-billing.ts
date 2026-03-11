@@ -21,6 +21,9 @@ import { supabase } from '@/lib/supabase'
 import type { OverageEvent, UsageForecast } from '@/lib/overage-billing-engine'
 import { OverageBillingEngine } from '@/lib/overage-billing-engine'
 import { UsageForecastService } from '@/services/usage-forecast-service'
+import { createLogger } from '@/utils/logger'
+
+const logger = createLogger('useOverageBilling')
 
 export interface UseOverageBillingResult {
   overageEvents: OverageEvent[]
@@ -69,7 +72,7 @@ export function useOverageBilling(orgId: string): UseOverageBillingResult {
     } catch (err) {
       const errorObj = err instanceof Error ? err : new Error('Unknown error')
       setError(errorObj)
-      console.error('[useOverageBilling] Error loading data:', err)
+      logger.error('Overage billing data load failed', { error: err })
     } finally {
       setIsLoading(false)
     }

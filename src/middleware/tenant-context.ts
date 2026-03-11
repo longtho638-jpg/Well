@@ -13,6 +13,9 @@
 
 import { supabase } from '@/lib/supabase'
 import type { RaasJwtClaims } from '@/lib/rbac-engine'
+import { createLogger } from '@/utils/logger'
+
+const logger = createLogger('TenantMiddleware')
 
 /**
  * Tenant context extracted from request
@@ -192,7 +195,7 @@ export function createTenantMiddleware() {
 
       next()
     } catch (err) {
-      console.error('[Tenant Middleware] Error:', err)
+      logger.error('Middleware error', { error: err })
       next() // Fail open on error (development mode)
     }
   }
@@ -224,7 +227,7 @@ export async function getTenantRateLimitPolicy(
 
     return data.rate_limit_config || null
   } catch (err) {
-    console.error('[getTenantRateLimitPolicy] Error:', err)
+    logger.warn('Rate limit policy fetch failed', { error: err })
     return null
   }
 }
@@ -250,7 +253,7 @@ export async function getTenantQuotaOverride(
 
     return data.quota_limit
   } catch (err) {
-    console.error('[getTenantQuotaOverride] Error:', err)
+    logger.warn('Quota override fetch failed', { error: err })
     return null
   }
 }

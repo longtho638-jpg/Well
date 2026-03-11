@@ -21,6 +21,24 @@ import { supabase } from '@/lib/supabase'
 import type { LicenseTier } from '@/lib/rbac-engine'
 
 /**
+ * Raw database row types for tenant license data
+ */
+interface QuotaOverrideRow {
+  id: string
+  tenant_id: string
+  metric_type: string
+  quota_limit: number
+  valid_from: string
+  valid_until: string | null
+  applied_by: string
+}
+
+interface UsageDataRow {
+  metric_type: string
+  usage_value: number
+}
+
+/**
  * Tenant license status
  */
 export interface TenantLicenseStatus {
@@ -147,13 +165,13 @@ export async function getTenantLicenseStatus(
       .eq('active', true)
 
     // Transform snake_case to camelCase
-    const quotaOverrides: QuotaOverride[] = (overridesData || []).map((o: any) => ({
+    const quotaOverrides: QuotaOverride[] = (overridesData || []).map((o: QuotaOverrideRow) => ({
       id: o.id,
       tenantId: o.tenant_id,
       metricType: o.metric_type,
       quotaLimit: o.quota_limit,
       validFrom: o.valid_from,
-      validUntil: o.valid_until,
+      validUntil: o.valid_until ?? undefined,
       appliedBy: o.applied_by,
     }))
 
@@ -271,7 +289,7 @@ export async function getUsageSummary(
 
     // Aggregate usage by metric type
     const usageByMetric = new Map<string, number>()
-    usageData?.forEach((item: any) => {
+    usageData?.forEach((item: UsageDataRow) => {
       const current = usageByMetric.get(item.metric_type) || 0
       usageByMetric.set(item.metric_type, current + (item.usage_value || 0))
     })
@@ -283,11 +301,11 @@ export async function getUsageSummary(
       .eq('tenant_id', tenantId)
       .eq('active', true)
 
-    const overridesMap = new Map(overridesData?.map((o: any) => [o.metric_type, o.quota_limit]) || [])
+    const overridesMap = new Map(overridesData?.map((o: { metric_type: string; quota_limit: number }) => [o.metric_type, o.quota_limit]) || [])
 
     // Build metrics
     const metricTypes = ['api_calls', 'tokens', 'compute_minutes', 'model_inferences', 'agent_executions'] as const
-    const metrics: any = {}
+    const metrics: Record<string, { used: number; limit: number; percentage: number }> = {}
 
     for (const metricType of metricTypes) {
       const used = usageByMetric.get(metricType) || 0
@@ -315,7 +333,13 @@ export async function getUsageSummary(
       tenantId,
       periodStart: start.toISOString(),
       periodEnd: end.toISOString(),
-      metrics,
+      metrics: {
+        api_calls: metrics.api_calls || { used: 0, limit: 0, percentage: 0 },
+        tokens: metrics.tokens || { used: 0, limit: 0, percentage: 0 },
+        compute_minutes: metrics.compute_minutes || { used: 0, limit: 0, percentage: 0 },
+        model_inferences: metrics.model_inferences || { used: 0, limit: 0, percentage: 0 },
+        agent_executions: metrics.agent_executions || { used: 0, limit: 0, percentage: 0 },
+      },
       overages,
     }
   } catch (err) {

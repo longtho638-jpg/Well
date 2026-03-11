@@ -7,6 +7,9 @@ import { useState, useEffect, useCallback } from 'react'
 import { supabase } from '@/lib/supabase'
 import type { LicenseTier, TierFeatures } from '@/types/license'
 import { TIER_CONFIG as tierConfig } from '@/types/license'
+import { createLogger } from '@/utils/logger'
+
+const logger = createLogger('useLicenseTier')
 
 /**
  * Xác định tier dựa vào user metadata hoặc license table
@@ -69,7 +72,7 @@ export function useLicenseTier() {
         setFeatures(tierConfig.free.features)
       }
     } catch (error) {
-      console.error('Error fetching license tier:', error)
+      logger.error('License tier fetch failed', { error })
       setTier('free')
       setFeatures(tierConfig.free.features)
     } finally {

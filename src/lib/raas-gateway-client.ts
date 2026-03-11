@@ -19,6 +19,9 @@ import type {
   LicenseCacheEntry,
   RaasGatewayResponse,
 } from '@/types/license-enforcement'
+import { createLogger } from '@/utils/logger'
+
+const logger = createLogger('RaasGateway')
 
 export interface RaasGatewayClientOptions {
   /** Gateway base URL (default: from env or production) */
@@ -105,7 +108,7 @@ export class RaasGatewayClient {
         const result = await this.validateLicenseKey(key)
         results.set(key, result)
       } catch (error) {
-        console.error('[RaasGatewayClient] Batch validation error:', error)
+        logger.error('Batch validation error', { error })
         results.set(key, {
           isValid: false,
           status: 'invalid',
@@ -251,10 +254,7 @@ export class RaasGatewayClient {
         }
       } catch (error) {
         lastError = error instanceof Error ? error : new Error(String(error))
-        console.error(
-          `[RaasGatewayClient] Attempt ${attempt} failed:`,
-          lastError.message
-        )
+        logger.error(`Gateway attempt ${attempt} failed`, { error: lastError.message })
 
         // Don't retry on client errors (4xx)
         if (
@@ -275,10 +275,7 @@ export class RaasGatewayClient {
 
     // All retries failed - fail open or return error
     if (this.options.failOpen) {
-      console.warn(
-        '[RaasGatewayClient] Gateway unavailable, failing open:',
-        lastError?.message
-      )
+      logger.warn('Gateway unavailable, failing open', { error: lastError?.message })
       return {
         isValid: true, // Allow request in fail-open mode
         licenseKey,

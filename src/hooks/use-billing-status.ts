@@ -9,11 +9,24 @@ import { useState, useEffect, useCallback } from 'react'
 import { createClient } from '@supabase/supabase-js'
 import { useAuth } from './useAuth'
 import type { OverageResult, MetricType } from '@/types/overage'
+import { createLogger } from '@/utils/logger'
+
+const logger = createLogger('useBillingStatus')
 
 const supabase = createClient(
   import.meta.env.VITE_SUPABASE_URL,
   import.meta.env.VITE_SUPABASE_ANON_KEY
 )
+
+/**
+ * Raw database row type for usage billing history
+ */
+interface UsageBillingHistoryRow {
+  snapshot_date: string
+  metric_type: string
+  metric_value: number
+  quota_limit: number
+}
 
 /**
  * Billing Status State
@@ -126,7 +139,7 @@ export function useBillingStatus(orgId: string) {
 
       setStatus(data as BillingStatus)
     } catch (err) {
-      console.error('[useBillingStatus] Error:', err)
+      logger.error('Billing status fetch failed', { error: err })
       setError(err instanceof Error ? err.message : 'Failed to fetch billing status')
     } finally {
       setLoading(false)
@@ -190,7 +203,7 @@ export function useOverageStatus(orgId: string) {
 
       setOverage(data as OverageResult)
     } catch (err) {
-      console.error('[useOverageStatus] Error:', err)
+      logger.error('Overage status fetch failed', { error: err })
       setError(err instanceof Error ? err.message : 'Failed to fetch overage status')
     } finally {
       setLoading(false)
@@ -261,7 +274,7 @@ export function useDunningStatus(orgId: string) {
         setRetryCountdown(new Date(data.nextRetryAt))
       }
     } catch (err) {
-      console.error('[useDunningStatus] Error:', err)
+      logger.error('Dunning status fetch failed', { error: err })
       setError(err instanceof Error ? err.message : 'Failed to fetch dunning status')
     } finally {
       setLoading(false)
@@ -341,7 +354,7 @@ export function useUsageHistory(
       if (fetchError) throw fetchError
 
       // Transform data for chart
-      const transformed = historyData.map((row: any) => ({
+      const transformed = historyData.map((row: UsageBillingHistoryRow) => ({
         date: row.snapshot_date,
         metricType: row.metric_type as MetricType,
         value: row.metric_value,
@@ -351,7 +364,7 @@ export function useUsageHistory(
 
       setData(transformed)
     } catch (err) {
-      console.error('[useUsageHistory] Error:', err)
+      logger.error('Usage history fetch failed', { error: err })
       setError(err instanceof Error ? err.message : 'Failed to fetch usage history')
     } finally {
       setLoading(false)
@@ -405,7 +418,7 @@ export function usePaymentMethod(customerId: string) {
         })
       }
     } catch (err) {
-      console.error('[usePaymentMethod] Error:', err)
+      logger.error('Payment method fetch failed', { error: err })
       setError(err instanceof Error ? err.message : 'Failed to fetch payment method')
     } finally {
       setLoading(false)

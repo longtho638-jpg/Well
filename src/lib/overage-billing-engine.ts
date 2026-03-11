@@ -32,6 +32,24 @@ import type { SupabaseClient } from '@supabase/supabase-js'
 import { analyticsLogger } from '@/utils/logger'
 import { OverageCalculator, type OverageCalculation, type OverageMetricType } from './overage-calculator'
 
+/**
+ * Raw database row type for overage events
+ */
+interface OverageEventRow {
+  id: string
+  org_id: string
+  user_id: string | null
+  license_id: string | null
+  metric_type: string
+  overage_units: number
+  overage_cost: string | number
+  stripe_invoice_id: string | null
+  stripe_invoice_item_id: string | null
+  status: string
+  created_at: string
+  metadata: Record<string, unknown> | null
+}
+
 export interface OverageEvent {
   id?: string
   orgId: string
@@ -394,19 +412,19 @@ export class OverageBillingEngine {
         throw error
       }
 
-      return (data || []).map((item: any) => ({
+      return (data || []).map((item: OverageEventRow) => ({
         id: item.id,
         orgId: item.org_id,
-        userId: item.user_id,
-        licenseId: item.license_id,
-        metricType: item.metric_type,
+        userId: item.user_id ?? undefined,
+        licenseId: item.license_id ?? undefined,
+        metricType: item.metric_type as OverageMetricType,
         overageUnits: item.overage_units,
-        overageCost: parseFloat(item.overage_cost),
-        stripeInvoiceId: item.stripe_invoice_id,
-        stripeInvoiceItemId: item.stripe_invoice_item_id,
-        status: item.status,
+        overageCost: Number(item.overage_cost),
+        stripeInvoiceId: item.stripe_invoice_id ?? undefined,
+        stripeInvoiceItemId: item.stripe_invoice_item_id ?? undefined,
+        status: item.status as OverageEvent['status'],
         createdAt: new Date(item.created_at),
-        metadata: item.metadata,
+        metadata: item.metadata ?? undefined,
       }))
     } catch (error) {
       analyticsLogger.error('[OverageBillingEngine] getOverageEvents error', error)

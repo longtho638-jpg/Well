@@ -14,6 +14,9 @@ import { useEffect, useState, useCallback } from 'react'
 import { CloudflareRateLimiter } from '@/lib/rate-limiter-cloudflare'
 import type { RateLimitConfig, LicenseTier } from '@/lib/rbac-engine'
 import type { RateLimitResult } from '@/lib/rate-limiter-cloudflare'
+import { createLogger } from '@/utils/logger'
+
+const logger = createLogger('useTenantRateLimit')
 
 interface UseTenantRateLimitReturn {
   // Current usage
@@ -143,7 +146,7 @@ export function useTenantRateLimit(
         day: usageData.day.used,
       })
     } catch (err) {
-      console.error('[useTenantRateLimit] refreshUsage error:', err)
+      logger.warn('Usage refresh failed', { error: err })
     }
   }, [tenantId, tier, rateLimiter])
 

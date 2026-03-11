@@ -13,6 +13,9 @@ import { useRaasLicenses } from './use-raas-licenses'
 import type { UsageStatus } from '@/lib/usage-metering'
 import type { LicenseTier, UsageSummary, QuotaAlert } from '@/types/usage'
 import type { UsageContextValue, QuotaCheckResponse, UseUsageReturn } from './use-usage-metering-types'
+import { createLogger } from '@/utils/logger'
+
+const logger = createLogger('useUsageMetering')
 
 const supabase = createClient(
   (import.meta as any).env.VITE_SUPABASE_URL,
@@ -155,7 +158,7 @@ export function useQuota() {
 
       return data
     } catch (error) {
-      console.error('[useQuota] Error:', error)
+      logger.error('Quota check failed', { error })
       return { allowed: false, current_usage: 0, limit: 0, remaining: 0, percentage: 0, reset_at: '', error: 'Failed to check quota' }
     }
   }, [user])

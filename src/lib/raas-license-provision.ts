@@ -16,6 +16,9 @@
 
 import type { SupabaseClient } from '@supabase/supabase-js'
 import { createHmac, randomBytes } from 'crypto'
+import { createLogger } from '@/utils/logger'
+
+const logger = createLogger('LicenseProvision')
 
 // ─── Types ──────────────────────────────────────────────────────
 
@@ -203,7 +206,7 @@ export async function provisionLicenseOnPayment(
       }
     } catch (emailErr) {
       // Email failure shouldn't block provisioning
-      console.error('[LicenseProvision] Email send failed:', emailErr)
+      logger.error('Email send failed', { error: emailErr })
     }
 
     return {
@@ -220,7 +223,7 @@ export async function provisionLicenseOnPayment(
     }
 
   } catch (error) {
-    console.error('[LicenseProvision] Failed:', error)
+    logger.error('License provision failed', { error })
 
     // Log error to audit
     try {
@@ -314,7 +317,7 @@ export async function revokeLicenseOnCancel(
 
     return { success: true, revokedCount }
   } catch (error) {
-    console.error('[LicenseRevoke] Failed:', error)
+    logger.error('License revoke failed', { error })
     return { success: false, revokedCount: 0 }
   }
 }

@@ -12,6 +12,9 @@
  */
 
 import { supabase } from '@/lib/supabase'
+import { createLogger } from '@/utils/logger'
+
+const logger = createLogger('SubscriptionHealth')
 
 export type HealthScore = 'excellent' | 'good' | 'warning' | 'critical' | 'unknown'
 
@@ -54,6 +57,26 @@ export interface OveragesSummary {
 }
 
 /**
+ * Raw database row types for type-safe mapping
+ */
+interface BillingStateRow {
+  org_id: string
+  metric_type: string
+  current_usage: string | number
+  quota_limit: string | number
+  percentage_used: string | number
+  is_exhausted: boolean
+  last_sync: string
+}
+
+interface OverageTransactionRow {
+  metric_type: string
+  total_cost: string
+  overage_units: string | number
+  rate_per_unit: string | number
+}
+
+/**
  * Get comprehensive subscription health score for org
  */
 export async function getHealthScore(orgId: string): Promise<SubscriptionHealthStatus> {
@@ -93,7 +116,7 @@ export async function getHealthScore(orgId: string): Promise<SubscriptionHealthS
       lastSyncAt: billingState.length > 0 ? billingState[0].lastSync : null,
     }
   } catch (err) {
-    console.error('[SubscriptionHealth] Error:', err)
+    logger.error('Health score calculation failed', { error: err })
     return getDefaultHealthStatus(orgId)
   }
 }
@@ -113,7 +136,7 @@ async function getBillingState(orgId: string): Promise<BillingState[]> {
       return []
     }
 
-    return data.map((item: any) => ({
+    return data.map((item: BillingStateRow) => ({
       orgId: item.org_id,
       metricType: item.metric_type,
       currentUsage: Number(item.current_usage),
@@ -123,7 +146,7 @@ async function getBillingState(orgId: string): Promise<BillingState[]> {
       lastSync: item.last_sync,
     }))
   } catch (err) {
-    console.error('[SubscriptionHealth] Error fetching billing state:', err)
+    logger.error('Failed to fetch billing state', { error: err })
     return []
   }
 }
@@ -153,10 +176,10 @@ async function getOverageSummary(orgId: string): Promise<OveragesSummary> {
     const breakdownByMetric: Record<string, { totalCost: number; totalUnits: number; avgRate: number }> = {}
     let totalCost = 0
 
-    data.forEach((item: any) => {
-      const cost = parseFloat(item.total_cost) || 0
+    data.forEach((item: OverageTransactionRow) => {
+      const cost = Number(item.total_cost) || 0
       const units = Number(item.overage_units) || 0
-      const rate = parseFloat(item.rate_per_unit) || 0
+      const rate = Number(item.rate_per_unit) || 0
 
       if (!breakdownByMetric[item.metric_type]) {
         breakdownByMetric[item.metric_type] = {
@@ -180,7 +203,7 @@ async function getOverageSummary(orgId: string): Promise<OveragesSummary> {
       breakdownByMetric,
     }
   } catch (err) {
-    console.error('[SubscriptionHealth] Error fetching overages:', err)
+    logger.error('Failed to fetch overages', { error: err })
     return {
       hasOverage: false,
       totalCost: 0,
@@ -222,7 +245,7 @@ async function getDunningStatus(orgId: string): Promise<{
       amountAtRisk: parseFloat(latest.amount_owed) || 0,
     }
   } catch (err) {
-    console.error('[SubscriptionHealth] Error fetching dunning:', err)
+    logger.error('Failed to fetch dunning status', { error: err })
     return {
       hasActive: false,
       currentStage: null,
@@ -270,7 +293,7 @@ async function getSubscription(orgId: string): Promise<{
       paymentMethodStatus,
     }
   } catch (err) {
-    console.error('[SubscriptionHealth] Error fetching subscription:', err)
+    logger.error('Failed to fetch subscription', { error: err })
     return null
   }
 }

@@ -9,6 +9,9 @@ import { useEffect, useState, useCallback, useMemo } from 'react'
 import { createClient } from '@supabase/supabase-js'
 import { UsageAnalytics } from '@/lib/usage-analytics'
 import { UsageMeter } from '@/lib/usage-metering'
+import { createLogger } from '@/utils/logger'
+
+const logger = createLogger('useUsageAnalytics')
 
 export interface UsageTrendData {
   period_start: string
@@ -113,7 +116,7 @@ export function useUsageAnalytics(options: UseUsageAnalyticsOptions = {}) {
 
       return trends
     } catch (err) {
-      console.error('[useUsageAnalytics] getTrends error:', err)
+      logger.error('Trends fetch failed', { error: err })
       throw err
     }
   }, [userId, licenseId, supabase])
@@ -130,7 +133,7 @@ export function useUsageAnalytics(options: UseUsageAnalyticsOptions = {}) {
       if (error) throw error
       return data || []
     } catch (err) {
-      console.error('[useUsageAnalytics] getQuotaUtilization error:', err)
+      logger.error('Quota utilization fetch failed', { error: err })
       throw err
     }
   }, [licenseId, supabase])
@@ -151,7 +154,7 @@ export function useUsageAnalytics(options: UseUsageAnalyticsOptions = {}) {
       if (error) throw error
       return data || []
     } catch (err) {
-      console.error('[useUsageAnalytics] getTopConsumers error:', err)
+      logger.error('Top consumers fetch failed', { error: err })
       throw err
     }
   }, [supabase])
@@ -172,7 +175,7 @@ export function useUsageAnalytics(options: UseUsageAnalyticsOptions = {}) {
       if (error) throw error
       return (data || []).filter((a: AnomalyAlert) => a.is_anomaly)
     } catch (err) {
-      console.error('[useUsageAnalytics] detectAnomalies error:', err)
+      logger.error('Anomaly detection failed', { error: err })
       throw err
     }
   }, [userId, licenseId, supabase])
@@ -192,7 +195,7 @@ export function useUsageAnalytics(options: UseUsageAnalyticsOptions = {}) {
       if (error) throw error
       return data?.[0] || null
     } catch (err) {
-      console.error('[useUsageAnalytics] getBillingProjection error:', err)
+      logger.error('Billing projection fetch failed', { error: err })
       throw err
     }
   }, [licenseId, supabase])

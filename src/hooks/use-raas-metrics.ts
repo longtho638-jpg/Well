@@ -178,7 +178,7 @@ export function useRaaSMetrics(
       onMetricsUpdate?.(metricsData)
     } catch (err) {
       const error = err instanceof Error ? err : new Error('Unknown error')
-      console.error('[useRaaSMetrics] Fetch failed', error)
+      analyticsLogger.error('Metrics fetch failed', { error })
 
       retryCountRef.current += 1
 
@@ -188,7 +188,7 @@ export function useRaaSMetrics(
       } else {
         // Exponential backoff for retry
         const delay = Math.min(1000 * Math.pow(2, retryCountRef.current), 10000)
-        console.warn(`[useRaaSMetrics] Retry ${retryCountRef.current}/${maxRetries} in ${delay}ms`)
+        analyticsLogger.warn('Retry scheduled', { retry: retryCountRef.current, max: maxRetries, delayMs: delay })
         pollingRef.current = setTimeout(() => fetchMetrics(isRefresh), delay)
       }
     } finally {

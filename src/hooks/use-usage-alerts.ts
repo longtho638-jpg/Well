@@ -14,6 +14,27 @@ import { useEffect, useState, useCallback } from 'react'
 import { supabase } from '@/lib/supabase'
 import type { AlertEvent, AlertSettings, AlertHistoryItem } from '@/types/usage-alerts'
 import type { AlertMetricType, AlertThreshold } from '@/lib/usage-alert-engine'
+import { createLogger } from '@/utils/logger'
+
+/**
+ * Raw database row type for alert webhook events
+ */
+interface AlertWebhookRow {
+  id: string
+  event_id: string
+  event_type: string
+  user_id: string
+  license_id: string | null
+  metric_type: string
+  threshold_percentage: number
+  current_usage: number
+  quota_limit: number
+  webhook_status: string
+  processed_at: string | null
+  created_at: string
+}
+
+const logger = createLogger('useUsageAlerts')
 
 interface UseUsageAlertsReturn {
   // Real-time alerts
@@ -66,20 +87,20 @@ export function useUsageAlerts(userId: string): UseUsageAlertsReturn {
       if (error) throw error
 
       setHistory(
-        (data || []).map((item: any) => ({
+        (data || []).map((item: AlertWebhookRow) => ({
           id: item.id,
           eventId: item.event_id,
           eventType: item.event_type,
           metricType: item.metric_type as AlertMetricType,
           thresholdPercentage: item.threshold_percentage as AlertThreshold,
           usagePercentage: Math.round((item.current_usage / item.quota_limit) * 100),
-          webhookStatus: item.webhook_status,
+          webhookStatus: item.webhook_status as 'pending' | 'sent' | 'failed',
           createdAt: item.created_at,
-          processedAt: item.processed_at,
+          processedAt: item.processed_at ?? undefined,
         }))
       )
     } catch (err) {
-      console.error('[useUsageAlerts] fetchHistory error:', err)
+      logger.warn('History fetch failed', { error: err })
     }
   }, [userId])
 
@@ -104,7 +125,7 @@ export function useUsageAlerts(userId: string): UseUsageAlertsReturn {
         ...data.settings,
       })
     } catch (err) {
-      console.error('[useUsageAlerts] fetchSettings error:', err)
+      logger.warn('Settings fetch failed', { error: err })
       setSettings(DEFAULT_SETTINGS)
     }
   }, [userId])
@@ -127,7 +148,7 @@ export function useUsageAlerts(userId: string): UseUsageAlertsReturn {
 
         setSettings(updatedSettings)
       } catch (err) {
-        console.error('[useUsageAlerts] updateSettings error:', err)
+        logger.error('Settings update failed', { error: err })
         throw err
       }
     },
@@ -150,7 +171,7 @@ export function useUsageAlerts(userId: string): UseUsageAlertsReturn {
         body: { user_id: userId },
       })
     } catch (err) {
-      console.error('[useUsageAlerts] checkAlerts error:', err)
+      logger.warn('Alert check failed', { error: err })
     }
   }, [userId])
 

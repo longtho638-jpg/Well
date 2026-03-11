@@ -14,6 +14,9 @@
 
 import type { SupabaseClient } from '@supabase/supabase-js'
 import type { OverageMetricType } from './overage-calculator'
+import { createLogger } from '@/utils/logger'
+
+const logger = createLogger('QuotaEnforcer')
 
 export type EnforcementMode = 'soft' | 'hard' | 'hybrid'
 
@@ -170,7 +173,7 @@ export class QuotaEnforcer {
         metadata: quotaBreakdown,
       }
     } catch (err) {
-      console.error('[QuotaEnforcer] Error:', err)
+      logger.error('Quota check failed', { error: err })
       // Fail open - allow request but log error
       return {
         allowed: true,
@@ -263,13 +266,13 @@ export class QuotaEnforcer {
       const { data, error } = await query
 
       if (error) {
-        console.error('[QuotaEnforcer] Usage fetch error:', error)
+        logger.error('Usage fetch failed', { error })
         return 0
       }
 
       return data?.reduce((sum, r) => sum + (r.quantity || 0), 0) || 0
     } catch (err) {
-      console.error('[QuotaEnforcer] Usage fetch error:', err)
+      logger.error('Usage fetch failed', { error: err })
       return 0
     }
   }
@@ -337,7 +340,7 @@ export class QuotaEnforcer {
 
       return effectiveQuota
     } catch (err) {
-      console.error('[QuotaEnforcer] Quota fetch error:', err)
+      logger.error('Quota fetch failed', { error: err })
       // Fallback to tier default
       const tier = await this.getOrgTier()
       return DEFAULT_TIER_QUOTAS[tier]?.[metricType] || 0

@@ -6,6 +6,9 @@
 import { captureException } from './performance';
 import { csrfToken } from './security-csrf-token-generator-and-session-store';
 import { UsageMeter } from '@/lib/usage-metering';
+import { createLogger } from '@/utils/logger';
+
+const logger = createLogger('ApiClient');
 
 // ============================================================================
 // API CONFIGURATION
@@ -108,7 +111,7 @@ class ApiClient {
                         statusCode: response.status,
                         duration,
                         error: data.message || 'Request failed',
-                    }).catch(console.error);
+                    }).catch((err: Error) => logger.error('Failed to track API call', { error: err }));
                 }
 
                 return {
@@ -127,7 +130,7 @@ class ApiClient {
                 await this.config.usageMeter.trackApiCall(endpoint, method, {
                     statusCode: response.status,
                     duration,
-                }).catch(console.error);
+                }).catch((err: Error) => logger.error('Failed to track API call', { error: err }));
             }
 
             return { success: true, data: data as T };
@@ -142,7 +145,7 @@ class ApiClient {
             if (this.config.usageMeter) {
                 await this.config.usageMeter.trackApiCall(endpoint, method, {
                     error: isAborted ? 'Timeout' : 'Network error',
-                }).catch(console.error);
+                }).catch((err: Error) => logger.error('Failed to track API call', { error: err }));
             }
 
             return {

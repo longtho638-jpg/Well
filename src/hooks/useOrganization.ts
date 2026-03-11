@@ -8,6 +8,9 @@
 import { useState, useEffect, useCallback } from 'react'
 import { supabase } from '@/lib/supabase'
 import { useUser } from './useUser'
+import { createLogger } from '@/utils/logger'
+
+const logger = createLogger('useOrganization')
 
 export interface Organization {
   id: string
@@ -80,7 +83,7 @@ export function useOrganization(): UseOrganizationResult {
     } catch (err) {
       const errorObj = err instanceof Error ? err : new Error('Unknown error')
       setError(errorObj)
-      console.error('[useOrganization] Error loading organization:', err)
+      logger.error('Organization load failed', { error: err })
     } finally {
       setIsLoading(false)
     }

@@ -13,6 +13,9 @@
 import fs from 'fs'
 import path from 'path'
 import { EventEmitter } from 'events'
+import { createLogger } from '@/utils/logger'
+
+const logger = createLogger('TaskWatcher')
 
 export interface TaskFile {
   id: string
@@ -59,7 +62,7 @@ export class TaskWatcher extends EventEmitter {
     this.polling = true
     this.poll()
 
-    console.log('[TaskWatcher] Started - watching', this.config.tasksDir) // eslint-disable-line no-console
+    logger.info('Started', { tasksDir: this.config.tasksDir })
   }
 
   /**
@@ -71,7 +74,7 @@ export class TaskWatcher extends EventEmitter {
       clearTimeout(this.pollTimer)
       this.pollTimer = null
     }
-    console.log('[TaskWatcher] Stopped') // eslint-disable-line no-console
+    logger.info('Stopped')
   }
 
   /**
@@ -100,7 +103,7 @@ export class TaskWatcher extends EventEmitter {
         }
       }
     } catch (error) {
-      console.error('[TaskWatcher] Poll error:', error)
+      logger.error('Poll error', { error })
     }
 
     this.pollTimer = setTimeout(() => this.poll(), this.config.pollIntervalMs)
@@ -135,7 +138,7 @@ export class TaskWatcher extends EventEmitter {
         status: 'pending',
       }
     } catch (error) {
-      console.error('[TaskWatcher] Parse error:', error)
+      logger.error('Parse error', { error })
       return null
     }
   }
@@ -151,7 +154,7 @@ export class TaskWatcher extends EventEmitter {
     fs.copyFileSync(task.path, archivePath)
     fs.unlinkSync(task.path)
 
-    console.log(`[TaskWatcher] Archived ${task.filename} → ${archiveName}`) // eslint-disable-line no-console
+    logger.info('Task archived', { original: task.filename, archive: archiveName })
   }
 
   /**

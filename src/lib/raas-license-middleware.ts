@@ -43,6 +43,9 @@ import {
   type get403Message,
 } from '@/lib/raas-403-response'
 import { raasAnalyticsEvents } from '@/lib/raas-analytics-events'
+import { createLogger } from '@/utils/logger'
+
+const logger = createLogger('LicenseMiddleware')
 
 /**
  * Default grace period: 24 hours
@@ -190,7 +193,7 @@ export async function licenseValidationMiddleware(
     if (license.status === 'expired') {
       if (enableGracePeriod && isInGracePeriod(license, gracePeriodMs)) {
         // Allow but log warning
-        console.warn('[LicenseMiddleware] Expired license in grace period', {
+        logger.warn('Expired license in grace period', {
           licenseKey: apiKey.substring(0, 8) + '...',
           expiresAt: license.expiresAt,
           gracePeriodHours: gracePeriodMs / (1000 * 60 * 60),
@@ -291,7 +294,7 @@ export async function licenseValidationMiddleware(
 
       // Log grace period warning
       if (suspensionStatus.gracePeriodRemainingHours && suspensionStatus.gracePeriodRemainingHours > 0) {
-        console.warn('[LicenseMiddleware] Subscription in grace period', {
+        logger.warn('Subscription in grace period', {
           orgId: targetOrgId,
           gracePeriodHours: suspensionStatus.gracePeriodRemainingHours,
           amountOwed: suspensionStatus.amountOwed,
@@ -315,14 +318,13 @@ export async function licenseValidationMiddleware(
       license,
     }
   } catch (error) {
-    console.error('[LicenseMiddleware] Validation error:', error)
+    logger.error('Validation error', { error })
 
     // Fail open or closed based on configuration
     if (failOpen) {
-      console.warn(
-        '[LicenseMiddleware] Gateway error, failing open:',
-        error instanceof Error ? error.message : String(error)
-      )
+      logger.warn('Gateway error, failing open', {
+        error: error instanceof Error ? error.message : String(error),
+      })
       return {
         allowed: true,
         license: {

@@ -6,6 +6,9 @@
 
 import type { SupabaseClient } from '@supabase/supabase-js'
 import { UsageMeter } from './usage-metering'
+import { createLogger } from '@/utils/logger'
+
+const logger = createLogger('UsageMetering')
 
 export interface UserFromRequest {
   userId: string
@@ -74,13 +77,13 @@ export function createUsageMiddleware(
             method: req.method,
             statusCode: res.statusCode,
           },
-        }).catch(console.error)
+        }).catch((err: Error) => logger.error('Failed to track API call', { error: err }))
         return originalJson(body)
       }
 
       next()
     } catch (error) {
-      console.error('[UsageMiddleware] Error:', error)
+      logger.error('Usage middleware error', { error })
       next()
     }
   }

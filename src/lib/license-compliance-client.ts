@@ -6,6 +6,21 @@
  */
 
 import { supabase } from '@/lib/supabase'
+import { createLogger } from '@/utils/logger'
+
+const logger = createLogger('ComplianceClient')
+
+/**
+ * Raw database row type for compliance logs
+ */
+interface ComplianceLogRow {
+  event_id: string
+  check_type: string
+  license_status: string
+  enforcement_action: string
+  error_message: string | null
+  created_at: string
+}
 
 export interface ComplianceStatus {
   orgId: string
@@ -121,7 +136,7 @@ export async function getComplianceStatus(orgId: string): Promise<ComplianceStat
       suspensionReason: data.suspension_reason || undefined,
     }
   } catch (err) {
-    console.error('[getComplianceStatus] Error:', err)
+    logger.error('Failed to get compliance status', { error: err })
     return null
   }
 }
@@ -152,16 +167,16 @@ export async function getComplianceHistory(
       return []
     }
 
-    return data.map((item: any) => ({
+    return data.map((item: ComplianceLogRow) => ({
       eventId: item.event_id,
       checkType: item.check_type,
       licenseStatus: item.license_status,
       enforcementAction: item.enforcement_action,
       createdAt: item.created_at,
-      error: item.error_message,
+      error: item.error_message ?? undefined,
     }))
   } catch (err) {
-    console.error('[getComplianceHistory] Error:', err)
+    logger.error('Failed to get compliance history', { error: err })
     return []
   }
 }
@@ -181,13 +196,13 @@ export async function reactivateOrganization(
     })
 
     if (error) {
-      console.error('[reactivateOrganization] Error:', error)
+      logger.error('Failed to reactivate organization', { error })
       return false
     }
 
     return true
   } catch (err) {
-    console.error('[reactivateOrganization] Error:', err)
+    logger.error('Failed to reactivate organization', { error: err })
     return false
   }
 }

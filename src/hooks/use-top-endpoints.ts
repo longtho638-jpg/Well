@@ -7,6 +7,9 @@
 
 import { useState, useEffect, useCallback } from 'react'
 import { createClient } from '@supabase/supabase-js'
+import { createLogger } from '@/utils/logger'
+
+const logger = createLogger('useTopEndpoints')
 
 const supabaseUrl = import.meta.env.VITE_SUPABASE_URL || 'https://xwymzrxtxbrhfljvdxcw.supabase.co'
 const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY || 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inh3eW16cnh0eGJyaGZsanZkeGN3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3MzkyNzI3ODgsImV4cCI6MjA1NDg0ODc4OH0.o1RzE9Y6dQyKxJ8y0YbQnMwVUqL7Rr4o1xZ0Yz1xJ8c'
@@ -119,7 +122,7 @@ export function useTopEndpoints(options: UseTopEndpointsOptions = {}) {
       setData(results)
       setError(null)
     } catch (err: any) {
-      console.error('[useTopEndpoints] Error:', err)
+      logger.error('Endpoints fetch failed', { error: err.message })
       setError(err.message)
     } finally {
       setLoading(false)

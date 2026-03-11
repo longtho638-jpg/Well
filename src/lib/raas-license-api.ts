@@ -12,6 +12,9 @@
  */
 
 import type { LicenseValidationResult } from '@/lib/raas-gate'
+import { createLogger } from '@/utils/logger'
+
+const logger = createLogger('RaasLicenseApi')
 
 export interface ValidateLicenseRequest {
   licenseKey: string
@@ -100,7 +103,7 @@ export async function validateLicenseKey(
       message: data.message,
     }
   } catch (error) {
-    console.error('[validateLicenseKey] Error:', error)
+    logger.error('License validation failed', { error })
     return {
       isValid: false,
       tier: 'basic',
@@ -135,7 +138,7 @@ export function storeValidatedLicense(
 
     storage.setItem(key, serialized)
   } catch (error) {
-    console.error('[storeValidatedLicense] Error:', error)
+    logger.error('Failed to store license', { error })
   }
 }
 
@@ -158,7 +161,7 @@ export function getStoredLicense(): StoredLicenseState | null {
 
     return null
   } catch (error) {
-    console.error('[getStoredLicense] Error:', error)
+    logger.error('Failed to get stored license', { error })
     return null
   }
 }
@@ -171,7 +174,7 @@ export function clearStoredLicense(): void {
     localStorage.removeItem('raas_license_state')
     sessionStorage.removeItem('raas_license_state')
   } catch (error) {
-    console.error('[clearStoredLicense] Error:', error)
+    logger.error('Failed to clear stored license', { error })
   }
 }
 

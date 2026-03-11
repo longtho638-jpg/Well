@@ -17,6 +17,9 @@ import { supabase } from '@/lib/supabase'
 import { dunningService } from '@/lib/dunning-service'
 import { raasAnalyticsEvents } from '@/lib/raas-analytics-events'
 import type { LicenseEnforcementResult } from '@/types/license-enforcement'
+import { createLogger } from '@/utils/logger'
+
+const logger = createLogger('SuspensionLogic')
 
 /**
  * Suspension status result
@@ -136,7 +139,7 @@ export async function getSuspensionConfig(
 
     return config
   } catch (err) {
-    console.error('[SuspensionLogic] Error fetching config:', err)
+    logger.error('Failed to fetch suspension config', { error: err })
     return DEFAULT_CONFIG
   }
 }
@@ -172,7 +175,7 @@ export async function getBillingState(orgId: string): Promise<{
       hasActiveSubscription: ['active', 'trialing', 'past_due'].includes(data.status),
     }
   } catch (err) {
-    console.error('[SuspensionLogic] Error fetching billing state:', err)
+    logger.error('Failed to fetch billing state', { error: err })
     return {
       subscriptionStatus: 'none',
       currentPeriodEnd: null,
@@ -390,7 +393,7 @@ export async function logSuspensionEvent(
       .single()
 
     if (error) {
-      console.error('[SuspensionLogic] Error logging suspension event:', error)
+      logger.error('Failed to log suspension event', { error })
     }
 
     // Emit analytics event (non-blocking, best-effort)
@@ -408,7 +411,7 @@ export async function logSuspensionEvent(
           path,
         })
         .catch((err) => {
-          console.error('[SuspensionLogic] Analytics emission failed:', err)
+          logger.error('Analytics emission failed', { error: err })
         })
     }
 
@@ -418,7 +421,7 @@ export async function logSuspensionEvent(
 
     return { success: true, eventId: data.id }
   } catch (err) {
-    console.error('[SuspensionLogic] Error:', err)
+    logger.error('Suspension event logging failed', { error: err })
     return { success: false }
   }
 }

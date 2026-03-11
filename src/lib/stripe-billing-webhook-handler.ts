@@ -34,13 +34,46 @@ const corsHeaders = {
   'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type, stripe-signature',
 }
 
-interface StripeWebhookEvent {
+interface StripeWebhookEvent<T = unknown> {
   id: string
   type: string
   created: number
   data: {
-    object: any
+    object: T
   }
+}
+
+// Type alias for Supabase client from Deno edge function
+type SupabaseClient = ReturnType<typeof createClient>
+
+// Stripe Invoice type
+interface StripeInvoice {
+  id: string
+  customer: string
+  amount_due: number
+  amount_paid: number
+  subscription: string
+  currency: string
+}
+
+// Stripe Subscription type
+interface StripeSubscription {
+  id: string
+  customer: string
+  status: string
+  current_period_end: number
+  cancel_at_period_end: boolean
+  cancellation_details?: {
+    reason: string
+  }
+}
+
+// Handler result type
+interface WebhookHandlerResult {
+  success: boolean
+  message?: string
+  dunningId?: string
+  data?: unknown
 }
 
 serve(async (req: Request) => {
@@ -72,20 +105,20 @@ serve(async (req: Request) => {
     const supabase = createClient(SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY)
 
     // Route to appropriate handler
-    let result: { success: boolean; message?: string; data?: any }
+    let result: WebhookHandlerResult
 
     switch (event.type) {
       case 'invoice.payment_failed':
-        result = await handlePaymentFailed(event, supabase)
+        result = await handlePaymentFailed(event as StripeWebhookEvent<StripeInvoice>, supabase)
         break
       case 'invoice.payment_succeeded':
-        result = await handlePaymentSucceeded(event, supabase)
+        result = await handlePaymentSucceeded(event as StripeWebhookEvent<StripeInvoice>, supabase)
         break
       case 'customer.subscription.updated':
-        result = await handleSubscriptionUpdated(event, supabase)
+        result = await handleSubscriptionUpdated(event as StripeWebhookEvent<StripeSubscription>, supabase)
         break
       case 'customer.subscription.deleted':
-        result = await handleSubscriptionDeleted(event, supabase)
+        result = await handleSubscriptionDeleted(event as StripeWebhookEvent<StripeSubscription>, supabase)
         break
       case 'charge.failed':
       case 'charge.succeeded':
@@ -115,9 +148,9 @@ serve(async (req: Request) => {
  * Triggers dunning workflow
  */
 async function handlePaymentFailed(
-  event: StripeWebhookEvent,
-  supabase: any
-): Promise<{ success: boolean; message?: string; dunningId?: string }> {
+  event: StripeWebhookEvent<StripeInvoice>,
+  supabase: SupabaseClient
+): Promise<WebhookHandlerResult> {
   const invoice = event.data.object
 
   console.log('[StripeWebhook] Payment failed:', {
@@ -210,9 +243,9 @@ async function handlePaymentFailed(
  * Resolves any active dunning events
  */
 async function handlePaymentSucceeded(
-  event: StripeWebhookEvent,
-  supabase: any
-): Promise<{ success: boolean; message?: string }> {
+  event: StripeWebhookEvent<StripeInvoice>,
+  supabase: SupabaseClient
+): Promise<WebhookHandlerResult> {
   const invoice = event.data.object
 
   console.log('[StripeWebhook] Payment succeeded:', {
@@ -277,9 +310,9 @@ async function handlePaymentSucceeded(
  * Updates subscription status in database
  */
 async function handleSubscriptionUpdated(
-  event: StripeWebhookEvent,
-  supabase: any
-): Promise<{ success: boolean; message?: string }> {
+  event: StripeWebhookEvent<StripeSubscription>,
+  supabase: SupabaseClient
+): Promise<WebhookHandlerResult> {
   const subscription = event.data.object
 
   console.log('[StripeWebhook] Subscription updated:', {
@@ -321,9 +354,9 @@ async function handleSubscriptionUpdated(
  * Handle customer.subscription.deleted event
  */
 async function handleSubscriptionDeleted(
-  event: StripeWebhookEvent,
-  supabase: any
-): Promise<{ success: boolean; message?: string }> {
+  event: StripeWebhookEvent<StripeSubscription>,
+  supabase: SupabaseClient
+): Promise<WebhookHandlerResult> {
   const subscription = event.data.object
 
   console.log('[StripeWebhook] Subscription deleted:', {

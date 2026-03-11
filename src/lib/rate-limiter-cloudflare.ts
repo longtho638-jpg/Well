@@ -17,6 +17,9 @@
 
 import type { RateLimitConfig, LicenseTier, AuditLogEntry } from './rbac-engine';
 import { getTenantRateLimitPolicy } from '@/middleware/tenant-context';
+import { createLogger } from '@/utils/logger';
+
+const logger = createLogger('RateLimiter')
 
 /**
  * Cloudflare KV binding interface
@@ -203,7 +206,7 @@ export class CloudflareRateLimiter {
       };
     } catch (error) {
       // KV error - fail open in development, fail closed in production
-      console.error('[RateLimiter] KV error:', error);
+      logger.error('KV operation failed', { error })
       return {
         allowed: true,
         remaining: limit,
@@ -268,7 +271,7 @@ export class CloudflareRateLimiter {
 
       await this.kv.put(key, JSON.stringify(newState), { expirationTtl: ttl });
     } catch (error) {
-      console.error('[RateLimiter] Failed to increment:', error);
+      logger.error('Failed to increment usage', { error })
     }
   }
 
@@ -423,18 +426,30 @@ export function logRateLimitEvent(
     request_id,
   };
 
-  console.warn('[Rate Limit Audit]', JSON.stringify(entry));
+  logger.warn('Rate limit event', { entry })
 }
 
 /**
  * Express/Cloudflare Workers middleware factory
  */
+interface ExpressRequest {
+  headers: {
+    get?: (name: string) => string | null
+  }
+}
+
+interface ExpressResponse {
+  setHeader: (name: string, value: string | number) => void
+  status: (code: number) => ExpressResponse
+  json: (body: Record<string, unknown>) => void
+}
+
 export function createRateLimitMiddleware(
   rateLimiter: CloudflareRateLimiter,
-  getCustomerId: (req: any) => string,
-  getTier: (req: any) => LicenseTier
+  getCustomerId: (req: ExpressRequest) => string,
+  getTier: (req: ExpressRequest) => LicenseTier
 ) {
-  return async (req: any, res: any, next: () => void) => {
+  return async (req: ExpressRequest, res: ExpressResponse, next: () => void) => {
     const customerId = getCustomerId(req);
     const tier = getTier(req);
     const requestId = crypto.randomUUID();
@@ -465,7 +480,7 @@ export function createRateLimitMiddleware(
 
       next();
     } catch (error) {
-      console.error('[Rate Limit Middleware] Error:', error);
+      logger.error('Rate limit middleware error', { error })
       next(); // Fail open on error
     }
   };

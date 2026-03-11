@@ -41,6 +41,9 @@ import {
 import { raas403Response } from '@/lib/raas-403-response'
 import { raasAnalyticsEvents } from '@/lib/raas-analytics-events'
 import { QuotaEnforcer } from '@/lib/quota-enforcer'
+import { createLogger } from '@/utils/logger'
+
+const logger = createLogger('ModelQuota')
 
 // ============================================================================
 // TYPE DEFINITIONS
@@ -196,7 +199,7 @@ async function decodeAuthToken(
     // Unknown token format
     return null
   } catch (error) {
-    console.error('[ModelQuota] Token decode error:', error)
+    logger.error('Token decode error', { error })
     return null
   }
 }
