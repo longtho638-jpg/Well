@@ -234,7 +234,7 @@ export async function checkSuspensionStatus(
 
   // Check subscription status
   switch (billingState.subscriptionStatus) {
-    case 'canceled':
+    case 'canceled': {
       return {
         shouldSuspend: true,
         reason: 'subscription_canceled',
@@ -244,8 +244,9 @@ export async function checkSuspensionStatus(
         subscriptionStatus: billingState.subscriptionStatus,
         adminBypassAvailable,
       }
+    }
 
-    case 'expired':
+    case 'expired': {
       return {
         shouldSuspend: true,
         reason: 'subscription_expired',
@@ -255,8 +256,9 @@ export async function checkSuspensionStatus(
         subscriptionStatus: billingState.subscriptionStatus,
         adminBypassAvailable,
       }
+    }
 
-    case 'past_due':
+    case 'past_due': {
       // Check dunning status
       const dunningEvents = await dunningService.getActiveDunningEvents(orgId)
       const hasActiveDunning = dunningEvents.length > 0
@@ -323,8 +325,9 @@ export async function checkSuspensionStatus(
         dunningStage,
         adminBypassAvailable,
       }
+    }
 
-    case 'unpaid':
+    case 'unpaid': {
       return {
         shouldSuspend: true,
         reason: 'non_payment',
@@ -334,12 +337,13 @@ export async function checkSuspensionStatus(
         subscriptionStatus: billingState.subscriptionStatus,
         adminBypassAvailable,
       }
+    }
 
     case 'active':
     case 'trialing':
     case 'incomplete':
     case 'none':
-    default:
+    default: {
       // Allow active, trialing, incomplete, or no subscription
       return {
         shouldSuspend: false,
@@ -350,6 +354,7 @@ export async function checkSuspensionStatus(
         subscriptionStatus: billingState.subscriptionStatus,
         adminBypassAvailable,
       }
+    }
   }
 }
 

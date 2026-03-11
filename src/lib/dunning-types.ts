@@ -88,3 +88,16 @@ export interface FailedWebhookRecord {
 export type DunningStage = 'initial' | 'reminder' | 'final' | 'cancel_notice'
 
 export type ResolutionMethod = 'payment_success' | 'manual_override' | 'subscription_canceled'
+
+/**
+ * Raw database row type for dunning emails (for RPC returns)
+ */
+export interface DunningEmailRow {
+  dunning_id: string
+  org_id: string
+  user_id: string | null
+  email_template: string
+  amount_owed: string | number
+  payment_url: string | null
+  days_since_failure: number
+}

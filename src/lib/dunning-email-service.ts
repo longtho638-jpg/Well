@@ -7,7 +7,7 @@
 
 import { supabase } from '@/lib/supabase'
 import { analyticsLogger } from '@/utils/logger'
-import type { DunningEmailResult, DunningStage, DunningConfig } from './dunning-types'
+import type { DunningEmailResult, DunningStage, DunningConfig, DunningEmailRow } from './dunning-types'
 
 /**
  * Raw database row type for email sequence items
@@ -16,19 +16,6 @@ interface EmailSequenceRow {
   stage: string
   day: number
   template: string
-}
-
-/**
- * Raw database row type for dunning emails
- */
-interface DunningEmailRow {
-  dunning_id: string
-  org_id: string
-  user_id: string | null
-  email_template: string
-  amount_owed: string
-  payment_url: string | null
-  days_since_failure: number
 }
 
 /**
@@ -188,7 +175,7 @@ export async function getPendingDunningEmails(): Promise<
       orgId: item.org_id,
       userId: item.user_id,
       emailTemplate: item.email_template,
-      amountOwed: parseFloat(item.amount_owed),
+      amountOwed: parseFloat(item.amount_owed as string),
       paymentUrl: item.payment_url,
       daysSinceFailure: item.days_since_failure,
     }))
@@ -203,7 +190,7 @@ export async function getPendingDunningEmails(): Promise<
  */
 export async function sendEmailSequence(
   dunningId: string,
-  orgId: string,
+  _orgId: string,
   config: {
     emailSequence: Array<{ stage: string; day: number; template: string }>
     autoSendEmails: boolean

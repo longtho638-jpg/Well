@@ -24,6 +24,12 @@ import { serve } from 'https://deno.land/std@0.168.0/http/server.ts'
 import Stripe from 'https://esm.sh/stripe@14.0.0?target=deno'
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2.45.0?target=deno'
 
+// Logger for Edge Function (console-based since createLogger not available in Deno)
+const logger = {
+  info: (msg: string, data?: unknown) => console.log(`[StripeWebhook] ${msg}`, data ? JSON.stringify(data) : ''),
+  error: (msg: string, data?: unknown) => console.error(`[StripeWebhook] ${msg}`, data ? JSON.stringify(data) : ''),
+}
+
 const STRIPE_SECRET_KEY = Deno.env.get('STRIPE_SECRET_KEY')!
 const STRIPE_WEBHOOK_SECRET = Deno.env.get('STRIPE_WEBHOOK_SECRET')!
 const SUPABASE_URL = Deno.env.get('SUPABASE_URL')!
@@ -92,14 +98,14 @@ serve(async (req: Request) => {
       const stripe = new Stripe(STRIPE_SECRET_KEY, { apiVersion: '2024-06-20' })
       event = stripe.webhooks.constructEvent(body, signature, STRIPE_WEBHOOK_SECRET)
     } catch (err) {
-      console.error('[StripeWebhook] Signature verification failed:', err)
+      logger.error('Signature verification failed', err)
       return new Response(
         JSON.stringify({ error: 'Webhook signature verification failed' }),
         { status: 400, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
       )
     }
 
-    console.log(`[StripeWebhook] Received event: ${event.type} (${event.id})`)
+    logger.info(`Received event: ${event.type} (${event.id})`)
 
     // Initialize Supabase client
     const supabase = createClient(SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY)
@@ -125,7 +131,7 @@ serve(async (req: Request) => {
         result = { success: true, message: 'Charge event acknowledged' }
         break
       default:
-        console.log(`[StripeWebhook] Unhandled event type: ${event.type}`)
+        logger.info(`Unhandled event type: ${event.type}`)
         result = { success: true, message: 'Event received but not processed' }
     }
 
@@ -135,7 +141,7 @@ serve(async (req: Request) => {
     )
   } catch (error) {
     const errorMessage = error instanceof Error ? error.message : 'Unknown error'
-    console.error('[StripeWebhook] Error:', errorMessage)
+    logger.error('Error processing webhook', errorMessage)
     return new Response(
       JSON.stringify({ error: errorMessage, success: false }),
       { status: 500, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
@@ -153,7 +159,7 @@ async function handlePaymentFailed(
 ): Promise<WebhookHandlerResult> {
   const invoice = event.data.object
 
-  console.log('[StripeWebhook] Payment failed:', {
+  logger.info('Payment failed', {
     invoiceId: invoice.id,
     customerId: invoice.customer,
     amount: invoice.amount_due,
@@ -169,7 +175,7 @@ async function handlePaymentFailed(
       .single()
 
     if (!subscription) {
-      console.error('[StripeWebhook] Subscription not found for:', invoice.subscription)
+      logger.error('Subscription not found', invoice.subscription)
       return { success: false, message: 'Subscription not found' }
     }
 
@@ -181,7 +187,7 @@ async function handlePaymentFailed(
       .single()
 
     if (existingDunning) {
-      console.log('[StripeWebhook] Dunning event already exists:', existingDunning.id)
+      logger.info('Dunning event already exists', existingDunning.id)
       return { success: true, message: 'Dunning event already logged', dunningId: existingDunning.id }
     }
 
@@ -195,7 +201,7 @@ async function handlePaymentFailed(
       })
       paymentUrl = portalSession.url
     } catch (err) {
-      console.error('[StripeWebhook] Failed to create portal session:', err)
+      logger.error('Failed to create portal session', err)
     }
 
     // Log dunning event
@@ -212,7 +218,7 @@ async function handlePaymentFailed(
     })
 
     if (error) {
-      console.error('[StripeWebhook] Error logging dunning event:', error)
+      logger.error('Error logging dunning event', error)
       return { success: false, message: error.message }
     }
 
@@ -229,11 +235,11 @@ async function handlePaymentFailed(
       severity: 'high',
     })
 
-    console.log('[StripeWebhook] Dunning event created:', dunningId)
+    logger.info('Dunning event created', dunningId)
     return { success: true, message: 'Dunning event created', dunningId }
   } catch (err) {
     const errorMessage = err instanceof Error ? err.message : 'Unknown error'
-    console.error('[StripeWebhook] handlePaymentFailed error:', errorMessage)
+    logger.error('handlePaymentFailed error', errorMessage)
     return { success: false, message: errorMessage }
   }
 }
@@ -248,7 +254,7 @@ async function handlePaymentSucceeded(
 ): Promise<WebhookHandlerResult> {
   const invoice = event.data.object
 
-  console.log('[StripeWebhook] Payment succeeded:', {
+  logger.info('Payment succeeded', {
     invoiceId: invoice.id,
     customerId: invoice.customer,
     amount: invoice.amount_paid,
@@ -271,9 +277,9 @@ async function handlePaymentSucceeded(
       })
 
       if (error) {
-        console.error('[StripeWebhook] Error resolving dunning:', error)
+        logger.error('Error resolving dunning', error)
       } else {
-        console.log('[StripeWebhook] Dunning resolved:', dunningEvent.id)
+        logger.info('Dunning resolved', dunningEvent.id)
       }
     }
 
@@ -300,7 +306,7 @@ async function handlePaymentSucceeded(
     return { success: true, message: 'Payment recorded and dunning resolved' }
   } catch (err) {
     const errorMessage = err instanceof Error ? err.message : 'Unknown error'
-    console.error('[StripeWebhook] handlePaymentSucceeded error:', errorMessage)
+    logger.error('handlePaymentSucceeded error', errorMessage)
     return { success: false, message: errorMessage }
   }
 }
@@ -315,7 +321,7 @@ async function handleSubscriptionUpdated(
 ): Promise<WebhookHandlerResult> {
   const subscription = event.data.object
 
-  console.log('[StripeWebhook] Subscription updated:', {
+  logger.info('Subscription updated', {
     subscriptionId: subscription.id,
     status: subscription.status,
     customerId: subscription.customer,
@@ -337,15 +343,15 @@ async function handleSubscriptionUpdated(
       .eq('stripe_subscription_id', subscription.id)
 
     if (error) {
-      console.error('[StripeWebhook] Error updating subscription:', error)
+      logger.error('Error updating subscription', error)
       return { success: false, message: error.message }
     }
 
-    console.log('[StripeWebhook] Subscription updated successfully')
+    logger.info('Subscription updated successfully')
     return { success: true, message: 'Subscription updated' }
   } catch (err) {
     const errorMessage = err instanceof Error ? err.message : 'Unknown error'
-    console.error('[StripeWebhook] handleSubscriptionUpdated error:', errorMessage)
+    logger.error('handleSubscriptionUpdated error', errorMessage)
     return { success: false, message: errorMessage }
   }
 }
@@ -359,7 +365,7 @@ async function handleSubscriptionDeleted(
 ): Promise<WebhookHandlerResult> {
   const subscription = event.data.object
 
-  console.log('[StripeWebhook] Subscription deleted:', {
+  logger.info('Subscription deleted', {
     subscriptionId: subscription.id,
     customerId: subscription.customer,
   })
@@ -378,15 +384,15 @@ async function handleSubscriptionDeleted(
       .eq('stripe_subscription_id', subscription.id)
 
     if (error) {
-      console.error('[StripeWebhook] Error canceling subscription:', error)
+      logger.error('Error canceling subscription', error)
       return { success: false, message: error.message }
     }
 
-    console.log('[StripeWebhook] Subscription canceled successfully')
+    logger.info('Subscription canceled successfully')
     return { success: true, message: 'Subscription canceled' }
   } catch (err) {
     const errorMessage = err instanceof Error ? err.message : 'Unknown error'
-    console.error('[StripeWebhook] handleSubscriptionDeleted error:', errorMessage)
+    logger.error('handleSubscriptionDeleted error', errorMessage)
     return { success: false, message: errorMessage }
   }
 }
