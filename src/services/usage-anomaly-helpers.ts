@@ -6,6 +6,7 @@
  */
 
 import type { SupabaseClient } from '@supabase/supabase-js'
+import type { Anomaly } from './usage-anomaly-types'
 import { analyticsLogger } from '@/utils/logger'
 
 export async function detectUsageAnomalies(

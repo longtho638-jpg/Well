@@ -280,11 +280,12 @@ describe('RaaS Workflow E2E', () => {
 
     it('should fetch usage from Gateway', async () => {
       // Arrange - seed data
+      const token1 = await authClient.generateToken(testOrg.id).then(r => r.token)
       await mockGateway.reportUsage({
         orgId: testOrg.id,
         period: new Date().toISOString().slice(0, 7),
         metrics: { api_calls: { totalUsage: 5000 } },
-      }, `Bearer ${authClient.generateToken(testOrg.id).token}`)
+      }, `Bearer ${token1}`)
 
       // Act
       const usage = await gatewayClient.fetchUsage(testOrg.id, new Date().toISOString().slice(0, 7))
@@ -301,23 +302,26 @@ describe('RaaS Workflow E2E', () => {
   describe('Test 3: KV Storage & Rate Limiting', () => {
     it('should aggregate usage in KV storage', async () => {
       // Arrange & Act - multiple reports
+      const token1 = await authClient.generateToken(testOrg.id).then(r => r.token)
       await mockGateway.reportUsage({
         orgId: testOrg.id,
         period: new Date().toISOString().slice(0, 7),
         metrics: { api_calls: { totalUsage: 100 } },
-      }, `Bearer ${authClient.generateToken(testOrg.id).token}`)
+      }, `Bearer ${token1}`)
 
+      const token2 = await authClient.generateToken(testOrg.id).then(r => r.token)
       await mockGateway.reportUsage({
         orgId: testOrg.id,
         period: new Date().toISOString().slice(0, 7),
         metrics: { api_calls: { totalUsage: 200 } },
-      }, `Bearer ${authClient.generateToken(testOrg.id).token}`)
+      }, `Bearer ${token2}`)
 
+      const token3 = await authClient.generateToken(testOrg.id).then(r => r.token)
       await mockGateway.reportUsage({
         orgId: testOrg.id,
         period: new Date().toISOString().slice(0, 7),
         metrics: { tokens: { totalUsage: 5000 } },
-      }, `Bearer ${authClient.generateToken(testOrg.id).token}`)
+      }, `Bearer ${token3}`)
 
       // Assert
       const usage = await mockGateway.fetchUsage(testOrg.id, new Date().toISOString().slice(0, 7))
@@ -330,7 +334,7 @@ describe('RaaS Workflow E2E', () => {
 
     it('should enforce rate limiting', async () => {
       // Arrange
-      const token = authClient.generateToken(testOrg.id).token
+      const token = await authClient.generateToken(testOrg.id).then(r => r.token)
       const promises = Array.from({ length: 15 }, () =>
         mockGateway.reportUsage({
           orgId: testOrg.id,
@@ -412,11 +416,12 @@ describe('RaaS Workflow E2E', () => {
       const quantity = 2000
 
       // Act - Report usage
+      const token5 = await authClient.generateToken(testOrg.id).then(r => r.token)
       await mockGateway.reportUsage({
         orgId: testOrg.id,
         period: new Date().toISOString().slice(0, 7),
         metrics: { [metricType]: { totalUsage: quantity } },
-      }, `Bearer ${authClient.generateToken(testOrg.id).token}`)
+      }, `Bearer ${token5}`)
 
       // Fetch from "dashboard" (Gateway)
       const dashboardData = await mockGateway.fetchUsage(
@@ -439,21 +444,21 @@ describe('RaaS Workflow E2E', () => {
   // Test 6: License State Scenarios
   // ============================================
   describe('Test 6: License State Scenarios', () => {
-    it('should generate JWT for active license', () => {
+    it('should generate JWT for active license', async () => {
       // Arrange - Active license (default)
       expect(testLicense.status).toBe('active')
 
       // Act
-      const result = authClient.generateToken(testOrg.id, testLicense.id)
+      const result = await authClient.generateToken(testOrg.id, testLicense.id)
 
       // Assert
       expect(result.token).toBeDefined()
       expect(result.expiresAt).toBeGreaterThan(Date.now())
     })
 
-    it('should include license_id in JWT payload', () => {
+    it('should include license_id in JWT payload', async () => {
       // Act
-      const result = authClient.generateToken(testOrg.id, testLicense.id)
+      const result = await authClient.generateToken(testOrg.id, testLicense.id)
 
       // Verify payload
       const payload = JSON.parse(atob(result.token.split('.')[1]))

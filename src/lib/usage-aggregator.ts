@@ -10,7 +10,7 @@
  *
  *   const aggregator = new UsageAggregator(supabase, orgId);
  *   aggregator.subscribe((update) => {
- *     console.log('Real-time usage update:', update);
+ *     analyticsLogger.debug('Real-time usage update:', update);
  *   });
  *
  *   const summary = await aggregator.getRealTimeSummary();
@@ -29,6 +29,7 @@
  */
 
 import type { SupabaseClient, RealtimeChannel } from '@supabase/supabase-js'
+import { analyticsLogger } from '@/utils/logger'
 
 // Stripe Billing Aggregation Types
 export interface AggregationKey {
@@ -203,7 +204,7 @@ export class UsageAggregator {
       )
       .subscribe()
 
-    console.warn(`[UsageAggregator] Realtime subscription started for org ${this.orgId}`)
+    analyticsLogger.warn(`[UsageAggregator] Realtime subscription started for org ${this.orgId}`)
   }
 
   /**
@@ -213,7 +214,7 @@ export class UsageAggregator {
     if (this.channel) {
       this.supabase.removeChannel(this.channel)
       this.channel = null
-      console.warn(`[UsageAggregator] Realtime subscription stopped for org ${this.orgId}`)
+      analyticsLogger.warn(`[UsageAggregator] Realtime subscription stopped for org ${this.orgId}`)
     }
   }
 
@@ -225,7 +226,7 @@ export class UsageAggregator {
       try {
         callback(update)
       } catch (error) {
-        console.error('[UsageAggregator] Subscriber error:', error)
+        analyticsLogger.error('[UsageAggregator] Subscriber error:', error)
       }
     })
   }
@@ -274,7 +275,7 @@ export class UsageAggregator {
       .lt('recorded_at', end)
 
     if (error) {
-      console.error('[UsageAggregator] Fetch error:', error)
+      analyticsLogger.error('[UsageAggregator] Fetch error:', error)
       throw error
     }
 
@@ -323,7 +324,7 @@ export class UsageAggregator {
       .order('recorded_at', { ascending: true })
 
     if (error) {
-      console.error('[UsageAggregator] Trend fetch error:', error)
+      analyticsLogger.error('[UsageAggregator] Trend fetch error:', error)
       throw error
     }
 
@@ -362,7 +363,7 @@ export class UsageAggregator {
       .gte('recorded_at', start)
 
     if (error) {
-      console.error('[UsageAggregator] Top users fetch error:', error)
+      analyticsLogger.error('[UsageAggregator] Top users fetch error:', error)
       throw error
     }
 
@@ -409,7 +410,7 @@ export class UsageAggregator {
 
     const { start: periodStart, end: periodEnd } = getPeriodBoundaries(period, date)
 
-    console.warn('[UsageAggregator] Starting billing aggregation:', {
+    analyticsLogger.warn('[UsageAggregator] Starting billing aggregation:', {
       period,
       periodStart,
       periodEnd,
@@ -440,7 +441,7 @@ export class UsageAggregator {
     }
 
     if (!events || events.length === 0) {
-      console.warn('[UsageAggregator] No events to aggregate')
+      analyticsLogger.warn('[UsageAggregator] No events to aggregate')
       return {
         eventsProcessed: 0,
         aggregationsCreated: 0,
@@ -458,7 +459,7 @@ export class UsageAggregator {
       grouped.set(key, existing)
     }
 
-    console.warn('[UsageAggregator] Grouped events:', {
+    analyticsLogger.warn('[UsageAggregator] Grouped events:', {
       totalEvents: events.length,
       groups: grouped.size,
     })
@@ -479,7 +480,7 @@ export class UsageAggregator {
       const aggregationKey = generateAggregationKey(lid, feat, periodStart, periodEnd)
 
       if (dryRun) {
-        console.warn('[UsageAggregator] Dry run - would create aggregation:', {
+        analyticsLogger.warn('[UsageAggregator] Dry run - would create aggregation:', {
           aggregationKey,
           licenseId: lid,
           feature: feat,
@@ -502,7 +503,7 @@ export class UsageAggregator {
 
       if (existing) {
         // Already aggregated - skip or update if quantity changed
-        console.warn('[UsageAggregator] Aggregation exists:', {
+        analyticsLogger.warn('[UsageAggregator] Aggregation exists:', {
           aggregationKey,
           existingQuantity: existing.total_quantity,
           newQuantity: totalQuantity,
@@ -536,7 +537,7 @@ export class UsageAggregator {
         .single()
 
       if (insertError) {
-        console.error('[UsageAggregator] Failed to create aggregation:', insertError)
+        analyticsLogger.error('[UsageAggregator] Failed to create aggregation:', insertError)
         continue
       }
 
@@ -546,7 +547,7 @@ export class UsageAggregator {
 
     result.eventsProcessed = events.length
 
-    console.warn('[UsageAggregator] Aggregation complete:', {
+    analyticsLogger.warn('[UsageAggregator] Aggregation complete:', {
       eventsProcessed: result.eventsProcessed,
       aggregationsCreated: result.aggregationsCreated,
       duplicatesSkipped: result.duplicatesSkipped,
@@ -586,11 +587,11 @@ export class UsageAggregator {
     }
 
     if (!aggregations || aggregations.length === 0) {
-      console.log('[UsageAggregator] No aggregations to sync')
+      analyticsLogger.debug('[UsageAggregator] No aggregations to sync')
       return { success: true, recordsSynced: 0, recordsFailed: 0, errors: [] }
     }
 
-    console.log('[UsageAggregator] Syncing to Stripe:', {
+    analyticsLogger.info('[UsageAggregator] Syncing to Stripe:', {
       subscriptionItemId,
       aggregationsCount: aggregations.length,
       dryRun,
@@ -605,7 +606,7 @@ export class UsageAggregator {
 
     for (const agg of aggregations) {
       if (dryRun) {
-        console.log('[UsageAggregator] Dry run - would sync:', {
+        analyticsLogger.info('[UsageAggregator] Dry run - would sync:', {
           aggregationId: agg.id,
           feature: agg.feature,
           quantity: agg.total_quantity,
@@ -633,7 +634,7 @@ export class UsageAggregator {
       })
 
       if (stripeError) {
-        console.error('[UsageAggregator] Stripe sync failed:', stripeError)
+        analyticsLogger.error('[UsageAggregator] Stripe sync failed:', stripeError)
         result.recordsFailed++
         result.errors.push({
           aggregationId: agg.id,
@@ -655,7 +656,7 @@ export class UsageAggregator {
       result.recordsSynced++
     }
 
-    console.log('[UsageAggregator] Stripe sync complete:', {
+    analyticsLogger.info('[UsageAggregator] Stripe sync complete:', {
       recordsSynced: result.recordsSynced,
       recordsFailed: result.recordsFailed,
     })
@@ -730,7 +731,7 @@ export class UsageAggregator {
     }
 
     const deletedCount = data?.length || 0
-    console.log('[UsageAggregator] Cleanup complete:', { deletedCount, olderThanDays })
+    analyticsLogger.info('[UsageAggregator] Cleanup complete:', { deletedCount, olderThanDays })
     return deletedCount
   }
 

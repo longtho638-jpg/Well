@@ -314,16 +314,16 @@ describe('RaasAlertRulesEngine', () => {
                 },
             ];
 
-            const mockSelect = {
-                select: vi.fn().mockReturnValue({
-                    eq: vi.fn().mockReturnValue({
-                        order: vi.fn().mockResolvedValue({ data: mockRules, error: null }),
-                    }),
-                }),
+            // Mock needs to handle: .select().eq().eq().order()
+            // The eq method needs to return itself for the second eq call, then handle order
+            const mockChain = {
+                select: vi.fn().mockReturnThis(),
+                eq: vi.fn().mockReturnThis(),
+                order: vi.fn().mockResolvedValue({ data: mockRules, error: null }),
             };
 
             const { supabase } = await import('@/lib/supabase');
-            vi.mocked(supabase.from).mockReturnValue(mockSelect as any);
+            vi.mocked(supabase.from).mockReturnValue(mockChain as any);
 
             const rules = await engine.getAlertRules(mockOrgId);
 

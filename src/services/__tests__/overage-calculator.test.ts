@@ -3,12 +3,14 @@
  */
 
 import { describe, it, expect } from 'vitest'
-import {
+import { overageCalculator } from '../overage-calculator'
+
+const {
   calculateOverageUnits,
   calculateOverageCost,
   calculatePercentageUsed,
   generateOverageIdempotencyKey,
-} from '../overage-calculator'
+} = overageCalculator
 
 describe('Overage Calculator', () => {
   describe('calculateOverageUnits', () => {

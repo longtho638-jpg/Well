@@ -15,7 +15,8 @@
  * - Access logging
  */
 
-import type { UserRole, LicenseTier, PermissionKey, AuditLogEntry } from './rbac-engine';
+import type { PermissionKey, AuditLogEntry } from './rbac-engine';
+import { analyticsLogger } from '@/utils/logger';
 
 /**
  * Audit event types
@@ -415,7 +416,7 @@ export class AuditLogService {
     cutoffDate.setDate(cutoffDate.getDate() - policy.retention_days);
 
     if (!policy.auto_delete) {
-      console.log(`[Audit] Policy ${policy.name}: Legal hold - no deletion`);
+      analyticsLogger.info(`[Audit] Policy ${policy.name}: Legal hold - no deletion`);
       return 0;
     }
 

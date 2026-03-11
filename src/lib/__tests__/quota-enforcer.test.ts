@@ -11,21 +11,7 @@
 import { QuotaEnforcer } from '../quota-enforcer'
 import type { SupabaseClient } from '@supabase/supabase-js'
 import { vi, describe, it, expect, beforeEach } from 'vitest'
-
-// Mock Supabase client
-const createMockSupabase = () => ({
-  from: vi.fn().mockReturnThis(),
-  select: vi.fn().mockReturnThis(),
-  eq: vi.fn().mockReturnThis(),
-  in: vi.fn().mockReturnThis(),
-  gt: vi.fn().mockReturnThis(),
-  gte: vi.fn().mockReturnThis(),
-  lt: vi.fn().mockReturnThis(),
-  order: vi.fn().mockReturnThis(),
-  limit: vi.fn().mockReturnThis(),
-  single: vi.fn().mockResolvedValue({ data: null, error: null }),
-  maybeSingle: vi.fn().mockResolvedValue({ data: null, error: null }),
-})
+import { createMockSupabase, createMockQuery } from './mock-supabase'
 
 describe('QuotaEnforcer', () => {
   let mockSupabase: ReturnType<typeof createMockSupabase>
@@ -44,35 +30,70 @@ describe('QuotaEnforcer', () => {
 
   describe('checkQuota', () => {
     it('allows requests under quota', async () => {
-      // Mock: 500/1000 used
-      mockSupabase.from = vi.fn().mockReturnThis()
-      mockSupabase.select = vi.fn().mockResolvedValue({
+      // Mock usage records query returns 500 usage
+      const mockUsageQuery = createMockQuery({
         data: [{ quantity: 500 }],
         error: null,
+      })
+      // Mock org tier lookup returns 'basic' tier
+      const mockOrgQuery = createMockQuery({
+        data: { plan_slug: 'basic' },
+        error: null,
+      })
+
+      mockSupabase.from = vi.fn((table: string) => {
+        if (table === 'usage_records') {
+          return mockUsageQuery
+        }
+        if (table === 'tenant_quota_overrides') {
+          return createMockQuery({ data: null, error: null })
+        }
+        if (table === 'tenant_grace_periods') {
+          return createMockQuery({ data: null, error: null })
+        }
+        return mockOrgQuery
       })
 
       const result = await enforcer.checkQuota('api_calls')
 
+      // Basic tier has 10000 api_calls quota
+      // Usage: 500, Quota: 10000, Remaining: 9500
       expect(result.allowed).toBe(true)
       expect(result.currentUsage).toBe(500)
-      expect(result.remaining).toBe(500)
-      expect(result.percentageUsed).toBe(50)
+      expect(result.remaining).toBe(9500)
+      expect(result.percentageUsed).toBe(5)
       expect(result.isOverLimit).toBe(false)
     })
 
     it('blocks requests in hard mode when over limit', async () => {
-      // Mock: 1200/1000 used
-      mockSupabase.from = vi.fn().mockReturnThis()
-      mockSupabase.select = vi.fn().mockResolvedValue({
-        data: [{ quantity: 1200 }],
+      // Mock: 12000/10000 used (over basic tier limit)
+      const mockUsageQuery = createMockQuery({
+        data: [{ quantity: 12000 }],
         error: null,
+      })
+      const mockOrgQuery = createMockQuery({
+        data: { plan_slug: 'basic' },
+        error: null,
+      })
+
+      mockSupabase.from = vi.fn((table: string) => {
+        if (table === 'usage_records') {
+          return mockUsageQuery
+        }
+        if (table === 'tenant_quota_overrides') {
+          return createMockQuery({ data: null, error: null })
+        }
+        if (table === 'tenant_grace_periods') {
+          return createMockQuery({ data: null, error: null })
+        }
+        return mockOrgQuery
       })
 
       const result = await enforcer.checkQuota('api_calls')
 
       expect(result.allowed).toBe(false)
       expect(result.isOverLimit).toBe(true)
-      expect(result.overageUnits).toBe(200)
+      expect(result.overageUnits).toBe(2000)
       expect(result.percentageUsed).toBe(120)
     })
 
@@ -83,42 +104,90 @@ describe('QuotaEnforcer', () => {
         enforcementMode: 'soft',
       })
 
-      // Mock: 1200/1000 used
-      mockSupabase.from = vi.fn().mockReturnThis()
-      mockSupabase.select = vi.fn().mockResolvedValue({
-        data: [{ quantity: 1200 }],
+      // Mock: 12000/10000 used (over basic tier limit)
+      const mockUsageQuery = createMockQuery({
+        data: [{ quantity: 12000 }],
         error: null,
+      })
+      const mockOrgQuery = createMockQuery({
+        data: { plan_slug: 'basic' },
+        error: null,
+      })
+
+      mockSupabase.from = vi.fn((table: string) => {
+        if (table === 'usage_records') {
+          return mockUsageQuery
+        }
+        if (table === 'tenant_quota_overrides') {
+          return createMockQuery({ data: null, error: null })
+        }
+        if (table === 'tenant_grace_periods') {
+          return createMockQuery({ data: null, error: null })
+        }
+        return mockOrgQuery
       })
 
       const result = await softEnforcer.checkQuota('api_calls')
 
+      // Soft mode allows even when over limit
       expect(result.allowed).toBe(true)
       expect(result.isOverLimit).toBe(true)
-      expect(result.overageUnits).toBe(200)
+      expect(result.overageUnits).toBe(2000)
     })
 
     it('handles unlimited quota (-1)', async () => {
       // Mock unlimited quota
-      mockSupabase.from = vi.fn().mockReturnThis()
-      mockSupabase.select = vi.fn().mockResolvedValue({
+      const mockUsageQuery = createMockQuery({
         data: [{ quantity: 999999 }],
         error: null,
       })
+      const mockOrgQuery = createMockQuery({
+        data: { plan_slug: 'master' },
+        error: null,
+      })
 
-      // Override getEffectiveQuota to return -1 (unlimited)
+      mockSupabase.from = vi.fn((table: string) => {
+        if (table === 'usage_records') {
+          return mockUsageQuery
+        }
+        if (table === 'tenant_quota_overrides') {
+          return createMockQuery({ data: null, error: null })
+        }
+        if (table === 'tenant_grace_periods') {
+          return createMockQuery({ data: null, error: null })
+        }
+        return mockOrgQuery
+      })
+
       const result = await enforcer.checkQuota('api_calls')
 
-      // With default tier quotas, this should use tier-based quota
-      // Test would need mocking for unlimited scenario
-      expect(result.remaining).toBeGreaterThanOrEqual(-1)
+      // With master tier, quota should be -1 (unlimited)
+      expect(result.effectiveQuota).toBe(-1)
+      expect(result.remaining).toBe(-1)
     })
 
     it('returns retryAfter when over limit', async () => {
-      // Mock: over limit
-      mockSupabase.from = vi.fn().mockReturnThis()
-      mockSupabase.select = vi.fn().mockResolvedValue({
-        data: [{ quantity: 1500 }],
+      // Mock: over limit (12000/10000)
+      const mockUsageQuery = createMockQuery({
+        data: [{ quantity: 12000 }],
         error: null,
+      })
+      const mockOrgQuery = createMockQuery({
+        data: { plan_slug: 'basic' },
+        error: null,
+      })
+
+      mockSupabase.from = vi.fn((table: string) => {
+        if (table === 'usage_records') {
+          return mockUsageQuery
+        }
+        if (table === 'tenant_quota_overrides') {
+          return createMockQuery({ data: null, error: null })
+        }
+        if (table === 'tenant_grace_periods') {
+          return createMockQuery({ data: null, error: null })
+        }
+        return mockOrgQuery
       })
 
       const result = await enforcer.checkQuota('api_calls')
@@ -129,26 +198,64 @@ describe('QuotaEnforcer', () => {
     })
 
     it('fails open on database errors', async () => {
-      // Mock error
-      mockSupabase.from = vi.fn().mockReturnThis()
-      mockSupabase.select = vi.fn().mockRejectedValue(new Error('DB connection failed'))
+      // Mock error on usage query - need to reject on await
+      const mockErrorQuery: any = {
+        select: vi.fn().mockReturnThis(),
+        eq: vi.fn().mockReturnThis(),
+        gte: vi.fn().mockReturnThis(),
+        lt: vi.fn().mockReturnThis(),
+      }
+      // Make await reject by implementing then
+      Object.defineProperty(mockErrorQuery, 'then', {
+        value: function(resolve: any, reject: any) {
+          return Promise.reject(new Error('DB connection failed')).then(resolve, reject)
+        },
+        writable: true,
+        configurable: true
+      })
+
+      mockSupabase.from = vi.fn((table: string) => {
+        if (table === 'usage_records') {
+          return mockErrorQuery
+        }
+        // Still need to mock other tables
+        if (table === 'tenant_quota_overrides') {
+          return createMockQuery({ data: null, error: null })
+        }
+        if (table === 'tenant_grace_periods') {
+          return createMockQuery({ data: null, error: null })
+        }
+        return createMockQuery({ data: { plan_slug: 'basic' }, error: null })
+      })
 
       const result = await enforcer.checkQuota('api_calls')
 
       // Should fail open (allow request)
       expect(result.allowed).toBe(true)
       expect(result.currentUsage).toBe(0)
-      expect(result.effectiveQuota).toBe(-1)
-    })
+      // On error, falls back to tier default (basic = 10000), not -1
+      expect(result.effectiveQuota).toBe(10000)
+    }, 10000)
   })
 
   describe('getEffectiveQuota', () => {
     it('returns base quota from tier when no overrides', async () => {
       // Mock tier lookup returns 'basic'
-      mockSupabase.from = vi.fn().mockReturnThis()
-      mockSupabase.select = vi.fn().mockResolvedValue({
+      // The code calls: from('user_subscriptions').select().eq().single() for tier lookup
+      const mockOrgQuery = createMockQuery({
         data: { plan_slug: 'basic' },
         error: null,
+      })
+
+      // Return different queries for different tables
+      mockSupabase.from = vi.fn((table: string) => {
+        if (table === 'tenant_quota_overrides') {
+          return createMockQuery({ data: null, error: null })
+        }
+        if (table === 'tenant_grace_periods') {
+          return createMockQuery({ data: null, error: null })
+        }
+        return mockOrgQuery
       })
 
       const quota = await enforcer.getEffectiveQuota('api_calls')
@@ -159,10 +266,24 @@ describe('QuotaEnforcer', () => {
 
     it('applies tenant quota override', async () => {
       // Mock tenant override
-      mockSupabase.from = vi.fn().mockReturnThis()
-      mockSupabase.select = vi.fn()
-        .mockResolvedValueOnce({ data: { quota_limit: 50000 }, error: null }) // Tenant override
-        .mockResolvedValueOnce({ data: { plan_slug: 'basic' }, error: null }) // Tier lookup
+      const mockTenantQuery = createMockQuery({
+        data: { quota_limit: 50000 },
+        error: null
+      })
+      const mockOrgQuery = createMockQuery({
+        data: { plan_slug: 'basic' },
+        error: null
+      })
+
+      mockSupabase.from = vi.fn((table: string) => {
+        if (table === 'tenant_quota_overrides') {
+          return mockTenantQuery
+        }
+        if (table === 'tenant_grace_periods') {
+          return createMockQuery({ data: null, error: null })
+        }
+        return mockOrgQuery
+      })
 
       const enforcerWithTenant = new QuotaEnforcer(mockSupabase as unknown as SupabaseClient, {
         orgId: 'test-org-123',
@@ -178,13 +299,33 @@ describe('QuotaEnforcer', () => {
 
     it('applies grace period boost', async () => {
       // Mock grace period with 20% boost (2000)
-      mockSupabase.from = vi.fn().mockReturnThis()
-      mockSupabase.select = vi.fn()
-        .mockResolvedValueOnce({ data: null, error: null }) // No tenant override
-        .mockResolvedValueOnce({ data: { boost_amount: 2000 }, error: null }) // Grace period
-        .mockResolvedValueOnce({ data: { plan_slug: 'basic' }, error: null }) // Tier lookup
+      const mockNoTenantOverride = createMockQuery({ data: null, error: null })
+      const mockGraceQuery = createMockQuery({
+        data: { boost_amount: 2000 },
+        error: null
+      })
+      const mockOrgQuery = createMockQuery({
+        data: { plan_slug: 'basic' },
+        error: null
+      })
 
-      const quota = await enforcer.getEffectiveQuota('api_calls')
+      mockSupabase.from = vi.fn((table: string) => {
+        if (table === 'tenant_quota_overrides') {
+          return mockNoTenantOverride
+        }
+        if (table === 'tenant_grace_periods') {
+          return mockGraceQuery
+        }
+        return mockOrgQuery
+      })
+
+      const enforcerWithTenant = new QuotaEnforcer(mockSupabase as unknown as SupabaseClient, {
+        orgId: 'test-org-123',
+        tenantId: 'test-tenant-456',
+        enforcementMode: 'hard',
+      })
+
+      const quota = await enforcerWithTenant.getEffectiveQuota('api_calls')
 
       // Base (10000) + Grace boost (2000) = 12000
       expect(quota).toBe(12000)

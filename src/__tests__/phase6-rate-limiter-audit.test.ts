@@ -58,7 +58,8 @@ describe('Phase 6: Cloudflare Rate Limiter', () => {
 
       expect(result.allowed).toBe(true);
       expect(result.remaining).toBeGreaterThanOrEqual(0);
-      expect(result.limit).toBe(30); // basic tier: 30 req/min
+      // Returns the most restrictive limit (per-second: 1, not per-minute: 30)
+      expect(result.limit).toBe(1); // basic tier: 1 req/second (most restrictive)
     });
 
     it('should deny requests over limit', async () => {
@@ -69,12 +70,14 @@ describe('Phase 6: Cloudflare Rate Limiter', () => {
       const result1 = await limiter.checkRateLimit('cust_test', 'basic');
       expect(result1.allowed).toBe(true);
 
-      // Increment usage
+      // Increment usage twice to exceed the 1 req/sec limit
+      await limiter.incrementUsage('cust_test', 'basic');
       await limiter.incrementUsage('cust_test', 'basic');
 
-      // Second request should show reduced remaining
+      // Second request should be denied (over limit)
       const result2 = await limiter.checkRateLimit('cust_test', 'basic');
-      expect(result2.remaining).toBeLessThan(result1.remaining);
+      expect(result2.allowed).toBe(false);
+      expect(result2.remaining).toBe(0);
     });
 
     it('should have higher limits for premium tier', async () => {

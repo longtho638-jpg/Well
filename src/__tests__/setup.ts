@@ -17,12 +17,36 @@ vi.mock('framer-motion', async () => {
   };
 });
 
-// Mock i18next
+// Mock i18next with basic translations
 vi.mock('react-i18next', () => ({
   useTranslation: () => ({
-    t: (key: string) => key,
+    t: (key: string, params?: any) => {
+      // Basic translation map for common keys
+      const translations: Record<string, string> = {
+        'quotaTracker.reset_at': 'Làm mới vào:',
+        'quotaTracker.extension_usage': 'Đã dùng',
+        'quotaTracker.extension_limit': 'Giới hạn',
+        'quotaTracker.warning': 'Cảnh báo',
+        'quotaTracker.near_limit_warning': 'Cảnh báo',
+        'quotaTracker.over_limit': 'Vượt giới hạn',
+        'extension.approved': 'ĐÃ DUYỆT',
+        'extension.pending': 'CHỜ DUYỆT',
+        'extension.denied': 'TỪ CHỐI',
+        'extension.none': 'CHƯA CẬP NHẬT',
+        'extension.viewing': 'đang được xem xét',
+        'extension.not_supported': 'không hỗ trợ extension',
+      }
+      // Handle parameterized translations
+      if (key === 'quotaTracker.over_limit' && params?.count) {
+        return `Vượt giới hạn: ${params.count.toLocaleString()}`
+      }
+      if (key === 'quotaTracker.near_limit_warning' && params?.percentage) {
+        return `Cảnh báo: ${params.percentage}%`
+      }
+      return translations[key] || key
+    },
     i18n: {
-      language: 'en',
+      language: 'vi',
       changeLanguage: async () => {},
     },
   }),

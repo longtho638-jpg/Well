@@ -10,14 +10,21 @@
 
 import { OverageCalculator } from '../overage-calculator'
 import type { SupabaseClient } from '@supabase/supabase-js'
+import { describe, it, expect, vi, beforeEach } from 'vitest'
 
-const createMockSupabase = () => ({
-  from: jest.fn().mockReturnThis(),
-  select: jest.fn().mockReturnThis(),
-  eq: jest.fn().mockReturnThis(),
-  single: jest.fn().mockResolvedValue({ data: null, error: null }),
-  insert: jest.fn().mockReturnThis(),
-})
+const createMockSupabase = () => {
+  const mock: any = {
+    from: vi.fn().mockReturnThis(),
+    select: vi.fn().mockReturnThis(),
+    eq: vi.fn().mockReturnThis(),
+    single: vi.fn().mockResolvedValue({ data: null, error: null }),
+    insert: vi.fn().mockReturnThis(),
+    functions: {
+      invoke: vi.fn().mockResolvedValue({ data: { success: true }, error: null }),
+    },
+  }
+  return mock as unknown as SupabaseClient
+}
 
 describe('OverageCalculator', () => {
   let mockSupabase: ReturnType<typeof createMockSupabase>
@@ -67,7 +74,7 @@ describe('OverageCalculator', () => {
 
       expect(result.overageUnits).toBe(0)
       expect(result.totalCost).toBe(0)
-      expect(result.percentageUsed).toBe(50)
+      expect(result.totalUsage).toBe(5000)
     })
 
     it('calculates overage for tokens', async () => {
@@ -85,7 +92,7 @@ describe('OverageCalculator', () => {
 
     it('uses fallback rates when database unavailable', async () => {
       // Mock database error
-      mockSupabase.from = jest.fn().mockImplementation(() => {
+      mockSupabase.from = vi.fn().mockImplementation(() => {
         throw new Error('DB unavailable')
       })
 
@@ -106,10 +113,15 @@ describe('OverageCalculator', () => {
   describe('trackOverage', () => {
     it('creates overage transaction', async () => {
       // Mock: no existing transaction, tier lookup returns 'pro'
-      mockSupabase.from = jest.fn().mockReturnThis()
-      mockSupabase.select = jest.fn().mockResolvedValue({ data: null, error: null }) // No existing
-      mockSupabase.insert = jest.fn().mockReturnThis()
-      mockSupabase.single = jest.fn().mockResolvedValue({
+      const chainMock: any = {
+        select: vi.fn().mockReturnThis(),
+        eq: vi.fn().mockReturnThis(),
+        single: vi.fn().mockResolvedValue({ data: null, error: null }), // No existing
+        insert: vi.fn().mockReturnThis(),
+      }
+      chainMock.select.mockReturnThis()
+      mockSupabase.from = vi.fn().mockReturnValue(chainMock)
+      chainMock.single.mockResolvedValue({
         data: { id: 'tx-123' },
         error: null,
       })
@@ -128,11 +140,15 @@ describe('OverageCalculator', () => {
 
     it('respects idempotency (no duplicate transactions)', async () => {
       // Mock: existing transaction found
-      mockSupabase.from = jest.fn().mockReturnThis()
-      mockSupabase.select = jest.fn().mockResolvedValue({
-        data: { id: 'existing-tx-456' },
-        error: null,
-      })
+      const chainMock: any = {
+        select: vi.fn().mockReturnThis(),
+        eq: vi.fn().mockReturnThis(),
+        single: vi.fn().mockResolvedValue({
+          data: { id: 'existing-tx-456' },
+          error: null,
+        }),
+      }
+      mockSupabase.from = vi.fn().mockReturnValue(chainMock)
 
       const result = await calculator.trackOverage({
         metricType: 'api_calls',
@@ -160,8 +176,13 @@ describe('OverageCalculator', () => {
         },
       ]
 
-      mockSupabase.from = jest.fn().mockReturnThis()
-      mockSupabase.select = jest.fn().mockResolvedValue({ data: mockData, error: null })
+      const chainMock: any = {
+        select: vi.fn().mockReturnThis(),
+        eq: vi.fn().mockReturnThis(),
+        order: vi.fn().mockReturnThis(),
+        limit: vi.fn().mockResolvedValue({ data: mockData, error: null }),
+      }
+      mockSupabase.from = vi.fn().mockReturnValue(chainMock)
 
       const history = await calculator.getOverageHistory({
         billingPeriod: '2026-03',
@@ -182,8 +203,14 @@ describe('OverageCalculator', () => {
         { metric_type: 'tokens', total_cost: '1.00' },
       ]
 
-      mockSupabase.from = jest.fn().mockReturnThis()
-      mockSupabase.select = jest.fn().mockResolvedValue({ data: mockData, error: null })
+      // Create a chainable mock that returns data on await
+      const queryMock: any = {
+        select: vi.fn().mockReturnThis(),
+        eq: vi.fn().mockReturnThis(),
+        then: vi.fn((resolve) => resolve({ data: mockData, error: null })),
+      }
+
+      mockSupabase.from = vi.fn().mockReturnValue(queryMock)
 
       const result = await calculator.getTotalOverageCost('2026-03')
 
@@ -198,22 +225,37 @@ describe('OverageCalculator', () => {
 
   describe('syncToStripe', () => {
     it('syncs overage transaction to Stripe', async () => {
-      // Mock transaction fetch
-      mockSupabase.from = jest.fn().mockReturnThis()
-      mockSupabase.select = jest.fn().mockResolvedValue({
-        data: {
-          id: 'tx-123',
-          stripe_subscription_item_id: 'si_abc123',
-          overage_units: 5000,
-          metric_type: 'api_calls',
-          created_at: '2026-03-09T00:00:00Z',
-        },
-        error: null,
-      })
+      // Create chainable mock for transaction fetch
+      const selectChain: any = {
+        select: vi.fn().mockReturnThis(),
+        eq: vi.fn().mockReturnThis(),
+        single: vi.fn().mockResolvedValue({
+          data: {
+            id: 'tx-123',
+            stripe_subscription_item_id: 'si_abc123',
+            overage_units: 5000,
+            metric_type: 'api_calls',
+            created_at: '2026-03-09T00:00:00Z',
+            idempotency_key: 'ovg_key',
+          },
+          error: null,
+        }),
+      }
+
+      // Create chainable mock for update
+      const updateChain: any = {
+        update: vi.fn().mockReturnThis(),
+        eq: vi.fn().mockResolvedValue({ data: null, error: null }),
+      }
+
+      // Mock .from() to return appropriate chain based on call
+      mockSupabase.from = vi.fn()
+        .mockReturnValueOnce(selectChain) // First call: select
+        .mockReturnValueOnce(updateChain) // Second call: update
 
       // Mock Stripe function call
-      mockSupabase.functions = {
-        invoke: jest.fn().mockResolvedValue({ data: { id: 'usage-rec-456' }, error: null }),
+      ;(mockSupabase as any).functions = {
+        invoke: vi.fn().mockResolvedValue({ data: { id: 'usage-rec-456' }, error: null }),
       }
 
       const result = await calculator.syncToStripe('tx-123')

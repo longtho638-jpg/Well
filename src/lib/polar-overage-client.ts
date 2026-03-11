@@ -15,6 +15,7 @@
  */
 
 import { supabase } from '@/lib/supabase'
+import { analyticsLogger } from '@/utils/logger'
 
 export interface PolarOveragePayload {
   organization_id: string
@@ -106,17 +107,17 @@ export async function reportOverageToPolar(
     )
 
     if (webhookError) {
-      console.error('[reportOverageToPolar] Webhook error:', webhookError)
+      analyticsLogger.error('[reportOverageToPolar] Webhook error:', webhookError)
       return { success: false, error: webhookError.message }
     }
 
-    console.log('[reportOverageToPolar] Overage reported to Polar:', transactionId)
+    analyticsLogger.info('[reportOverageToPolar] Overage reported to Polar:', transactionId)
     return {
       success: true,
       polarTransactionId: data?.polar_transaction_id,
     }
   } catch (err) {
-    console.error('[reportOverageToPolar] Error:', err)
+    analyticsLogger.error('[reportOverageToPolar] Error:', err)
     return {
       success: false,
       error: err instanceof Error ? err.message : 'Unknown error',
@@ -139,14 +140,14 @@ export async function syncOverageTransaction(
       .single()
 
     if (transaction?.stripe_sync_status === 'synced' && transaction.polar_synced_at) {
-      console.log('[syncOverageTransaction] Already synced:', transactionId)
+      analyticsLogger.info('[syncOverageTransaction] Already synced:', transactionId)
       return { success: true }
     }
 
     // Trigger sync
     return await reportOverageToPolar(transactionId)
   } catch (err) {
-    console.error('[syncOverageTransaction] Error:', err)
+    analyticsLogger.error('[syncOverageTransaction] Error:', err)
     return {
       success: false,
       error: err instanceof Error ? err.message : 'Unknown error',
@@ -186,7 +187,7 @@ export async function getPolarCustomerId(
 
     return userSub?.metadata?.polar_customer_id || null
   } catch (err) {
-    console.error('[getPolarCustomerId] Error:', err)
+    analyticsLogger.error('[getPolarCustomerId] Error:', err)
     return null
   }
 }
@@ -227,7 +228,7 @@ export async function batchSyncOverages(
 
     return { synced, failed, errors }
   } catch (err) {
-    console.error('[batchSyncOverages] Error:', err)
+    analyticsLogger.error('[batchSyncOverages] Error:', err)
     return { synced: 0, failed: 0, errors: ['Batch sync failed: ' + err] }
   }
 }

@@ -10,13 +10,12 @@
  * @see {@link https://raas.agencyos.network/docs/rbac}
  */
 
-import type { LicenseValidationResult } from './raas-gate';
+import { analyticsLogger } from '@/utils/logger';
 
 /**
  * JWT issuer domain - configurable via environment variable
  * Default: raas.agencyos.network
  */
-const JWT_ISSUER_DOMAIN = process.env.RAAS_JWT_ISSUER || 'raas.agencyos.network';
 
 /**
  * JWT Claims interface for RaaS authentication
@@ -413,7 +412,7 @@ export function parseJwt(token: string): RaasJwtClaims {
       customer_id: payload.customer_id,
       scope: payload.scope || [],
     };
-  } catch (error) {
+  } catch (_error) {
     throw new Error('Invalid JWT payload');
   }
 }
@@ -439,8 +438,8 @@ export interface AuditLogEntry {
  */
 export function logAccessDecision(entry: AuditLogEntry): void {
   // In production, this sends to audit log service
-  // For now, console log (replace with proper audit service)
-  console.log('[RBAC Audit]', JSON.stringify(entry));
+  // Using analyticsLogger for production logging
+  analyticsLogger.info('[RBAC Audit]', JSON.stringify(entry));
 }
 
 /**

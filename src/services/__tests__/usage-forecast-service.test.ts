@@ -9,7 +9,8 @@
  */
 
 import { describe, it, expect, beforeEach, vi } from 'vitest'
-import { UsageForecastService } from '@/services/usage-forecast-service'
+import { UsageForecastService } from '../usage-forecast-service'
+import { calculateLinearRegression, calculateConfidence } from '../usage-forecast-helpers'
 import type { SupabaseClient } from '@supabase/supabase-js'
 
 const createMockSupabase = () => {
@@ -198,9 +199,7 @@ describe('UsageForecastService', () => {
         { date: '2026-03-05', value: 500 },
       ]
 
-      // Access private method via any cast for testing
-      const service = forecastService as any
-      const result = service.calculateLinearRegression(data)
+      const result = calculateLinearRegression(data)
 
       expect(result.slope).toBeCloseTo(100, 0)
       expect(result.rSquared).toBeCloseTo(1, 2) // Perfect linear relationship
@@ -215,8 +214,7 @@ describe('UsageForecastService', () => {
         { date: '2026-03-05', value: 150 },
       ]
 
-      const service = forecastService as any
-      const result = service.calculateLinearRegression(data)
+      const result = calculateLinearRegression(data)
 
       expect(result.rSquared).toBeLessThan(0.5) // Low correlation
     })
@@ -240,12 +238,11 @@ describe('UsageForecastService', () => {
         { date: '2026-03-05', value: 100 },
       ]
 
-      const service = forecastService as any
-      const consistentRegression = service.calculateLinearRegression(consistentData)
-      const erraticRegression = service.calculateLinearRegression(erraticData)
+      const consistentRegression = calculateLinearRegression(consistentData)
+      const erraticRegression = calculateLinearRegression(erraticData)
 
-      const consistentConfidence = service.calculateConfidence(consistentData, consistentRegression)
-      const erraticConfidence = service.calculateConfidence(erraticData, erraticRegression)
+      const consistentConfidence = calculateConfidence(consistentData, consistentRegression)
+      const erraticConfidence = calculateConfidence(erraticData, erraticRegression)
 
       // Consistent data should have higher confidence than erratic data
       expect(consistentConfidence).toBeGreaterThan(erraticConfidence)
@@ -262,9 +259,8 @@ describe('UsageForecastService', () => {
         { date: '2026-03-05', value: 100 },
       ]
 
-      const service = forecastService as any
-      const regression = service.calculateLinearRegression(data)
-      const confidence = service.calculateConfidence(data, regression)
+      const regression = calculateLinearRegression(data)
+      const confidence = calculateConfidence(data, regression)
 
       expect(confidence).toBeLessThan(0.5)
     })

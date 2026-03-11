@@ -19,6 +19,7 @@
  */
 
 import { supabase } from '@/lib/supabase';
+import { analyticsLogger } from '@/utils/logger';
 
 /**
  * Grace period status
@@ -89,7 +90,7 @@ export async function activateGracePeriod(
     const { data: { user } } = await supabase.auth.getUser();
 
     if (!user) {
-      console.error('[activateGracePeriod] No authenticated user');
+      analyticsLogger.error('[activateGracePeriod] No authenticated user');
       return null;
     }
 
@@ -113,7 +114,7 @@ export async function activateGracePeriod(
       .single();
 
     if (error) {
-      console.error('[activateGracePeriod] Error:', error);
+      analyticsLogger.error('[activateGracePeriod] Error:', error);
       return null;
     }
 
@@ -135,7 +136,7 @@ export async function activateGracePeriod(
       limitedQuotas: customQuotas || DEFAULT_GRACE_PERIOD_CONFIG.limitedQuotas,
     };
   } catch (err) {
-    console.error('[activateGracePeriod] Error:', err);
+    analyticsLogger.error('[activateGracePeriod] Error:', err);
     return null;
   }
 }
@@ -189,7 +190,7 @@ export async function checkGracePeriodStatus(
       limitedQuotas: data.limited_quotas,
     };
   } catch (err) {
-    console.error('[checkGracePeriodStatus] Error:', err);
+    analyticsLogger.error('[checkGracePeriodStatus] Error:', err);
     return null;
   }
 }
@@ -205,7 +206,7 @@ export async function expireGracePeriod(tenantId: string): Promise<boolean> {
     const { data: { user } } = await supabase.auth.getUser();
 
     if (!user) {
-      console.error('[expireGracePeriod] No authenticated user');
+      analyticsLogger.error('[expireGracePeriod] No authenticated user');
       return false;
     }
 
@@ -224,7 +225,7 @@ export async function expireGracePeriod(tenantId: string): Promise<boolean> {
       .eq('status', 'active');
 
     if (error) {
-      console.error('[expireGracePeriod] Error:', error);
+      analyticsLogger.error('[expireGracePeriod] Error:', error);
       return false;
     }
 
@@ -235,7 +236,7 @@ export async function expireGracePeriod(tenantId: string): Promise<boolean> {
 
     return true;
   } catch (err) {
-    console.error('[expireGracePeriod] Error:', err);
+    analyticsLogger.error('[expireGracePeriod] Error:', err);
     return false;
   }
 }
@@ -295,7 +296,7 @@ async function logGracePeriodAudit(
         created_at: new Date().toISOString(),
       });
   } catch (err) {
-    console.error('[logGracePeriodAudit] Error:', err);
+    analyticsLogger.error('[logGracePeriodAudit] Error:', err);
     // Non-critical, don't throw
   }
 }
@@ -315,7 +316,7 @@ export async function extendGracePeriod(
     const { data: { user } } = await supabase.auth.getUser();
 
     if (!user) {
-      console.error('[extendGracePeriod] No authenticated user');
+      analyticsLogger.error('[extendGracePeriod] No authenticated user');
       return null;
     }
 
@@ -323,7 +324,7 @@ export async function extendGracePeriod(
     const currentStatus = await checkGracePeriodStatus(tenantId);
 
     if (!currentStatus) {
-      console.error('[extendGracePeriod] No active grace period');
+      analyticsLogger.error('[extendGracePeriod] No active grace period');
       return null;
     }
 
@@ -345,7 +346,7 @@ export async function extendGracePeriod(
       .single();
 
     if (error) {
-      console.error('[extendGracePeriod] Error:', error);
+      analyticsLogger.error('[extendGracePeriod] Error:', error);
       return null;
     }
 
@@ -369,7 +370,7 @@ export async function extendGracePeriod(
       limitedQuotas: data.limited_quotas,
     };
   } catch (err) {
-    console.error('[extendGracePeriod] Error:', err);
+    analyticsLogger.error('[extendGracePeriod] Error:', err);
     return null;
   }
 }

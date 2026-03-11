@@ -19,9 +19,6 @@
 
 import { supabase } from '@/lib/supabase'
 
-// Json type for database compatibility
-type Json = string | number | boolean | null | { [key: string]: Json | undefined } | Json[]
-
 export interface DunningEvent {
   id: string
   orgId: string
@@ -114,13 +111,13 @@ export async function handlePaymentFailed(
     })
 
     if (error) {
-      console.error('[DunningService] Error logging dunning event:', error)
+      analyticsLogger.error('[DunningService] Error logging dunning event:', error)
       return { success: false, error: error.message }
     }
 
     return { success: true, dunningId: data }
   } catch (err) {
-    console.error('[DunningService] Error:', err)
+    analyticsLogger.error('[DunningService] Error:', err)
     return {
       success: false,
       error: err instanceof Error ? err.message : 'Unknown error',
@@ -180,7 +177,7 @@ export async function getDunningConfig(orgId: string): Promise<DunningConfig> {
       updatedAt: data.updated_at,
     }
   } catch (err) {
-    console.error('[DunningService] Error fetching config:', err)
+    analyticsLogger.error('[DunningService] Error fetching config:', err)
     // Return default config on error
     return {
       id: '',
@@ -217,7 +214,7 @@ export async function getPendingDunningEmails(): Promise<
     const { data, error } = await supabase.rpc('get_pending_dunning_emails')
 
     if (error) {
-      console.error('[DunningService] Error getting pending emails:', error)
+      analyticsLogger.error('[DunningService] Error getting pending emails:', error)
       return []
     }
 
@@ -231,7 +228,7 @@ export async function getPendingDunningEmails(): Promise<
       daysSinceFailure: item.days_since_failure,
     }))
   } catch (err) {
-    console.error('[DunningService] Error:', err)
+    analyticsLogger.error('[DunningService] Error:', err)
     return []
   }
 }
@@ -299,7 +296,7 @@ export async function resolveDunning(
     })
 
     if (error) {
-      console.error('[DunningService] Error resolving dunning:', error)
+      analyticsLogger.error('[DunningService] Error resolving dunning:', error)
       return { success: false, dunningId, error: error.message }
     }
 
@@ -344,7 +341,7 @@ export async function processDunningStages(): Promise<{
     const { data, error } = await supabase.rpc('process_dunning_stages')
 
     if (error) {
-      console.error('[DunningService] Error processing stages:', error)
+      analyticsLogger.error('[DunningService] Error processing stages:', error)
       return { success: false, updatedCount: 0, error: error.message }
     }
 
@@ -376,7 +373,7 @@ export async function getActiveDunningEvents(orgId?: string): Promise<DunningEve
     const { data, error } = await query
 
     if (error) {
-      console.error('[DunningService] Error fetching active events:', error)
+      analyticsLogger.error('[DunningService] Error fetching active events:', error)
       return []
     }
 
@@ -408,7 +405,7 @@ export async function getActiveDunningEvents(orgId?: string): Promise<DunningEve
       updatedAt: item.updated_at,
     }))
   } catch (err) {
-    console.error('[DunningService] Error:', err)
+    analyticsLogger.error('[DunningService] Error:', err)
     return []
   }
 }
@@ -459,7 +456,7 @@ export async function getDunningStatistics(): Promise<{
       cancellationCount: data.cancellation_count || 0,
     }
   } catch (err) {
-    console.error('[DunningService] Error fetching statistics:', err)
+    analyticsLogger.error('[DunningService] Error fetching statistics:', err)
     return {
       activeDunningCount: 0,
       resolvedCount: 0,
@@ -537,7 +534,7 @@ export async function getFailedWebhooksForRetry(): Promise<
       .limit(50)
 
     if (error) {
-      console.error('[DunningService] Error getting failed webhooks:', error)
+      analyticsLogger.error('[DunningService] Error getting failed webhooks:', error)
       return []
     }
 
@@ -550,7 +547,7 @@ export async function getFailedWebhooksForRetry(): Promise<
       retryCount: item.retry_count,
     }))
   } catch (err) {
-    console.error('[DunningService] Error:', err)
+    analyticsLogger.error('[DunningService] Error:', err)
     return []
   }
 }

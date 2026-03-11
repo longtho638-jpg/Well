@@ -4,6 +4,7 @@
  * Syncs overage transactions to Stripe Usage Records at period boundaries.
  */
 
+import type { StripeUsageSyncResult } from './stripe-usage-sync-types'
 import {
   getPendingOveragesForSync,
   groupBySubscriptionItem,
