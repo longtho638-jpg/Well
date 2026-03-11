@@ -1,15 +1,15 @@
 # Cloudflare Pages configuration for WellNexus
-# For Pages, use wrangler.toml only for vars and secrets
-# Build and deploy handled by GitHub Actions + Vercel
+# Direct deploy with wrangler pages deploy
 
 name = "wellnexus"
+pages_build_output_dir = "dist"
 compatibility_date = "2024-01-01"
 
 [vars]
 NODE_ENV = "production"
 VITE_APP_NAME = "WellNexus"
 
-# Secrets (configure via Cloudflare dashboard or wrangler secret):
+# Secrets (configure via Cloudflare dashboard):
 # - SUPABASE_URL
 # - SUPABASE_ANON_KEY
 # - SENTRY_DSN
