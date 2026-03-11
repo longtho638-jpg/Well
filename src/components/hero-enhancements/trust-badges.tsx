@@ -41,6 +41,5 @@ export const TRUST_BADGES = [
     { name: 'VNPay' },
     { name: 'Momo' },
     { name: 'Google Cloud' },
-    { name: 'Firebase' },
     { name: 'Stripe' },
 ];

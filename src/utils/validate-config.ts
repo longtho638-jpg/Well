@@ -20,18 +20,10 @@ export function validateConfig(
   env: Record<string, string | boolean | undefined> = import.meta.env as Record<string, string | boolean | undefined>,
   exitOnLicenseError: boolean = false
 ): ConfigState {
+  // WellNexus uses Supabase - Firebase not required
   const requiredEnvVars = [
-    'VITE_FIREBASE_API_KEY',
-    'VITE_FIREBASE_AUTH_DOMAIN',
-    'VITE_FIREBASE_PROJECT_ID',
-    'VITE_FIREBASE_STORAGE_BUCKET',
-    'VITE_FIREBASE_MESSAGING_SENDER_ID',
-    'VITE_FIREBASE_APP_ID',
     'VITE_SUPABASE_URL',
     'VITE_SUPABASE_ANON_KEY',
-    'VITE_API_URL',
-    // Add VITE_GEMINI_API_KEY if strictly required for app startup,
-    // otherwise it might be better handled lazily when the feature is accessed.
   ];
 
   const missingKeys: string[] = [];

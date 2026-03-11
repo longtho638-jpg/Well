@@ -13,12 +13,6 @@ describe('validateConfig', () => {
 
   it('should return valid state when all keys are present', () => {
     const mockEnv = {
-      VITE_FIREBASE_API_KEY: 'test-key',
-      VITE_FIREBASE_AUTH_DOMAIN: 'test-domain',
-      VITE_FIREBASE_PROJECT_ID: 'test-id',
-      VITE_FIREBASE_STORAGE_BUCKET: 'test-bucket',
-      VITE_FIREBASE_MESSAGING_SENDER_ID: 'test-sender',
-      VITE_FIREBASE_APP_ID: 'test-app-id',
       VITE_SUPABASE_URL: 'test-url',
       VITE_SUPABASE_ANON_KEY: 'test-anon-key',
       VITE_API_URL: 'http://localhost:3000',
@@ -32,13 +26,13 @@ describe('validateConfig', () => {
 
   it('should detect missing keys', () => {
     const mockEnv = {
-      VITE_FIREBASE_API_KEY: 'test-key',
+      VITE_SUPABASE_URL: 'test-url',
       PROD: false,
     };
 
     const result = validateConfig(mockEnv);
     expect(result.isValid).toBe(false);
-    expect(result.missingKeys).toContain('VITE_FIREBASE_AUTH_DOMAIN');
+    expect(result.missingKeys).toContain('VITE_SUPABASE_ANON_KEY');
   });
 
   it('should return invalid state in production if keys are missing', () => {
