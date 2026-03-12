@@ -15,8 +15,6 @@ import type {
   ApiCallOptions,
   FeatureUsageOptions,
   ResourceConsumptionOptions,
-  DetailedUsageEvent,
-  EventMetadata,
 } from './usage-instrumentation-types'
 
 export * from './usage-instrumentation-types'

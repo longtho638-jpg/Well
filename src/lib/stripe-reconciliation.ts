@@ -18,8 +18,6 @@ import type {
  * Reconciliation configuration
  */
 export interface ReconciliationConfig {
-  /** Stripe secret key */
-  stripeSecretKey?: string
   /** Enable debug logging */
   debug?: boolean
 }
@@ -29,6 +27,7 @@ export interface ReconciliationConfig {
  */
 export class StripeReconciliation {
   private supabase: SupabaseClient
+   
   private config: ReconciliationConfig
 
   constructor(supabase: SupabaseClient, config: ReconciliationConfig = {}) {

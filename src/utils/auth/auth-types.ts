@@ -18,12 +18,14 @@ export interface AuthTokens {
 }
 
 export interface JWTPayload {
-    sub: string;
-    exp: number;
-    iat: number;
-    email?: string;
-    role?: string;
-    [key: string]: unknown;
+    sub: string;           // Subject (user ID)
+    exp: number;           // Expiration time (seconds since epoch)
+    iat: number;           // Issued at (seconds since epoch)
+    email?: string;        // User email (optional)
+    role?: string;         // User role (optional)
+    iss?: string;          // Issuer (optional)
+    aud?: string;          // Audience (optional)
+    jti?: string;          // JWT ID (optional, for refresh tokens)
 }
 
 export type AuthStatus = 'loading' | 'authenticated' | 'unauthenticated';

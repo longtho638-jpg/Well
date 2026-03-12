@@ -79,6 +79,7 @@ export class UsageAlertEngine {
   private userId: string
   private licenseId?: string
   private orgId?: string
+   
   private tier: string
   private webhookUrl: string
   private lastAlertCache: Map<string, number> = new Map()
@@ -95,12 +96,8 @@ export class UsageAlertEngine {
   /**
    * Check current usage against thresholds and emit alerts if needed
    */
-  async checkAndEmitAlerts(usageStatus?: UsageStatus): Promise<AlertDeliveryResult[]> {
+  async checkAndEmitAlerts(_usageStatus?: UsageStatus): Promise<AlertDeliveryResult[]> {
     const results: AlertDeliveryResult[] = []
-
-    // Get current usage status if not provided
-    const status = usageStatus || await this.getCurrentUsageStatus()
-    const limits = await this.getLimits()
 
     // Check each metric type
     const metrics: (keyof UsageStatus)[] = ['api_calls', 'tokens', 'compute', 'model_inferences', 'agent_executions']

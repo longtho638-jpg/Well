@@ -18,6 +18,7 @@ import type {
 export class UsageInstrumentation {
   private supabase: SupabaseClient
   protected config: InstrumentationConfig
+   
   private usageMeter: UsageMeter
   private eventBuffer: DetailedUsageEvent[] = []
   private flushTimer: ReturnType<typeof setTimeout> | null = null
