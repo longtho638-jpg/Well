@@ -67,6 +67,12 @@ export function useAuth() {
     }
 
     // 3. Check active session on mount
+    // Safety timeout: ensure initialized is set even if fetchUserFromDB hangs
+    const initTimeout = setTimeout(() => {
+      authLogger.warn('Auth init timeout — forcing initialized=true after 5s');
+      setInitialized(true);
+    }, 5000);
+
     supabase.auth.getSession().then(async ({ data: { session } }) => {
       if (session?.user) {
         // Fetch full user data from database using store action
@@ -77,6 +83,7 @@ export function useAuth() {
     }).catch((err) => {
       authLogger.error('Session initialization failed', err);
     }).finally(() => {
+      clearTimeout(initTimeout);
       setInitialized(true);
     });
 
