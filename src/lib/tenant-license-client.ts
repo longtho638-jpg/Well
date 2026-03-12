@@ -18,6 +18,7 @@
  */
 
 import { supabase } from '@/lib/supabase'
+import { analyticsLogger } from '@/utils/logger'
 import type { LicenseTier } from '@/lib/rbac-engine'
 
 /**
@@ -138,7 +139,7 @@ export async function getTenantLicenseStatus(
       .single()
 
     if (error || !data) {
-      console.error('[getTenantLicenseStatus] Error:', error)
+      analyticsLogger.error('[getTenantLicenseStatus] Error:', error)
       return null
     }
 
@@ -188,7 +189,7 @@ export async function getTenantLicenseStatus(
       lastCheckedAt: new Date().toISOString(),
     }
   } catch (err) {
-    console.error('[getTenantLicenseStatus] Error:', err)
+    analyticsLogger.error('[getTenantLicenseStatus] Error:', err)
     return null
   }
 }
@@ -343,7 +344,7 @@ export async function getUsageSummary(
       overages,
     }
   } catch (err) {
-    console.error('[getUsageSummary] Error:', err)
+    analyticsLogger.error('[getUsageSummary] Error:', err)
     return null
   }
 }
@@ -403,7 +404,7 @@ export async function getFeatureFlags(
 
     return data.flags || null
   } catch (err) {
-    console.error('[getFeatureFlags] Error:', err)
+    analyticsLogger.error('[getFeatureFlags] Error:', err)
     return null
   }
 }

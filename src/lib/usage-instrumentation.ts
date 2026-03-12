@@ -8,6 +8,7 @@
 import type { SupabaseClient } from '@supabase/supabase-js'
 import { UsageInstrumentation } from './usage-instrumentation-core'
 import { UsageTracker } from './usage-instrumentation-tracker'
+import { analyticsLogger } from '@/utils/logger'
 import type {
   InstrumentationConfig,
   ModelInferenceOptions,
@@ -88,7 +89,7 @@ export class UsageInstrumentationService extends UsageInstrumentation {
           duration_ms: duration,
           status_code: response.status,
           response_size_bytes: parseInt(response.headers.get('content-length') || '0'),
-        }).catch(console.error)
+        }).catch(err => analyticsLogger.error('Track API call error:', err))
 
         return response
       } catch (error) {
@@ -100,7 +101,7 @@ export class UsageInstrumentationService extends UsageInstrumentation {
           duration_ms: duration,
           status_code: 0,
           error_message: error instanceof Error ? error.message : 'Unknown error',
-        }).catch(console.error)
+        }).catch(err => analyticsLogger.error('Track API call error:', err))
 
         throw error
       }
@@ -108,11 +109,11 @@ export class UsageInstrumentationService extends UsageInstrumentation {
 
     globalThis.fetch = instrumentedFetch
 
-    console.warn('[UsageInstrumentation] Fetch interceptor installed')
+    analyticsLogger.warn('[UsageInstrumentation] Fetch interceptor installed')
 
     return () => {
       globalThis.fetch = originalFetch
-      console.warn('[UsageInstrumentation] Fetch interceptor removed')
+      analyticsLogger.warn('[UsageInstrumentation] Fetch interceptor removed')
     }
   }
 }

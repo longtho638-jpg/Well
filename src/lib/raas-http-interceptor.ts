@@ -102,9 +102,9 @@ export function disableRAASInterceptor(): void {
     try {
         restoreApiClientHeaders();
         interceptorEnabled = false;
-        console.warn('[RaaS Interceptor] Disabled');
+        analyticsLogger.warn('[RaaS Interceptor] Disabled');
     } catch (error) {
-        console.error('[RaaS Interceptor] Failed to disable:', error);
+        analyticsLogger.error('[RaaS Interceptor] Failed to disable:', error);
     }
 }
 

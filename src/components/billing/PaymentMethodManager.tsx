@@ -23,6 +23,7 @@
 import React, { useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { createClient } from '@supabase/supabase-js'
+import { analyticsLogger } from '@/utils/logger'
 
 export interface PaymentMethod {
   id: string
@@ -106,7 +107,7 @@ export const PaymentMethodManager: React.FC<PaymentMethodManagerProps> = ({
         })
       }
     } catch (error) {
-      console.error('[PaymentMethodManager] Fetch error:', error)
+      analyticsLogger.error('[PaymentMethodManager] Fetch error:', error)
     } finally {
       setLoading(false)
     }
@@ -122,7 +123,7 @@ export const PaymentMethodManager: React.FC<PaymentMethodManagerProps> = ({
 
       setInvoices(data?.invoices || [])
     } catch (error) {
-      console.error('[PaymentMethodManager] Invoice fetch error:', error)
+      analyticsLogger.error('[PaymentMethodManager] Invoice fetch error:', error)
     }
   }
 
@@ -151,7 +152,7 @@ export const PaymentMethodManager: React.FC<PaymentMethodManagerProps> = ({
       // Show success message
       alert('✅ Thêm thẻ thành công!')
     } catch (error) {
-      console.error('[PaymentMethodManager] Add error:', error)
+      analyticsLogger.error('[PaymentMethodManager] Add error:', error)
       alert('❌ Không thể thêm thẻ. Vui lòng thử lại.')
     } finally {
       setUpdating(false)
@@ -176,7 +177,7 @@ export const PaymentMethodManager: React.FC<PaymentMethodManagerProps> = ({
       setPaymentMethod(null)
       onPaymentMethodUpdated?.({ id: '', type: 'card', isDefault: false })
     } catch (error) {
-      console.error('[PaymentMethodManager] Remove error:', error)
+      analyticsLogger.error('[PaymentMethodManager] Remove error:', error)
       alert('❌ Không thể xóa thẻ.')
     } finally {
       setUpdating(false)

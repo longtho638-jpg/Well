@@ -2,6 +2,9 @@
  * Plan Status Scheduler - Sync subscriptions to AgencyOS
  */
 
+// Declare Deno global for type checking
+declare const Deno: { env: { get: (key: string) => string | undefined } } | undefined
+
 import { analyticsLogger } from '@/utils/logger'
 import { GatewayAuthClient } from '@/lib/gateway-auth-client'
 import type { Subscription, SyncResult, PolarWebhookData, StripeSubscriptionData } from './plan-status-types'
@@ -15,7 +18,10 @@ import {
 } from './plan-status-helpers'
 
 function getEnvVar(key: string): string | undefined {
-  if (typeof Deno !== 'undefined') return Deno.env.get(key)
+  // eslint-disable-next-line no-undef
+  const hasDeno = typeof Deno !== 'undefined'
+  // eslint-disable-next-line no-undef
+  if (hasDeno) return (Deno as any).env.get(key)
   if (typeof process !== 'undefined' && process.env) return process.env[key]
   return undefined
 }
@@ -176,7 +182,8 @@ export class PlanStatusScheduler {
       })
     }
 
-    return this.authClient.getValidToken(orgId).token
+    const result = await this.authClient.getValidToken(orgId)
+    return result.token
   }
 }
 

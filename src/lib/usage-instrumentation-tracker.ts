@@ -7,6 +7,7 @@
 
 import type { SupabaseClient } from '@supabase/supabase-js'
 import { UsageMeter } from './usage-metering'
+import { analyticsLogger } from '@/utils/logger'
 import type {
   ModelInferenceOptions,
   AgentExecutionOptions,
@@ -70,7 +71,7 @@ export class UsageTracker {
       prompt_tokens: options.prompt_tokens,
       completion_tokens: options.completion_tokens,
       agent_type: options.agent_type,
-    }).catch(console.error)
+    }).catch(err => analyticsLogger.error('Track model inference error:', err))
   }
 
   /**
@@ -101,7 +102,7 @@ export class UsageTracker {
     }
 
     this.eventBuffer.push(event)
-    await this.usageMeter.trackAgentExecution(options.agent_type, options.metadata).catch(console.error)
+    await this.usageMeter.trackAgentExecution(options.agent_type, options.metadata).catch(err => analyticsLogger.error('Track agent execution error:', err))
   }
 
   /**
@@ -131,7 +132,7 @@ export class UsageTracker {
     }
 
     this.eventBuffer.push(event)
-    await this.usageMeter.trackApiCall(options.endpoint, options.method).catch(console.error)
+    await this.usageMeter.trackApiCall(options.endpoint, options.method).catch(err => analyticsLogger.error('Track API call error:', err))
   }
 
   /**

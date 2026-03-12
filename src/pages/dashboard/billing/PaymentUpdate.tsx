@@ -7,7 +7,7 @@
 
 import React, { useState, useEffect } from 'react'
 import { AlertCircle, CreditCard, CheckCircle, Loader2 } from 'lucide-react'
-import { useAuth } from '@/hooks/useAuth'
+import { useStore } from '@/store'
 import { supabase } from '@/lib/supabase'
 import { stripeBillingClient } from '@/lib/stripe-billing-client'
 import { Button } from '@/components/ui/Button'
@@ -28,7 +28,7 @@ interface BillingStatus {
 
 export const PaymentUpdatePage: React.FC = () => {
   const { t } = useTranslation()
-  const { user } = useAuth()
+  const { user } = useStore()
   const [loading, setLoading] = useState(true)
   const [updating, setUpdating] = useState(false)
   const [billingStatus, setBillingStatus] = useState<BillingStatus | null>(null)

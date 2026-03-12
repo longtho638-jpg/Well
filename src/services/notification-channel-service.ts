@@ -16,6 +16,7 @@ import { createClient } from '@supabase/supabase-js';
 import type { SupabaseClient } from '@supabase/supabase-js';
 import { emailService } from './email-service';
 import { getTierConfig as _getTierConfig } from './license-service';
+import { analyticsLogger } from '@/utils/logger';
 import type {
   NotificationChannel,
   NotificationPayload,
@@ -82,7 +83,7 @@ export class NotificationChannelService {
         timezone: undefined,
       };
     } catch (error) {
-      console.error('[NotificationChannelService] getUserPreferences error', error);
+      analyticsLogger.error('[NotificationChannelService] getUserPreferences error', error);
       return null;
     }
   }
@@ -253,7 +254,7 @@ export class NotificationChannelService {
 
       // Placeholder: Log SMS intent (replace with actual SMS API call)
       // eslint-disable-next-line no-console
-      console.info('[SMS] Would send to:', phoneNumber, 'Body:', smsBody);
+      // SMS sending logic removed - console statements removed per cleanup
 
       return {
         success: true,
@@ -351,7 +352,7 @@ export class NotificationChannelService {
       if (preferences && this.isUserInQuietHours(preferences)) {
         // Queue for later delivery (implement queue logic as needed)
         // eslint-disable-next-line no-console
-        console.info('[NotificationChannelService] User in quiet hours, queuing notification');
+        // Quiet hours logging removed per cleanup
       }
 
       // Send through each available channel
@@ -397,7 +398,7 @@ export class NotificationChannelService {
 
       return results;
     } catch (error) {
-      console.error('[NotificationChannelService] sendTierBasedNotification error', error);
+      analyticsLogger.error('[NotificationChannelService] sendTierBasedNotification error', error);
       return [{
         success: false,
         channel: 'email',
@@ -431,9 +432,7 @@ export class NotificationChannelService {
       if (retryCount <= maxRetries) {
         const delay = calculateBackoffDelay(retryCount);
         // eslint-disable-next-line no-console
-        console.info(
-          `[NotificationChannelService] Retry ${retryCount}/${maxRetries} for ${channel} after ${delay}ms`
-        );
+        // Retry logging removed per cleanup
         await this.sleep(delay);
       }
     }
@@ -469,10 +468,10 @@ export class NotificationChannelService {
         });
 
       if (error) {
-        console.error('[NotificationChannelService] logNotification error', error);
+        analyticsLogger.error('[NotificationChannelService] logNotification error', error);
       }
     } catch (error) {
-      console.error('[NotificationChannelService] logNotification error', error);
+      analyticsLogger.error('[NotificationChannelService] logNotification error', error);
     }
   }
 

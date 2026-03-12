@@ -23,6 +23,7 @@ import { useTranslation } from 'react-i18next'
 import { useRaaSLicense } from '@/hooks/use-raas-license'
 import { LicenseKeyInput } from '@/components/raas/LicenseKeyInput'
 import { Button } from '@/components/ui/Button'
+import { analyticsLogger } from '@/utils/logger'
 
 interface AgencyOSLicenseGateProps {
   children: React.ReactNode
@@ -127,7 +128,7 @@ export function AgencyOSLicenseGate({
                     setShowOnboarding(false)
                   }}
                   onError={(error) => {
-                    console.error('License validation error:', error)
+                    analyticsLogger.error('License validation error:', error)
                   }}
                   autoFocus
                   showHelp

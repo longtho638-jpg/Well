@@ -17,6 +17,7 @@
 
 import { createClient } from '@supabase/supabase-js'
 import { createHmac } from 'crypto'
+import { analyticsLogger } from '@/utils/logger'
 
 interface UsageBillingPayload {
   orgId: string
@@ -120,7 +121,7 @@ export async function sendUsageToBilling(options: SendUsageOptions): Promise<{
 
     if (!polarResponse.ok) {
       const errorData = await polarResponse.json()
-      console.error('[USAGE-BILLING] Polar.sh error:', errorData)
+      analyticsLogger.error('[USAGE-BILLING] Polar.sh error:', errorData)
       throw new Error(`Polar.sh returned ${polarResponse.status}`)
     }
 
@@ -144,7 +145,7 @@ export async function sendUsageToBilling(options: SendUsageOptions): Promise<{
     }
 
   } catch (error) {
-    console.error('[USAGE-BILLING] Error:', error)
+    analyticsLogger.error('[USAGE-BILLING] Error:', error)
 
     // Log the failure
     try {
@@ -162,7 +163,7 @@ export async function sendUsageToBilling(options: SendUsageOptions): Promise<{
         synced_at: new Date().toISOString(),
       })
     } catch (logError) {
-      console.error('[USAGE-BILLING] Failed to log error:', logError)
+      analyticsLogger.error('[USAGE-BILLING] Failed to log error:', logError)
     }
 
     return {

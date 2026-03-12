@@ -21,11 +21,11 @@ import { QuotaProgressBar } from '@/components/overage/QuotaProgressBar'
 import { OverageCostBreakdown } from '@/components/overage/OverageCostBreakdown'
 import { UsageAnalytics, getQuotaSeverity, getQuotaColor } from '@/lib/usage-analytics'
 import { supabase } from '@/lib/supabase'
-import { useAuth } from '@/hooks/useAuth'
+import { useStore } from '@/store'
 
 export const QuotaTracker: React.FC = () => {
   const { t } = useTranslation()
-  const { user } = useAuth()
+  const { user } = useStore()
   const [refreshKey, setRefreshKey] = useState(0)
 
   // Fetch overage status with 30s polling

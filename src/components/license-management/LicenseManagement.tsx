@@ -6,6 +6,7 @@
 import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { ExtensionStatus, type ExtensionStatusType } from './ExtensionStatus';
+import { analyticsLogger } from '@/utils/logger';
 
 interface ExtensionData {
   permitted: boolean;
@@ -65,7 +66,7 @@ export const LicenseManagement: React.FC = () => {
         setExtensionStatus(data.extensions['algo-trader']);
         setLoading(false);
       } catch (err) {
-        console.error('Failed to fetch extension status:', err);
+        analyticsLogger.error('Failed to fetch extension status:', err);
         setError('Không thể kết nối đến máy chủ');
         setLoading(false);
       }

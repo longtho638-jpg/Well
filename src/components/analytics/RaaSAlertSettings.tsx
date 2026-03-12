@@ -18,6 +18,7 @@ import React, { useState, useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
 import { raasAlertRules, type AlertRuleConfig, type AlertSeverity, type AlertRuleType } from '@/lib/raas-alert-rules'
 import { AlertTriangle, Bell, Settings, Trash2, Edit, Plus, Save, X, Check } from 'lucide-react'
+import { analyticsLogger } from '@/utils/logger'
 
 // ============================================================================
 // TYPES
@@ -130,7 +131,7 @@ export function RaaSAlertSettings({ orgId, onRuleChange }: RaaSAlertSettingsProp
       onRuleChange?.()
       setShowForm(false)
     } catch (err) {
-      console.error('[RaaSAlertSettings] Save error:', err)
+      analyticsLogger.error('[RaaSAlertSettings] Save error:', err)
     } finally {
       setSaving(false)
     }
@@ -146,7 +147,7 @@ export function RaaSAlertSettings({ orgId, onRuleChange }: RaaSAlertSettingsProp
       await loadRules()
       onRuleChange?.()
     } catch (err) {
-      console.error('[RaaSAlertSettings] Delete error:', err)
+      analyticsLogger.error('[RaaSAlertSettings] Delete error:', err)
     }
   }
 

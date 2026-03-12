@@ -19,6 +19,7 @@ import React, { useState, useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
 import { raasAuditExport, type AuditEventType, type ExportFormat } from '@/lib/raas-audit-export'
 import { Download, FileJson, FileSpreadsheet, Search, Filter, Calendar, Eye } from 'lucide-react'
+import { analyticsLogger } from '@/utils/logger'
 
 // ============================================================================
 // TYPES
@@ -97,7 +98,7 @@ export function RaaSAuditLog({ orgId, apiKey, sessionId }: RaaSAuditLogProps) {
       const parsed = JSON.parse(data)
       setEvents(parsed)
     } catch (err) {
-      console.error('[RaaSAuditLog] Parse error:', err)
+      analyticsLogger.error('[RaaSAuditLog] Parse error:', err)
       setEvents([])
     }
 

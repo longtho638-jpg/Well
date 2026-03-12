@@ -24,6 +24,7 @@
 import React, { useEffect, useState, useCallback } from 'react'
 import { createClient } from '@supabase/supabase-js'
 import { motion } from 'framer-motion'
+import { analyticsLogger } from '@/utils/logger'
 
 export type AlertMetricType = 'api_calls' | 'ai_calls' | 'tokens' | 'compute_minutes' | 'storage_gb' | 'emails' | 'model_inferences' | 'agent_executions'
 
@@ -153,7 +154,7 @@ export const RealtimeQuotaTracker: React.FC<RealtimeQuotaTrackerProps> = ({
       setUsageData(newUsageData)
       setLastUpdated(new Date())
     } catch (error) {
-      console.error('[RealtimeQuotaTracker] Fetch error:', error)
+      analyticsLogger.error('[RealtimeQuotaTracker] Fetch error:', error)
     } finally {
       setLoading(false)
     }

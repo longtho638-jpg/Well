@@ -6,6 +6,7 @@
  */
 
 import type { SupabaseClient } from '@supabase/supabase-js'
+import { analyticsLogger } from '@/utils/logger'
 import type {
   StripeUsageRecord,
   LocalAggregationRecord,
@@ -83,7 +84,7 @@ export class StripeReconciliation {
       .lt('period_end', periodEnd)
 
     if (error) {
-      console.error('[StripeReconciliation] Fetch local error:', error)
+      analyticsLogger.error('[StripeReconciliation] Fetch local error:', error)
       return []
     }
 
@@ -108,7 +109,7 @@ export class StripeReconciliation {
     })
 
     if (error) {
-      console.error('[StripeReconciliation] Fetch Stripe error:', error)
+      analyticsLogger.error('[StripeReconciliation] Fetch Stripe error:', error)
       return []
     }
 
@@ -176,7 +177,7 @@ export class StripeReconciliation {
       .eq('license_id', licenseId)
 
     if (error) {
-      console.error('[StripeReconciliation] Status error:', error)
+      analyticsLogger.error('[StripeReconciliation] Status error:', error)
       return { lastSyncedAt: null, pendingSync: 0, totalSynced: 0 }
     }
 

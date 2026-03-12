@@ -7,6 +7,7 @@
 
 import type { SupabaseClient } from '@supabase/supabase-js'
 import { UsageMeter } from './usage-metering'
+import { analyticsLogger } from '@/utils/logger'
 import type {
   DetailedUsageEvent,
   InstrumentationConfig,
@@ -34,7 +35,7 @@ export class UsageInstrumentation {
     })
 
     if (config.debug) {
-      console.warn('[UsageInstrumentation] Initialized:', {
+      analyticsLogger.warn('[UsageInstrumentation] Initialized:', {
         licenseKey: config.licenseKey ? '***' : 'none',
         customerId: config.customerId ? '***' : 'none',
         userId: config.userId,
@@ -57,7 +58,7 @@ export class UsageInstrumentation {
     }
 
     if (this.config.debug) {
-      console.warn('[UsageInstrumentation] Tracking event:', normalizedEvent)
+      analyticsLogger.warn('[UsageInstrumentation] Tracking event:', normalizedEvent)
     }
 
     this.eventBuffer.push(normalizedEvent)
@@ -99,13 +100,13 @@ export class UsageInstrumentation {
         .insert(records)
 
       if (error) {
-        console.error('[UsageInstrumentation] Flush error:', error)
+        analyticsLogger.error('[UsageInstrumentation] Flush error:', error)
         this.eventBuffer.unshift(...events)
         throw error
       }
 
       if (this.config.debug) {
-        console.warn('[UsageInstrumentation] Flushed', records.length, 'events')
+        analyticsLogger.warn('[UsageInstrumentation] Flushed', records.length, 'events')
       }
     } finally {
       this.isFlushing = false
@@ -119,10 +120,10 @@ export class UsageInstrumentation {
     const interval = this.config.flushIntervalMs || 10000
 
     this.flushTimer = setInterval(() => {
-      this.flush().catch(console.error)
+      this.flush().catch(err => analyticsLogger.error('Auto-flush error:', err))
     }, interval)
 
-    console.warn(`[UsageInstrumentation] Auto-flush started (every ${interval}ms)`)
+    analyticsLogger.warn(`[UsageInstrumentation] Auto-flush started (every ${interval}ms)`)
   }
 
   /**
@@ -132,7 +133,7 @@ export class UsageInstrumentation {
     if (this.flushTimer) {
       clearInterval(this.flushTimer)
       this.flushTimer = null
-      console.warn('[UsageInstrumentation] Auto-flush stopped')
+      analyticsLogger.warn('[UsageInstrumentation] Auto-flush stopped')
     }
   }
 
@@ -142,7 +143,7 @@ export class UsageInstrumentation {
   async cleanup(): Promise<void> {
     this.stopAutoFlush()
     await this.flush()
-    console.warn('[UsageInstrumentation] Cleanup complete')
+    analyticsLogger.warn('[UsageInstrumentation] Cleanup complete')
   }
 
   /**
