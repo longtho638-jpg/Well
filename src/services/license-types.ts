@@ -4,11 +4,14 @@
  * Shared types for license service.
  */
 
+export type LicenseTier = 'basic' | 'premium' | 'enterprise' | 'master';
+
 export interface LicenseRecord {
   id: string;
   license_key: string;
   user_id: string;
   status: 'active' | 'expired' | 'revoked' | 'pending';
+  tier?: LicenseTier;
   features: {
     adminDashboard: boolean;
     payosWebhook: boolean;

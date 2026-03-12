@@ -7,7 +7,14 @@
 
 import { createClient } from '@supabase/supabase-js';
 import { validateLicenseFormat, getDaysRemaining } from '@/lib/raas-gate-utils';
-import type { LicenseRecord, LicenseActivationRequest, LicenseValidationResponse } from './license-types';
+import type {
+  LicenseRecord,
+  LicenseActivationRequest,
+  LicenseValidationResponse,
+  LicenseTier,
+} from './license-types';
+import type { TierConfig } from '@/types/raas-license';
+import { TIER_CONFIGS } from '@/types/raas-license';
 
 const supabaseUrl = import.meta.env.VITE_SUPABASE_URL || 'https://placeholder.supabase.co';
 const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY || 'placeholder';
@@ -30,20 +37,31 @@ export function validateLicenseKeyQuick(licenseKey: string): { valid: boolean; e
 }
 
 /**
- * Generate license key from timestamp
- * Format: RAAS-{timestamp}-{hash}
+ * Generate license key with tier-based format
+ * Format: raas_(tier)_(timestamp)_(hex)_(hex)
  */
-export function generateLicenseKey(userId: string, features: string[] = []): string {
+export function generateLicenseKey(userId: string, tier: LicenseTier = 'basic', features: string[] = []): string {
   const timestamp = Math.floor(Date.now() / 1000);
-  const hashInput = `${userId}-${timestamp}-${features.join('-')}`;
+  const hashInput = `${userId}-${tier}-${timestamp}-${features.join('-')}`;
   let hash = 0;
+  let hash2 = 0;
   for (let i = 0; i < hashInput.length; i++) {
     const char = hashInput.charCodeAt(i);
     hash = ((hash << 5) - hash) + char;
     hash = hash & hash;
+    hash2 = ((hash2 << 7) - hash2) + char * (i + 1);
+    hash2 = hash2 & hash2;
   }
-  const hashStr = Math.abs(hash).toString(36).toUpperCase().padStart(6, '0');
-  return `RAAS-${timestamp}-${hashStr}`;
+  const hashStr1 = Math.abs(hash).toString(36).toUpperCase().padStart(6, '0');
+  const hashStr2 = Math.abs(hash2).toString(36).toUpperCase().padStart(6, '0');
+  return `raas_${tier}_${timestamp}_${hashStr1}_${hashStr2}`;
+}
+
+/**
+ * Get tier configuration
+ */
+export function getTierConfig(tier: LicenseTier): TierConfig {
+  return TIER_CONFIGS[tier as keyof typeof TIER_CONFIGS];
 }
 
 /**
@@ -151,7 +169,7 @@ export async function revokeLicense(licenseKey: string, reason: string): Promise
       .update({ status: 'revoked', metadata: { revoked_reason: reason, revoked_at: new Date().toISOString() } })
       .eq('license_key', licenseKey);
     return !error;
-  } catch (error) {
+  } catch {
     // License revocation error
     return false;
   }
@@ -173,8 +191,228 @@ export async function getUserLicense(userId: string): Promise<LicenseRecord | nu
       .single();
     if (error || !data) return null;
     return data;
-  } catch (error) {
+  } catch {
     // Get user license error
     return null;
   }
+}
+
+/**
+ * Suspend license (admin action)
+ */
+export async function suspendLicense(
+  licenseId: string,
+  reason: string,
+  suspendedBy: string
+): Promise<{ success: boolean; error?: string }> {
+  try {
+    const supabase = createLicenseClient();
+    const { error } = await supabase
+      .from('raas_licenses')
+      .update({
+        is_suspended: true,
+        suspended_at: new Date().toISOString(),
+        suspended_reason: reason,
+        suspended_by: suspendedBy,
+      })
+      .eq('id', licenseId);
+
+    if (error) throw error;
+
+    // Log suspension in audit log
+    await supabase.from('raas_license_audit_logs').insert({
+      license_id: licenseId,
+      action: 'updated',
+      metadata: {
+        suspension: {
+          suspended: true,
+          reason,
+          suspended_by: suspendedBy,
+          suspended_at: new Date().toISOString(),
+        },
+      },
+    });
+
+    return { success: true };
+  } catch (error) {
+    return { success: false, error: (error as Error).message };
+  }
+}
+
+/**
+ * Unsuspend license (admin action)
+ */
+export async function unsuspendLicense(licenseId: string): Promise<{ success: boolean; error?: string }> {
+  try {
+    const supabase = createLicenseClient();
+    const { error } = await supabase
+      .from('raas_licenses')
+      .update({
+        is_suspended: false,
+        suspended_at: null,
+        suspended_reason: null,
+        suspended_by: null,
+      })
+      .eq('id', licenseId);
+
+    if (error) throw error;
+
+    // Log unsuspension in audit log
+    await supabase.from('raas_license_audit_logs').insert({
+      license_id: licenseId,
+      action: 'updated',
+      metadata: { suspension: { suspended: false } },
+    });
+
+    return { success: true };
+  } catch (error) {
+    return { success: false, error: (error as Error).message };
+  }
+}
+
+/**
+ * Update license tier
+ */
+export async function updateLicenseTier(
+  licenseId: string,
+  newTier: LicenseTier
+): Promise<{ success: boolean; error?: string }> {
+  try {
+    const supabase = createLicenseClient();
+    const tierConfig = getTierConfig(newTier);
+
+    const { error } = await supabase
+      .from('raas_licenses')
+      .update({
+        tier: newTier,
+        quota_api_calls: tierConfig.quotas.apiCalls,
+        quota_tokens: tierConfig.quotas.tokens,
+        features: tierConfig.features,
+      })
+      .eq('id', licenseId);
+
+    if (error) throw error;
+
+    // Log tier change in audit log
+    await supabase.from('raas_license_audit_logs').insert({
+      license_id: licenseId,
+      action: 'updated',
+      metadata: {
+        tier_change: {
+          from: 'unknown',
+          to: newTier,
+          new_quotas: tierConfig.quotas,
+        },
+      },
+    });
+
+    return { success: true };
+  } catch (error) {
+    return { success: false, error: (error as Error).message };
+  }
+}
+
+/**
+ * Get license usage (quota utilization)
+ */
+export async function getLicenseUsage(licenseId: string): Promise<{
+  success: boolean;
+  usage?: {
+    apiCalls: { used: number; quota: number; percentage: number };
+    tokens: { used: number; quota: number; percentage: number };
+  };
+  error?: string;
+}> {
+  try {
+    const supabase = createLicenseClient();
+    const { data, error } = await supabase
+      .from('raas_licenses')
+      .select('quota_api_calls, quota_tokens, used_api_calls, used_tokens')
+      .eq('id', licenseId)
+      .single();
+
+    if (error) throw error;
+
+    const apiCallsPercentage =
+      data.quota_api_calls > 0
+        ? Math.round((data.used_api_calls / data.quota_api_calls) * 100)
+        : 0;
+    const tokensPercentage =
+      data.quota_tokens > 0
+        ? Math.round((data.used_tokens / data.quota_tokens) * 100)
+        : 0;
+
+    return {
+      success: true,
+      usage: {
+        apiCalls: {
+          used: data.used_api_calls || 0,
+          quota: data.quota_api_calls || 0,
+          percentage: apiCallsPercentage,
+        },
+        tokens: {
+          used: data.used_tokens || 0,
+          quota: data.quota_tokens || 0,
+          percentage: tokensPercentage,
+        },
+      },
+    };
+  } catch (error) {
+    return { success: false, error: (error as Error).message };
+  }
+}
+
+/**
+ * Update license usage (called after API calls)
+ * Note: Requires database function increment_license_usage or direct column update
+ */
+export async function updateLicenseUsage(
+  licenseId: string,
+  apiCallsUsed: number,
+  tokensUsed: number
+): Promise<{ success: boolean; error?: string }> {
+  try {
+    const supabase = createLicenseClient();
+
+    // Get current usage first
+    const { data: current } = await supabase
+      .from('raas_licenses')
+      .select('used_api_calls, used_tokens')
+      .eq('id', licenseId)
+      .single();
+
+    if (!current) {
+      return { success: false, error: 'License not found' };
+    }
+
+    // Increment usage
+    const { error } = await supabase
+      .from('raas_licenses')
+      .update({
+        used_api_calls: (current.used_api_calls || 0) + apiCallsUsed,
+        used_tokens: (current.used_tokens || 0) + tokensUsed,
+      })
+      .eq('id', licenseId);
+
+    if (error) throw error;
+
+    return { success: true };
+  } catch (error) {
+    return { success: false, error: (error as Error).message };
+  }
+}
+
+/**
+ * Parse tier from license key
+ */
+export function parseTierFromLicenseKey(licenseKey: string): LicenseTier | null {
+  // Format: raas_(tier)_(timestamp)_(hex)_(hex)
+  const parts = licenseKey.split('_');
+  if (parts.length >= 2) {
+    const tier = parts[1] as LicenseTier;
+    if (['basic', 'premium', 'enterprise', 'master'].includes(tier)) {
+      return tier;
+    }
+  }
+  return null;
 }

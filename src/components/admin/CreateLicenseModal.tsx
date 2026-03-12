@@ -1,11 +1,13 @@
 /**
  * Create License Modal
- * ROIaaS PHASE 2: Creates license + audit log with admin user ID and IP
+ * ROIaaS PHASE 2.2: Creates license + audit log with tier selector and quota presets
  */
 
 import React, { useState } from 'react';
 import { createClient } from '@supabase/supabase-js';
 import { useStore } from '@/store';
+import type { LicenseTier } from '@/types/raas-license';
+import { TIER_CONFIGS } from '@/types/raas-license';
 
 const supabase = createClient(
   import.meta.env.VITE_SUPABASE_URL,
@@ -22,6 +24,7 @@ export function CreateLicenseModal({ isOpen, onClose, onSuccess }: CreateLicense
   const { user } = useStore();
   const [userId, setUserId] = useState('');
   const [email, setEmail] = useState('');
+  const [tier, setTier] = useState<LicenseTier>('basic');
   const [expiresAt, setExpiresAt] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -72,6 +75,9 @@ export function CreateLicenseModal({ isOpen, onClose, onSuccess }: CreateLicense
       const hashStr = Math.random().toString(36).substring(2, 8).toUpperCase();
       const licenseKey = `RAAS-${timestamp}-${hashStr}`;
 
+      // Get tier config
+      const tierConfig = TIER_CONFIGS[tier];
+
       // Get client IP
       const ipAddress = await getClientIp();
 
@@ -81,13 +87,11 @@ export function CreateLicenseModal({ isOpen, onClose, onSuccess }: CreateLicense
         .insert({
           license_key: licenseKey,
           user_id: finalUserId,
+          tier,
           status: 'active',
-          features: {
-            adminDashboard: true,
-            payosWebhook: true,
-            commissionDistribution: true,
-            policyEngine: true,
-          },
+          features: tierConfig.features,
+          quota: tierConfig.quotas,
+          usage: { apiCalls: 0, tokens: 0 },
           expires_at: expiresAt,
           metadata: { created_via: 'admin_dashboard', created_by_email: user?.email || 'unknown' },
         })
@@ -106,7 +110,8 @@ export function CreateLicenseModal({ isOpen, onClose, onSuccess }: CreateLicense
           created_via: 'admin_dashboard',
           admin_email: user?.email || 'unknown',
           ip_address: ipAddress,
-          features_enabled: ['adminDashboard', 'payosWebhook', 'commissionDistribution', 'policyEngine'],
+          tier,
+          features_enabled: Object.keys(tierConfig.features).filter((k) => tierConfig.features[k as keyof typeof tierConfig.features]),
         },
       });
 
@@ -139,6 +144,37 @@ export function CreateLicenseModal({ isOpen, onClose, onSuccess }: CreateLicense
               placeholder="Nhập email user"
               className="w-full px-3 py-2 bg-gray-800 border border-gray-700 rounded text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-primary"
             />
+          </div>
+
+          <div>
+            <label htmlFor="tier-select" className="block text-sm text-gray-400 mb-1">Gói License</label>
+            <select
+              id="tier-select"
+              value={tier}
+              onChange={(e) => setTier(e.target.value as LicenseTier)}
+              className="w-full px-3 py-2 bg-gray-800 border border-gray-700 rounded text-white focus:outline-none focus:ring-2 focus:ring-primary"
+            >
+              {Object.entries(TIER_CONFIGS).map(([key, config]) => (
+                <option key={key} value={key}>
+                  {key.charAt(0).toUpperCase() + key.slice(1)} - ${config.priceMonthly}/tháng
+                </option>
+              ))}
+            </select>
+          </div>
+
+          {/* Quota Preview */}
+          <div className="p-3 bg-gray-800 border border-gray-700 rounded">
+            <p className="text-sm text-gray-400 mb-2">Giới hạn gói {tier}:</p>
+            <div className="grid grid-cols-2 gap-4 text-sm">
+              <div>
+                <span className="text-gray-500">API Calls:</span>
+                <span className="text-white ml-2">{TIER_CONFIGS[tier].quotas.apiCalls.toLocaleString()}</span>
+              </div>
+              <div>
+                <span className="text-gray-500">Tokens:</span>
+                <span className="text-white ml-2">{TIER_CONFIGS[tier].quotas.tokens.toLocaleString()}</span>
+              </div>
+            </div>
           </div>
 
           <div>

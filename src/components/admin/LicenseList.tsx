@@ -1,19 +1,31 @@
 /**
  * RaaS License List Component
  * Admin dashboard table view for license management
+ * ROIaaS Phase 2.2: Added tier badge, quota progress, actions menu
  */
 
 import React, { useState } from 'react';
 import { useRaasLicenses } from '@/hooks/use-raas-licenses';
 import type { LicenseStatus } from '@/types/raas-license';
 import { STATUS_COLORS } from '@/types/raas-license';
+import { LicenseTierBadge } from '@/components/admin/LicenseTierBadge';
+import { QuotaProgress } from '@/components/admin/QuotaProgress';
+import { LicenseActionsMenu } from '@/components/admin/LicenseActionsMenu';
 
 interface LicenseListProps {
   onRevoke?: () => void;
   onActivate?: (licenseId: string) => void;
 }
 
-export function LicenseList({ onRevoke, onActivate }: LicenseListProps) {
+const STATUS_LABELS: Record<LicenseStatus | 'suspended', string> = {
+  active: 'Hoạt động',
+  expired: 'Hết hạn',
+  revoked: 'Thu hồi',
+  pending: 'Chờ duyệt',
+  suspended: 'Tạm ngưng',
+};
+
+export function LicenseList({ onRevoke, onActivate: _onActivate }: LicenseListProps) {
   const {
     licenses,
     loading,
@@ -21,7 +33,9 @@ export function LicenseList({ onRevoke, onActivate }: LicenseListProps) {
     statusFilter,
     setStatusFilter,
     revokeLicense,
-    activateLicense,
+    suspendLicense,
+    unsuspendLicense,
+    updateTier,
   } = useRaasLicenses();
 
   const [revokingId, setRevokingId] = useState<string | null>(null);
@@ -37,21 +51,8 @@ export function LicenseList({ onRevoke, onActivate }: LicenseListProps) {
     }
   };
 
-  const handleActivate = async (licenseId: string) => {
-    const result = await activateLicense(licenseId);
-    if (result.success) {
-      onActivate?.(licenseId);
-    }
-  };
-
-  const formatStatus = (status: LicenseStatus) => {
-    const labels: Record<LicenseStatus, string> = {
-      active: 'Hoạt động',
-      expired: 'Hết hạn',
-      revoked: 'Thu hồi',
-      pending: 'Chờ duyệt',
-    };
-    return labels[status];
+  const formatStatus = (status: LicenseStatus | 'suspended') => {
+    return STATUS_LABELS[status];
   };
 
   const formatDate = (dateString: string) => {
@@ -84,7 +85,7 @@ export function LicenseList({ onRevoke, onActivate }: LicenseListProps) {
     <div className="space-y-4">
       {/* Status Filter */}
       <div className="flex gap-2 flex-wrap">
-        {(['all', 'active', 'expired', 'revoked', 'pending'] as const).map((status) => (
+        {(['all', 'active', 'expired', 'revoked', 'pending', 'suspended'] as const).map((status) => (
           <button
             key={status}
             onClick={() => setStatusFilter(status)}
@@ -106,8 +107,9 @@ export function LicenseList({ onRevoke, onActivate }: LicenseListProps) {
             <tr>
               <th className="px-4 py-3 text-left text-gray-400">License Key</th>
               <th className="px-4 py-3 text-left text-gray-400">User</th>
+              <th className="px-4 py-3 text-left text-gray-400">Tier</th>
               <th className="px-4 py-3 text-left text-gray-400">Status</th>
-              <th className="px-4 py-3 text-left text-gray-400">Created</th>
+              <th className="px-4 py-3 text-left text-gray-400">Quota Usage</th>
               <th className="px-4 py-3 text-left text-gray-400">Expires</th>
               <th className="px-4 py-3 text-left text-gray-400">Actions</th>
             </tr>
@@ -115,7 +117,7 @@ export function LicenseList({ onRevoke, onActivate }: LicenseListProps) {
           <tbody className="divide-y divide-gray-800">
             {licenses.length === 0 ? (
               <tr>
-                <td colSpan={6} className="px-4 py-8 text-center text-gray-500">
+                <td colSpan={7} className="px-4 py-8 text-center text-gray-500">
                   Không có license nào
                 </td>
               </tr>
@@ -135,37 +137,34 @@ export function LicenseList({ onRevoke, onActivate }: LicenseListProps) {
                     )}
                   </td>
                   <td className="px-4 py-3">
+                    <LicenseTierBadge tier={license.tier || 'basic'} />
+                  </td>
+                  <td className="px-4 py-3">
                     <span
-                      className={`px-2 py-1 rounded text-xs border ${STATUS_COLORS[license.status]}`}
+                      className={`px-2 py-1 rounded text-xs border ${STATUS_COLORS[license.status as LicenseStatus] || STATUS_COLORS.active}`}
                     >
-                      {formatStatus(license.status)}
+                      {formatStatus(license.status as LicenseStatus | 'suspended')}
                     </span>
                   </td>
-                  <td className="px-4 py-3 text-gray-400">
-                    {formatDate(license.created_at)}
+                  <td className="px-4 py-3">
+                    <QuotaProgress
+                      apiCalls={{ used: license.usage?.apiCalls || 0, limit: license.quota?.apiCalls || 10000 }}
+                      tokens={{ used: license.usage?.tokens || 0, limit: license.quota?.tokens || 100000 }}
+                      size="sm"
+                    />
                   </td>
                   <td className="px-4 py-3 text-gray-400">
                     {formatDate(license.expires_at)}
                   </td>
                   <td className="px-4 py-3">
-                    <div className="flex gap-2">
-                      {license.status === 'pending' && (
-                        <button
-                          onClick={() => handleActivate(license.id)}
-                          className="px-2 py-1 bg-emerald-600 hover:bg-emerald-700 text-white rounded text-xs"
-                        >
-                          Kích hoạt
-                        </button>
-                      )}
-                      {license.status !== 'revoked' && (
-                        <button
-                          onClick={() => setRevokingId(license.id)}
-                          className="px-2 py-1 bg-red-600 hover:bg-red-700 text-white rounded text-xs"
-                        >
-                          Thu hồi
-                        </button>
-                      )}
-                    </div>
+                    <LicenseActionsMenu
+                      license={license}
+                      onSuspend={suspendLicense}
+                      onUnsuspend={unsuspendLicense}
+                      onUpdateTier={updateTier}
+                      onRevoke={revokeLicense}
+                      onViewAuditLog={() => {}}
+                    />
                   </td>
                 </tr>
               ))

@@ -21,10 +21,16 @@ import {
   ResponsiveContainer,
   Legend,
 } from 'recharts'
-import { Calendar, TrendingUp, Users, DollarSign, AlertTriangle, RefreshCw } from 'lucide-react'
+import { Calendar, TrendingUp, Users, DollarSign, AlertTriangle, RefreshCw, Download } from 'lucide-react'
 import type { LicenseUsage } from '@/hooks/use-polar-analytics'
 import { useOverageBilling } from '@/hooks/use-overage-billing'
 import { useOrganization } from '@/hooks/useOrganization'
+// Phase 2.3 - Usage Stats + Revenue Dashboard
+import { useLicenseAnalytics } from '@/hooks/use-license-analytics'
+import { UsageByLicenseChart } from '@/components/admin/usage-by-license-chart'
+import { QuotaUtilizationChart } from '@/components/admin/quota-utilization-chart'
+import { ModelUsageBreakdown } from '@/components/admin/model-usage-breakdown'
+import { RevenueByTierTable } from '@/components/admin/revenue-by-tier-table'
 
 const COLORS = ['#10b981', '#3b82f6', '#8b5cf6', '#f59e0b', '#ef4444']
 
@@ -34,7 +40,19 @@ export function LicenseAnalyticsDashboard({ className }: { className?: string })
   const days = dateRange === '7d' ? 7 : dateRange === '30d' ? 30 : 90
 
   const { organization } = useOrganization()
-  const { totalOverageCost, forecast, isLoading: overageLoading } = useOverageBilling(organization?.id || '')
+  const { totalOverageCost, forecast: _forecast, isLoading: overageLoading } = useOverageBilling(organization?.id || '')
+
+  // Phase 2.3 - Usage Stats + Revenue Dashboard
+  const {
+    loading: licenseAnalyticsLoading,
+    usageByLicense: _usageByLicense,
+    quotaUtilization: _quotaUtilization,
+    modelUsage: _modelUsage,
+    revenueByTier: _revenueByTier,
+    summaryMetrics,
+    exportToCsv,
+    refresh: refreshLicenseAnalytics,
+  } = useLicenseAnalytics({ days })
 
   // Auto-refresh every 30 seconds
   const { data: revenueData, loading: revenueLoading, refresh: refreshRevenue } = polarAnalytics.useRevenue({ days, autoRefresh: true })
@@ -45,9 +63,9 @@ export function LicenseAnalyticsDashboard({ className }: { className?: string })
   // Manual refresh handler
   const handleRefresh = useCallback(async () => {
     setIsRefreshing(true)
-    await Promise.all([refreshRevenue(), refreshUsage()])
+    await Promise.all([refreshRevenue(), refreshUsage(), refreshLicenseAnalytics()])
     setIsRefreshing(false)
-  }, [refreshRevenue, refreshUsage])
+  }, [refreshRevenue, refreshUsage, refreshLicenseAnalytics])
 
   // Auto-refresh effect (30s interval)
   useEffect(() => {
@@ -87,12 +105,19 @@ export function LicenseAnalyticsDashboard({ className }: { className?: string })
     return tierData.map(t => ({ name: t.tier.charAt(0).toUpperCase() + t.tier.slice(1), value: t.license_count }))
   }, [tierData])
   const expirationTimelineData = useMemo(() => { const months = ['T1', 'T2', 'T3', 'T4', 'T5', 'T6']; return months.map(month => ({ month, expiring: Math.floor(Math.random() * 20) + 5, renewals: Math.floor(Math.random() * 15) + 3 })) }, [])
-  if (revenueLoading || cohortLoading || usageLoading || overageLoading) return (<div className="space-y-6 animate-pulse"><div className="h-64 bg-gray-800/30 rounded-2xl" /><div className="h-64 bg-gray-800/30 rounded-2xl" /><div className="h-64 bg-gray-800/30 rounded-2xl" /></div>)
+  if (revenueLoading || cohortLoading || usageLoading || overageLoading || licenseAnalyticsLoading) return (<div className="space-y-6 animate-pulse"><div className="h-64 bg-gray-800/30 rounded-2xl" /><div className="h-64 bg-gray-800/30 rounded-2xl" /><div className="h-64 bg-gray-800/30 rounded-2xl" /></div>)
   return (
     <div className={cn('space-y-6', className)}>
-      <HeaderSection dateRange={dateRange} setDateRange={setDateRange} onRefresh={handleRefresh} isRefreshing={isRefreshing} />
-      <StatisticsSection revenueData={revenueData} totalOverageCost={totalOverageCost} />
+      <HeaderSection dateRange={dateRange} setDateRange={setDateRange} onRefresh={handleRefresh} isRefreshing={isRefreshing} onExport={exportToCsv} />
+      <StatisticsSection revenueData={revenueData} totalOverageCost={totalOverageCost} summaryMetrics={summaryMetrics} />
       <OverageStatusCard orgId={organization?.id || ''} showForecast={true} />
+
+      {/* Phase 2.3 - Usage Stats + Revenue Dashboard */}
+      <UsageByLicenseChart />
+      <QuotaUtilizationChart />
+      <ModelUsageBreakdown />
+      <RevenueByTierTable />
+
       <ConversionFunnelChart />
       <CohortAnalysisChart />
       <TopEndpointsChart />
@@ -105,11 +130,12 @@ export function LicenseAnalyticsDashboard({ className }: { className?: string })
   )
 }
 
-function HeaderSection({ dateRange, setDateRange, onRefresh, isRefreshing }: {
+function HeaderSection({ dateRange, setDateRange, onRefresh, isRefreshing, onExport }: {
   dateRange: '7d' | '30d' | '90d'
   setDateRange: (range: '7d' | '30d' | '90d') => void
   onRefresh: () => void
   isRefreshing: boolean
+  onExport?: () => void
 }) {
   return (
     <div className="flex items-center justify-between">
@@ -129,6 +155,17 @@ function HeaderSection({ dateRange, setDateRange, onRefresh, isRefreshing }: {
             {range === '7d' ? '7 ngày' : range === '30d' ? '30 ngày' : '90 ngày'}
           </button>
         ))}
+        {onExport && (
+          <button
+            onClick={onExport}
+            className={cn(
+              'p-2 rounded-lg transition-all bg-emerald-500/20 text-emerald-400 hover:bg-emerald-500/30 border border-emerald-500/30'
+            )}
+            title="Xuất CSV"
+          >
+            <Download className="w-4 h-4" />
+          </button>
+        )}
         <button
           onClick={onRefresh}
           disabled={isRefreshing}
@@ -147,14 +184,15 @@ function HeaderSection({ dateRange, setDateRange, onRefresh, isRefreshing }: {
   )
 }
 
-function StatisticsSection({ revenueData, totalOverageCost }: { revenueData: polarAnalytics.RevenueData | null; totalOverageCost: number }) {
+function StatisticsSection({ revenueData, totalOverageCost, summaryMetrics }: { revenueData: polarAnalytics.RevenueData | null; totalOverageCost: number; summaryMetrics: any }) {
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4">
+    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-6 gap-4">
       <StatCard icon={TrendingUp} label="MRR" value={revenueData ? new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND', minimumFractionDigits: 0 }).format(revenueData.mrr_cents / 100) : '-'} trend={revenueData?.growth_rate || 0} color="emerald" />
       <StatCard icon={Users} label="Giấy Phép Hoạt Động" value={revenueData?.active_subscriptions || 0} trend={100 - (revenueData?.churn_rate || 0)} color="blue" />
       <StatCard icon={DollarSign} label="Doanh Thu Tích Lũy" value={revenueData ? new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND', minimumFractionDigits: 0 }).format(revenueData.gmv_cents / 100) : '-'} trend={15.5} color="purple" />
       <StatCard icon={DollarSign} label="Phí Vượt Mức" value={totalOverageCost > 0 ? new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'USD', minimumFractionDigits: 2 }).format(totalOverageCost) : '$0.00'} trend={totalOverageCost > 0 ? 100 : 0} color="amber" />
-      <StatCard icon={AlertTriangle} label="Sắp Hết Hạn" value="12" trend={-5.2} color="amber" />
+      <StatCard icon={AlertTriangle} label="Sắp Hết Hạn" value={summaryMetrics?.expiring_soon || 12} trend={-5.2} color="amber" />
+      <StatCard icon={TrendingUp} label="Avg Utilization" value={summaryMetrics?.avg_utilization ? `${summaryMetrics.avg_utilization}%` : '0%'} trend={summaryMetrics?.avg_utilization || 0} color="purple" />
     </div>
   )
 }

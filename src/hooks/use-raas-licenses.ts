@@ -1,10 +1,11 @@
 /**
  * RaaS License Management Hook
+ * ROIaaS Phase 2.2: Added suspend, unsuspend, updateTier, getUsage methods
  */
 
 import { useState, useEffect, useCallback } from 'react';
 import { createClient } from '@supabase/supabase-js';
-import type { RaaSLicense, LicenseAuditLog, LicenseStatus } from '@/types/raas-license';
+import type { RaaSLicense, LicenseStatus, LicenseTier, LicenseQuota } from '@/types/raas-license';
 
 const supabase = createClient(
   import.meta.env.VITE_SUPABASE_URL,
@@ -13,7 +14,6 @@ const supabase = createClient(
 
 export function useRaasLicenses() {
   const [licenses, setLicenses] = useState<RaaSLicense[]>([]);
-  const [auditLogs, setAuditLogs] = useState<LicenseAuditLog[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [statusFilter, setStatusFilter] = useState<LicenseStatus | 'all'>('all');
@@ -54,9 +54,84 @@ export function useRaasLicenses() {
 
       if (error) throw error;
       return data || [];
-    } catch (err: unknown) {
-      // Error handled
+    } catch {
       return [];
+    }
+  }, []);
+
+  // Suspend a license
+  const suspendLicense = useCallback(async (licenseId: string, reason: string) => {
+    try {
+      const { error } = await supabase
+        .from('raas_licenses')
+        .update({
+          status: 'suspended' as LicenseStatus,
+          metadata: {
+            suspended_reason: reason,
+            suspended_at: new Date().toISOString(),
+            suspended_by: 'admin'
+          },
+        })
+        .eq('id', licenseId);
+
+      if (error) throw error;
+      await fetchLicenses();
+      return { success: true };
+    } catch (err: unknown) {
+      return { success: false, error: (err as Error).message };
+    }
+  }, [fetchLicenses]);
+
+  // Unsuspend a license
+  const unsuspendLicense = useCallback(async (licenseId: string) => {
+    try {
+      const { error } = await supabase
+        .from('raas_licenses')
+        .update({
+          status: 'active' as LicenseStatus,
+          metadata: { unsuspended_at: new Date().toISOString() },
+        })
+        .eq('id', licenseId);
+
+      if (error) throw error;
+      await fetchLicenses();
+      return { success: true };
+    } catch (err: unknown) {
+      return { success: false, error: (err as Error).message };
+    }
+  }, [fetchLicenses]);
+
+  // Update tier of a license
+  const updateTier = useCallback(async (licenseId: string, tier: LicenseTier) => {
+    try {
+      const { error } = await supabase
+        .from('raas_licenses')
+        .update({ tier })
+        .eq('id', licenseId);
+
+      if (error) throw error;
+      await fetchLicenses();
+      return { success: true };
+    } catch (err: unknown) {
+      return { success: false, error: (err as Error).message };
+    }
+  }, [fetchLicenses]);
+
+  // Get usage for a license
+  const getUsage = useCallback(async (licenseId: string): Promise<LicenseQuota | null> => {
+    try {
+      const { data, error } = await supabase
+        .from('usage_records')
+        .select('api_calls, tokens')
+        .eq('license_id', licenseId)
+        .order('created_at', { ascending: false })
+        .limit(1)
+        .single();
+
+      if (error) return null;
+      return { apiCalls: data?.api_calls || 0, tokens: data?.tokens || 0 };
+    } catch {
+      return null;
     }
   }, []);
 
@@ -113,6 +188,7 @@ export function useRaasLicenses() {
   const createLicense = useCallback(async (
     userId: string,
     expiresAt: string,
+    tier: LicenseTier = 'basic',
     features?: RaaSLicense['features']
   ) => {
     try {
@@ -122,12 +198,13 @@ export function useRaasLicenses() {
         .insert({
           license_key: licenseKey,
           user_id: userId,
+          tier,
           status: 'active',
           features: features || {
             adminDashboard: true,
-            payosWebhook: true,
-            commissionDistribution: true,
-            policyEngine: true,
+            payosWebhook: tier !== 'basic',
+            commissionDistribution: tier !== 'basic',
+            policyEngine: tier === 'enterprise' || tier === 'master',
           },
           expires_at: expiresAt,
           metadata: { created_via: 'admin_dashboard' },
@@ -149,13 +226,16 @@ export function useRaasLicenses() {
 
   return {
     licenses,
-    auditLogs,
     loading,
     error,
     statusFilter,
     setStatusFilter,
     fetchLicenses,
     fetchAuditLogs,
+    suspendLicense,
+    unsuspendLicense,
+    updateTier,
+    getUsage,
     revokeLicense,
     activateLicense,
     createLicense,
