@@ -8,11 +8,11 @@
 import type { SupabaseClient } from '@supabase/supabase-js'
 import { analyticsLogger } from '@/utils/logger'
 import { GatewayAuthClient } from '@/lib/gateway-auth-client'
+import type { SyncConfig, SyncResult } from './raas-gateway-usage-sync-types'
 import {
   validateAndTransformRecords,
   storeLocalEvents,
   fetchGatewayUsage,
-  delay,
   retryWithBackoff,
 } from './raas-gateway-usage-helpers'
 

@@ -28,6 +28,7 @@ declare const Deno: {
 
 import type { SupabaseClient } from '@supabase/supabase-js'
 import type { UsageStatus, TierLimits } from './usage-metering'
+import { analyticsLogger } from '@/utils/logger'
 
 export type AlertMetricType = 'api_calls' | 'tokens' | 'compute_minutes' | 'model_inferences' | 'agent_executions'
 export type AlertThreshold = 80 | 90 | 100
@@ -99,11 +100,20 @@ export class UsageAlertEngine {
   async checkAndEmitAlerts(_usageStatus?: UsageStatus): Promise<AlertDeliveryResult[]> {
     const results: AlertDeliveryResult[] = []
 
-    // Check each metric type
-    const metrics: (keyof UsageStatus)[] = ['api_calls', 'tokens', 'compute', 'model_inferences', 'agent_executions']
+    // Get current usage status
+    const usageStatus = await this.getCurrentUsageStatus()
 
-    for (const metric of metrics) {
-      const metricStatus = status[metric]
+    // Check each metric type (exclude isLimited and resetAt which are not metrics)
+    const metricKeys: Array<Exclude<keyof UsageStatus, 'isLimited' | 'resetAt'>> = [
+      'api_calls',
+      'tokens',
+      'compute',
+      'model_inferences',
+      'agent_executions',
+    ]
+
+    for (const metric of metricKeys) {
+      const metricStatus = usageStatus[metric as keyof typeof usageStatus]
       if (!metricStatus || typeof metricStatus !== 'object' || metricStatus.limit === 0 || metricStatus.limit === -1) {
         continue // Skip if no limit or unlimited
       }
@@ -193,7 +203,7 @@ export class UsageAlertEngine {
         error: data.error,
       }
     } catch (error) {
-      console.error('[UsageAlertEngine] emitAlert error:', error)
+      analyticsLogger.error('[UsageAlertEngine] emitAlert error:', error)
       return {
         success: false,
         eventId: '',
@@ -227,7 +237,7 @@ export class UsageAlertEngine {
 
       return Boolean(data === true)
     } catch (error) {
-      console.error('[UsageAlertEngine] canSendAlert error:', error)
+      analyticsLogger.error('[UsageAlertEngine] canSendAlert error:', error)
       return true // Allow if check fails (fail-open)
     }
   }
@@ -279,7 +289,7 @@ export class UsageAlertEngine {
         resetAt: new Date(today.getTime() + 24 * 60 * 60 * 1000).toISOString(),
       }
     } catch (error) {
-      console.error('[UsageAlertEngine] getCurrentUsageStatus error:', error)
+      analyticsLogger.error('[UsageAlertEngine] getCurrentUsageStatus error:', error)
       return this.getEmptyUsageStatus()
     }
   }
@@ -308,7 +318,7 @@ export class UsageAlertEngine {
           return { ...tierDefaults, ...limits } as TierLimits
         }
       } catch (error) {
-        console.error('[UsageAlertEngine] getLimits error:', error)
+        analyticsLogger.error('[UsageAlertEngine] getLimits error:', error)
       }
     }
 
@@ -393,7 +403,7 @@ export class UsageAlertEngine {
           (data.metadata as Record<string, unknown>).polar_customer_id as string || null
       }
     } catch (error) {
-      console.error('[UsageAlertEngine] getCustomerId error:', error)
+      analyticsLogger.error('[UsageAlertEngine] getCustomerId error:', error)
     }
 
     return null

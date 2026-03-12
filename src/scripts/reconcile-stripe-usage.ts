@@ -279,7 +279,7 @@ async function main() {
   if (result.discrepancies.length > 0) {
     // eslint-disable-next-line no-console
     console.log('\n## Discrepancies')
-    result.discrepancies.forEach(d => {
+    result.discrepancies.forEach((d: {date: string; supabase_usage: number; stripe_usage: number; difference: number}) => {
       // eslint-disable-next-line no-console
       console.log(`  ${d.date}: Supabase=${d.supabase_usage}, Stripe=${d.stripe_usage}, Diff=${d.difference}`)
     })
@@ -288,7 +288,7 @@ async function main() {
   // eslint-disable-next-line no-console
   console.log('\n## Recommendations')
   // eslint-disable-next-line no-console
-  result.recommendations.forEach(r => console.log(`  ${r}`))
+  result.recommendations.forEach((r: string) => console.log(`  ${r}`))
 
   // TODO: Write report to file
   // const reportPath = `plans/reports/stripe-reconciliation-${period}.md`

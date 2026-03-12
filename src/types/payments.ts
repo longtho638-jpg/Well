@@ -191,3 +191,23 @@ export interface RevenueTarget {
   progressPercent: number
   projectedCompletion: string
 }
+
+// Stripe usage reconciliation types
+export interface UsageReconciliationResult {
+  period: {
+    start: string
+    end: string
+  }
+  supabase_total: number
+  stripe_total: number
+  difference: number
+  difference_percent: number
+  status: 'matched' | 'discrepancy'
+  discrepancies: Array<{
+    date: string
+    supabase_usage: number
+    stripe_usage: number
+    difference: number
+  }>
+  recommendations: string[]
+}
