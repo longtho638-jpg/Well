@@ -4,6 +4,7 @@
  */
 
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import type { LicenseTier, RaaSLicense } from '@/types/raas-license';
 
 interface LicenseActionsMenuProps {
@@ -23,6 +24,7 @@ export function LicenseActionsMenu({
   onRevoke,
   onViewAuditLog,
 }: LicenseActionsMenuProps) {
+  const { t } = useTranslation();
   const [isOpen, setIsOpen] = useState(false);
   const [showModal, setShowModal] = useState<
     | { type: 'suspend'; reason: string }
@@ -56,9 +58,8 @@ export function LicenseActionsMenu({
     }
   };
 
-  const handleUpdateTier = async () => {
-    if (!showModal || showModal.type !== 'tier') return;
-    const result = await onUpdateTier(license.id, showModal.tier);
+  const handleTierChange = async (tier: LicenseTier) => {
+    const result = await onUpdateTier(license.id, tier);
     if (result.success) {
       setShowModal(null);
       setIsOpen(false);
@@ -86,14 +87,14 @@ export function LicenseActionsMenu({
                 onClick={handleUnsuspend}
                 className="w-full px-4 py-2 text-left text-sm text-emerald-400 hover:bg-gray-800"
               >
-                Unsuspend
+                {t('admin.licenses.unsuspend')}
               </button>
             ) : (
               <button
                 onClick={() => setShowModal({ type: 'suspend', reason: '' })}
                 className="w-full px-4 py-2 text-left text-sm text-amber-400 hover:bg-gray-800"
               >
-                Suspend
+                {t('admin.licenses.suspend')}
               </button>
             )}
 
@@ -101,14 +102,14 @@ export function LicenseActionsMenu({
               onClick={() => setShowModal({ type: 'tier', tier: license.tier })}
               className="w-full px-4 py-2 text-left text-sm text-blue-400 hover:bg-gray-800"
             >
-              Change Tier
+              {t('admin.licenses.change_tier')}
             </button>
 
             <button
               onClick={() => onViewAuditLog(license.id)}
               className="w-full px-4 py-2 text-left text-sm text-purple-400 hover:bg-gray-800"
             >
-              View Audit Log
+              {t('admin.licenses.view_audit_log')}
             </button>
 
             {license.status !== 'revoked' && (
@@ -116,7 +117,7 @@ export function LicenseActionsMenu({
                 onClick={() => setShowModal({ type: 'revoke', reason: '' })}
                 className="w-full px-4 py-2 text-left text-sm text-red-400 hover:bg-gray-800"
               >
-                Revoke
+                {t('admin.licenses.revoke')}
               </button>
             )}
           </div>
@@ -131,6 +132,7 @@ export function LicenseActionsMenu({
           onReasonChange={(reason) => setShowModal({ type: 'suspend', reason })}
           onCancel={() => setShowModal(null)}
           onConfirm={handleSuspend}
+          t={t}
         />
       )}
 
@@ -142,6 +144,7 @@ export function LicenseActionsMenu({
           onReasonChange={(reason) => setShowModal({ type: 'revoke', reason })}
           onCancel={() => setShowModal(null)}
           onConfirm={handleRevoke}
+          t={t}
         />
       )}
 
@@ -149,9 +152,9 @@ export function LicenseActionsMenu({
       {showModal?.type === 'tier' && (
         <TierChangeModal
           currentTier={license.tier}
-          onTierChange={(tier) => setShowModal({ type: 'tier', tier })}
+          onTierChange={handleTierChange}
           onCancel={() => setShowModal(null)}
-          onConfirm={handleUpdateTier}
+          t={t}
         />
       )}
     </div>
@@ -164,35 +167,37 @@ function SuspendRevokeModal({
   onReasonChange,
   onCancel,
   onConfirm,
+  t,
 }: {
   type: 'suspend' | 'revoke';
   reason: string;
   onReasonChange: (reason: string) => void;
   onCancel: () => void;
   onConfirm: () => void;
+  t: (key: string) => string;
 }) {
   return (
     <div className="fixed inset-0 bg-black/80 flex items-center justify-center z-50">
       <div className="bg-gray-900 border border-gray-700 rounded-lg p-6 max-w-md w-full mx-4">
         <h3 className="text-lg font-semibold text-white mb-4">
-          {type === 'suspend' ? 'Suspend License' : 'Revoke License'}
+          {type === 'suspend' ? t('admin.licenses.suspend_confirm') : t('admin.licenses.revoke_confirm')}
         </h3>
         <textarea
           value={reason}
           onChange={(e) => onReasonChange(e.target.value)}
-          placeholder={`Enter ${type} reason...`}
+          placeholder={type === 'suspend' ? t('admin.licenses.suspend_reason_placeholder') : t('admin.licenses.revoke_reason_placeholder')}
           className="w-full h-32 px-3 py-2 bg-gray-800 border border-gray-700 rounded text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-primary"
         />
         <div className="flex gap-3 mt-4 justify-end">
           <button onClick={onCancel} className="px-4 py-2 text-gray-400 hover:text-white">
-            Cancel
+            {t('admin.licenses.cancel')}
           </button>
           <button
             onClick={onConfirm}
             disabled={!reason.trim()}
             className={`px-4 py-2 ${type === 'suspend' ? 'bg-amber-600 hover:bg-amber-700' : 'bg-red-600 hover:bg-red-700'} disabled:opacity-50 disabled:cursor-not-allowed text-white rounded`}
           >
-            {type === 'suspend' ? 'Suspend' : 'Revoke'}
+            {type === 'suspend' ? t('admin.licenses.suspend') : t('admin.licenses.revoke')}
           </button>
         </div>
       </div>
@@ -204,17 +209,19 @@ function TierChangeModal({
   currentTier,
   onTierChange,
   onCancel,
+  t,
 }: {
   currentTier: LicenseTier;
-  onTierChange: (tier: LicenseTier) => void;
+  onTierChange: (tier: LicenseTier) => Promise<void>;
   onCancel: () => void;
+  t: (key: string) => string;
 }) {
   const tiers: LicenseTier[] = ['basic', 'premium', 'enterprise', 'master'];
 
   return (
     <div className="fixed inset-0 bg-black/80 flex items-center justify-center z-50">
       <div className="bg-gray-900 border border-gray-700 rounded-lg p-6 max-w-md w-full mx-4">
-        <h3 className="text-lg font-semibold text-white mb-4">Change Tier</h3>
+        <h3 className="text-lg font-semibold text-white mb-4">{t('admin.licenses.change_tier')}</h3>
         <div className="space-y-2">
           {tiers.map((tier) => (
             <button
@@ -222,13 +229,13 @@ function TierChangeModal({
               onClick={() => onTierChange(tier)}
               className={`w-full px-4 py-2 text-left rounded border ${currentTier === tier ? 'border-primary bg-primary/20 text-white' : 'border-gray-700 text-gray-400 hover:bg-gray-800'}`}
             >
-              {tier.charAt(0).toUpperCase() + tier.slice(1)}
+              {t(`admin.licenses.${tier}`)}
             </button>
           ))}
         </div>
         <div className="flex gap-3 mt-4 justify-end">
           <button onClick={onCancel} className="px-4 py-2 text-gray-400 hover:text-white">
-            Cancel
+            {t('admin.licenses.cancel')}
           </button>
         </div>
       </div>

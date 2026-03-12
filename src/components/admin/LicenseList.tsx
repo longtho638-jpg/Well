@@ -5,6 +5,7 @@
  */
 
 import React, { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useRaasLicenses } from '@/hooks/use-raas-licenses';
 import type { LicenseStatus } from '@/types/raas-license';
 import { STATUS_COLORS } from '@/types/raas-license';
@@ -17,15 +18,16 @@ interface LicenseListProps {
   onActivate?: (licenseId: string) => void;
 }
 
-const STATUS_LABELS: Record<LicenseStatus | 'suspended', string> = {
-  active: 'Hoạt động',
-  expired: 'Hết hạn',
-  revoked: 'Thu hồi',
-  pending: 'Chờ duyệt',
-  suspended: 'Tạm ngưng',
+const STATUS_I18N_KEYS: Record<LicenseStatus | 'suspended', string> = {
+  active: 'admin.licenses.status_active',
+  expired: 'admin.licenses.status_expired',
+  revoked: 'admin.licenses.status_revoked',
+  pending: 'admin.licenses.status_pending',
+  suspended: 'admin.licenses.status_suspended',
 };
 
 export function LicenseList({ onRevoke, onActivate: _onActivate }: LicenseListProps) {
+  const { t } = useTranslation();
   const {
     licenses,
     loading,
@@ -52,7 +54,7 @@ export function LicenseList({ onRevoke, onActivate: _onActivate }: LicenseListPr
   };
 
   const formatStatus = (status: LicenseStatus | 'suspended') => {
-    return STATUS_LABELS[status];
+    return t(STATUS_I18N_KEYS[status]);
   };
 
   const formatDate = (dateString: string) => {
@@ -76,7 +78,7 @@ export function LicenseList({ onRevoke, onActivate: _onActivate }: LicenseListPr
   if (error) {
     return (
       <div className="p-4 bg-red-500/10 border border-red-500/30 rounded-lg text-red-400">
-        Lỗi: {error}
+        {t('admin.licenses.error')}: {error}
       </div>
     );
   }
@@ -95,7 +97,7 @@ export function LicenseList({ onRevoke, onActivate: _onActivate }: LicenseListPr
                 : 'bg-gray-800 text-gray-400 hover:bg-gray-700'
             }`}
           >
-            {status === 'all' ? 'Tất cả' : formatStatus(status)}
+            {status === 'all' ? t('admin.licenses.all') : formatStatus(status)}
           </button>
         ))}
       </div>
@@ -105,20 +107,20 @@ export function LicenseList({ onRevoke, onActivate: _onActivate }: LicenseListPr
         <table className="w-full text-sm">
           <thead className="bg-gray-900">
             <tr>
-              <th className="px-4 py-3 text-left text-gray-400">License Key</th>
-              <th className="px-4 py-3 text-left text-gray-400">User</th>
-              <th className="px-4 py-3 text-left text-gray-400">Tier</th>
-              <th className="px-4 py-3 text-left text-gray-400">Status</th>
-              <th className="px-4 py-3 text-left text-gray-400">Quota Usage</th>
-              <th className="px-4 py-3 text-left text-gray-400">Expires</th>
-              <th className="px-4 py-3 text-left text-gray-400">Actions</th>
+              <th className="px-4 py-3 text-left text-gray-400">{t('admin.licenses.license_key')}</th>
+              <th className="px-4 py-3 text-left text-gray-400">{t('admin.licenses.user')}</th>
+              <th className="px-4 py-3 text-left text-gray-400">{t('admin.licenses.tier')}</th>
+              <th className="px-4 py-3 text-left text-gray-400">{t('admin.licenses.status')}</th>
+              <th className="px-4 py-3 text-left text-gray-400">{t('admin.licenses.quota_usage')}</th>
+              <th className="px-4 py-3 text-left text-gray-400">{t('admin.licenses.expires')}</th>
+              <th className="px-4 py-3 text-left text-gray-400">{t('admin.licenses.actions')}</th>
             </tr>
           </thead>
           <tbody className="divide-y divide-gray-800">
             {licenses.length === 0 ? (
               <tr>
                 <td colSpan={7} className="px-4 py-8 text-center text-gray-500">
-                  Không có license nào
+                  {t('admin.licenses.no_licenses')}
                 </td>
               </tr>
             ) : (
@@ -177,11 +179,11 @@ export function LicenseList({ onRevoke, onActivate: _onActivate }: LicenseListPr
       {revokingId && (
         <div className="fixed inset-0 bg-black/80 flex items-center justify-center z-50">
           <div className="bg-gray-900 border border-gray-700 rounded-lg p-6 max-w-md w-full mx-4">
-            <h3 className="text-lg font-semibold text-white mb-4">Xác nhận thu hồi license</h3>
+            <h3 className="text-lg font-semibold text-white mb-4">{t('admin.licenses.revoke_confirm')}</h3>
             <textarea
               value={revokeReason}
               onChange={(e) => setRevokeReason(e.target.value)}
-              placeholder="Nhập lý do thu hồi..."
+              placeholder={t('admin.licenses.revoke_reason_placeholder')}
               className="w-full h-32 px-3 py-2 bg-gray-800 border border-gray-700 rounded text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-primary"
             />
             <div className="flex gap-3 mt-4 justify-end">
@@ -192,14 +194,14 @@ export function LicenseList({ onRevoke, onActivate: _onActivate }: LicenseListPr
                 }}
                 className="px-4 py-2 text-gray-400 hover:text-white"
               >
-                Hủy
+                {t('admin.licenses.cancel')}
               </button>
               <button
                 onClick={() => handleRevoke(revokingId)}
                 disabled={!revokeReason.trim()}
                 className="px-4 py-2 bg-red-600 hover:bg-red-700 disabled:opacity-50 disabled:cursor-not-allowed text-white rounded"
               >
-                Thu hồi
+                {t('admin.licenses.revoke')}
               </button>
             </div>
           </div>

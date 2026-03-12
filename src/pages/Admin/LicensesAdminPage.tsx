@@ -4,12 +4,14 @@
  */
 
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { LicenseList } from '@/components/admin/LicenseList';
 import { LicenseAuditLogViewer } from '@/components/admin/LicenseAuditLogViewer';
 import { CreateLicenseModal } from '@/components/admin/CreateLicenseModal';
 import { LicenseAnalyticsDashboard } from '@/components/admin/LicenseAnalyticsDashboard';
 
 export default function LicensesAdminPage() {
+  const { t } = useTranslation();
   const [showCreateModal, setShowCreateModal] = useState(false);
   const [activeTab, setActiveTab] = useState<'licenses' | 'analytics'>('licenses');
 
@@ -18,16 +20,16 @@ export default function LicensesAdminPage() {
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-2xl font-bold text-white">Quản lý License RaaS</h1>
+          <h1 className="text-2xl font-bold text-white">{t('admin.licenses.create_title')}</h1>
           <p className="text-gray-400 text-sm mt-1">
-            Quản lý license keys, kích hoạt, thu hồi và xem audit logs
+            {t('admin.licenses.page_description')}
           </p>
         </div>
         <button
           onClick={() => setShowCreateModal(true)}
           className="px-4 py-2 bg-primary hover:bg-primary/80 text-white rounded-lg font-medium"
         >
-          + Tạo License
+          {t('admin.licenses.create_button')}
         </button>
       </div>
 
@@ -41,7 +43,7 @@ export default function LicensesAdminPage() {
               : 'text-gray-400 hover:text-white'
           }`}
         >
-          Danh sách License
+          {t('admin.licenses.list_title')}
         </button>
         <button
           onClick={() => setActiveTab('analytics')}
@@ -51,7 +53,7 @@ export default function LicensesAdminPage() {
               : 'text-gray-400 hover:text-white'
           }`}
         >
-          Analytics Dashboard
+          {t('admin.nav.analytics')}
         </button>
       </div>
 
@@ -60,7 +62,7 @@ export default function LicensesAdminPage() {
         <div className="grid gap-6">
           {/* License List */}
           <div className="bg-gray-900/50 border border-gray-800 rounded-lg p-6">
-            <h2 className="text-lg font-semibold text-white mb-4">Danh sách License</h2>
+            <h2 className="text-lg font-semibold text-white mb-4">{t('admin.licenses.list_title')}</h2>
             <LicenseList
               onRevoke={() => {}}
               onActivate={() => {}}

@@ -4,6 +4,7 @@
  */
 
 import React, { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { createClient } from '@supabase/supabase-js';
 import { useStore } from '@/store';
 import type { LicenseTier } from '@/types/raas-license';
@@ -21,6 +22,7 @@ interface CreateLicenseModalProps {
 }
 
 export function CreateLicenseModal({ isOpen, onClose, onSuccess }: CreateLicenseModalProps) {
+  const { t } = useTranslation();
   const { user } = useStore();
   const [userId, setUserId] = useState('');
   const [email, setEmail] = useState('');
@@ -41,7 +43,7 @@ export function CreateLicenseModal({ isOpen, onClose, onSuccess }: CreateLicense
     }
   };
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setLoading(true);
     setError(null);
@@ -58,16 +60,16 @@ export function CreateLicenseModal({ isOpen, onClose, onSuccess }: CreateLicense
         if (userData) {
           finalUserId = userData.id;
         } else {
-          throw new Error('Không tìm thấy user với email: ' + email);
+          throw new Error(t('admin.licenses.user_not_found'));
         }
       }
 
       if (!finalUserId) {
-        throw new Error('Yêu cầu userId hoặc email');
+        throw new Error(t('admin.licenses.user_required'));
       }
 
       if (!expiresAt) {
-        throw new Error('Yêu cầu ngày hết hạn');
+        throw new Error(t('admin.licenses.expires_required'));
       }
 
       // Generate license key
@@ -129,11 +131,11 @@ export function CreateLicenseModal({ isOpen, onClose, onSuccess }: CreateLicense
   return (
     <div className="fixed inset-0 bg-black/80 flex items-center justify-center z-50">
       <div className="bg-gray-900 border border-gray-700 rounded-lg p-6 max-w-lg w-full mx-4">
-        <h2 className="text-xl font-semibold text-white mb-6">Tạo License Mới</h2>
+        <h2 className="text-xl font-semibold text-white mb-6">{t('admin.licenses.create_title')}</h2>
 
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
-            <label htmlFor="user-input" className="block text-sm text-gray-400 mb-1">User ID (hoặc Email)</label>
+            <label htmlFor="user-input" className="block text-sm text-gray-400 mb-1">{t('admin.licenses.user_label')}</label>
             <input
               id="user-input" type="text"
               value={userId || email}
@@ -141,13 +143,13 @@ export function CreateLicenseModal({ isOpen, onClose, onSuccess }: CreateLicense
                 setUserId('');
                 setEmail(e.target.value);
               }}
-              placeholder="Nhập email user"
+              placeholder={t('admin.licenses.user_placeholder')}
               className="w-full px-3 py-2 bg-gray-800 border border-gray-700 rounded text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-primary"
             />
           </div>
 
           <div>
-            <label htmlFor="tier-select" className="block text-sm text-gray-400 mb-1">Gói License</label>
+            <label htmlFor="tier-select" className="block text-sm text-gray-400 mb-1">{t('admin.licenses.tier_label')}</label>
             <select
               id="tier-select"
               value={tier}
@@ -156,7 +158,7 @@ export function CreateLicenseModal({ isOpen, onClose, onSuccess }: CreateLicense
             >
               {Object.entries(TIER_CONFIGS).map(([key, config]) => (
                 <option key={key} value={key}>
-                  {key.charAt(0).toUpperCase() + key.slice(1)} - ${config.priceMonthly}/tháng
+                  {t(`admin.licenses.${key}`)} - ${config.priceMonthly}/month
                 </option>
               ))}
             </select>
@@ -164,21 +166,21 @@ export function CreateLicenseModal({ isOpen, onClose, onSuccess }: CreateLicense
 
           {/* Quota Preview */}
           <div className="p-3 bg-gray-800 border border-gray-700 rounded">
-            <p className="text-sm text-gray-400 mb-2">Giới hạn gói {tier}:</p>
+            <p className="text-sm text-gray-400 mb-2">{t('admin.licenses.quota_limit_preview')} {t(`admin.licenses.${tier}`)}:</p>
             <div className="grid grid-cols-2 gap-4 text-sm">
               <div>
-                <span className="text-gray-500">API Calls:</span>
+                <span className="text-gray-500">{t('admin.licenses.api_calls_label')}:</span>
                 <span className="text-white ml-2">{TIER_CONFIGS[tier].quotas.apiCalls.toLocaleString()}</span>
               </div>
               <div>
-                <span className="text-gray-500">Tokens:</span>
+                <span className="text-gray-500">{t('admin.licenses.tokens_label')}:</span>
                 <span className="text-white ml-2">{TIER_CONFIGS[tier].quotas.tokens.toLocaleString()}</span>
               </div>
             </div>
           </div>
 
           <div>
-            <label htmlFor="expires-input" className="block text-sm text-gray-400 mb-1">Ngày hết hạn</label>
+            <label htmlFor="expires-input" className="block text-sm text-gray-400 mb-1">{t('admin.licenses.expires_label')}</label>
             <input
               type="datetime-local"
               value={expiresAt}
@@ -196,13 +198,13 @@ export function CreateLicenseModal({ isOpen, onClose, onSuccess }: CreateLicense
           {createdKey && (
             <div className="p-4 bg-emerald-500/10 border border-emerald-500/30 rounded">
               <p className="text-emerald-400 text-sm font-medium mb-2">
-                ✅ License đã tạo thành công!
+                {t('admin.licenses.success_title')}
               </p>
               <div className="p-2 bg-gray-800 rounded font-mono text-xs text-emerald-300 break-all">
                 {createdKey}
               </div>
               <p className="text-gray-500 text-xs mt-2">
-                Sao chép key này và gửi cho user
+                {t('admin.licenses.copy_key_instruction')}
               </p>
             </div>
           )}
@@ -213,14 +215,14 @@ export function CreateLicenseModal({ isOpen, onClose, onSuccess }: CreateLicense
               onClick={onClose}
               className="px-4 py-2 text-gray-400 hover:text-white"
             >
-              Đóng
+              {t('admin.licenses.close')}
             </button>
             <button
               type="submit"
               disabled={loading || !!createdKey}
               className="px-4 py-2 bg-primary hover:bg-primary/80 disabled:opacity-50 disabled:cursor-not-allowed text-white rounded"
             >
-              {loading ? 'Đang tạo...' : createdKey ? 'Đã tạo' : 'Tạo License'}
+              {loading ? t('admin.licenses.creating') : createdKey ? t('admin.licenses.created') : t('admin.licenses.create_button')}
             </button>
           </div>
         </form>

@@ -3,6 +3,8 @@
  * Shows quota usage progress bars for API calls and tokens
  */
 
+import { useTranslation } from 'react-i18next';
+
 interface QuotaProgressProps {
   apiCalls: { used: number; limit: number };
   tokens: { used: number; limit: number };
@@ -36,10 +38,11 @@ function ProgressBar({ used, limit, label, size }: { used: number; limit: number
 }
 
 export function QuotaProgress({ apiCalls, tokens, size = 'md' }: QuotaProgressProps) {
+  const { t } = useTranslation();
   return (
     <div className="space-y-3">
-      <ProgressBar used={apiCalls.used} limit={apiCalls.limit} label="API Calls" size={size} />
-      <ProgressBar used={tokens.used} limit={tokens.limit} label="Tokens" size={size} />
+      <ProgressBar used={apiCalls.used} limit={apiCalls.limit} label={t('admin.licenses.api_calls')} size={size} />
+      <ProgressBar used={tokens.used} limit={tokens.limit} label={t('admin.licenses.tokens')} size={size} />
     </div>
   );
 }
