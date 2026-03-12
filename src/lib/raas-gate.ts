@@ -166,3 +166,26 @@ export function checkRaasLicenseGuard(requiredFeature?: string): boolean {
     if (!requiredFeature) return true;
     return result.features[requiredFeature] || false;
 }
+
+/**
+ * Public API for license checking (alias for validateRaaSLicense)
+ */
+export function checkLicense(key?: string): LicenseValidationResult {
+    return validateRaaSLicense(key);
+}
+
+/**
+ * Check if user is on free tier (basic plan with limited features)
+ */
+export function isFreeTier(key?: string): boolean {
+    const result = validateRaaSLicense(key);
+    return !result.isValid || result.tier === 'basic';
+}
+
+/**
+ * Check if user is on premium tier (premium, enterprise, or master)
+ */
+export function isPremiumTier(key?: string): boolean {
+    const result = validateRaaSLicense(key);
+    return result.isValid && ['premium', 'enterprise', 'master'].includes(result.tier);
+}
