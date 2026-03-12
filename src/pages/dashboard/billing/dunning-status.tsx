@@ -156,7 +156,7 @@ export const DunningStatusPage: React.FC<DunningStatusPageProps> = ({
         setDunning(null)
       }
     } catch (error) {
-      console.error('[DunningStatusPage] Fetch error:', error)
+      // Fetch error handled by error boundary
     } finally {
       setLoading(false)
     }

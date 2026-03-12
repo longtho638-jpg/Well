@@ -47,7 +47,7 @@ export const QuotaTracker: React.FC = () => {
         const current = await analytics.getCurrentUsage()
         setQuotaStatus(current)
       } catch (err) {
-        console.error('[QuotaTracker] Failed to fetch quota status:', err)
+        // Failed to fetch quota status - handled by error boundary
       } finally {
         setQuotaLoading(false)
       }

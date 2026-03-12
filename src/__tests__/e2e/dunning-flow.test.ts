@@ -110,12 +110,26 @@ const createMockSupabase = () => {
   const dunningConfig: DunningConfig[] = []
   const smsLogs: SMSLog[] = []
   const userSubscriptions: any[] = []
+  const failedWebhooks: any[] = []
 
   const mock = {
     from: (table: string) => {
       const tableMethods: any = {
-        select: vi.fn(() => ({
-          ...tableMethods,
+        select: vi.fn((fields?: string) => ({
+          eq: vi.fn((key: string, value: any) => {
+            // Support .select().eq().single() chain
+            let result: any = null
+            if (table === 'dunning_events') {
+              result = dunningEvents.find((e) => e[key] === value)
+            } else if (table === 'dunning_config') {
+              result = dunningConfig.find((c) => c[key] === value)
+            } else if (table === 'user_subscriptions') {
+              result = userSubscriptions.find((s: any) => s[key] === value)
+            }
+            return {
+              single: vi.fn().mockResolvedValue({ data: result || null, error: null }),
+            }
+          }),
           single: vi.fn().mockResolvedValue({ data: null, error: null }),
         })),
         insert: vi.fn((data: any) => {
@@ -164,6 +178,19 @@ const createMockSupabase = () => {
             smsLogs.push(newLog)
             return {
               insert: vi.fn().mockResolvedValue({ data: newLog, error: null }),
+            }
+          }
+          if (table === 'failed_webhooks') {
+            const newWebhook = {
+              id: `wh_${Date.now()}`,
+              ...data,
+              created_at: new Date().toISOString(),
+            }
+            failedWebhooks.push(newWebhook)
+            return {
+              select: vi.fn(() => ({
+                single: vi.fn().mockResolvedValue({ data: newWebhook, error: null }),
+              })),
             }
           }
           if (table === 'user_subscriptions') {
@@ -220,6 +247,19 @@ const createMockSupabase = () => {
               update: vi.fn(() => ({
                 eq: vi.fn().mockResolvedValue({ data: null, error: null }),
               })),
+            }
+          }
+          if (table === 'failed_webhooks') {
+            const result = failedWebhooks.find((w) => w[key] === value)
+            return {
+              update: vi.fn(() => ({
+                eq: vi.fn().mockResolvedValue({ data: null, error: null }),
+                single: vi.fn().mockResolvedValue({ data: null, error: null }),
+              })),
+              single: vi.fn().mockResolvedValue({
+                data: result || null,
+                error: null,
+              }),
             }
           }
           if (table === 'user_subscriptions') {
@@ -299,9 +339,13 @@ const createMockSupabase = () => {
       if (fn === 'advance_dunning_stage') {
         const event = dunningEvents.find((e) => e.id === params.p_dunning_id)
         if (event) {
+          // Validate stage transitions
+          const validStages = ['initial', 'reminder', 'final', 'cancel_notice']
+          if (!validStages.includes(params.p_new_stage)) {
+            return Promise.resolve({ data: false, error: null })
+          }
           event.dunning_stage = params.p_new_stage
           event.email_sent = params.p_email_sent
-          event.email_template = params.p_email_template
           event.updated_at = new Date().toISOString()
           return Promise.resolve({ data: true, error: null })
         }

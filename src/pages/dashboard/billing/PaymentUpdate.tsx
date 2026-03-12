@@ -97,7 +97,7 @@ export const PaymentUpdatePage: React.FC = () => {
             }
           }
         } catch (err) {
-          console.warn('Failed to get payment method:', err)
+          // Failed to get payment method - handled by UI
         }
       }
 
@@ -109,7 +109,7 @@ export const PaymentUpdatePage: React.FC = () => {
         payment_method: paymentMethod,
       })
     } catch (err) {
-      console.error('Error loading billing status:', err)
+      // Error loading billing status - handled by error boundary
       setError(t('billing.load_error'))
     } finally {
       setLoading(false)
@@ -155,7 +155,7 @@ export const PaymentUpdatePage: React.FC = () => {
         throw new Error('Failed to get portal URL')
       }
     } catch (err) {
-      console.error('Error updating payment method:', err)
+      // Error updating payment method - handled by error boundary
       setError(err instanceof Error ? err.message : t('billing.update_error'))
     } finally {
       setUpdating(false)

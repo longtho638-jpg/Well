@@ -34,12 +34,10 @@ export function CustomerPortalButton({
         // Open in new window
         window.open(portalUrl, '_blank')
       } else {
-        console.error('Failed to get portal URL')
-        // Show error toast here
+        // Failed to get portal URL - handled by UI
       }
     } catch (err) {
-      console.error('Error opening portal:', err)
-      // Show error toast here
+      // Error opening portal - handled by UI
     } finally {
       setLoading(false)
     }

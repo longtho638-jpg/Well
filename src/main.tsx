@@ -59,7 +59,7 @@ if (typeof window !== 'undefined') {
       instrumentation.cleanup();
     });
 
-    console.warn('[Usage Metering] Auto-tracking enabled for user:', userId);
+    // Usage metering enabled silently (logger would require circular import)
   }
 }
 

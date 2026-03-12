@@ -143,7 +143,7 @@ export async function getBillingStatus(userId: string): Promise<BillingStatus | 
       isOverage,
     };
   } catch (err) {
-    console.error('[getBillingStatus] Error:', err);
+    // Error handled by returning null
     return null;
   }
 }
@@ -171,13 +171,13 @@ export async function getUsageSummary(
 
     return data;
   } catch (err) {
-    console.error('[getUsageSummary] Error:', err);
+    // Error handled by returning null
     return null;
   }
 }
 
 /**
- * Create Stripe Customer Portal session for self-service plan management
+ * Create Stripe Customer Portal session
  */
 export async function createCustomerPortalSession(
   customerId: string,
@@ -192,13 +192,13 @@ export async function createCustomerPortalSession(
     });
 
     if (error) {
-      console.error('[createCustomerPortalSession] Error:', error);
+      // Error handled by returning null
       return null;
     }
 
     return data as CustomerPortalSession;
   } catch (err) {
-    console.error('[createCustomerPortalSession] Error:', err);
+    // Error handled by returning null
     return null;
   }
 }
@@ -239,7 +239,7 @@ export async function getCustomerPortalUrl(
 
     return session.url;
   } catch (err) {
-    console.error('[getCustomerPortalUrl] Error:', err);
+    // Error handled by returning null
     return null;
   }
 }

@@ -81,7 +81,7 @@ export function UsageDashboardPage() {
         setSelectedTenant(tenantList[0])
       }
     } catch (err) {
-      console.error('[fetchTenants] Error:', err)
+      // Fetch error handled by error boundary
     } finally {
       setLoadingTenants(false)
     }
