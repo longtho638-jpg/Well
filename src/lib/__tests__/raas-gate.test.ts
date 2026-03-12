@@ -20,6 +20,7 @@ const TEST_KEYS = {
     master: 'raas_master_1234567890_abcdef0123456789_abcdef0123456789',
     old_format: 'RAAS-1234567890-ABCD1234',
     invalid: 'invalid-key',
+    empty: '',
 };
 
 describe('RaaS License Gate', () => {
@@ -29,7 +30,7 @@ describe('RaaS License Gate', () => {
 
     describe('validateRaaSLicense', () => {
         it('should return invalid for missing license key', () => {
-            const result = validateRaaSLicense('');
+            const result = validateRaaSLicense(TEST_KEYS.empty);
             expect(result.isValid).toBe(false);
             expect(result.tier).toBe('basic');
             expect(result.status).toBe('expired');
@@ -108,7 +109,7 @@ describe('RaaS License Gate', () => {
 
     describe('isFreeTier', () => {
         it('should return true for invalid license', () => {
-            expect(isFreeTier('')).toBe(true);
+            expect(isFreeTier(TEST_KEYS.empty)).toBe(true);
             expect(isFreeTier(TEST_KEYS.invalid)).toBe(true);
         });
 
@@ -123,7 +124,7 @@ describe('RaaS License Gate', () => {
 
     describe('isPremiumTier', () => {
         it('should return false for invalid license', () => {
-            expect(isPremiumTier('')).toBe(false);
+            expect(isPremiumTier(TEST_KEYS.empty)).toBe(false);
         });
 
         it('should return false for basic tier', () => {
@@ -157,7 +158,7 @@ describe('RaaS License Gate', () => {
         });
 
         it('should return false for invalid license', () => {
-            expect(hasFeature('adminDashboard', '')).toBe(false);
+            expect(hasFeature('adminDashboard', TEST_KEYS.empty)).toBe(false);
         });
     });
 });
