@@ -29,6 +29,15 @@ vi.mock('../../secure-token-storage', () => ({
   },
 }));
 
+/**
+ * Helper to create proper Base64URL encoded JWT parts
+ * JWT uses Base64URL encoding without padding
+ */
+function toBase64Url(obj: unknown): string {
+  const base64 = btoa(JSON.stringify(obj));
+  return base64.replace(/\+/g, '-').replace(/\//g, '_').replace(/=/g, '');
+}
+
 describe('auth-token-utils', () => {
   const mockTokens = {
     accessToken: 'mock-access-token',
@@ -157,9 +166,10 @@ describe('auth-token-utils', () => {
 
 describe('decodeJWT', () => {
   it('should decode valid JWT payload', () => {
-    const payload = { sub: 'user-123', exp: Date.now() / 1000 + 3600 };
-    const header = btoa(JSON.stringify({ alg: 'HS256', typ: 'JWT' }));
-    const payloadEncoded = btoa(JSON.stringify(payload));
+    const now = Math.floor(Date.now() / 1000);
+    const payload = { sub: 'user-123', exp: now + 3600, iat: now };
+    const header = toBase64Url({ alg: 'HS256', typ: 'JWT' });
+    const payloadEncoded = toBase64Url(payload);
     const signature = 'mock-signature';
     const token = `${header}.${payloadEncoded}.${signature}`;
 
@@ -169,10 +179,10 @@ describe('decodeJWT', () => {
   });
 
   it('should handle URL-safe base64 encoding (replace - with +, _ with /)', () => {
-    const payload = { sub: 'user-456' };
-    const header = btoa(JSON.stringify({ alg: 'HS256', typ: 'JWT' }));
-    let payloadEncoded = btoa(JSON.stringify(payload));
-    payloadEncoded = payloadEncoded.replace(/\+/g, '-').replace(/\//g, '_');
+    const now = Math.floor(Date.now() / 1000);
+    const payload = { sub: 'user-456', exp: now + 3600, iat: now };
+    const header = toBase64Url({ alg: 'HS256', typ: 'JWT' });
+    const payloadEncoded = toBase64Url(payload);
     const signature = 'mock-signature';
     const token = `${header}.${payloadEncoded}.${signature}`;
 
@@ -202,18 +212,20 @@ describe('isJWTExpired', () => {
   });
 
   it('should return true when JWT exp is in the past', () => {
-    const payload = { sub: 'user-123', exp: Math.floor(Date.now() / 1000) - 100 };
-    const header = btoa(JSON.stringify({ alg: 'HS256', typ: 'JWT' }));
-    const payloadEncoded = btoa(JSON.stringify(payload));
+    const now = Math.floor(Date.now() / 1000);
+    const payload = { sub: 'user-123', exp: now - 100, iat: now };
+    const header = toBase64Url({ alg: 'HS256', typ: 'JWT' });
+    const payloadEncoded = toBase64Url(payload);
     const token = `${header}.${payloadEncoded}.signature`;
 
     expect(isJWTExpired(token)).toBe(true);
   });
 
   it('should return false when JWT exp is in the future', () => {
-    const payload = { sub: 'user-123', exp: Math.floor(Date.now() / 1000) + 3600 };
-    const header = btoa(JSON.stringify({ alg: 'HS256', typ: 'JWT' }));
-    const payloadEncoded = btoa(JSON.stringify(payload));
+    const now = Math.floor(Date.now() / 1000);
+    const payload = { sub: 'user-123', exp: now + 3600, iat: now };
+    const header = toBase64Url({ alg: 'HS256', typ: 'JWT' });
+    const payloadEncoded = toBase64Url(payload);
     const token = `${header}.${payloadEncoded}.signature`;
 
     expect(isJWTExpired(token)).toBe(false);
@@ -226,19 +238,21 @@ describe('getJWTRemainingTime', () => {
   });
 
   it('should return 0 when JWT exp is in the past', () => {
-    const payload = { sub: 'user-123', exp: Math.floor(Date.now() / 1000) - 100 };
-    const header = btoa(JSON.stringify({ alg: 'HS256', typ: 'JWT' }));
-    const payloadEncoded = btoa(JSON.stringify(payload));
+    const now = Math.floor(Date.now() / 1000);
+    const payload = { sub: 'user-123', exp: now - 100, iat: now };
+    const header = toBase64Url({ alg: 'HS256', typ: 'JWT' });
+    const payloadEncoded = toBase64Url(payload);
     const token = `${header}.${payloadEncoded}.signature`;
 
     expect(getJWTRemainingTime(token)).toBe(0);
   });
 
   it('should return remaining time in milliseconds when JWT exp is in the future', () => {
-    const futureExp = Math.floor(Date.now() / 1000) + 3600;
-    const payload = { sub: 'user-123', exp: futureExp };
-    const header = btoa(JSON.stringify({ alg: 'HS256', typ: 'JWT' }));
-    const payloadEncoded = btoa(JSON.stringify(payload));
+    const now = Math.floor(Date.now() / 1000);
+    const futureExp = now + 3600;
+    const payload = { sub: 'user-123', exp: futureExp, iat: now };
+    const header = toBase64Url({ alg: 'HS256', typ: 'JWT' });
+    const payloadEncoded = toBase64Url(payload);
     const token = `${header}.${payloadEncoded}.signature`;
 
     const result = getJWTRemainingTime(token);

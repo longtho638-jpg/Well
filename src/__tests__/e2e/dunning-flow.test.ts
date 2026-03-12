@@ -114,7 +114,10 @@ const createMockSupabase = () => {
   const mock = {
     from: (table: string) => {
       const tableMethods: any = {
-        select: vi.fn(() => tableMethods),
+        select: vi.fn(() => ({
+          ...tableMethods,
+          single: vi.fn().mockResolvedValue({ data: null, error: null }),
+        })),
         insert: vi.fn((data: any) => {
           if (table === 'dunning_events') {
             const newEvent: DunningEvent = {
@@ -261,7 +264,12 @@ const createMockSupabase = () => {
         })),
         single: vi.fn().mockResolvedValue({ data: null, error: null }),
         update: vi.fn(() => ({
-          eq: vi.fn().mockResolvedValue({ data: null, error: null }),
+          eq: vi.fn(() => ({
+            select: vi.fn(() => ({
+              single: vi.fn().mockResolvedValue({ data: null, error: null }),
+            })),
+            single: vi.fn().mockResolvedValue({ data: null, error: null }),
+          })),
         })),
       }
       return tableMethods
@@ -286,9 +294,7 @@ const createMockSupabase = () => {
           updated_at: new Date().toISOString(),
         }
         dunningEvents.push(newEvent)
-        return {
-          single: vi.fn().mockResolvedValue({ data: newEvent.id, error: null }),
-        }
+        return Promise.resolve({ data: newEvent.id, error: null })
       }
       if (fn === 'advance_dunning_stage') {
         const event = dunningEvents.find((e) => e.id === params.p_dunning_id)
@@ -297,13 +303,9 @@ const createMockSupabase = () => {
           event.email_sent = params.p_email_sent
           event.email_template = params.p_email_template
           event.updated_at = new Date().toISOString()
-          return {
-            single: vi.fn().mockResolvedValue({ data: true, error: null }),
-          }
+          return Promise.resolve({ data: true, error: null })
         }
-        return {
-          single: vi.fn().mockResolvedValue({ data: false, error: null }),
-        }
+        return Promise.resolve({ data: false, error: null })
       }
       if (fn === 'resolve_dunning_event') {
         const event = dunningEvents.find((e) => e.id === params.p_dunning_id)
@@ -312,37 +314,29 @@ const createMockSupabase = () => {
           event.resolution_method = params.p_resolution_method
           event.resolved_at = new Date().toISOString()
           event.updated_at = new Date().toISOString()
-          return {
-            single: vi.fn().mockResolvedValue({ data: true, error: null }),
-          }
+          return Promise.resolve({ data: true, error: null })
         }
-        return {
-          single: vi.fn().mockResolvedValue({ data: false, error: null }),
-        }
+        return Promise.resolve({ data: false, error: null })
       }
       if (fn === 'get_dunning_config') {
         const config = dunningConfig.find((c) => c.org_id === params.p_org_id)
-        return {
-          single: vi.fn().mockResolvedValue({
-            data: config || {
-              org_id: params.p_org_id,
-              enabled: true,
-              auto_send_emails: true,
-              auto_send_sms: true,
-              max_retry_days: 14,
-              retry_interval_days: 2,
-            },
-            error: null,
-          }),
-        }
+        return Promise.resolve({
+          data: config || {
+            org_id: params.p_org_id,
+            enabled: true,
+            auto_send_emails: true,
+            auto_send_sms: true,
+            max_retry_days: 14,
+            retry_interval_days: 2,
+          },
+          error: null,
+        })
       }
       if (fn === 'get_pending_dunning_emails') {
-        return {
-          single: vi.fn().mockResolvedValue({
-            data: [],
-            error: null,
-          }),
-        }
+        return Promise.resolve({
+          data: [],
+          error: null,
+        })
       }
       if (fn === 'process_dunning_stages') {
         let updatedCount = 0
@@ -481,7 +475,7 @@ const createMockStripe = () => {
 // ============================================================
 
 describe('Phase 9: Dunning Flow E2E Tests', () => {
-  let mockSupabase: SupabaseClient
+  let mockSupabase: any
   let mockStripe: any
   const orgId = '123e4567-e89b-12d3-a456-426614174000'
   const userId = '789e4567-e89b-12d3-a456-426614174000'
