@@ -10,8 +10,8 @@ import { Button } from '@/components/ui/Button'
 
 interface PlanUpgradeCTAProps {
   currentOverage?: number
-  _currentTier?: string
-  _suggestedTier?: string
+  currentTier?: string
+  suggestedTier?: string
   onUpgrade?: () => void
 }
 
