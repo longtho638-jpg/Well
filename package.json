@@ -23,6 +23,7 @@
     "prepare": "husky install || true",
     "build:skip-i18n": "NODE_OPTIONS=--max-old-space-size=4096 vite build --mode production",
     "build:analyze": "ANALYZE=true NODE_OPTIONS=--max-old-space-size=4096 vite build --mode production",
+    "deploy": "npx wrangler pages deploy dist --project-name wellnexus --branch main",
     "sop:dev": "cd agi-sops && uvicorn api.main:app --reload --host 0.0.0.0 --port 8000",
     "sop:install": "cd agi-sops && pip install -r requirements.txt",
     "sop:test": "cd agi-sops && python3 -c \"from sop_engine import *; from llm_runtime import *; print('SOP Engine OK')\""
