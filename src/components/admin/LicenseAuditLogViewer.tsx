@@ -37,8 +37,8 @@ export function LicenseAuditLogViewer({ licenseId, limit = 50 }: LicenseAuditLog
         const { data, error } = await query;
         if (error) throw error;
         setLogs(data || []);
-      } catch (err: unknown) {
-        // Error handled
+      } catch {
+        // Error handled internally
       } finally {
         setLoading(false);
       }

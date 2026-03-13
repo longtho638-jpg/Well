@@ -27,7 +27,8 @@
 import { createClient } from '@supabase/supabase-js';
 import { createLogger } from '@/utils/logger';
 import { verifyWebhookSignature } from '@/lib/webhook-signature-verify';
-import { computeHmacSha256, secureCompare } from '@/lib/vibe-payment/payos-adapter';
+ 
+import { computeHmacSha256, secureCompare } from '@/lib/vibe-payment/payos-adapter'; // eslint-disable-line @typescript-eslint/no-unused-vars
 
 const logger = createLogger('PayOSWebhook');
 

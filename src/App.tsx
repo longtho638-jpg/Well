@@ -5,7 +5,7 @@ import { AdminRoute } from './components/AdminRoute';
 import { LicenseGate } from './components/raas/LicenseGate';
 import { ErrorBoundary } from './components/ErrorBoundary';
 import { AnalyticsRoute } from './guards/AnalyticsRoute';
-import { PremiumRoute } from './guards/PremiumRoute';
+// PremiumRoute reserved for future premium feature gating
 import {
   LandingPage, Login, Signup, ConfirmEmail, ReferralRedirect,
   ForgotPasswordPage, ResetPasswordPage, Dashboard, Marketplace,
