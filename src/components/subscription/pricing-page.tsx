@@ -335,9 +335,3 @@ export const PricingPage: React.FC<PricingPageProps> = ({
 
 export default PricingPage;
 
-// Export props type for index.ts
-export interface PricingPageProps {
-  currentPlan?: string;
-  onUpgrade: (planId: string, billingCycle: 'monthly' | 'yearly') => void;
-  upgrading?: string | null;
-}
