@@ -578,7 +578,7 @@ const createMockSupabase = () => {
               event.dunning_stage = 'reminder'
               updatedCount++
             }
-            event.updated_at = new Date().toISOString()
+            event.updatedAt = new Date().toISOString()
           }
         }
         // Return data/error directly (not wrapped in single())

@@ -87,6 +87,7 @@ import { partners } from './vi/partners';
 import { partnerstable } from './vi/partnerstable';
 import { portfoliosection } from './vi/portfoliosection';
 import { premiumnavigation } from './vi/premiumnavigation';
+import { pricing } from './vi/pricing';
 import { productactions } from './vi/productactions';
 import { productcard } from './vi/productcard';
 import { productdetail } from './vi/productdetail';
@@ -2523,6 +2524,7 @@ export const vi = {
     sign_out: "Đăng xuất",
     sign_out_description: "Đăng xuất khỏi tài khoản của bạn"
   },
+  pricing: pricing,
   subscription: {
     title: "[MISSING] title",
     subtitle: "[MISSING] subtitle",

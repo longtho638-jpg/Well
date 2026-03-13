@@ -13,6 +13,7 @@ import {
   Package,
   ClipboardList,
   Settings,
+  Activity,
 } from 'lucide-react';
 
 export interface NavItem {
@@ -38,5 +39,6 @@ export function buildNavItems(t: (key: string) => string): NavItem[] {
     { id: 'strategy', label: t('admin.nav.strategy'), icon: <Settings size={20} />, path: '/admin/policy-engine' },
     { id: 'audit', label: t('admin.nav.auditLog'), icon: <ClipboardList size={20} />, path: '/admin/audit-log' },
     { id: 'licenses', label: t('admin.nav.licenses'), icon: <Settings size={20} />, path: '/admin/licenses' },
+    { id: 'metering', label: t('admin.nav.metering'), icon: <Activity size={20} />, path: '/admin/metering' },
   ];
 }

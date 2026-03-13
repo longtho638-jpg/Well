@@ -41,6 +41,7 @@ export const SettingsPage = lazy(() => import('../pages/SettingsPage'));
 export const ProfilePage = lazy(() => import('../pages/ProfilePage'));
 export const SubscriptionPage = lazy(() => import('../pages/SubscriptionPage'));
 export const NotFoundPage = lazy(() => import('../pages/NotFoundPage'));
+export const PricingPage = lazy(() => import('../pages/pricing'));
 export const CommissionDashboard = lazy(() => import('../pages/CommissionDashboard'));
 export const VendorDashboard = lazy(() => import('../components/marketplace/VendorDashboard').then(m => ({ default: m.VendorDashboard })));
 export const UsageDashboardPage = lazy(() => import('../pages/UsageDashboard').then(m => ({ default: m.UsageDashboardPage })));
@@ -56,17 +57,21 @@ export const AdminProducts = lazy(() => import('../pages/Admin/Products'));
 export const AuditLog = lazy(() => import('../pages/Admin/AuditLog'));
 export const LicensesAdminPage = lazy(() => import('../pages/Admin/LicensesAdminPage'));
 export const AnalyticsPage = lazy(() => import('../pages/Admin/AnalyticsPage'));
+export const AnalyticsDashboardPage = lazy(() => import('../pages/AnalyticsDashboard').then(m => ({ default: m.AnalyticsDashboardPage })));
+export const MeteringDashboard = lazy(() => import('../pages/Admin/MeteringDashboard').then(m => ({ default: m.MeteringDashboard })));
 
 // ============================================================
-// SUSPENSE FALLBACK ELEMENTS
+// SUSPENSE FALLBACK COMPONENTS
 // ============================================================
 
-export const PageSpinner = React.createElement(
-  'div',
-  { className: 'flex items-center justify-center h-screen bg-zinc-950', role: 'status' },
-  React.createElement('div', { className: 'animate-spin rounded-full h-12 w-12 border-b-2 border-emerald-500' }),
-  React.createElement('span', { className: 'sr-only' }, 'Loading page...')
-);
+export const PageSpinner: React.FC = () => {
+  return (
+    <div className="flex items-center justify-center h-screen bg-zinc-950" role="status">
+      <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-emerald-500" />
+      <span className="sr-only">Loading page...</span>
+    </div>
+  );
+};
 
 export const SectionSpinner = React.createElement(
   'div',

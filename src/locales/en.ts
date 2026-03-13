@@ -91,6 +91,7 @@ import { partnerstable } from './en/partnerstable';
 import { policyEngine } from './en/policyEngine';
 import { portfoliosection } from './en/portfoliosection';
 import { premiumnavigation } from './en/premiumnavigation';
+import { pricing } from './en/pricing';
 import { productactions } from './en/productactions';
 import { productcard } from './en/productcard';
 import { productdetail } from './en/productdetail';
@@ -2380,6 +2381,7 @@ export const en = {
     sign_out: "[MISSING] sign out",
     sign_out_description: "[MISSING] sign out description"
   },
+  pricing: pricing,
   subscription: {
     title: "[MISSING] title",
     subtitle: "[MISSING] subtitle",

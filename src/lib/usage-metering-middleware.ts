@@ -2,10 +2,12 @@
  * Usage Metering Middleware Helper
  *
  * Express/FastAPI middleware for usage tracking and rate limiting
+ * Updated Phase 3: Integrates with usage-tracker.ts for simplified tracking
  */
 
 import type { SupabaseClient } from '@supabase/supabase-js'
 import { UsageMeter } from './usage-metering'
+import { trackUsage } from '@/metering/usage-tracker'
 import { createLogger } from '@/utils/logger'
 
 const logger = createLogger('UsageMetering')
@@ -67,10 +69,13 @@ export function createUsageMiddleware(
       res.setHeader('X-RateLimit-Remaining', String((rateStatus.remaining || 0) - 1))
       res.setHeader('X-RateLimit-Reset', rateStatus.resetAt || '')
 
-      // Track API call after response
+      // Track API call after response using Phase 3 tracker
       const originalJson = res.json.bind(res)
       res.json = (body: unknown): unknown => {
-        meter.track('api_call', {
+        trackUsage({
+          orgId: user.orgId || user.userId,
+          userId: user.userId,
+          metricType: 'api_calls',
           quantity: 1,
           metadata: {
             endpoint: req.originalUrl || req.url,

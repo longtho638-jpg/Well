@@ -4,6 +4,8 @@ import { AppLayout } from './components/AppLayout';
 import { AdminRoute } from './components/AdminRoute';
 import { LicenseGate } from './components/raas/LicenseGate';
 import { ErrorBoundary } from './components/ErrorBoundary';
+import { AnalyticsRoute } from './guards/AnalyticsRoute';
+import { PremiumRoute } from './guards/PremiumRoute';
 import {
   LandingPage, Login, Signup, ConfirmEmail, ReferralRedirect,
   ForgotPasswordPage, ResetPasswordPage, Dashboard, Marketplace,
@@ -12,12 +14,12 @@ import {
   NetworkPage, WithdrawalPage, Leaderboard, MarketingTools,
   Admin, TestPage, DebuggerPage, SystemStatus, AgentDashboard,
   CheckoutPage, OrderSuccess, SettingsPage, ProfilePage,
-  SubscriptionPage, NotFoundPage,
+  SubscriptionPage, NotFoundPage, PricingPage,
   Overview, CMS, Partners, Finance, PolicyEngine,
   OrderManagement, AdminProducts, AuditLog, LicensesAdminPage,
-  AnalyticsPage,
+  AnalyticsPage, AnalyticsDashboardPage,
   PageSpinner, SectionSpinner, AdminSpinner,
-  CommissionDashboard, UsageDashboardPage,
+  CommissionDashboard, UsageDashboardPage, MeteringDashboard,
 } from './config/app-lazy-routes-and-suspense-fallbacks';
 
 import { useStore } from './store';
@@ -30,9 +32,9 @@ import { useAutoLogout } from './hooks/useAutoLogout';
 import { PWAInstallPrompt } from './components/pwa-install-prompt';
 
 // Wraps lazy components with ErrorBoundary + Suspense for chunk-load crash protection
-const SafePage: React.FC<{ fallback?: React.ReactNode; children: React.ReactNode }> = ({ fallback = PageSpinner, children }) => (
+const SafePage = ({ fallback, children }: { fallback?: React.ReactElement; children: React.ReactNode }) => (
   <ErrorBoundary>
-    <Suspense fallback={fallback}>
+    <Suspense fallback={fallback ?? <PageSpinner />}>
       {children}
     </Suspense>
   </ErrorBoundary>
@@ -63,6 +65,7 @@ const App: React.FC = () => {
           {/* PUBLIC ROUTES: Landing, Auth & Venture Vision */}
           {/* ============================================================ */}
           <Route path="/" element={<SafePage><LandingPage /></SafePage>} />
+          <Route path="/pricing" element={<SafePage><PricingPage /></SafePage>} />
           <Route path="/login" element={<SafePage><Login /></SafePage>} />
           <Route path="/signup" element={<SafePage><Signup /></SafePage>} />
           <Route path="/confirm-email" element={<SafePage><ConfirmEmail /></SafePage>} />
@@ -90,7 +93,16 @@ const App: React.FC = () => {
             <Route path="products" element={<SafePage fallback={AdminSpinner}><AdminProducts /></SafePage>} />
             <Route path="audit-log" element={<SafePage fallback={AdminSpinner}><AuditLog /></SafePage>} />
             <Route path="licenses" element={<SafePage fallback={AdminSpinner}><LicensesAdminPage /></SafePage>} />
-            <Route path="analytics" element={<SafePage fallback={AdminSpinner}><AnalyticsPage /></SafePage>} />
+            <Route path="analytics" element={
+              <AnalyticsRoute>
+                <SafePage fallback={AdminSpinner}><AnalyticsPage /></SafePage>
+              </AnalyticsRoute>
+            } />
+            <Route path="metering" element={
+              <SafePage fallback={AdminSpinner}>
+                <MeteringDashboard />
+              </SafePage>
+            } />
           </Route>
 
           {/* ============================================================ */}
@@ -156,6 +168,14 @@ const App: React.FC = () => {
             <Route path="settings" element={<SafePage fallback={SectionSpinner}><SettingsPage /></SafePage>} />
             <Route path="profile" element={<SafePage fallback={SectionSpinner}><ProfilePage /></SafePage>} />
             <Route path="usage" element={<SafePage fallback={SectionSpinner}><UsageDashboardPage /></SafePage>} />
+            <Route
+              path="analytics"
+              element={
+                <AnalyticsRoute>
+                  <SafePage fallback={SectionSpinner}><AnalyticsDashboardPage /></SafePage>
+                </AnalyticsRoute>
+              }
+            />
           </Route>
 
           {/* ============================================================ */}
