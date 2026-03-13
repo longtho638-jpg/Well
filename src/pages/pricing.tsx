@@ -26,8 +26,6 @@ import {
   Headphones,
   RefreshCcw,
   Star,
-  Award,
-  TrendingUp,
   Sparkles,
   Loader2,
   AlertCircle,
@@ -64,9 +62,9 @@ interface Toast {
 }
 
 const PricingPage: React.FC = () => {
-  const { t, lang } = useTranslation();
+  const { t } = useTranslation();
   const [billingCycle, setBillingCycle] = useState<'monthly' | 'yearly'>('monthly');
-  const [selectedTier, setSelectedTier] = useState<string | null>(null);
+  const [_selectedTier, setSelectedTier] = useState<string | null>(null);
   const [openFaqIndex, setOpenFaqIndex] = useState<number | null>(0);
   const [showPaymentModal, setShowPaymentModal] = useState(false);
   const [paymentData, setPaymentData] = useState<PaymentResponse | null>(null);
@@ -177,11 +175,6 @@ const PricingPage: React.FC = () => {
     { questionKey: 'pricing.faq.q9_question', answerKey: 'pricing.faq.q9_answer' },
     { questionKey: 'pricing.faq.q10_question', answerKey: 'pricing.faq.q10_answer' },
   ];
-
-  const formatPrice = (price: number) => {
-    if (price === 0) return t('pricing.free_name');
-    return `${new Intl.NumberFormat('vi-VN').format(price)}₫`;
-  };
 
   const handleUpgrade = async (tierId: string) => {
     const tier = tiers.find(t => t.id === tierId);
