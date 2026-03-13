@@ -12,11 +12,6 @@
 import { test, expect } from '@playwright/test';
 
 test.describe('Quota Exhaustion Flow', () => {
-  const _testOrg = {
-    id: 'e2e-test-org',
-    tier: 'basic',
-    apiCallsQuota: 10000,
-  };
 
   test.beforeEach(async ({ page }) => {
     await page.route('**/api/reset-e2e-state', async route => {
