@@ -11,18 +11,17 @@ import PricingPage from '../pricing';
 
 // Mock dependencies
 vi.mock('framer-motion', () => ({
-  motion: {
-    div: ({ children, className, onClick, ...props }: React.ComponentProps<'div'>) => (
-      <div className={className} onClick={onClick} role="none" {...props}>
-        {children}
-      </div>
-    ),
-    button: ({ children, className, onClick, ...props }: React.ComponentProps<'button'>) => (
-      <button className={className} onClick={onClick} {...props}>
-        {children}
-      </button>
-    ),
-  },
+  motion: new Proxy({}, {
+    get: (_target, prop: string) => {
+      const MotionComponent = ({ children, className, onClick, ...props }: React.ComponentProps<'div'>) => (
+        <div className={className} onClick={onClick} role="none" {...props}>
+          {children}
+        </div>
+      );
+      MotionComponent.displayName = `motion.${prop}`;
+      return MotionComponent;
+    },
+  }),
   AnimatePresence: ({ children }: { children: React.ReactNode }) => <>{children}</>,
 }));
 
@@ -37,6 +36,14 @@ vi.mock('lucide-react', () => ({
   Clock: () => <span data-testid="icon-clock">Clock</span>,
   Headphones: () => <span data-testid="icon-headphones">Headphones</span>,
   RefreshCcw: () => <span data-testid="icon-refresh">Refresh</span>,
+  Star: () => <span data-testid="icon-star">★</span>,
+  Award: () => <span data-testid="icon-award">Award</span>,
+  TrendingUp: () => <span data-testid="icon-trending">Trending</span>,
+  Sparkles: () => <span data-testid="icon-sparkles">Sparkles</span>,
+  Loader2: () => <span data-testid="icon-loader">Loading</span>,
+  AlertCircle: () => <span data-testid="icon-alert">Alert</span>,
+  X: () => <span data-testid="icon-x">X</span>,
+  ArrowRight: () => <span data-testid="icon-arrow">→</span>,
 }));
 
 vi.mock('@/hooks', () => ({
@@ -115,7 +122,7 @@ describe('PricingPage', () => {
 
     it('renders save badge', () => {
       renderPricingPage();
-      expect(screen.getByText('pricing.save_2_months')).toBeInTheDocument();
+      expect(screen.getAllByText('pricing.save_2_months').length).toBeGreaterThan(0);
     });
   });
 

@@ -38,6 +38,9 @@ export const pricing = {
   most_popular: "Most Popular",
   current_plan: "Current Plan",
   processing: "Processing...",
+  processing_payment: "Creating payment link...",
+  payment_created: "Payment link created successfully",
+  forever_free: "forever free",
 
   // CTA buttons
   upgrade: "Upgrade",
@@ -89,6 +92,7 @@ export const pricing = {
   // Feature comparison table
   feature_comparison: "Feature Comparison",
   feature: "Feature",
+  comparison_subtitle: "Compare features across all plans to find your perfect fit",
 
   // FAQ Section
   faq_title: "Frequently Asked Questions",
@@ -137,6 +141,21 @@ export const pricing = {
     money_back: "7-day money-back guarantee",
     support_24_7: "24/7 Support",
     cancel_anytime: "Cancel anytime",
+  },
+
+  // Testimonials
+  testimonials: {
+    title: "What Users Say",
+    subtitle: "Thousands of people trust and use WellNexus daily",
+    sarah_name: "Sarah Nguyen",
+    sarah_role: "Pro Distributor",
+    sarah_content: "WellNexus helped me increase my income by 40% in just 2 months. The AI Copilot is truly useful!",
+    david_name: "David Tran",
+    david_role: "Leader of 50+ team",
+    david_content: "Team management has never been easier. Advanced analytics help me make accurate decisions.",
+    lisa_name: "Lisa Pham",
+    lisa_role: "Enterprise Business",
+    lisa_content: "API integration and white-label saved us months of development. The 24/7 support is amazing!",
   },
 
   // CTA sections

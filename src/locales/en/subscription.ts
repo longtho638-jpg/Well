@@ -20,6 +20,7 @@ export const subscription = {
   upgrade: "Upgrade",
   cancel_confirm: "Are you sure you want to cancel?",
   processing: "Processing...",
+  processing_upgrade: "Processing upgrade...",
   free: "Free",
   choose_plan: "Choose Your Plan",
   feature_comparison: "Feature Comparison",
@@ -62,4 +63,6 @@ export const subscription = {
   // Lock overlay keys
   premium_feature: "Premium Feature",
   upgrade_now: "Upgrade Now",
+  // Member count
+  max_members: "Up to {{count}} members",
 };

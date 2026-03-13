@@ -20,6 +20,7 @@ export const subscription = {
   upgrade: "Nâng cấp",
   cancel_confirm: "Xác nhận hủy gói?",
   processing: "Đang xử lý...",
+  processing_upgrade: "Đang xử lý nâng cấp...",
   free: "Miễn phí",
   choose_plan: "Chọn gói cước của bạn",
   feature_comparison: "So sánh tính năng",
@@ -62,4 +63,6 @@ export const subscription = {
   // Lock overlay keys
   premium_feature: "Tính năng Premium",
   upgrade_now: "Nâng cấp ngay",
+  // Member count
+  max_members: "Tối đa {{count}} thành viên",
 };

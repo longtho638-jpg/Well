@@ -38,6 +38,9 @@ export const pricing = {
   most_popular: "Phổ Biến Nhất",
   current_plan: "Gói Hiện Tại",
   processing: "Đang xử lý...",
+  processing_payment: "Đang tạo liên kết thanh toán...",
+  payment_created: "Tạo liên kết thanh toán thành công",
+  forever_free: "miễn phí trọn đời",
 
   // CTA buttons
   upgrade: "Nâng Cấp",
@@ -89,6 +92,7 @@ export const pricing = {
   // Feature comparison table
   feature_comparison: "So Sánh Tính Năng",
   feature: "Tính năng",
+  comparison_subtitle: "So sánh các tính năng để tìm gói phù hợp nhất cho bạn",
 
   // FAQ Section
   faq_title: "Câu Hỏi Thường Gặp",
@@ -137,6 +141,21 @@ export const pricing = {
     money_back: "Đảm bảo hoàn tiền 7 ngày",
     support_24_7: "Hỗ trợ 24/7",
     cancel_anytime: "Hủy bất cứ lúc nào",
+  },
+
+  // Testimonials
+  testimonials: {
+    title: "Người Dùng Nói Gì",
+    subtitle: "Hàng ngàn người đã tin tưởng và sử dụng WellNexus",
+    sarah_name: "Sarah Nguyen",
+    sarah_role: "Nhà phân phối Pro",
+    sarah_content: "WellNexus giúp tôi tăng 40% thu nhập chỉ sau 2 tháng. AI Copilot thật sự hữu ích!",
+    david_name: "David Tran",
+    david_role: "Leader nhóm 50+ người",
+    david_content: "Quản lý nhóm chưa bao giờ dễ dàng đến thế. Bảng phân tích nâng cao giúp tôi ra quyết định chính xác.",
+    lisa_name: "Lisa Pham",
+    lisa_role: "Doanh nghiệp Enterprise",
+    lisa_content: "Tích hợp API và white-label giúp chúng tôi tiết kiệm hàng tháng phát triển. Hỗ trợ 24/7 rất tuyệt!",
   },
 
   // CTA sections
