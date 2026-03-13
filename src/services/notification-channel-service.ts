@@ -248,12 +248,11 @@ export class NotificationChannelService {
 
       // SMS sending logic - placeholder for SMS provider integration
       // In production, integrate with Twilio, Vonage, or other SMS provider
-      const smsBody = payload.smsTemplate
-        ? payload.smsTemplate
-        : `${payload.title}: ${payload.message}`;
+      // const smsBody = payload.smsTemplate
+      //   ? payload.smsTemplate
+      //   : `${payload.title}: ${payload.message}`;
 
       // Placeholder: Log SMS intent (replace with actual SMS API call)
-      // eslint-disable-next-line no-console
       // SMS sending logic removed - console statements removed per cleanup
 
       return {
@@ -351,7 +350,7 @@ export class NotificationChannelService {
       // Check quiet hours
       if (preferences && this.isUserInQuietHours(preferences)) {
         // Queue for later delivery (implement queue logic as needed)
-        // eslint-disable-next-line no-console
+         
         // Quiet hours logging removed per cleanup
       }
 
@@ -431,7 +430,7 @@ export class NotificationChannelService {
 
       if (retryCount <= maxRetries) {
         const delay = calculateBackoffDelay(retryCount);
-        // eslint-disable-next-line no-console
+         
         // Retry logging removed per cleanup
         await this.sleep(delay);
       }

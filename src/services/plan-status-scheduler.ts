@@ -18,9 +18,9 @@ import {
 } from './plan-status-helpers'
 
 function getEnvVar(key: string): string | undefined {
-  // eslint-disable-next-line no-undef
+   
   const hasDeno = typeof Deno !== 'undefined'
-  // eslint-disable-next-line no-undef
+   
   if (hasDeno) return (Deno as any).env.get(key)
   if (typeof process !== 'undefined' && process.env) return process.env[key]
   return undefined
