@@ -144,7 +144,7 @@ export function RevenueByTierChart({ className }: { className?: string }) {
                   border: '1px solid #374151',
                   borderRadius: '0.5rem',
                 }}
-                formatter={(value: any) => [
+                formatter={(value: number) => [
                   new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND', minimumFractionDigits: 0 }).format(value / 100),
                   'MRR',
                 ]}

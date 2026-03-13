@@ -54,7 +54,7 @@ export function CohortRetentionChart({ data, className }: CohortRetentionChartPr
                 border: '1px solid #374151',
                 borderRadius: '0.5rem',
               }}
-              formatter={(value: any) => [`${value.toFixed(1)}%`, 'Retention']}
+              formatter={(value: number) => [`${value.toFixed(1)}%`, 'Retention']}
             />
             <Legend />
             {data.slice(0, 6).map((cohort, index) => {

@@ -78,7 +78,7 @@ export function CohortAnalysisChart() {
             <defs><linearGradient id="retentionGradient" x1="0" y1="0" x2="0" y2="1"><stop offset="5%" stopColor="#3b82f6" stopOpacity={0.3} /><stop offset="95%" stopColor="#3b82f6" stopOpacity={0} /></linearGradient></defs>
             <XAxis dataKey="week" stroke="#9ca3af" fontSize={12} tickFormatter={(v) => `W${v}`} />
             <YAxis stroke="#9ca3af" fontSize={12} tickFormatter={(v) => `${v}%`} />
-            <Tooltip contentStyle={{ backgroundColor: '#1f2937', border: '1px solid #374151', borderRadius: '0.5rem' }} formatter={(value: any, name: string) => name === 'Retention Rate' ? [`${value.toFixed(1)}%`, 'Retention Rate'] : [value.toLocaleString(), name]} />
+            <Tooltip contentStyle={{ backgroundColor: '#1f2937', border: '1px solid #374151', borderRadius: '0.5rem' }} formatter={(value: number, name: string) => name === 'Retention Rate' ? [`${value.toFixed(1)}%`, 'Retention Rate'] : [value.toLocaleString(), name]} />
             <Legend />
             <Area type="monotone" dataKey="retention_rate" name="Retention Rate" stroke="#3b82f6" fillOpacity={1} fill="url(#retentionGradient)" />
           </AreaChart>

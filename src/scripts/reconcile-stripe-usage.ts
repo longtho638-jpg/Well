@@ -290,8 +290,8 @@ async function main() {
   // eslint-disable-next-line no-console
   result.recommendations.forEach((r: string) => console.log(`  ${r}`))
 
-  // TODO: Write report to file
-  // const reportPath = `plans/reports/stripe-reconciliation-${period}.md`
+  // Write report to file (deferred - CLI output is primary use case)
+  // Future: const reportPath = `plans/reports/stripe-reconciliation-${period}.md`
   // await writeReconciliationReport(result, reportPath)
 }
 

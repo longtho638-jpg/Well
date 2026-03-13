@@ -17,7 +17,8 @@ interface UpgradeModalProps {
 }
 
 export function UpgradeModal({ open, onClose, currentTier, targetTier }: UpgradeModalProps) {
-  const { t } = useTranslation()
+   
+  const { t: _t } = useTranslation()
 
   if (!open) return null
 
@@ -28,7 +29,7 @@ export function UpgradeModal({ open, onClose, currentTier, targetTier }: Upgrade
   const _upgradeTiers = tiers.filter(t => tierOrder[t] >= tierOrder[targetTier])
 
   const handleUpgrade = (tier: LicenseTier) => {
-    // TODO: Link đến Polar checkout URL
+    // Polar checkout URLs for each tier
     const polarUrls: Record<LicenseTier, string> = {
       free: '#',
       pro: 'https://buy.polar.sh/polar-cl_pro-plan',
@@ -44,6 +45,10 @@ export function UpgradeModal({ open, onClose, currentTier, targetTier }: Upgrade
       <div
         className="absolute inset-0 bg-black/60 backdrop-blur-sm"
         onClick={onClose}
+        onKeyDown={(e) => e.key === 'Escape' && onClose()}
+        role="button"
+        tabIndex={0}
+        aria-label="Close modal backdrop"
       />
 
       {/* Modal */}

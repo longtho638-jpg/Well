@@ -123,7 +123,7 @@ export function RetentionCurveChart({ data, className }: RetentionCurveChartProp
             <CartesianGrid strokeDasharray="3 3" stroke="#374151" opacity={0.5} />
             <XAxis dataKey="day" stroke="#9ca3af" fontSize={12} tickFormatter={(v) => `D${v}`} />
             <YAxis stroke="#9ca3af" fontSize={12} tickFormatter={(v) => `${v}%`} />
-            <Tooltip contentStyle={{ backgroundColor: '#1f2937', border: '1px solid #374151', borderRadius: '0.5rem' }} formatter={(value: any) => [`${value.toFixed(1)}%`, 'Retention']} />
+            <Tooltip contentStyle={{ backgroundColor: '#1f2937', border: '1px solid #374151', borderRadius: '0.5rem' }} formatter={(value: number) => [`${value.toFixed(1)}%`, 'Retention']} />
             <Legend />
             {data.slice(0, 6).map((cohort, index) => {
               const cohortKey = new Date(cohort.cohort_month).toLocaleDateString('vi-VN', { month: 'short', year: '2-digit' })

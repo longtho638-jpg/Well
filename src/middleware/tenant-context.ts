@@ -140,12 +140,16 @@ export async function buildTenantContext(
   }
 
   // Build successful context
+  if (!validation.tenant) {
+    throw new Error('Tenant validation failed - no tenant found')
+  }
+
   return {
-    tenantId: validation.tenant!.id,
-    tenantPolicyId: validation.tenant!.policy_id,
-    tenantName: validation.tenant!.name,
-    tenantStatus: validation.tenant!.status,
-    customerId: validation.tenant!.customer_id,
+    tenantId: validation.tenant.id,
+    tenantPolicyId: validation.tenant.policy_id,
+    tenantName: validation.tenant.name,
+    tenantStatus: validation.tenant.status,
+    customerId: validation.tenant.customer_id,
     isValid: true,
   }
 }
@@ -168,7 +172,7 @@ export function injectTenantContext(
  */
 export function createTenantMiddleware() {
   return async (req: TenantRequest, res: {
-    status?: (code: number) => { json?: (data: any) => void }
+    status?: (code: number) => { json?: (data: unknown) => void }
     setHeader?: (key: string, value: string) => void
   }, next: () => void) => {
     try {

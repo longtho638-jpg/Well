@@ -184,7 +184,12 @@ function HeaderSection({ dateRange, setDateRange, onRefresh, isRefreshing, onExp
   )
 }
 
-function StatisticsSection({ revenueData, totalOverageCost, summaryMetrics }: { revenueData: polarAnalytics.RevenueData | null; totalOverageCost: number; summaryMetrics: any }) {
+interface SummaryMetrics {
+  expiring_soon: number
+  avg_utilization: number
+}
+
+function StatisticsSection({ revenueData, totalOverageCost, summaryMetrics }: { revenueData: polarAnalytics.RevenueData | null; totalOverageCost: number; summaryMetrics: SummaryMetrics | null | undefined }) {
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-6 gap-4">
       <StatCard icon={TrendingUp} label="MRR" value={revenueData ? new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND', minimumFractionDigits: 0 }).format(revenueData.mrr_cents / 100) : '-'} trend={revenueData?.growth_rate || 0} color="emerald" />

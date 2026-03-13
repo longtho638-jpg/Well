@@ -60,8 +60,8 @@ function generateChartData(
   timeWindowMinutes: number = 30
 ): ChartDataPoint[] {
   const now = Date.now()
-  const windowMs = timeWindowMinutes * 60 * 1000
-  const intervalMs = Math.max(1000, windowMs / 30) // 30 data points
+  // const windowMs = timeWindowMinutes * 60 * 1000
+  // const intervalMs = Math.max(1000, windowMs / 30) // 30 data points (reserved for future use)
 
   const data: ChartDataPoint[] = []
 
@@ -84,10 +84,16 @@ function generateChartData(
   return data
 }
 
+interface CustomTooltipProps {
+  active?: boolean
+  payload?: Array<{ value: number }>
+  label?: string
+}
+
 /**
  * Custom tooltip component
  */
-function CustomTooltip({ active, payload, label }: any) {
+function CustomTooltip({ active, payload, label }: CustomTooltipProps) {
   if (active && payload && payload.length) {
     return (
       <div className="px-3 py-2 bg-gray-900/95 border border-white/10 rounded-lg shadow-xl backdrop-blur-sm">

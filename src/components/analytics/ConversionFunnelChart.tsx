@@ -109,7 +109,7 @@ export function ConversionFunnelChart() {
                 border: '1px solid #374151',
                 borderRadius: '0.5rem',
               }}
-              formatter={(value: any, name: string) => {
+              formatter={(value: number, name: string) => {
                 if (name === 'Count') {
                   return [value.toLocaleString(), 'Users']
                 }

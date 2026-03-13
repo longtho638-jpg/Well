@@ -3,7 +3,11 @@
  * Utilities for exporting chart data to CSV and PDF
  */
 
-export async function exportToCSV(data: any[], filename: string) {
+interface ExportableData {
+  [key: string]: string | number | boolean | null
+}
+
+export async function exportToCSV(data: ExportableData[], filename: string) {
   if (!data || !data.length) return
 
   const headers = Object.keys(data[0])

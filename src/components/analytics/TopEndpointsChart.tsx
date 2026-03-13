@@ -123,7 +123,7 @@ export function TopEndpointsChart({ className }: { className?: string }) {
                 border: '1px solid #374151',
                 borderRadius: '0.5rem',
               }}
-              formatter={(value: any, name: string) => {
+              formatter={(value: number, name: string) => {
                 if (name === 'Calls') {
                   return [value.toLocaleString(), 'Total Calls']
                 }

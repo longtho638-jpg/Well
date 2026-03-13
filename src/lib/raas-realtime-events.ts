@@ -16,12 +16,14 @@
  *
  *   // Subscribe to all events
  *   const unsubscribe = await raasRealtimeEvents.subscribe((event) => {
- *     console.log('New event:', event)
+ *     // Handle new event
  *   })
  *
  *   // Subscribe to specific org
  *   const unsubscribe = await raasRealtimeEvents.subscribe(
- *     (event) => console.log('Org event:', event),
+ *     (event) => {
+ *       // Handle org-specific event
+ *     },
  *     { orgId: 'org_123' }
  *   )
  */
@@ -110,7 +112,10 @@ export class RaasRealtimeEvents {
     if (!this.subscribers.has(subscriberId)) {
       this.subscribers.set(subscriberId, new Set())
     }
-    this.subscribers.get(subscriberId)!.add(handler)
+    const subscriberSet = this.subscribers.get(subscriberId)
+    if (subscriberSet) {
+      subscriberSet.add(handler)
+    }
 
     analyticsLogger.info('[RaasRealtime] Subscriber added', {
       subscriberId,
@@ -260,7 +265,8 @@ export class RaasRealtimeEvents {
       this.eventBuffer.set(batchKey, [])
     }
 
-    const buffer = this.eventBuffer.get(batchKey)!
+    const buffer = this.eventBuffer.get(batchKey)
+    if (!buffer) return
     buffer.push(event)
 
     // Clear existing timer

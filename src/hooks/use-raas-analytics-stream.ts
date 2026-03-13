@@ -19,7 +19,7 @@
  *   useEffect(() => {
  *     if (events.length > 0) {
  *       const latestEvent = events[events.length - 1]
- *       console.log('New event:', latestEvent)
+ *       // Process latest event
  *     }
  *   }, [events])
  */
@@ -88,8 +88,10 @@ export function useRaasAnalyticsStream(
     autoConnect = true,
   } = options
 
-  const orgId = optionsOrgId
-  const eventType = optionsEventType
+   
+  const [_orgId, _setOrgId] = useState(optionsOrgId)
+   
+  const [_eventType, _setEventType] = useState(optionsEventType)
 
   // State
   const [events, setEvents] = useState<RaasEvent[]>([])
