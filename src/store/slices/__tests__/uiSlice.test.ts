@@ -4,7 +4,11 @@
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { describe, it, expect, beforeEach, afterAll, vi } from 'vitest';
-import { createUISlice } from '../uiSlice';
+import { createUISlice, UISlice } from '../uiSlice';
+import type { User, Transaction } from '../../../types';
+
+// create UiSliceState type using pre created types 
+type UiSliceState = UISlice & {user: User; transactions: Transaction[]};
 
 vi.useFakeTimers();
 
@@ -25,7 +29,7 @@ describe('UISlice', () => {
   });
 
   it('should create landing page with correct data', async () => {
-    let state: any = { user: mockUser, ...mockInitialState };
+    let state: UiSliceState = { user: mockUser, ...mockInitialState };
     const slice = createUISlice((updates) => { state = { ...state, ...updates }; }, () => state, {} as any);
     const newPagePromise = slice.createLandingPage('template-a', 'https://example.com/portrait.jpg');
 
@@ -40,7 +44,7 @@ describe('UISlice', () => {
 
   it('should publish landing page by ID', () => {
     const existingPage = { id: 'LP-001', userId: 'user-123', template: 'template-a' as const, isPublished: false };
-    let state: any = { user: mockUser, ...mockInitialState, userLandingPages: [existingPage] };
+    let state: UiSliceState = { user: mockUser, ...mockInitialState, userLandingPages: [existingPage] };
     const setMock = vi.fn((updater) => {
       const updates = typeof updater === 'function' ? updater(state) : updater;
       state = { ...state, ...updates };
@@ -55,7 +59,7 @@ describe('UISlice', () => {
 
   it('should not publish wrong page ID', () => {
     const existingPage = { id: 'LP-001', userId: 'user-123', template: 'template-a' as const, isPublished: false };
-    let state: any = { user: mockUser, ...mockInitialState, userLandingPages: [existingPage] };
+    let state: UiSliceState = { user: mockUser, ...mockInitialState, userLandingPages: [existingPage] };
     const slice = createUISlice((updates) => { state = { ...state, ...updates }; }, () => state, {} as any);
     slice.publishLandingPage('LP-999');
     expect(state.userLandingPages[0].isPublished).toBe(false);
@@ -63,7 +67,7 @@ describe('UISlice', () => {
 
   it('should redeem item when balance is sufficient', async () => {
     const item = { id: 'item-1', name: 'Premium Package', isAvailable: true, stock: 10, growCost: 1000000, redemptionCount: 0 };
-    let state: any = { user: mockUser, ...mockInitialState, redemptionItems: [item], transactions: [] };
+    let state: UiSliceState = { user: mockUser, ...mockInitialState, redemptionItems: [item], transactions: [] };
     const slice = createUISlice((updates) => { state = { ...state, ...updates }; }, () => state, {} as any);
     const redeemPromise = slice.redeemItem('item-1');
     vi.advanceTimersByTime(1500);
@@ -78,14 +82,14 @@ describe('UISlice', () => {
 
   it('should throw error when redeeming unavailable item', async () => {
     const unavailableItem = { id: 'item-2', name: 'Sold Out', isAvailable: false, stock: 0, growCost: 500000 };
-    let state: any = { user: mockUser, ...mockInitialState, redemptionItems: [unavailableItem], transactions: [] };
+    let state: UiSliceState = { user: mockUser, ...mockInitialState, redemptionItems: [unavailableItem], transactions: [] };
     const slice = createUISlice((updates) => { state = { ...state, ...updates }; }, () => state, {} as any);
     await expect(slice.redeemItem('item-2')).rejects.toThrow('Cannot redeem item');
   });
 
   it('should throw error when insufficient balance', async () => {
     const expensiveItem = { id: 'item-3', name: 'Luxury Package', isAvailable: true, stock: 5, growCost: 10000000 };
-    let state: any = { user: { ...mockUser, growBalance: 1000000 }, ...mockInitialState, redemptionItems: [expensiveItem], transactions: [] };
+    let state: UiSliceState = { user: { ...mockUser, growBalance: 1000000 }, ...mockInitialState, redemptionItems: [expensiveItem], transactions: [] };
     const slice = createUISlice((updates) => { state = { ...state, ...updates }; }, () => state, {} as any);
     await expect(slice.redeemItem('item-3')).rejects.toThrow('Cannot redeem item');
   });

@@ -4,13 +4,15 @@
 
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { DeadLetterQueueService } from '../dead-letter-queue-service';
+import type { SupabaseLike } from '@/lib/vibe-supabase/typed-query-helpers';
 
 describe('DeadLetterQueueService', () => {
   let dlq: DeadLetterQueueService;
-  let mockSupabase: any;
+  let mockSupabase: SupabaseLike;
 
   beforeEach(() => {
-    mockSupabase = { from: vi.fn(), rpc: vi.fn() };
+    mockSupabase = { from: vi.fn(), rpc: vi.fn(),
+    } as SupabaseLike;
     dlq = new DeadLetterQueueService(mockSupabase);
   });
 
