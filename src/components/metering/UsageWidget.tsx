@@ -77,7 +77,6 @@ const getBorderColorByPercentage = (percentage: number): string => {
 const MetricCard: React.FC<MetricCardProps> = ({ label, used, limit, percentage, unit, icon: Icon }) => {
   const isOverLimit = percentage >= 100
   const isNearLimit = percentage >= 80 && percentage < 100
-  const isNormal = percentage < 80
 
   return (
     <motion.div
