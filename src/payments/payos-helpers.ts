@@ -76,7 +76,7 @@ export async function storePaymentIntent(params: {
 }
 
 export async function getPaymentIntent(orderCode: number): Promise<StoredIntent | null> {
-  const { error } = await (supabase as unknown as SupabaseLike)
+  const { data, error } = await (supabase as unknown as SupabaseLike)
     .from('payment_intents')
     .select('*')
     .eq('order_code', orderCode)
