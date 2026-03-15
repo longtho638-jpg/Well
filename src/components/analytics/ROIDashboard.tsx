@@ -308,12 +308,12 @@ const UpgradeCTA: React.FC<UpgradeCTAProps> = ({ feature }) => (
           'Subscription ROI Calculator',
           'Monthly Savings Report',
           'Priority Support',
-        ].map(() => (
+        ].map((featureName, i) => (
           <li key={i} className="flex items-center gap-3 text-gray-300">
             <div className="w-5 h-5 rounded-full bg-emerald-500/20 flex items-center justify-center flex-shrink-0">
               <Zap className="w-3 h-3 text-emerald-400" />
             </div>
-            {feature}
+            {featureName}
           </li>
         ))}
       </motion.ul>
@@ -478,7 +478,7 @@ export const ROIDashboard: React.FC<ROIDashboardProps> = ({ className }) => {
           className="p-6 rounded-2xl border border-white/10 bg-gradient-to-br from-cyan-900/20 to-blue-900/20 backdrop-blur-sm"
         >
           <div className="space-y-1">
-            {MOCK_FEATURE_USAGE.map((feature, i) => (
+            {MOCK_FEATURE_USAGE.map((feature) => (
               <HeatmapBar key={feature.feature} feature={feature} />
             ))}
           </div>

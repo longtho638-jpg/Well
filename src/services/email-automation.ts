@@ -8,41 +8,42 @@
  * - Upgrade prompts when hitting limits
  * - Weekly digest for Pro users
  *
- * Uses Resend or Nodemailer for email delivery
+ * Uses Resend for email delivery.
+ * For SMTP/nodemailer support, see email-service.ts which uses Supabase Edge Functions.
  */
 
 import { createClient, type SupabaseClient } from '@supabase/supabase-js';
 
 // ===== Types =====
 
-interface EmailRecipient {
+export interface EmailRecipient {
   email: string;
   name?: string;
   orgId?: string;
   userId?: string;
 }
 
-interface TrialReminderEmail {
+export interface TrialReminderEmail {
   type: 'trial_reminder';
   daysRemaining: number;
   trialEndsAt: Date;
 }
 
-interface MilestoneEmail {
+export interface MilestoneEmail {
   type: 'milestone';
   milestoneName: string;
   milestoneValue: number;
   category: 'usage' | 'revenue' | 'engagement';
 }
 
-interface UpgradePromptEmail {
+export interface UpgradePromptEmail {
   type: 'upgrade_prompt';
   currentLimit: number;
   usagePercent: number;
   recommendedPlan: string;
 }
 
-interface WeeklyDigestEmail {
+export interface WeeklyDigestEmail {
   type: 'weekly_digest';
   weekStart: Date;
   weekEnd: Date;
@@ -62,20 +63,16 @@ interface EmailOptions {
   tags?: Record<string, string>;
 }
 
-interface EmailServiceConfig {
-  provider: 'resend' | 'nodemailer';
+export interface EmailServiceConfig {
+  provider: 'resend';
   apiKey?: string;
-  smtpConfig?: {
-    host: string;
-    port: number;
-    secure: boolean;
-    auth: {
-      user: string;
-      pass: string;
-    };
-  };
   fromEmail: string;
   fromName: string;
+}
+
+export interface EmailResult {
+  success: boolean;
+  error?: string;
 }
 
 // ===== Email Templates =====
@@ -222,7 +219,7 @@ const MILESTONE_TEMPLATES = {
     revenue: {
       subject: '💰 Revenue milestone achieved!',
       html: (name: string, milestone: string, value: number) => `
-        <h1>Conggratulations ${name}!</h1>
+        <h1>Congratulations ${name}!</h1>
         <p style="font-size: 24px; color: #f59e0b;">💸 Revenue milestone: <strong>${milestone}</strong></p>
         <p style="font-size: 18px;">Total: <strong>${new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(value)}</strong></p>
         <p>You're on fire!</p>
@@ -361,7 +358,7 @@ export class EmailAutomationService {
     recipient: EmailRecipient,
     daysRemaining: number,
     locale: 'vi' | 'en' = 'vi'
-  ): Promise<{ success: boolean; error?: string }> {
+  ): Promise<EmailResult> {
     try {
       const template = TRIAL_REMINDER_TEMPLATES[locale][daysRemaining as 14 | 7 | 3];
       if (!template) {
@@ -391,7 +388,7 @@ export class EmailAutomationService {
     recipient: EmailRecipient,
     milestone: MilestoneEmail,
     locale: 'vi' | 'en' = 'vi'
-  ): Promise<{ success: boolean; error?: string }> {
+  ): Promise<EmailResult> {
     try {
       const categoryTemplates = MILESTONE_TEMPLATES[locale][milestone.category];
       if (!categoryTemplates) {
@@ -423,7 +420,7 @@ export class EmailAutomationService {
     recipient: EmailRecipient,
     prompt: UpgradePromptEmail,
     locale: 'vi' | 'en' = 'vi'
-  ): Promise<{ success: boolean; error?: string }> {
+  ): Promise<EmailResult> {
     try {
       const template = UPGRADE_PROMPT_TEMPLATES[locale];
       const name = recipient.name || 'bạn';
@@ -451,7 +448,7 @@ export class EmailAutomationService {
     recipient: EmailRecipient,
     digest: WeeklyDigestEmail,
     locale: 'vi' | 'en' = 'vi'
-  ): Promise<{ success: boolean; error?: string }> {
+  ): Promise<EmailResult> {
     try {
       const template = WEEKLY_DIGEST_TEMPLATES[locale];
       const name = recipient.name || 'bạn';
@@ -486,23 +483,12 @@ export class EmailAutomationService {
   }
 
   /**
-   * Send email using configured provider
-   */
-  private async sendEmail(options: EmailOptions): Promise<void> {
-    if (this.config.provider === 'resend') {
-      await this.sendWithResend(options);
-    } else if (this.config.provider === 'nodemailer') {
-      await this.sendWithNodemailer(options);
-    }
-  }
-
-  /**
    * Send email using Resend API
    */
-  private async sendWithResend(options: EmailOptions): Promise<void> {
+  private async sendEmail(options: EmailOptions): Promise<void> {
     const apiKey = this.config.apiKey || process.env.RESEND_API_KEY;
     if (!apiKey) {
-      throw new Error('Resend API key not configured');
+      throw new Error('Resend API key not configured. Set RESEND_API_KEY environment variable.');
     }
 
     const response = await fetch('https://api.resend.com/emails', {
@@ -528,34 +514,8 @@ export class EmailAutomationService {
   }
 
   /**
-   * Send email using Nodemailer (SMTP)
-   */
-  private async sendWithNodemailer(options: EmailOptions): Promise<void> {
-    if (!this.config.smtpConfig) {
-      throw new Error('Nodemailer SMTP config not provided');
-    }
-
-    // Dynamic import for Node.js environment
-    const nodemailer = (await import('nodemailer')).default;
-
-    const transporter = nodemailer.createTransport({
-      host: this.config.smtpConfig.host,
-      port: this.config.smtpConfig.port,
-      secure: this.config.smtpConfig.secure,
-      auth: this.config.smtpConfig.auth,
-    });
-
-    await transporter.sendMail({
-      from: `${this.config.fromName} <${this.config.fromEmail}>`,
-      to: options.to.email,
-      subject: options.subject,
-      html: options.html,
-      text: options.text,
-    });
-  }
-
-  /**
    * Schedule automated trial reminder emails
+   * Call this from a cron job or scheduled function
    */
   async scheduleTrialReminders(): Promise<void> {
     const { data: trials, error } = await this.supabase
@@ -588,6 +548,7 @@ export class EmailAutomationService {
 
   /**
    * Schedule weekly digests for Pro users
+   * Call this from a cron job or scheduled function (e.g., every Monday at 9 AM)
    */
   async scheduleWeeklyDigests(): Promise<void> {
     const { data: proUsers, error } = await this.supabase
@@ -616,8 +577,9 @@ export class EmailAutomationService {
       if (!metrics || metrics.length === 0) continue;
 
       const totalUsage = metrics.length;
-      const featuresUsed = [...new Set(metrics.map((m: any) => (m.category || 'general') as string))];
-      const topFeature = (featuresUsed[0] as string) || 'Analytics';
+      const categorySet = new Set(metrics.map((m: any) => (m.category || 'general') as string));
+      const featuresUsed = Array.from(categorySet);
+      const topFeature = featuresUsed[0] || 'Analytics';
 
       await this.sendWeeklyDigest(
         { email: user.email, name: user.name, userId: user.user_id },
@@ -641,7 +603,7 @@ export class EmailAutomationService {
 // ===== Singleton Instance =====
 
 export const emailAutomation = new EmailAutomationService({
-  provider: (process.env.EMAIL_PROVIDER as 'resend' | 'nodemailer') || 'resend',
+  provider: 'resend',
   apiKey: process.env.RESEND_API_KEY,
   fromEmail: process.env.EMAIL_FROM || 'noreply@wellnexus.vn',
   fromName: process.env.EMAIL_FROM_NAME || 'WellNexus',

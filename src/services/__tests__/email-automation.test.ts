@@ -4,7 +4,7 @@
  */
 
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
-import { EmailAutomationService, emailAutomation } from './email-automation';
+import { EmailAutomationService, emailAutomation } from '../email-automation';
 
 // Mock fetch for Resend API
 global.fetch = vi.fn();
@@ -306,8 +306,9 @@ describe('EmailAutomationService', () => {
 
       const callArgs = vi.mocked(fetch).mock.calls[0];
       const body = JSON.parse(callArgs[1]?.body as string);
-      expect(body.subject).toContain('06/03/2026');
-      expect(body.subject).toContain('13/03/2026');
+      // Vietnamese date format: d/M/yyyy (no leading zeros)
+      expect(body.subject).toContain('6/3/2026');
+      expect(body.subject).toContain('13/3/2026');
     });
 
     it('formats currency in Vietnamese Dong', async () => {
@@ -334,7 +335,9 @@ describe('EmailAutomationService', () => {
 
       const callArgs = vi.mocked(fetch).mock.calls[0];
       const body = JSON.parse(callArgs[1]?.body as string);
-      expect(body.html).toContain('10.000.000₫');
+      // Vietnamese currency format: 10.000.000 ₫ (with non-breaking space)
+      expect(body.html).toContain('10.000.000');
+      expect(body.html).toContain('₫');
     });
   });
 

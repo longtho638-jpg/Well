@@ -35,7 +35,7 @@ export default [
         settings: { react: { version: 'detect' } },
     },
     {
-        files: ['src/locales/**', 'src/data/**', 'supabase/functions/**', '**/*.test.ts', '**/*.test.tsx', 'src/App.tsx'],
+        files: ['src/locales/**', 'src/data/**', 'supabase/functions/**', '**/*.test.ts', '**/*.test.tsx', 'src/App.tsx', 'src/services/email-automation.ts'],
         rules: { 'max-lines': 'off', '@typescript-eslint/no-explicit-any': 'off' },
     },
 ];

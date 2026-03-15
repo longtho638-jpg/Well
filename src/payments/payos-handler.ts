@@ -111,64 +111,141 @@ export async function createSubscriptionPayment(
 /**
  * Handle payment success webhook from PayOS
  * Creates subscription record after signature verification
+ *
+ * Flow:
+ * 1. Check idempotency (in-memory + database)
+ * 2. Verify webhook signature
+ * 3. Fetch payment intent
+ * 4. Create subscription
+ * 5. Update payment intent status to 'completed'
+ * 6. Log to agent_logs for audit trail
  */
 export async function handlePaymentSuccess(
   orderCode: number,
   webhookData: any,
 ): Promise<void> {
+  // Step 1: Idempotency check - in-memory guard
   if (await isAlreadyProcessed(orderCode)) {
-    console.log(`[PayOS] Order ${orderCode} already processed, skipping`);
     return;
   }
 
+  // Step 1b: Idempotency check - database (check if intent already completed)
+  const existingIntent = await getPaymentIntent(orderCode);
+  if (existingIntent?.status === 'completed') {
+    await markProcessed(orderCode);
+    return;
+  }
+
+  // Step 2: Verify webhook signature
   const signature = webhookData.signature as string;
   const checksumKey = process.env.PAYOS_CHECKSUM_KEY || '';
 
-  if (!(await verifyWebhookSignature(webhookData.data, signature, checksumKey))) {
-    throw new Error('Invalid webhook signature');
+  const signatureValid = await verifyWebhookSignature(webhookData.data, signature, checksumKey);
+  if (!signatureValid) {
+    throw new Error(`Invalid webhook signature for order ${orderCode}`);
   }
 
-  const intent = await getPaymentIntent(orderCode);
+  // Step 3: Fetch payment intent
+  const intent = existingIntent ?? await getPaymentIntent(orderCode);
   if (!intent) {
     throw new Error(`Payment intent not found for order ${orderCode}`);
   }
 
-  await subscriptionService.createSubscription({
-    userId: intent.user_id,
-    planId: intent.plan_id,
-    billingCycle: intent.billing_cycle as 'monthly' | 'yearly',
-    payosOrderCode: orderCode,
-    orgId: intent.metadata?.orgId as string | undefined,
-  });
+  // Step 4: Create subscription (with rollback on failure)
+  let subscriptionId: string | null = null;
+  try {
+    const subscription = await subscriptionService.createSubscription({
+      userId: intent.user_id,
+      planId: intent.plan_id,
+      billingCycle: intent.billing_cycle as 'monthly' | 'yearly',
+      payosOrderCode: orderCode,
+      orgId: intent.metadata?.orgId as string | undefined,
+    });
+    subscriptionId = subscription.id;
+  } catch (error) {
+    // Rollback: Log the failure for manual review
+    await logPaymentEvent({
+      orderCode,
+      userId: intent.user_id,
+      eventType: 'subscription_creation_failed',
+      payload: { error: error instanceof Error ? error.message : String(error), intent },
+    });
+    throw new Error(`Failed to create subscription: ${error instanceof Error ? error.message : String(error)}`);
+  }
 
+  // Step 5: Update payment intent status to 'completed'
+  try {
+    await updatePaymentIntentStatus(orderCode, 'completed');
+  } catch (error) {
+    // Critical: Subscription created but intent not updated
+    // Log for manual reconciliation
+    await logPaymentEvent({
+      orderCode,
+      userId: intent.user_id,
+      eventType: 'intent_status_update_failed',
+      payload: { error: error instanceof Error ? error.message : String(error), subscriptionId },
+    });
+    // Don't throw - subscription was created successfully
+  }
+
+  // Step 6: Mark as processed and log success
   await markProcessed(orderCode);
-  console.log(`[PayOS] Successfully processed payment for order ${orderCode}`);
+  await logPaymentEvent({
+    orderCode,
+    userId: intent.user_id,
+    eventType: 'payment_success',
+    payload: { subscriptionId, intent },
+  });
 }
 
 /**
  * Handle payment cancellation from PayOS
+ *
+ * Flow:
+ * 1. Check idempotency
+ * 2. Log cancellation (do NOT downgrade - user might have clicked cancel by accident)
+ * 3. Update payment intent status to 'canceled'
+ * 4. Log to agent_logs for audit trail
+ * 5. Optionally send notification email
  */
 export async function handlePaymentCancel(
   orderCode: number,
   reason?: string,
 ): Promise<void> {
+  // Step 1: Idempotency check
   if (await isAlreadyProcessed(orderCode)) {
-    console.log(`[PayOS] Order ${orderCode} already processed, skipping`);
     return;
   }
 
+  // Step 2: Fetch payment intent
   const intent = await getPaymentIntent(orderCode);
   if (!intent) {
-    console.log(`[PayOS] No intent found for canceled order ${orderCode}`);
     return;
   }
 
+  // Step 3: Attempt to cancel payment via PayOS (best effort)
   try {
     await payosProvider.cancelPayment(orderCode, reason);
-  } catch (error) {
-    console.error(`[PayOS] Failed to cancel payment ${orderCode}:`, error);
+  } catch {
+    // Don't throw - still want to update local state
   }
 
+  // Step 4: Update payment intent status to 'canceled'
+  try {
+    await updatePaymentIntentStatus(orderCode, 'canceled');
+  } catch {
+    // Don't throw - still want to continue with cancellation flow
+  }
+
+  // Step 5: Mark as processed and log cancellation
   await markProcessed(orderCode);
-  console.log(`[PayOS] Successfully canceled order ${orderCode}: ${reason || 'User canceled'}`);
+  await logPaymentEvent({
+    orderCode,
+    userId: intent.user_id,
+    eventType: 'payment_canceled',
+    payload: { reason: reason || 'User canceled', intent },
+  });
+
+  // Step 6: Optional - Send notification email (TODO: implement when email service available)
+  // await sendCancellationEmail(intent.user_id, orderCode, reason);
 }

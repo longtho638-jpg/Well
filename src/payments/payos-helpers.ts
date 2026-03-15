@@ -58,7 +58,7 @@ export async function storePaymentIntent(params: {
   amount: number;
   orgId?: string;
 }): Promise<void> {
-  const { data, error } = await (supabase as unknown as SupabaseLike)
+  const { error } = await (supabase as unknown as SupabaseLike)
     .from('payment_intents')
     .insert({
       order_code: params.orderCode,
@@ -76,15 +76,63 @@ export async function storePaymentIntent(params: {
 }
 
 export async function getPaymentIntent(orderCode: number): Promise<StoredIntent | null> {
-  const { data, error } = await (supabase as unknown as SupabaseLike)
+  const { error } = await (supabase as unknown as SupabaseLike)
     .from('payment_intents')
     .select('*')
     .eq('order_code', orderCode)
     .single();
 
-  if (error || !data) {
+  if (error) {
     return null;
   }
 
   return data as StoredIntent;
+}
+
+// ─── Payment Intent Status Update ─────────────────────────────────────────────
+
+export async function updatePaymentIntentStatus(
+  orderCode: number,
+  status: 'completed' | 'canceled' | 'expired',
+): Promise<void> {
+  const { error } = await (supabase as unknown as SupabaseLike)
+    .from('payment_intents')
+    .update({
+      status,
+      completed_at: status === 'completed' ? new Date().toISOString() : null,
+    })
+    .eq('order_code', orderCode);
+
+  if (error) {
+    console.error(`[PayOS] Failed to update intent status for order ${orderCode}:`, error);
+    throw error;
+  }
+}
+
+// ─── Audit Logging ────────────────────────────────────────────────────────────
+
+export interface PaymentEventLog {
+  orderCode: number;
+  userId: string;
+  eventType: 'payment_success' | 'payment_canceled' | 'subscription_creation_failed' | 'intent_status_update_failed';
+  payload: Record<string, unknown>;
+}
+
+export async function logPaymentEvent(event: PaymentEventLog): Promise<void> {
+  const { error } = await (supabase as unknown as SupabaseLike)
+    .from('agent_logs')
+    .insert({
+      user_id: event.userId,
+      agent_name: 'payos-handler',
+      action: event.eventType,
+      details: {
+        orderCode: event.orderCode,
+        eventType: event.eventType,
+        ...event.payload,
+      },
+    });
+
+  if (error) {
+    console.error(`[PayOS] Failed to log payment event for order ${event.orderCode}:`, error);
+  }
 }
